@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "biosimulators-simularium"
+version = "0.6.2"
+description = "Converting Biosimulators spatial simulation outputs into a Simularium-compliant format."
+authors = ["Alex Patrie <alexanderpatrie@gmail.com>"]
+readme = "README.md"
+packages = [{include = "biosimulators_simularium"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+smoldyn = "*"
+toml = "^0.10.2"
+simulariumio = "^1.11.0"
+pyvista = "^0.44.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+mypy = "*"
+flake8 = "*"
+twine = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
