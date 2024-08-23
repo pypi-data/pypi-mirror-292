@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: kidsafeinternet
+Version: 0.0.1
+Summary: A library for detecting safe images using AI
+Home-page: https://github.com/kidsafeinternet/library
+Author: Zander Lewis
+Author-email: zander@zanderlewis.dev
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastai>=2.0.0
+
+# library
+ Kid Safe Internet Python Library.
+
+## Installation
+```bash
+pip install kidsafeinternet
+```
+
+## Usage
+```python
+from kidsafeinternet import is_safe_image
+
+image_path = 'path_to_image.jpg'
+if is_safe_image(image_path):
+    print("The image is safe.")
+else:
+    print("The image is not safe.")
+```
