@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: MBTAclient
+Version: 0.2.2
+Summary: A Python client for interacting with the MBTA API
+Author-email: Luca Chiabrera <luca.chiabrera@gmail.com>
+Project-URL: Homepage, https://github.com/chiabre/MBTAclient
+Project-URL: Issues, https://github.com/chiabre/MBTAclient/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# MBTAclient
+
+**MBTAclient** is a Python client library for interacting with the Massachusetts Bay Transportation Authority (MBTA) API. This library provides access to MBTA data, including routes, predictions, schedules, and more.
+
+## Features
+
+- Structured objects to retrieve and access information about:
+    - MBTA Routes
+    - MBTA Stops
+    - MBTA Trips
+    - MBTA Schedules
+    - MBTA Predictions
+    - MBTA Alerts
+- Two handlers to simplify the retrieval and access to journey information, including near-live scheduling, stops, and alerts:
+    - **`journeys_handler`**: Provides a list of the next N (N=`max_journeys`) journeys from a departure stop (`depart_from_name`) to an arrival stop (`arrive_at_name`).
+    - **`trip_handler`**: Provides a single journey on a given commuter rail trip (`trip`) from a departure stop (`depart_from_name`) to an arrival stop (`arrive_at_name`).
+- Easily integrates with Home Assistant or other Python-based systems.
+
+
+## Contributing
+
+Contributions are welcome! If you would like to contribute to this project, please fork the repository and submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
