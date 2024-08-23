@@ -1,0 +1,157 @@
+
+<pre>
+
+	<h1>quests</h1>
+		@ moves 
+
+	<h2>venue</h2>
+	
+		[ ] organization
+		
+			/prosthetic_1
+				/mints
+				/treasures
+					/treasure.1
+						prosthetic.py 
+							prosthetic = {								
+								"names": []
+							}
+							
+							
+					/treasure.2 
+						treasure.py
+					
+					/treasure.3				
+						treasure.py
+						
+						
+				
+				/trends
+					/[ephemeral]
+						#
+						#	This is for equality checks of sends.
+						#
+						#
+						
+					/@monetary
+						[mongo:DB] DB_prosthetic_trends
+						
+							#
+							#	db.items.createIndex ({ key1: 1, key2: 1 }, { unique: true })
+							#
+							#
+							[mongo:collection] collection_vernacular [{
+								#
+								#	The domain can only have one "."
+								#
+								#
+								"domain": "",
+								
+								"names": "",
+								
+								"tags": [],
+								"cautions": [],
+								
+								"versions": {
+									"1.0.0": bits_id
+								}
+							}]
+							
+							[mongo:collection] bites
+							[mongo:collection] bites.files 
+								# This one is auto created by GridFS
+						
+						
+				prosthetic_essence.py 
+					essence = {
+						
+					}
+				
+		<h3>essential plays</h3>
+
+			[@ prosthetic_1] prosthetic ventures on
+			
+				#
+				#	[ ] start the reverse proxy
+				#		
+				#			https://treasure.1.prosthetic
+				#			https://treasure.2.prosthetic
+				#			https://treasure.3.prosthetic
+				#	
+				#	[ ] 
+				#
+				#
+			
+			[@ prosthetic_1] prosthetic ventures off		
+		
+			[@ prosthetic_1] prosthetic treasures inventory
+	
+			[@ prosthetic_1] prosthetic treasures save --name "treasure.1" --version 1.0.0
+				#
+				#	This doesn't delete the treasure. 
+				#	To delete, just use "rm" or something.
+				#
+ 
+				#
+				#	* search for "treasure.1" in the "treasures"
+				#	* search for "treasure.py" in "treasure.1"
+				#	* import "treasure" from "treasure.py"
+				#
+	
+				#
+				#	EQ check:
+				#		* send tar file to trends
+				#		* receive tar file from trends to temporary
+				#
+	
+			[@ prosthetic_1] prosthetic treasures receive --name "treasure.1" --version 1.0.0
+			
+			
+	
+			[@ prosthetic_1] prosthetic trends inventory
+	
+			[@ prosthetic_1] prosthetic trends search --name "treasure"
+			
+			
+			
+	
+		<h3>migrations</h3>
+		
+			[ ] export as "mongo_db_1:mongo_collection_1"
+				import as "mongo_db_2:mongo_collection_2"
+
+
+	<h2>ranked</h2>
+	
+		[ ] prosthetic on
+		
+			This should turn on "mongo"
+			and "sanic"
+			
+		
+		[ ] https://prosthetic
+		
+				Don't have definition numbers.
+				Don't use slants for links.
+								
+				
+
+		[ ] crown.JSON {
+				"name": "",
+				"tags": []
+			}
+
+		[ ] save a backup of GridFS
+			[ ] trend archives
+			
+		[ ] mongo replica set
+		
+		[ ] mint to trends with reversibility check
+		
+	
+	<h2>save</h2>
+		[ ] locks
+			[ ] 
+		
+		
+</pre>

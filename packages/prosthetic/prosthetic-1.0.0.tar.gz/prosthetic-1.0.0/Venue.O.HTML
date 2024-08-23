@@ -1,0 +1,81 @@
+
+
+
+<pre>
+
+	<nav>
+		<header>prosthetic</header>
+			@ prosthetic
+			@ screenplays
+		
+			# drawbridge
+				# mongo_data
+				# cryo
+			
+			# crowns
+			# prosthetic
+			# bullion
+			# money
+	</nav>
+	
+	<h2>description</h2>
+		
+		This is a module for organizing.
+		
+	<h2>on</h2>
+		<h3>session 1</h3>
+			docker compose up -d; docker exec -it prosthetic.1 bash -c "bash"
+			. /habitat/_controls/build_1.sh
+			
+		<h3>session 2</h3>
+			 docker exec -it prosthetic.1 bash -c "bash"
+			. /habitat/_controls/build_2.sh
+	
+	<h2>off</h2>
+		docker container stop prosthetic.1; docker container remove prosthetic.1
+
+	<h2>constellation</h2>
+		tmux?
+	
+		(cd /habitat/constellations && prosthetic_1 ventures on)
+		(cd /habitat/parties/prosthetic/frontiers/trends/sveltenetics && bun run dev)
+		
+		[mongo] 192.168.0.98:39000
+		[sanic] 192.168.0.98:22000
+		
+	<h2>monetary</h2>
+		objectives:
+			[ ] export the "passes", dump the "squeezes"
+	
+		<h3>saving</h3>
+			prosthetic_1 adventures monetary saves export --version 1
+
+		<h3>loading</h3>
+			prosthetic_1 adventures monetary saves import --version 1 --drop
+	
+	<h2>publish</h2>
+		(cd /habitat/parties/prosthetic/frontiers/trends/sveltenetics && bun run build)
+		ls /habitat/parties/prosthetic/frontiers/trends/sveltenetics/build
+	
+		(cd /habitat/constellations && prosthetic_1 ventures off)
+		python3 /habitat/parties/prosthetic/_status/status.proc.py
+		
+		(cd /habitat && rm -rf dist && poetry build --format sdist --verbose && chmod -R 777 /habitat && du -sh /habitat/dist)
+		
+		
+		poetry publish --verbose;
+		
+		chmod -R 777 /habitat
+		
+		
+		
+		
+		
+
+
+
+
+
+
+
+</pre>

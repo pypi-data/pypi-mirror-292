@@ -1,0 +1,128 @@
+
+
+
+<pre>
+
+
+
+/*
+	import { refresh_trucks, modify_truck, monitor_truck } from '$lib/trinkets/Layer_Octas_Gifts_Friends/Screenplays/modal_items'
+	await refresh_trucks ({
+		unsigned_transaction_fields: {
+			ICANN_net_path: "",
+			from_address_hexadecimal_string: "",
+			to_address_hexadecimal_string: "",
+			amount_of_Octas: "",
+			//
+			transaction_expiration: ""
+		},
+		
+		unsigned_transaction: {
+			hexadecimal_string: "",
+			Aptos_object: {},
+			Aptos_object_fiberized: ""
+		},
+		signature: {
+			hexadecimal_string: "",
+			Aptos_object: {},
+			Aptos_object_fiberized: ""
+		}
+	})
+	
+	let monitor = await monitor_truck (() => {
+		
+	})
+	monitor.stop ()
+	
+	
+	await modify_truck ("unsigned_transaction_fields.ICANN_net_path", "another.path")
+*/
+
+/*
+	import { retrieve_items, change_item } from '$lib/trinkets/Layer_Octas_Gifts_Friends/Screenplays/modal_items'
+	const items = await retrieve_items ()
+	
+	await change_item ("unsigned_transaction.hexadecimal_string", "")
+*/
+
+import cloneDeep from 'lodash/cloneDeep'
+import _set from 'lodash/set'
+
+let the_freight = {}
+let monitors = []
+
+export const refresh_items = async (freight) => {
+	const monitor_deep = (obj, onChange) => {
+		const handler = {
+			get (target, property, receiver) {
+				try {
+					return new Proxy(target[property], handler);
+				} 
+				catch (err) {
+					return Reflect.get(target, property, receiver);
+				}
+			},
+			set(target, property, value, receiver) {
+				const success = Reflect.set (target, property, value, receiver);
+				if (success) {
+					onChange ();
+				}
+				
+				return success;
+			}
+		};
+
+		return new Proxy (obj, handler);
+	};
+	the_freight = monitor_deep (freight, () => {
+		console.log ('items changed:', items);
+	});
+}
+
+export const monitor_truck = async (action) => {
+	monitors.push (action)
+	
+	return {
+		stop () {
+			const monitors = this.monitors;
+		
+			for (let S = 0; S < monitors.length; S++) {
+				const monitor = monitors [S]
+				if (monitor === fn) {
+					this.monitors.splice (S, 1)
+					return;
+				}		
+			}
+			
+			console.error ("Stopping monitoring was not possible.")
+		}
+	}
+}
+
+export const change_item = async (keys, contents) => {
+	_set (items, keys, contents);
+}
+
+export const retrieve_items = async () => {
+	return cloneDeep (items);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
