@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "anc"
+version = "0.1.6"
+description = "cli"
+authors = ["xxx AI Inc. <dev@xxx.ai>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/a7n-global/infra"
+repository = "https://github.com/a7n-global/infra"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = "*"
+cloudpickle = "3.0.0"
+contextlib2 = "*"
+exceptiongroup = "*"
+httpx = {extras = ["http2"], version = "*"}
+rich = "*"
+typing-extensions = "*"
+loguru = "*"
+requests = "*"
+pydantic = "!=2.1.0"
+python-multipart = "*"
+pillow = "*"
+pyyaml = "*"
+toml = "^0.10.2"
+
+[tool.poetry.dev-dependencies]
+black = "23.12.0"
+ruff = "*"
+accelerate = "*"
+diffusers = {extras = ["torch"], version = "*"}
+sentence-transformers = "*"
+torch = "*"
+transformers = "*"
+
+[tool.poetry.scripts]
+anc = "anc.cli:main" 
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.packages]]
+include = "anc"
+
+[[tool.poetry.packages]]
+include = "pyproject.toml"
