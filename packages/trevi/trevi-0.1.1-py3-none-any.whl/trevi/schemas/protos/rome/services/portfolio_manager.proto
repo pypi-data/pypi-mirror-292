@@ -1,0 +1,164 @@
+syntax = "proto3";
+
+package rome.services.portfolio_manager;
+
+// The portfolio manager service definition.
+service PortfolioMangerService {
+  rpc HealthCheck (HealthCheckRequest) returns (HealthCheckResponse) {}
+  rpc CreatePortfolio (CreatePortfolioRequest) returns (CreatePortfolioResponse) {}
+
+  rpc DepositAsset (DepositAssetRequest) returns (DepositAssetResponse) {}
+  rpc WithdrawAsset (WithdrawAssetRequest) returns (WithdrawAssetResponse) {}
+
+  rpc Transact (TransactRequest) returns (TransactResponse) {}
+  rpc PlaceHold (PlaceHoldRequest) returns (PlaceHoldResponse) {}
+  rpc ReleaseHold (ReleaseHoldRequest) returns (ReleaseHoldResponse) {}
+
+  rpc GetPortfolio (GetPortfolioRequest) returns (GetPortfolioResponse) {}
+
+  rpc GetAsset (GetAssetRequest) returns (GetAssetResponse) {}
+}
+
+message StateInfo {
+  AssetState state = 1;
+  repeated PortfolioAsset assets = 2;
+}
+
+message Portfolio {
+  string account_id = 1;
+  string name = 2;
+  repeated StateInfo states = 10;
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+  bool ok = 1;
+}
+
+enum AssetState {
+    AVAILABLE = 0;
+    HOLD = 1;
+}
+
+message PortfolioAsset {
+    string name = 1;
+    double amount = 2;
+}
+
+message GetAssetRequest {
+  string account_id = 1;
+  string portfolio_name = 2;
+  string asset_name = 3;
+  AssetState state = 4;
+}
+
+message GetAssetResponse {
+  PortfolioAsset asset = 1;
+  GetAssetRequest request = 50;
+}
+
+message CreatePortfolioRequest {
+  string account_id = 1;
+  string name = 2;
+}
+
+message CreatePortfolioResponse {
+  Portfolio portfolio = 1;
+  CreatePortfolioRequest request = 50;
+}
+
+message TransactRequest {
+    string account_id = 1;
+    string portfolio_name = 2;
+
+    message TransactionSide {
+      string asset_name = 10;
+      double amount = 11;
+    }
+
+    TransactionSide buy_side = 10;
+    TransactionSide sell_side = 11;
+
+    AssetState sell_from_state = 20;
+}
+
+message TransactResponse {
+    StateInfo from_state = 1;
+    StateInfo to_state = 2;
+
+    TransactRequest request = 50;
+}
+
+message PlaceHoldRequest {
+    string account_id = 1;
+    string portfolio_name = 2;
+
+    string asset_name = 10;
+    double amount = 11;
+}
+
+message PlaceHoldResponse {
+    StateInfo from_state = 1;
+    StateInfo to_state = 2;
+
+    PlaceHoldRequest request = 50;
+}
+
+message ReleaseHoldRequest {
+    string account_id = 1;
+    string portfolio_name = 2;
+
+    string asset_name = 10;
+    double amount = 11;
+}
+
+message ReleaseHoldResponse {
+    StateInfo from_state = 1;
+    StateInfo to_state = 2;
+
+    ReleaseHoldRequest request = 50;
+}
+
+message GetPortfolioRequest {
+  string account_id = 1;
+  string portfolio_name = 2;
+
+  message Debug {
+    bool include_req_in_resp = 1;
+  }
+  Debug debug = 100;
+}
+
+message GetPortfolioResponse {
+  Portfolio portfolio = 1;
+  GetPortfolioRequest request = 50;
+}
+
+message DepositAssetRequest {
+  string account_id = 1;
+  string portfolio_name = 2;
+  string asset_name = 10;
+  double amount = 11;
+}
+
+message DepositAssetResponse {
+  string account_id = 1;
+  string portfolio_name = 2;
+  string asset_name = 10;
+  double balance = 11;
+}
+
+message WithdrawAssetRequest {
+  string account_id = 1;
+  string portfolio_name = 2;
+  string asset_name = 10;
+  double amount = 11;
+}
+
+message WithdrawAssetResponse {
+  string account_id = 1;
+  string portfolio_name = 2;
+  string asset_name = 10;
+  double balance = 11;
+}
