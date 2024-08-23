@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "ttui"
+version = "0.1.2"
+description = "A terminal .txt file viewer"
+authors = ["Andy Sit <andysit173@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+asttokens = "2.4.1"
+click = "8.1.7"
+colorama = "0.4.6"
+executing = "2.0.1"
+icecream = "2.1.3"
+linkify-it-py = "2.0.3"
+markdown-it-py = "3.0.0"
+mdit-py-plugins = "0.4.1"
+mdurl = "0.1.2"
+pygments = "2.18.0"
+rich = "13.7.1"
+six = "1.16.0"
+textual = "0.76.0"
+typing-extensions = "4.12.2"
+uc-micro-py = "1.0.3"
+
+[tool.poetry.scripts]
+tt = "ttui.cli:run"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
