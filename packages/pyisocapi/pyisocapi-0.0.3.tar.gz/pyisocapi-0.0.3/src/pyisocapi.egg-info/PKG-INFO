@@ -1,0 +1,89 @@
+Metadata-Version: 2.1
+Name: pyisocapi
+Version: 0.0.3
+Summary: Python Isocapi API wrapper
+Author-email: isocapi@gmail.com
+Project-URL: Homepage, https://isocapi.com/
+Project-URL: Repository, https://github.com/isocsoft/pyisocapi.git
+Project-URL: Issues, https://github.com/isocsoft/pyisocapi/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: niquests>=3.7.2
+Provides-Extra: test
+Requires-Dist: parameterized; extra == "test"
+Requires-Dist: ruff; extra == "test"
+Requires-Dist: pre-commit; extra == "test"
+
+# Pyisocapi
+The Pyisocapi library provides convenient access to the Isocapi API from apps written in Python.
+It includes client with multiple convenient methods to obtain data you need - both synchronously and asynchronously.
+
+## Isocapi documentantion
+See our page: [Isocapi](https://isocapi.com/docs/)
+
+## Instalation
+```sh
+pip install --upgrade pyisocapi
+```
+
+#### Requirements
+- Python 3.10+
+
+## Usage:
+<details open>
+    <summary><b>synchronous</b></summary> 
+    
+```py
+from pyisocapi import IsocapiClient
+
+api_key = "YOUR_API_KEY"
+url = "OLX_URL"
+
+client = IsocapiClient(api_key)
+response = client.get_olx_by_url(url)
+
+print(response)
+>> IsocapiAPIResponse(data={'id': 1234, ...}]}, error='', message='Successfully retrieved data', success=True)
+
+print(response.success)
+>> True
+```
+</details>
+
+<details>
+    <summary><b>asynchronous</b></summary>
+
+```python
+import asyncio
+from pyisocapi import IsocapiClient
+
+async def main():
+    api_key = "YOUR_API_KEY"
+    url = "OLX_URL"
+
+    client = IsocapiClient(api_key)
+    response = await client.get_olx_by_url_async(url)
+
+    print(response)
+
+asyncio.run(main())
+
+>> IsocapiAPIResponse(data={'id': 1234, ...}]}, error='', message='Successfully retrieved data', success=True)
+
+print(response.success)
+>> True
+```
+</details>
+
+#### Payloads
+Some of the methods (e.g. get_otodom_by_keyword) require more complex payloads that are wrapped in convenient types which can be imported from `pyisocapi.payloads`
+
+#### Handling exceptions
+Unsuccessful requests raise exceptions. The class of the exception will reflect the sort of error that occurred. To handle them yourself import them from `pyisocapi.exceptions`
+
+
+## Support
+If you have encountered a bug or have any ideas how to improve this library - don't be afraid to open an [issue](https://github.com/isocsoft/pyisocapi/issues/new) with an explanation.
