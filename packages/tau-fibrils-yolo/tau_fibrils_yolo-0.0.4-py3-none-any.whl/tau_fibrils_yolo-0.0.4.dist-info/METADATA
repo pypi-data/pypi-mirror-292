@@ -1,0 +1,173 @@
+Metadata-Version: 2.1
+Name: tau-fibrils-yolo
+Version: 0.0.4
+Summary: YoloV8 model for the detection of Tau fibrils in Cryo-EM images.
+Author-email: Mallory Wittwer <mallory.wittwer@epfl.ch>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2024, EPFL.
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        * Redistributions of source code must retain the above copyright notice, this
+          list of conditions and the following disclaimer.
+        
+        * Redistributions in binary form must reproduce the above copyright notice,
+          this list of conditions and the following disclaimer in the documentation
+          and/or other materials provided with the distribution.
+        
+        * Neither the name of the copyright holder nor the names of its
+          contributors may be used to endorse or promote products derived from
+          this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+Project-URL: homepage, https://github.com/EPFL-Center-for-Imaging/tau_fibrils_yolo
+Project-URL: repository, https://github.com/EPFL-Center-for-Imaging/tau_fibrils_yolo
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: napari[all]>=0.4.16
+Requires-Dist: qtpy
+Requires-Dist: magicgui
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: tifffile
+Requires-Dist: pooch==1.8.0
+Requires-Dist: scikit-image
+Requires-Dist: scikit-learn
+Requires-Dist: ultralytics
+Requires-Dist: opencv-contrib-python-headless
+
+![EPFL Center for Imaging logo](https://imaging.epfl.ch/resources/logo-for-gitlab.svg)
+# 🧬 Tau Fibrils Yolo - Object detection in Cryo-EM images
+
+![screenshot](assets/screenshot.png)
+
+We provide a [YoloV8](https://docs.ultralytics.com/) model for the detection of oriented bounding boxes (OBBs) of Tau fibrils in Cryo-EM images.
+
+[[`Installation`](#installation)] [[`Model`](#model)] [[`Usage`](#usage)]
+
+This project is part of a collaboration between the [EPFL Center for Imaging](https://imaging.epfl.ch/) and the [Laboratory of Biological Electron Microscopy](https://www.lbem.ch/).
+
+## Installation
+
+### As a standalone app
+
+Download and run the latest installer from the [Releases](https://github.com/EPFL-Center-for-Imaging/tau-fibrils-yolo/releases) page.
+
+### As a Python package
+
+We recommend performing the installation in a clean Python environment. Install our package from PyPi:
+
+```sh
+pip install tau-fibrils-yolo
+```
+
+or from the repository:
+
+```sh
+pip install git+https://gitlab.com/center-for-imaging/tau-fibrils-object-detection.git
+```
+
+or clone the repository and install with:
+
+```sh
+git clone git+https://gitlab.com/center-for-imaging/tau-fibrils-object-detection.git
+cd tau-fibrils-yolo
+pip install -e .
+```
+
+## Model
+
+The model weights (6.5 Mb) are automatically downloaded from [this repository on Zenodo](https://sandbox.zenodo.org/records/99113) the first time you run inference. The model files are saved in the user home folder in the `.yolo` directory.
+
+## Usage
+
+**In Napari**
+
+To use our model in Napari, start the viewer with
+
+```sh
+napari -w tau-fibrils-yolo
+```
+
+or open the Napari menu bar and select `Plugins > Tau fibrils detection`.
+
+Open an image using `File > Open files` or drag-and-drop an image into the viewer window.
+
+**Sample data**: To test the model, you can run it on our provided sample image. In Napari, open the image from `File > Open Sample > [TODO - add a sample image]`.
+
+
+**As a library**
+
+You can run the model to detect fibrils in an image (represented as a numpy array).
+
+```py
+from tau_fibrils_yolo import FibrilsDetector
+
+detector = FibrilsDetector()
+
+boxes, probabilities = detector.predict(your_image)
+```
+
+**As a CLI**
+
+Run inference on an image from the command-line. For example:
+
+```sh
+tau_fibrils_predict_image -i /path/to/folder/image_001.tif
+```
+
+The command will save the segmentation next to the image:
+
+```
+folder/
+    ├── image_001.tif
+    ├── image_001_results.csv
+```
+
+Optionally, you can use the `-r` flag to also rescale the image by a given factor.
+
+To run inference in batch on all images in a folder, use:
+
+```sh
+tau_fibrils_predict_folder -i /path/to/folder/
+```
+
+This will produce:
+
+```
+folder/
+    ├── image_001.tif
+    ├── image_001_results.csv
+    ├── image_002.tif
+    ├── image_002_results.csv
+```
+
+## Issues
+
+If you encounter any problems, please file an issue along with a detailed description.
+
+## License
+
+This model is licensed under the [BSD-3](LICENSE) license.
+
+## Acknowledgements
+
+We would particularly like to thank **Valentin Vuillon** for annotating the images on which this model was trained, and for developing the preliminary code that laid the foundation for this image analysis project. The repository containing his original version of the project can be found [here](https://gitlab.com/epfl-center-for-imaging/automated-analysis-tau-fibrils-project).
