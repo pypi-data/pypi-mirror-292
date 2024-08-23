@@ -1,0 +1,28 @@
+# LOCK-BEGIN[imports]: DON'T MODIFY
+from podite import (
+    I64,
+    U16,
+    pod,
+    U32,
+)
+
+# LOCK-END
+
+
+# LOCK-BEGIN[class(OpenOrdersMetadata)]: DON'T MODIFY
+@pod
+class OpenOrdersMetadata:
+    ask_qty_in_book: I64
+    bid_qty_in_book: I64
+    head_index: U16
+    num_open_orders: U16
+    padding: U32
+    # LOCK-END
+
+    @classmethod
+    def to_bytes(cls, obj, **kwargs):
+        return cls.pack(obj, converter="bytes", **kwargs)
+
+    @classmethod
+    def from_bytes(cls, raw, **kwargs):
+        return cls.unpack(raw, converter="bytes", **kwargs)
