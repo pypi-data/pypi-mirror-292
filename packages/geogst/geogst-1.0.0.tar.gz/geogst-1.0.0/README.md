@@ -1,0 +1,124 @@
+# geogst
+> Structural geology tools with Python.
+
+**geogst** is a Python 3 module library for structural geology geodata processing. 
+
+It allows to perform geological operations, such as determining the intersections
+between a geological plane and a topographic surface, creating multiple parallel
+geological profiles with attitudes, geological outcrop and line intersections.
+
+**Plane-DEM intersections**
+
+![](ims/plane_dem_intersection.png)
+
+**Geological profiles**
+
+![](ims/timpa_san_lorenzo_profiles.png)
+
+Moreover, it allows to perform geometric operations on orientation data (planes, axes) and to
+plot the attitudes of geological plane and axes in stereonets.
+
+![](ims/stereonet.png)
+
+## Installation
+
+You should have *python-setuptools* already installed, otherwise you can install it via apt or pip3, e.g.:
+
+Linux:
+
+```sh
+sudo apt-get install python-setuptools
+```
+
+To install *geogst*, from the shell (you should be in the geogst directory) you can run:
+```
+python3 setup.py install
+```
+You can then check if the module was successfully installed in Python3 by importing the module via:
+```python
+import geogst
+```
+
+## Usage example
+
+**Orientations**
+
+Orientations can refer to linear or planar features. When referring to linear orientations, we subdivide them into directional, with a defined direction, or axial, without direction. 
+We import all classes/methods from the orientations sub-module:
+
+```python
+from geogst.core.orientations.orientations import *
+```
+A Direct is equivalent to a unit vector in the 3D space, with orientation expressed by polar coordinates: a direction defined by a trend (from the North, 0°-360°) and a plunge (-90° to 90°, where positive values are downward-directed while negative ones are upward-directed):
+
+```python
+or1 = Direct(130, 10)  # orientation defined by its trend and plunge. Pointing downward, since positive plunge.
+or2 = Direct(312, -45)  # or2 points upwards, since it has a negative plunge
+or3 = Direct(300, -20)  # as or2
+```
+
+We can plot using the *plot* function. The data to plot have to be inserted into a list.
+
+```python
+plot([or1, or2, or3]) # we provide the function arguments in a list
+```
+
+![](ims/usages_stereoplot.png)
+
+
+**P-T focal mechanisms**
+
+Creation of a P-T axes instance from a FaultSlick instance:
+
+```python
+ptbx_from_fltsl = PTBAxes.from_fault_slickenline(Fault(90, 45, slickenlines=[Slickenline(90, 45)]))
+print(ptbx_from_fltsl)
+
+PTBAxes(P Axis(az: 180.00°, pl: 90.00°), T Axis(az: 90.00°, pl: 0.00°))
+```
+
+**For tutorials, please refer to the Jupyter Notebooks in the [doc/tutorials][tutorials] folder:**
+
+_Geometries_
+
+* [Basic spatial data][basic-spatial-data]
+
+_Intersections_
+
+* [DEM-plane intersections][dem-plane-intersections]
+
+_Orientations_
+
+* [Geological data][geological-data]
+* [Vectors and orientations][vectors-and-orientations]
+
+_Profiles_
+
+* [Geological profiles - Valnerina][geological-profiles-valnerina]
+* [Geological profiles with animation- Timpa San Lorenzo][geological-profiles-with-animation-timpa-san-lorenzo]
+* [Profile with attitudes - Monte Alpi][profile-with-attitudes-monte-alpi]
+* [Seismological profiles - Colfiorito][seismological-profiles-colfiorito]
+
+## Meta
+
+Mauro Alberti – alberti.m65@gmail.com
+
+Distributed under the MIT license. See ``LICENSE`` for more information.
+
+[https://gitlab.com/mauroalberti/geogst](https://gitlab.com/mauroalberti/geogst/)
+
+<!-- Markdown link & img dfn's -->
+[npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/datadog-metrics
+[npm-downloads]: https://img.shields.io/npm/dm/datadog-metrics.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
+[tutorials]: https://gitlab.com/mauroalberti/geogst/-/tree/main/doc/tutorials
+[basic-spatial-data]: https://gitlab.com/mauroalberti/geogst/-/blob/main/doc/tutorials/geometries/Basic%20spatial%20data.ipynb
+[dem-plane-intersections]: https://gitlab.com/mauroalberti/geogst/-/blob/main/doc/tutorials/intersections/DEM-plane%20intersections.ipynb
+[geological-data]: https://gitlab.com/mauroalberti/geogst/-/blob/main/doc/tutorials/orientations/Geological%20data.ipynb
+[vectors-and-orientations]: https://gitlab.com/mauroalberti/geogst/-/blob/main/doc/tutorials/orientations/Vectors%20and%20orientations.ipynb
+[geological-profiles-valnerina]: https://gitlab.com/mauroalberti/geogst/-/blob/main/doc/tutorials/profiles/Geologic%20profiles%20-%20Valnerina.ipynb
+[geological-profiles-with-animation-timpa-san-lorenzo]: https://gitlab.com/mauroalberti/geogst/-/blob/main/doc/tutorials/profiles/Geologic%20profiles%20with%20animation%20-%20Timpa%20San%20Lorenzo.ipynb
+[profile-with-attitudes-monte-alpi]: https://gitlab.com/mauroalberti/geogst/-/blob/main/doc/tutorials/profiles/Profile%20with%20attitudes%20-%20Monte%20Alpi.ipynb
+[seismological-profiles-colfiorito]: https://gitlab.com/mauroalberti/geogst/-/blob/main/doc/tutorials/profiles/Seismological%20profiles%20-%20Colfiorito.ipynb
