@@ -1,0 +1,99 @@
+namespace rlbot.flat;
+
+enum TextHAlign: ubyte {
+  Left,
+  Center,
+  Right,
+}
+
+enum TextVAlign: ubyte {
+  Top,
+  Center,
+  Bottom,
+}
+
+table Color {
+  a:ubyte;
+  r:ubyte;
+  g:ubyte;
+  b:ubyte;
+}
+
+table BallAnchor {
+  index:uint;
+  local:Vector3 (required);
+}
+
+table CarAnchor {
+  index:uint;
+  local:Vector3 (required);
+}
+
+union RelativeAnchor {
+  BallAnchor,
+  CarAnchor,
+}
+
+table RenderAnchor {
+  world:Vector3 (required);
+  relative:RelativeAnchor;
+}
+
+table Line3D {
+  start:RenderAnchor (required);
+  end:RenderAnchor (required);
+  color:Color (required);
+}
+
+table PolyLine3D {
+  points:[Vector3] (required);
+  color:Color (required);
+}
+
+table String2D {
+  text:string (required);
+  /// 0 = Left
+  /// 1 = Right
+  x:float;
+  /// 0 = Top
+  /// 1 = Bottom
+  y:float;
+  scale:float;
+  foreground:Color (required);
+  background:Color (required);
+  h_align:TextHAlign;
+  v_align:TextVAlign;
+}
+
+table String3D {
+  text:string (required);
+  anchor:RenderAnchor (required);
+  scale:float;
+  foreground:Color (required);
+  background:Color (required);
+  h_align:TextHAlign;
+  v_align:TextVAlign;
+}
+
+union RenderType {
+  Line3D,
+  PolyLine3D,
+  String2D,
+  String3D,
+}
+
+table RenderMessage {
+  variety:RenderType (required);
+}
+
+table RenderGroup {
+  render_messages:[RenderMessage] (required);
+  /// The id of the render group
+  id:int;
+}
+
+root_type RenderGroup;
+
+table RemoveRenderGroup {
+  id:int;
+}
