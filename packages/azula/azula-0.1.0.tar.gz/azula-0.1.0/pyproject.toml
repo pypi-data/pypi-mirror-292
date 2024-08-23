@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "azula"
+description = "Diffusion models in PyTorch"
+authors = [
+  {name = "The Probabilists", email = "theprobabilists@gmail.com"}
+]
+classifiers = [
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+]
+dynamic = ["dependencies", "version"]
+keywords = [
+  "torch",
+  "diffusion models",
+  "probability",
+  "distribution",
+  "generative",
+  "deep learning",
+]
+readme = "README.md"
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = [
+  "pre-commit",
+  "pytest",
+  "ruff",
+]
+
+[project.urls]
+documentation = "https://azula.readthedocs.io"
+source = "https://github.com/probabilists/azula"
+tracker = "https://github.com/probabilists/azula/issues"
+
+[tool.ruff]
+extend-include = ["*.ipynb"]
+line-length = 99
+
+[tool.ruff.lint]
+extend-select = ["B", "I", "W"]
+ignore = ["E731"]
+preview = true
+
+[tool.ruff.lint.extend-per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+lines-between-types = 1
+no-sections = true
+relative-imports-order = "closest-to-furthest"
+
+[tool.ruff.format]
+preview = true
+
+[tool.setuptools.dynamic]
+dependencies = {file = "requirements.txt"}
+version = {attr = "azula.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["azula*"]
