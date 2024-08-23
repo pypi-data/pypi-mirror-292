@@ -1,0 +1,239 @@
+[project]
+# Storing project metadata in pyproject.toml https://peps.python.org/pep-0621/
+name = "cared-cli"
+description = "A command line interface for managing a CaReD server."
+authors = [
+  # Authors sorted by number of commits
+  {name = "David Linke", email = "david.linke@catalysis.de"},
+]
+maintainers = [
+  {name = "David Linke", email = "david.linke@catalysis.de"},
+]
+license = {text = "Apache 2.0"}
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["CaReD", "RDM", "ELN", "LIMS"]
+# https://pypi.org/classifiers/
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python",
+  "Environment :: Console",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "click>=8.1.7",
+]
+
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/likat-rostock/cared-cli"
+GitHub = "https://github.com/likat-rostock/cared-cli"
+Changelog = "https://github.com/likat-rostock/cared-cli/releases"
+
+[project.optional-dependencies]
+tests = [
+  "pytest",
+  "coverage",
+]
+lint = [
+  "ruff",
+]
+dev = [
+  "cared_cli[tests,lint]",
+  "duty",
+]
+
+[project.scripts]
+cared = "cared_cli._cli:app"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+# Hatch disallows direct references for dependencies by default.
+# Enable them to allow installing dependencies from github repositories.
+# allow-direct-references = true
+
+# Build targets for hatch are defined as sections within tool.hatch.build.targets:
+[tool.hatch.build.targets.sdist]
+include = [
+  "/src",
+]
+[tool.hatch.build.targets.wheel]
+packages = ["src/cared_cli"]
+
+# integrates git-tag-based versions into hatch, https://github.com/ofek/hatch-vcs
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/cared_cli/_version.py"
+
+[tool.pytest.ini_options]
+# pytest configuration:
+# https://docs.pytest.org/en/stable/customize.html
+
+# Sets directories to be searched for tests. Useful when all project tests are
+# in a known location to speed up test collection and to avoid picking up
+# undesired tests by accident.
+testpaths = [
+  "tests",
+ ]
+
+# Directories that are not visited by pytest collector:
+norecursedirs = "dist build .tox .git .cache __pycache__ .venv"
+
+# Treat typos in function markers as an error (pytest)
+# --strict-markers
+# Raise an error instead of a warning for pytest related config issues (pytest)
+# --strict-config
+# Degree of detail of trace-backs (pytest)
+# --tb=short
+# Execute doctests in classes, functions, and test modules (pytest)
+# --doctest-modules
+addopts = "--strict-markers --strict-config --tb=short"
+
+[tool.coverage]
+[tool.coverage.run]
+# https://coverage.readthedocs.io/en/latest/config.html
+parallel = true
+branch = true
+source = ["cared_cli"]
+omit = [
+    "**/cared_cli/_version.py",
+]
+
+[tool.coverage.paths]
+# Specify where coverage schould look for source files.
+source = [
+    "src",
+    "**/site-packages", # for not using tox
+    # ".tox/**/site-packages",
+]
+
+[tool.coverage.report]
+# Show in report which lines are not covered
+show_missing = false
+# Any line of the source code that matches one of these regexes is excluded
+# from being reported as missing.
+exclude_lines = [
+    # Have to re-enable the standard pragma
+    "pragma: no cover",
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "return NotImplemented",
+    "if __name__ == .__main__.:",
+]
+
+[tool.coverage.html]
+# Directory where to write the HTML report files.
+directory = ".htmlcov"
+title = "cared-cli coverage report"
+
+[tool.ruff]
+extend-exclude = ["src/cared_cli/_version.py"]
+
+[tool.ruff.lint]
+ignore = [
+    "D100",   # Missing docstring in public module
+    "D104",   # Missing docstring in public package
+    "D106",   # Missing docstring in public nested class
+    "D203",   # One blank line required before class docstring.
+    "D212",   # Multi-line docstring summary should start at the first line
+    "D401",   # First line should be in imperative mood
+    "E501",   # line too long
+    "ISC001", # Implicit string concatenation
+]
+
+# Rule selection https://beta.ruff.rs/docs/rules/
+select = [
+    # sort order as in ruff docs (ruff v0.6.1)
+    "F",   # Pyflakes
+    "E",   # pycodestyle (errors)
+    "W",   # pycodestyle (warnings)
+    "C90", # mccabe
+    "I",   # isort
+    "N",   # pep8-naming
+    "D",   # pydocstyle
+    "UP",  # pyupgrade
+    "YTT", # flake8-2020
+    #"ANN", # flake8-annotations (type annotations)
+    #"ASYNC", # flake8-async
+    #"TRIO", # flake8-trio
+    "S",   # flake8-bandit
+    "BLE", # flake8-blind-except
+    "FBT", # flake8-boolean-trap
+    "B",   # flake8-bugbear
+    "A",   # flake8-builtins
+    #"COM", # flake8-commas
+    #"CPY", # flake8-copyright
+    "C4",  # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "T10", # flake8-debugger
+    "DJ",  # flake8-django
+    "EM",  # flake8-errmsg
+    #"EXE", # flake8-executable
+    #"FA",  # flake8-future-annotations
+    "ISC", # flake8-implicit-str-concat
+    #"ICN", # flake8-import-conventions
+    "LOG", # flake8-logging
+    "G",   # flake8-logging-format
+    #"INP", # flake8-no-pep420
+    "PIE", # flake8-pie
+    #"T20", # flake8-print
+    #"PYI", # flake8-pyi (type hinting sub files)
+    "PT",  # flake8-pytest-style
+    "Q",   # flake8-quotes
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "SLF", # flake8-self
+    #"SLOT", # flake8-slots
+    "SIM", # flake8-simplify
+    #"TID", # flake8-tidy-imports
+    #"TCH", # flake8-type-checking
+    #"INT", # flake8-gettext
+    #"ARG", # flake8-unused-arguments
+    #"PTH", # flake8-use-pathlib
+    #"TD", # flake8-todos
+    #"FIX", # flake8-fixme
+    #"ERA", # eradicate - commented out code
+    #"PD", # pandas-vet
+    "PGH", # pygrep-hooks
+    "PL",  # whole Pylint (Convention(C), Error(E), Refactor(R), Warning(W))
+    "TRY", # tryceratops
+    #"FLY", # flynt
+    #"NPY", # NumPy-specific rules
+    #"FAST" # FastAPI
+    #"AIR", # Airflow
+    #"PERF", # Perflint
+    #"FURB", # refurb
+    #"DOC" # pydoclint (docstring)
+    "RUF",  # Ruff-specific rules
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = [
+  "S101",   # assert in tests is OK
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"  # "google", "numpy", or "pep257"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+# Spell checker: https://github.com/crate-ci/typos
+[tool.typos.default.extend-words]
+# Don't correct surname "Linke" (writing "linke" in lowercase was required for ignoring)
+linke = "linke"
