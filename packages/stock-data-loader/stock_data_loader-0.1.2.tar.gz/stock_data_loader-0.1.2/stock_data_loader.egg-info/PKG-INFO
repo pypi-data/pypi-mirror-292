@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: stock_data_loader
+Version: 0.1.2
+Summary: A library for loading stock data from Seeking Alpha API
+Home-page: https://github.com/yourusername/stock_data_loader
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: requests
+
+# Stock Data Loader
+
+A Python library for loading stock data from the Seeking Alpha API.
+
+## Installation
+
+You can install the Stock Data Loader using pip:
+
+```
+pip install stock-data-loader
+```
+
+## How to Use StockDataLoader
+
+[Previous usage instructions remain the same]
+
+## Output Columns
+
+The `load_symbol_data` method returns a pandas DataFrame with the following columns:
+
+- `id`: Unique identifier for the stock
+- `type`: Type of the data (usually "ticker")
+- `symbol`: Stock symbol
+- `name`: Full name of the company
+- `followersCount`: Number of followers on Seeking Alpha
+- `exchange`: Stock exchange where the stock is listed
+- `analysis`: Number of analysis articles
+- `related_analysis`: Number of related analysis articles
+- `transcripts`: Number of earnings call transcripts
+- `earning_slides`: Number of earning slides available
+- `news`: Number of news articles
+- `partnerNews`: Number of partner news articles
+- `pressReleases`: Number of press releases
+- `bulls_say`: Number of bullish opinions
+- `bears_say`: Number of bearish opinions
+- `market_open`: Market open status (may be empty)
+- `market_open_time`: Market open time (may be empty)
+- `analysis_count`: Another count of analysis articles (may differ from `analysis`)
+- `news_count`: Another count of news articles (may differ from `news`)
+- `transcripts_count`: Another count of transcripts (may differ from `transcripts`)
+
+Note: Some columns may be empty or have different values than expected due to variations in the API response.
+
+## Example Output
+
+Here's a sample of what the output might look like:
+
+```python
+print(result_df.head())
+```
+
+```
+      id    type symbol  name  followersCount exchange  analysis  related_analysis  transcripts  earning_slides   news  partnerNews  pressReleases  bulls_say  bears_say
+0    146  ticker   AAPL  AAPL        2713202   NASDAQ    10037            27710            81                0  10753        13829            242          3          3
+1  16123  ticker   TSLA  TSLA        1151910   NASDAQ     5929             8495            85               20   5737        16194            322          3          3
+2 148893  ticker  GOOGL  GOOGL        459787   NASDAQ     1974            10468            33                1   4592         4273             97          3          1
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
