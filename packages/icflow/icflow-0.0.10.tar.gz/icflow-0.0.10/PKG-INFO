@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: icflow
+Version: 0.0.10
+Summary: A collection of simple utilities for machine learning workflows.
+Author-email: "James Grogan, Irish Centre for High End Computing" <james.grogan@ichec.ie>
+Project-URL: Repository, https://git.ichec.ie/performance/toolshed/icflow
+Project-URL: Homepage, https://git.ichec.ie/performance/toolshed/icflow
+Keywords: Machine Learning,Workflow,HPC
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: System :: Distributed Computing
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ictasks==0.0.3
+Requires-Dist: icplot==0.0.7
+Requires-Dist: numpy
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-sugar; extra == "test"
+Requires-Dist: black; extra == "test"
+Requires-Dist: flake8; extra == "test"
+Requires-Dist: pylint; extra == "test"
+Requires-Dist: mypy; extra == "test"
+Provides-Extra: machine-learning
+Requires-Dist: opencv-python-headless; extra == "machine-learning"
+Requires-Dist: tensorboard; extra == "machine-learning"
+Requires-Dist: torch; extra == "machine-learning"
+Requires-Dist: torchvision; extra == "machine-learning"
+Requires-Dist: mlflow; extra == "machine-learning"
+
+`icflow` is a Python package with some prototype 'workflow' tools for use in ICHEC.
+
+It is intended to help standardize some of our workflows in areas like Machine Learning by using common utilities, data-formats and data-structures. 
+
+# Installation #
+
+It is available on PyPI:
+
+``` shell
+pip install icflow
+```
+
+# Copyright
+
+This software is Copyright of the Irish Centre for High End Computing 2024. You can use it under the terms of the GPLv3+. See the included `LICENSE` file for details.
