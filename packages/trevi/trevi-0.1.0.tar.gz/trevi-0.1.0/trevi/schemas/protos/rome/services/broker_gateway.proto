@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package rome.services.broker;
+
+import "google/protobuf/timestamp.proto";
+
+service BrokerGateway {
+  rpc HealthCheck (HealthCheckRequest) returns (HealthCheckResponse) {}
+  rpc GetTime (GetTimeRequest) returns (GetTimeResponse) {}
+  rpc SubmitOrder (SubmitOrderRequest) returns (SubmitOrderResponse) {}
+  rpc OrderStatus (OrderStatusRequest) returns (OrderStatusResponse) {}
+}
+
+
+message ConditionalTrading {
+  message TakeProfit {
+    double limit_price = 1;
+  }
+
+  message StopLoss {
+    double stop_price = 1;
+    double limit_price = 2;
+  }
+
+  TakeProfit take_profit = 1;
+  StopLoss stop_loss = 2;
+}
+
+enum AssetType {
+  EQUITY = 0;
+  CRYPTO = 1;
+}
+
+enum OrderSide {
+  BUY = 0;
+  SELL = 1;
+}
+
+enum TimeInForce {
+    IOC = 0;
+    FOK = 1;
+    GTC = 2;
+}
+
+enum OrderStatus {
+  UNKNOWN = 0;
+  PENDING = 1;
+  FILLED = 2;
+  CANCELLED = 3;
+  REJECTED = 4;
+}
+
+message Asset {
+  AssetType type = 1;
+  string symbol = 2;
+}
+
+message MarketOrder {}
+
+message LimitOrder {
+  double price = 1;
+}
+
+message PortfolioDetails {
+    string account_id = 1;
+    string name = 2;
+}
+
+message Order {
+  Asset asset = 1;
+
+  double quantity = 2;
+
+  OrderSide side = 3;
+
+  PortfolioDetails portfolio = 4;
+
+  TimeInForce time_in_force = 10;
+
+
+  oneof order_type {
+    MarketOrder market = 50;
+    LimitOrder limit = 51;
+  }
+
+  ConditionalTrading conditional_trading = 100;
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+  bool ok = 1;
+}
+
+
+message GetTimeRequest {}
+
+message GetTimeResponse {
+    google.protobuf.Timestamp timestamp = 1;
+}
+
+message SubmitOrderRequest {
+  Order order = 1;
+}
+
+message SubmitOrderResponse {
+  Order order = 1;
+  string id = 2;
+}
+
+message OrderStatusRequest {
+  string id = 1;
+}
+
+message OrderStatusResponse {
+  string id = 1;
+  Order order = 2;
+  OrderStatus status = 3;
+}

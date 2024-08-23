@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package rome.streams.output;
+
+message SubscribePublish {
+    string subscribe_to = 1;
+    string publish_to = 2;
+}
+
+message CryptoTickerOStreamConf {
+    repeated SubscribePublish subscribePublish = 1;
+}
+
+message StockQuoteOStreamConf {
+    repeated SubscribePublish subscribePublish = 1;
+}

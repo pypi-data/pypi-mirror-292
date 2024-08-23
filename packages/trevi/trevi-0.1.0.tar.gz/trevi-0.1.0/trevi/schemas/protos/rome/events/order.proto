@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package rome.events;
+
+enum Brokerage {
+    BACKTEST = 0;
+}
+
+enum OrderSide {
+  BUY = 0;
+  SELL = 1;
+}
+
+enum OrderType {
+    MARKET = 0;
+    LIMIT = 1;
+}
+
+enum OrderStatus {
+    PLACED = 0;
+    FILLED = 1;
+}
+
+message PortfolioDetails {
+    string account_id = 1;
+    string name = 2;
+}
+
+message Order {
+    string asset = 1;
+
+    string order_id = 2;
+
+    OrderType order_type = 3;
+
+    OrderSide side = 4;
+
+    double price = 5;
+
+    double quantity = 6;
+
+    google.protobuf.Timestamp timestamp = 7;
+
+    string strategy = 10;
+
+    OrderStatus status = 20;
+
+    Brokerage brokerage = 100;
+    PortfolioDetails portfolio = 101;
+}
