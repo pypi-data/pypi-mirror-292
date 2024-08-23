@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: sf-grid
+Version: 0.1.0
+Summary: General Robot Intelligence Development Platform - SDK Console
+Author-email: Scaled Foundations <info@scaledfoundations.ai>
+Project-URL: Homepage, https://scaledfoundations.ai
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: <=3.11.9,>=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: art
+Requires-Dist: httpx
+Requires-Dist: pyjwt
+Requires-Dist: tabulate
+
+## Setup
+
+1. Create a new environment
+
+`conda create -n grid python=3.11`
+
+2. Install the package
+
+```
+conda activate grid
+pip install -e .
+```
+
+3. Pull the GRID-core and GRID-service Docker images from ACR.
+4. Start the REPL by typing `grid` in the terminal.
