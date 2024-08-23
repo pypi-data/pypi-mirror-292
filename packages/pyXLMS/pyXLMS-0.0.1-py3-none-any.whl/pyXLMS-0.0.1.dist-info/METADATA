@@ -1,0 +1,94 @@
+Metadata-Version: 2.1
+Name: pyXLMS
+Version: 0.0.1
+Summary: A python package to process protein cross-linking data.
+Author-email: Micha Johannes Birklbauer <micha.birklbauer@fh-hagenberg.at>
+Maintainer-email: Micha Johannes Birklbauer <micha.birklbauer@fh-hagenberg.at>
+License: MIT License
+        
+        Copyright (c) 2024 Micha Johannes Birklbauer
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/hgb-bin-proteomics/pyXLMS
+Project-URL: Documentation, https://hgb-bin-proteomics.github.io/pyXLMS
+Project-URL: Issues, https://github.com/hgb-bin-proteomics/pyXLMS/issues
+Keywords: crosslink,crosslinker,crosslinking,mass spectrometry,proteomics
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Provides-Extra: gui
+Requires-Dist: streamlit ; extra == 'gui'
+
+# pyXLMS
+
+Supported search engines:
+- MS Annika
+- xiSearch / xiFDR
+- MaxLynx
+- ?
+
+General interface with csv input
+
+Packages to include:
+- Export to xiNET
+  - Req:
+  - fasta file
+  - Crosslink:
+    - Sequence
+    - XL position in peptide
+    - protein accession
+    - XL position in protein
+    - Score
+- Export to xiVIEW
+  - Req: cover by xiNET Req
+- Export to xiFDR
+  - Req:
+  - CSM:
+    - Spectrum File
+    - Scan Nr
+    - Sequence
+    - XL position in peptide
+    - Precursor charge
+    - Score CSM
+    - Score peptide
+    - protein accession
+    - position of peptide in protein
+    - decoy peptide
+- Export to pyXlinkViewer
+  - Req: all covered
+- Export to XMAS
+  - Req: all covered
+- Export to Spectral Library
+  - Req:
+  - MGF
+  - CSM:
+    - Modification
+    - RT
+    - Ion Mobility / Compensation Voltage  
+- MS Annika FDR
+  - Req: all covered
+- MS Annika Combine Results
+  - Req: all covered
+- CSM Annotation
+  - Req: this is probably MS Annika only, as it requires doublet information
