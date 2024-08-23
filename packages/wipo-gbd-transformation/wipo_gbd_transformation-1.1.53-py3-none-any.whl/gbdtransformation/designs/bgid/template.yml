@@ -1,0 +1,169 @@
+{% from 'navigation.tmpl' import match %}
+
+{% call(header) match('DesignTransactionBody.TransactionContentDetails', Transaction) %}
+
+{% call(design) match('TransactionData.DesignDetails.Design', header) %}
+{% set design_count = design | get_designs_count(header) %}
+{% set design_pos = design | get_designs_pos(header) %}
+{% set kind = design | translate_kind(header) %}
+type: 'DESIGN'
+subtype: 'OPEN'
+designGrouping: 'MULTIPLE'
+designsCount: {{ design_count }}
+
+kind:
+  - {{kind}}
+{{ design }}
+registrationOfficeCode: {{ design.RegistrationOfficeCode}}
+designatedCountries:
+    - BG
+reference:
+{% if header | is_international %}
+  registration:
+    - number: {{ design.ApplicationNumber | get_ir_refnum }}
+      office: WO
+  {% endif %}
+{% if not kind == 'Industrial Design' %}
+  registration:
+    - number: {{ design.RegistrationNumber }}
+{% endif %}
+
+{% set idstatus = design | translate_status %}
+{% set appdate = design.ApplicationDate | get_appdate(design.ApplicationNumber) %}
+
+st13: {{ design.ApplicationNumber | parseForSt13(design) | st13(design.RegistrationOfficeCode, design_pos, appdate=appdate) }}
+
+applicationNumber: {{ design.ApplicationNumber }}
+applicationDate: {{ design.ApplicationDate }}
+registrationNumber: {{ design.RegistrationNumber }}
+registrationDate: {{ design.RegistrationDate }}
+publicationDate: {{ design.PublicationDate }}
+expiryDate: {{ design.ExpiryDate }}
+
+applicationLanguageCode: BG
+
+
+applicants:
+  {% call(applicant) match('ApplicantDetails.Applicant', design) %}
+  - identifier: {{ applicant.ApplicantIdentifier }}
+    {% call(details) match('ApplicantAddressBook.FormattedNameAddress.Name.FormattedName', applicant) %}
+    {% if details.OrganizationName %}
+    kind: 'organization'
+    fullName:
+      - languageCode: BG
+        text: {{ details.OrganizationName }}
+    {% else %}
+    kind: 'person'
+    fullName:
+      - languageCode: BG
+        text: {{ details | format_name }}
+    firstName:
+      - languageCode: BG
+        text: {{ details.FirstName}}
+    lastName:
+      - languageCode: BG
+        text: {{ details.LastName}}
+    middleName:
+      - languageCode: BG
+        text: {{ details.MiddleName}}
+    {% endif %}
+    {% endcall %}
+    {% call(address) match('ApplicantAddressBook.FormattedNameAddress.Address', applicant) %}
+    fullAddress:
+        - languageCode: BG
+          text: {{ address.FormattedAddress | format_address }}
+          addressLines: {{ address.FormattedAddress.AddressStreet }}
+          cityName: {{ address.FormattedAddress.AddressCity }}
+          geographicRegionName: {{ address.FormattedAddress.AddressCounty }}
+          postalCode: {{ address.FormattedAddress.AddressPostcode }}
+          countryCode: {{ address.AddressCountryCode }}
+    {% endcall %}
+  {% endcall %}
+
+representatives:
+  {% call(rep) match('RepresentativeDetails.Representative', design) %}
+  - identifier: {{ rep.RepresentativeIdentifier }}
+    {% call(details) match('RepresentativeAddressBook.FormattedNameAddress.Name.FormattedName', rep) %}
+    kind: {{ rep.RepresentativeLegalEntity}}
+    {% if details.OrganizationName %}
+    fullName:
+      - languageCode: BG
+        text: {{ details.OrganizationName }}
+    {% else %}
+    fullName:
+      - languageCode: BG
+        text: {{ details | format_name }}
+    firstName:
+      - languageCode: BG
+        text: {{ details.FirstName}}
+    lastName:
+      - languageCode: BG
+        text: {{ details.LastName}}
+    middleName:
+      - languageCode: BG
+        text: {{ details.MiddleName}}
+    {% endif %}
+    {% endcall %}
+    {% call(address) match('RepresentativeAddressBook.FormattedNameAddress.Address', rep) %}
+    fullAddress:
+        - languageCode: BG
+          text: {{ address.FormattedAddress | format_address }}
+          addressLines: {{ address.FormattedAddress.AddressStreet }}
+          cityName: {{ address.FormattedAddress.AddressCity }}
+          geographicRegionName: {{ address.FormattedAddress.AddressCounty }}
+          postalCode: {{ address.FormattedAddress.AddressPostcode }}
+          countryCode: {{ address.AddressCountryCode }}
+    {% endcall %}
+  {% endcall %}
+
+designs:
+  - designPos: {{ design_pos }}
+    officeStatus: {{ design.DesignCurrentStatusCode | parseStatus }}
+    gbdStatus: {{ idstatus }}
+    statusDate: {{ design.DesignCurrentStatusDate }}
+    productIndication:
+    {% call(indic) match('IndicationProduct', design.IndicationProductDetails) %}
+      - languageCode: {{ indic | guess_language(indic._languageCode, BG) }}
+        text: {{ indic }}
+      {% endcall %}
+
+    designImageDetails:
+    {% call(sheet) match('DesignRepresentationSheet', design.DesignRepresentationSheetDetails) %}
+    {% call(img) match('ViewDetails.View',sheet) %}
+      - name: {{ img.ViewURI }}
+    {% endcall %}
+    {% endcall %}
+
+    designer:
+      {% call(designer) match('DesignerDetails.Designer', design) %}
+        {% call(details) match('DesignerAddressBook.FormattedNameAddress.Name.FreeFormatName', designer) %}
+          - identifier: {{ designer.DesignerIdentifier }}
+            fullName:
+              {% call(nameline) match('FreeFormatNameDetails.FreeFormatNameLine', details) %}
+              - text: {{ nameline }}
+                languageCode: BG
+              {% endcall %}
+          {% endcall %}
+        {% endcall %}
+
+    productIndicationClasses:
+    {% call(indicationProducts) match('ClassDescriptionDetails', design) %}
+      - kind: "Locarno"
+        classes:
+        {% call(code) match('ClassDescription', indicationProducts) %}
+          - code: {{ code.ClassNumber }}
+        {% endcall %}
+    {% endcall %}
+
+    priorities:
+      {% call(priority) match('PriorityDetails.Priority', design) %}
+        - countryCode: {{ priority.PriorityCountryCode }}
+          number: {{ priority.PriorityNumber }}
+          date: {{ priority.PriorityDate }}
+      {% endcall %}
+
+
+
+
+{% endcall %}
+{% endcall %}
