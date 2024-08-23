@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: cabysis-mail-man
+Version: 1.0.2
+Summary: Cabysis email sender service
+Home-page: UNKNOWN
+Author: Cabysis
+Author-email: dev@cabysis.com
+License: MIT
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+# Email Sender Package
+
+MailManSender package is a Python library for sending emails easily using SMTP created by CabySis.
+
+
+## Installation
+
+You can install the lastest version as:
+
+```bash
+    pip install cabysis-mail-man
+```
+## Usage
+
+You can use this library after installation as this example:
+
+```python
+from mail import sender
+from mail.file_meta import FileMeta
+
+    files_meta = [
+        FileMeta(file_path="path/file.txt"),    # Create file meta by file stored on path
+        FileMeta(                               # Create file meta by buffer and file name
+            buffer=b"file buffer example",
+            file_name="file.txt",
+        ),
+    ]
+
+    subject = "This is a subject"               # Define email subject
+    message = "This is email body message."     # Define email body
+    to_emails = [                               # Define the email receivers list
+        "your_email@exmple.com"
+    ]
+    provider = "your_provider_name"             # Specify the provider
+    api_key = "your_api_key"                    # Specify the api key 
+    sender.send_mail(subject, message, to_emails, provider, api_key, files_meta)  # Send email with the provided data
+```
+
+
+
