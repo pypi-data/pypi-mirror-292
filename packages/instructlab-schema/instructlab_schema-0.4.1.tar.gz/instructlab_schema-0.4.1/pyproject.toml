@@ -1,0 +1,96 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[build-system]
+requires = ["setuptools>=70.1.0", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "instructlab-schema"
+authors = [{ name = "InstructLab", email = "dev@instructlab.ai" }]
+description = "InstructLab Taxonomy Schema"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "typing_extensions",
+    "jsonschema>=4.22.0",
+    "PyYAML>=6.0.0",
+    # The below library should NOT be imported into any python files
+    # We only use the command via subprocess
+    "yamllint>=1.35.1",
+]
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://instructlab.ai"
+source = "https://github.com/instructlab/schema"
+issues = "https://github.com/instructlab/schema/issues"
+
+[tool.setuptools_scm]
+version_file = "src/instructlab/schema/_version.py"
+local_scheme = "no-local-version"                   # do not include +gREV local version, required for Test PyPI upload
+
+[tool.mypy]
+python_version = "3.10"
+exclude = ["^src/instructlab/schema/_version\\.py$"]
+
+[tool.ruff]
+target-version = "py310"
+src = ["src", "tests"]
+extend-exclude = ["src/instructlab/schema/_version.py"]
+line-length = 180
+
+[tool.ruff.lint]
+select = [
+    "B",   # flake8-bugbear
+    "E",   # pycodestyle
+    "F",   # Pyflakes
+    "Q",   # flake8-quotes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
+]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"yamllint".msg = "yamllint is for use as a command via subprocess."
+
+[tool.pylint.main]
+py-version = "3.10"
+source-roots = ["src", "tests"]
+ignore = ["_version.py"]
+
+[tool.pylint.design]
+max-branches = 20
+max-line-length = 180
+max-locals = 20
+min-public-methods = 1
+
+[tool.pylint.format]
+max-args = 8
+
+[tool.pylint."messages control"]
+disable = [
+    "missing-class-docstring",
+    "missing-module-docstring",
+    "missing-function-docstring",
+]
+
+[tool.pylint.reports]
+reports = true
+score = true
+
+[tool.check-wheel-contents]
+ignore = [
+    "W002", # ignore duplicate files
+]

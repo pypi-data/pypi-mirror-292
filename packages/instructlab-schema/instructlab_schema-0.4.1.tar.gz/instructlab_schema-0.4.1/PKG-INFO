@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: instructlab-schema
+Version: 0.4.1
+Summary: InstructLab Taxonomy Schema
+Author-email: InstructLab <dev@instructlab.ai>
+License: Apache-2.0
+Project-URL: homepage, https://instructlab.ai
+Project-URL: source, https://github.com/instructlab/schema
+Project-URL: issues, https://github.com/instructlab/schema/issues
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typing_extensions
+Requires-Dist: jsonschema>=4.22.0
+Requires-Dist: PyYAML>=6.0.0
+Requires-Dist: yamllint>=1.35.1
+
+# Taxonomy Schema
+
+This Python package defines the JSON schema and a parser for the InstructLab [Taxonomy](https://github.com/instructlab/taxonomy) YAML.
+
+Consumers of this schema can `pip install instructlab-schema`, and use the `instructlab.schema.taxonomy.TaxonomyParser` class to parse and validate `qna.yaml` taxonomy files.
+Schema files can be directly accessed using the `instructlab.schema.schema_base()` method to get access the base of the schema resources.
