@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "pytest-matchers"
+version = "0.3.0"
+description = "Matchers for pytest"
+license = "MIT"
+authors = ["MartinGotelli <martingotelliferenaz@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "pytest_matchers", from = "src/pytest_matchers" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+black = "^24.8.0"
+pylint = "^3.2.6"
+coverage = "^7.6.1"
+codespell = "^2.3.0"
+vulture = "^2.11"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[project.entry-points.pytest11]
+myproject = "pytest_matchers.plugin"
+
+
+[tool.coverage.run]
+branch = true
+command_line = "-m pytest src/tests"
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = ["@abstractmethod", "If"]
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.vulture]
+paths = ["src", "vulture/whitelist.py"]
+ignore_decorators = []
+ignore_names = ['pytestmark', 'cls', 'return_value', 'side_effect']
+sort_by_size = true
+
+[tool.black]
+line-length = 100
+target-version = ['py311'] # Needs to be single quote, it is a regular expression
+
+[tool.codespell]
+skip= "./node_modules,./venv,./env,./htmlcov"
+ignore-words-list = "astroid"
