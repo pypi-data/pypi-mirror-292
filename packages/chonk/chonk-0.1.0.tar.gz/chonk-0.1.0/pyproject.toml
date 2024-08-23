@@ -1,0 +1,85 @@
+[project]
+name = "chonk"
+description = "codebase consolidation tool"
+requires-python = ">=3.12"
+authors = [
+    { name = "OLILHR" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "click>=8.1.7",
+    "prompt_toolkit>=3.0.47",
+    "tiktoken>=0.7.0",
+    "tqdm>=4.66.5",
+    "types-tqdm>=4.66.0",
+]
+dynamic = []
+readme = "README.md"
+version = "0.1.0"
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Changelog = "https://github.com/OLILHR/chonk/releases"
+Homepage = "https://github.com/OLILHR/chonk"
+
+[project.scripts]
+chonk = "chonk.main:generate_markdown"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm.version]
+source = "scm"
+
+[tool.pdm.build]
+includes = [
+    "chonk",
+]
+excludes = [
+    "/unittests",
+]
+
+[tool.pdm.readme]
+content-type = "text/markdown"
+path = "README.md"
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+line_length = 120
+profile = "black"
+
+[tool.mypy]
+disable_error_code = [
+    "no-untyped-def",
+    "no-untyped-call",
+]
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "too-few-public-methods",
+    "fixme",
+    "missing-docstring",
+]
+
+[mypy]
+truethy-bool = true
