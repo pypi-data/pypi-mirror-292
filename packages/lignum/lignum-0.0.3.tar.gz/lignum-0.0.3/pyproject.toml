@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lignum"
+version = "0.0.3"
+authors = [{name = "Rob Sigrest", email = "rob.sigrest@gmail.com"}]
+readme = "readme.md"
+description = "A teensy structured JSON logger for python."
+
+[project.urls]
+Homepage = "https://github.com/rsigrest/lignum"
+Repository = "https://github.com/rsigrest/lignum.git"
+
+[project.optional-dependencies]
+test = [
+  "flake8==7.1.1",
+  "pytest==8.3.2",
+]
