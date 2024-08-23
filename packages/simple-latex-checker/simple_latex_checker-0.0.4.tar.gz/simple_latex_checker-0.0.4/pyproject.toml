@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling", "nbformat"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/simple_latex_checker"]
+
+[project]
+name = "simple_latex_checker"
+version = "0.0.4"
+authors = [
+  { name="Vincent Bowen", email="vincent@vincentbowen.com" },
+]
+description = "VERY simple and lightweight checking of latex formatting"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/vincedbowen/simple-latex-checker"
+Issues = "https://github.com/vincedbowen/simple-latex-checker/issues"
