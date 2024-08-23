@@ -1,0 +1,549 @@
+Metadata-Version: 2.1
+Name: sysnet-citesdoc110
+Version: 1.1.0.1
+Summary: CITES Documents data controller REST API 1.1.0
+Home-page: 
+Author-email: Radim Jaeger <rjaeger@sysnet.cz>
+License: Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright [yyyy] [name of copyright owner]
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+        
+Project-URL: Homepage, https://github.com/SYSNET-CZ/swagger/tree/main/clients/citesdoc_110
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# citesdoc-110
+API pro datový konektor dokumentů CITES   ### Verze 1.0.1   OrderType, CustomsPermitType, CustomsGoodsType, AttachmentType, AttachmentListType, LinkedType, DocumentAdditionalType additional a attachments  ### Verze 1.1.0 - holder_history - applicant  - stanoviska - evidenční karta (DocumentStatement*Type, DocumentRegistrationCardType)) - práce s permity v různých formátech 
+
+This Python package is automatically generated by the [Swagger Codegen](https://github.com/swagger-api/swagger-codegen) project:
+
+- API version: 1.1.0
+- Package version: 1.1.0
+- Build package: io.swagger.codegen.v3.generators.python.PythonClientCodegen
+
+## Requirements.
+
+Python 3.9+
+
+## Installation & Usage
+### pip install
+
+
+```sh
+pip install sysnet-citesdoc110
+```
+
+Then import the package:
+```python
+import citesdoc_110 
+```
+
+## Getting Started
+
+Please follow the [installation procedure](#installation--usage) and then run the following:
+
+```python
+from __future__ import print_function
+import time
+import citesdoc_110
+from citesdoc_110.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: api_key_auth
+configuration = citesdoc_110.Configuration()
+configuration.api_key['X-API-KEY'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['X-API-KEY'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = citesdoc_110.AdditionalApi(citesdoc_110.ApiClient(configuration))
+identifier = 'identifier_example' # str | Identifikátor dokumentu (PID nebo UNID)
+
+try:
+    # Odstraní dokument (cruD)
+    api_response = api_instance.delete_additional_document(identifier)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling AdditionalApi->delete_additional_document: %s\n" % e)
+
+# Configure API key authorization: api_key_auth
+configuration = citesdoc_110.Configuration()
+configuration.api_key['X-API-KEY'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['X-API-KEY'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = citesdoc_110.AdditionalApi(citesdoc_110.ApiClient(configuration))
+identifier = 'identifier_example' # str | Identifikátor dokumentu (PID nebo UNID)
+
+try:
+    # Vrací konkrétní dodatečný dokument (cRud)
+    api_response = api_instance.get_additional_document(identifier)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling AdditionalApi->get_additional_document: %s\n" % e)
+
+# Configure API key authorization: api_key_auth
+configuration = citesdoc_110.Configuration()
+configuration.api_key['X-API-KEY'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['X-API-KEY'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = citesdoc_110.AdditionalApi(citesdoc_110.ApiClient(configuration))
+parent = 'parent_example' # str | Identifikátor nařízeného dokument (PID, UUID, UNID) (optional)
+doc_code = 'doc_code_example' # str |  (optional)
+creator = 'creator_example' # str | Klíčové slovo pro vyhledání dokumentu podle autora (optional)
+key = 'key_example' # str | předává klíčové slovo pro vyhledání dokumentů. Lomítka nahrazovat podtržítkem (optional)
+search = 'search_example' # str | předává text pro fulltextové vyhledání dokumentů (optional)
+start = 56 # int | První dokument na stránce (optional)
+page_size = 56 # int | Velikost stránky při stránkovaném výstupu (optional)
+page = 56 # int | Číslo stránky výstupu (optional)
+
+try:
+    # Vrací seznam dodatečných dokumentů
+    api_response = api_instance.get_additional_list(parent=parent, doc_code=doc_code, creator=creator, key=key, search=search, start=start, page_size=page_size, page=page)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling AdditionalApi->get_additional_list: %s\n" % e)
+
+# Configure API key authorization: api_key_auth
+configuration = citesdoc_110.Configuration()
+configuration.api_key['X-API-KEY'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['X-API-KEY'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = citesdoc_110.AdditionalApi(citesdoc_110.ApiClient(configuration))
+identifier = 'identifier_example' # str | Identifikátor dokumentu (PID nebo UNID)
+
+try:
+    # Vrací PDF dodatečného dokumentu
+    api_response = api_instance.get_pdf_file_additional(identifier)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling AdditionalApi->get_pdf_file_additional: %s\n" % e)
+
+# Configure API key authorization: api_key_auth
+configuration = citesdoc_110.Configuration()
+configuration.api_key['X-API-KEY'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['X-API-KEY'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = citesdoc_110.AdditionalApi(citesdoc_110.ApiClient(configuration))
+body = citesdoc_110.CitesDocumentAdditionalType() # CitesDocumentAdditionalType |  (optional)
+
+try:
+    # Vloží nový dodatečný dokument
+    api_response = api_instance.post_additional_document(body=body)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling AdditionalApi->post_additional_document: %s\n" % e)
+
+# Configure API key authorization: api_key_auth
+configuration = citesdoc_110.Configuration()
+configuration.api_key['X-API-KEY'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['X-API-KEY'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = citesdoc_110.AdditionalApi(citesdoc_110.ApiClient(configuration))
+identifier = 'identifier_example' # str | Identifikátor dokumentu (PID nebo UNID)
+body = citesdoc_110.CitesDocumentAdditionalType() # CitesDocumentAdditionalType |  (optional)
+
+try:
+    # Aktualizuje dodatečný dokument (crUd)
+    api_response = api_instance.put_additional_document(identifier, body=body)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling AdditionalApi->put_additional_document: %s\n" % e)
+```
+
+## Documentation for API Endpoints
+
+All URIs are relative to *https://athos.sysnet.cz/citesdoc/1.1.0*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+*AdditionalApi* | [**delete_additional_document**](docs/AdditionalApi.md#delete_additional_document) | **DELETE** /additional/{identifier} | Odstraní dokument (cruD)
+*AdditionalApi* | [**get_additional_document**](docs/AdditionalApi.md#get_additional_document) | **GET** /additional/{identifier} | Vrací konkrétní dodatečný dokument (cRud)
+*AdditionalApi* | [**get_additional_list**](docs/AdditionalApi.md#get_additional_list) | **GET** /additional | Vrací seznam dodatečných dokumentů
+*AdditionalApi* | [**get_pdf_file_additional**](docs/AdditionalApi.md#get_pdf_file_additional) | **GET** /additional/pdf/{identifier} | Vrací PDF dodatečného dokumentu
+*AdditionalApi* | [**post_additional_document**](docs/AdditionalApi.md#post_additional_document) | **POST** /additional | Vloží nový dodatečný dokument
+*AdditionalApi* | [**put_additional_document**](docs/AdditionalApi.md#put_additional_document) | **PUT** /additional/{identifier} | Aktualizuje dodatečný dokument (crUd)
+*AdminsApi* | [**delete_template**](docs/AdminsApi.md#delete_template) | **DELETE** /template/{doc_code} | Odstraní položku šablony PDF včetně všech souborů (cruD)
+*AdminsApi* | [**get_template**](docs/AdminsApi.md#get_template) | **GET** /template/{doc_code} | Vrátí popis šablony (cRud)
+*AdminsApi* | [**get_template_list**](docs/AdminsApi.md#get_template_list) | **GET** /template | Vrací seznam šablon
+*AdminsApi* | [**post_template_item**](docs/AdminsApi.md#post_template_item) | **POST** /template | Zavede novou položku šablony (Crud)
+*AdminsApi* | [**put_template**](docs/AdminsApi.md#put_template) | **PUT** /template/{doc_code} | Aktualizuje popis šablony (crUd)
+*AdminsApi* | [**upload_template_file_binary**](docs/AdminsApi.md#upload_template_file_binary) | **PUT** /template/upload/binary/{doc_code} | Nahraje soubor se šablonou jiný formát (nař. zip))
+*AdminsApi* | [**upload_template_file_pdf**](docs/AdminsApi.md#upload_template_file_pdf) | **PUT** /template/upload/pdf/{doc_code} | Nahraje soubor se šablonou PDF
+*AdminsApi* | [**upload_template_file_xml**](docs/AdminsApi.md#upload_template_file_xml) | **PUT** /template/upload/xml/{doc_code} | Nahraje soubor se šablonou XML
+*AttachmentsApi* | [**delete_attachment**](docs/AttachmentsApi.md#delete_attachment) | **DELETE** /attachment/{identifier} | odstraní přílohu i s metadaty
+*AttachmentsApi* | [**get_attachment**](docs/AttachmentsApi.md#get_attachment) | **GET** /attachment/download/{identifier} | vrací soubor přílohy
+*AttachmentsApi* | [**get_attachment_list**](docs/AttachmentsApi.md#get_attachment_list) | **GET** /attachment | získá seznam příloh
+*AttachmentsApi* | [**get_attachment_list_container**](docs/AttachmentsApi.md#get_attachment_list_container) | **GET** /atachment/container/{container} | vrací seznam příloh v kontejneru
+*AttachmentsApi* | [**get_attachment_list_document**](docs/AttachmentsApi.md#get_attachment_list_document) | **GET** /atachment/document/{document} | vrací seznam příloh v dokumentu
+*AttachmentsApi* | [**get_attachment_metadata**](docs/AttachmentsApi.md#get_attachment_metadata) | **GET** /attachment/{identifier} | vrací metadata přílohy
+*AttachmentsApi* | [**post_attachment**](docs/AttachmentsApi.md#post_attachment) | **POST** /attachment | uploaduje novou přílohu (Crud)
+*AttachmentsApi* | [**put_attachment**](docs/AttachmentsApi.md#put_attachment) | **PUT** /attachment/{identifier} | aktualizuje metadata přílohy
+*DevelopersApi* | [**info_api**](docs/DevelopersApi.md#info_api) | **GET** /info | Vrací servisní informace
+*DevelopersApi* | [**info_api_head**](docs/DevelopersApi.md#info_api_head) | **HEAD** /info | Vrací informaci o dostupnosti služby
+*PermitApi* | [**convert_permit_cz2_doc**](docs/PermitApi.md#convert_permit_cz2_doc) | **POST** /convert/cz/doc | Konvertuje permit z formátu CZ do produkčního formátu CITES
+*PermitApi* | [**convert_permit_cz2_eu**](docs/PermitApi.md#convert_permit_cz2_eu) | **POST** /convert/cz/eu | Konvertuje permit z formátu CZ do EU
+*PermitApi* | [**convert_permit_doc2_cz**](docs/PermitApi.md#convert_permit_doc2_cz) | **POST** /convert/doc/cz | Konvertuje permit z produkčního formátu CITES do formátu CZ
+*PermitApi* | [**convert_permit_doc2_eu**](docs/PermitApi.md#convert_permit_doc2_eu) | **POST** /convert/doc/eu | Konvertuje permit z produkčního formátu CITES do formátu EU
+*PermitApi* | [**convert_permit_eu2_cz**](docs/PermitApi.md#convert_permit_eu2_cz) | **POST** /convert/eu/cz | Konvertuje permit z formátu EU do CZ
+*PermitApi* | [**convert_permit_eu2_doc**](docs/PermitApi.md#convert_permit_eu2_doc) | **POST** /convert/eu/doc | Konvertuje permit z formátu EU do produkčního formátu CITES
+*PermitApi* | [**get_permit_cz**](docs/PermitApi.md#get_permit_cz) | **GET** /permit/cz/{idno} | Vrací permit v CZ CITES formátu
+*PermitApi* | [**get_permit_doc**](docs/PermitApi.md#get_permit_doc) | **GET** /permit/doc/{idno} | Vrací permit v produkčním CITES formátu
+*PermitApi* | [**get_permit_eu**](docs/PermitApi.md#get_permit_eu) | **GET** /permit/eu/{idno} | Vrací permit v EU CITES formátu
+*PermitApi* | [**post_permit_cz**](docs/PermitApi.md#post_permit_cz) | **POST** /permit/cz/{idno} | Nahraje permit ve formátu EU
+*PermitApi* | [**post_permit_doc**](docs/PermitApi.md#post_permit_doc) | **POST** /permit/doc/{idno} | Nahraje permit v produkčním formátu CITES
+*PermitApi* | [**post_permit_eu**](docs/PermitApi.md#post_permit_eu) | **POST** /permit/eu/{idno} | Nahraje permit ve formátu EU
+*PermitApi* | [**put_permit_cz**](docs/PermitApi.md#put_permit_cz) | **PUT** /permit/cz/{idno} | Aktualizuje permit ve formátu EU
+*PermitApi* | [**put_permit_doc**](docs/PermitApi.md#put_permit_doc) | **PUT** /permit/doc/{idno} | Aktualizuje permit v produkčním formátu CITES
+*PermitApi* | [**put_permit_eu**](docs/PermitApi.md#put_permit_eu) | **PUT** /permit/eu/{idno} | Aktualizuje permit ve formátu EU
+*PublicApi* | [**delete_document**](docs/PublicApi.md#delete_document) | **DELETE** /doc/{identifier} | Odstraní dokument (cruD)
+*PublicApi* | [**get_document**](docs/PublicApi.md#get_document) | **GET** /doc/{identifier} | Vrací konkrétní dokument (cRud)
+*PublicApi* | [**get_document_list**](docs/PublicApi.md#get_document_list) | **GET** /doc | Vrací seznam dokumentů podle klíče nebo kódu
+*PublicApi* | [**get_pdf_file**](docs/PublicApi.md#get_pdf_file) | **GET** /doc/pdf/{identifier} | Vrací PDF dokument
+*PublicApi* | [**post_document**](docs/PublicApi.md#post_document) | **POST** /doc | Vytvoří nový dokument (Crud)
+*PublicApi* | [**put_document**](docs/PublicApi.md#put_document) | **PUT** /doc/{identifier} | Aktualizuje dokument (crUd)
+*RegistrationCardsApi* | [**delete_registration_card**](docs/RegistrationCardsApi.md#delete_registration_card) | **DELETE** /registration_card/{identifier} | Odstraní evidenční kartu (cruD)
+*RegistrationCardsApi* | [**get_pdf_file_registration_card**](docs/RegistrationCardsApi.md#get_pdf_file_registration_card) | **GET** /registration_card/pdf/{identifier} | Vrací PDF dokument
+*RegistrationCardsApi* | [**get_registration_card**](docs/RegistrationCardsApi.md#get_registration_card) | **GET** /registration_card/{identifier} | Vrací konkrétní evidenční kartu (cRud)
+*RegistrationCardsApi* | [**get_registration_card_list**](docs/RegistrationCardsApi.md#get_registration_card_list) | **GET** /registration_card | Vrací seznam evidenčních karet
+*RegistrationCardsApi* | [**post_registration_card**](docs/RegistrationCardsApi.md#post_registration_card) | **POST** /registration_card | Vytvoří novou evidenční kartu (Crud)
+*RegistrationCardsApi* | [**put_registration_card**](docs/RegistrationCardsApi.md#put_registration_card) | **PUT** /registration_card/{identifier} | Aktualizuje evidenční kartu (crUd)
+*StatementApi* | [**delete_statement**](docs/StatementApi.md#delete_statement) | **DELETE** /statement/{identifier} | Odstraní stanovisko AOPK (cruD)
+*StatementApi* | [**delete_statement_request**](docs/StatementApi.md#delete_statement_request) | **DELETE** /request/{identifier} | Odstraní žádost o stanovisko AOPK (cruD)
+*StatementApi* | [**get_pdf_file_statement**](docs/StatementApi.md#get_pdf_file_statement) | **GET** /statement/pdf/{identifier} | Vrací PDF dokument
+*StatementApi* | [**get_statement_certificate**](docs/StatementApi.md#get_statement_certificate) | **GET** /statement/certificate/{identifier} | Vrací konkrétní stanovisko AOPK k výjimce (cRud)
+*StatementApi* | [**get_statement_certificate_request**](docs/StatementApi.md#get_statement_certificate_request) | **GET** /request/certificate/{identifier} | Vrací konkrétní žádost o stanovisko AOPK k výjimce (cRud)
+*StatementApi* | [**get_statement_list**](docs/StatementApi.md#get_statement_list) | **GET** /statement | Vrací seznam stanovisek AOPK podle klíče nebo kódu
+*StatementApi* | [**get_statement_permit**](docs/StatementApi.md#get_statement_permit) | **GET** /statement/permit/{identifier} | Vrací konkrétní stanovisko AOPK k permitu (cRud)
+*StatementApi* | [**get_statement_request_list**](docs/StatementApi.md#get_statement_request_list) | **GET** /request | Vrací seznam žádostí o stanoviska AOPK podle klíče nebo kódu
+*StatementApi* | [**post_statement_certificate**](docs/StatementApi.md#post_statement_certificate) | **POST** /statement/certificate | Vytvoří nové stanovisko AOPK k potvrzení o výjimce (Crud)
+*StatementApi* | [**post_statement_permit**](docs/StatementApi.md#post_statement_permit) | **POST** /statement/permit | Vytvoří nové stanovisko AOPK k permitu (Crud)
+*StatementApi* | [**post_statement_request_certificate**](docs/StatementApi.md#post_statement_request_certificate) | **POST** /request/certificate | Vytvoří novou žádost o stanovisko AOPK k potvrzení o výjimce (Crud)
+*StatementApi* | [**put_statement_certificate**](docs/StatementApi.md#put_statement_certificate) | **PUT** /statement/certificate/{identifier} | Aktualizuje stanovisko AOPK k výjimce (crUd)
+*StatementApi* | [**put_statement_certificate_request**](docs/StatementApi.md#put_statement_certificate_request) | **PUT** /request/certificate/{identifier} | Aktualizuje žádost o stanovisko AOPK k výjimce (crUd)
+*StatementApi* | [**put_statement_permit**](docs/StatementApi.md#put_statement_permit) | **PUT** /statement/permit/{identifier} | Aktualizuje stanovisko AOPK k permitu (crUd)
+
+## Documentation For Models
+
+ - [AdditionalEntryType](docs/AdditionalEntryType.md)
+ - [AgreeType](docs/AgreeType.md)
+ - [AuthoritativeSignatoryPersonType](docs/AuthoritativeSignatoryPersonType.md)
+ - [BaseEntryListType](docs/BaseEntryListType.md)
+ - [CITESEPermitType](docs/CITESEPermitType.md)
+ - [CZCitesPermitType](docs/CZCitesPermitType.md)
+ - [CitesDocumentAdditionalEntryListType](docs/CitesDocumentAdditionalEntryListType.md)
+ - [CitesDocumentAdditionalType](docs/CitesDocumentAdditionalType.md)
+ - [CitesDocumentAttachmentListType](docs/CitesDocumentAttachmentListType.md)
+ - [CitesDocumentAttachmentType](docs/CitesDocumentAttachmentType.md)
+ - [CitesDocumentEntryListType](docs/CitesDocumentEntryListType.md)
+ - [CitesDocumentPrincipalType](docs/CitesDocumentPrincipalType.md)
+ - [CitesDocumentRegistrationCardType](docs/CitesDocumentRegistrationCardType.md)
+ - [CitesDocumentStatementCertificateRequestType](docs/CitesDocumentStatementCertificateRequestType.md)
+ - [CitesDocumentStatementCertificateType](docs/CitesDocumentStatementCertificateType.md)
+ - [CitesDocumentStatementPermitType](docs/CitesDocumentStatementPermitType.md)
+ - [CitesDocumentTemplateType](docs/CitesDocumentTemplateType.md)
+ - [CitesDocumentXfdfListType](docs/CitesDocumentXfdfListType.md)
+ - [CitesDocumentXfdfType](docs/CitesDocumentXfdfType.md)
+ - [CitesDocumentXfdfTypeIdentifier](docs/CitesDocumentXfdfTypeIdentifier.md)
+ - [CitesDocumentXfdfTypeTemplateFile](docs/CitesDocumentXfdfTypeTemplateFile.md)
+ - [CodeType](docs/CodeType.md)
+ - [ConditionsType](docs/ConditionsType.md)
+ - [CountryIDType](docs/CountryIDType.md)
+ - [CrossBorderRegulatoryProcedureType](docs/CrossBorderRegulatoryProcedureType.md)
+ - [CustomsGoodsType](docs/CustomsGoodsType.md)
+ - [CustomsPermitType](docs/CustomsPermitType.md)
+ - [DocumentAuthenticationType](docs/DocumentAuthenticationType.md)
+ - [DocumentCodeType](docs/DocumentCodeType.md)
+ - [DocumentContextParameterType](docs/DocumentContextParameterType.md)
+ - [DocumentPrincipalCustomsGoodsType](docs/DocumentPrincipalCustomsGoodsType.md)
+ - [DocumentPrincipalCustomsPermitType](docs/DocumentPrincipalCustomsPermitType.md)
+ - [DocumentVersionType](docs/DocumentVersionType.md)
+ - [EntryType](docs/EntryType.md)
+ - [ErrorModel](docs/ErrorModel.md)
+ - [ExchangedDocumentContextType](docs/ExchangedDocumentContextType.md)
+ - [ExchangedDocumentType](docs/ExchangedDocumentType.md)
+ - [GeneralType](docs/GeneralType.md)
+ - [GoodsBirthType](docs/GoodsBirthType.md)
+ - [GoodsIdetificationHistoryItemType](docs/GoodsIdetificationHistoryItemType.md)
+ - [GoodsIdetificationType](docs/GoodsIdetificationType.md)
+ - [GoodsItemBaseType](docs/GoodsItemBaseType.md)
+ - [GoodsOrderType](docs/GoodsOrderType.md)
+ - [GoodsPrincipalType](docs/GoodsPrincipalType.md)
+ - [GoodsQuantityType](docs/GoodsQuantityType.md)
+ - [GoodsType](docs/GoodsType.md)
+ - [GoodsTypeCodeType](docs/GoodsTypeCodeType.md)
+ - [GoodsTypeExtensionCodeType](docs/GoodsTypeExtensionCodeType.md)
+ - [GovernmentActionCodeType](docs/GovernmentActionCodeType.md)
+ - [IDType](docs/IDType.md)
+ - [IssuingType](docs/IssuingType.md)
+ - [LinkedListType](docs/LinkedListType.md)
+ - [LinkedType](docs/LinkedType.md)
+ - [LogisticsLocationType](docs/LogisticsLocationType.md)
+ - [LogisticsPackageType](docs/LogisticsPackageType.md)
+ - [LogisticsShippingMarksType](docs/LogisticsShippingMarksType.md)
+ - [MailAddressType](docs/MailAddressType.md)
+ - [MessageFunctionCodeType](docs/MessageFunctionCodeType.md)
+ - [MetadataType](docs/MetadataType.md)
+ - [OrderType](docs/OrderType.md)
+ - [OtherType](docs/OtherType.md)
+ - [PermitConditionsType](docs/PermitConditionsType.md)
+ - [PermitSpecialConditionsType](docs/PermitSpecialConditionsType.md)
+ - [PersonBaseType](docs/PersonBaseType.md)
+ - [PersonExtendedType](docs/PersonExtendedType.md)
+ - [PersonHistoryItemType](docs/PersonHistoryItemType.md)
+ - [PersonType](docs/PersonType.md)
+ - [PhoneNumberType](docs/PhoneNumberType.md)
+ - [QuantityType](docs/QuantityType.md)
+ - [ReferencedDocumentType](docs/ReferencedDocumentType.md)
+ - [RelatedType](docs/RelatedType.md)
+ - [RepresentativePersonType](docs/RepresentativePersonType.md)
+ - [SingleWindowType](docs/SingleWindowType.md)
+ - [SpecifiedPeriodType](docs/SpecifiedPeriodType.md)
+ - [StatementCertificateRequestItemParentType](docs/StatementCertificateRequestItemParentType.md)
+ - [StatementCertificateRequestItemType](docs/StatementCertificateRequestItemType.md)
+ - [StatementCertificateRequestType](docs/StatementCertificateRequestType.md)
+ - [StatementCertificateType](docs/StatementCertificateType.md)
+ - [StatementDocumentType](docs/StatementDocumentType.md)
+ - [StatementPermitType](docs/StatementPermitType.md)
+ - [SupplyChainConsignmentItemType](docs/SupplyChainConsignmentItemType.md)
+ - [SupplyChainConsignmentType](docs/SupplyChainConsignmentType.md)
+ - [SupplyChainTradeLineItemType](docs/SupplyChainTradeLineItemType.md)
+ - [TaxonItemType](docs/TaxonItemType.md)
+ - [TextType](docs/TextType.md)
+ - [TradeAddressType](docs/TradeAddressType.md)
+ - [TradeCountryType](docs/TradeCountryType.md)
+ - [TradePartyType](docs/TradePartyType.md)
+ - [TradeProductType](docs/TradeProductType.md)
+ - [TransactionType](docs/TransactionType.md)
+ - [TransportEventType](docs/TransportEventType.md)
+ - [TransportType](docs/TransportType.md)
+ - [UserType](docs/UserType.md)
+ - [WorkflowListType](docs/WorkflowListType.md)
+ - [WorkflowType](docs/WorkflowType.md)
+ - [XfdfFieldType](docs/XfdfFieldType.md)
+
+## Documentation For Authorization
+
+
+## api_key_auth
+
+- **Type**: API key
+- **API key parameter name**: X-API-KEY
+- **Location**: HTTP header
+
+
+## Author
+
+info@sysnet.cz
