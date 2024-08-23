@@ -1,0 +1,93 @@
+name: Build and Publish
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  
+  build:
+    name: Build, Lint, Test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.x"
+    - name: Install dependencies
+      run: |
+        python -m pip install .[test]
+        python -m pip install build --user
+    - name: Lint
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Test
+      run: |
+        pytest --capture=sys
+    - name: Build Wheel & Tarball
+      run: python -m build
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+
+  publish:
+    name: Publish
+    needs:
+    - build
+    runs-on: ubuntu-latest
+    environment: 
+      name: pypi
+      url: https://pypi.org/p/lignum
+    permissions:
+      id-token: write
+    steps:
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+  
+  # release:
+  #   name: Create GitHub Release
+  #   needs:
+  #   - publish
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: write
+  #     id-token: write
+  #   steps:
+  #   - name: Download Artifacts
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: python-package-distributions
+  #       path: dist/
+  #   - name: Sign Distribution
+  #     uses: sigstore/gh-action-sigstore-python@v2.1.1
+  #     with:
+  #       inputs: |
+  #         ./dist/*.tar.gz
+  #         ./dist/*.whl
+  #   - name: Create Release
+  #     env:
+  #       GITHUB_TOKEN: ${{ github.token }}
+  #     run: |
+  #       gh release create
+  #       '${{ github.ref_name }}'
+  #       --repo '${{ github.repository }}'
+  #       --notes ""
+  #   - name: Upload Release
+  #     env:
+  #       GITHUB_TOKEN: ${{ github.token }}
+  #     run: |
+  #       gh release upload
+  #       '${{ github.ref_name }}' dist/**
+  #       --repo '${{ github.repository }}'
+      
