@@ -1,0 +1,70 @@
+{% load i18n cms_tags %}
+<h3> {{ instance.category.name }} </h3>
+<form action="" method="GET">
+    <div>
+        <div>
+            <input type="text" placeholder="Search..." name="search" value="{{ request.GET.search }}">
+            <span class="input-group-list">
+                <button type="submit"> Buscar</button>
+            </span>
+        </div>
+    </div>
+</form>
+
+{% if request.GET.search %}
+    <p>
+        {% trans "search results for" %} {{ request.GET.search }}
+    </p>
+{% endif %}
+{% for publication in info_publications %}
+    <h5>{% render_model publication "title" %}</h5>
+    {% if publication.description %}
+        <p>{{ publication.description }}</p>
+    {% endif %}
+    <p>Publicación: {{ publication.published_at }} </p>
+    {% if publication.publish_end_at %}
+        <p>Despublicación: {{ publication.publish_end_at }} </p>
+    {% endif %}
+    <a href="{{ publication.file.url }}" target="{{ instance.target }}">Ver Archivo</a>
+    <hr>
+{% empty %}
+    <p>{% trans "No files were found in the selected category" %}</p>
+{% endfor %}
+
+{% if paginator.num_pages > 1%}
+     <nav>
+        {% if info_publications.has_previous %}
+            <a href="?page={{ info_publications.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">&laquo; {% trans "previous" %}</a>
+        {% endif %}
+        <span class="current">
+            {% trans "Page" %} {{ info_publications.number }} {% trans "of" %} {{ paginator.num_pages }}
+        </span>
+        {% if info_publications.has_next %}
+            <a href="?page={{ info_publications.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{% trans "next" %} &raquo;</a>
+        {% endif %}
+    </nav>
+{% endif %}
+
+
+{% comment %}
+    {{ instance.category }}
+    {{ instance.pagination }} #Number of items per page
+    {{ instance.target }}
+    # info_publications list variables:
+    {{ title }}
+    {{ description }}
+    {{ category }}
+    {{ author }}
+    {{ published_at }}
+    {{ publish_end_at }}
+    {{ icon_class }} # Class Icons FontAwesome File, PDF, Word, Excel, Power Point
+    {{ file }}
+    # pagination list variables:
+    {{ info_publications.has_previous }}
+    {{ info_publications.has_next }}
+    {{ info_publications.previous_page_number }}
+    {{ info_publications.next_page_number }}
+    {{ info_publications.number }}
+    {{ paginator.page_range }}
+    {{ paginator.num_pages }}
+{% endcomment %}
