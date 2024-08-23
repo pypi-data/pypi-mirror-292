@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: seer-pas-sdk
+Version: 0.1.3
+Summary: SDK for Seer Proteograph Analysis Suite (PAS)
+Home-page: https://github.com/seerbio/seer-pas-sdk
+Author: Agam Jolly
+Author-email: ajolly@seer.bio
+Project-URL: Bug Tracker, https://github.com/seerbio/seer-pas-sdk/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: boto3==1.26.152
+Requires-Dist: botocore==1.29.152
+Requires-Dist: pandas==2.0.1
+Requires-Dist: numpy<2.0.0,>=1.5.3
+Requires-Dist: PyJWT==2.8.0
+Requires-Dist: python-dotenv==1.0.0
+Requires-Dist: Requests==2.31.0
+Requires-Dist: tqdm==4.65.0
+
+# Seer PAS Python SDK
+
+[![Test](https://github.com/seerbio/seer-pas-sdk/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/seerbio/seer-pas-sdk/actions/workflows/test.yml)
+[![Lint](https://github.com/seerbio/seer-pas-sdk/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/seerbio/seer-pas-sdk/actions/workflows/lint.yml)
+
+This SDK permits interaction with the Seer Proteograph Analysis Suite using Python.
+
+## Installation
+
+```shell
+pip install seer-pas-sdk
+```
+
+## Usage
+
+To import and set up the SDK:
+
+```python
+from seer_pas_sdk import SeerSDK
+
+# Instantiate an SDK object with your credentials:
+sdk = SeerSDK(USERNAME, PASSWORD)
+```
+
+You can then use the SDK's methods to create, query, or retrieve projects, plates, samples, and analyses.
+
+For complete documentation of this SDK, visit [https://seerbio.github.io/seer-pas-sdk/](https://seerbio.github.io/seer-pas-sdk/ "Documentation").
