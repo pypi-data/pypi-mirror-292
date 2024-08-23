@@ -1,0 +1,90 @@
+Metadata-Version: 2.1
+Name: poetry-plugin-private
+Version: 1.0.1
+Summary: A plugin that contains dynamic version numbers and default PyPI repository source settings.
+License: MIT
+Author: L.STONE
+Author-email: web.developer.network@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: poetry (>=1.2.0,<2.0.0)
+Description-Content-Type: text/markdown
+
+# README
+
+## 相关资料
+
+* [poetry-plugin-pypi-mirror](https://github.com/arcesium/poetry-plugin-pypi-mirror)
+* [poetry-version-plugin](https://github.com/tiangolo/poetry-version-plugin)
+* [License](https://choosealicense.com/licenses/mit/)
+
+## 构建 whl 二进制包
+
+Location: `[PROJECT_ROOT]/.env`
+
+```bash
+POETRY_VIRTUALENVS_IN_PROJECT=true
+POETRY_PLUGIN_PRIVATE_DISABLE_LOG=true
+POETRY_PYPI_MIRROR_URL=http://pypi.stone.cs/simple/
+```
+
+```bash
+cd [PROJECT_ROOT]
+make
+```
+
+## 安装插件
+
+```bash
+pip install poetry-plugin-private
+```
+
+## 修改 pyproject.toml 配置
+
+**新增以下内容即可支持读取 `__version__` 变量动态版本号**
+
+Location: `<Env>:VERSION` or `[Package]/__init__.py`:`__version__`
+
+**当 `source = init` 时，优先检测环境变量 `VERSION` 的值作为版本号。否则，从 `[Package]/__init__.py` 文件中读取 `__version__` 变量值作为版本号。**
+
+```toml
+[tool.poetry-version-plugin]
+source = "init"
+```
+
+Env: `VERSION`
+
+```toml
+[tool.poetry-version-plugin]
+source = "env"
+```
+
+## 设置环境变量修改默认 PyPI 源地址
+
+`Linux`
+
+```bash
+export POETRY_VIRTUALENVS_IN_PROJECT="true"
+export POETRY_PYPI_MIRROR_DISABLE_CACHE="true"
+export POETRY_PLUGIN_PRIVATE_DISABLE_LOG="true"
+export POETRY_PYPI_MIRROR_URL="http://pypi.stone.cs/simple/"
+```
+
+`Windows 10/11`
+
+```ps1
+[Environment]::SetEnvironmentVariable("POETRY_VIRTUALENVS_IN_PROJECT", "true", "User");
+[Environment]::SetEnvironmentVariable("POETRY_PLUGIN_PRIVATE_DISABLE_LOG", "true", "User");
+[Environment]::SetEnvironmentVariable("POETRY_PYPI_MIRROR_DISABLE_CACHE", "true", "User");
+[Environment]::SetEnvironmentVariable("POETRY_PYPI_MIRROR_URL", "http://pypi.stone.cs/simple/", "User");
+```
+
+## 待支持的特性
+
+* 支持环境变量 `VERSION` 动态设置 build 的版本号。
+
