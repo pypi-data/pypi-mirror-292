@@ -1,0 +1,110 @@
+Metadata-Version: 2.1
+Name: pcce-api
+Version: 1.0rc1
+Summary: Prisma Cloud Compute Edition API Client
+Keywords: Prisma Cloud,Prisma Cloud Compute,Palo Alto,CNAPP,API
+Author-email: Pham Xuan Quynh <th1nks1mple@protonmail.com>
+Maintainer-email: Pham Xuan Quynh <th1nks1mple@protonmail.com>
+Requires-Python: >=3.8.1
+Description-Content-Type: text/x-rst
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Security
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: marshmallow>=3.21.3
+Requires-Dist: requests>=2.31.0
+Requires-Dist: restfly>=1.4.7
+Requires-Dist: black==24.3.0 ; extra == "test"
+Requires-Dist: bandit[toml]==1.7.9 ; extra == "test"
+Requires-Dist: flake8 ; extra == "test"
+Requires-Dist: flake8-docstrings ; extra == "test"
+Requires-Dist: flake8-bugbear==23.5.9 ; extra == "test"
+Requires-Dist: flake8-pyproject ; extra == "test"
+Requires-Dist: pre-commit==3.3.1 ; extra == "test"
+Requires-Dist: pylint==2.17.4 ; extra == "test"
+Requires-Dist: pytest==7.3.1 ; extra == "test"
+Requires-Dist: responses==0.25.3 ; extra == "test"
+Requires-Dist: pytest-cov==4.0.0 ; extra == "test"
+Requires-Dist: tomli==2.0.1 ; extra == "test"
+Project-URL: Documentation, https://gitlab.com/th1nks1mple/pcce-api
+Project-URL: Source, https://gitlab.com/th1nks1mple/pcce-api
+Project-URL: Tracker, https://gitlab.com/th1nks1mple/pcce-api/-/issues
+Provides-Extra: test
+
+Welcome to PCCE-API's documentation!
+==============================================
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+   :target: https://github.com/psf/black
+.. image:: https://img.shields.io/badge/linting-pylint-yellowgreen
+   :target: https://github.com/pylint-dev/pylint
+.. image:: https://img.shields.io/badge/security-bandit-yellow.svg
+   :target: https://github.com/PyCQA/bandit
+.. image:: https://gitlab.com/th1nks1mple/pcce-api/badges/main/pipeline.svg
+   :target: https://gitlab.com/th1nks1mple/pcce-api/-/commits/main
+.. image:: https://gitlab.com/th1nks1mple/pcce-api/badges/main/coverage.svg
+   :target: https://gitlab.com/th1nks1mple/pcce-api/-/commits/main
+.. image:: https://img.shields.io/pypi/pyversions/pcce-api
+   :target: https://pypi.org/project/pcce-api/
+.. image:: https://img.shields.io/pypi/v/pcce-api
+   :target: https://pypi.org/project/pcce-api/
+
+PCCE-API is a Prisma Cloud Compute Edition API Client.
+
+- Issue Tracker: https://gitlab.com/th1nks1mple/pcce-api/-/issues
+- GitLab Repository: https://gitlab.com/th1nks1mple/pcce-api
+
+Features
+--------
+
+- Implement the latest Prisma Cloud Compute Edition API.
+- Use marshmallow library for validate schema data before send to server.
+
+Installation
+------------
+
+To install the most recent published version to pypi, its simply a matter of
+installing via pip:
+
+.. code-block:: bash
+
+   pip install pcce-api
+
+If you're looking for bleeding-edge, then feel free to install directly from the
+github repository like so:
+
+.. code-block:: bash
+
+   pip install git+git://gitlab.com/th1nks1mple/pcce-api.git#egg=pcce-api
+
+Getting Started
+---------------
+
+Lets assume that we want to get the list of users that have been create on our
+PCCE application.  Performing this action is as simple as the following:
+
+.. code-block:: python
+
+   from pcce import PCCE
+   pcce = PCCE(url='http://console.domain',
+                  username='username',
+                  password='password')
+   for user in pcce.users.list():
+      print(user)
+
+Documents
+---------
+
+https://pan.dev/compute/api/31-02/
+
+License
+-------
+
+The project is licensed under the MIT license.
+

@@ -1,0 +1,33 @@
+stages:
+  - test
+  - publish
+
+variables:
+  FLIT_ROOT_INSTALL: 1
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+before_script:
+  - python -m pip install --upgrade pip
+  - pip install flit
+
+cache:
+  paths:
+    - .cache/pip
+
+unitest:
+  stage: test
+  image: python:3.12
+  script:
+    - flit install --only-deps --deps develop
+    - pytest
+  coverage: '/^TOTAL.+?(\d+\%)$/'
+
+publish:
+  stage: publish
+  image: python:3.12
+  script:
+    - pip install twine
+    - flit build
+    - twine upload dist/*
+  only:
+    - tags
