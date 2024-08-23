@@ -1,0 +1,5 @@
+LOG_FILE_NAME = "q-dev-chat.api.log"
+LOGGER_NAME = "q-dev-chat-api-operations"
+LOG_FILE_PATH = "/var/log/studio/q_dev_chat"
+LOG_FILE_NAME = "q_dev_chat_api.log"
+METRICS_NAMESPACE = "QDevChat"
