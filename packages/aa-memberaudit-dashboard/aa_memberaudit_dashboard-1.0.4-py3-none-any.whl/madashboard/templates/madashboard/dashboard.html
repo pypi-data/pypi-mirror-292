@@ -1,0 +1,74 @@
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% load humanize %}
+
+    <div id="memberaudit-check-dashboard-widget" class="col-12 align-self-stretch py-2">
+        <div class="card h-100">
+            <div class="card-body">
+            <div class="d-flex align-items-center">
+                <h4 class="ms-auto me-auto mb-3">
+                    Memberaudit Char Checker
+                </h4>
+            </div>
+            {% if chars %}
+                <div>
+                    <div style="height: 100%; overflow-y:auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center"></th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">Information</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for char_id, char_info in chars.items %}
+                                <tr>
+                                    <td class="text-center">
+                                            <img src="https://images.evetech.net/characters/{{ char_id }}/portrait?size=32" class="rounded-circle me-2" title="{{ char_info.name }}" height="30">
+                                    </td>
+                                    <td class="text-center">{{ char_info.name }}</td>
+                                    <td class="text-center">
+                                        <span class="text-white">
+                                            {{ char_info.issues }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="text-danger">
+                                            <i class="fas fa-times-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="{% translate "Not Registred" %}"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Verlinkung hinzufügen -->
+                <div class="row justify-content-center mt-3">
+                    <span class="text-warning text-center">
+                        <i class="fas fa-exclamation-triangle"></i> {% translate "Please register all Characters to the Member Audit System" %}
+                    </span>
+                    <div class="col-auto">
+                        <a href="{% url 'memberaudit:launcher' %}" class="btn btn-warning">{% translate "Go to Member Audit Launcher" %}</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row justify-content-center mt-3">
+                    <span class="text-success text-center">
+                        <i class="fas fa-check-circle"></i> {% translate "All Characters are registered to the Member Audit System" %}
+                    </span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
