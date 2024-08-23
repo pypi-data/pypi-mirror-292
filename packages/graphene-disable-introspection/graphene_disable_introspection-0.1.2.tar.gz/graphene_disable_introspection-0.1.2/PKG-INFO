@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: graphene_disable_introspection
+Version: 0.1.2
+Summary: Middleware for Python Graphene to disable introspection
+Home-page: https://github.com/Paprikaschote/graphene-disable-introspection
+Download-URL: https://github.com/Paprikaschote/graphene-disable-introspection/archive/refs/tags/v0.1.2.tar.gz
+Author: Carlo Völker
+Author-email: carlovoelker@gmx.net
+License: GPL-3.0
+Keywords: django,graphene,graphql,introspection,middleware,__schema,disable,security
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Framework :: Django
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Graphene Middleware to Disable Introspection
+
+This middleware for Python's Graphene library disables introspection queries, enhancing the security of your GraphQL API by preventing clients from discovering the schema.
+
+## Installation
+
+To install the middleware, you can use pip:
+
+```bash
+pip install graphene-disable-introspection
+```
+
+## Usage
+To use the middleware in your Graphene project, you need to add it to your GraphQL schema.
+
+### Example
+#### Python Usage
+Import the middleware and add it to your schema.
+```python
+from graphene_disable_introspection import DisableIntrospectionMiddleware
+
+GraphqlView.as_view(middleware=[DisableIntrospectionMiddleware()])
+```
+
+#### Django Usage
+Add the middleware to your Django settings. I recommend to add it to the top of the middleware list.
+```python
+GRAPHENE = {
+    ...
+    "MIDDLEWARE": [
+        "graphene_disable_introspection.DisableIntrospectionMiddleware",
+        ...
+    ],
+}
+```
+
+Alternatively, you can deactivate Graphene introspection for the production system only.
+```python
+if os.environ.get("APP_SETTINGS") == "production":
+    GRAPHENE["MIDDLEWARE"].insert(0, "graphene_disable_introspection.DisableIntrospectionMiddleware")
+```
+
+## License
+This project is licensed under the GPL-3.0 License.
+
