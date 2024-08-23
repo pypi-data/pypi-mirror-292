@@ -1,0 +1,14 @@
+[tool.ruff]
+# Specify the set of lint rules
+lint.select = ["E", "F", "W", "C90"]
+
+# Ignore certain rules if necessary
+lint.ignore = ["E501"]  # Ignore line length errors
+
+# Maximum line length
+line-length = 88
+
+# Per-file ignores
+[tool.ruff.lint.per-file-ignores]
+"altrumai/__init__.py" = ["F401"]
+"tests/test_altrumai.py" = ["F811"]
