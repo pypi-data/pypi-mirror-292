@@ -1,0 +1,42 @@
+---
+name: Documentation
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - v*
+  pull_request:
+    branches: [main]
+  workflow_run:
+    workflows: ["Build"]
+    branches: [main]
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+jobs:
+  Docs:
+    runs-on: ubuntu-latest
+    concurrency: Docs
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - name: Install dependencies
+        run: |
+          pip install sphinx furo sphinx-copybutton pytest-doctestplus \
+          sphinx_github_changelog piq scipy scikit-image matplotlib nibabel tqdm
+      - name: Sphinx build
+        run: |
+          sphinx-build docs/source _build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _build/
+          force_orphan: true
