@@ -1,0 +1,161 @@
+Metadata-Version: 2.1
+Name: flexiai
+Version: 1.1.9
+Summary: FlexiAI: A dynamic and modular AI framework leveraging Multi-Agent Systems and Retrieval Augmented Generation (RAG) for seamless integration with OpenAI and Azure OpenAI services.
+Home-page: https://github.com/SavinRazvan/flexiai
+Author: Savin Ionut Razvan
+Author-email: razvan.i.savin@gmail.com
+License: MIT
+Project-URL: Bug Reports, https://github.com/SavinRazvan/flexiai/issues
+Project-URL: Source, https://github.com/SavinRazvan/flexiai
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development
+Requires-Python: >=3.10.14
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: annotated-types ==0.7.0
+Requires-Dist: anyio ==4.4.0
+Requires-Dist: azure-common ==1.1.28
+Requires-Dist: azure-core ==1.30.2
+Requires-Dist: azure-identity ==1.17.1
+Requires-Dist: azure-mgmt-core ==1.4.0
+Requires-Dist: azure-mgmt-resource ==23.1.1
+Requires-Dist: blinker ==1.8.2
+Requires-Dist: certifi ==2024.7.4
+Requires-Dist: cffi ==1.16.0
+Requires-Dist: charset-normalizer ==3.3.2
+Requires-Dist: click ==8.1.7
+Requires-Dist: cryptography ==43.0.0
+Requires-Dist: distro ==1.9.0
+Requires-Dist: Flask ==3.0.3
+Requires-Dist: h11 ==0.14.0
+Requires-Dist: httpcore ==1.0.5
+Requires-Dist: httpx ==0.27.0
+Requires-Dist: idna ==3.7
+Requires-Dist: iniconfig ==2.0.0
+Requires-Dist: isodate ==0.6.1
+Requires-Dist: itsdangerous ==2.2.0
+Requires-Dist: Jinja2 ==3.1.4
+Requires-Dist: MarkupSafe ==2.1.5
+Requires-Dist: msal ==1.30.0
+Requires-Dist: msal-extensions ==1.2.0
+Requires-Dist: nest-asyncio ==1.6.0
+Requires-Dist: openai ==1.40.2
+Requires-Dist: packaging ==24.1
+Requires-Dist: platformdirs ==3.7.0
+Requires-Dist: pluggy ==1.5.0
+Requires-Dist: portalocker ==2.10.1
+Requires-Dist: pycparser ==2.22
+Requires-Dist: pydantic ==2.8.2
+Requires-Dist: pydantic-settings ==2.3.3
+Requires-Dist: pydantic-core ==2.20.1
+Requires-Dist: PyJWT ==2.8.0
+Requires-Dist: pytest ==8.3.1
+Requires-Dist: python-dotenv ==1.0.1
+Requires-Dist: pillow ==10.4.0
+Requires-Dist: pypandoc ==1.13
+Requires-Dist: requests ==2.32.3
+Requires-Dist: six ==1.16.0
+Requires-Dist: sniffio ==1.3.1
+Requires-Dist: tqdm ==4.66.4
+Requires-Dist: typing-extensions ==4.12.2
+Requires-Dist: urllib3 ==2.2.2
+Requires-Dist: Werkzeug ==3.0.3
+Requires-Dist: faiss-cpu ==1.8.0
+Requires-Dist: numpy ==1.26.4
+
+# FlexiAI
+
+[![CI](https://github.com/SavinRazvan/flexiai/actions/workflows/workflow.yml/badge.svg)](https://github.com/SavinRazvan/flexiai/actions/workflows/workflow.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-000000.svg)](https://opensource.org/licenses/MIT)
+[![Python Versions](https://img.shields.io/pypi/pyversions/flexiai.svg)](https://pypi.org/project/flexiai/)
+[![PyPI version](https://badge.fury.io/py/flexiai.svg?v=1.1.9)](https://badge.fury.io/py/flexiai)
+[![Downloads](https://static.pepy.tech/badge/flexiai)](https://pepy.tech/project/flexiai)
+
+FlexiAI is a dynamic and modular AI framework designed to leverage the power of Multi-Agent Systems and Retrieval Augmented Generation (RAG). This framework is ideal for developers seeking to integrate AI capabilities into their applications with ease and flexibility. With FlexiAI, you can harness the power of both OpenAI and Azure OpenAI services to create intelligent agents that can manage tasks, process data, and provide advanced AI-driven solutions.
+
+## Introduction Video
+
+Learn more about FlexiAI by watching the following introductory video:
+
+[![Watch the video](https://img.youtube.com/vi/KveLqPBLhUE/0.jpg)](https://www.youtube.com/watch?v=XHkXnQcblPM)
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](https://github.com/SavinRazvan/flexiai/blob/main/docs/setup.md#table-of-contents)
+- [Documentation](#documentation)
+- [Quick Start Examples](#quick-start-examples)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+## Features
+
+- **Flexible AI Management**: Central hub for managing AI operations including:
+  - **Thread Management**: Handle and organize multiple threads of conversation.
+  - **Message Management**: Manage messages within threads.
+  - **Run Management**: Create and monitor runs for processing tasks.
+  - **Session Management**: Maintain user sessions for continuity.
+  - **Vector Store Management**: Manage vector stores, including local and external stores, for embedding and retrieval tasks.
+  - **Image Generation**: Create and manipulate images using AI models.
+  - **Audio Management**: Advanced audio handling including:
+    - Speech-to-Text
+    - Text-to-Speech
+    - Audio Transcription
+    - Audio Translation
+  - **Embedding Management**: Handle text embeddings for various NLP tasks.
+  - **Multi-Agent System**: Manage multiple AI agents concurrently to handle various tasks efficiently.
+  - **Completions Management**: Interact with the OpenAI API to handle chat completions, structured completions, and function-calling completions.
+  - **Assistant Management**: Manage AI assistants, including creating, updating, retrieving, and integrating them into threads using the OpenAI Assistants API.
+  
+- **Retrieval Augmented Generation (RAG)**: Enhance the AI's capabilities by integrating retrieval mechanisms to provide enriched and contextually relevant responses.
+  - **Comprehensive Task Management**: Organize, execute, and manage a variety of tasks with the integrated `TaskManager`, enabling AI assistants to take actions and retrieve real-time data from your personal computer or cloud services.
+- **Flexible Credential Management**: Seamlessly switch between OpenAI and Azure OpenAI credentials.
+- **Extensible Architecture**: Easily extend and customize the framework with user-defined functions and tasks.
+- **Robust Logging**: Comprehensive logging for effective debugging and monitoring.
+- **Secure and Scalable**: Suitable for both small projects and large enterprise applications.
+- **Actively Maintained**: Continuously improved and supported by the project's developer.
+- **Parallel Execution**: Execute tasks and tool calls in parallel for improved performance.
+
+## Installation
+
+For setting up starter files and detailed installation instructions, please refer to the [Installation](docs/setup.md#table-of-contents).
+
+## Documentation
+
+The FlexiAI framework comes with comprehensive documentation to help you get started and make the most out of its capabilities:
+
+- [Setup Guide](docs/setup.md)
+- [Project Mapping](docs/project_mapping.md)
+- [API Reference](docs/api_reference.md)
+- [Usage Guide](docs/usage.md)
+- [Contributing Guide](docs/contributing.md)
+
+## Quick Start Examples
+
+FlexiAI provides ready-to-use applications to help you quickly get started with integrating AI into your projects. These examples are designed to be flexible and modifiable, so you can adapt them to your specific needs:
+
+- **FlexiAI Flask Application**: A web-based application built using Flask that demonstrates how to integrate the FlexiAI framework with a web server. This application includes endpoints for managing threads, messages, sessions, and more. It offers a great foundation for developers looking to build and customize AI-driven web applications quickly.
+
+- **CLI Chat Application**: A command-line interface (CLI) based chat application that leverages FlexiAI to facilitate simple text-based interactions with AI agents. This example showcases how to set up a lightweight and efficient chat system using the FlexiAI framework.
+
+These starter applications are designed to be easily extended and customized. Whether you're building a complex web application or a simple chatbot, these examples provide a solid foundation to help you jumpstart your AI-powered project.
+
+## Contributing
+
+We welcome contributions from the community. If you want to contribute to FlexiAI, please read our [Contributing Guide](docs/contributing.md) to get started.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE.txt) file for details.
+
+## Contact
+
+For any inquiries or support, please contact Savin Ionut Razvan at [razvan.i.savin@gmail.com](mailto:razvan.i.savin@gmail.com).
