@@ -1,0 +1,1 @@
+from .simple_latex_checker import run_check
