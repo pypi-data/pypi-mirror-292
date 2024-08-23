@@ -1,0 +1,2 @@
+class BasecampApiException(Exception):
+    pass
