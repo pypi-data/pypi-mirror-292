@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fennet"
+version = "0.0.1"
+dependencies = [
+  "alphabase",
+  "peptdeep",
+  "pydivsufsort",
+  "fair-esm",
+  "matplotlib",
+  "pre-commit",
+  "click",
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Wen-Feng Zeng", email = "jalew.zwf@qq.com"},
+]
+maintainers = [
+  {name = "Wen-Feng Zeng", email = "jalew.zwf@qq.com"}
+]
+description = "Fennet"
+readme = "README.md"
+license = {file = "LICENSE.txt"}
+keywords = ["deep learning", "protein language model", "proteomics", "multi-dimensional proteomics"]
+classifiers = [
+  "Development Status :: 1 - Planning",
+  "Programming Language :: Python"
+]
+# __classifiers__ = [
+#     "Development Status :: 1 - Planning",
+#     # "Development Status :: 2 - Pre-Alpha",
+#     # "Development Status :: 3 - Alpha",
+#     # "Development Status :: 4 - Beta",
+#     # "Development Status :: 5 - Production/Stable",
+#     # "Development Status :: 6 - Mature",
+#     # "Development Status :: 7 - Inactive"
+#     "Intended Audience :: Science/Research",
+#     "License :: OSI Approved :: Apache Software License",
+#     "Operating System :: OS Independent",
+#     "Programming Language :: Python :: 3",
+#     "Topic :: Scientific/Engineering :: Bio-Informatics",
+# ]
+
+[project.optional-dependencies]
+gui = ["streamlit"]
+
+[project.urls]
+Homepage = "https://fennomix.com"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/FennOmix/fennet.git"
+"Bug Tracker" = "https://github.com/FennOmix/fennet/issues"
+Changelog = "https://github.com/FennOmix/fennet/blob/main/CHANGELOG.md"
+
+[project.scripts]
+fennet = "fennet.cli:run"
+
+# [project.gui-scripts]
+# fennet-gui = "fennet:main_gui"
+
+# [project.entry-points."fennet"]
+# fennet = "fennet:main"
+
+[tool.setuptools]
+py-modules = []
+
+[tool.ruff.lint]
+select =  [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+ignore = [
+    "E501",  # Line too long  (ruff wraps code, but not docstrings)
+    "B028",  #  No explicit `stacklevel` keyword argument found (for warnings)
+    "B006", # Do not use mutable data structures for argument defaults # TODO: fix this!
+]

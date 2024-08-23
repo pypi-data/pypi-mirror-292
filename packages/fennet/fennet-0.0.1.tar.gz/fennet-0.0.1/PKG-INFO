@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: fennet
+Version: 0.0.1
+Summary: Fennet
+Author-email: Wen-Feng Zeng <jalew.zwf@qq.com>
+Maintainer-email: Wen-Feng Zeng <jalew.zwf@qq.com>
+Project-URL: Homepage, https://fennomix.com
+Project-URL: Documentation, https://readthedocs.org
+Project-URL: Repository, https://github.com/FennOmix/fennet.git
+Project-URL: Bug Tracker, https://github.com/FennOmix/fennet/issues
+Project-URL: Changelog, https://github.com/FennOmix/fennet/blob/main/CHANGELOG.md
+Keywords: deep learning,protein language model,proteomics,multi-dimensional proteomics
+Classifier: Development Status :: 1 - Planning
+Classifier: Programming Language :: Python
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: alphabase
+Requires-Dist: peptdeep
+Requires-Dist: pydivsufsort
+Requires-Dist: fair-esm
+Requires-Dist: matplotlib
+Requires-Dist: pre-commit
+Requires-Dist: click
+Provides-Extra: gui
+Requires-Dist: streamlit; extra == "gui"
+
+# Fennet
+Deep learning for multi-dimensional proteomics
+
+
+# mhc
+
+For development:
+In linux, if you clone the project in local and work in conda virtual environment,
+when encountering *ModuleNotFoundError: No module named 'fennet'*，
+you can execute *export PYTHONPATH=$PYTHONPATH:/path/to/Fennet/* in terminal and retry fennet command line tools.
