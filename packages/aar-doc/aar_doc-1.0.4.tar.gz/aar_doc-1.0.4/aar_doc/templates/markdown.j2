@@ -1,0 +1,98 @@
+# Ansible Role: {{ role }}
+---
+{%- if "version" in galaxy_collection %}
+Version: {{ galaxy_collection.version }}
+{% endif %}
+{{ metadata.galaxy_info.description }}
+{% if ("galaxy_tags" in metadata.galaxy_info) and (metadata.galaxy_info.galaxy_tags | length > 0) %}
+Tags: {{ metadata.galaxy_info.galaxy_tags | join(', ') }}
+{%- endif %}
+
+## Requirements
+---
+| Platform | Versions |
+| -------- | -------- |
+{%- for platform in metadata.galaxy_info.platforms %}
+| {{ platform.name }} | {{ platform.versions | default([]) | join(', ') }} |
+{%- endfor %}
+
+## Role Arguments
+---
+{% for entrypoint in argument_specs.keys() %}
+{%- set path, options=entrypoint_options[entrypoint][0] -%}
+### Entrypoint: {{ entrypoint }}
+---
+{{ argument_specs[entrypoint].short_description }}
+
+|Option|Description|Type|Required|Default|
+|---|---|---|---|---|
+{%- for name, details in options.items() %}
+| {{ name }} | {{ details.display_description }} | {{ details.display_type }} | {{ details.display_required }} | {{ details.display_default }} |
+{%- endfor %}
+
+{% if entrypoint_options[entrypoint] | length > 1 -%}
+{% for path, options in entrypoint_options[entrypoint][1:] -%}
+#### Options for {{ path | join(" > ") }}
+---
+|Option|Description|Type|Required|Default|
+|---|---|---|---|---|
+{%- for name, details in options.items() %}
+| {{ name }} | {{ details.display_description }} | {{ details.display_type }} | {{ details.display_required }} | {{ details.display_default }} |
+{%- endfor %}
+
+{% endfor -%}
+{% endif -%}
+{% if entrypoint in entrypoint_choices -%}
+{% for path, choices in entrypoint_choices[entrypoint] -%}
+#### Choices for {{ path | join(" > ") }}
+---
+|Choice|
+|---|
+{%- for item in choices %}
+| {{ item }} |
+{%- endfor %}
+
+{% endfor -%}
+{% endif -%}
+{% endfor %}
+## Dependencies
+---
+{%- if ("dependencies" in metadata) and (metadata.dependencies | length > 0) %}
+{%- for dependency in metadata.dependencies %}
+- {{ dependency }}
+{%- endfor %}
+{%- else %}
+None.
+{%- endif %}
+
+## Example Playbook
+---
+```
+- hosts: all
+  tasks:
+    - name: Importing role: {{ role }}
+      ansible.builtin.import_role:
+        name: {{ role }}
+      vars:
+        {% for name, variable in argument_specs.main.options | items -%}
+        {%- if variable.required | default(false) -%}
+        {{ name }}: # required, type: {{ variable.type }}
+        {%- endif -%}
+        {% endfor %}
+```
+
+## License
+---
+{{ metadata.galaxy_info.license }}
+
+## Author and Project Information
+---
+{%- if "company" in metadata.galaxy_info %}
+{{ metadata.galaxy_info.author }} @ {{ metadata.galaxy_info.company }}
+{%- else %}
+{{ metadata.galaxy_info.author }}
+{%- endif %}
+{% if metadata.galaxy_info.issue_tracker_url is defined and metadata.galaxy_info.issue_tracker_url | length > 0 %}
+Issues: [tracker]({{ metadata.galaxy_info.issue_tracker_url }})
+{%- endif -%}
+
