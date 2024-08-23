@@ -1,0 +1,101 @@
+[project]
+name = "loggingx-py"
+description = "Drop-in replacement for Python's built-in `logging` module"
+authors = [{ name = "Hyeonki Hong", email = "hhk7734@gmail.com" }]
+requires-python = ">=3.8,<4.0"
+
+dynamic = ["version"]
+
+license = { file = "LICENSE" }
+readme = "README.md"
+keywords = ["logging", "contextual-logging", "structured-logging"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+]
+
+[project.urls]
+repository = "https://github.com/hhk7734/loggingx.py"
+
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.package-data]
+"*" = ["py.typed", "*.pyi"]
+
+[tool.setuptools.packages.find]
+include = ["loggingx", "loggingx.*"]
+
+
+[tool.poetry]
+name = "loggingx-py"
+version = "0"
+description = ""
+authors = ["Hyeonki Hong <hhk7734@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.11.1"
+ruff = "^0.6.1"
+orjson = "^3.10.7"
+
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+line-length = 120
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+ignore = []
+
+fixable = ["ALL"]
+unfixable = []
+
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+
+[tool.mypy]
