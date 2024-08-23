@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: suffix_expression
+Version: 2024.8.23
+Summary: 后缀表达式处理库
+Home-page: https://github.com/longliangzhe/suffix_expression
+Author: Lighting Long
+Author-email: 17818883308@139.com
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+License-File: LICENSE.txt
+
+计算与生成后缀表达式。
+
+使用方法：
+
+Suffix_expression.generate(普通算式)以生成后缀表达式。
+
+Suffix_expression.count(后缀表达式,是否整除（bool型）)以计算后缀表达式。
+
+Expression(算式).type()获取算式是中缀、后缀还是前缀表达式。
+
+for i in Expression对象以遍历表达式对象
