@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "plain.worker"
+packages = [
+    { include = "plain" },
+]
+
+version = "0.5.1"
+description = "Background job processing for Plain."
+authors = ["Dave Gaeddert <dave.gaeddert@dropseed.dev>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+plain = "<1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+plain = {path = "../plain", develop = true}
+"plain.models" = {path = "../plain-models", develop = true}
+"plain.pytest" = {path = "../plain-pytest", develop = true}
+coverage = "^7.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
