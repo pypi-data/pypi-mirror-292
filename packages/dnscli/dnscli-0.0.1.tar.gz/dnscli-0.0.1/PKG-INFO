@@ -1,0 +1,43 @@
+Metadata-Version: 2.3
+Name: dnscli
+Version: 0.0.1
+Summary: 域名解析记录管理工具
+Project-URL: Homepage, https://github.com/liwanggui/dnscli
+Project-URL: Repository, https://github.com/liwanggui/dnscli
+Project-URL: Documentation, https://github.com/liwanggui/dnscli
+Project-URL: Issues, https://github.com/liwanggui/dnscli/issues
+Project-URL: Changelog, https://github.com/liwanggui/dnscli/release
+Author-email: liwanggui <liwanggui@163.com>
+License: MIT License
+License-File: LICENSE
+Keywords: alidns,aliyun,dnscli,dnspod
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: alibabacloud-alidns20150109==3.5.0
+Requires-Dist: prettytable==3.10.0
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: requests==2.28.1
+Requires-Dist: tencentcloud-sdk-python==3.0.806
+Description-Content-Type: text/markdown
+
+# dnscli
+
+DNS 命令行工具，支持域名解析记录的增删改查。 现已适配以下DNS服务商
+
+- [阿里云](https://www.aliyun.com/)
+- [腾讯云](https://cloud.tencent.com/)
+- ...
+
+## 安装
+
+```bash
+pip install dnscli
+```
+## 命令说明
+
+- alidns: 阿里云 DNS 命令行工具
+- dnspod: 腾讯云 DNS 命令行工具
