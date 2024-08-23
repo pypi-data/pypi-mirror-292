@@ -1,0 +1,47 @@
+[project]
+name = "icepak-network-deps"
+version = "1.0.0"
+authors = [
+  { name="Kiran Gavini", email="kiran.gavini@ansys.com"},
+  { name="Deven Bibikar", email="dbibikar@berkeley.edu" }
+]
+description = "Toolkit to visualize Icepak Network Editor"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.package-data]
+"ansys.aedt.toolkits.networkEditor" = ["assets/*.css", "assets/*.js"]
+
+dependencies = [
+  "networkx",
+  "dash",
+  "dash-cytoscape",
+  "dash-bootstrap-components",
+  "dash_daq", 
+  "thread6", 
+  "dash_ag_grid", 
+  "celery", 
+  "diskcache", 
+  "dash[diskcache]", 
+  "random2"
+]
+
+[project.urls]
+Homepage = "https://github.com/ansys"
+
+[tool.flit.module]
+name = "icepak.network.deps"
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+force_sort_within_sections = true
+line_length = 120
+src_paths = ["doc", "src", "tests"]
