@@ -1,0 +1,32 @@
+[project]
+name = "awscli-profile"
+version = "1.1.0"
+description = "awscli profile manager intended for use as cli alias"
+authors = [
+    { name = "Yuichiro Smith", email = "yu-ichiro@s3i7h.com" },
+]
+dependencies = [
+    "typer>=0.12.4",
+]
+requires-python = ">=3.8"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/s3i7h/awscli-profile"
+Repository = "https://github.com/s3i7h/awscli-profile"
+Issues = "https://github.com/s3i7h/awscli-profile/issues"
+
+[project.scripts]
+aws-profile = "awscli_profile:main"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
