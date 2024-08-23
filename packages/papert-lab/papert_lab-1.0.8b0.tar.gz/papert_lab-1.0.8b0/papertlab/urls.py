@@ -1,0 +1,6 @@
+website = "https://papert.in/"
+edit_errors = "https://papert-in.gitbook.io/papert.in/troubleshooting/file-editing-problems"
+favicon = "https://github.com/papertlab/papert-lab/tree/main/docs\static\logo.png"
+model_warnings = "https://papert-in.gitbook.io/papert.in/troubleshooting/model_warnings"
+token_limits = "https://papert-in.gitbook.io/papert.in/troubleshooting/token_limits"
+large_repos = "https://papert-in.gitbook.io/papert.in/troubleshooting/large_repos"
