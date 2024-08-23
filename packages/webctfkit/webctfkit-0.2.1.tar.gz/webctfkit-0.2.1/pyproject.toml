@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "webctfkit"
+version = "0.2.1"
+description = "A collection of essential helper methods for web-based Capture The Flag (CTF) challenges."
+authors = ["mohammedgqudah <mohghq@gmail.com>"]
+readme = "README.md"
+packages = [{include = "webtools"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytest = "^8.3.2"
+jsmin = "^3.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+Homepage = "https://github.com/mohammedgqudah/webctfkit"
+Documentation = "https://github.com/mohammedgqudah/webctfkit/wiki"
+Repository = "https://github.com/mohammedgqudah/webctfkit.git"
+Issues = "https://github.com/mohammedgqudah/webctfkit/issues"
+
