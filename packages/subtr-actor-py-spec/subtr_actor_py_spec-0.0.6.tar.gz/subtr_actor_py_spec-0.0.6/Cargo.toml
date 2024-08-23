@@ -1,0 +1,19 @@
+[package]
+name = "subtr-actor-py-spec"
+version = "0.0.6"
+authors = ["Ivan Malison <IvanMalison@gmail.com>"]
+edition = "2021"
+
+[dependencies]
+boxcars = "0.9.9"
+subtr-actor-spec = "0.0.3"
+numpy = "0.18.0"
+serde_json = "1.0.52"
+
+[dependencies.pyo3]
+version = "0.18.2"
+features = ["extension-module"]
+
+[lib]
+name = "subtr_actor_spec"
+crate-type = ["cdylib"]
