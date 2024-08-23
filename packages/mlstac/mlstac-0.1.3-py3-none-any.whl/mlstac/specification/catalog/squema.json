@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "name": {
+      "enum": [
+        "train",
+        "test",
+        "val",
+        "validation"
+      ],
+      "title": "Name",
+      "type": "string"
+    },
+    "metadata": {
+      "format": "uri",
+      "minLength": 1,
+      "title": "Metadata",
+      "type": "string"
+    },
+    "files": {
+      "items": {
+        "format": "uri",
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Files",
+      "type": "array"
+    }
+  },
+  "required": [
+    "name",
+    "metadata",
+    "files"
+  ],
+  "title": "Catalog",
+  "type": "object"
+}
