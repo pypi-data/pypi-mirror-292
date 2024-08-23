@@ -1,0 +1,76 @@
+"""
+Type annotations for resiliencehub service client paginators.
+
+[Open documentation](https://youtype.github.io/types_aiobotocore_docs/types_aiobotocore_resiliencehub/paginators/)
+
+Usage::
+
+    ```python
+    from aiobotocore.session import get_session
+
+    from types_aiobotocore_resiliencehub.client import ResilienceHubClient
+    from types_aiobotocore_resiliencehub.paginator import (
+        ListAppAssessmentResourceDriftsPaginator,
+        ListResourceGroupingRecommendationsPaginator,
+    )
+
+    session = get_session()
+    with session.create_client("resiliencehub") as client:
+        client: ResilienceHubClient
+
+        list_app_assessment_resource_drifts_paginator: ListAppAssessmentResourceDriftsPaginator = client.get_paginator("list_app_assessment_resource_drifts")
+        list_resource_grouping_recommendations_paginator: ListResourceGroupingRecommendationsPaginator = client.get_paginator("list_resource_grouping_recommendations")
+    ```
+"""
+
+from typing import AsyncIterator, Generic, Iterator, TypeVar
+
+from aiobotocore.paginate import AioPaginator
+from botocore.paginate import PageIterator
+
+from .type_defs import (
+    ListAppAssessmentResourceDriftsResponseTypeDef,
+    ListResourceGroupingRecommendationsResponseTypeDef,
+    PaginatorConfigTypeDef,
+)
+
+__all__ = (
+    "ListAppAssessmentResourceDriftsPaginator",
+    "ListResourceGroupingRecommendationsPaginator",
+)
+
+_ItemTypeDef = TypeVar("_ItemTypeDef")
+
+class _PageIterator(Generic[_ItemTypeDef], PageIterator):
+    def __iter__(self) -> Iterator[_ItemTypeDef]:
+        """
+        Proxy method to specify iterator item type.
+        """
+
+class ListAppAssessmentResourceDriftsPaginator(AioPaginator):
+    """
+    [Show boto3 documentation](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/resiliencehub.html#ResilienceHub.Paginator.ListAppAssessmentResourceDrifts)
+    [Show types-aiobotocore documentation](https://youtype.github.io/types_aiobotocore_docs/types_aiobotocore_resiliencehub/paginators/#listappassessmentresourcedriftspaginator)
+    """
+
+    def paginate(
+        self, *, assessmentArn: str, PaginationConfig: PaginatorConfigTypeDef = ...
+    ) -> AsyncIterator[ListAppAssessmentResourceDriftsResponseTypeDef]:
+        """
+        [Show boto3 documentation](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/resiliencehub.html#ResilienceHub.Paginator.ListAppAssessmentResourceDrifts.paginate)
+        [Show types-aiobotocore documentation](https://youtype.github.io/types_aiobotocore_docs/types_aiobotocore_resiliencehub/paginators/#listappassessmentresourcedriftspaginator)
+        """
+
+class ListResourceGroupingRecommendationsPaginator(AioPaginator):
+    """
+    [Show boto3 documentation](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/resiliencehub.html#ResilienceHub.Paginator.ListResourceGroupingRecommendations)
+    [Show types-aiobotocore documentation](https://youtype.github.io/types_aiobotocore_docs/types_aiobotocore_resiliencehub/paginators/#listresourcegroupingrecommendationspaginator)
+    """
+
+    def paginate(
+        self, *, appArn: str = ..., PaginationConfig: PaginatorConfigTypeDef = ...
+    ) -> AsyncIterator[ListResourceGroupingRecommendationsResponseTypeDef]:
+        """
+        [Show boto3 documentation](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/resiliencehub.html#ResilienceHub.Paginator.ListResourceGroupingRecommendations.paginate)
+        [Show types-aiobotocore documentation](https://youtype.github.io/types_aiobotocore_docs/types_aiobotocore_resiliencehub/paginators/#listresourcegroupingrecommendationspaginator)
+        """
