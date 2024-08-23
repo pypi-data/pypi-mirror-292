@@ -1,0 +1,58 @@
+click>=7
+requests>=2
+
+[all]
+jinja2<3.1.0
+Sphinx>=1.4.4
+sphinx-rtd-theme>=0.1.9
+sphinx-click>=2.5.0
+pycurl>=7
+check-manifest>=0.25
+coverage>=4.0
+mock>=3.0
+pydocstyle>=1.0.0
+pytest-cache>=1.0
+pytest-cov>=1.8.0
+pytest>=2.8.0
+xrootd>=4.12.2
+
+[all:python_version == "2.7"]
+pytest-mock<3.0,>=2.0
+
+[all:python_version == "3.6"]
+platformdirs<2.1
+
+[all:python_version >= "3"]
+black>=19.10b0
+pytest-mock>=3.0
+
+[docs]
+jinja2<3.1.0
+Sphinx>=1.4.4
+sphinx-rtd-theme>=0.1.9
+sphinx-click>=2.5.0
+
+[pycurl]
+pycurl>=7
+
+[tests]
+check-manifest>=0.25
+coverage>=4.0
+mock>=3.0
+pydocstyle>=1.0.0
+pytest-cache>=1.0
+pytest-cov>=1.8.0
+pytest>=2.8.0
+
+[tests:python_version == "2.7"]
+pytest-mock<3.0,>=2.0
+
+[tests:python_version == "3.6"]
+platformdirs<2.1
+
+[tests:python_version >= "3"]
+black>=19.10b0
+pytest-mock>=3.0
+
+[xrootd]
+xrootd>=4.12.2
