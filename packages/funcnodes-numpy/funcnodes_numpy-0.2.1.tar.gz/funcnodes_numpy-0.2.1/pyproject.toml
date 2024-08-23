@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "funcnodes-numpy"
+version = "0.2.1"
+description = ""
+authors = ["Julian Kimmig <julian.kimmig@gmx.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+funcnodes = "*"
+numpy = "^2.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
