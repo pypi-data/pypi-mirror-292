@@ -1,0 +1,33 @@
+[project]
+name = "ODFex"
+dynamic = ["version"]
+authors = [
+  { name="Frederik H Gjørup", email="fgjorup@chem.au.dk" },
+]
+description = "A simple visualization tool intended to help interpret or predict the azimuthal variation in X-ray powder diffraction data"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["numpy >= 1.24",
+                "pyqtgraph >= 0.13",
+                "Dans_Diffraction >= 2.2.3",
+                "PyQt6 >= 6.7",
+                "PyOpenGL >= 3.1.6",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License (GPL)",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Topic :: Education",
+    "Topic :: Scientific/Engineering",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "ODFex.__version__"}
+
+[project.urls]
+"Homepage" = "https://github.com/fgjorup/ODFex"
+
+[project.scripts]
+ODFex = "ODFex.ODFex:main"
