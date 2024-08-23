@@ -1,0 +1,128 @@
+Metadata-Version: 2.1
+Name: GearAPI
+Version: 0.1
+Summary: An API wrapper for cumulocity API. Made for researcher. Focus on Measurements and events resources from GEAR data
+Home-page: https://github.com/kajimadev-KaTRIS/GearAPI
+Author: Darius Lim Hong Yi
+Author-email: hy.lim@kajima.com.sg
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: pandas (==2.2.2)
+Requires-Dist: requests
+Requires-Dist: dataclasses (==0.6)
+Requires-Dist: wheel (==0.37.1)
+
+# ThingsCloudAPI
+
+## Description
+A Python API wrapper.Design to interact with the IoT data from The GEAR through Thinkcloud (Cumulocity) Rest framework. 
+This readme is to provide the user on the steps to configure thinkcloud credentials and getting thinkcloud data.
+
+The purpose of create this library is to abstract away these following when getting the data:
+1. API endpoint handling
+2. pagnation handling
+3. API retry
+4. file handling
+5. Handling API from multiple devices 
+
+\\This makes GEAR data exploration a more straight forward task.
+
+## Pre-requisite
+1. get a kajima-managed github account (Check with Katris SB team members)
+2. request for access to get_data library (Check with Katris SB team members)
+3. Authenticate your user (local or server) to your github account
+ - generate a ssh key - (bash/git-bash) #### ssh-keygen -t <name_of_the_file> -C "your_email@example.com"
+ - you should have a public key (.pub) and private key stored in the .ssh folder
+ - copy your pub key - (bash/git-bash) #### cat ~/.ssh/<name_of_the_file>.pub
+ - go your github profile icon - setting - SSH and GPG key
+ - add new SSH key, paste the copied pub key
+4. request for thinkcloud credential for API request. (Check with Katris SB team members)
+
+## Configuration
+// This library is tested on python 3.10.9 and 3.6.8 (Python library version for HPCI and HPCM, as of 25-Jul-24)
+
+1. git clone git@github.com:kajimadev-KaTRIS/get_data.git (Read pre-requisite)
+1. put in your credential in the get_data/config/config.ini file.  (Read pre-requisite)
+2. set your current working path to get_data folder
+
+## How to get data
+
+In general, quantity of the data generated from measurement device is much higher than event data. While user can get the measurement data from only specify the device type, it is **highly recommended** to be specific when getting measurement data from device type to improve query time and not affect the API rate limit.
+
+To get data, user have to specify the 3 mandatory field. These 3 fields are self-exploratory.
+1. start date - format DD-MM-YYYY
+2. end date - format DD-MM-YYYY
+3. device type - Refer to Appendix or main.py for all the available device type defined in thinkcloud. - example 'IAQ'
+Note: *If you want today's data. Choose start date as today date and end date as today +1 day.*
+
+Other optional field to improve query performance. **Refer to device_list.csv & BMS_Fragment_list.csv for more information.**
+1. subType - To specify the subType froom the device type. E.g. purple air for IAQ. 
+2. floor - To specify the floor level from the device type. E.g. L1 for IAQ.
+3. id - To specify the id from the device type. E.g. 382202384 for IAQ. 
+4. *value_fragment_type - For measurement data type. To specify the fragment type from a group of devices. E.g. k for Power Meter (PM)
+5. *value_fragment_series - For measurement data type. To specify the fragment type from a group of devices. E.g. kwh for Power Meter (PM)
+
+
+## Appendix
+
+### IoT Data flow to Things Cloud
+In the GEAR, there are over 2000 devices and 8000 datapoint. There are at least 1 datapoint generated per data per devices per interval. The interval of the data
+sent to Things Cloud range between ~sub-seconds to ~4 min.<br />
+
+For example,<br />
+IAQ device id-20519232 -> sent 1 data generated every 4 min to things cloud API. -> each data contain 7 datapoint (temperature,humidity, air_quality, illumination, PM2.5 etc)<br />
+
+Depend on the microservice settings. Data are categorised into measurement type or event type data.<br />
+
+In thinkcloud, data are mainly event type data and measurement type data. The frequency of data coming into the system is largely depend on the purpose and priority.
+For example, measurement data are posted at a set interval (~10 seconds). For event data, it is generated when a logic is triggered so frequency can varies (~1seconds to days).<br />
+
+### Repository File Structure
+- main.py -> main file to get data from thinkcloud
+- src/helper -> helper function to support module.py
+- src/module/module.py -> Contain thingscloudAPI class to interact with the data from thingsclouds API.
+- src/module/rest_adapter.py -> A generic class for rest adapter for thingscloud API.
+- src/module/device_stats.py -> A child class of thingscloudAPI class to get statistical data of the devices.
+- src/module/exceptions.py -> custom exceptions files to support module.py
+- utilis/logging.py -> logger class to get logging information for module.py. useful for debug
+- utilis/path_utilis.py -> general pathing functions to find support files.
+- utilis/utilis.py -> utilis functions to support module.py
+- utilis/models.py -> dataclasses for thingscloudAPI data.
+
+
+### Device Type
+
+#### Device data_type (mandatory): 
+##### Event deviceType
+1. all_events - get all events under 2-12
+2. robot - get robot event data
+3. cctv - get cctv event data. Footage are not included and its not permitted for users view.
+4. acms_exit - facial recogniser event data. entry related.
+5. acms_entry - facial recogniser event data. exit related.
+6. vms - vehicle registration data.
+7. ai_camera - ai camera event data.
+8. pms_entry - vehicle parking event data. entry related.
+9. pms_exit - vehicle parking event data. exit related.
+10. pms_status - carpark slots availability data.
+11. user_environmental_preference - user environmental preference data.
+12. smart_box - locker event data.
+
+##### Measurement deviceType
+1. visitor_registration - visitor registration data.
+2. iaq - indoor air quality device data.
+3. smart_landscaping - plant sensors related data.
+4. restroom - restroom measurement data.
+5. collabospace - panasonic related equipment data. (at GEAR lvl 2)
+6. solar_panel - solar panel data
+7. BMS - aircon, lighting, electrical devices data.
+8. LMS - lift data.
+
+
+
+
+
