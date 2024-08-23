@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: llama-index-readers-obsidian
+Version: 0.2.0
+Summary: llama-index readers obsidian integration
+License: MIT
+Author: Your Name
+Author-email: you@example.com
+Maintainer: hursh-desai
+Requires-Python: >=3.8.1,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: llama-index-core (>=0.11.0,<0.12.0)
+Requires-Dist: llama-index-readers-file (>=0.2.0,<0.3.0)
+Description-Content-Type: text/markdown
+
+# LlamaIndex Readers Integration: Obsidian
+
+## Overview
+
+Obsidian Reader is a utility class for loading data from an Obsidian Vault. It parses all markdown files in the vault and extracts text from under Obsidian headers, returning a list of documents, each containing text from a separate header.
+
+### Usage
+
+```python
+from llama_index.readers.obsidian import ObsidianReader
+
+# Initialize ObsidianReader with the path to the Obsidian vault
+reader = ObsidianReader(input_dir="<Path to Obsidian Vault>")
+
+# Load data from the Obsidian vault
+documents = reader.load_data()
+```
+
+Implementation for Obsidian reader can be found [here](https://docs.llamaindex.ai/en/stable/examples/data_connectors/ObsidianReaderDemo/)
+
+This loader is designed to be used as a way to load data into
+[LlamaIndex](https://github.com/run-llama/llama_index/tree/main/llama_index) and/or subsequently
+used as a Tool in a [LangChain](https://github.com/hwchase17/langchain) Agent.
+
