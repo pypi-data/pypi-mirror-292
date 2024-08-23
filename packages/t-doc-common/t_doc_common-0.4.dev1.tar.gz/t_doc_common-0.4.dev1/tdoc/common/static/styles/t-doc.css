@@ -1,0 +1,22 @@
+/* Copyright 2024 Caroline Blank <caro@c-space.org> */
+/* Copyright 2024 Remy Blank <remy@c-space.org> */
+/* SPDX-License-Identifier: MIT */
+
+.hidden {
+    display: none !important;
+}
+
+/* Set the maximum width of sidebars instead of a fixed width. */
+div.sidebar, aside.sidebar {
+    max-width: 40%;
+    width: inherit;
+}
+
+/* Fix the gap left by pydata_sphinx_theme between the table and the
+   scrollbar. */
+div.pst-scrollable-table-container {
+    margin-bottom: 1rem;
+}
+.table {
+    margin-bottom: 0;
+}

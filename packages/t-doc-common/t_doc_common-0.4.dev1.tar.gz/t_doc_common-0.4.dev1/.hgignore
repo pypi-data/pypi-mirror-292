@@ -1,0 +1,14 @@
+# Copyright 2024 Caroline Blank <caro@c-space.org>
+# Copyright 2024 Remy Blank <remy@c-space.org>
+# SPDX-License-Identifier: MIT
+
+syntax: glob
+*.orig
+*.sqlite3
+__pycache__
+
+syntax: regexp
+^build/
+^dist/
+^tmp/
+^[^/]+\.egg-info/
