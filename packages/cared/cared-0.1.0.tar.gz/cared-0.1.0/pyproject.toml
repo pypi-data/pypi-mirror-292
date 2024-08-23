@@ -1,0 +1,45 @@
+[project]
+name = "cared"
+version = "0.1.0"
+description = "Dummy Python package to block the name cared on pypi and avoid name squatting attacks."
+authors = [
+  # Authors sorted by number of commits
+  {name = "David Linke", email = "david.linke@catalysis.de"},
+]
+maintainers = [
+  {name = "David Linke", email = "david.linke@catalysis.de"},
+]
+license = {text = "Apache 2.0"}
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["CaReD"]
+dependencies = []
+
+# https://pypi.org/classifiers/
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python",
+  "Environment :: Console",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Documentation = "https://github.com/likat-rostock/cared"
+GitHub = "https://github.com/likat-rostock/cared"
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+]
+
+[project.scripts]
+cared = "cared.__init__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
