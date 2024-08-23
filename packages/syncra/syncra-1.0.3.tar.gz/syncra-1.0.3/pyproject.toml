@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "syncra"
+version = "1.0.3"
+description = "A utility for creating synchronous and asynchronous compatible methods."
+readme = "README.md"
+requires-python = ">=3.6"
+authors = [
+    { name="Islati // Skreet Media Inc // Wogwon Society", email="islati@wogwon.com" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/islati/syncra"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-asyncio", "pytest-cov", "twine"]
