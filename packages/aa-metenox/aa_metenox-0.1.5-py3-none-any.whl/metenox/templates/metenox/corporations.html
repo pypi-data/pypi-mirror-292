@@ -1,0 +1,20 @@
+{% extends 'metenox/base.html' %}
+{% load i18n %}
+{% load humanize %}
+
+{% block details %}
+
+    <h5>Corporations under you:</h5>
+
+    <ul>
+        {% for corporation, metenoxes in metenoxes.items %}
+            <li><h5>{{ corporation }}</h5></li>
+            <ul>
+                {% for metenox in metenoxes %}
+                    <li>{{ metenox }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
