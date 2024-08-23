@@ -1,0 +1,46 @@
+# This file contains the inputs to the model
+# Inputs are placed on new lines, in the following order:
+# latitude - longitude - altitude - time interval (hours) - year - month - day - 
+#		hour - minute - second - desired output - precipitation model option - Database update option
+#
+# Latitude, longitude, and altitude use the following format:
+# interval Input0 ... InputN
+#
+# Examples:
+# If 5 70 80 is used, inputs are [70 75 80]
+# If 0 70 78 88 66 is used, inputs are [70 78 88 66]
+# The interval can be decimal and/or negative
+#
+# Time Interval is the interval in hours (can be decimal and/or negative)
+#
+# Time inputs use the format:
+# Input0 ... InputN
+# 
+# The time arrays are created in the same way as the above examples, using the time interval input.
+# If the interval is zero, then the list of times are used (like above).
+#
+# The desired output takes a single character
+# The options are:
+# (n)mf2, n(m)f2 storm, hmf(2), hmf(1), (p)rofile, p(r)ofile with storm, (s)atellite path, s(a)tellite path with storm
+#
+# The precipitation model option can be set to on (1) or off (0)
+#
+# The D region model option can be set to on (1) or off (0)
+#
+# The database update option can be either 0 (do not update), 1 (update if necessary), or 2 (force an update)
+#
+# END HEADER
+0 70 70 70 70
+0 90 90 90 90
+0 100 100 100 100
+8
+2012 2012
+3 3
+27 28
+0 0
+0 0
+0 0
+a
+1
+0
+0
