@@ -1,0 +1,81 @@
+Metadata-Version: 2.1
+Name: lcpfn
+Version: 0.1.3
+Summary: In-context Bayesian Learning Curve Extrapolation
+Author-email: Steven Adriaensen <adriaens@cs.uni-freiburg.de>, Herilalaina Rakotoarison <rakotoah@cs.uni-freiburg.de>, Samuel Müller <muellesa@cs.uni-freiburg.de>, Frank Hutter <fh@cs.uni-freiburg.de>
+License: MIT License
+        
+        Copyright (c) 2024 AutoML-Freiburg-Hannover
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: homepage, https://github.com/automl/lcpfn
+Project-URL: repository, https://github.com/automl/lcpfn
+Project-URL: bugtracker, https://github.com/automl/lcpfn/issues
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development
+Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: <3.12,>=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: torch<=1.11.0
+Requires-Dist: numpy<2,>=1.21.2
+Requires-Dist: requests>=2.23.0
+
+
+# Efficient Bayesian Learning Curve Extrapolation using Prior-Data Fitted Networks
+
+This repository offers an implementation of [LC-PFN](https://openreview.net/pdf?id=xgTV6rmH6n), a method designed for efficient Bayesian learning curve extrapolation.
+
+**LC-PFN in action on [Google colab](https://colab.research.google.com/drive/1JA2t91xgqZVfjZya41oW5vVQktv_YXhE?usp=sharing) and [HuggingFace](https://huggingface.co/spaces/herilalaina/lcpfn)**
+
+Installation using pip:
+
+```bash
+pip install -U lcpfn
+```
+
+### Usage
+
+Try out the `notebooks` (require ``matplotlib``) for training and inference examples.
+
+**NOTE:**  Our model supports only increasing curves with values in $[0,1]$. If needed, please consider normalizing your curves to meet these constraints. See an example in ``notebooks/curve_normalization.ipynb``.
+
+
+### Reference
+
+```
+@inproceedings{
+adriaensens2023lcpfn,
+title={Efficient Bayesian Learning Curve Extrapolation using Prior-Data Fitted Networks},
+author={Adriaensen, Steven and Rakotoarison, Herilalaina and Müller, Samuel and Hutter, Frank},
+booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+year={2023},
+url={https://openreview.net/forum?id=xgTV6rmH6n}
+}
+```
+
+
