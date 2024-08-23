@@ -1,0 +1,55 @@
+Metadata-Version: 2.3
+Name: cared-cli
+Version: 0.1.0
+Summary: A command line interface for managing a CaReD server.
+Project-URL: Documentation, https://github.com/likat-rostock/cared-cli
+Project-URL: GitHub, https://github.com/likat-rostock/cared-cli
+Project-URL: Changelog, https://github.com/likat-rostock/cared-cli/releases
+Author-email: David Linke <david.linke@catalysis.de>
+Maintainer-email: David Linke <david.linke@catalysis.de>
+License: Apache 2.0
+License-File: LICENSE
+Keywords: CaReD,ELN,LIMS,RDM
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Requires-Dist: click>=8.1.7
+Provides-Extra: dev
+Requires-Dist: coverage; extra == 'dev'
+Requires-Dist: duty; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Provides-Extra: lint
+Requires-Dist: ruff; extra == 'lint'
+Provides-Extra: tests
+Requires-Dist: coverage; extra == 'tests'
+Requires-Dist: pytest; extra == 'tests'
+Description-Content-Type: text/markdown
+
+[![PyPI - Version](https://img.shields.io/pypi/v/cared-cli)](https://pypi.org/project/cared-cli)
+[![](https://github.com/LIKAT-Rostock/cared-cli/workflows/Publish/badge.svg)](https://github.com/LIKAT-Rostock/cared-cli/actions)
+[![](https://github.com/LIKAT-Rostock/cared-cli/workflows/Build/badge.svg)](https://github.com/LIKAT-Rostock/cared-cli/actions)
+
+# CaReD CLI
+
+A command line interface for managing a CaReD server.
+
+CaReD stands for **Ca**talysis **Re**search **D**atamangement.
+
+It is a not-yet released web application to support researchers in catalysis doing their research more efficient while following the [FAIR](https://doi.org/10.1038/sdata.2016.18) principles.
+
+Version 0.1 is mainly a project template. CaReD specific commands have not been added yet to this public repo.
+
+The main development including the issue-tracking happens in a private intranet repository.
+Therefore, the GitHub repository is mostly silent.
+
+## Development
+
+This project uses [uv](https://docs.astral.sh/uv) for packaging and [ruff](https://docs.astral.sh/ruff) for consistent formatting.
