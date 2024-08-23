@@ -1,0 +1,77 @@
+Metadata-Version: 2.1
+Name: xerial-orm
+Version: 0.9.7
+Summary: A Simple but Powerful Object Rational Mapping (ORM) library.
+Author: Suppakorn Rakna
+Author-email: Kittipong Piyawanno <k.piyawanno@gmailc.com>
+Project-URL: Homepage, https://github.com/Piyawanno/Xerial
+Project-URL: Documentation, https://github.com/Piyawanno/Xerial/tree/main/document
+Project-URL: Repository, https://github.com/Piyawanno/Xerial
+Project-URL: Issues, https://github.com/Piyawanno/Xerial/issues
+Project-URL: Changelog, https://github.com/Piyawanno/Xerial/blob/main/CHANGELOG.md
+Keywords: database,orm
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Database
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: psycopg2-binary
+Requires-Dist: asyncpg
+Requires-Dist: aiosqlite
+Requires-Dist: pyodbc
+Requires-Dist: aioodbc
+Requires-Dist: shapely
+Requires-Dist: packaging
+Requires-Dist: tabulate
+Requires-Dist: xlsxwriter
+
+# Xerial ORM
+
+A Simple but Powerful Object Rational Mapping (ORM) library.
+Xerial is a session-based ORM, which emphasizes the concept
+[*Code Centric Data Structure*](document/Concept.md) to support developer
+working in team.
+
+For tutorial and documentation see [Document](document/README.md).
+
+For code example see [Example](example).
+
+## Supported DB
+- PostgreSQL
+- Oracle
+- MariaDB/MySQL
+- SQLite
+- MS SQL Server
+
+## Main Features
+- Code Centric Data Structure
+- Automatic table creation and structure modification based on Model Code
+- Table structure and data rollback
+- SQL based query clause
+- Relation between models (1-to-1, 1-to-N, N-to-N)
+- Metadata for table structure including form input for later use by application development.
+
+## Installation
+
+For production :
+
+```bash
+pip3 install xerial-orm
+```
+
+For development from source code:
+
+```bash
+sudo ./XerialSetup.py setup
+sudo ./XerialSetup.py link
+```
