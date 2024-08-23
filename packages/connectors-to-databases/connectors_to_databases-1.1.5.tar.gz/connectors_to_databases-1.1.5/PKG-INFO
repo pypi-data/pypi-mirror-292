@@ -1,0 +1,83 @@
+Metadata-Version: 2.1
+Name: connectors-to-databases
+Version: 1.1.5
+Summary: Python module for connect with DataBases
+License: Apache License
+Author: Ivan Korsakov
+Author-email: korsakov.iyu@gmail.com
+Requires-Python: >=3.11.1,<4.0.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: clickhouse-connect (>=0.7.18,<0.8.0)
+Requires-Dist: cryptography (==43.0.0)
+Requires-Dist: numpy (==1.26.4)
+Requires-Dist: pandas (>=2.2.2,<3.0.0)
+Requires-Dist: psycopg2-binary (>=2.9.9,<3.0.0)
+Requires-Dist: pymysql (>=1.1.1,<2.0.0)
+Requires-Dist: sqlalchemy (>=2.0.32,<3.0.0)
+Project-URL: Bug Tracker, https://github.com/yourusername/your-repo/issues
+Project-URL: Homepage, https://github.com/yourusername/your-repo
+Project-URL: PyPi, https://pypi.org/project/connectors-to-databases/
+Description-Content-Type: text/markdown
+
+# Connector to databases
+
+![PyPI](https://img.shields.io/pypi/v/connectors-to-databases?color=blueviolet) 
+![Python](https://img.shields.io/pypi/pyversions/connectors-to-databases?color=blueviolet)
+![License](https://img.shields.io/pypi/l/connectors-to-databases?color=blueviolet)
+
+![PG](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![PG](https://img.shields.io/badge/ClickHouse-white?style=for-the-badge&logo=clickhouse&logoColor=yellow)
+
+**Connector to databases** – easy package for connect with database:
+
+- [ClickHouse](https://github.com/ClickHouse/ClickHouse)
+- [MariaDB](https://github.com/MariaDB/server)
+- [MSSQL](https://www.microsoft.com/en/sql-server/sql-server-2019)
+- [MySQL](https://github.com/mysql/mysql-server)
+- [PostgreSQL](https://github.com/postgres/postgres)- 
+
+## Installation
+
+Install the current version with 
+[PyPI](https://pypi.org/project/connectors-to-databases/):
+
+```bash
+pip install connectors-to-databases
+```
+
+Or from GitHub:
+
+```bash
+pip install https://github.com/k0rsakov/connectors_to_databases/archive/refs/heads/main.zip
+```
+
+## Usage
+
+How to use connections:
+- [ClickHouse.md](doc/ClickHouse.md)
+- [MariaDB.md](doc/MariaDB.md)
+- [MSSQL.md](doc/MSSQL.md)
+- [MySQL.md](doc/MySQL.md)
+- [PostgreSQL.md](doc/PostgreSQL.md)
+
+## Contributing
+
+Bug reports and/or pull requests are welcome
+
+### Create `venv`
+
+```bash
+python3.11 -m venv venv && \
+source venv/bin/activate && \
+pip install --upgrade pip && \
+pip install -r requirements.txt
+```
+
+
+## License
+
+The module is available as open source under the terms of the 
+[Apache License, Version 2.0](https://opensource.org/licenses/Apache-2.0)
+
