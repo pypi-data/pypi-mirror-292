@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pymcdm_reidentify"
+version = "1.0.0"
+authors = [
+    {name = "Bartłomiej Kizielewicz", email = "bartlomiej-kizielewicz@zut.edu.pl"},
+]
+description = "Python library for reidnetification of multi-criteria models"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    'numpy',
+    'pymcdm',
+    'mealpy',
+    'matplotlib'
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx-autoapi",
+    "nbsphinx",
+    "IPython",
+    "myst_parser",
+    "sphinx-rtd-theme",
+    "recommonmark",
+    "pandoc"
+]
