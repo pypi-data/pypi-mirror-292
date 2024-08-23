@@ -1,0 +1,319 @@
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gpxcsv"
+version = "0.3.0"
+description = 'Convert Garmin GPX file to CSV or JSON'
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+keywords = []
+authors = [{ name = "Marcos Huerta", email = "marcos@marcoshuerta.com" }]
+classifiers = [
+  'License :: OSI Approved :: MIT License',
+  'Operating System :: OS Independent',
+
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["lxml"]
+
+[project.urls]
+Documentation = "https://github.com/astrowonk/search_transcripts/#readme"
+Issues = "https://github.com/astrowonk/search_transcripts/issues"
+Source = "https://github.com/astrowonk/search_transcripts"
+
+[project.scripts]
+gpxcsv = "gpxcsv.__main__:main"
+
+
+[tool.hatch.envs.default]
+dependencies = ["pytest", "pytest-cov"]
+[tool.hatch.envs.default.scripts]
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=search_transcripts --cov=tests"
+no-cov = "cov --no-cov"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["37", "38", "39", "310", "311"]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/.github"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gpxcsv"]
+
+[tool.coverage.run]
+branch = true
+source = ["src/Tests", 'src/gpxcsv']
+command_line = "-m unittest discover -s src"
+omit = ["src/gpxcsv/__main__.py"]
+
+
+[tool.coverage.report]
+fail_under = 90
+omit = ["src/gpxcsv/__main__.py"]
+
+exclude_also = [
+  "def __repr__",
+  "if self.debug:",
+  "if settings.DEBUG",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if 0:",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "class .*\\bProtocol\\):",
+  "@(abc\\.)?abstractmethod",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "preserve"
+indent-style = "space"
+docstring-code-format = true
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint]
+preview = true
+extend-select = [
+  "E999", # syntax-error
+  # "PLE0011",  # unrecognized-inline-option
+  # "PLE0013",  # bad-plugin-value
+  # "PLE0014",  # bad-configuration-section
+  # "PLE0015",  # unrecognized-option
+  # "PLE0100",  # init-is-generator
+  "PLE0101", # return-in-init
+  # "PLE0102",  # function-redefined
+  # "PLE0103",  # not-in-loop
+  "F706", # return-outside-function
+  "F704", # yield-outside-function
+  # "PLE0107",  # nonexistent-operator
+  # "PLE0108",  # duplicate-argument-name
+  # "PLE0110",  # abstract-class-instantiated
+  # "PLE0111",  # bad-reversed-sequence
+  # "PLE0112",  # too-many-star-expressions
+  # "PLE0113",  # invalid-star-assignment-target
+  # "PLE0114",  # star-needs-assignment-target
+  # "PLE0115",  # nonlocal-and-global
+  "PLE0116", # continue-in-finally
+  "PLE0117", # nonlocal-without-binding
+  # "PLE0118",  # used-prior-global-declaration
+  # "PLE0119",  # misplaced-format-function
+  # "PLE0202",  # method-hidden
+  # "PLE0203",  # access-member-before-definition
+  # "PLE0211",  # no-method-argument
+  # "PLE0213",  # no-self-argument
+  # "PLE0236",  # invalid-slots-object
+  # "PLE0237",  # assigning-non-slot
+  # "PLE0238",  # invalid-slots
+  # "PLE0239",  # inherit-non-class
+  # "PLE0240",  # inconsistent-mro
+  "PLE0241", # duplicate-bases
+  # "PLE0242",  # class-variable-slots-conflict
+  # "PLE0243",  # invalid-class-object
+  # "PLE0244",  # invalid-enum-extension
+  # "PLE0301",  # non-iterator-returned
+  "PLE0302", # unexpected-special-method-signature
+  # "PLE0303",  # invalid-length-returned
+  # "PLE0304",  # invalid-bool-returned
+  # "PLE0305",  # invalid-index-returned
+  # "PLE0306",  # invalid-repr-returned
+  # "PLE0307",  # invalid-str-returned
+  # "PLE0308",  # invalid-bytes-returned
+  # "PLE0309",  # invalid-hash-returned
+  # "PLE0310",  # invalid-length-hint-returned
+  # "PLE0311",  # invalid-format-returned
+  # "PLE0312",  # invalid-getnewargs-returned
+  # "PLE0313",  # invalid-getnewargs-ex-returned
+  # "PLE0401",  # import-error
+  # "PLE0402",  # relative-beyond-top-level
+  # "PLE0601",  # used-before-assignment
+  # "PLE0602",  # undefined-variable
+  # "PLE0603",  # undefined-all-variable
+  "PLE0604", # invalid-all-object
+  "PLE0605", # invalid-all-format
+  # "PLE0611",  # no-name-in-module
+  # "PLE0633",  # unpacking-non-sequence
+  "PLE0643", # potential-index-error
+  # "PLE0701",  # bad-except-order
+  # "PLE0702",  # raising-bad-type
+  "PLE0704", # misplaced-bare-raise
+  # "PLE0705",  # bad-exception-cause
+  # "PLE0710",  # raising-non-exception
+  # "PLE0711",  # notimplemented-raised
+  # "PLE0712",  # catching-non-exception
+  # "PLE1003",  # bad-super-call
+  # "PLE1101",  # no-member
+  # "PLE1102",  # not-callable
+  # "PLE1111",  # assignment-from-no-return
+  # "PLE1120",  # no-value-for-parameter
+  # "PLE1121",  # too-many-function-args
+  # "PLE1123",  # unexpected-keyword-arg
+  # "PLE1124",  # redundant-keyword-arg
+  # "PLE1125",  # missing-kwoa
+  # "PLE1126",  # invalid-sequence-index
+  # "PLE1127",  # invalid-slice-index
+  # "PLE1128",  # assignment-from-none
+  # "PLE1129",  # not-context-manager
+  # "PLE1130",  # invalid-unary-operand-type
+  # "PLE1131",  # unsupported-binary-operation
+  # "PLE1132",  # repeated-keyword
+  # "PLE1133",  # not-an-iterable
+  # "PLE1134",  # not-a-mapping
+  # "PLE1135",  # unsupported-membership-test
+  # "PLE1136",  # unsubscriptable-object
+  # "PLE1137",  # unsupported-assignment-operation
+  # "PLE1138",  # unsupported-delete-operation
+  # "PLE1139",  # invalid-metaclass
+  "PLE1141", # dict-iter-missing-items
+  "PLE1142", # await-outside-async
+  # "PLE1143",  # unhashable-member
+  # "PLE1144",  # invalid-slice-step
+  # "PLE1200",  # logging-unsupported-format
+  # "PLE1201",  # logging-format-truncated
+  "PLE1205", # logging-too-many-args
+  "PLE1206", # logging-too-few-args
+  # "PLE1300",  # bad-format-character
+  # "PLE1301",  # truncated-format-string
+  # "PLE1302",  # mixed-format-string
+  # "PLE1303",  # format-needs-mapping
+  # "PLE1304",  # missing-format-string-key
+  # "PLE1305",  # too-many-format-args
+  # "PLE1306",  # too-few-format-args
+  "PLE1307", # bad-string-format-type
+  "PLE1310", # bad-str-strip-call
+  "PLE1507", # invalid-envvar-value
+  "PLE1519", # singledispatch-method
+  # "PLE1520",  # singledispatchmethod-function
+  # "PLE1700",  # yield-inside-async-function
+  # "PLE1701",  # not-async-context-manager
+  # "PLE2501",  # invalid-unicode-codec
+  "PLE2502", # bidirectional-unicode
+  "PLE2510", # invalid-character-backspace
+  # "PLE2511",  # invalid-character-carriage-return
+  "PLE2512", # invalid-character-sub
+  "PLE2513", # invalid-character-esc
+  "PLE2514", # invalid-character-nul
+  "PLE2515", # invalid-character-zero-width-space
+  # "PLE3102",  # positional-only-arguments-expected
+  # "PLE3701",  # invalid-field-call
+  # "PLE4702",  # modified-iterating-dict
+  # "PLE4703",  # modified-iterating-set
+  # "PLF0001",  # fatal
+  # "PLF0002",  # astroid-error
+  # "PLF0010",  # parse-error
+  # "PLF0011",  # config-parse-error
+  # "PLF0202",  # method-check-failed
+  "PLR0917", # too-many-positional
+  # "PLR1737",  # use-yield-from
+  # "PLW0101",  # unreachable
+  # "PLW0109",  # duplicate-key
+  # "PLW0301",  # unnecessary-semicolon
+  "PLW0602", # global-variable-not-assigned
+  "F841",    # unused-variable
+  "PLW0711", # binary-op-exception
+  # "PLW1302",  # bad-format-string
+  # "PLW1401",  # anomalous-backslash-in-string
+  "PLW1501", # bad-open-mode
+  # "PLW4906",  # deprecated-attribute
+]
+ignore = [
+  # "PLC0103",  # invalid-name
+  # "PLC0104",  # disallowed-name
+  # "PLC0105",  # typevar-name-incorrect-variance
+  "D419", # empty-docstring
+  "E501", # line-too-long
+  # "PLC0302",  # too-many-lines
+  "W291",    # trailing-whitespace
+  "PLC0414", # useless-import-alias
+  "PLC2401", # non-ascii-name
+  # "PLC2403",  # non-ascii-module-import
+  # "PLC2503",  # bad-file-encoding
+  "PLC2801", # unnecessary-dunder-call
+  # "PLC3001",  # unnecessary-lambda-assignment
+  "PLC3002", # unnecessary-direct-lambda-call
+  # "PLI0001",  # raw-checker-failed
+  # "PLI0010",  # bad-inline-option
+  # "PLI0011",  # locally-disabled
+  # "PLI0013",  # file-ignored
+  # "PLI0020",  # suppressed-message
+  # "PLI0021",  # useless-suppression
+  # "PLI0022",  # deprecated-pragma
+  # "PLI0023",  # use-symbolic-message-instead
+  # "PLI1101",  # c-extension-no-member
+  # "PLR0022",  # useless-option-value
+  # "PLR0123",  # literal-comparison
+  "PLR0124", # comparison-with-itself
+  # "PLR0133",  # comparison-of-constants
+  "PLR0202", # no-classmethod-decorator
+  "PLR0203", # no-staticmethod-decorator
+  "UP004",   # useless-object-inheritance
+  "PLR0206", # property-with-parameters
+  # "PLR0401",  # cyclic-import
+  # "PLR0402",  # consider-using-from-import
+  # "PLR0801",  # duplicate-code
+  # "PLR0901",  # too-many-ancestors
+  # "PLR0902",  # too-many-instance-attributes
+  # "PLR0903",  # too-few-public-methods
+  "PLR0904", # too-many-public-methods
+  "PLR0911", # too-many-return-statements
+  "PLR0912", # too-many-branches
+  "PLR0913", # too-many-arguments
+  "PLR0914", # too-many-locals
+  "PLR0915", # too-many-statements
+  "PLR0916", # too-many-boolean-expressions
+  # "PLR1701",  # consider-merging-isinstance
+  "PLR1702", # too-many-nested-blocks
+  # "PLR1703",  # simplifiable-if-statement
+  "PLR1704", # redefined-argument-from-local
+  "PLR1711", # useless-return
+  "C416",    # unnecessary-comprehension
+  "PLR1733", # unnecessary-dict-index-lookup
+  "PLR1736", # unnecessary-list-index-lookup
+  "PLW0108", # unnecessary-lambda
+  "PLW0120", # useless-else-on-loop
+  "PLW0127", # self-assigning-variable
+  "PLW0128", # redeclared-assigned-name
+  "PLW0129", # assert-on-string-literal
+  "B033",    # duplicate-value
+  "PLW0131", # named-expr-without-context
+  "PLW0245", # super-without-brackets
+  "PLW0406", # import-self
+  "PLW0603", # global-statement
+  "PLW0604", # global-at-module-level
+  "F401",    # unused-import
+  "E722",    # bare-except
+  "PLW1508", # invalid-envvar-default
+  "PLW1509", # subprocess-popen-preexec-fn
+  # "PLW1510",  # subprocess-run-check
+  "PLW1514", # unspecified-encoding
+  # "PLW1515",  # forgotten-debug-statement
+  # "PLW1518",  # method-cache-max-size-none
+  "PLW2101", # useless-with-lock
+  # "PLW2301",  # unnecessary-ellipsis
+  # "PLW2402",  # non-ascii-file-name
+  # "PLW2601",  # using-f-string-in-unsupported-version
+  # "PLW2602",  # using-final-decorator-in-unsupported-version
+  # "PLW3101",  # missing-timeout
+  "PLW3301", # nested-min-max
+  # "PLW3601",  # bad-chained-comparison
+  # "PLW4701",  # modified-iterating-list
+  # "PLW4901",  # deprecated-module
+  # "PLW4902",  # deprecated-method
+  # "PLW4903",  # deprecated-argument
+  # "PLW4904",  # deprecated-class
+  # "PLW4905",  # deprecated-decorator
+]
