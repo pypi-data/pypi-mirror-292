@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: mr-openai-module
+Version: 0.1.1
+Summary: A module for interacting with OpenAI using prompt.
+Author: Mahul Rana
+Author-email: mahulrana007@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# OpenAI Utils
+
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/openai-utils)
+![PyPI - License](https://img.shields.io/pypi/l/openai-utils)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/openai-utils)
+
+**OpenAI Utils** is a simple, reusable Python module that makes it easy to interact with the OpenAI API. It provides utility functions for generating text completions, listing available models, and more. This package is designed for developers who want to integrate OpenAI's powerful language models into their applications with minimal setup.
+
+## Features
+
+- **Text Completion**: Generate text based on a prompt using various OpenAI models.
+- **Model Listing**: Easily retrieve a list of available OpenAI models.
+- **Customizable**: Adjust parameters like temperature, max tokens, and more to fit your needs.
+
+## Installation
+
+You can install the package directly from PyPI:
+
+```bash
+pip install mr_openai_module
+
+## Usage
+
+from mr_openai_module.openai_client import OpenAIClient
+
+client = OpenAIClient(api_key="your_openai_api_key")
+response = client.generate_text("Tell me a joke.")
+print(response)
+
+
+
+
+
+
+
