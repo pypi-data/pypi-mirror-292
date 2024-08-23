@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ publication.title }}</title>
+    <style>
+        @page {
+            size: letter landscape;
+            margin: 2cm;
+        }
+    </style>
+</head>
+<body>
+    <!-- Content for Static Frame 'header_frame' -->
+    {% if publication.category.certificate.header %}
+         <div style="text-align: center">
+             <img src="{{ domain }}{{ publication.category.certificate.header.url }}" alt="publication.category.certificate.header.default_alt_text" style="width: 600pt; height: 75pt">
+         </div>
+    {% endif %}
+    <br>
+    <div>
+        <h2 style="text-align: center;"> {{ publication.category.certificate.title }} </h2>
+        <h1 style="text-align: center">CERTIFICA QUE:</h1>
+        <p>{{ publication.category.certificate.description }}</p>
+        <p>Titulo de la publicación: {{ publication.title }} </p>
+        <p>Url de la publicación: <a href="{{ domain }}{{ publication.file.url }}">{{ domain }}{{ publication.file.url }}</a> </p>
+        <p>Fecha de la publicación: {{ publication.published_at }} </p>
+        <p>Fecha de despublicación:
+            {% if publication.publish_end_at %}
+                {{ publication.publish_end_at }}
+            {% else %}
+                Fecha no registrada
+            {% endif %}
+        </p>
+        <br>
+        <p>La presente certificación se expide a solicitud del interesado el día {{ date_now|date:"d \d\e F \d\e Y - H:i:s" }}</p>
+    </div>
+    <br>
+    <!-- Content for Static Frame 'footer_frame' -->
+    {% if publication.category.certificate.sign %}
+         <div style="text-align: center">
+             <img src="{{ domain }}{{ publication.category.certificate.sign.url }}" alt="publication.category.certificate.header.default_alt_text" style="width: 250pt; height: 75pt">
+         </div>
+    {% endif %}
+
+</body>
+</html>
+{% comment %}
+    # publication variables:
+    {{ title }}
+    {{ description }}
+    {{ category }}
+    {{ author }}
+    {{ published_at }}
+    {{ publish_end_at }}
+    {{ icon_class }} # Class Icons FontAwesome File, PDF, Word, Excel, Power Point
+    {{ file }}
+    # date_now variable:
+    {{ date_now }} # Fecha y hora actual cuando renderiza
+{% endcomment %}
+   
+
