@@ -1,0 +1,384 @@
+Metadata-Version: 2.3
+Name: pymor
+Version: 2024.1.2
+Summary: Library for building model order reduction applications with Python
+Project-URL: homepage, https://pymor.org
+Project-URL: documentation, https://docs.pymor.org
+Project-URL: source, https://github.com/pymor/pymor
+Project-URL: tracker, https://github.com/pymor/pymor/issues
+Project-URL: release notes, https://docs.pymor.org/latest/release_notes/all.html
+Author-email: pyMOR developers <main.developers@pymor.org>
+Maintainer-email: Stephan Rave <stephan.rave@uni-muenster.de>
+License: Copyright pyMOR developers and contributors. All rights reserved.
+        
+        Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+        following conditions are met:
+        
+        * Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+          disclaimer.
+        * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+          disclaimer in the documentation and/or other materials provided with the distribution.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+        INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+        WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+        THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+        
+        The following files contain source code originating from other open source software projects:
+        
+        * docs/source/pymordocstring.py  (sphinxcontrib-napoleon)
+        * src/pymor/algorithms/genericsolvers.py (SciPy)
+        
+        See these files for more information.
+License-File: AUTHORS.md
+License-File: LICENSE.txt
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Requires-Python: >=3.8
+Requires-Dist: diskcache
+Requires-Dist: matplotlib>=3.5.0
+Requires-Dist: numpy!=1.25.0,<2,>=1.20.3
+Requires-Dist: packaging
+Requires-Dist: pillow
+Requires-Dist: pygments
+Requires-Dist: qtpy>=2.3.1
+Requires-Dist: scipy>=1.5.4
+Requires-Dist: typer
+Provides-Extra: ann
+Requires-Dist: torch>=1.11.0; extra == 'ann'
+Provides-Extra: dev
+Requires-Dist: conda-lock==1.4.0; extra == 'dev'
+Requires-Dist: hatch; extra == 'dev'
+Requires-Dist: ruff==0.3.5; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: bash-kernel; extra == 'docs'
+Requires-Dist: docutils; extra == 'docs'
+Requires-Dist: ipympl; extra == 'docs'
+Requires-Dist: ipywidgets>7; extra == 'docs'
+Requires-Dist: jupyterlab; extra == 'docs'
+Requires-Dist: jupyterlab-myst; extra == 'docs'
+Requires-Dist: k3d>=2.15.2; extra == 'docs'
+Requires-Dist: myst-nb>=0.16; extra == 'docs'
+Requires-Dist: notebook; extra == 'docs'
+Requires-Dist: pybind11[global]; extra == 'docs'
+Requires-Dist: python-slugify; extra == 'docs'
+Requires-Dist: slycot>=0.5.4; extra == 'docs'
+Requires-Dist: sphinx; extra == 'docs'
+Requires-Dist: sphinx-autoapi; extra == 'docs'
+Requires-Dist: sphinx-material; extra == 'docs'
+Requires-Dist: sphinxcontrib-bibtex; extra == 'docs'
+Requires-Dist: torch>=1.11.0; extra == 'docs'
+Provides-Extra: docs-additional
+Requires-Dist: bash-kernel; extra == 'docs-additional'
+Requires-Dist: docutils; extra == 'docs-additional'
+Requires-Dist: myst-nb>=0.16; extra == 'docs-additional'
+Requires-Dist: pybind11[global]; extra == 'docs-additional'
+Requires-Dist: python-slugify; extra == 'docs-additional'
+Requires-Dist: sphinx; extra == 'docs-additional'
+Requires-Dist: sphinx-autoapi; extra == 'docs-additional'
+Requires-Dist: sphinx-material; extra == 'docs-additional'
+Requires-Dist: sphinxcontrib-bibtex; extra == 'docs-additional'
+Provides-Extra: dune
+Requires-Dist: dune-gdt>=2022.5.3; (platform_system == 'Linux' and platform_machine == 'x86_64') and extra == 'dune'
+Requires-Dist: dune-xt[visualisation]>=2022.5.3; (platform_system == 'Linux' and platform_machine == 'x86_64') and extra == 'dune'
+Provides-Extra: full
+Requires-Dist: bash-kernel; extra == 'full'
+Requires-Dist: conda-lock==1.4.0; extra == 'full'
+Requires-Dist: docutils; extra == 'full'
+Requires-Dist: gmsh; extra == 'full'
+Requires-Dist: hatch; extra == 'full'
+Requires-Dist: hypothesis[numpy,pytest]==6.56.3; extra == 'full'
+Requires-Dist: ipympl; extra == 'full'
+Requires-Dist: ipyparallel>=6.2.5; extra == 'full'
+Requires-Dist: ipywidgets>7; extra == 'full'
+Requires-Dist: jupyterlab; extra == 'full'
+Requires-Dist: jupyterlab-myst; extra == 'full'
+Requires-Dist: k3d>=2.15.2; extra == 'full'
+Requires-Dist: lxml; extra == 'full'
+Requires-Dist: meshio>=4.4; extra == 'full'
+Requires-Dist: myst-nb>=0.16; extra == 'full'
+Requires-Dist: ngsolve; extra == 'full'
+Requires-Dist: notebook; extra == 'full'
+Requires-Dist: pybind11[global]; extra == 'full'
+Requires-Dist: pyevtk; extra == 'full'
+Requires-Dist: pyopengl; extra == 'full'
+Requires-Dist: pyside6>=6.4.3; extra == 'full'
+Requires-Dist: pytest-cov; extra == 'full'
+Requires-Dist: pytest-datadir; extra == 'full'
+Requires-Dist: pytest-notebook; extra == 'full'
+Requires-Dist: pytest>=7.2.1; extra == 'full'
+Requires-Dist: python-slugify; extra == 'full'
+Requires-Dist: ruff==0.3.5; extra == 'full'
+Requires-Dist: scikit-fem>=6.0.0; extra == 'full'
+Requires-Dist: sphinx; extra == 'full'
+Requires-Dist: sphinx-autoapi; extra == 'full'
+Requires-Dist: sphinx-material; extra == 'full'
+Requires-Dist: sphinxcontrib-bibtex; extra == 'full'
+Requires-Dist: torch>=1.11.0; extra == 'full'
+Requires-Dist: xmljson; extra == 'full'
+Provides-Extra: full-compiled
+Requires-Dist: bash-kernel; extra == 'full-compiled'
+Requires-Dist: conda-lock==1.4.0; extra == 'full-compiled'
+Requires-Dist: docutils; extra == 'full-compiled'
+Requires-Dist: gmsh; extra == 'full-compiled'
+Requires-Dist: hatch; extra == 'full-compiled'
+Requires-Dist: hypothesis[numpy,pytest]==6.56.3; extra == 'full-compiled'
+Requires-Dist: ipympl; extra == 'full-compiled'
+Requires-Dist: ipyparallel>=6.2.5; extra == 'full-compiled'
+Requires-Dist: ipywidgets>7; extra == 'full-compiled'
+Requires-Dist: jupyterlab; extra == 'full-compiled'
+Requires-Dist: jupyterlab-myst; extra == 'full-compiled'
+Requires-Dist: k3d>=2.15.2; extra == 'full-compiled'
+Requires-Dist: lxml; extra == 'full-compiled'
+Requires-Dist: meshio>=4.4; extra == 'full-compiled'
+Requires-Dist: mpi4py>=3.0.3; extra == 'full-compiled'
+Requires-Dist: myst-nb>=0.16; extra == 'full-compiled'
+Requires-Dist: ngsolve; extra == 'full-compiled'
+Requires-Dist: notebook; extra == 'full-compiled'
+Requires-Dist: pybind11[global]; extra == 'full-compiled'
+Requires-Dist: pyevtk; extra == 'full-compiled'
+Requires-Dist: pyopengl; extra == 'full-compiled'
+Requires-Dist: pyside6>=6.4.3; extra == 'full-compiled'
+Requires-Dist: pytest-cov; extra == 'full-compiled'
+Requires-Dist: pytest-datadir; extra == 'full-compiled'
+Requires-Dist: pytest-notebook; extra == 'full-compiled'
+Requires-Dist: pytest>=7.2.1; extra == 'full-compiled'
+Requires-Dist: python-slugify; extra == 'full-compiled'
+Requires-Dist: ruff==0.3.5; extra == 'full-compiled'
+Requires-Dist: scikit-fem>=6.0.0; extra == 'full-compiled'
+Requires-Dist: slycot>=0.5.4; extra == 'full-compiled'
+Requires-Dist: sphinx; extra == 'full-compiled'
+Requires-Dist: sphinx-autoapi; extra == 'full-compiled'
+Requires-Dist: sphinx-material; extra == 'full-compiled'
+Requires-Dist: sphinxcontrib-bibtex; extra == 'full-compiled'
+Requires-Dist: torch>=1.11.0; extra == 'full-compiled'
+Requires-Dist: xmljson; extra == 'full-compiled'
+Provides-Extra: gmsh
+Requires-Dist: gmsh; extra == 'gmsh'
+Provides-Extra: gui
+Requires-Dist: pyopengl; extra == 'gui'
+Requires-Dist: pyside6>=6.4.3; extra == 'gui'
+Provides-Extra: ipyparallel
+Requires-Dist: ipyparallel>=6.2.5; extra == 'ipyparallel'
+Provides-Extra: jupyter
+Requires-Dist: ipympl; extra == 'jupyter'
+Requires-Dist: ipywidgets>7; extra == 'jupyter'
+Requires-Dist: jupyterlab; extra == 'jupyter'
+Requires-Dist: jupyterlab-myst; extra == 'jupyter'
+Requires-Dist: k3d>=2.15.2; extra == 'jupyter'
+Requires-Dist: notebook; extra == 'jupyter'
+Provides-Extra: mpi
+Requires-Dist: mpi4py>=3.0.3; extra == 'mpi'
+Provides-Extra: ngsolve
+Requires-Dist: ngsolve; extra == 'ngsolve'
+Provides-Extra: scikit-fem
+Requires-Dist: scikit-fem>=6.0.0; extra == 'scikit-fem'
+Provides-Extra: slycot
+Requires-Dist: slycot>=0.5.4; extra == 'slycot'
+Provides-Extra: tests
+Requires-Dist: hypothesis[numpy,pytest]==6.56.3; extra == 'tests'
+Requires-Dist: notebook; extra == 'tests'
+Requires-Dist: pytest-cov; extra == 'tests'
+Requires-Dist: pytest-datadir; extra == 'tests'
+Requires-Dist: pytest-notebook; extra == 'tests'
+Requires-Dist: pytest>=7.2.1; extra == 'tests'
+Provides-Extra: vtk
+Requires-Dist: lxml; extra == 'vtk'
+Requires-Dist: meshio>=4.4; extra == 'vtk'
+Requires-Dist: pyevtk; extra == 'vtk'
+Requires-Dist: xmljson; extra == 'vtk'
+Description-Content-Type: text/markdown
+
+![pyMOR Logo](./logo/pymor_logo.svg)
+
+[![PyPI](https://img.shields.io/pypi/pyversions/pymor.svg)](https://pypi.python.org/pypi/pymor)
+[![PyPI](https://img.shields.io/pypi/v/pymor.svg)](https://pypi.python.org/pypi/pymor)
+[![Docs](https://img.shields.io/endpoint?url=https%3A%2F%2Fdocs.pymor.org%2Fbadge.json)](https://docs.pymor.org/)
+[![DOI](https://zenodo.org/badge/9220688.svg)](https://zenodo.org/badge/latestdoi/9220688)
+[![GitLab Pipeline](https://zivgitlab.uni-muenster.de/pymor/pymor/badges/main/pipeline.svg)](https://zivgitlab.uni-muenster.de/pymor/pymor/commits/main)
+[![Conda Tests](https://github.com/pymor/pymor/actions/workflows/conda_tests.yml/badge.svg)](https://github.com/pymor/pymor/actions/workflows/conda_tests.yml)
+[![codecov](https://codecov.io/gh/pymor/pymor/branch/main/graph/badge.svg)](https://codecov.io/gh/pymor/pymor)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/pymor/pymor/main.svg)](https://results.pre-commit.ci/latest/github/pymor/pymor/main)
+
+# pyMOR - Model Order Reduction with Python
+
+pyMOR is a software library for building
+[model order reduction](https://morwiki.mpi-magdeburg.mpg.de)
+applications with the Python programming language.
+All algorithms in pyMOR are formulated in terms of abstract interfaces,
+allowing generic implementations to work with different backends,
+from NumPy/SciPy to external partial differential equation solver packages.
+
+## Features
+
+* Reduced basis methods for parametric linear and non-linear problems.
+* System-theoretic methods for linear time-invariant systems.
+* Neural network-based methods for parametric problems.
+* Proper orthogonal decomposition.
+* Dynamic mode decomposition.
+* Rational interpolation of data (Loewner, AAA).
+* Numerical linear algebra (Gram-Schmidt, time-stepping, ...).
+* Pure Python implementations of finite element and finite volume
+  discretizations using the NumPy/SciPy scientific computing stack.
+
+## License
+
+pyMOR is licensed under BSD-2-clause.
+See [LICENSE.txt](LICENSE.txt).
+
+## Citing
+
+If you use pyMOR for academic work, please consider citing our
+[publication](https://epubs.siam.org/doi/10.1137/15M1026614):
+
+    R. Milk, S. Rave, F. Schindler
+    pyMOR - Generic Algorithms and Interfaces for Model Order Reduction
+    SIAM J. Sci. Comput., 38(5), pp. S194--S216, 2016
+
+## Installation via pip
+
+We recommend installation of pyMOR in a [virtual environment](https://virtualenv.pypa.io/en/latest/).
+
+pyMOR can easily be installed with the [pip](https://pip.pypa.io/en/stable/)
+command.
+Please note that pip versions prior to 21.1 might have problems resolving all
+dependencies, so running the following first is recommended:
+
+    pip install --upgrade pip
+
+If you are not operating in a virtual environment, you can pass the optional
+`--user` argument to pip.
+pyMOR will then only be installed for your local user, not requiring
+administrator privileges.
+
+### Latest Release (without Optional Dependencies)
+
+For an installation with minimal dependencies, run
+
+    pip install pymor
+
+Note that most included demo scripts additionally require Qt bindings such as
+`pyside2` to function.
+Therefore we recommend install pyMOR with the `gui` extra:
+
+    pip install pymor[gui]  # 2023.1 and later
+
+### Latest Release (with all Optional Dependencies)
+
+The following installs the latest release of pyMOR on your system with most
+optional dependencies:
+
+    pip install pymor[full]
+
+There are some optional packages not included with `pymor[full]`
+because they need additional setup on your system:
+
+* [mpi4py](https://mpi4py.readthedocs.io/en/stable/mpi4py.html):
+  support of MPI distributed models and parallelization of greedy
+  algorithms (requires MPI development headers and a C compiler):
+
+      pip install mpi4py
+
+* [Slycot](https://github.com/python-control/Slycot):
+  dense matrix equation solvers for system-theoretic methods and
+  H-infinity norm calculation (requires OpenBLAS headers and a
+  Fortran compiler):
+
+      pip install slycot
+
+### Latest Development Version
+
+To install the latest development version of pyMOR, execute
+
+    pip install 'pymor[full] @ git+https://github.com/pymor/pymor'
+
+which requires that the [git](https://git-scm.com/) version control system is
+installed on your system.
+
+### Current Release Branch Version
+
+From time to time, the main branch of pyMOR undergoes major changes and things
+might break (this is usually announced in our
+[discussion forum](https://github.com/pymor/pymor/discussions)),
+so you might prefer to install pyMOR from the current release branch:
+
+    pip install 'pymor[full] @ git+https://github.com/pymor/pymor@2024.1.x'
+
+Release branches will always stay stable and will only receive bugfix commits
+after the corresponding release has been made.
+
+## Installation via conda
+
+We recommend installation of pyMOR in a
+[conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html).
+
+pyMOR can be installed using conda by running
+
+    conda install -c conda-forge pymor
+
+## Documentation
+
+Documentation is available [online](https://docs.pymor.org/).
+We recommend starting with
+[getting started](https://docs.pymor.org/latest/getting_started.html),
+[tutorials](https://docs.pymor.org/latest/tutorials.html), and
+[technical overview](https://docs.pymor.org/latest/technical_overview.html).
+
+To build the documentation locally,
+run the following from inside the root directory of the pyMOR source tree:
+
+    make docs
+
+This will generate HTML documentation in `docs/_build/html`.
+
+## External PDE Solvers
+
+pyMOR has been designed with easy integration of external PDE solvers in mind.
+
+We provide bindings for the following solver libraries:
+
+* [FEniCS](https://fenicsproject.org)
+
+    MPI-compatible wrapper classes for dolfin linear algebra data structures are
+    shipped with pyMOR (`pymor.bindings.fenics`).
+    For an example see `pymordemos.thermalblock`, `pymordemos.thermalblock_simple`.
+    It is tested using FEniCS version 2019.1.0.
+
+* [deal.II](https://dealii.org)
+
+    Python bindings and pyMOR wrapper classes can be found
+    [here](https://github.com/pymor/pymor-deal.II).
+
+* [NGSolve](https://ngsolve.org)
+
+    Wrapper classes for the NGSolve finite element library are shipped with pyMOR
+    (`pymor.bindings.ngsolve`).
+    For an example see `pymordemos.thermalblock_simple`.
+    It is tested using NGSolve version v6.2.2104.
+
+A simple example for direct integration of pyMOR with a a custom solver
+can be found in `pymordemos.minimal_cpp_demo`.
+
+An alternative approach is to import system matrices from file and use
+`scipy.sparse`-based solvers.
+
+## Environments for pyMOR Development and Tests
+
+Please see the [Developer Documentation](https://docs.pymor.org/latest/developer_docs.html).
+
+## Contact
+
+Should you have any questions regarding pyMOR or wish to contribute,
+do not hesitate to send us an email at
+
+    main.developers@pymor.org
