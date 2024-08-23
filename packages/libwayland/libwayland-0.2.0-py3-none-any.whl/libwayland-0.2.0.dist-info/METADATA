@@ -1,0 +1,129 @@
+Metadata-Version: 2.3
+Name: libwayland
+Version: 0.2.0
+Summary: An implementation of the Wayland protocol with no external dependencies.
+Project-URL: Homepage, https://github.com/grking/libwayland
+Project-URL: Documentation, https://github.com/grking/libwayland#readme
+Project-URL: Issues, https://github.com/grking/libwayland/issues
+Project-URL: Source, https://github.com/grking/libwayland
+Author-email: Graham King <grking.email@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 Graham R King
+        
+        Permission is hereby granted, free of charge, to any person obtaining
+        a copy of this software and associated documentation files (the
+        "Software"), to deal in the Software without restriction, including
+        without limitation the rights to use, copy, modify, merge, publish,
+        distribute, sublicense, and/or sell copies of the Software, and to
+        permit persons to whom the Software is furnished to do so, subject to
+        the following conditions:
+        
+        The above copyright notice and this permission notice (including the
+        next paragraph) shall be included in all copies or substantial
+        portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+        EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+        NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+        BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+        ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+        CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >=3.8
+Provides-Extra: build
+Requires-Dist: lxml; extra == 'build'
+Requires-Dist: requests; extra == 'build'
+Description-Content-Type: text/markdown
+
+# libwayland
+
+__This is in early prototype stage__
+
+A Python implementation of the Wayland protocol, from scratch, with no external dependencies, including no dependencies on any Wayland libraries.
+
+This seeks to be a Python implementation of libwayland-client. The server/compositor perspective hasn't been considered.
+
+## Objectives
+
+* No external dependencies, needs no Wayland libraries, and only Python standard libraries at runtime. This is a replacement for libwayland-client, not a wrapper for it.
+* Intellisense code completion support for methods and events.
+* All stable and staging Wayland protocols built in.
+* A design that makes using https://wayland.app as a reference straightforward.
+* Can optionally refresh protocols from local or official online sources.
+
+## Notes
+
+Wayland identifiers that collide with Python builtin keywords are renamed to end with an underscore. The list of changes is:
+
+* `wl_registry.events.global` becomes `wl_registry.events.global_`
+
+## Making Wayland Requests
+
+As documented in the wayland protocol, with the exception that `new_id` arguments should be omitted. Wayland methods instead return a Python object reference to be slightly more Pythonic.
+
+```python
+registry = wayland.wl_display.get_registry()
+```
+
+## Event Handlers
+
+Events are collected together under the `events` attribute of an interface. Define event handlers:
+
+```python
+    def on_error(self, object_id, code, message):
+        print(f"Fatal error: {object_id} {code} {message}")
+        sys.exit(1)
+```
+
+Register an event handler by add adding it to the relevant event:
+
+```python
+    wayland.wl_display.events.error += self.on_error
+```
+
+The order of parameters in the event handler doesn't matter.
+
+## Processing Events
+
+To process all pending wayland events and call any registered event handlers:
+
+```python
+wayland.process_messages()
+```
+
+## Refreshing Protocols
+
+The package is installed with the Wayland stable and staging protocols already built-in. Refreshing the protocol definitions is optional. It requires some additional Python dependencies:
+
+* `pip install lxml`
+* `pip install requests`
+
+To rebuild the Wayland protocols from the locally installed protocol definitions:
+
+```bash
+python -m wayland
+```
+
+To rebuild the protocols directly from the online sources:
+
+```bash
+python -m wayland --download
+```
+
+## Thanks
+
+Thanks to Philippe Gaultier, whose article [Wayland From Scratch](https://gaultier.github.io/blog/wayland_from_scratch.html) inspired this project.
+
