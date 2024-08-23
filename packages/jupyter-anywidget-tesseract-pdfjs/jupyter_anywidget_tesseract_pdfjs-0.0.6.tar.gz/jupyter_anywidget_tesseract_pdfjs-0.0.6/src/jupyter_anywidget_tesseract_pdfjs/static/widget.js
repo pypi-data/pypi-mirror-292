@@ -1,0 +1,1 @@
+function a({model:e,el:n}){let t=document.createElement("button");t.innerHTML=`count is ${e.get("value")}`,t.addEventListener("click",()=>{e.set("value",e.get("value")+1),e.save_changes()}),e.on("change:value",()=>{t.innerHTML=`count is ${e.get("value")}`}),n.classList.add("jupyter_anywidget_tesseract_pdfjs"),n.appendChild(t)}var o={render:a};export{o as default};
