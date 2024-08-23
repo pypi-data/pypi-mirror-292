@@ -1,0 +1,51 @@
+Metadata-Version: 2.3
+Name: asimov-agents
+Version: 0.0.4
+Summary: A library of primitives for building agentic flows.
+Project-URL: Homepage, https://github.com/BismuthCloud/asimov
+Project-URL: URL, https://github.com/BismuthCloud/asimov
+Project-URL: Documentation, https://github.com/BismuthCloud/asimov
+Project-URL: Issues, https://github.com/BismuthCloud/asimov/issues
+Project-URL: Source, https://github.com/BismuthCloud/asimov
+Author-email: Ian Butler <ian@bismuth.cloud>
+License-Expression: Apache-2.0
+License-File: LICENSE
+Keywords: agent,ai,bismuth,git
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.12
+Requires-Dist: boto3<2.0.0,>=1.26.0
+Requires-Dist: gitpython<4.0.0,>=3.1.0
+Requires-Dist: httpx<1.0.0,>=0.23.0
+Requires-Dist: jsonpickle>=3.0.0
+Requires-Dist: lupa==2.2.0
+Requires-Dist: psycopg2-binary>=2.9.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: redis>=5.0.0
+Provides-Extra: dev
+Requires-Dist: black>=23.1.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+## General Thoughts
+
+### Agents
+
+Agents are comprised of planners, executors, observers, and discriminators.
+
+For a given task the general flow is a planner will receive a task and generate an objective and a directed graph of either parallelizeable or sequential steps that executors will attempt to complete to achieve this.
+
+Each output is passed to a discriminator who qualitatively and or functionally (depending on the task) asseses it. The discriminator will pass or fail an output which depdening on the configuration can either be retried or hard failed and kicked back up to the planner to decide next steps. 
+
+Observers are present during each stage and function to provide feedback to executors and discriminators. They do not make decisions and cannot directly affect execution but their output is supplied as context for a discriminator or executor to alter their outputs.
+
+If an output succeeds it will be passed downstream to the next executor and the process repeats until completion.
+
+Planners receive updates on step completion and have a discriminator and observer to influence viability of the plan being executed. 
+
+
