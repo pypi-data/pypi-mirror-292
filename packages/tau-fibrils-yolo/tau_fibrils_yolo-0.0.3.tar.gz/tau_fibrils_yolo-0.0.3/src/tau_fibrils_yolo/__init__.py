@@ -1,0 +1,2 @@
+from tau_fibrils_yolo._widget import YoloDetectorWidget
+from tau_fibrils_yolo.predict import FibrilsDetector
