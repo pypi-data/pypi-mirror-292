@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "echaim"
+version = "1.1.2"
+description = "A Python wrapper to the E-CHAIM C source code."
+authors = ["lap1dem <vadym.bidula@gmail.com>"]
+readme = "README.md"
+build = "build.py"
+
+include = [
+    # Source files for Fortran extensions must be included in the source distribution.
+    {path = "CMakeLists.txt", format = "sdist"},
+    {path = "src/echaim/source_c/*.c", format = "sdist"},
+    # Generated binaries must be included in the wheel distribution.
+    {path = "echaim/*.so", format = "wheel"},
+    {path = "echaim/*.dylib", format = "wheel"},
+]
+
+[tool.poetry.dependencies]
+python = "^3.9, <4.0"
+numpy = "^1.22"
+tqdm = "^4.64.1"
+sphinx = "^5.3.0"
+sphinx-rtd-theme = "^1.1.1"
+sphinx-autodoc-typehints = "^1.19.5"
+sphinxcontrib-bibtex = "^2.5.0"
+
+
+[tool.poetry.group.dev.dependencies]
+setuptools-cpp = "^0.1.0"
+matplotlib = "^3.6.2"
+pyqt5 = "^5.15.7"
+
+[build-system]
+requires = ["scikit-build", "cmake", "poetry-core"]
+#requires = ["cmake", "poetry-core",  "wheel", "setuptools-cpp"]
+build-backend = "poetry.core.masonry.api"
