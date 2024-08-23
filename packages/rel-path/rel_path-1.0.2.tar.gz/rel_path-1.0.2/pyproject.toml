@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "rel-path"
+# Primary package version gets set here. This is used for publishing, and once
+# installed, `nautobot.__version__` will have this version number.
+version = "1.0.2"
+description = "Get relative path."
+authors = ["Josef Fuchs <josef.fuchs@j-fuchs.at>"]
+license = "Apache-2.0"
+homepage = "https://github.com/jifox/relpath"
+repository = "https://github.com/jifox/relpath"
+readme = "README.md"
+classifiers = [
+    "Intended Audience :: Developers",
+    'Development Status :: 5 - Production/Stable',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: POSIX :: Linux',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Topic :: Software Development :: Libraries',
+    'Typing :: Typed'
+]
+packages = [
+    {include = "relpath"}
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+pathlib = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
