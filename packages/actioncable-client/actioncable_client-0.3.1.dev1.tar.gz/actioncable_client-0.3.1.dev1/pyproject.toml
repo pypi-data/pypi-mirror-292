@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling", "hatch-requirements-txt"]
+build-backend = "hatchling.build"
+
+[project]
+name = "actioncable_client"
+authors = [
+  { name="Tobias Feistmantl", email="tobias@myhome-automations.com" },
+  { name="Roland Laurès", email="roland@liant.dev" },
+]
+maintainers = [
+  { name="Roland Laurès", email="roland@liant.dev" },
+]
+description = "ActionCable Client for Python 3"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["dependencies", "version"]
+
+[project.urls]
+Homepage = "https://gitlab.com/liant-sasu/actioncable-client"
+Issues = "https://gitlab.com/liant-sasu/actioncable-client/-/issues"
+
+[tool.ruff]
+
+target-version = "py39"
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements.txt"]
+
+[tool.hatch.version]
+path = "src/actioncable_client/__about__.py"
