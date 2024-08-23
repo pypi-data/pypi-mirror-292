@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Engineered Prompts</title>
+    <link href="https://unpkg.com/@gitlab/ui/dist/index.css" rel="stylesheet" />
+    <script src="https://unpkg.com/@gitlab/ui"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.5;
+            color: #2e2e2e;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 16px;
+            flex: 1 1 calc(20% - 20px);
+            min-width: 200px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f75cb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        th.right,
+        td.right {
+            text-align: right;
+        }
+
+        th {
+            background-color: #fafafa;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .card {
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+
+        }
+
+        .badge-success {
+            background-color: #108548;
+            color: #fff;
+        }
+
+        .badge-warning {
+            background-color: #ab6100;
+            color: #fff;
+        }
+
+        .badge-error {
+            background-color: #dd2b0e;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="gl-font-size-h1 gl-mb-5">Dashboard Engineered Prompts</h1>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Errors &amp; Warnings</h3>
+                <p>$total_errors_warnings</p>
+            </div>
+            <div class="stat-card">
+                <h3>Prompt files with test</h3>
+                <p>$percentage_with_tests</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Cost</h3>
+                <p>$total_cost</p>
+            </div>
+            <div class="stat-card">
+                <h3>Duration</h3>
+                <p>$duration</p>
+            </div>
+            <div class="stat-card">
+                <h3>Outdated Results</h3>
+                <p>$outdated_tests</p>
+            </div>
+        </div>
+
+        <h2 class="gl-font-size-h2 gl-mb-3">Prompt files with tests</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Prompt file</th>
+                    <th class="right">% Passed</th>
+                    <th class="right"># Described Tests</th>
+                    <th class="right">Avg. Duration</th>
+                    <th class="right">Cost</th>
+                    <th class="right"># Outdated Results</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                $prompt_files_with_tests
+
+            </tbody>
+        </table>
+
+        <h2 class="gl-font-size-h2 gl-mb-3">Prompt files without tests</h2>
+        <div class="card">
+            <ul>
+                $prompt_files_without_tests
+            </ul>
+        </div>
+
+        <h2 class="gl-font-size-h2 gl-mb-3">Errors and Warnings</h2>
+        <div class="card">
+            <p>$errors_warnings</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Severity</th>
+                        <th>Name</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    $errors_warnings_details
+                </tbody>
+            </table>
+        </div>
+
+
+        <h2 class="gl-font-size-h2 gl-mb-3">About Engineered Prompts</h2>
+        <div class="card" width="60%">
+            <p><strong>Engineered Prompts: Structured Inputs for Automated Processes</strong></p>
+            <p>In the rapidly evolving landscape of artificial intelligence, the concept of an "engineered prompt" is
+                gaining
+                prominence, particularly in environments that leverage large language models (LLMs) and other AI
+                systems.
+                Engineered
+                prompts are meticulously crafted inputs designed to interact with AI models in a way that ensures
+                consistent
+                and
+                reliable outputs. These prompts are not just queries but structured tools that are integral to the
+                automated
+                processes
+                in which they function.</p>
+
+            <p><strong>Definition and Purpose</strong></p>
+            <p>
+                An engineered prompt is a carefully designed input that is used to generate a specific type of response
+                from
+                an
+                AI
+                model. Unlike casual or ad-hoc prompts, engineered prompts are developed through a rigorous process that
+                considers
+                the
+                nuances of the model’s language understanding and output capabilities. They are akin to code in software
+                development,
+                serving as a fundamental component that interacts with the AI to execute specific tasks reliably.
+            </p>
+
+            <p><strong>Characteristics of Engineered Prompts</strong></p>
+            <ul>
+                <li>
+                    <b>Precision and Clarity</b> Engineered prompts are precise, unambiguous, and tailored to elicit a
+                    specific
+                    type
+                    of
+                    response or behavior from an AI model.
+                </li>
+                <li>
+                    <b>Reusability</b>: These prompts are designed to be reusable across similar tasks or models,
+                    ensuring
+                    efficiency
+                    and
+                    consistency in automated processes.
+                </li>
+                <li>
+                    <b>Scalability</b> Engineered prompts can be scaled or modified according to different requirements
+                    or
+                    in
+                    response
+                    to
+                    changes in the AI model’s behavior.
+                </li>
+            </ul>
+
+            <p><strong>Development and Maintenance</strong></p>
+            Just like any software code, engineered prompts require a structured development and maintenance process to
+            ensure
+            they
+            remain effective and safe for use:
+            <ul>
+                <li>
+                    <b>Versioning</b>: Keeping track of different versions of prompts is crucial, especially as models
+                    and
+                    requirements
+                    evolve. Versioning allows developers to manage changes systematically, revert to previous versions
+                    if
+                    needed, and
+                    understand the evolution of prompt effectiveness over time.
+                </li>
+                <li>
+                    <b>Documentation</b> Comprehensive documentation is essential for engineered prompts. It should
+                    detail
+                    the
+                    design
+                    rationale, expected outputs, model compatibility, and any dependencies. This documentation is vital
+                    for
+                    both
+                    current
+                    use
+                    and future modifications.
+                </li>
+                <li>
+                    <b>Testing and Validation</b> Rigorous testing is a cornerstone of prompt development. This includes
+                    unit
+                    testing
+                    to
+                    verify prompt functionality, integration testing to ensure compatibility with the AI model, and
+                    validation
+                    testing
+                    to
+                    confirm that the prompt generates the expected outputs.
+                </li>
+                <li>
+                    <b>Performance Tests</b> Performance testing evaluates how well the prompt works in terms of speed
+                    and
+                    resource
+                    utilization, ensuring that the prompt is efficient even at scale.
+                </li>
+                <li>
+                    <b>Regression Testing</b> This is particularly critical when the underlying AI model is updated or
+                    when
+                    switching to a model from a different provider. Regression tests help verify that updates or changes
+                    do
+                    not
+                    negatively affect the performance of the prompt.
+                </li>
+            </ul>
+            <p><strong>Use Cases</strong>
+            </p>
+            <p>
+                Engineered prompts are used in diverse fields such as customer service, content generation, automated
+                programming
+                help,
+                and more. In each case, the prompt acts as a bridge between the user’s needs and the model’s
+                capabilities,
+                facilitating a controlled and predictable AI interaction.</p>
+            <p><strong>More info</strong></p>
+            <ul>
+                <li><a
+                        href="https://towardsdatascience.com/testing-large-language-models-like-we-test-software-92745d28a359">Testing
+                        Language Models (and Prompts) Like We Test Software</a></li>
+                <li><a href="https://homes.cs.washington.edu/~marcotcr/acl20_checklist.pdf">Beyond Accuracy: Behavioral
+                        Testing
+                        of
+                        NLP Models with CheckList</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
