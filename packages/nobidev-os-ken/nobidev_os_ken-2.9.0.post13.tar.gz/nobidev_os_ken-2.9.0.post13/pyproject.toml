@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nobidev-os-ken"
+version = "2.9.0.post13"
+description = "A component-based software defined networking framework for OpenStack."
+readme = "README.rst"
+requires-python = ">=3.8"
+authors = [
+    { name = "Nobi", email = "nobi@nobidev.com" },
+    { name = "OpenStack", email = "openstack-discuss@lists.openstack.org" }
+]
+classifiers = [
+    "Environment :: OpenStack",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10"
+]
+keywords = ["openstack", "networking", "sdn"]
+dependencies = [
+    'eventlet >= 0.26.1',
+    'msgpack >= 1.0.0',
+    'ncclient >= 0.6.13',
+    'netaddr >= 0.7.18',
+    'oslo.config >= 5.1.0',
+    'nobidev-ovs >= 3.3.1',
+    'packaging >= 20.4',
+    'Routes >= 2.3.1',
+    'WebOb >= 1.8.2'
+]
+
+[project.scripts]
+osken = "os_ken.cmd.osken_base:main"
+osken-manager = "os_ken.cmd.manager:main"
+
+[tool.setuptools.packages.find]
+include = ["os_ken", "os_ken.*"]
+
+[project.urls]
+Homepage = "https://www.openstack.org/"
