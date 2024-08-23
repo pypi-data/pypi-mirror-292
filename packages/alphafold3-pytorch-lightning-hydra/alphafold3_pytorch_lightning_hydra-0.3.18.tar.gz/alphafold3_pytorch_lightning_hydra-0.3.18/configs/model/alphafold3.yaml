@@ -1,0 +1,44 @@
+_target_: alphafold3_pytorch.models.alphafold3_module.Alphafold3LitModule
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 1.8e-3
+  betas: [0.9, 0.95]
+  eps: 1e-8
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.LambdaLR
+  _partial_: true
+  lr_lambda: ${resolve_variable:alphafold3_pytorch.utils.model_utils.default_lambda_lr_fn}
+  verbose: true
+
+net:
+  _target_: alphafold3_pytorch.models.components.alphafold3.Alphafold3
+  dim_atom_inputs: 3
+  dim_template_feats: 44
+  num_dist_bins: 38
+  pdb_training_set: true
+
+# training parameters
+compile: false # compile model for faster training with pytorch 2.0
+skip_invalid_gradient_updates: true
+
+# model parameters
+parameters_initialized_from: random # NOTE: must be one of (initial_training: 'random', fine_tuning_1: 'initial_training', fine_tuning_2: 'fine_tuning_1', fine_tuning_3: 'fine_tuning_2'), proceeding from left to right following Table 6 in the paper
+masked_diffusion_loss_for_non_protein_in_disorder: false # NOTE: must be one of (initial_training: False, fine_tuning_1: True, fine_tuning_2: True, fine_tuning_3: True), proceeding from left to right following Table 6 in the paper
+train_structure_and_distogram: true # NOTE: must be one of (initial_training: True, fine_tuning_1: True, fine_tuning_2: True, fine_tuning_3: False), proceeding from left to right following Table 6 in the paper
+train_pae_head: true # NOTE: must be one of (initial_training: False, fine_tuning_1: False, fine_tuning_2: False, fine_tuning_3: True), proceeding from left to right following Table 6 in the paper
+diffusion_batch_size: 48 # NOTE: must be one of (initial_training: 48, fine_tuning_1: 32, fine_tuning_2: 32, fine_tuning_3: 32), proceeding from left to right following Table 6 in the paper
+polymer_ligand_bond_loss_weight: 0.0 # NOTE: must be one of (initial_training: 0.0, fine_tuning_1: 1.0, fine_tuning_2: 1.0, fine_tuning_3: 1.0), proceeding from left to right following Table 6 in the paper
+diffusion_add_smooth_lddt_loss: false # NOTE: must be one of (initial_training: True, fine_tuning_1: True, fine_tuning_2: True, fine_tuning_3: True), proceeding from left to right
+diffusion_add_bond_loss: false # NOTE: must be one of (initial_training: False, fine_tuning_1: True, fine_tuning_2: True, fine_tuning_3: True), proceeding from left to right following Table 6 in the paper
+
+# model selection
+is_fine_tuning: false # NOTE: must be one of (initial_training: False, fine_tuning_1: True, fine_tuning_2: True, fine_tuning_3: True), proceeding from left to right following Table 6 in the paper
+num_samples_per_example: 5 # NOTE: determines how many samples are generated (and potentially visualized) for each input validation or test example
+
+# visualization parameters
+visualize_train_samples_every_n_steps: 0 # NOTE: set to 0 to disable
+visualize_val_samples_every_n_steps: 0 # NOTE: set to 0 to disable
+visualize_test_samples_every_n_steps: 0 # NOTE: set to 0 to disable
