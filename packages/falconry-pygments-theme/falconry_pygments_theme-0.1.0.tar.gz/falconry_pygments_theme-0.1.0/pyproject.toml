@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "falconry-pygments-theme"
+version = "0.1.0"
+description = "Falconry Pygments styles"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "Apache 2.0"}
+keywords = ["falcon-framework", "pygments", "pygments-style"]
+authors = [
+  {name = "Vytautas Liuolia", email = "vytautas.liuolia@gmail.com" }
+]
+# maintainers = [
+#   {name = "A. Great Maintainer", email = "maintainer@example.com" }
+# ]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = ["pygments >= 1.5"]
+
+[project.entry-points."pygments.styles"]
+falconry-light = "falconry_pygments_theme.light:FalconryLightStyle"
+falconry-dark = "falconry_pygments_theme.dark:FalconryDarkStyle"
+
+[project.urls]
+"Homepage" = "https://github.com/falconry/pygments-theme"
+"Funding" = "https://opencollective.com/falcon"
+"Chat" = "https://gitter.im/falconry/dev"
+"Source" = "https://github.com/falconry/pygments-theme"
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+
+[tool.ruff]
+target-version = "py38"
+format.quote-style = "single"
+line-length = 79
