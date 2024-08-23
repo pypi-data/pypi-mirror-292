@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: saldor
+Version: 0.0.7
+Summary: A client library for the Saldor API.
+License: MIT
+Author: Jack Cameron
+Author-email: jack@saldor.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: pydantic (>=2.8.2,<3.0.0)
+Requires-Dist: pytest (>=8.3.2,<9.0.0)
+Requires-Dist: requests (>=2.26.0,<3.0.0)
+Requires-Dist: types-requests (>=2.32.0.20240712,<3.0.0.0)
+Description-Content-Type: text/markdown
+
+# Saldor
+
+Saldor is a Python client library for interacting with the Saldor.com API. It
+allows developers to easily integrate Saldor's services into their Python
+applications.
+
+## Examples
+
+### Using the python library
+
+```
+pip install saldor
+```
+
+Writing a basic app that uses the client:
+
+```
+import os
+
+import saldor
+
+client = saldor.SaldorClient(api_key=os.getenv("SALDOR_API_KEY"))
+
+
+documents = client.scrape_url(
+    url="URL",
+    params={},
+)
+# Create a directory called 'results' if it doesn't exist
+os.makedirs("results", exist_ok=True)
+
+# Iterate through the documents and save each as a markdown file
+for i, document in enumerate(documents["data"]):
+    file_path = os.path.join("results", f"{i}.md")
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.write(document)
+```
+
+### Using curl
+
+```
+curl -X POST "https://api.saldor.com/scrape" \
+     -H "x-api-key: API-KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"url": "URL", "params": {}}'
+```
+
+
+
+
