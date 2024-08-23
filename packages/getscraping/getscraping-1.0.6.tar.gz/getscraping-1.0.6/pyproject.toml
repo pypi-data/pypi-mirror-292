@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "getscraping"
+version = "1.0.6"
+description = "Python SDK for the GetScraping API"
+readme = "README.md"
+authors = [{ name = "Bart Hough", email = "hello@getscraping.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License (GPL)",
+    "Framework :: Scrapy",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["web scraping", "crawler", "tutorial", "beautifulsoup", "scraperapi", "scrapingbee"]
+dependencies = [
+    "requests>=2.0.0",
+    "bs4",
+    "pydantic>=2.0.0",
+]
+requires-python = ">=3.6"
+
+[project.optional-dependencies]
+dev = ["pytest", "responses"]
+
+[project.urls]
+Homepage = "https://getscraping.com/"
+repository    = "https://github.com/GetScraping/get-scraping-python"
+documentation = "https://getscraping.com/docs"
+
+[tool.bumpver]
+current_version = "1.0.6"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message  = "Bump version {old_version} -> {new_version}"
+commit          = true
+tag             = true
+push            = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = ['current_version = "{version}"', 'version = "{version}"']
+"src/getscraping/__init__.py" = ["{version}"]
