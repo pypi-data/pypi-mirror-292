@@ -1,0 +1,110 @@
+Metadata-Version: 2.1
+Name: depalma-napari-omero
+Version: 0.2.0
+Summary: Napari interface for the De Palma lab.
+Author-email: Mallory Wittwer <mallory.wittwer@epfl.ch>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2024, EPFL
+        All rights reserved.
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        * Redistributions of source code must retain the above copyright notice, this
+          list of conditions and the following disclaimer.
+        
+        * Redistributions in binary form must reproduce the above copyright notice,
+          this list of conditions and the following disclaimer in the documentation
+          and/or other materials provided with the distribution.
+        
+        * Neither the name of the copyright holder nor the names of its
+          contributors may be used to endorse or promote products derived from
+          this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+Project-URL: homepage, https://github.com/EPFL-Center-for-Imaging/depalma-napari-omero
+Project-URL: repository, https://github.com/EPFL-Center-for-Imaging/depalma-napari-omero
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Requires-Python: <3.10,>=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: napari[all]>=0.4.16
+Requires-Dist: qtpy
+Requires-Dist: magicgui
+Requires-Dist: napari-label-focus>=0.0.9
+Requires-Dist: napari-remove-objects
+Requires-Dist: napari-adaptive-painting
+Requires-Dist: mousetumornet
+Requires-Dist: mouselungseg
+Requires-Dist: mousetumortrack
+Requires-Dist: ezomero==1.1.1
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: imagecodecs[all]
+Requires-Dist: tifffile
+Requires-Dist: pooch
+
+![EPFL Center for Imaging logo](https://imaging.epfl.ch/resources/logo-for-gitlab.svg)
+![screenshot](./assets/screenshot.png)
+# Image analysis of tumor nodules in mice CT scans
+
+We provide a unified user interface in Napari to detect, track, visualize, annotate, and measure the size evolution of lung tumor nodules in mice CT scans. The datasets and experiment metadata are automatically downloaded and parsed from OMERO.
+
+This project is part of a collaboration between the [EPFL Center for Imaging](https://imaging.epfl.ch/) and the [De Palma Lab](https://www.epfl.ch/labs/depalma-lab/).
+
+## Installation
+
+**As a standalone app**
+
+Download and run the latest installer from the [Releases](https://github.com/EPFL-Center-for-Imaging/depalma-napari-omero/releases) page.
+
+**In Python**
+
+We recommend performing the installation in a clean Python environment. Install our package from PyPi:
+
+```sh
+pip install depalma-napari-omero
+```
+
+or from the repository:
+
+```sh
+pip install git+https://github.com/EPFL-Center-for-Imaging/depalma-napari-omero.git
+```
+
+or clone the repository and install with:
+
+```sh
+git clone git+https://github.com/EPFL-Center-for-Imaging/depalma-napari-omero.git
+cd depalma-napari-omero
+pip install -e .
+```
+
+## Usage
+
+From the command-line, start Napari with the `depalma-napari-omero` plugin:
+
+```
+napari -w depalma-napari-omero
+```
+
+## Related projects
+
+- [Mouse Tumor Net](https://gitlab.com/epfl-center-for-imaging/mousetumornet) | Detect tumor nodules in mice CT scans.
+- [Mouse Lungs Seg](https://gitlab.com/epfl-center-for-imaging/mouselungseg) | Detect the lungs cavity in mice CT scans.
+- [Mouse Tumor Track](https://gitlab.com/epfl-center-for-imaging/mousetumortrack) | Track tumor nodules in mice CT scans.
+- [JupyterHub (De Palma)](https://gitlab.com/epfl-center-for-imaging/depalma-jupyterhub) | A tailored JupyterHub deployment.
