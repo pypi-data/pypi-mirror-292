@@ -1,0 +1,32 @@
+include *.md
+include docs/index.rst
+include LICENSE
+include Version
+include requirements.txt
+include spkit/__init__.py
+include spkit/data/EEG16SecData.pkl
+include spkit/data/primitive_polynomials_GF2_dict.txt
+include spkit/eeg/Standard_1020.csv
+include spkit/eeg/*.csv
+include spkit/eeg/*.txt
+include spkit/eeg/*.png
+
+recursive-include spkit *.py
+recursive-include spkit *.txt
+recursive-include examples *.py
+recursive-include examples *.ipynb
+recursive-include *.ipynb
+recursive-include *.pkl
+recursive-include spkit/data *.pkl
+
+recursive-include spkit/data/files/ *.pkl
+recursive-include spkit/data/files/ *.txt
+
+recursive-include spkit/eeg/files/ *.pkl
+recursive-include spkit/eeg/files/ *.csv
+recursive-include spkit/eeg/files/ *.png
+recursive-include spkit/eeg/files/ *.txt
+
+recursive-exclude * __pycache__
+recursive-exclude * .DS_Store
+recursive-exclude *.yml
