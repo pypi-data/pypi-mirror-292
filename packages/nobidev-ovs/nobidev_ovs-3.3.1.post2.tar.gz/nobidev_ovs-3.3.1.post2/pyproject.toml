@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nobidev-ovs"
+version = "3.3.1.post2"
+description = "Open vSwitch library"
+authors = [
+    { name = "Nobi", email = "nobi@nobidev.com" },
+    { name = "Open vSwitch", email = "dev@openvswitch.org" }
+]
+license = { text = "Apache-2.0" }
+keywords = ["openvswitch", "ovs", "OVSDB"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Database :: Front-Ends",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Networking",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6"
+]
+dependencies = ["sortedcontainers"]
+
+[project.optional-dependencies]
+flow = ["netaddr", "pyparsing"]
+dns = ["unbound"]
+win32 = ["pywin32 >= 1.0"]
+
+[tool.setuptools.packages.find]
+include = ["ovs", "ovs.compat", "ovs.compat.sortedcontainers", "ovs.db", "ovs.unixctl", "ovs.flow"]

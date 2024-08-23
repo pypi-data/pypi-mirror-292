@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: nobidev-ovs
+Version: 3.3.1.post2
+Summary: Open vSwitch library
+Author-email: Nobi <nobi@nobidev.com>, Open vSwitch <dev@openvswitch.org>
+License: Apache-2.0
+Keywords: openvswitch,ovs,OVSDB
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Topic :: Database :: Front-Ends
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Networking
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Requires-Dist: sortedcontainers
+Provides-Extra: flow
+Requires-Dist: netaddr; extra == "flow"
+Requires-Dist: pyparsing; extra == "flow"
+Provides-Extra: dns
+Requires-Dist: unbound; extra == "dns"
+Provides-Extra: win32
+Requires-Dist: pywin32>=1.0; extra == "win32"
