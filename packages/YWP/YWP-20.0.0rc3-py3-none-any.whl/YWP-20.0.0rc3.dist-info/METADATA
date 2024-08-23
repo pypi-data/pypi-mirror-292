@@ -1,0 +1,1139 @@
+Metadata-Version: 2.1
+Name: YWP
+Version: 20.0.0rc3
+Summary: This is a library to simplify the Python language for beginners while adding some features that are not found in other libraries
+Author: Your Wanted Products (YWP)
+Author-email: pbstzidr@ywp.freewebhostmost.com
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: SpeechRecognition ==3.10.4
+Requires-Dist: cryptography ==42.0.5
+Requires-Dist: dill ==0.3.8
+Requires-Dist: flask-cors ==4.0.1
+Requires-Dist: flask ==3.0.3
+Requires-Dist: googletrans ==4.0.0rc1
+Requires-Dist: gtts ==2.5.1
+Requires-Dist: joblib ==1.4.2
+Requires-Dist: moviepy ==1.0.3
+Requires-Dist: nltk ==3.8.1
+Requires-Dist: pillow ==10.4.0
+Requires-Dist: pyaudio ==0.2.14
+Requires-Dist: pycryptodome ==3.20.0
+Requires-Dist: pygame ==2.5.2
+Requires-Dist: python-nmap ==0.7.1
+Requires-Dist: pyttsx3 ==2.90
+Requires-Dist: requests ==2.31.0
+Requires-Dist: scapy ==2.5.0
+Requires-Dist: selenium ==4.22.0
+Requires-Dist: setuptools ==68.1.2
+Requires-Dist: sounddevice ==0.4.7
+Requires-Dist: tensorflow ==2.16.1
+Requires-Dist: tflearn ==0.5.0
+Requires-Dist: tqdm ==4.66.4
+Requires-Dist: twine ==5.1.0
+Requires-Dist: vosk ==0.3.45
+Requires-Dist: wheel ==0.43.0
+Requires-Dist: yara-python ==4.5.1
+
+# YWP
+
+YWP is a library to simplify the Python language for beginners while adding some features that are not found in other libraries
+
+## Installation
+
+You can install YWP using pip:
+
+```bash
+pip install YWP==20.0.0rc3
+```
+
+### Usage (Code)
+
+```python
+module Audios:
+    def play_audio(pro_path, mp3_audio_file):
+        """
+            Plays an audio file using a specified program.
+
+            Args:
+            - pro_path: Path to the program to use for playing the audio.
+            - mp3_file_path: Path to the MP3 file to play.
+
+            Returns:
+            - 'opened' if successful.
+            - 'Not Found File' if the file does not exist.
+        """
+
+    def stop_recording():
+        """
+            Stops recording audio by terminating PyAudio instances.
+        """
+    def record_audio(filename="recorder.wav", duration=5, fs=44100, device_number=2):
+        """
+            Records audio using the default or specified audio device.
+
+            Args:
+            - filename: Name of the WAV file to save the recorded audio.
+            - duration: Duration of the recording in seconds.
+            - fs: Sampling frequency (default: 44100).
+            - device_number: Optional device number to record from.
+
+            Returns:
+            - 'saved' if successful.
+            - Error message if unsuccessful.
+        """
+    def transcribe_audio(filename="recorder.wav", language_="en-US"):
+        """
+            Transcribes audio from a WAV file using Google Speech Recognition.
+
+            Args:
+            - filename: Path to the WAV file to transcribe.
+            - language_: Language code for the language spoken (default: 'en-US').
+
+            Returns:
+            - Transcribed text if successful.
+            - Empty string if no speech detected or unrecognized.
+            - Error message if unsuccessful.
+        """
+    def text_to_speech(text, filename="tts.mp3", language='en'):
+        """
+            Converts text to speech and saves it as an MP3 file using gTTS.
+
+            Args:
+            - text: Text to convert to speech.
+            - filename: Name of the output MP3 file.
+            - language: Language code for the language spoken (default: 'en').
+
+            Returns:
+            - 'saved' if successful.
+        """
+    def play_sound(filename='tts.mp3'):
+        """
+            Plays a sound file using pygame.
+
+            Args:
+            - filename: Path to the sound file (MP3).
+
+            Returns:
+            - 'played' if successful.
+        """
+    def play_audio_online(pro_path, mp3_file_link):
+        """
+            Plays an online audio file using a specified program.
+
+            Args:
+            - pro_path: Path to the program to use for playing the audio.
+            - mp3_file_link: URL or link to the MP3 file to play.
+
+            Returns:
+            - 'opened' if successful.
+        """
+module Files:
+    """
+        A class for handling file operations.
+
+        Methods:
+        - delete_file: Deletes a file if it exists.
+        - open_file: Opens a file if it exists using subprocess.
+        - create_file: Creates a new file and writes user input into it.
+        - delete_all_files: Deletes files in a directory based on specified types.
+
+        Attributes:
+        - None
+    """
+    def create_file(name):
+        """
+            Creates a new file and writes user input into it.
+
+            Args:
+            - name: Name of the file to create.
+
+            Returns:
+            - "created" if file is successfully created and written to.
+            - Raises an exception if creation fails.
+        """
+    def open_file(filepath):
+        """
+            Opens a file if it exists using subprocess.
+
+            Args:
+            - filepath: Path to the file to open.
+
+            Returns:
+            - "open" if file is successfully opened.
+            - "Not Found Path" if file path does not exist.
+            - "An error occurred" with the error message if an exception occurs.
+        """
+    def delete_all_files(directory=".", type={}):
+        """
+            Deletes files in a directory based on specified types.
+
+            Args:
+            - directory: Directory path where files are located.
+            - type: Dictionary mapping index to file types to delete.
+
+            Returns:
+            - "Deleted" if files are successfully deleted.
+            - Raises an exception if deletion fails.
+        """
+    def delete_file(filepath):
+        """
+            Deletes a file if it exists.
+
+            Args:
+            - filepath: Path to the file to delete.
+
+            Returns:
+            - "Deleted" if file is successfully deleted.
+            - Raises an exception if deletion fails.
+        """
+module Websites:
+    def open_website(url):
+        """
+            Opens a website in the default web browser.
+
+            Args:
+            - url: The URL of the website to open.
+
+            Returns:
+            - 'opened' if successful.
+            - Error message if unsuccessful.
+        """
+module System:
+    def shutdown():
+        """
+            Shutdown the system.
+
+            Raises:
+            - NotImplementedError: If the OS is not supported (Windows, Linux, and macOS are supported).
+        """
+    def restart():
+        """
+            Restart the system.
+
+            Raises:
+            - NotImplementedError: If the OS is not supported (only Windows is supported).
+        """
+    def log_off():
+        """
+            Log off the current user.
+
+            Raises:
+            - NotImplementedError: If the OS is not supported (only Windows is supported).
+        """
+    def hibernate():
+        """
+            Hibernate the system.
+
+            Raises:
+            - NotImplementedError: If the OS is not supported (only Windows is supported).
+        """
+module Crypto:
+    def token_information(data, type='binance'):
+        """
+            Opens a web browser with token information based on the type.
+
+            Args:
+            - data (Any): Token in "binance" and "etherum" and Pool in "geckoterminal"
+            - type (str): Type of token platform ('binance', 'etherum', 'geckoterminal').
+
+            Returns:
+            - str: Message indicating if the operation was successful or unsupported type.
+        """
+module server:
+        """
+            A simple class to create and run a Flask server.
+
+            Methods:
+            - __init__: Initializes the server instance with None.
+            - route_flask: Adds a route to the Flask application.
+            - run: Starts the Flask server with specified configurations.
+
+            Attributes:
+            - app: Holds the Flask application instance.
+        """
+    def route_flask(location, returnValue):
+        """
+            Adds a route to the Flask application.
+
+            Args:
+            - location: URL endpoint for the route.
+            - returnValue: Value returned by the route function.
+
+            Returns:
+            - 'done' if route addition is successful.
+        """
+    def run(check=False, debug=True, host="0.0.0.0", port="8000"):
+        """
+            Starts the Flask server.
+
+            Args:
+            - check: If True, runs only if __name__ == "__main__".
+            - debug: Enables debug mode if True.
+            - host: Host IP address to run the server on.
+            - port: Port number to run the server on.
+
+            Returns:
+            - 'done' if server starts successfully.
+        """
+class AI: (Not Now)
+    class Builder():(Not Now)
+        def train(jsonfile="intents.json", picklefile="data.pickle", h5file="model.h5"): (Not Now)
+            """
+                Trains an AI model using intents JSON file and saves the model.
+
+                Args:
+                - jsonfile (str): Path to the intents JSON file.
+                - picklefile (str): Path to save/load the pickle data.
+                - h5file (str): Path to save/load the trained model weights.
+
+                Returns:
+                - str: Message indicating the training status.
+            """
+        def process(message, picklefile="data.pickle", h5file="model.h5", jsonfile="intents.json", sleeptime=0): (Not Now)
+            """
+                Processes a message using the trained AI model and returns a response.
+
+                Args:
+                - message (str): Input message to process.
+                - picklefile (str): Path to the pickle file containing training data.
+                - h5file (str): Path to the trained model weights.
+                - jsonfile (str): Path to the intents JSON file.
+                - sleeptime (int): Optional sleep time before returning a response.
+
+                Returns:
+                - str: AI response based on the input message.
+            """
+        def json_creator(jsonfile="intents.json", tag, patterns=[], responses=[]): (Not Now)
+            """
+                Creates or appends intents to a JSON file.
+
+                Args:
+                - jsonfile (str): Path to the JSON file.
+                - tag (str): Tag name for the intent.
+                - patterns (list): List of patterns or queries.
+                - responses (list): List of responses corresponding to the patterns.
+
+                Returns:
+                - None
+            """
+module VideosCreator:
+    """
+        A class for creating videos from images using MoviePy.
+
+        Nested Class:
+        - Basic: Provides basic functionalities for video creation.
+
+        Methods:
+        - basic_video_creator: Creates a video from images with basic effects and options.
+
+        Attributes:
+        - VIDEO_DURATIONS: Dictionary mapping video platforms to their maximum durations.
+    """
+    class Basic:
+        """
+            Provides basic functionalities for creating videos from images.
+        """
+        def basic_video_creator(image_folder="images/", animation_choice="None", frame_rate=25, video_name="output", video_type=".mp4", video_platform="Youtube", image_time=5):
+            """
+                Creates a video from images with specified parameters.
+
+                Args:
+                - image_folder: Folder containing images.
+                - animation_choice: Animation effect between images (FadeIn, FadeOut, Rotate, FlipHorizontal, FlipVertical).
+                - frame_rate: Frames per second for the video.
+                - video_name: Name of the output video file.
+                - video_type: Type of the output video file (e.g., mp4).
+                - video_platform: Platform for which the video is optimized (Youtube, Facebook, Instagram, Tiktok).
+                - image_time: Duration each image appears in seconds.
+
+                Returns:
+                - 'done' if video creation is successful.
+            """
+module endecrypt:
+    """
+        A class for handling encryption and decryption operations.
+
+        Methods:
+        - aes.encrypt: Encrypts a file using AES encryption.
+        - aes.decrypt: Decrypts a file encrypted using AES encryption.
+        - BlowFish.encrypt: Encrypts a file using Blowfish encryption.
+        - BlowFish.decrypt: Decrypts a file encrypted using Blowfish encryption.
+        - Base64.encrypt: Encrypts a file using Base64 encoding.
+        - Base64.decrypt: Decrypts a file encoded using Base64 encoding.
+        - Hex.encrypt: Encrypts a file by converting it to hexadecimal format.
+        - Hex.decrypt: Decrypts a file from hexadecimal format.
+
+        Attributes:
+        - None
+    """
+    class aes:
+        """
+            AES encryption and decryption operations.
+
+            Methods:
+            - encrypt: Encrypts a file using AES encryption.
+            - decrypt: Decrypts a file encrypted using AES encryption.
+
+            Attributes:
+            - None
+        """
+        def encrypt(file_path, password):
+            """
+                Encrypts a file using AES encryption.
+
+                Args:
+                - file_path: Path to the file to encrypt.
+                - password: Password used for encryption.
+
+                Returns:
+                - 'done' if encryption is successful.
+                - Raises an exception if encryption fails.
+            """
+        def decrypt(file_path, password):
+            """
+                Decrypts a file encrypted using AES encryption.
+
+                Args:
+                - file_path: Path to the file to decrypt.
+                - password: Password used for decryption.
+
+                Returns:
+                - 'done' if decryption is successful.
+                - Raises an exception if decryption fails.
+            """
+    class BlowFish:
+        """
+            Blowfish encryption and decryption operations.
+
+            Methods:
+            - encrypt: Encrypts a file using Blowfish encryption.
+            - decrypt: Decrypts a file encrypted using Blowfish encryption.
+
+            Attributes:
+            - None
+        """
+        def encrypt(file_path, password):
+            """
+                Encrypts a file using Blowfish encryption.
+
+                Args:
+                - file_path: Path to the file to encrypt.
+                - password: Password used for encryption.
+
+                Returns:
+                - 'done' if encryption is successful.
+                - Returns error message as string if encryption fails.
+            """
+        def decrypt(file_path, password):
+            """
+                Decrypts a file encrypted using Blowfish encryption.
+
+                Args:
+                - file_path: Path to the file to decrypt.
+                - password: Password used for decryption.
+
+                Returns:
+                - 'done' if decryption is successful.
+                - Returns error message as string if decryption fails.
+            """
+    class Base64:
+        """
+            Base64 encoding and decoding operations.
+
+            Methods:
+            - encrypt: Encrypts a file using Base64 encoding.
+            - decrypt: Decrypts a file encoded using Base64 encoding.
+
+            Attributes:
+            - None
+        """
+        def encrypt(file_path):
+            """
+                Encrypts a file using Base64 encoding.
+
+                Args:
+                - file_path: Path to the file to encrypt.
+
+                Returns:
+                - 'done' if encryption is successful.
+                - Returns error message as string if encryption fails.
+            """
+        def decrypt(file_path):
+            """
+                Decrypts a file encoded using Base64 encoding.
+
+                Args:
+                - file_path: Path to the file to decrypt.
+
+                Returns:
+                - 'done' if decryption is successful.
+                - Returns error message as string if decryption fails.
+            """
+    class Hex:
+        """
+            Hexadecimal encoding and decoding operations.
+
+            Methods:
+            - encrypt: Encrypts a file by converting it to hexadecimal format.
+            - decrypt: Decrypts a file from hexadecimal format.
+
+            Attributes:
+            - None
+        """
+        def encrypt(file_path):
+            """
+                Encrypts a file by converting it to hexadecimal format.
+
+                Args:
+                - file_path: Path to the file to encrypt.
+
+                Returns:
+                - 'done' if encryption is successful.
+                - Returns error message as string if encryption fails.
+            """
+        def decrypt(file_path):
+            """
+                Decrypts a file from hexadecimal format.
+
+                Args:
+                - file_path: Path to the file to decrypt.
+
+                Returns:
+                - 'done' if decryption is successful.
+                - Returns error message as string if decryption fails.
+            """
+module Libraries:
+    """
+        A class for creating and managing libraries and setup files.
+
+        Methods:
+        - init_creator: Initializes a Python file with import statements.
+        - basic_setup_file_creator: Creates a basic setup.py file for a Python library.
+        - upload_file_creator: Creates upload scripts for distributing a Python library.
+
+        Attributes:
+        - None
+    """
+    class Basic:
+        def init_creator(filesave="__init__.py", filename, function_class):
+            """
+                Initializes a Python file with import statements.
+
+                Args:
+                - filesave: File path to save the initialization.
+                - filename: Name of the Python file to import from.
+                - function_class: Name of the function or class to import.
+
+                Returns:
+                - 'done' if successful.
+                - Error message if unsuccessful.
+            """
+        def basic_setup_file_creator(filename="setup.py", folder_name, readme_name="README.md", library_name, library_version, libraries_required=[], description, creator_name, creator_email, License="MIT"):
+            """
+                Creates a basic setup.py file for a Python library.
+
+                Args:
+                - filename: Name of the setup file to create.
+                - folder_name: Folder name (not used in function logic).
+                - readme_name: Name of the README file.
+                - library_name: Name of the Python library.
+                - library_version: Version of the Python library.
+                - libraries_required: List of required libraries.
+                - description: Description of the Python library.
+                - creator_name: Name of the library creator.
+                - creator_email: Email of the library creator.
+                - License: License type (default: MIT).
+
+                Returns:
+                - 'done' if successful.
+                - 'FileName Found' if filename already exists.
+                - Error message if unsuccessful.
+            """
+        def upload_file_creator(filename="upload_libarary", pypi_api, platform="windows"):
+            """
+                Creates upload scripts for distributing a Python library.
+
+                Args:
+                - filename: Name of the upload script file.
+                - pypi_api: PyPI API key or token.
+                - platform: Platform to generate script for (windows or linux).
+
+                Returns:
+                - 'done' if successful.
+                - 'FileName Found' if filename already exists.
+                - 'Platform Not Supported' if platform is not windows or linux.
+                - Error message if unsuccessful.
+            """
+module printstyle:
+    def print_one(text, second=0.05):
+        """
+            This is For Custom Print for Letter
+
+            Args:
+                text (str): this is Sentence
+                second (float, optional): this is Seconds For Letter. Defaults to 0.05.
+
+            Raises:
+                ZeroDivisionError
+            
+        """
+    def print_all(text, total_time=5):
+        """
+            This is For Custom Print for Sentence
+
+            Args:
+                text (_type_): This is Sentence
+                total_time (float, optional): This is Seconds For Sentence. Defaults to 5.
+
+            Raises:
+                ZeroDivisionError
+        """
+module Translate:
+    def translate_text(text, to_lan="en", from_lan="en"):
+        """
+            This is for Translate text to any language
+
+            Args:
+                text (str)
+                to_lan (str): To Language. Defaults to "en".
+                from_lan (str): From Language. Defaults to "en".
+
+            Returns:
+                str: Translated Text
+        """
+module inuser:
+    class Audios_inuser:
+        def play_audio_inuser()
+        def stop_recording_inuser()
+        def record_audio_inuser()
+        def transcribe_audio_inuser()
+        def text_to_speech_inuser()
+        def play_sound_inuser()
+        def play_audio_online_inuser():
+        def transcribe_audio_offline_inuser()
+        def text_to_speech_offline_inuser()
+    class Files_inuser:
+        def create_file_inuser()
+        def open_file_inuser()
+        def delete_all_files_inuser()
+    class Websites_inuser:
+        def open_website_inuser()
+    class Crypto_inuser:
+        def token_information_inuser()
+    class server_inuser:
+        def route_flask_inuser()
+        def run_inuser()
+    class AI: (Not Now)
+        class Builder(): (Not Now)
+            def train_inuser(): (Not Now)
+            def process_inuser(): (Not Now)
+            def json_creator_inuser(): (Not Now)
+    class VideosCreator_inuser:
+        class Basic_inuser:
+            def basic_video_creator_inuser()
+    class endecrypt_inuser:
+        class aes_inuser:
+            def encrypt_inuser()
+            def decrypt_inuser()
+        class BlowFish_inuser:
+            def encrypt_inuser()
+            def decrypt_inuser()
+        class Base64_inuser:
+            def encrypt_inuser()
+            def decrypt_inuser()
+        class Hex_inuser:
+            def encrypt_inuser()
+            def decrypt_inuser()
+    class Libraries_inuser:
+        class Basic_inuser:
+            def init_creator_inuser()
+            def basic_setup_file_creator_inuser()
+            def upload_file_creator_inuser()
+    class printstyle_inuser:
+        def print_one_inuser()
+        def print_all_inuser()
+    class Translate_inuser:
+        def translate_text_inuser()
+    class AskAI_inuser:
+        class YWPAI_inuser:
+            def BetaVersion_inuser()
+
+def help():
+    """This is YWP.help Command in CMD/Terminal"""
+
+module ScanSec:
+    """Class containing various cybersecurity functions."""
+
+    class NmapNetwork:
+        """Class for network scanning using Nmap."""
+
+        def scan_network(ip):
+            """
+                Scans a network for open ports and services on a given IP address.
+                
+                Args:
+                    ip (str): The IP address to scan.
+                    
+                Summary:
+                    Uses Nmap to scan the given IP address for open ports and displays
+                    the protocol and state of each port.
+            """
+
+    class Fernet:
+        """Class for encryption and decryption using Fernet symmetric encryption."""
+
+        def generate_key():
+            """
+                Generates a new Fernet key.
+                
+                Returns:
+                    bytes: The generated key.
+                    
+                Summary:
+                    Generates and returns a new key for Fernet encryption.
+            """
+
+        def encrypt_message(key, message):
+            """
+                Encrypts a message using the provided Fernet key.
+                
+                Args:
+                    key (bytes): The Fernet key.
+                    message (str): The message to encrypt.
+                    
+                Returns:
+                    bytes: The encrypted message.
+                    
+                Summary:
+                    Encrypts a given message using the specified Fernet key and returns
+                    the encrypted message.
+            """
+
+        def decrypt_message(key, encrypted_message):
+            """
+                Decrypts an encrypted message using the provided Fernet key.
+                
+                Args:
+                    key (bytes): The Fernet key.
+                    encrypted_message (bytes): The message to decrypt.
+                    
+                Returns:
+                    str: The decrypted message.
+                    
+                Summary:
+                    Decrypts a given encrypted message using the specified Fernet key and returns
+                    the decrypted message.
+            """
+
+    class HashLib:
+        """Class for password hashing and verification using SHA-256."""
+
+        def hash_password(password):
+            """
+                Hashes a password using SHA-256.
+                
+                Args:
+                    password (str): The password to hash.
+                    
+                Returns:
+                    str: The hashed password.
+                    
+                Summary:
+                    Hashes a given password using SHA-256 and returns the hashed password.
+            """
+
+        def verify_password(stored_password, provided_password):
+            """
+                Verifies a password against the stored hashed password.
+                
+                Args:
+                    stored_password (str): The stored hashed password.
+                    provided_password (str): The password to verify.
+                    
+                Returns:
+                    bool: True if the password matches, False otherwise.
+                    
+                Summary:
+                    Verifies a provided password by hashing it with SHA-256 and comparing
+                    it to the stored hashed password.
+            """
+
+    class Logging:
+        """Class for setting up a logger to create and manage log files."""
+
+        def setup_logger(log_file):
+            """
+                Sets up a logger to log messages to a specified log file.
+                
+                Args:
+                    log_file (str): The path to the log file.
+                    
+                Returns:
+                    logging.Logger: The configured logger.
+                    
+                Summary:
+                    Configures and returns a logger that logs messages to the specified log file.
+            """
+
+    class Yara:
+        """Class for scanning files using Yara rules."""
+
+        def scan_file(rule_path, file_path):
+            """
+                Scans a file for matches against Yara rules.
+                
+                Args:
+                    rule_path (str): The path to the Yara rule file.
+                    file_path (str): The path to the file to scan.
+                    
+                Returns:
+                    list: A list of matches found in the file.
+                    
+                Summary:
+                    Compiles Yara rules from the specified rule file and scans the given file
+                    for matches, returning a list of found matches.
+            """
+
+    class BruteForce:
+        """Class for performing brute force attacks to crack passwords."""
+
+        def brute_force_crack(password_set, target_password):
+            """
+                Attempts to crack a password using brute force.
+                
+                Args:
+                    password_set (str): The set of characters to use for brute force.
+                    target_password (str): The password to crack.
+                
+                Returns:
+                    str: The cracked password if found, else None.
+                
+                Summary:
+                    Uses brute force to attempt cracking the target password by generating
+                    all possible combinations from the provided character set.
+            """
+
+    class PortScanner:
+        """Class for scanning open ports on a host."""
+
+        def scan_ports(host, start_port, end_port):
+            """
+                Scans open ports on a given host.
+                
+                Args:
+                    host (str): The host to scan.
+                    start_port (int): The starting port number.
+                    end_port (int): The ending port number.
+                
+                Returns:
+                    list: List of open ports.
+                
+                Summary:
+                    Scans the specified range of ports on the given host and returns a list
+                    of open ports.
+            """
+
+    class SQLInjectionTester:
+        """Class for testing SQL injection vulnerabilities."""
+
+        def test_sql_injection(url, payload):
+            """
+                Tests for SQL injection vulnerability.
+                
+                Args:
+                    url (str): The URL to test.
+                    payload (str): The SQL payload to use.
+                
+                Returns:
+                    bool: True if vulnerable, else False.
+                
+                Summary:
+                    Tests the given URL for SQL injection vulnerability using the provided
+                    SQL payload and returns whether the site is vulnerable.
+            """
+
+    class XSSTester:
+        """Class for testing cross-site scripting (XSS) vulnerabilities."""
+
+        def test_xss(url, payload):
+            """
+                Tests for XSS vulnerability.
+                
+                Args:
+                    url (str): The URL to test.
+                    payload (str): The XSS payload to use.
+                
+                Returns:
+                    bool: True if vulnerable, else False.
+                
+                Summary:
+                    Tests the given URL for XSS vulnerability using the provided payload
+                    and returns whether the site is vulnerable.
+            """
+
+    class CSRFTTester:
+        """Class for testing cross-site request forgery (CSRF) vulnerabilities."""
+
+        def test_csrf(url, csrf_token, session):
+            """
+                Tests for CSRF vulnerability.
+                
+                Args:
+                    url (str): The URL to test.
+                    csrf_token (str): The CSRF token.
+                    session (requests.Session): The session object.
+                
+                Returns:
+                    bool: True if vulnerable, else False.
+                
+                Summary:
+                    Tests the given URL for CSRF vulnerability using the provided CSRF token
+                    and session object, and returns whether the site is vulnerable.
+            """
+
+    class TrafficSniffer:
+        """Class for sniffing network traffic."""
+
+        def sniff_packets(interface, packet_count):
+            """
+                Sniffs network packets on a given interface.
+                
+                Args:
+                    interface (str): The network interface to sniff on.
+                    packet_count (int): The number of packets to capture.
+                
+                Returns:
+                    list: List of captured packets.
+                
+                Summary:
+                    Sniffs the specified number of packets on the given network interface
+                    and returns the captured packets.
+            """
+
+    class PasswordStrengthChecker:
+        """Class for checking the strength of a password."""
+
+        def check_password_strength(password):
+            """
+                Checks the strength of a given password.
+                
+                Args:
+                    password (str): The password to check.
+                
+                Returns:
+                    str: Strength of the password ("Weak", "Moderate", "Strong").
+                
+                Summary:
+                    Analyzes the given password and returns its strength based on length
+                    and character composition.
+            """
+
+    class FirewallRuleChecker:
+        """Class for checking firewall rules."""
+
+        def check_firewall_rules():
+            """
+                Checks the current firewall rules.
+                
+                Returns:
+                    str: List of current firewall rules.
+                
+                Summary:
+                    Retrieves and returns the current firewall rules configured on the system.
+            """
+
+    class IPGeolocation:
+        """Class for getting geolocation of an IP address."""
+
+        def get_geolocation(ip):
+            """
+                Gets the geolocation of a given IP address.
+                
+                Args:
+                    ip (str): The IP address to geolocate.
+                
+                Returns:
+                    dict: Geolocation information.
+                
+                Summary:
+                    Uses an external service to get and return the geolocation information
+                    for the specified IP address.
+            """
+
+    class DataExfiltrationDetector:
+        """Class for detecting data exfiltration."""
+
+        def detect_exfiltration(log_file, threshold=1000):
+            """
+                Detects potential data exfiltration.
+                
+                Args:
+                    log_file (str): The path to the log file.
+                    threshold (int): The threshold for data transfer in bytes.
+                
+                Returns:
+                    bool: True if exfiltration is detected, else False.
+                
+                Summary:
+                    Analyzes the specified log file for signs of data exfiltration based on
+                    the provided threshold and returns whether exfiltration is detected.
+            """
+
+    class MalwareAnalyzer:
+        """Class for analyzing malware samples."""
+
+        def analyze_malware(file_path):
+            """
+                Analyzes a given malware sample.
+                
+                Args:
+                    file_path (str): The path to the malware file.
+                
+                Returns:
+                    str: Analysis report.
+                
+                Summary:
+                    Analyzes the specified malware sample and returns an analysis report.
+            """
+
+    class SocialEngineeringDetector:
+        """Class for detecting social engineering attacks."""
+
+        def detect_social_engineering(email_content):
+            """
+                Detects potential social engineering attacks.
+                
+                Args:
+                    email_content (str): The content of the email to analyze.
+                
+                Returns:
+                    bool: True if a social engineering attack is detected, else False.
+                
+                Summary:
+                    Analyzes the specified email content for signs of social engineering
+                    attacks and returns whether an attack is detected.
+            """
+
+    class PhishingURLDetector:
+        """Class for detecting phishing URLs."""
+
+        def detect_phishing(url):
+            """
+                Detects if a URL is a phishing attempt.
+                
+                Args:
+                    url (str): The URL to check.
+                
+                Returns:
+                    bool: True if the URL is a phishing attempt, else False.
+                
+                Summary:
+                    Analyzes the specified URL to determine if it is a phishing attempt
+                    and returns the result.
+            """
+
+    class RansomwareDetector:
+        """Class for detecting ransomware."""
+
+        def detect_ransomware(file_path):
+            """
+                Detects if a file is ransomware.
+                
+                Args:
+                    file_path (str): The path to the file.
+                
+                Returns:
+                    bool: True if the file is ransomware, else False.
+                
+                Summary:
+                    Analyzes the specified file to determine if it is ransomware and
+                    returns the result.
+            """
+
+    class WirelessAuditor:
+        """Class for auditing wireless networks."""
+
+        def audit_wireless(interface):
+            """
+                Audits wireless networks on a given interface.
+                
+                Args:
+                    interface (str): The wireless interface to audit.
+                
+                Returns:
+                    str: Audit report.
+                
+                Summary:
+                    Performs an audit of wireless networks using the specified interface
+                    and returns an audit report.
+            """
+module AskAI:
+    """Ask AIs"""
+    class YWPAI:
+        """Ask YWP AI"""
+        def BetaVersion(query, Name, OS, Country, Work, Company):
+            """
+                Ask YWP AI 2.1 Beta Version
+
+                Args:
+                    query (str, required): This is Message. Defaults to "".
+                    Name (str, optional): Enter Your Name. Defaults to "".
+                    OS (str, optional): Enter Your Device OS. Defaults to "".
+                    Country (str, optional): Enter Your Conutry. Defaults to "".
+                    Work (str, optional): Enter Where are you work. Defaults to "".
+                    Company (str, optional): Enter Your Company Name (If Available). Defaults to "".
+            """
+```
+
+#### Usage (Terminal)
+
+```java
+YWP.install_packages:
+    Help:
+        This Command Used For Install Required Libraries
+YWP.install_libraries:
+    Help:
+        This Command Used For Install Libraries Required For YWP (If Not Installed Sucsessfully or Found any errors in Installtion)
+YWP.upgrade_libraries:
+    Help:
+        This Command Used For Upgrade Libraries Required For YWP (If you want)
+YWP.upgrade_library:
+    Help:
+        This Command Used For Upgrade YWP Library
+YWP:
+    Help:
+        This is Command Used For Print Available Commands
+YWP.help:
+    Help:
+        This is Command Used For Print Available Commands
+```
+
+##### LICENSE
+
+MIT License
+
+```javascript
+Copyright (c) [2024] ["Ammar Elkhateeb"]
+```
+
+```javascript
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
