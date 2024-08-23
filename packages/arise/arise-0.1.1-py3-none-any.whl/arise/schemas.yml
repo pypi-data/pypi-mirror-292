@@ -1,0 +1,105 @@
+builds:
+  arise-bitcoind:
+    instructions: &baseInstructions
+      0: FROM debian:stable-slim AS builder
+      1: RUN apt-get update
+      2: RUN apt-get install -y autoconf bsdmainutils build-essential ccache clang git libboost-all-dev libtool pkg-config
+      3: WORKDIR /usr
+      4: RUN git clone --depth 1 --branch v27.1 https://github.com/bitcoin/bitcoin.git
+      5: RUN mkdir ~/.ccache && echo "max_size = 50.0G\nbase_dir = /usr/bitcoin\n" > ~/.ccache/ccache.conf
+      6: RUN cd bitcoin && ./autogen.sh && ./configure CC="clang" CXX="clang++" && make -j"$(($(nproc)+1))" src/bitcoind src/bitcoin-cli
+      7: FROM debian:stable-slim AS runner
+      8: WORKDIR /usr/app
+      9: RUN apt-get update
+      10: RUN apt-get install -y libevent-dev
+      11: COPY --from=builder /usr/bitcoin/src/bitcoind /usr/app/bitcoind
+      12: COPY --from=builder /usr/bitcoin/src/bitcoin-cli /usr/app/bitcoin-cli
+      13: ENV PATH=$PATH:/usr/app
+      14: RUN mkdir -p /home/bitcoin/.bitcoin
+      15: VOLUME ["/home/bitcoin/.bitcoin"]
+  arise-mainnet:
+    instructions:
+      <<: *baseInstructions
+      15: EXPOSE 8332 8333
+      16: ENTRYPOINT ["/usr/app/bitcoind"]
+  arise-signet:
+    instructions:
+      <<: *baseInstructions
+      15: EXPOSE 38332 38333
+      16: ENTRYPOINT ["/usr/app/bitcoind"]
+  arise-testnet:
+    instructions:
+      <<: *baseInstructions
+      15: EXPOSE 18332 18333
+      16: ENTRYPOINT ["/usr/app/bitcoind"]
+  arise-testnet4:
+    instructions:
+      <<: *baseInstructions
+      15: EXPOSE 48332 48333
+      16: ENTRYPOINT ["/usr/app/bitcoind"]
+network: arise
+services:
+  arise-bitcoind:
+    command: &baseCommand
+      0: -daemon=1
+      1: -datadir=/home/bitcoin/.bitcoin
+      2: -dnsseed=0
+      3: -listen=1
+      4: -listenonion=1
+      5: -server=1
+      6: -txindex=1
+      7: -blockfilterindex=1
+      8: -rest=1
+      9: -rpcallowip=127.0.0.1
+      10: -rpcallowip=10.0.0.0/8
+      11: -rpcallowip=192.168.0.0/16
+      12: -rpcallowip=172.0.0.0/8
+      13: -rpcbind=0.0.0.0
+      14: -rpcservertimeout=120
+      15: -rpcpassword=${ARISE_RPCPASS}
+      16: -rpcuser=${ARISE_RPCUSER}
+      17: -rpcworkqueue=128
+      18: -upnp=0
+      19: -whitelist=127.0.0.1
+    image: arise-bitcoind
+    ports:
+      - 0:0
+  arise-mainnet:
+    command:
+      <<: *baseCommand
+      20: -port=8333
+      21: -rpcport=8332
+    image: arise-mainnet
+    ports:
+      - 8332:8332
+      - 8333:8333
+  arise-signet:
+    command:
+      <<: *baseCommand
+      20: -port=38333
+      21: -rpcport=38332
+      22: -signet
+    image: arise-signet
+    ports:
+      - 38332:38332
+      - 38333:38333
+  arise-testnet:
+    command:
+      <<: *baseCommand
+      20: -port=18333
+      21: -rpcport=18332
+      22: -testnet
+    image: arise-testnet
+    ports:
+      - 18332:18332
+      - 18333:18333
+  arise-testnet4:
+    command:
+      <<: *baseCommand
+      20: -port=48333
+      21: -rpcport=48332
+      22: -testnet4
+    image: arise-testnet4
+    ports:
+      - 48332:48332
+      - 48333:48333
