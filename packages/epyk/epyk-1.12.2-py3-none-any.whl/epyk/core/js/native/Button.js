@@ -1,0 +1,1 @@
+function button(a,b,c){b=getDataFromTemplate(b,c);a.setAttribute('data-processing',false);a.innerHTML=b;setCss(a,c);}
