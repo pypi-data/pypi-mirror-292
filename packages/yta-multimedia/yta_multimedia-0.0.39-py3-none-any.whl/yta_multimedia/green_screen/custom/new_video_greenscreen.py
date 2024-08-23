@@ -1,0 +1,116 @@
+from yta_multimedia.greenscreen.classes.greenscreen_details import GreenscreenDetails
+from yta_general_utils.type_checker import variable_is_type
+from moviepy.editor import ImageClip
+from typing import Union
+from yta_multimedia.greenscreen.classes.greenscreen_details import GreenscreenDetails
+from moviepy.editor import VideoFileClip, ImageClip, CompositeVideoClip, vfx, concatenate_videoclips
+from yta_general_utils.file_processor import file_is_video_file
+from yta_general_utils.file_downloader import download_file_from_google_drive
+from yta_general_utils.tmp_processor import create_tmp_filename
+
+class NewVideoGreenscreen:
+    greenscreen: GreenscreenDetails = None
+
+    def __init__(self, greenscreen: Union[GreenscreenDetails, str]):
+        # TODO: if 'greenscreen' is str (and is file), we should
+        # automatically scan the file to detect by code the 
+        # greenscreen details (color and pixels)
+        if variable_is_type(greenscreen, str):
+            # TODO: We first detect and generate a GreenscreenDetails object
+            # that we set in self.greenscreen
+            raise Exception('Function not implemented yet: auto-detecting greenscreen details.')
+
+        self.greenscreen = greenscreen
+
+    def from_image_to_image(self):
+        # TODO: Does this make sense? We are working with a video, so
+        # trying to generate just a frame, an image, does make sense?
+        # TODO: By the way, this is not working yet
+        pass
+
+    def from_image_to_video(self, image_filename: str, duration: float = 3.0, output_filename: Union[str, None] = None):
+        """
+        Receives an 'image_filename', places it into the greenscreen and generates
+        a video of 'duration' seconds of duration that is returned. This method
+        will store locally the video if 'output_filename' is provided.
+        """
+        if not image_filename:
+            return None
+        
+        if not duration:
+            return None
+        
+        if not output_filename:
+            return None
+        
+        imageclip = ImageClip(image_filename, duration = duration)
+        final_clip = self.from_video_to_video(imageclip)
+
+        if output_filename:
+            final_clip.write_videofile(output_filename)
+
+        return final_clip
+    
+    def from_video_to_image(self):
+        # TODO: Does this make sense? By now it is not implemented
+        pass
+
+    def from_video_to_video(self, video: Union[str, VideoFileClip, CompositeVideoClip, ImageClip], output_filename: Union[str, None] = None):
+        """
+        Inserts the provided 'video' in the greenscreen and returns the
+        CompositeVideoClip that has been created. If 'output_filename' 
+        provided, it will be written locally with that file name.
+
+        The provided 'video' can be a filename or a moviepy video clip.
+
+        TODO: Careful when video is longer than greenscreen
+        """
+        if not video:
+            return None
+        
+        if variable_is_type(video, str):
+            if not file_is_video_file(video):
+                return None
+            
+            video = VideoFileClip(video)
+
+        # TODO: Change this 
+        # We could have different areas in which append 1 or more 
+        # videos, so it would be handled different. By now I'm
+        # considering we only have one
+
+        # We download the file to be able to use it
+        self.greenscreen.google_drive_url
+        TMP_FILENAME = download_file_from_google_drive(self.greenscreen.google_drive_url, create_tmp_filename('tmp.mp3'))
+
+        # We choose the first greenscreen area to work with
+        greenscreen_area = self.greenscreen.greenscreen_areas[0]
+        
+        # Create the clip
+        green_screen_clip = VideoFileClip(self.__filename).fx(vfx.mask_color, color = greenscreen_area.rgb_color, thr = 100, s = 5)
+
+        width = greenscreen_area.lower_right_pixel[0] - greenscreen_area.upper_left_pixel[0]
+        # If the provided clip is shorter than our green screen: easy, crop the green screen
+        # If the provided clip is longer than our green screen: I use the green screen duration
+        # and let the clip be original the rest of the time
+        if green_screen_clip.duration > video.duration:
+            green_screen_clip = green_screen_clip.set_duration(video.duration)
+            # Clip will be displayed inside the green screen area
+            video = video.resize(width = width).set_position((greenscreen_area.upper_left_pixel[0], greenscreen_area.upper_left_pixel[1]))
+            video = CompositeVideoClip([video, green_screen_clip], size = green_screen_clip.size)
+        elif video.duration > green_screen_clip.duration:
+            # First subclip will be displayed inside the green screen area
+            first_clip = video.subclip(0, green_screen_clip.duration).resize(width = width).set_position((greenscreen_area.upper_left_pixel[0], greenscreen_area.upper_left_pixel[1]))
+            # Second clip will be as the original one
+            second_clip = video.subclip(green_screen_clip.duration, video.duration)
+            video = concatenate_videoclips([
+                CompositeVideoClip([first_clip, green_screen_clip], size = green_screen_clip.size),
+                second_clip
+            ])
+        else:
+            video = CompositeVideoClip([video, green_screen_clip], size = green_screen_clip.size)
+
+        if output_filename:
+            video.write_videofile(output_filename, fps = video.fps)
+
+        return video

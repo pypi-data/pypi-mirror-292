@@ -1,0 +1,2 @@
+TV_SCREEN_GOOGLE_DRIVE_DOWNLOAD_URL = 'https://drive.google.com/file/d/1fHGLruNc0ddqMwsGldcsc_OnHyWFC99x/view?usp=sharing'
+YOUTUBE_VIDEO_GREEN_SCREEN_GOOGLE_DRIVE_DOWNLOAD_URL = 'https://drive.google.com/file/d/1WQVnXY1mrw-quVXOqTBJm8x9scEO_JNz/view?usp=sharing'
