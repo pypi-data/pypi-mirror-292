@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: declareq
+Version: 0.1.10
+Summary: declare http request over requests
+Home-page: https://github.com/wangxiaochuang/declareq
+Author: wangxiaochuang
+Author-email: jackstrawxiaoxin@gmail.com
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.6.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: retrying
+Requires-Dist: uritemplate
+Requires-Dist: toolz
+Requires-Dist: foxmock
+Provides-Extra: tests
+Requires-Dist: pytest ; extra == 'tests'
+
+
+# drequests
+
+declare network request
+
+- Works with requests
+- Inspired by [uplink](https://github.com/prkumar/uplink)
+- more simple and flixible
+
+just like uplink did, use Github API v3 for example:
+
+```python
+from declareq.arguments import Path, Query, UrlPrefix
+from declareq.builder import Consumer
+from declareq.commands import get
+
+
+class Github(Consumer):
+    '''github v3 api'''
+
+    def __init__(self, _: UrlPrefix):
+        pass
+
+    @get("/users/{user}/repos")
+    def get_repos(self, user: Path, sort_by: Query("sort") = "created"):
+        '''get github repos of user'''
+
+
+github = Github("https://api.github.com")
+github.get_repos("prkumar", sort_by="created")
+```
