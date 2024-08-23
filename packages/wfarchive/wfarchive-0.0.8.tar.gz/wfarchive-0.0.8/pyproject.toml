@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wfarchive"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Heqi Zhang", email = "zhangheqi@mail.ustc.edu.cn" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = ["requests"]
+
+[tool.hatch.version]
+path = "src/wfarchive/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/wfarchive tests}"
+
+[tool.coverage.run]
+source_pkgs = ["wfarchive", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/wfarchive/__about__.py",
+]
+
+[tool.coverage.paths]
+wfarchive = ["src/wfarchive", "*/wfarchive/src/wfarchive"]
+tests = ["tests", "*/wfarchive/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+[project.scripts]
+wfarchive = "wfarchive.cli:main"
+wfa = "wfarchive.cli:main"
