@@ -1,0 +1,201 @@
+Metadata-Version: 2.1
+Name: rocm-smi-exporter
+Version: 0.0.1a8
+Summary: Export rocm-smi metrics as prometheus metrics
+Author-email: Yaxiong Zhao <yaxiong@powerml.co>
+Maintainer-email: Yaxiong Zhao <yaxiong@powerml.co>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: prometheus-client ==0.20.0
+Requires-Dist: pyrsmi ==1.0.1
+
+# rocm-smi-exporter
+
+Export rocm-smi metrics as prometheus metrics
+
+## Design
+
+* Raw metrics from devices are obtained with `pyrsmi`, which is a wrapper of rocm's C API to access device metrics
+* Raw metrics are converted into Prometheus format.
+* The list of metrics can be seen from the source code.
+
+## Install
+
+```
+# Public Pypi package
+pip install rocm-smi-exporter==0.0.1a6
+
+# Private Docker image
+powerml/rocm-smi-exporter:0.0.1a6
+```
+
+## Known issues
+
+### On K8s, exporter cannot be deployed as sidecar of a Pod requesting GPUs
+
+When this exporter is deployed as a sidecar container of a pod that requests AMD GPUs,
+the exporter sidecar has no access to the GPUs (which are accessible to the other containers).
+
+[ROCm/k8s-device-plugin](https://github.com/ROCm/k8s-device-plugin)
+is used to manage AMD GPUs on K8s, we suspect its setup confuses `librocm_smi64.so`,
+which is used by this exporter to collect metrics.
+
+## Working secnarios
+
+### Deploy exporter as systemd service for infrastructure monitoring
+
+See [systemd](systemd)
+
+### Call exporter API directly in your python application
+
+You can invoke the GPU metrics exporting code inside your python application.
+And use the scraping configuration as follows.
+
+## Docker
+
+```
+docker build . -t powerml/rocm-smi-exporter
+
+# Login with powerml repo in 1password and push to it
+docker login
+docker push powerml/rocm-smi-exporter
+
+# -v /opt:/opt is needed to make rocm runtime library available to container
+docker run -d --rm --name=smi-exporter -p 9001:9001 \
+--device=/dev/kfd --device=/dev/dri --group-add video \
+-v /opt:/opt powerml/rocm-smi-exporter
+
+# You should see the ROCM_* prefixed metrics
+curl localhost:9001/metrics
+```
+
+## [DO NOT USE, DOESNT WORK] Integration with kube-prometheus-stack
+
+**NOTE**: `powerml/rocm-smi-exporter:0.0.1a6` is a private image, you may need to build your own image from the pip package.
+
+Assume there is already a
+[kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
+deployment on your kubernetes cluster. Verify that with:
+
+```
+helm list -n <namespace-of-kube-prometheus-stack>
+```
+
+### Deploy exporter sidecar container
+
+NOTE: You'll need to have the imagePullSecret to be able to pull `powerml/rocm-smi-exporter`.
+
+First, you'll need to deploy the exporter as `sidecar` container to your pods that request AMD GPUs.
+Use the template below. You'll need to add:
+* `rocm-smi-exporter-sidecar` to your pod's `containers` section
+* `host-opt` to your pod's `volumes` section
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ pod-name }}
+  labels:
+    exporter: rocm-smi
+spec:
+  containers:
+  - name: {{ main-container-name }}
+    image: {{ main-image }}
+    resources:
+      limits:
+        amd.com/gpu: {{ count }}
+  # Add the following sidecar container to your pod
+  - name: rocm-smi-exporter-sidecar
+    image: powerml/rocm-smi-exporter
+    # This port must be same as the promPort
+    args: ["lamini-rocm-smi-exporter", "--port=9001"]
+    imagePullPolicy: Always
+    ports:
+    - containerPort: 9001
+      name: prometheus
+    volumeMounts:
+    - mountPath: /opt
+      name: host-opt
+  volumes:
+  # Add additional volumen for sidecar container
+  - name: host-opt
+    hostPath:
+      # This is ROCm installation directory
+      path: /opt
+      type: Directory
+```
+
+### Upgrade kube-prometheus-stack helm values to pick up metrics from the sidecar
+
+In your `kube-prometheus-stack`'s values.yaml file, add the following `rocm-smi-exporter` to the
+`prometheus.prometheusSpec.additionalScrapeConfigs` section. You can the location in the [example of official repo](
+https://github.com/prometheus-community/helm-charts/blob/847789a719d91dd13d30a6e9eaa530af897e3276/charts/kube-prometheus-stack/values.yaml#L3843).
+An example is provided below.
+```
+# This is a sample configuration.
+# Save this to values.yaml and upgrade with helm.
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+      - job_name: rocm-smi-exporter
+        scrape_interval: 1s
+        metrics_path: /metrics
+        scheme: http
+        kubernetes_sd_configs:
+        - role: pod
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_label_exporter]
+          action: keep
+          regex: rocm-smi
+        - source_labels: [__meta_kubernetes_pod_name]
+          target_label: pod
+        - source_labels: [__meta_kubernetes_namespace]
+          target_label: namespace
+        - source_labels: [__meta_kubernetes_pod_node_name]
+          target_label: node
+        - source_labels: [__meta_kubernetes_pod_ip]
+          target_label: instance
+```
+
+Save the above yaml to `values.yaml` and upgrade your own helm release.
+```
+helm list -n <namespace>
+```
+You'll see the output like below:
+![image](https://github.com/user-attachments/assets/a71fce1a-d4cc-4568-8839-be68fa08ee60)
+Note down the release name and version, here they are `prometheus` and `61.3.0`.
+
+Then upgrade the release with the command below:
+```
+helm upgrade <release-name> prometheus-community/kube-prometheus-stack -f values.yaml --version <version>
+```
+
+### Verify in Grafana
+
+Open Grafana, click `Explore -> Prometheus -> Select Metric -> ROCM_*`, you should see the captured metrics:
+```
+METRIC_GPU_UTIL = "ROCM_SMI_DEV_GPU_UTIL"
+METRIC_GPU_MEM_TOTAL = "ROCM_SMI_DEV_GPU_MEM_TOTAL"
+METRIC_GPU_MEM_USED = "ROCM_SMI_DEV_GPU_MEM_USED"
+METRIC_GPU_MEM_UTIL = "ROCM_SMI_DEV_MEM_UTIL"
+METRIC_GPU_POWER = "ROCM_SMI_DEV_POWER"
+METRIC_GPU_CU_OCCUPANCY = "ROCM_SMI_DEV_CU_OCCUPANCY"
+```
+
+![image](https://github.com/user-attachments/assets/9d01a4c0-9da1-4f67-ae06-224f768eddfd)
+
+You can import [GPUs](GPUs_Grafana.json) Grafana Dashboard into your Grafana.
+
+## Reference
+
+* [Add args to systemd service](https://superuser.com/a/728962)
+  * The python code accepts `--port` and other arguments
+  * If needed, set its value when launching systemd service
+* [amd/amd-smi-exporter](https://github.com/amd/amd_smi_exporter) is AMD’s “semi-official” exporter for collecting
+  metrics from AMD devices: CPU/APU/GPU, **to us** it has a few major issues:
+  * It’s not focused on GPU, so it may take much longer than we can wait for it to mature, and it will always
+    take longer for any new features to be implemented.
+  * It seems experimental, get no dedicated staffing from AMD
+* [nvidia/dcgm-exporter](https://github.com/NVIDIA/dcgm-exporter) is the mature solution from NVIDIA;
+  it’s focusing on GPUs, and already working
+  * We use it as an template to architecture ROCm-smi-exporter, parts related to standard k8s features can be borrowed directly
+
