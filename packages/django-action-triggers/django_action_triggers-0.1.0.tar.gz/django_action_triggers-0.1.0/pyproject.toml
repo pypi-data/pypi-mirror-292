@@ -1,0 +1,65 @@
+[tool.poetry]
+name = "django-action-triggers"
+version = "0.1.0"
+description = "A Django application that triggers actions based on database changes. Supports webhook integration, message brokers (Kafka, RabbitMQ), and flexible configurations."
+authors = ["Salaah Amin <salaah01@users.noreply.github.com>"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/Salaah01/django-action-triggers"
+repository = "https://github.com/Salaah01/django-action-triggers"
+documentation = "https://salaah01.github.io/django-action-triggers/"
+packages = [{ include = "action_triggers" }]
+
+[tool.ruff]
+line-length = 79
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.pytest]
+env = ["DJANGO_SETTINGS_MODULE = tests.settings"]
+
+[tool.coverage.report]
+include = ["action_triggers/*"]
+omit = ["action_triggers/migrations/*"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.13"
+django = ">=3.2"
+djangorestframework = "^3.15.2"
+requests = "^2.32.3"
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+exclude = ["action_triggers/migrations", "docs", "venv"]
+
+[tool.django-stubs]
+django_settings_module = "tests.settings"
+
+[tool.poetry.group.dev.dependencies]
+tox = "^4.17.1"
+ruff = "^0.5.7"
+isort = "^5.13.2"
+pytest = "^8.3.2"
+pytest-cov = "^5.0.0"
+coverage = "^7.6.1"
+django-coverage-plugin = "^3.1.0"
+model-bakery = "^1.19.1"
+responses = "^0.25.3"
+mypy = "^1.11.1"
+django-stubs = "^5.0.4"
+types-requests = "^2.32.0.20240712"
+pika = ">=1.0.0"
+psycopg2 = "^2.9.9"
+pytest-asyncio = "^0.23.8"
+confluent-kafka = "^2.5.0"
+
+[tool.poetry.extras]
+postgres = ["psycopg2"]
+rabbitmq = ["pika"]
+kafka = ["confluent-kafka"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
