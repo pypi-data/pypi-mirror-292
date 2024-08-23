@@ -1,0 +1,78 @@
+[tool.poetry]
+name = "presentpy"
+version = "1.4.6"
+description = "Create slides from Jupyter Notebooks"
+authors = ["Antonio Feregrino <antonio.feregrino@gmail.com>"]
+license = "MIT"
+readme = "readme.md"
+include = ["src/presentpy/**/*"]
+
+[tool.poetry.scripts]
+presentpy = "presentpy.__main__:process"
+
+[tool.poetry.dependencies]
+click = "^8.1.7"
+lxml = "^5.2.2"
+mistletoe = "^1.4.0"
+nbformat = "^5.10.4"
+pillow = "^10.4.0"
+pygments = "^2.18.0"
+python = "^3.10"
+beautifulsoup4 = "^4.12.3"
+colour = "^0.1.5"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+bump-my-version = "^0.24.3"
+mkdocs-material = "^9.5.30"
+pytest = "^8.3.1"
+ruff = "^0.5.4"
+
+[tool.poetry.group.juptyter.dependencies]
+jupyter = "^1.0.0"
+jupyterlab = "^4.0.2"
+
+[tool.bumpversion]
+current_version = "1.4.6"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+ignore_missing_version = false
+ignore_missing_files = false
+tag = true
+sign_tags = false
+tag_name = "v{new_version}"
+tag_message = "Bump version: {current_version} → {new_version}"
+allow_dirty = false
+commit = true
+message = "version: {current_version} → {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "src/presentpy/__init__.py"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N"]
+ignore = ["C90"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["presentpy"]
+
+[tool.black]
+line-length = 120
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
