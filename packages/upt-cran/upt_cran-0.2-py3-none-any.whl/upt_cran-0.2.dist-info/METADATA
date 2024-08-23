@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: upt-cran
+Version: 0.2
+Summary: CRAN frontend for upt
+Home-page: https://framagit.org/upt/upt-cran
+Author: Cyril Roelandt
+Author-email: tipecaml@gmail.com
+License: BSD-3-Clause
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: upt
+Provides-Extra: test
+Requires-Dist: requests-mock ; extra == 'test'
+
+# Universal Packaging Tool: CRAN frontend
+This is a [CRAN](https://cran.r-project.org/) frontend for [upt](https://pypi.python.org/pypi/upt).
