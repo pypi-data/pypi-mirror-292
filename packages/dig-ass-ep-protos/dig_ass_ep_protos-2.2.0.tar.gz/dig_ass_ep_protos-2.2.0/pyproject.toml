@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = 'dig_ass_ep_protos'
+
+authors = [{ name = 'AGI-MED-TEAM' }]
+description = 'Proto files for dig_ass_ep_protos'
+readme = 'README.md'
+
+dynamic = ['version', 'dependencies']
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = { attr = "dig_ass_ep_protos.__version__" }
+dependencies = { file = ['requirements.txt'] }
