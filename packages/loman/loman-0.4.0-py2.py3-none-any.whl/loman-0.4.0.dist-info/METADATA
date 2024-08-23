@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: loman
+Version: 0.4.0
+Summary: Loman tracks state of computations, and the dependencies between them, allowing full and partial recalculations.
+Home-page: https://github.com/janusassetallocation/loman
+Author: Ed Parcell
+Author-email: edparcell@gmail.com
+License: BSD
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+License-File: LICENSE
+License-File: COPYING
+License-File: AUTHORS
+Requires-Dist: decorator
+Requires-Dist: dill
+Requires-Dist: pydotplus
+Requires-Dist: networkx
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+
