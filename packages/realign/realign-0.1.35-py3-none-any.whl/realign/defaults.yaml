@@ -1,0 +1,27 @@
+
+llm_agents:
+  default: &basic_agent_settings
+    model: openai/gpt-4o-mini
+    system_prompt: |
+      Be a good agent.
+
+  rating_5_star_agent: &rating_5_star_agent
+    model: openai/gpt-4o-mini
+    template: rating_5_star
+    json_mode: on
+    hyperparams:
+      temperature: 0
+
+  explanation_summary_agent: &explanation_summary_agent
+    model: openai/gpt-4o-mini
+    template: explanation_summary
+    json_mode: on
+    hyperparams:
+      temperature: 0
+
+evaluators:
+
+  llm_rating_json:
+    repeat: 3
+    aggregate: llm_rating_json_aggregate(values)
+    agent_settings: *rating_5_star_agent
