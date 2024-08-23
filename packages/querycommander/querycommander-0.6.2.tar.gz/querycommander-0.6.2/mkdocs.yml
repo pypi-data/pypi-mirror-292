@@ -1,0 +1,40 @@
+site_name: Query Commander Docs
+site_url: https://querycommander.com/
+repo_url: https://github.com/lnxusr1/query-commander/
+
+theme: 
+    name: readthedocs
+    highlightjs: true
+    prev_next_buttons_location: none
+    titles_only: true
+    collapse_navigation: false
+    logo: https://docs.querycommander.com/en/latest/images/logo-white.png
+    favicon: https://docs.querycommander.com/en/latest/images/favicon.svg
+
+nav:
+    - Overview: 'index.md'
+    - Roadmap: 'roadmap.md'
+    - About: 'about.md'
+    - Installation: 
+      - 'Apache 2.x (httpd)': 'installation/apache.md'
+      - 'AWS (Lambda)': 'installation/aws.md'
+    - Configuration:
+      - 'Basic Setup': 'configuration/basic.md'
+      - Settings: 'configuration/options.md'
+      - Authentication: 'configuration/authenticator.md'
+      - 'User Profiles': 'configuration/profiler.md'
+      - 'Session Management': 'configuration/tokenizer.md'
+      - Connections: 'configuration/connections.md'
+
+    - Links:
+      - '@ Change Log': 'changelog.md'
+      - '@ Report Bugs & Issues': 'https://github.com/lnxusr1/query-commander/issues'
+      - '@ Join the Discussion': 'https://github.com/lnxusr1/query-commander/discussions'
+      - '@ Code': 'https://github.com/lnxusr1/query-commander/'
+      #- '@ Website': 'https://querycommander.com'
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
