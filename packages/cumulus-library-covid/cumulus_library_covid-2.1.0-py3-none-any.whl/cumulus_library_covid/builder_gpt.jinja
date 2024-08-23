@@ -1,0 +1,41 @@
+-- Map boolean column names to symptom labels that Chart Review will use
+{% set cols = {
+  'congestion_or_runny_nose': 'Congestion or runny nose',
+  'cough': 'Cough',
+  'diarrhea': 'Diarrhea',
+  'dyspnea': 'Dyspnea',
+  'fatigue': 'Fatigue',
+  'fever_or_chills': 'Fever or chills',
+  'headache': 'Headache',
+  'loss_of_taste_or_smell': 'Loss of taste or smell',
+  'muscle_or_body_aches': 'Muscle or body aches',
+  'nausea_or_vomiting': 'Nausea or vomiting',
+  'sore_throat': 'Sore throat',
+} -%}
+
+CREATE TABLE covid_symptom__symptom_{{ model }} AS
+
+-- Iterate table once for each symptom, noting the cases where it was present
+{% for col_name, symptom_label in cols.items() %}
+SELECT
+    CONCAT('Encounter/', nr.encounter_id) AS encounter_ref,
+    CONCAT('DocumentReference/', nr.docref_id) AS docref_ref,
+    '{{ symptom_label }}' AS symptom_display
+FROM covid_symptom__nlp_results_{{ model }} AS nr
+WHERE nr.symptoms.{{ col_name }}
+UNION
+{% endfor %}
+
+-- Also capture encounters with no symptoms (as a single empty symptom label).
+-- Chart review will recognize this as "reviewed, but did not find anything".
+SELECT
+    CONCAT('Encounter/', nr.encounter_id) AS encounter_ref,
+    CONCAT('DocumentReference/', nr.docref_id) AS docref_ref,
+    '' AS symptom_display
+FROM covid_symptom__nlp_results_{{ model }} AS nr
+WHERE
+{% for col_name in cols %}
+NOT nr.symptoms.{{ col_name }}
+{%- if not loop.last %} AND{%- endif %}
+{% endfor %}
+;
