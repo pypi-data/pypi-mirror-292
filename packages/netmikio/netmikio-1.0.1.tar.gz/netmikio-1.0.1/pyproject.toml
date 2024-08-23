@@ -1,0 +1,7 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=45", "wheel", "setuptools_scm"]
+
+[build]
+ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF"
+
