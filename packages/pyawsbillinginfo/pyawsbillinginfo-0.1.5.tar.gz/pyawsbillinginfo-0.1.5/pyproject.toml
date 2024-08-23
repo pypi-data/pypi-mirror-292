@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "pyawsbillinginfo"
+version = "0.1.5"
+description = "A CLI for retrieving AWS Billing info"
+authors = ["Joe Drumgoole <joe@joedrumgoole.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+boto3 = "^1.35.3"
+configargparse = "^1.7"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+
+[tool.poetry.scripts]
+pyawsbillinginfo = "pyawsbillinginfo.pyawsbillinginfo:aws_billing_info"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
