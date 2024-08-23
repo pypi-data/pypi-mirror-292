@@ -1,0 +1,16 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lignum"
+authors = [{name = "Rob Sigrest", email = "rob.sigrest@gmail.com"}]
+readme = "readme.md"
+dynamic = ["description"]
+version = "0.0.1"
+
+[project.optional-dependencies]
+test = [
+  "flake8==7.1.1",
+  "pytest==8.3.2",
+]
