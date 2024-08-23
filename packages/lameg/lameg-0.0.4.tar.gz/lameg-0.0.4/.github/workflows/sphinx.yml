@@ -1,0 +1,47 @@
+name: Deploy Sphinx Docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        python-version: '3.7'
+        activate-environment: lameg
+        auto-activate-base: false
+
+    - name: Install dependencies
+      run: |
+        conda activate lameg
+        pip install .
+        pip install -r dev_requirements.txt
+      shell: bash -l {0}
+
+    - name: Generate API documentation
+      run: |
+        conda activate lameg
+        cd docs
+        make apidoc
+      shell: bash -l {0}
+
+    - name: Build the documentation
+      run: |
+        conda activate lameg
+        cd docs
+        make html-noplot
+      shell: bash -l {0}
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/_build/html
