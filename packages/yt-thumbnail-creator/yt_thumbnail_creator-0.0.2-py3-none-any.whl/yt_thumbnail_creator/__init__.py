@@ -1,0 +1,1 @@
+from yt_thumbnail_creator import yt_thumb_gen
