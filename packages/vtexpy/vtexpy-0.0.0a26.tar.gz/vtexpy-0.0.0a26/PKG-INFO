@@ -1,0 +1,68 @@
+Metadata-Version: 2.1
+Name: vtexpy
+Version: 0.0.0a26
+Summary: Unofficial Python SDK for VTEX API
+Home-page: https://github.com/lvieirajr/vtex-python
+License: MIT
+Keywords: vtex,sdk,client,api
+Author: Luis Vieira
+Author-email: lvieira@lvieira.com
+Maintainer: Luis Vieira
+Maintainer-email: lvieira@lvieira.com
+Requires-Python: >=3.9,<3.13
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Dist: httpx (>=0.26,<1.0)
+Requires-Dist: tenacity (>=8.3,<10.0)
+Project-URL: Documentation, https://github.com/lvieirajr/vtex-python
+Project-URL: Repository, https://github.com/lvieirajr/vtex-python
+Description-Content-Type: text/markdown
+
+# VTEXPY
+[![PyPI Version](https://img.shields.io/pypi/v/vtexpy.svg)](https://pypi.python.org/pypi/vtexpy)
+
+## Unofficial Python SDK for VTEX API
+
+This is an unofficial Python SDK designed to facilitate integration with the VTEX API.
+
+### Features
+
+- Easy to use Python interface for calling endpoints on the VTEX API.
+
+### Getting Started
+
+#### Requirements
+
+- Python >= 3.9, <3.13
+- httpx >= 0.26, <1.0
+- tenacity >= 8.3, <10.0
+
+#### Installation
+
+```bash
+pip install vtexpy
+```
+
+#### Usage
+
+```python
+from vtex import VTEX
+
+
+vtex_client = VTEX(account_name="<ACCOUNT_NAME>", app_key="APP_KEY", app_token="<APP_TOKEN>")
+carrier_list_response = vtex_client.logistics.list_carriers(page=1, page_size=100)
+```
+
