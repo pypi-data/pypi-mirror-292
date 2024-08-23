@@ -1,0 +1,57 @@
+Metadata-Version: 2.3
+Name: uncross
+Version: 0.1.0
+Summary: An opinionated meta build system for C cross-compilation.
+Project-URL: Documentation, https://github.com/williamkborn/uncross#readme
+Project-URL: Issues, https://github.com/williamkborn/uncross/issues
+Project-URL: Source, https://github.com/williamkborn/uncross
+Author-email: William Born <william.born.git@gmail.com>
+License-Expression: MIT
+License-File: LICENSE.txt
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: auto-click-auto
+Requires-Dist: click
+Requires-Dist: codechecker
+Requires-Dist: colorama
+Requires-Dist: gitpython
+Requires-Dist: prompt-toolkit
+Requires-Dist: requests
+Requires-Dist: rich
+Requires-Dist: setuptools
+Requires-Dist: toml
+Provides-Extra: tools
+Requires-Dist: clang-format; extra == 'tools'
+Requires-Dist: clang-tidy; extra == 'tools'
+Requires-Dist: cmake; extra == 'tools'
+Description-Content-Type: text/markdown
+
+# uncross
+
+[![PyPI - Version](https://img.shields.io/pypi/v/uncross.svg)](https://pypi.org/project/uncross)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/uncross.svg)](https://pypi.org/project/uncross)
+
+-----
+
+## Table of Contents
+
+- [Installation](#installation)
+- [License](#license)
+
+## Installation
+
+```console
+pip install uncross
+```
+
+## License
+
+`uncross` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
