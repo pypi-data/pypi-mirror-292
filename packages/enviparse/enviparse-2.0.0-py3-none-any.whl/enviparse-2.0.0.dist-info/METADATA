@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: enviparse
+Version: 2.0.0
+Summary: enviparse help you manage your application properties using environment variabl
+Author-email: Illuin technology <contact@illuin.tech>
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.9
+License-File: LICENSE.txt
+Provides-Extra: attr
+Requires-Dist: attrs <24.0.0,>=19.2.0 ; extra == 'attr'
+Provides-Extra: dev
+Requires-Dist: black ==24.8.0 ; extra == 'dev'
+Requires-Dist: build ==1.2.1 ; extra == 'dev'
+Requires-Dist: pytest ==8.3.2 ; extra == 'dev'
+Requires-Dist: pytest-cov ==5.0.0 ; extra == 'dev'
+Requires-Dist: pylint ==3.2.6 ; extra == 'dev'
+Requires-Dist: setuptools ==73.0.1 ; extra == 'dev'
+Requires-Dist: twine ==5.1.1 ; extra == 'dev'
+Requires-Dist: wheel ==0.44.0 ; extra == 'dev'
+Provides-Extra: opyoid
+Requires-Dist: opyoid <2.1.0,>=1.0.0 ; extra == 'opyoid'
+
