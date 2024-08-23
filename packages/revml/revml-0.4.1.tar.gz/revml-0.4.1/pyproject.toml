@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "revml"
+version = "0.4.1"
+description = "EVM (de)compiler using NN."
+authors = ["apehex <apehex@protonmail.com>"]
+readme = ".github/README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.13"
+tensorflow = ">=2.15"
+mlable = ">=0.7"
+tokun = ">=0.13"
+
+[tool.poetry.group.test.dependencies]
+pytest = "*"
+
+[tool.poetry.group.dev.dependencies]
+datasets = ">= 2.20"
+tensorflow-datasets = ">=4.9"
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
