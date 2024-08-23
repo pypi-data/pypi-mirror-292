@@ -1,0 +1,54 @@
+Metadata-Version: 2.3
+Name: pppybox
+Version: 0.0.12
+Project-URL: Documentation, https://github.com/edwardzjl/pybox#readme
+Project-URL: Issues, https://github.com/edwardzjl/pybox/issues
+Project-URL: Source, https://github.com/edwardzjl/pybox
+Author-email: Junlin Zhou <jameszhou2108@hotmail.com>
+License-Expression: Apache-2.0
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: aiohttp[speedups]>=3.9.3
+Requires-Dist: jkclient>=0.0.5
+Requires-Dist: jupyter-client>=8.6.0
+Requires-Dist: pydantic>=2
+Requires-Dist: python-dotenv>=1
+Requires-Dist: requests>=2
+Requires-Dist: websockets>=12
+Provides-Extra: local
+Requires-Dist: ipykernel>=6.26.0; extra == 'local'
+Requires-Dist: ipython>=8.18.1; extra == 'local'
+Description-Content-Type: text/markdown
+
+# pybox
+
+[![PyPI - Version](https://img.shields.io/pypi/v/pppybox.svg)](https://pypi.org/project/pppybox)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pppybox.svg)](https://pypi.org/project/pppybox)
+
+-----
+
+## Table of Contents
+
+- [pybox](#pybox)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [License](#license)
+
+## Installation
+
+```console
+pip install pppybox
+```
+
+## License
+
+`pybox` is distributed under the terms of the [Apache 2.0](https://spdx.org/licenses/Apache-2.0.html) license.
