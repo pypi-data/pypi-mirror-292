@@ -1,0 +1,45 @@
+site_name: GraphRAG
+
+theme:
+  name: material
+  highlightjs: true
+  features:
+    - navigation.tabs
+
+plugins:
+  - search
+  - gen-files:
+      scripts:
+        - scripts/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: false
+            heading_level: 1
+            docstring_style: google
+            show_if_no_docstring: true
+            members_order: alphabetical
+  - mkdocs-jupyter
+
+markdown_extensions:
+  - markdown_include.include:
+      base_path: .
+  - admonition
+nav:
+  - Home: index.md
+  - Guides:
+    - Text Unit Extraction: guides/text_units_extraction.ipynb
+    - Graph Generation:
+        - Overview: guides/graph_extraction/index.md
+        - Entity Relationship Extraction: guides/graph_extraction/er_extraction.ipynb
+        - Graph Generator: guides/graph_extraction/graph_generator.ipynb
+    
+  - API Reference: reference/
+
+repo_name: ksachdeva/langchain-graphrag
+repo_url: https://github.com/ksachdeva/langchain-graphrag
