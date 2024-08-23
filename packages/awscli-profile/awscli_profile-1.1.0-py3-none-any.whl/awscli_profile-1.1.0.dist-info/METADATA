@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: awscli-profile
+Version: 1.1.0
+Summary: awscli profile manager intended for use as cli alias
+Author-Email: Yuichiro Smith <yu-ichiro@s3i7h.com>
+License: MIT
+Project-URL: Homepage, https://github.com/s3i7h/awscli-profile
+Project-URL: Repository, https://github.com/s3i7h/awscli-profile
+Project-URL: Issues, https://github.com/s3i7h/awscli-profile/issues
+Requires-Python: >=3.8
+Requires-Dist: typer>=0.12.4
+Description-Content-Type: text/markdown
+
+# awscli-profile
+
+[![PyPI - Version](https://img.shields.io/pypi/v/awscli-profile)](https://pypi.org/project/awscli-profile/)
+
+
+a simple profile switcher for awscli
+
+# Installation
+
+```shell
+$ pip install awscli_profile
+```
+
+# Usage
+
+```shell
+$ aws-profile
+ 0)account1 - AKA....
+*1)account2 - AKB....
+
+Choose profile: 0
+Switched to: account1
+```
+
+```
+$ aws-profile account2
+Switched to: account2
+```
+
+## as a awscli alias
+
+```shell
+$ echo 'profile = !aws-profile' >> ~/.aws/cli/alias
+```
