@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package rome.services.fund_manager;
+
+// The fund manager service definition.
+service FundMangerService {
+  rpc HealthCheck (HealthCheckRequest) returns (HealthCheckResponse) {}
+  rpc CreateAccount (CreateAccountRequest) returns (CreateAccountResponse) {}
+  rpc DepositFundsToAccount (DepositFundsToAccountRequest) returns (DepositFundsToAccountResponse) {}
+  rpc WithdrawFundsFromAccount (WithdrawFundsFromAccountRequest) returns (WithdrawFundsFromAccountResponse) {}
+  rpc SubscribeFundsToPortfolio (SubscribeFundsToPortfolioRequest) returns (SubscribeFundsToPortfolioResponse) {}
+  rpc WithdrawFundsFromPortfolio (WithdrawFundsFromPortfolioRequest) returns (WithdrawFundsFromPortfolioResponse) {}
+}
+
+
+message Transaction {
+
+  message Transfer {
+    string from = 1;
+    string to = 2;
+    double amount = 3;
+  }
+
+  message Trade {
+
+  }
+}
+
+message Portfolio {
+  string id = 1;
+  string name = 2;
+  string account_name = 3;
+}
+
+message Account {
+  string id = 1;
+  string name = 2;
+  double balance = 3;
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+  bool ok = 1;
+}
+
+message CreateAccountRequest {
+  string name = 1;
+
+  message Debug {
+    bool include_req_in_resp = 1;
+  }
+  Debug debug = 100;
+}
+
+message CreateAccountResponse {
+  Account account = 1;
+  CreateAccountRequest request = 50;
+}
+
+message DepositFundsToAccountRequest {
+  string account_id = 1;
+  string source = 2;
+  double amount = 3;
+
+  message Debug {
+    bool include_req_in_resp = 1;
+  }
+  Debug debug = 100;
+}
+
+message DepositFundsToAccountResponse {
+  Account account = 1;
+  DepositFundsToAccountRequest request = 50;
+}
+
+message WithdrawFundsFromAccountRequest {
+  string account_id = 1;
+  string sink = 2;
+  double amount = 3;
+
+  message Debug {
+    bool include_req_in_resp = 1;
+  }
+  Debug debug = 100;
+
+}
+
+message WithdrawFundsFromAccountResponse {
+  Account account = 1;
+  WithdrawFundsFromAccountRequest request = 50;
+}
+
+message SubscribeFundsToPortfolioRequest {
+  string account_id = 1;
+  string portfolio_id = 2;
+  double amount = 3;
+
+  message Debug {
+    bool include_req_in_resp = 1;
+  }
+  Debug debug = 100;
+}
+
+message SubscribeFundsToPortfolioResponse {
+  string account_id = 1;
+  string portfolio_id = 2;
+
+  // Ending balance
+  double balance = 3;
+
+  SubscribeFundsToPortfolioRequest request = 50;
+}
+
+
+message WithdrawFundsFromPortfolioRequest {
+  string account_id = 1;
+  string portfolio_id = 2;
+  double amount = 3;
+
+  message Debug {
+    bool include_req_in_resp = 1;
+  }
+  Debug debug = 100;
+}
+
+message WithdrawFundsFromPortfolioResponse {
+  string account_id = 1;
+  string portfolio_id = 2;
+
+  // Ending balance
+  double balance = 3;
+
+  WithdrawFundsFromPortfolioRequest request = 50;
+}

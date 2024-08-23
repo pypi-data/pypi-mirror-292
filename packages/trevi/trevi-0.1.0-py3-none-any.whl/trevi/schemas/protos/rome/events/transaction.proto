@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package rome.events;
+
+message Transaction {
+    string source = 1;
+    string to = 2;
+    double amount = 3;
+}

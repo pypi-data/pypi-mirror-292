@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package rome.conf.backtest.source_streams.crypto;
+
+message SubscribePublish {
+    string subscribe_to = 1;
+    string publish_to = 2;
+}
+
+message TickPubConfiguration {
+    string clock_stream = 1;
+    repeated SubscribePublish subpub = 10;
+}

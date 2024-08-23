@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package rome.conf.backtest.clock;
+
+import "google/protobuf/timestamp.proto";
+
+
+message ClockConfiguration {
+    google.protobuf.Timestamp start = 1;
+    google.protobuf.Timestamp end = 2;
+    double wait_milliseconds = 3;
+    double increment_seconds = 4;
+}

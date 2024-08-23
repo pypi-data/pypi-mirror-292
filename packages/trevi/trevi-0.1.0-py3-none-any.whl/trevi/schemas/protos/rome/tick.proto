@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package rome.findata;
+
+import "google/protobuf/timestamp.proto";
+
+message Tick {
+    google.protobuf.Timestamp timestamp = 1;
+    string product = 2;
+    message Side {
+        double price = 1;
+        double quantity = 2;
+    }
+    Side bid = 10;
+    Side ask = 11;
+
+}

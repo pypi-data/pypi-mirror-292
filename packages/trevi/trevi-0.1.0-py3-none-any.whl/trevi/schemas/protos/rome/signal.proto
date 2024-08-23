@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package rome.signal;
+
+import "google/protobuf/timestamp.proto";
+
+message Signal {
+    google.protobuf.Timestamp timestamp = 1;
+    bool signal = 2;
+}

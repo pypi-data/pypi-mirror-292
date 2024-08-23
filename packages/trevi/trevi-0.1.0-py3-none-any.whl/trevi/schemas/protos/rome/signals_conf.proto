@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package rome.signals.conf;
+
+message SubscribePublish {
+    string subscribe_to = 1;
+    string publish_to = 2;
+}
+
+
+message BidAskDivergeConf {
+    SubscribePublish subscribePublish = 1;
+}
+
+message MonotonicConf {
+    int32 count = 1;
+    bool increasing = 2;
+    SubscribePublish subscribePublish = 10;
+}
