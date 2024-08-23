@@ -1,0 +1,29 @@
+[project]
+name = "dashai_plugin_test_cami"
+version = "0.0.3"
+
+dependencies = [
+  # add plugin dependencies here
+]
+
+authors = [
+  { name="c"},
+  { email="c@gmail.com"},
+]
+
+keywords = [
+    "DashAI",
+    "Model"
+]
+
+description = "DashAI Plugin description"
+readme = "README.md"
+requires-python = ">=3.8" # DashAI software needs python 3.8 or higher
+
+[project.entry-points."dashai.plugins"]
+# Add all the necessary entrypoint (one per DashAI component)
+MLPImageClassifier="dashai_plugin_test_cami.mlp_pytorch_model:MLPImageClassifier"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
