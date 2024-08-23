@@ -1,0 +1,40 @@
+- multiple integrals vs iterated integrals: allow to specify order of integration.
+  see:
+  https://en.wikipedia.org/wiki/Order_of_integration_(calculus)
+  https://en.wikipedia.org/wiki/Multiple_integral#Multiple_integrals_and_iterated_integrals
+
+- implementation of improved Lebedev-Laikov methods via ROSE.
+  These are reported to be even more efficient. Additionally, the ROSE procedure might be
+  applicable to all Gauss quadratures with octahedral symmetry.
+  see:
+  Stevensson2006 https://doi.org/10.1016/j.jmr.2006.04.008
+
+- add S2 Gauss quadratures from Stepan2020.
+  These are more efficient than Lebendev and than Graf2013 and have octahedral symmetry
+  see:
+  Stepan2020 https://www.aanda.org/articles/aa/abs/2020/04/aa37566-20/aa37566-20.html
+  quadratures available as txt files via CDS
+
+- add S2 Gauss quadratures from Popov2023, available up to degree 30
+  These are more efficient than Lebendev and similar to Graf2013 and have icosahedral symmetry
+  Additional, this paper provides a table pointing to the "best" quadratures up to degree 79 from
+  various sources.
+  It also indicates, that quadratures of different symmetry might be available from the same authors.
+  see:
+  Popov2023 https://link.springer.com/article/10.1134/S1995423923040067
+
+- make storage of quadratures more efficient by using symmetries.
+  E.g., for rules with octahedral symmetry, storing one octant is enough.
+  see, e.g. Stepan2020 https://www.aanda.org/articles/aa/abs/2020/04/aa37566-20/aa37566-20.html
+  and many other sources, including burkhart's website
+
+- implement functionality to rotate quadrature points.
+  This would for example be useful for more efficient storage or for more flexibility.
+  Would also allow to test robustness of quadratures with respect to random rotations
+  more easily.
+
+- Check if this lattice database could be useful for quadratures on other geometries:
+  http://www.math.rwth-aachen.de/~Gabriele.Nebe/LATTICES/
+
+- add spherical designs, coverings and packings from SloaneWebsite:
+  http://www.neilsloane.com/

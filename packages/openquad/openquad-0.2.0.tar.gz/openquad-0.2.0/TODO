@@ -1,0 +1,76 @@
+# Problems to solve:
+x Figure out interface for quadrature points (grids or no grids?); if necessary, figure out, how to design grids
+x Mapping between quadrature methods and abbreviations
+x Make sure, order of angles for two-angle-grids is correct (theta-phi vs phi-theta)
+. Implement conversion of two-angle-grids to quaternions; how to determine if first or third Euler angle is used?
+x Fix Jacobian
+. require python 3.7+ for testing (because of nullcontext for does_not_raise)
+x switch from quaternion to quaternionic
+x design interface for selecting the quadrature order or the number of grid points
+x let subclasses handle jacobian
+. create test that ensures that integrating an array is independent of the data's memory layout
+x implement xyz for S2 and enable tests
+x implement quaternions for SO3 and enable tests
+. fix monte-carlo-so3
+- create test for intergation of S2 with xyz?
+x add methods for writing grids
+x replace squeeze by sum in newton_cotes.py (in order to unify output)
+x for newton_cotes: if axis has length one, multiply by length of interval to achieve the same result as with gauss-legendre
+x fix new methods: file errors:
+    - womersley/s2_symmetric/ss002.00006
+x fix GrafSO3Gauss: not normalized weights for p_acc=5
+- add p_acc attribute to topological quadratures?
+. add name attribute to quadratures
+. make _available_sizes public?
+x fix idx_stop in calculation of rank profiles
+x add sampling in z instead of theta
+x do not sample endpoint for periodic intervals (trapz and simps)
+. add test for periodic boundaries
+. implement None-type quadrature (with sanity checks)
+x add test for None-type quadrature
+x fix memory bug by copying input paramters
+
+
+x implement more methods;
+sources:
+sloane: http://www.neilsloane.com/index.html#TABLES
+womersley: https://web.maths.unsw.edu.au/~rsw/Sphere/
+graf: https://www-user.tu-chemnitz.de/~potts/workgroup/graef/quadrature/
+
+2d options:
+- spherical designs (t=21/N=240) from sloane http://neilsloane.com/sphdesigns/index.html
+- spherical coverings from sloane http://neilsloane.com/coverings/index.html
+- spherical packings from sloane http://neilsloane.com/packings/index.html
+- spherical packings with icosahedral symmetry from sloane http://neilsloane.com/icosahedral.codes/index.html
+
+- non-symmetric spherical designs (t=180/N=16382) from womersley https://web.maths.unsw.edu.au/~rsw/Sphere/EffSphDes/sf.html
+- symmetric spherical designs (t=325/N=52978) from womersley https://web.maths.unsw.edu.au/~rsw/Sphere/EffSphDes/ss.html
+- mininum energy points for n=6561 from womersley https://web.maths.unsw.edu.au/~rsw/Sphere/Energy/index.html
+
+- fft optimized Gaussian quadrature (t=44/N=672) with symmetries from graf https://www-user.tu-chemnitz.de/~potts/workgroup/graef/quadrature/index.php
+- fft optimized spherical designs (t=124/N=7812) with symmetries from graf https://www-user.tu-chemnitz.de/~potts/workgroup/graef/quadrature/index.php
+- fft optimized non-optimal spherical designs from graf for t=100,200,500,1000 (N up to 1002000)
+
+3d options:
+- spherical desings from womersley (t=31/N=3642) https://web.maths.unsw.edu.au/~rsw/Sphere/EffSphDes/S3SD.html
+
+- fft optimized Gaussian quadratures (t=14/N=960) with symmetries from graf
+- fft optimized Chebyshev quadratures (equal weight/spherical design) (t=23/N=5880) with symmetries from graf
+
+
+# decisions required:
+x evaluate jacobian on subclass level or in the high-level classes?
+-> evaluate at subclass level. seems to be more consistent, since also the interval is handled on the subclass level
+
+x decide on dimension of grid: (n_coords, size) vs (size, n_coords)
+-> (n_coords, size); it is more convenient to use in functions with the interface like f(x1, x2, x3...)
+
+x To which extent do I want to support quaternions?
+-> angles are the primary coordinates; I may support quaternions for convenience
+
+x Think about if integration volumne should be included in the integral (8pi^2 or 4pi etc).
+  In particular, this matters for the Monte-Carlo integration.
+-> No, I will not include this factor in the integral. The package is designed for solving the angular integrals without any prefactors.
+
+
+

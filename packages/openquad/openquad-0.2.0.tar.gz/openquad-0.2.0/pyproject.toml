@@ -1,0 +1,72 @@
+[project]
+name = "openquad"
+dynamic = ["version"]
+authors = [
+  {name="Alexander Blech", email="alexander.blech@fu-berlin.de"},
+]
+description = "Open database for multi-dimensional numerical integration"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3"
+dependencies = [
+  "numpy",
+  "scipy",
+  "quaternionic",
+]
+keywords = [
+  "quadrature",
+  "integration",
+  "numerical integration",
+  "spherical quadrature",
+  "illumination integral",
+  "orientation average",
+  "Euler angles",
+  "orientation",
+  "SO3",
+  "Lebedev",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/openquad/__init__.py"
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "spherical",
+]
+examples = [
+  "matplotlib",
+  "spherical",
+]
+doc = [
+  "sphinx==7.4.7",
+  "pydata_sphinx_theme==0.15.4",
+  "intersphinx_registry",
+  "sphinx-autoapi==3.2.1",
+  "sphinx-copybutton==0.5.2",
+  "sphinx_design==0.6.0",
+  "numpydoc==1.7.0",
+]
+
+[tool.hatch.envs.doc]
+description = "Build documentation (Python 3.12)"
+template = "doc"
+features = [
+  "dev",
+  "doc",
+]
+python = "3.12"
+
+[tool.hatch.envs.doc.scripts]
+build = [
+    #"sphinx-build -v -W --keep-going -b html doc doc/_build/html -d doc/_build/doctree",
+    "sphinx-build -b html doc doc/_build/html -d doc/_build/doctree",
+]
+serve = "python -m http.server -d doc/_build/html"
