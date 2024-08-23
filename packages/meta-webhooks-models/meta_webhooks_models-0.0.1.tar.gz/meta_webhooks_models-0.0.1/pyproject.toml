@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=65.5.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meta-webhooks-models"
+version = "0.0.1"
+description = "Models to handling Meta Webhook payloads"
+readme = "README.md"
+authors = [{ name = "Andrea Carmisciano", email = "andrea.carmisciano@gmail.com" }]
+dynamic = ["dependencies"]
+
+[project.urls]  # Optional
+"Homepage" = "https://github.com/acarmisc/meta-webhooks-models"
+"Source" = "https://github.com/acarmisc/meta-webhooks-models"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+include = ["meta-webhooks-models*"]
+exclude = ["res", "venv", ".venv"]
