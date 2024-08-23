@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: arise
+Version: 0.1.1
+Summary: Running Bitcoin and peripherals via Terminal User Interface
+Home-page: https://github.com/krutt/arise
+License: MIT
+Keywords: anonymous,bitcoin,cli,lightning,terminal,tui,ui,user-interface
+Author: Sitt Guruvanich
+Author-email: aekasitt.g+github@siamintech.co.th
+Requires-Python: >=3.8,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: MacOS :: MacOS 9
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Office/Business :: Financial
+Classifier: Topic :: Office/Business :: Financial :: Investment
+Classifier: Topic :: Other/Nonlisted Topic
+Classifier: Topic :: Security :: Cryptography
+Requires-Dist: blessed (>=1.20.0,<2.0.0)
+Requires-Dist: click (>=8.1.7,<9.0.0)
+Requires-Dist: docker (>=6.1.3,<7.0.0)
+Requires-Dist: pydantic (>=2.5.2,<3.0.0)
+Requires-Dist: pyyaml (>=6.0.1,<7.0.0)
+Requires-Dist: requests (<=2.31.0)
+Requires-Dist: rich (>=13.7.0,<14.0.0)
+Project-URL: Repository, https://github.com/krutt/arise
+Description-Content-Type: text/markdown
+
+# Arise
+
+[![Arise Banner](static/arise-banner.svg)](https://github.com/krutt/arise/blob/master/static/arise-banner.svg)
+
+## Contributions
+
+To be determined
+
+### Known issues
+
+You may run into this setback when first running this project. This is a
+[docker-py](https://github.com/docker/docker-py/issues/3059) issue widely known as of October 2022.
+
+```python
+docker.errors.DockerException:
+  Error while fetching server API version: (
+    'Connection aborted.', FileNotFoundError(
+      2, 'No such file or directory'
+    )
+  )
+```
+
+See the following issue for Mac OSX troubleshooting.
+[docker from_env and pull is broken on mac](https://github.com/docker/docker-py/issues/3059#issuecomment-1294369344)
+Recommended fix is to run the following command:
+
+```sh
+sudo ln -s "$HOME/.docker/run/docker.sock" /var/run/docker.sock
+```
+
+## License
+
+This project is licensed under the terms of the MIT license.
+
+
+
