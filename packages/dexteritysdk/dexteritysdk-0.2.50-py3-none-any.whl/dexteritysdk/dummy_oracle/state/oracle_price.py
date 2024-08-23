@@ -1,0 +1,13 @@
+from solders.pubkey import Pubkey
+
+from dexteritysdk.dummy_oracle.state.common import AccountTag
+from podite import pod, U64, I64
+
+
+@pod
+class OraclePrice:
+    tag: AccountTag
+    price: I64
+    decimals: U64
+    slot: U64
+    update_authority: Pubkey
