@@ -1,0 +1,34 @@
+{
+    "provider": "anthropic",
+    "prompt_file_path": "prompts/generate_titles_claude.prompt",
+    "output_path": "output_directory",
+    "input_file": null,
+    "input_text": "",
+    "latency": 0.0,
+    "cost": 0.0,
+    "errors": {
+        "errors": [],
+        "duplicates": 0
+    },
+    "completion": {
+        "system_role": "You are a helpful assistant.",
+        "model": "claude-3-5-sonnet-20240620",
+        "parameters": {
+            "provider": "anthropic",
+            "model": "claude-3-5-sonnet-20240620",
+            "prompt_version": 1.0,
+            "input": "input/podcast_description.txt",
+            "output": "title-claude.txt",
+            "max_tokens": 1000
+        },
+        "cost": 0.0,
+        "is_json": false,
+        "test_path": "",
+        "response_message": "",
+        "latency": 0.0,
+        "provider_file": "claude.json"
+    },
+    "completion_type": "ClaudeCompletion",
+    "response_message": "",
+    "response_text": null
+}
