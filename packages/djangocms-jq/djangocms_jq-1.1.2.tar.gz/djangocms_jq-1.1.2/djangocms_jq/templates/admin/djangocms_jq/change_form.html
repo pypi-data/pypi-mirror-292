@@ -1,0 +1,79 @@
+{% extends "admin/change_form.html" %}
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+        .djangocms-admin-style table.example {
+            border: solid #808080 1px;
+            margin-bottom: 1em !important;
+        }
+        table.example td {
+            border-bottom: solid #808080 1px;
+            border-right: solid #808080 1px;
+            padding: 0.2em 0.6em;
+        }
+        table.example td:nth-child(2) {
+            text-align: right;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <hr>
+    <div>
+        <h1>Query examples</h1>
+        <p>
+            <div>For example consider the source:</div>
+            <pre class="cms-btn-active"><code><strong>{"person": {"name": "Bob", "age": 42}}</strong></code></pre>
+            <div>the query <code><strong>.person.name</strong></code> displays <code><strong>Bob</strong></code></div>
+            <div>the query <code><strong>.person.age</strong></code> displays <code><strong>42</strong></code></div>
+        </p>
+        <p>
+            <div>Another example of source:</div>
+            <pre class="cms-btn-active"><code><strong>[1, 2, 3]</strong></code></pre>
+            <div>the query <code><strong>.[]</strong></code> or <code><strong>.[0]</strong></code> displays <code><strong>1</strong></code></div>
+            <div>the query <code><strong>.[1]</strong></code> or <code><strong>.[]+1</strong></code> displays <code><strong>2</strong></code></div>
+            <div>the query <code><strong>.[2]</strong></code> or <code><strong>.[]+2</strong></code> displays <code><strong>3</strong></code></div>
+            <div>the query <code><strong>.</strong></code> displays <code><strong>[1, 2, 3]</strong></code></div>
+            <div>the query <code><strong>.[0:2]</strong></code> displays <code><strong>[1, 2]</strong></code></div>
+        </p>
+        <p>
+            <div>Complex example:</div>
+            <pre class="cms-btn-active"><code><strong>[
+    {"currency": "USD", "amount": 2230},
+    {"currency": "EUR", "amount": 22500},
+    {"currency": "GBP", "amount": 222000}
+]</strong></code></pre>
+            <div>the query <code><strong>.[] | select(.currency == "EUR").amount</strong></code> displays <code><strong>22500</strong></code></div>
+            <div>the query <code><strong>.[] | select(.amount &lt; 2240).amount</strong></code> displays <code><strong>2230</strong></code> (Displays only the first occurrence of the condition when the fetcher is set to "first".)</div>
+            <div>the query <code><strong>.[] | select(.amount &lt; 2240) | "\(.amount) \(.currency)"</strong></code> displays <code><strong>2230 USD</strong></code></div>
+            <div>the query <code><strong>max_by(.amount).currency</strong></code> displays <code><strong>GBP</strong></code></div>
+            <div>the query <code><strong>min_by(.amount).currency</strong></code> displays <code><strong>USD</strong></code></div>
+            <div>the query <code><strong>.[] | "&lt;tr&gt;&lt;td&gt;\(.currency)&lt;/td&gt;&lt;td&gt;\(.amount)&lt;/td&gt;&lt;/tr&gt;"</strong></code> with function "all" and wrapper "<code><strong>&lt;table&gt;{}&lt;/table&gt;</strong></code>" and checked checkbox "Mark safe" displays the table</div>
+            <table class="example">
+                <tr><td>USD</td><td>2230</td></tr>
+                <tr><td>EUR</td><td>22500</td></tr>
+                <tr><td>GBP</td><td>222000</td></tr>
+            </table>
+            <div>the query <code><strong>def format: tostring | [while(length &gt; 0; .[:-3]) | .[-3:]] | reverse | join(" ") + " CZK"; .[] | "&lt;tr&gt;&lt;td&gt;\(.currency)&lt;/td&gt;&lt;td&gt;\(.amount|format)&lt;/td&gt;&lt;/tr&gt;"</strong></code> with function "all" and wrapper "<code><strong>&lt;table&gt;{}&lt;/table&gt;</strong></code>" and checked checkbox "Mark safe" displays the table</div>
+            <table class="example">
+                <tr><td>USD</td><td>2 230 CZK</td></tr>
+                <tr><td>EUR</td><td>22 500 CZK</td></tr>
+                <tr><td>GBP</td><td>222 000 CZK</td></tr>
+            </table>
+        </p>
+        <p>
+            <div>For more examples see <a href="https://pypi.org/project/jq/" target="_top">jq on pypi.org</a>.</div>
+            <div>The function of querying data is <code><strong>jq.compile(query).input_value(source).$fetcher()</strong></code>.</div>
+            <div>
+                More resources for studying query:
+            </div>
+            <ol>
+                <li><a href="https://jqlang.github.io/jq/manual/" target="_top">jq Manual</a></li>
+                <li><a href="https://www.devtoolsdaily.com/jq/examples/" target="_top">JQ Examples</a></li>
+                <li><a href="https://exercism.org/tracks/jq/concepts/strings" target="_top">About Strings</a></li>
+                <li><a href="https://jqplay.org/" target="_top">jq play</a> - a playground</li>
+            </ol>
+        </p>
+    </div>
+{% endblock %}

@@ -1,0 +1,5 @@
+<span {{ instance.html_attributes }}>{% spaceless %}{% if instance.value is None %}
+        {{ instance.show_when_missing|default_if_none:"" }}
+    {% else %}
+        {{ instance.value }}
+    {% endif %}{% endspaceless %}</span>
