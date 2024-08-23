@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "CleanIO"
+version = "0.1.4"
+description = "Simple IO eliminating the boilerplate."
+readme = "README.rst"
+authors = [
+        "Travis Risner <cleanio@punmyword.com>",
+    ]
+license = "MIT"
+keywords = [ "IO", "yield" ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+homepage = "https://github.com/deeppunster/CleanIO/"
+repository = "https://github.com/deeppunster/CleanIO/"
+
+packages = [
+    { include = "cleanio", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+
+[tool.poetry.dev-dependencies]
+blue = "^0.9.0"
+certifi = "^2024.2.2"
+pytest = "^7.1.2"
+python-dotenv = "^0.20.0"
+Sphinx = "^5.1.1"
+
+[tool.poetry.group.dev.dependencies]
+keyring = "^25.2.0"
+
+[tool.poetry.urls]
+"Issues" = "https://github.com/deeppunster/CleanIO/issues"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+Homepage = "https://github.com/deeppunster/CleanIO"
+Issues = "https://github.com/deeppunster/CleanIO/issues"
