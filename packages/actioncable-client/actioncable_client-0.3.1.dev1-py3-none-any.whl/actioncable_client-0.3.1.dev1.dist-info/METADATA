@@ -1,0 +1,143 @@
+Metadata-Version: 2.3
+Name: actioncable_client
+Version: 0.3.1.dev1
+Summary: ActionCable Client for Python 3
+Project-URL: Homepage, https://gitlab.com/liant-sasu/actioncable-client
+Project-URL: Issues, https://gitlab.com/liant-sasu/actioncable-client/-/issues
+Author-email: Tobias Feistmantl <tobias@myhome-automations.com>, Roland Laurès <roland@liant.dev>
+Maintainer-email: Roland Laurès <roland@liant.dev>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9
+Requires-Dist: bson>=0.5.10
+Requires-Dist: requests-oauth2client>=1.5.3
+Requires-Dist: websocket-client>=1.1.0
+Description-Content-Type: text/markdown
+
+# ActionCable Client - A Python 3 client for Rails' Action Cable
+
+[![pipeline status](https://gitlab.com/liant-sasu/actioncable-client/badges/main/pipeline.svg?ignore_skipped=true)](https://gitlab.com/liant-sasu/actioncable-client/-/commits/main)
+[![coverage report](https://gitlab.com/liant-sasu/actioncable-client/badges/main/coverage.svg)](https://gitlab.com/liant-sasu/actioncable-client/-/commits/main)
+[![Latest Release](https://gitlab.com/liant-sasu/actioncable-client/-/badges/release.svg)](https://gitlab.com/liant-sasu/actioncable-client/-/releases)
+
+This library handles the connections and subscriptions and monitors the connection. It removes the underlaying websocket layer.
+
+Currently authentication is not managed by this library.
+
+## Credits
+
+The project originate [this](https://github.com/tobiasfeistmantl/python-actioncable-zwei) that was
+stalled for more than 5 years.
+
+## ROADMAP
+
+See [Roadmap file](https://gitlab.com/liant-sasu/actioncable-client/-/commits/main/ROADMAP.md)
+
+## Get started
+
+```shell
+sudo pip3 install actioncable_client
+```
+
+## Example usage
+
+### Setup the connection
+
+Setup the connection to your Action Cable server.
+
+```python
+from actioncable_client.connection import Connection
+# We advise you to use OAuth2 connections, but you can use Bearer Token or any other authentication mechanism.
+# Here we use the [deviceFlow](https://www.rfc-editor.org/rfc/rfc8628)
+from requests_oauth2client import OAuth2Client, OAuth2DeviceCodeAuth
+from urllib.parse import urlparse
+
+# just to get URL from string
+basehost = 'https://example.com'
+basehost_uri = urlparse(basehost)
+secured = basehost_uri.schema == 'https'
+
+# Create the authentication for OAuth2
+client = OAuth2Client(
+    token_endpoint='https://example.com/oauth/token',
+    device_authorization_endpoint='https://example.com/oauth/authorize_device',
+    client_id='7afe93b6-6063-11ef-b51a-9ea0527474b9', # The UUID of your application
+    # If you accept testing agains not https servers, don't forget to set this to true
+    # This is because requests_oauth2client do not accept custom ports (and they are right)
+    testing=(not secured or (basehost_uri.port is not None and basehost.port != 443))
+)
+# Get your device code to display This is linked to the Device Flow
+# I put a device_id which will get authorization from the resource_owner to acces with a given scope
+device_auth_resp = self._client.authorize_device(device_id='7afe93b6-6063-11ef-b51a-9ea0527474b9', scopes='my_scope')
+
+connection = Connection(
+    url=f'{'wss' if secured else 'ws'}://{basehost_uri.netloc}/cable',
+    # This will force the origin. If header is a BaseOAuth2RenewableTokenAuth subclass like
+    # OAuth2DeviceCodeAuth is, then it will take the auth server as origin by default (so let it blank)
+    origin='https://example2.com',
+    header=OAuth2DeviceCodeAuth(client, device_auth_resp)
+)
+connection.connect()
+```
+
+### Subscribe to a channel
+
+```python
+from actioncable_client.subscription import Subscription
+
+subscription = Subscription(connection, identifier={'channel': 'YourChannelCLassName'})
+
+def on_receive(message: dict):
+  print('New message arrived!')
+  print('Action: {} | Data: {}'.format(message['action'], message['data']))
+
+subscription.on_receive(callback=on_receive)
+subscription.create()
+```
+
+### Send data
+
+```python
+from actioncable_client.message import Message
+
+message = Message(action='update_something', data={'something': 'important'})
+
+subscription.send(message)
+```
+
+### Unsubscribe
+
+```python
+subscription.remove()
+```
+
+### Close connection
+
+```python
+connection.disconnect()
+```
+
+## Development
+
+Pull it up!
+
+## You need help?
+
+Ask a question on [StackOverflow](https://stackoverflow.com/) with the tag 'actioncable-client'.
+
+## Contribution
+
+Create pull requests on GitLab and help us to improve this package. There are some guidelines to follow:
+
+* Follow the conventions
+* Test all your implementations
+* Document methods which aren't self-explaining
+* try to follow the [Roadmap](https://gitlab.com/liant-sasu/actioncable-client/-/commits/main/ROADMAP.md)
+
+Copyright (c) 2024 Liant SASU, MIT license
