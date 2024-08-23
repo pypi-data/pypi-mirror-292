@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wordler-cli"
+version = "0.0.1"
+authors = [{name="Kevin Schattin"}]
+description = "Wordle solver!"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+dependencies = [
+    "questionary >= 2.0.1",
+    "pandas >= 2.2.2",
+    "numpy >= 1.24.2",
+    "typer >= 0.12.4",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.scripts]
+wordler = "wordler.main:app"
+
+[project.urls]
+Homepage = "https://github.com/k-bartolomeo/wordler"
+Issues = "https://github.com/k-bartolomeo/wordler/issues"
+
+[tool.setuptools]
+packages = ["wordler", "wordler.cli", "wordler.tables", "wordler.solver"]
+
+[tool.setuptools.package-data]
+"*" = ["*.csv"]
