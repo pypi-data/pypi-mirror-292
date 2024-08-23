@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: openapi-trimmer
+Version: 0.1.1
+Summary: Tool to trim OpenAPI YAML file to include only desired paths and components.
+Home-page: https://github.com/idachev/openapi-trimmer
+Author: Ivan Dachev
+Author-email: i_dachev@yahoo.co.uk
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: setuptools
+Requires-Dist: pyyaml >=6
+
+# OpenAPI Trimmer
+
+Usage to make Open API file only for Quotes API,
+removing all others and also removing some DTOs:
+
+```bash
+openapi-trimmer -i openapi.yaml \
+  -p /v1/quotes \
+  -ec CompanyConfigDto,CompanyConfigPagedDto,UpdateCompanyConfigDto
+```
+
+The output will be stored in `openapi-trimmer.yaml`
+
+At the end validate with:
+
+```bash
+swagger-cli validate ./openapi-trimmer.yaml
+```
+
+## PyPi
+
+To install check the package on PyPi:
+
+https://pypi.org/project/openapi-trimmer/
+
+```bash
+pip install openapi-trimmer
+```
