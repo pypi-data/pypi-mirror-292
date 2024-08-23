@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.handshakehelpers &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.handshakehelpers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.handshakehelpers</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Authors:</span>
+<span class="c1">#   Karel Srot</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Class with various handshake helpers.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.extensions</span> <span class="kn">import</span> <span class="n">PaddingExtension</span><span class="p">,</span> <span class="n">PreSharedKeyExtension</span>
+<span class="kn">from</span> <span class="nn">.utils.cryptomath</span> <span class="kn">import</span> <span class="n">derive_secret</span><span class="p">,</span> <span class="n">secureHMAC</span><span class="p">,</span> <span class="n">HKDF_expand_label</span>
+<span class="kn">from</span> <span class="nn">.utils.constanttime</span> <span class="kn">import</span> <span class="n">ct_compare_digest</span>
+<span class="kn">from</span> <span class="nn">.errors</span> <span class="kn">import</span> <span class="n">TLSIllegalParameterException</span>
+
+
+<div class="viewcode-block" id="HandshakeHelpers"><a class="viewcode-back" href="../../tlslite.handshakehelpers.html#tlslite.handshakehelpers.HandshakeHelpers">[docs]</a><span class="k">class</span> <span class="nc">HandshakeHelpers</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class encapsulates helper functions to be used with a TLS handshake.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HandshakeHelpers.alignClientHelloPadding"><a class="viewcode-back" href="../../tlslite.handshakehelpers.html#tlslite.handshakehelpers.HandshakeHelpers.alignClientHelloPadding">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">alignClientHelloPadding</span><span class="p">(</span><span class="n">clientHello</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Align ClientHello using the Padding extension to 512 bytes at least.</span>
+
+<span class="sd">        :param ClientHello clientHello: ClientHello to be aligned</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check clientHello size if padding extension should be added</span>
+        <span class="c1"># we want to add the extension even when using just SSLv3</span>
+        <span class="c1"># cut-off 4 bytes with the Hello header (ClientHello type + Length)</span>
+        <span class="n">clientHelloLength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">clientHello</span><span class="o">.</span><span class="n">write</span><span class="p">())</span> <span class="o">-</span> <span class="mi">4</span>
+        <span class="k">if</span> <span class="mi">256</span> <span class="o">&lt;=</span> <span class="n">clientHelloLength</span> <span class="o">&lt;=</span> <span class="mi">511</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">clientHello</span><span class="o">.</span><span class="n">extensions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">clientHello</span><span class="o">.</span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="c1"># we need to recalculate the size after extension list addition</span>
+                <span class="c1"># results in extra 2 bytes, equals to</span>
+                <span class="c1"># clientHelloLength = len(clientHello.write()) - 4</span>
+                <span class="n">clientHelloLength</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="c1"># we want to get 512 bytes in total, including the padding</span>
+            <span class="c1"># extension header (4B)</span>
+            <span class="n">paddingExtensionInstance</span> <span class="o">=</span> <span class="n">PaddingExtension</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="nb">max</span><span class="p">(</span><span class="mi">512</span> <span class="o">-</span> <span class="n">clientHelloLength</span> <span class="o">-</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">clientHello</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">paddingExtensionInstance</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_calc_binder</span><span class="p">(</span><span class="n">prf</span><span class="p">,</span> <span class="n">psk</span><span class="p">,</span> <span class="n">handshake_hash</span><span class="p">,</span> <span class="n">external</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the binder value for a given HandshakeHash (that includes</span>
+<span class="sd">        a truncated client hello already)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">prf</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">,</span> <span class="s1">&#39;sha384&#39;</span><span class="p">)</span>
+        <span class="n">key_len</span> <span class="o">=</span> <span class="mi">32</span> <span class="k">if</span> <span class="n">prf</span> <span class="o">==</span> <span class="s1">&#39;sha256&#39;</span> <span class="k">else</span> <span class="mi">48</span>
+
+        <span class="c1"># HKDF-Extract(0, PSK)</span>
+        <span class="n">early_secret</span> <span class="o">=</span> <span class="n">secureHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="n">key_len</span><span class="p">),</span> <span class="n">psk</span><span class="p">,</span> <span class="n">prf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">external</span><span class="p">:</span>
+            <span class="n">binder_key</span> <span class="o">=</span> <span class="n">derive_secret</span><span class="p">(</span><span class="n">early_secret</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;ext binder&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prf</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">binder_key</span> <span class="o">=</span> <span class="n">derive_secret</span><span class="p">(</span><span class="n">early_secret</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;res binder&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prf</span><span class="p">)</span>
+        <span class="n">finished_key</span> <span class="o">=</span> <span class="n">HKDF_expand_label</span><span class="p">(</span><span class="n">binder_key</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;finished&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">key_len</span><span class="p">,</span>
+                                         <span class="n">prf</span><span class="p">)</span>
+        <span class="n">binder</span> <span class="o">=</span> <span class="n">secureHMAC</span><span class="p">(</span><span class="n">finished_key</span><span class="p">,</span> <span class="n">handshake_hash</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="n">prf</span><span class="p">),</span> <span class="n">prf</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">binder</span>
+
+<div class="viewcode-block" id="HandshakeHelpers.calc_res_binder_psk"><a class="viewcode-back" href="../../tlslite.handshakehelpers.html#tlslite.handshakehelpers.HandshakeHelpers.calc_res_binder_psk">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">calc_res_binder_psk</span><span class="p">(</span><span class="n">iden</span><span class="p">,</span> <span class="n">res_master_secret</span><span class="p">,</span> <span class="n">tickets</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate PSK associated with provided ticket identity.&quot;&quot;&quot;</span>
+        <span class="n">ticket</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tickets</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">ticket</span> <span class="o">==</span> <span class="n">iden</span><span class="o">.</span><span class="n">identity</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">ticket_hash</span> <span class="o">=</span> <span class="s1">&#39;sha256&#39;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">res_master_secret</span><span class="p">)</span> <span class="o">==</span> <span class="mi">32</span> <span class="k">else</span> <span class="s1">&#39;sha384&#39;</span>
+
+        <span class="n">psk</span> <span class="o">=</span> <span class="n">HKDF_expand_label</span><span class="p">(</span><span class="n">res_master_secret</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;resumption&quot;</span><span class="p">,</span>
+                                <span class="n">ticket</span><span class="o">.</span><span class="n">ticket_nonce</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">res_master_secret</span><span class="p">),</span>
+                                <span class="n">ticket_hash</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">psk</span></div>
+
+<div class="viewcode-block" id="HandshakeHelpers.update_binders"><a class="viewcode-back" href="../../tlslite.handshakehelpers.html#tlslite.handshakehelpers.HandshakeHelpers.update_binders">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">update_binders</span><span class="p">(</span><span class="n">client_hello</span><span class="p">,</span> <span class="n">handshake_hashes</span><span class="p">,</span> <span class="n">psk_configs</span><span class="p">,</span>
+                       <span class="n">tickets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">res_master_secret</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sign the Client Hello using TLS 1.3 PSK binders.</span>
+
+<span class="sd">        note: the psk_configs should be in the same order as the ones in the</span>
+<span class="sd">        PreSharedKeyExtension extension (extra ones are ok)</span>
+
+<span class="sd">        :param client_hello: ClientHello to sign</span>
+<span class="sd">        :param handshake_hashes: hashes of messages exchanged so far</span>
+<span class="sd">        :param psk_configs: PSK identities and secrets</span>
+<span class="sd">        :param tickets: optional list of tickets received from server</span>
+<span class="sd">        :param bytearray res_master_secret: secret associated with the</span>
+<span class="sd">            tickets</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">client_hello</span><span class="o">.</span><span class="n">extensions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="n">PreSharedKeyExtension</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Last extension in client_hello must be &quot;</span>
+                             <span class="s2">&quot;PreSharedKeyExtension&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tickets</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">res_master_secret</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Tickets require setting res_master_secret&quot;</span><span class="p">)</span>
+
+        <span class="n">hh</span> <span class="o">=</span> <span class="n">handshake_hashes</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">hh</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">client_hello</span><span class="o">.</span><span class="n">psk_truncate</span><span class="p">())</span>
+
+        <span class="n">configs_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">psk_configs</span><span class="p">)</span>
+        <span class="n">ticket_idens</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">tickets</span><span class="p">:</span>
+            <span class="n">ticket_idens</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">ticket</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tickets</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">iden</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">identities</span><span class="p">):</span>
+            <span class="c1"># identities that are tickets don&#39;t carry PSK directly</span>
+            <span class="k">if</span> <span class="n">iden</span><span class="o">.</span><span class="n">identity</span> <span class="ow">in</span> <span class="n">ticket_idens</span><span class="p">:</span>
+                <span class="n">binder_hash</span> <span class="o">=</span> <span class="s1">&#39;sha256&#39;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">res_master_secret</span><span class="p">)</span> <span class="o">==</span> <span class="mi">32</span> \
+                    <span class="k">else</span> <span class="s1">&#39;sha384&#39;</span>
+                <span class="n">psk</span> <span class="o">=</span> <span class="n">HandshakeHelpers</span><span class="o">.</span><span class="n">calc_res_binder_psk</span><span class="p">(</span>
+                    <span class="n">iden</span><span class="p">,</span> <span class="n">res_master_secret</span><span class="p">,</span> <span class="n">tickets</span><span class="p">)</span>
+                <span class="n">external</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">config</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">configs_iter</span><span class="p">)</span>
+                    <span class="k">while</span> <span class="n">config</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">iden</span><span class="o">.</span><span class="n">identity</span><span class="p">:</span>
+                        <span class="n">config</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">configs_iter</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;psk_configs don&#39;t match the &quot;</span>
+                                     <span class="s2">&quot;PreSharedKeyExtension&quot;</span><span class="p">)</span>
+
+                <span class="n">binder_hash</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="s1">&#39;sha256&#39;</span>
+                <span class="n">psk</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">external</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="n">binder</span> <span class="o">=</span> <span class="n">HandshakeHelpers</span><span class="o">.</span><span class="n">_calc_binder</span><span class="p">(</span><span class="n">binder_hash</span><span class="p">,</span>
+                                                   <span class="n">psk</span><span class="p">,</span>
+                                                   <span class="n">hh</span><span class="p">,</span>
+                                                   <span class="n">external</span><span class="p">)</span>
+
+            <span class="c1"># replace the fake value with calculated one</span>
+            <span class="n">ext</span><span class="o">.</span><span class="n">binders</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">binder</span></div>
+
+<div class="viewcode-block" id="HandshakeHelpers.verify_binder"><a class="viewcode-back" href="../../tlslite.handshakehelpers.html#tlslite.handshakehelpers.HandshakeHelpers.verify_binder">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">verify_binder</span><span class="p">(</span><span class="n">client_hello</span><span class="p">,</span> <span class="n">handshake_hashes</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">secret</span><span class="p">,</span> <span class="n">prf</span><span class="p">,</span>
+                      <span class="n">external</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify the PSK binder value in client hello.</span>
+
+<span class="sd">        :param client_hello: ClientHello to verify</span>
+<span class="sd">        :param handshake_hashes: hashes of messages exchanged so far</span>
+<span class="sd">        :param position: binder at which position should be verified</span>
+<span class="sd">        :param secret: the secret PSK</span>
+<span class="sd">        :param prf: name of the hash used as PRF</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">client_hello</span><span class="o">.</span><span class="n">extensions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="n">PreSharedKeyExtension</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span>
+                <span class="s2">&quot;Last extension in client_hello must be &quot;</span>
+                <span class="s2">&quot;PreSharedKeyExtension&quot;</span><span class="p">)</span>
+
+        <span class="n">hh</span> <span class="o">=</span> <span class="n">handshake_hashes</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">hh</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">client_hello</span><span class="o">.</span><span class="n">psk_truncate</span><span class="p">())</span>
+
+        <span class="n">binder</span> <span class="o">=</span> <span class="n">HandshakeHelpers</span><span class="o">.</span><span class="n">_calc_binder</span><span class="p">(</span><span class="n">prf</span><span class="p">,</span>
+                                               <span class="n">secret</span><span class="p">,</span>
+                                               <span class="n">hh</span><span class="p">,</span>
+                                               <span class="n">external</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ct_compare_digest</span><span class="p">(</span><span class="n">binder</span><span class="p">,</span> <span class="n">ext</span><span class="o">.</span><span class="n">binders</span><span class="p">[</span><span class="n">position</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Binder does not verify&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.utils.cryptomath &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.utils.cryptomath</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.utils.cryptomath</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Authors: </span>
+<span class="c1">#   Trevor Perrin</span>
+<span class="c1">#   Martin von Loewis - python 3 port</span>
+<span class="c1">#   Yngve Pettersen (ported by Paul Sokolovsky) - TLS 1.2</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;cryptomath module</span>
+
+<span class="sd">This module has basic math/crypto code.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">binascii</span>
+
+<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">compat26Str</span><span class="p">,</span> <span class="n">compatHMAC</span><span class="p">,</span> <span class="n">compatLong</span><span class="p">,</span> \
+        <span class="n">bytes_to_int</span><span class="p">,</span> <span class="n">int_to_bytes</span><span class="p">,</span> <span class="n">bit_length</span><span class="p">,</span> <span class="n">byte_length</span>
+<span class="kn">from</span> <span class="nn">.codec</span> <span class="kn">import</span> <span class="n">Writer</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tlshashlib</span> <span class="k">as</span> <span class="n">hashlib</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tlshmac</span> <span class="k">as</span> <span class="n">hmac</span>
+
+
+<span class="c1"># **************************************************************************</span>
+<span class="c1"># Load Optional Modules</span>
+<span class="c1"># **************************************************************************</span>
+
+<span class="c1"># Try to load M2Crypto/OpenSSL</span>
+<span class="c1"># pylint: disable=invalid-name</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">M2Crypto</span> <span class="kn">import</span> <span class="n">m2</span>
+    <span class="n">m2cryptoLoaded</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">M2CRYPTO_AES_CTR</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="s1">&#39;aes_192_ctr&#39;</span><span class="p">):</span>
+        <span class="n">M2CRYPTO_AES_CTR</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/proc/sys/crypto/fips_enabled&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fipsFile</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;1&#39;</span> <span class="ow">in</span> <span class="n">fipsFile</span><span class="o">.</span><span class="n">read</span><span class="p">():</span>
+                <span class="n">m2cryptoLoaded</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">):</span>
+        <span class="c1"># looks like we&#39;re running in container, likely not FIPS mode</span>
+        <span class="n">m2cryptoLoaded</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># If AES-CBC is not available, don&#39;t use m2crypto</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="s1">&#39;aes_192_cbc&#39;</span><span class="p">):</span>
+        <span class="n">m2cryptoLoaded</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">m2cryptoLoaded</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># pylint: enable=invalid-name</span>
+
+<span class="c1">#Try to load GMPY</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">gmpy</span>
+    <span class="n">gmpy</span><span class="o">.</span><span class="n">mpz</span>
+    <span class="n">gmpyLoaded</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">gmpyLoaded</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="c1"># Try to load GMPY2</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="n">powmod</span>
+    <span class="n">GMPY2_LOADED</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">GMPY2_LOADED</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="c1"># Use the faster mpz</span>
+<span class="k">if</span> <span class="n">GMPY2_LOADED</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="n">mpz</span>
+<span class="k">elif</span> <span class="n">gmpyLoaded</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">gmpy</span> <span class="kn">import</span> <span class="n">mpz</span>
+
+
+<span class="c1">#Try to load pycrypto</span>
+<span class="c1"># pylint: disable=invalid-name</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">Crypto.Cipher.AES</span>
+    <span class="c1"># check if we&#39;re not using pycryptodome</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># pycrypto defaults to ECB when just key is provided</span>
+        <span class="c1"># pycryptodome requires specifying the mode of operation</span>
+        <span class="n">Crypto</span><span class="o">.</span><span class="n">Cipher</span><span class="o">.</span><span class="n">AES</span><span class="o">.</span><span class="n">AESCipher</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;2&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">128</span><span class="o">//</span><span class="mi">8</span><span class="p">))</span>
+        <span class="n">pycryptoLoaded</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">pycryptoLoaded</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">pycryptoLoaded</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># pylint: enable=invalid-name</span>
+
+
+<span class="c1"># **************************************************************************</span>
+<span class="c1"># PRNG Functions</span>
+<span class="c1"># **************************************************************************</span>
+
+<span class="c1"># Check that os.urandom works</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">zlib</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">1000</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="mi">900</span>
+
+<div class="viewcode-block" id="getRandomBytes"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.getRandomBytes">[docs]</a><span class="k">def</span> <span class="nf">getRandomBytes</span><span class="p">(</span><span class="n">howMany</span><span class="p">):</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="n">howMany</span><span class="p">))</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">==</span> <span class="n">howMany</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">b</span></div>
+
+<span class="n">prngName</span> <span class="o">=</span> <span class="s2">&quot;os.urandom&quot;</span>
+
+<span class="c1"># **************************************************************************</span>
+<span class="c1"># Simple hash functions</span>
+<span class="c1"># **************************************************************************</span>
+
+<div class="viewcode-block" id="MD5"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.MD5">[docs]</a><span class="k">def</span> <span class="nf">MD5</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a MD5 digest of data&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">secureHash</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;md5&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SHA1"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.SHA1">[docs]</a><span class="k">def</span> <span class="nf">SHA1</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a SHA1 digest of data&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">secureHash</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;sha1&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="secureHash"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.secureHash">[docs]</a><span class="k">def</span> <span class="nf">secureHash</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a digest of `data` using `algorithm`&quot;&quot;&quot;</span>
+    <span class="n">hashInstance</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">algorithm</span><span class="p">)</span>
+    <span class="n">hashInstance</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compat26Str</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">hashInstance</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="secureHMAC"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.secureHMAC">[docs]</a><span class="k">def</span> <span class="nf">secureHMAC</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a HMAC using `b` and `k` using `algorithm`&quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">compatHMAC</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">compatHMAC</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="HMAC_MD5"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.HMAC_MD5">[docs]</a><span class="k">def</span> <span class="nf">HMAC_MD5</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">secureHMAC</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="s1">&#39;md5&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HMAC_SHA1"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.HMAC_SHA1">[docs]</a><span class="k">def</span> <span class="nf">HMAC_SHA1</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">secureHMAC</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="s1">&#39;sha1&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HMAC_SHA256"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.HMAC_SHA256">[docs]</a><span class="k">def</span> <span class="nf">HMAC_SHA256</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">secureHMAC</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="s1">&#39;sha256&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HMAC_SHA384"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.HMAC_SHA384">[docs]</a><span class="k">def</span> <span class="nf">HMAC_SHA384</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">secureHMAC</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="s1">&#39;sha384&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HKDF_expand"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.HKDF_expand">[docs]</a><span class="k">def</span> <span class="nf">HKDF_expand</span><span class="p">(</span><span class="n">PRK</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">):</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">divceil</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">)()</span><span class="o">.</span><span class="n">digest_size</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+    <span class="n">Titer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">T</span> <span class="o">+=</span> <span class="n">Titer</span>
+        <span class="n">Titer</span> <span class="o">=</span> <span class="n">secureHMAC</span><span class="p">(</span><span class="n">PRK</span><span class="p">,</span> <span class="n">Titer</span> <span class="o">+</span> <span class="n">info</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">([</span><span class="n">x</span><span class="p">]),</span> <span class="n">algorithm</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">T</span><span class="p">[:</span><span class="n">L</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="HKDF_expand_label"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.HKDF_expand_label">[docs]</a><span class="k">def</span> <span class="nf">HKDF_expand_label</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">hashValue</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TLS1.3 key derivation function (HKDF-Expand-Label).</span>
+
+<span class="sd">    :param bytearray secret: the key from which to derive the keying material</span>
+<span class="sd">    :param bytearray label: label used to differentiate the keying materials</span>
+<span class="sd">    :param bytearray hashValue: bytes used to &quot;salt&quot; the produced keying</span>
+<span class="sd">        material</span>
+<span class="sd">    :param int length: number of bytes to produce</span>
+<span class="sd">    :param str algorithm: name of the secure hash algorithm used as the</span>
+<span class="sd">        basis of the HKDF</span>
+<span class="sd">    :rtype: bytearray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hkdfLabel</span> <span class="o">=</span> <span class="n">Writer</span><span class="p">()</span>
+    <span class="n">hkdfLabel</span><span class="o">.</span><span class="n">addTwo</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+    <span class="n">hkdfLabel</span><span class="o">.</span><span class="n">addVarSeq</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;tls13 &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">label</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">hkdfLabel</span><span class="o">.</span><span class="n">addVarSeq</span><span class="p">(</span><span class="n">hashValue</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">HKDF_expand</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">hkdfLabel</span><span class="o">.</span><span class="n">bytes</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="derive_secret"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.derive_secret">[docs]</a><span class="k">def</span> <span class="nf">derive_secret</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">handshake_hashes</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TLS1.3 key derivation function (Derive-Secret).</span>
+
+<span class="sd">    :param bytearray secret: secret key used to derive the keying material</span>
+<span class="sd">    :param bytearray label: label used to differentiate they keying materials</span>
+<span class="sd">    :param HandshakeHashes handshake_hashes: hashes of the handshake messages</span>
+<span class="sd">        or `None` if no handshake transcript is to be used for derivation of</span>
+<span class="sd">        keying material</span>
+<span class="sd">    :param str algorithm: name of the secure hash algorithm used as the</span>
+<span class="sd">        basis of the HKDF algorithm - governs how much keying material will</span>
+<span class="sd">        be generated</span>
+<span class="sd">    :rtype: bytearray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">handshake_hashes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">hs_hash</span> <span class="o">=</span> <span class="n">secureHash</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="n">algorithm</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">hs_hash</span> <span class="o">=</span> <span class="n">handshake_hashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="n">algorithm</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HKDF_expand_label</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">hs_hash</span><span class="p">,</span>
+                             <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">)()</span><span class="o">.</span><span class="n">digest_size</span><span class="p">,</span>
+                             <span class="n">algorithm</span><span class="p">)</span></div>
+
+<span class="c1"># **************************************************************************</span>
+<span class="c1"># Converter Functions</span>
+<span class="c1"># **************************************************************************</span>
+
+<div class="viewcode-block" id="bytesToNumber"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.bytesToNumber">[docs]</a><span class="k">def</span> <span class="nf">bytesToNumber</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">endian</span><span class="o">=</span><span class="s2">&quot;big&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a number stored in bytearray to an integer.</span>
+
+<span class="sd">    By default assumes big-endian encoding of the number.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">bytes_to_int</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">endian</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="numberToByteArray"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.numberToByteArray">[docs]</a><span class="k">def</span> <span class="nf">numberToByteArray</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">howManyBytes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">endian</span><span class="o">=</span><span class="s2">&quot;big&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert an integer into a bytearray, zero-pad to howManyBytes.</span>
+
+<span class="sd">    The returned bytearray may be smaller than howManyBytes, but will</span>
+<span class="sd">    not be larger.  The returned bytearray will contain a big- or little-endian</span>
+<span class="sd">    encoding of the input integer (n). Big endian encoding is used by default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">howManyBytes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="n">byte_length</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">howManyBytes</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">int_to_bytes</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">endian</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">endian</span> <span class="o">==</span> <span class="s2">&quot;big&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="n">length</span><span class="o">-</span><span class="n">howManyBytes</span><span class="p">:</span><span class="n">length</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">[:</span><span class="n">howManyBytes</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">int_to_bytes</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">howManyBytes</span><span class="p">,</span> <span class="n">endian</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mpiToNumber"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.mpiToNumber">[docs]</a><span class="k">def</span> <span class="nf">mpiToNumber</span><span class="p">(</span><span class="n">mpi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a MPI (OpenSSL bignum string) to an integer.&quot;&quot;&quot;</span>
+    <span class="n">byte</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">mpi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">byte</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x80</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input must be a positive integer&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">byte</span><span class="p">[</span><span class="mi">4</span><span class="p">:])</span></div>
+
+
+<div class="viewcode-block" id="numberToMPI"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.numberToMPI">[docs]</a><span class="k">def</span> <span class="nf">numberToMPI</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">ext</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#If the high-order bit is going to be set,</span>
+    <span class="c1">#add an extra byte of zeros</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">numBits</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x7</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">numBytes</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">ext</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="o">+</span><span class="n">ext</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">length</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+    <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">length</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+    <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">length</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+    <span class="n">b</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">length</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+    <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
+
+
+<span class="c1"># **************************************************************************</span>
+<span class="c1"># Misc. Utility Functions</span>
+<span class="c1"># **************************************************************************</span>
+
+
+<span class="c1"># pylint: disable=invalid-name</span>
+<span class="c1"># pylint recognises them as constants, not function names, also</span>
+<span class="c1"># we can&#39;t change their names without API change</span>
+<span class="n">numBits</span> <span class="o">=</span> <span class="n">bit_length</span>
+
+
+<span class="n">numBytes</span> <span class="o">=</span> <span class="n">byte_length</span>
+<span class="c1"># pylint: enable=invalid-name</span>
+
+
+<span class="c1"># **************************************************************************</span>
+<span class="c1"># Big Number Math</span>
+<span class="c1"># **************************************************************************</span>
+
+<div class="viewcode-block" id="getRandomNumber"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.getRandomNumber">[docs]</a><span class="k">def</span> <span class="nf">getRandomNumber</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">low</span> <span class="o">&lt;</span> <span class="n">high</span>
+    <span class="n">howManyBits</span> <span class="o">=</span> <span class="n">numBits</span><span class="p">(</span><span class="n">high</span><span class="p">)</span>
+    <span class="n">howManyBytes</span> <span class="o">=</span> <span class="n">numBytes</span><span class="p">(</span><span class="n">high</span><span class="p">)</span>
+    <span class="n">lastBits</span> <span class="o">=</span> <span class="n">howManyBits</span> <span class="o">%</span> <span class="mi">8</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">bytes</span> <span class="o">=</span> <span class="n">getRandomBytes</span><span class="p">(</span><span class="n">howManyBytes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lastBits</span><span class="p">:</span>
+            <span class="nb">bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">lastBits</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="nb">bytes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="n">low</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">high</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">n</span></div>
+
+<div class="viewcode-block" id="gcd"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.gcd">[docs]</a><span class="k">def</span> <span class="nf">gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">b</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">a</span></div>
+
+<div class="viewcode-block" id="lcm"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.lcm">[docs]</a><span class="k">def</span> <span class="nf">lcm</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">//</span> <span class="n">gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+
+<span class="c1"># pylint: disable=invalid-name</span>
+<span class="c1"># disable pylint check as the (a, b) are part of the API</span>
+<span class="k">if</span> <span class="n">GMPY2_LOADED</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">invMod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return inverse of a mod b, zero if none.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">powmod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Use Extended Euclidean Algorithm</span>
+<div class="viewcode-block" id="invMod"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.invMod">[docs]</a>    <span class="k">def</span> <span class="nf">invMod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return inverse of a mod b, zero if none.&quot;&quot;&quot;</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+        <span class="n">uc</span><span class="p">,</span> <span class="n">ud</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">c</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">d</span> <span class="o">//</span> <span class="n">c</span>
+            <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">-</span><span class="p">(</span><span class="n">q</span><span class="o">*</span><span class="n">c</span><span class="p">),</span> <span class="n">c</span>
+            <span class="n">uc</span><span class="p">,</span> <span class="n">ud</span> <span class="o">=</span> <span class="n">ud</span> <span class="o">-</span> <span class="p">(</span><span class="n">q</span> <span class="o">*</span> <span class="n">uc</span><span class="p">),</span> <span class="n">uc</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ud</span> <span class="o">%</span> <span class="n">b</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+<span class="c1"># pylint: enable=invalid-name</span>
+
+
+<span class="k">if</span> <span class="n">gmpyLoaded</span> <span class="ow">or</span> <span class="n">GMPY2_LOADED</span><span class="p">:</span>
+<div class="viewcode-block" id="powMod"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.powMod">[docs]</a>    <span class="k">def</span> <span class="nf">powMod</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">power</span><span class="p">,</span> <span class="n">modulus</span><span class="p">):</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+        <span class="n">power</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">power</span><span class="p">)</span>
+        <span class="n">modulus</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">modulus</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">power</span><span class="p">,</span> <span class="n">modulus</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compatLong</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">powMod</span> <span class="o">=</span> <span class="nb">pow</span>
+
+
+<div class="viewcode-block" id="divceil"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.divceil">[docs]</a><span class="k">def</span> <span class="nf">divceil</span><span class="p">(</span><span class="n">divident</span><span class="p">,</span> <span class="n">divisor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integer division with rounding up&quot;&quot;&quot;</span>
+    <span class="n">quot</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">divident</span><span class="p">,</span> <span class="n">divisor</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">quot</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">r</span><span class="p">))</span></div>
+
+
+<span class="c1">#Pre-calculate a sieve of the ~100 primes &lt; 1000:</span>
+<div class="viewcode-block" id="makeSieve"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.makeSieve">[docs]</a><span class="k">def</span> <span class="nf">makeSieve</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">sieve</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sieve</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">sieve</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">sieve</span><span class="p">):</span>
+            <span class="n">sieve</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="n">sieve</span><span class="p">[</span><span class="n">count</span><span class="p">]</span>
+    <span class="n">sieve</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sieve</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="k">if</span> <span class="n">x</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">sieve</span></div>
+
+<div class="viewcode-block" id="isPrime"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.isPrime">[docs]</a><span class="k">def</span> <span class="nf">isPrime</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sieve</span><span class="o">=</span><span class="n">makeSieve</span><span class="p">(</span><span class="mi">1000</span><span class="p">)):</span>
+    <span class="c1">#Trial division with sieve</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sieve</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">n</span><span class="p">:</span> <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
+    <span class="c1">#Passed trial division, proceed to Rabin-Miller</span>
+    <span class="c1">#Rabin-Miller implemented per Ferguson &amp; Schneier</span>
+    <span class="c1">#Compute s, t for Rabin-Miller</span>
+    <span class="k">if</span> <span class="n">display</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">s</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">s</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span>
+    <span class="c1">#Repeat Rabin-Miller x times</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1">#Use 2 as a base for first iteration speedup, per HAC</span>
+    <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">powMod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">v</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">powMod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">getRandomNumber</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="getRandomPrime"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.getRandomPrime">[docs]</a><span class="k">def</span> <span class="nf">getRandomPrime</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a random prime number of a given size.</span>
+
+<span class="sd">    the number will be &#39;bits&#39; bits long (i.e. generated number will be</span>
+<span class="sd">    larger than `(2^(bits-1) * 3 ) / 2` but smaller than 2^bits.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">bits</span> <span class="o">&gt;=</span> <span class="mi">10</span>
+    <span class="c1">#The 1.5 ensures the 2 MSBs are set</span>
+    <span class="c1">#Thus, when used for p,q in RSA, n will have its MSB set</span>
+    <span class="c1">#</span>
+    <span class="c1">#Since 30 is lcm(2,3,5), we&#39;ll set our test numbers to</span>
+    <span class="c1">#29 % 30 and keep them there</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="p">((</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">bits</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">bits</span> <span class="o">-</span> <span class="mi">30</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">display</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">cand_p</span> <span class="o">=</span> <span class="n">getRandomNumber</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
+        <span class="c1"># make odd</span>
+        <span class="k">if</span> <span class="n">cand_p</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cand_p</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">isPrime</span><span class="p">(</span><span class="n">cand_p</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cand_p</span></div>
+
+
+<span class="c1">#Unused at the moment...</span>
+<div class="viewcode-block" id="getRandomSafePrime"><a class="viewcode-back" href="../../../tlslite.utils.cryptomath.html#tlslite.utils.cryptomath.getRandomSafePrime">[docs]</a><span class="k">def</span> <span class="nf">getRandomSafePrime</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a random safe prime.</span>
+
+<span class="sd">    Will generate a prime `bits` bits long (see getRandomPrime) such that</span>
+<span class="sd">    the (p-1)/2 will also be prime.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">bits</span> <span class="o">&gt;=</span> <span class="mi">10</span>
+    <span class="c1">#The 1.5 ensures the 2 MSBs are set</span>
+    <span class="c1">#Thus, when used for p,q in RSA, n will have its MSB set</span>
+    <span class="c1">#</span>
+    <span class="c1">#Since 30 is lcm(2,3,5), we&#39;ll set our test numbers to</span>
+    <span class="c1">#29 % 30 and keep them there</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">bits</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mi">3</span><span class="o">//</span><span class="mi">2</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">bits</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">30</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">getRandomNumber</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">+=</span> <span class="mi">29</span> <span class="o">-</span> <span class="p">(</span><span class="n">q</span> <span class="o">%</span> <span class="mi">30</span><span class="p">)</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">display</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">q</span> <span class="o">+=</span> <span class="mi">30</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">q</span> <span class="o">&gt;=</span> <span class="n">high</span><span class="p">):</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">getRandomNumber</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
+            <span class="n">q</span> <span class="o">+=</span> <span class="mi">29</span> <span class="o">-</span> <span class="p">(</span><span class="n">q</span> <span class="o">%</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="c1">#Ideas from Tom Wu&#39;s SRP code</span>
+        <span class="c1">#Do trial division on p and q before Rabin-Miller</span>
+        <span class="k">if</span> <span class="n">isPrime</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">isPrime</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">isPrime</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">p</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.utils.python_rsakey &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.utils.python_rsakey</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.utils.python_rsakey</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Trevor Perrin</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Pure-Python RSA implementation.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">.cryptomath</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.rsakey</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.pem</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.deprecations</span> <span class="kn">import</span> <span class="n">deprecated_params</span>
+<span class="k">if</span> <span class="n">GMPY2_LOADED</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="n">mpz</span>
+<span class="k">elif</span> <span class="n">gmpyLoaded</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">gmpy</span> <span class="kn">import</span> <span class="n">mpz</span>
+
+<div class="viewcode-block" id="Python_RSAKey"><a class="viewcode-back" href="../../../tlslite.utils.python_rsakey.html#tlslite.utils.python_rsakey.Python_RSAKey">[docs]</a><span class="k">class</span> <span class="nc">Python_RSAKey</span><span class="p">(</span><span class="n">RSAKey</span><span class="p">):</span>
+<div class="viewcode-block" id="Python_RSAKey.__init__"><a class="viewcode-back" href="../../../tlslite.utils.python_rsakey.html#tlslite.utils.python_rsakey.Python_RSAKey.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dP</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dQ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">qInv</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">key_type</span><span class="o">=</span><span class="s2">&quot;rsa&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise key directly from integers.</span>
+
+<span class="sd">        see also generate() and parsePEM().&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">e</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">e</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">n</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">gmpyLoaded</span> <span class="ow">or</span> <span class="n">GMPY2_LOADED</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+            <span class="n">dP</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">dP</span><span class="p">)</span>
+            <span class="n">dQ</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">dQ</span><span class="p">)</span>
+            <span class="n">qInv</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">qInv</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">e</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">q</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">p</span> <span class="ow">and</span> <span class="n">q</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;p and q must be set or left unset together&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span> <span class="ow">and</span> <span class="n">p</span> <span class="ow">and</span> <span class="n">q</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">lcm</span><span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">invMod</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">d</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dP</span> <span class="ow">and</span> <span class="n">p</span><span class="p">:</span>
+            <span class="n">dP</span> <span class="o">=</span> <span class="n">d</span> <span class="o">%</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dP</span> <span class="o">=</span> <span class="n">dP</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dQ</span> <span class="ow">and</span> <span class="n">q</span><span class="p">:</span>
+            <span class="n">dQ</span> <span class="o">=</span> <span class="n">d</span> <span class="o">%</span> <span class="p">(</span><span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dQ</span> <span class="o">=</span> <span class="n">dQ</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">qInv</span><span class="p">:</span>
+            <span class="n">qInv</span> <span class="o">=</span> <span class="n">invMod</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qInv</span> <span class="o">=</span> <span class="n">qInv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blinder</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unblinder</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key_type</span> <span class="o">=</span> <span class="n">key_type</span></div>
+
+<div class="viewcode-block" id="Python_RSAKey.hasPrivateKey"><a class="viewcode-back" href="../../../tlslite.utils.python_rsakey.html#tlslite.utils.python_rsakey.Python_RSAKey.hasPrivateKey">[docs]</a>    <span class="k">def</span> <span class="nf">hasPrivateKey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Does the key has the associated private key (True) or is it only</span>
+<span class="sd">        the public part (False).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">!=</span> <span class="mi">0</span></div>
+
+    <span class="k">def</span> <span class="nf">_rawPrivateKeyOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="c1"># Create blinding values, on the first pass:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">blinder</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unblinder</span> <span class="o">=</span> <span class="n">getRandomNumber</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blinder</span> <span class="o">=</span> <span class="n">powMod</span><span class="p">(</span><span class="n">invMod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unblinder</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">,</span>
+                                      <span class="n">n</span><span class="p">)</span>
+            <span class="n">unblinder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unblinder</span>
+            <span class="n">blinder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blinder</span>
+
+            <span class="c1"># Update blinding values</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinder</span> <span class="o">=</span> <span class="p">(</span><span class="n">blinder</span> <span class="o">*</span> <span class="n">blinder</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unblinder</span> <span class="o">=</span> <span class="p">(</span><span class="n">unblinder</span> <span class="o">*</span> <span class="n">unblinder</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>
+
+        <span class="c1"># Blind the input</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="n">message</span> <span class="o">*</span> <span class="n">blinder</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>
+
+        <span class="c1"># Perform the RSA operation</span>
+        <span class="n">cipher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rawPrivateKeyOpHelper</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="c1"># Unblind the output</span>
+        <span class="n">cipher</span> <span class="o">=</span> <span class="p">(</span><span class="n">cipher</span> <span class="o">*</span> <span class="n">unblinder</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>
+
+        <span class="c1"># Return the output</span>
+        <span class="k">return</span> <span class="n">cipher</span>
+
+    <span class="k">def</span> <span class="nf">_rawPrivateKeyOpHelper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="c1">#Non-CRT version</span>
+        <span class="c1">#c = pow(m, self.d, self.n)</span>
+
+        <span class="c1">#CRT version  (~3x faster).</span>
+        <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+        <span class="n">s1</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dP</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">s2</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dQ</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="p">((</span><span class="n">s1</span> <span class="o">-</span> <span class="n">s2</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">qInv</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">s2</span> <span class="o">+</span> <span class="n">q</span> <span class="o">*</span> <span class="n">h</span>
+        <span class="k">return</span> <span class="n">c</span>
+
+    <span class="k">def</span> <span class="nf">_rawPublicKeyOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+<div class="viewcode-block" id="Python_RSAKey.acceptsPassword"><a class="viewcode-back" href="../../../tlslite.utils.python_rsakey.html#tlslite.utils.python_rsakey.Python_RSAKey.acceptsPassword">[docs]</a>    <span class="k">def</span> <span class="nf">acceptsPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Does it support encrypted key files.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Python_RSAKey.generate"><a class="viewcode-back" href="../../../tlslite.utils.python_rsakey.html#tlslite.utils.python_rsakey.Python_RSAKey.generate">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">key_type</span><span class="o">=</span><span class="s2">&quot;rsa&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a private key with modulus &#39;bits&#39; bit big.</span>
+
+<span class="sd">        key_type can be &quot;rsa&quot; for a universal rsaEncryption key or</span>
+<span class="sd">        &quot;rsa-pss&quot; for a key that can be used only for RSASSA-PSS.&quot;&quot;&quot;</span>
+        <span class="c1"># p, q, and t are standard names for the variables in RSA, so</span>
+        <span class="c1"># ignore the fact those are one character long variable names</span>
+        <span class="c1"># pylint: disable=invalid-name</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">Python_RSAKey</span><span class="p">()</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">getRandomPrime</span><span class="p">(</span><span class="n">bits</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">getRandomPrime</span><span class="p">(</span><span class="n">bits</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">gmpyLoaded</span> <span class="ow">or</span> <span class="n">GMPY2_LOADED</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="n">q</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">lcm</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># since we need to calculate inverse of 65537 mod t, they</span>
+            <span class="c1"># must be relatively prime (coprime)</span>
+            <span class="k">if</span> <span class="n">gcd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">65537</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">p</span> <span class="o">*</span> <span class="n">q</span>
+        <span class="k">if</span> <span class="n">gmpyLoaded</span> <span class="ow">or</span> <span class="n">GMPY2_LOADED</span><span class="p">:</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">mpz</span><span class="p">(</span><span class="mi">65537</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="mi">65537</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">invMod</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">dP</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">d</span> <span class="o">%</span> <span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">dQ</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">d</span> <span class="o">%</span> <span class="p">(</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">qInv</span> <span class="o">=</span> <span class="n">invMod</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">key_type</span> <span class="o">=</span> <span class="n">key_type</span>
+        <span class="c1"># pylint: enable=invalid-name</span>
+        <span class="k">return</span> <span class="n">key</span></div>
+
+<div class="viewcode-block" id="Python_RSAKey.parsePEM"><a class="viewcode-back" href="../../../tlslite.utils.python_rsakey.html#tlslite.utils.python_rsakey.Python_RSAKey.parsePEM">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@deprecated_params</span><span class="p">({</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;password_callback&quot;</span><span class="p">:</span> <span class="s2">&quot;passwordCallback&quot;</span><span class="p">})</span>
+    <span class="k">def</span> <span class="nf">parsePEM</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">password_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a string containing a PEM-encoded &lt;privateKey&gt;.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.python_key</span> <span class="kn">import</span> <span class="n">Python_Key</span>
+        <span class="k">return</span> <span class="n">Python_Key</span><span class="o">.</span><span class="n">parsePEM</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">password_callback</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

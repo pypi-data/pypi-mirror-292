@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.utils.aesgcm &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.utils.aesgcm</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.utils.aesgcm</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Google</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="c1"># GCM derived from Go&#39;s implementation in crypto/cipher.</span>
+<span class="c1">#</span>
+<span class="c1"># https://golang.org/src/crypto/cipher/gcm.go</span>
+
+<span class="c1"># GCM works over elements of the field GF(2^128), each of which is a 128-bit</span>
+<span class="c1"># polynomial. Throughout this implementation, polynomials are represented as</span>
+<span class="c1"># Python integers with the low-order terms at the most significant bits. So a</span>
+<span class="c1"># 128-bit polynomial is an integer from 0 to 2^128-1 with the most significant</span>
+<span class="c1"># bit representing the x^0 term and the least significant bit representing the</span>
+<span class="c1"># x^127 term. This bit reversal also applies to polynomials used as indices in a</span>
+<span class="c1"># look-up table.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">tlslite.utils</span> <span class="kn">import</span> <span class="n">python_aes</span>
+<span class="kn">from</span> <span class="nn">.constanttime</span> <span class="kn">import</span> <span class="n">ct_compare_digest</span>
+<span class="kn">from</span> <span class="nn">.cryptomath</span> <span class="kn">import</span> <span class="n">bytesToNumber</span><span class="p">,</span> <span class="n">numberToByteArray</span>
+
+<div class="viewcode-block" id="AESGCM"><a class="viewcode-back" href="../../../tlslite.utils.aesgcm.html#tlslite.utils.aesgcm.AESGCM">[docs]</a><span class="k">class</span> <span class="nc">AESGCM</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    AES-GCM implementation. Note: this implementation does not attempt</span>
+<span class="sd">    to be side-channel resistant. It&#39;s also rather slow.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AESGCM.__init__"><a class="viewcode-back" href="../../../tlslite.utils.aesgcm.html#tlslite.utils.aesgcm.AESGCM.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">implementation</span><span class="p">,</span> <span class="n">rawAesEncrypt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isBlockCipher</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isAEAD</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nonceLength</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tagLength</span> <span class="o">=</span> <span class="mi">16</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">implementation</span> <span class="o">=</span> <span class="n">implementation</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">16</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;aes128gcm&quot;</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">32</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;aes256gcm&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rawAesEncrypt</span> <span class="o">=</span> <span class="n">rawAesEncrypt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ctr</span> <span class="o">=</span> <span class="n">python_aes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="mi">16</span><span class="p">))</span>
+
+        <span class="c1"># The GCM key is AES(0).</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rawAesEncrypt</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">16</span><span class="p">)))</span>
+
+        <span class="c1"># Pre-compute all 4-bit multiples of h. Note that bits are reversed</span>
+        <span class="c1"># because our polynomial representation places low-order terms at the</span>
+        <span class="c1"># most significant bit. Thus x^0 * h = h is at index 0b1000 = 8 and</span>
+        <span class="c1"># x^1 * h is at index 0b0100 = 4.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_productTable</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">16</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_productTable</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reverseBits</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_productTable</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reverseBits</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_gcmShift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_productTable</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reverseBits</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="mi">2</span><span class="p">)])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_productTable</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reverseBits</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_gcmAdd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_productTable</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reverseBits</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="n">h</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">,</span> <span class="n">ad</span><span class="p">,</span> <span class="n">tagMask</span><span class="p">):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">ad</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">^=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ad</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="mi">64</span><span class="p">))</span> <span class="o">|</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mul</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">^=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">tagMask</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="mi">16</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">^=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">16</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">16</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">16</span><span class="p">])</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mul</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="mi">16</span>
+        <span class="k">if</span> <span class="n">extra</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+            <span class="n">block</span><span class="p">[:</span><span class="n">extra</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="n">extra</span><span class="p">:]</span>
+            <span class="n">y</span> <span class="o">^=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mul</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span>
+
+    <span class="k">def</span> <span class="nf">_mul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns y*H, where H is the GCM key. &quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Multiply H by y 4 bits at a time, starting with the highest power</span>
+        <span class="c1"># terms.</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="c1"># Multiply by x^4. The reduction for the top four terms is</span>
+            <span class="c1"># precomputed.</span>
+            <span class="n">retHigh</span> <span class="o">=</span> <span class="n">ret</span> <span class="o">&amp;</span> <span class="mh">0xf</span>
+            <span class="n">ret</span> <span class="o">&gt;&gt;=</span> <span class="mi">4</span>
+            <span class="n">ret</span> <span class="o">^=</span> <span class="p">(</span><span class="n">AESGCM</span><span class="o">.</span><span class="n">_gcmReductionTable</span><span class="p">[</span><span class="n">retHigh</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="mi">128</span><span class="o">-</span><span class="mi">16</span><span class="p">))</span>
+
+            <span class="c1"># Add in y&#39; * H where y&#39; are the next four terms of y, shifted down</span>
+            <span class="c1"># to the x^0..x^4. This is one of the pre-computed multiples of</span>
+            <span class="c1"># H. The multiplication by x^4 shifts them back into place.</span>
+            <span class="n">ret</span> <span class="o">^=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_productTable</span><span class="p">[</span><span class="n">y</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">&gt;&gt;=</span> <span class="mi">4</span>
+        <span class="k">assert</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+<div class="viewcode-block" id="AESGCM.seal"><a class="viewcode-back" href="../../../tlslite.utils.aesgcm.html#tlslite.utils.aesgcm.AESGCM.seal">[docs]</a>    <span class="k">def</span> <span class="nf">seal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nonce</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Encrypts and authenticates plaintext using nonce and data. Returns the</span>
+<span class="sd">        ciphertext, consisting of the encrypted plaintext and tag concatenated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nonce</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">12</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Bad nonce length&quot;</span><span class="p">)</span>
+
+        <span class="c1"># The initial counter value is the nonce, followed by a 32-bit counter</span>
+        <span class="c1"># that starts at 1. It&#39;s used to compute the tag mask.</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">counter</span><span class="p">[:</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">nonce</span>
+        <span class="n">counter</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">tagMask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rawAesEncrypt</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span>
+
+        <span class="c1"># The counter starts at 2 for the actual encryption.</span>
+        <span class="n">counter</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ctr</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span>
+        <span class="n">ciphertext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ctr</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
+
+        <span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">tagMask</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ciphertext</span> <span class="o">+</span> <span class="n">tag</span></div>
+
+<div class="viewcode-block" id="AESGCM.open"><a class="viewcode-back" href="../../../tlslite.utils.aesgcm.html#tlslite.utils.aesgcm.AESGCM.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nonce</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decrypts and authenticates ciphertext using nonce and data. If the</span>
+<span class="sd">        tag is valid, the plaintext is returned. If the tag is invalid,</span>
+<span class="sd">        returns None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nonce</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">12</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Bad nonce length&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">tag</span> <span class="o">=</span> <span class="n">ciphertext</span><span class="p">[</span><span class="o">-</span><span class="mi">16</span><span class="p">:]</span>
+        <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">ciphertext</span><span class="p">[:</span><span class="o">-</span><span class="mi">16</span><span class="p">]</span>
+
+        <span class="c1"># The initial counter value is the nonce, followed by a 32-bit counter</span>
+        <span class="c1"># that starts at 1. It&#39;s used to compute the tag mask.</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">counter</span><span class="p">[:</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">nonce</span>
+        <span class="n">counter</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">tagMask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rawAesEncrypt</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ct_compare_digest</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">tagMask</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># The counter starts at 2 for the actual decryption.</span>
+        <span class="n">counter</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ctr</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ctr</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_reverseBits</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">16</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xc</span><span class="p">)</span> <span class="o">|</span> <span class="p">((</span><span class="n">i</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xa</span><span class="p">)</span> <span class="o">|</span> <span class="p">((</span><span class="n">i</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x5</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">i</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_gcmAdd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">^</span> <span class="n">y</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_gcmShift</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="c1"># Multiplying by x is a right shift, due to bit order.</span>
+        <span class="n">highTermSet</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&amp;</span> <span class="mi">1</span>
+        <span class="n">x</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">highTermSet</span><span class="p">:</span>
+            <span class="c1"># The x^127 term was shifted up to x^128, so subtract a 1+x+x^2+x^7</span>
+            <span class="c1"># term. This is 0b11100001 or 0xe1 when represented as an 8-bit</span>
+            <span class="c1"># polynomial.</span>
+            <span class="n">x</span> <span class="o">^=</span> <span class="mh">0xe1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="mi">128</span><span class="o">-</span><span class="mi">8</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_inc32</span><span class="p">(</span><span class="n">counter</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">counter</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">counter</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">256</span>
+            <span class="k">if</span> <span class="n">counter</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="n">counter</span>
+
+    <span class="c1"># _gcmReductionTable[i] is i * (1+x+x^2+x^7) for all 4-bit polynomials i. The</span>
+    <span class="c1"># result is stored as a 16-bit polynomial. This is used in the reduction step to</span>
+    <span class="c1"># multiply elements of GF(2^128) by x^4.</span>
+    <span class="n">_gcmReductionTable</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mh">0x0000</span><span class="p">,</span> <span class="mh">0x1c20</span><span class="p">,</span> <span class="mh">0x3840</span><span class="p">,</span> <span class="mh">0x2460</span><span class="p">,</span> <span class="mh">0x7080</span><span class="p">,</span> <span class="mh">0x6ca0</span><span class="p">,</span> <span class="mh">0x48c0</span><span class="p">,</span> <span class="mh">0x54e0</span><span class="p">,</span>
+        <span class="mh">0xe100</span><span class="p">,</span> <span class="mh">0xfd20</span><span class="p">,</span> <span class="mh">0xd940</span><span class="p">,</span> <span class="mh">0xc560</span><span class="p">,</span> <span class="mh">0x9180</span><span class="p">,</span> <span class="mh">0x8da0</span><span class="p">,</span> <span class="mh">0xa9c0</span><span class="p">,</span> <span class="mh">0xb5e0</span><span class="p">,</span>
+    <span class="p">]</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

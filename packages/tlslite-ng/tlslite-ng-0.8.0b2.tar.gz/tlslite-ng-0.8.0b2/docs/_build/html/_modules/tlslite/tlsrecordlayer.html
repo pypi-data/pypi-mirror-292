@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.tlsrecordlayer &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.tlsrecordlayer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.tlsrecordlayer</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Authors: </span>
+<span class="c1">#   Trevor Perrin</span>
+<span class="c1">#   Google (adapted by Sam Rushing) - NPN support</span>
+<span class="c1">#   Google - minimal padding</span>
+<span class="c1">#   Martin von Loewis - python 3 port</span>
+<span class="c1">#   Yngve Pettersen (ported by Paul Sokolovsky) - TLS 1.2</span>
+<span class="c1">#   Hubert Kario</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Helper class for TLSConnection.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">generators</span>
+
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="kn">from</span> <span class="nn">.utils.compat</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.utils.cryptomath</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.utils.codec</span> <span class="kn">import</span> <span class="n">Parser</span><span class="p">,</span> <span class="n">BadCertificateError</span>
+<span class="kn">from</span> <span class="nn">.utils.lists</span> <span class="kn">import</span> <span class="n">to_str_delimiter</span><span class="p">,</span> <span class="n">getFirstMatching</span>
+<span class="kn">from</span> <span class="nn">.errors</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.messages</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.mathtls</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.recordlayer</span> <span class="kn">import</span> <span class="n">RecordLayer</span>
+<span class="kn">from</span> <span class="nn">.defragmenter</span> <span class="kn">import</span> <span class="n">Defragmenter</span>
+<span class="kn">from</span> <span class="nn">.handshakehashes</span> <span class="kn">import</span> <span class="n">HandshakeHashes</span>
+<span class="kn">from</span> <span class="nn">.bufferedsocket</span> <span class="kn">import</span> <span class="n">BufferedSocket</span>
+<span class="kn">from</span> <span class="nn">.handshakesettings</span> <span class="kn">import</span> <span class="n">HandshakeSettings</span>
+<span class="kn">from</span> <span class="nn">.keyexchange</span> <span class="kn">import</span> <span class="n">KeyExchange</span>
+
+<div class="viewcode-block" id="TLSRecordLayer"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer">[docs]</a><span class="k">class</span> <span class="nc">TLSRecordLayer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class handles data transmission for a TLS connection.</span>
+
+<span class="sd">    Its only subclass is :py:class:`~tlslite.tlsconnection.TLSConnection`.</span>
+<span class="sd">    We&#39;ve</span>
+<span class="sd">    separated the code in this class from TLSConnection to make things</span>
+<span class="sd">    more readable.</span>
+
+
+<span class="sd">    :vartype sock: socket.socket</span>
+<span class="sd">    :ivar sock: The underlying socket object.</span>
+
+<span class="sd">    :vartype session: ~tlslite.Session.Session</span>
+<span class="sd">    :ivar session: The session corresponding to this connection.</span>
+<span class="sd">        Due to TLS session resumption, multiple connections can correspond</span>
+<span class="sd">        to the same underlying session.</span>
+
+<span class="sd">    :vartype ~.version: tuple</span>
+<span class="sd">    :ivar ~.version: The TLS version being used for this connection.</span>
+<span class="sd">        (3,0) means SSL 3.0, and (3,1) means TLS 1.0.</span>
+
+<span class="sd">    :vartype closed: bool</span>
+<span class="sd">    :ivar closed: If this connection is closed.</span>
+
+<span class="sd">    :vartype resumed: bool</span>
+<span class="sd">    :ivar resumed: If this connection is based on a resumed session.</span>
+
+<span class="sd">    :vartype allegedSrpUsername: str or None</span>
+<span class="sd">    :ivar allegedSrpUsername:  This is set to the SRP username</span>
+<span class="sd">        asserted by the client, whether the handshake succeeded or not.</span>
+<span class="sd">        If the handshake fails, this can be inspected to determine</span>
+<span class="sd">        if a guessing attack is in progress against a particular user</span>
+<span class="sd">        account.</span>
+
+<span class="sd">    :vartype closeSocket: bool</span>
+<span class="sd">    :ivar closeSocket: If the socket should be closed when the</span>
+<span class="sd">        connection is closed, defaults to True (writable).</span>
+
+<span class="sd">        If you set this to True, TLS Lite will assume the responsibility of</span>
+<span class="sd">        closing the socket when the TLS Connection is shutdown (either</span>
+<span class="sd">        through an error or through the user calling close()).  The default</span>
+<span class="sd">        is False.</span>
+
+<span class="sd">    :vartype ignoreAbruptClose: bool</span>
+<span class="sd">    :ivar ignoreAbruptClose: If an abrupt close of the socket should</span>
+<span class="sd">        raise an error (writable).</span>
+
+<span class="sd">        If you set this to True, TLS Lite will not raise a</span>
+<span class="sd">        :py:class:`~tlslite.errors.TLSAbruptCloseError` exception if the</span>
+<span class="sd">        underlying</span>
+<span class="sd">        socket is unexpectedly closed.  Such an unexpected closure could be</span>
+<span class="sd">        caused by an attacker.  However, it also occurs with some incorrect</span>
+<span class="sd">        TLS implementations.</span>
+
+<span class="sd">        You should set this to True only if you&#39;re not worried about an</span>
+<span class="sd">        attacker truncating the connection, and only if necessary to avoid</span>
+<span class="sd">        spurious errors.  The default is False.</span>
+
+<span class="sd">    :vartype ~.encryptThenMAC: bool</span>
+<span class="sd">    :ivar ~.encryptThenMAC: Whether the connection uses the encrypt-then-MAC</span>
+<span class="sd">        construct for CBC cipher suites, will be False also if connection uses</span>
+<span class="sd">        RC4 or AEAD.</span>
+
+<span class="sd">    :vartype recordSize: int</span>
+<span class="sd">    :ivar recordSize: maximum size of data to be sent in a single record layer</span>
+<span class="sd">        message. Note that after encryption is established (generally after</span>
+<span class="sd">        handshake protocol has finished) the actual amount of data written to</span>
+<span class="sd">        network socket will be larger because of the record layer header,</span>
+<span class="sd">        padding</span>
+<span class="sd">        or encryption overhead. It can be set to low value (so that there is no</span>
+<span class="sd">        fragmentation on Ethernet, IP and TCP level) at the beginning of</span>
+<span class="sd">        connection to reduce latency and set to protocol max (2**14) to</span>
+<span class="sd">        maximise</span>
+<span class="sd">        throughput after sending the first few kiB of data. If negotiated,</span>
+<span class="sd">        record_size_limit extension may limit it though, causing reading of the</span>
+<span class="sd">        variable to return lower value that was initially set.</span>
+<span class="sd">        See also: HandshakeSettings.record_size_limit.</span>
+
+<span class="sd">    :vartype tickets: list of bytearray</span>
+<span class="sd">    :ivar tickets: list of session tickets received from server, oldest first.</span>
+
+<span class="sd">    :vartype client_cert_required: bool</span>
+<span class="sd">    :ivar client_cert_required: Set to True to make the post-handshake</span>
+<span class="sd">        authentication fail when client doesn&#39;t provide a certificate in</span>
+<span class="sd">        response</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TLSRecordLayer.__init__"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">):</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="n">BufferedSocket</span><span class="p">(</span><span class="n">sock</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">sock</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span> <span class="o">=</span> <span class="n">RecordLayer</span><span class="p">(</span><span class="n">sock</span><span class="p">)</span>
+
+        <span class="c1">#My session object (Session instance; read-only)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1">#Buffers for processing messages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_defragmenter</span> <span class="o">=</span> <span class="n">Defragmenter</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_defragmenter</span><span class="o">.</span><span class="n">add_static_size</span><span class="p">(</span><span class="n">ContentType</span><span class="o">.</span><span class="n">change_cipher_spec</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_defragmenter</span><span class="o">.</span><span class="n">add_static_size</span><span class="p">(</span><span class="n">ContentType</span><span class="o">.</span><span class="n">alert</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_defragmenter</span><span class="o">.</span><span class="n">add_dynamic_size</span><span class="p">(</span><span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearReadBuffer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearWriteBuffer</span><span class="p">()</span>
+
+        <span class="c1">#Handshake digests</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_hash</span> <span class="o">=</span> <span class="n">HandshakeHashes</span><span class="p">()</span>
+        <span class="c1"># Handshake digest used for Certificate Verify signature and</span>
+        <span class="c1"># also for EMS calculation, in practice, it excludes</span>
+        <span class="c1"># CertificateVerify and all following messages (Finished)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_certificate_verify_handshake_hash</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># for PSK binders we need to be able to calculate the hash of all</span>
+        <span class="c1"># echanged messages and a _truncated_ ClientHello message so we</span>
+        <span class="c1"># need a copy of those hashes before CH was received</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_client_hello_handshake_hash</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1">#Is the connection open?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closed</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#read-only</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refCount</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#Used to trigger closure</span>
+
+        <span class="c1">#Is this a resumed session?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resumed</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1">#read-only</span>
+
+        <span class="c1">#What username did the client claim in his handshake?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allegedSrpUsername</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1">#On a call to close(), do we close the socket? (writeable)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closeSocket</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1">#If the socket is abruptly closed, do we ignore it</span>
+        <span class="c1">#and pretend the connection was shut down properly? (writeable)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignoreAbruptClose</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1">#Fault we will induce, for testing purposes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fault</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Temporarily limit the size of outgoing records to following size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_record_limit</span> <span class="o">=</span> <span class="mi">16384</span>  <span class="c1"># 2**14</span>
+
+        <span class="c1"># NewSessionTickets received from server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tickets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># TLS 1.2 and earlier tickets received from server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tls_1_0_tickets</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Indicator for heartbeat extension mode, if we can receive</span>
+        <span class="c1"># heartbeat requests</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_can_receive</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Indicator for heartbeat extension mode, if we can send</span>
+        <span class="c1"># heartbeat requests</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_can_send</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Indicator, that both sides want use heartbeat extension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_supported</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Callback function for handling responses to heartbeat requests</span>
+        <span class="c1"># we sent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_response_callback</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_content_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+
+        <span class="c1"># tuple with list of certificates and the private key that will be</span>
+        <span class="c1"># used for post handshake authentication in TLS 1.3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client_keypair</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># dictionary with CertificateRequest messages we (as a server) have</span>
+        <span class="c1"># sent, the keys are the &quot;certificate request context&quot; from the</span>
+        <span class="c1"># messages (which are the values)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cert_requests</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># boolean to control if PHA needs to be aborted when the client</span>
+        <span class="c1"># doesn&#39;t provide a certificate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client_cert_required</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># boolean to control if ChangeCipherSpec in TLS1.3 is allowed or not</span>
+        <span class="c1"># we start with True, as peers MUST always processe the messages</span>
+        <span class="c1"># before the handshake is done, only then we disable it (for PHA)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_middlebox_compat_mode</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_send_record_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum size of payload that can be sent.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">send_record_limit</span>
+
+    <span class="nd">@_send_record_limit</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_send_record_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum size of payload that can be sent.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">send_record_limit</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_recv_record_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum size of payload that can be received.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">recv_record_limit</span>
+
+    <span class="nd">@_recv_record_limit</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_recv_record_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum size of payload that can be received.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">recv_record_limit</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">recordSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum size of the records that will be sent out.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_record_limit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_record_limit</span><span class="p">)</span>
+
+    <span class="nd">@recordSize</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">recordSize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Size to automatically fragment records to.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_record_limit</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Boolean stating if the endpoint acts as a client&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">client</span>
+
+    <span class="nd">@_client</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the endpoint to act as a client or not&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the SSL protocol version of connection&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">version</span>
+
+    <span class="nd">@version</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the SSL protocol version of connection</span>
+
+<span class="sd">        The setter is a public method only for backwards compatibility.</span>
+<span class="sd">        Don&#39;t use it! See at HandshakeSettings for options to set desired</span>
+<span class="sd">        protocol version.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">tls13record</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">encryptThenMAC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the connection uses Encrypt Then MAC (RFC 7366)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">encryptThenMAC</span>
+
+<div class="viewcode-block" id="TLSRecordLayer.clearReadBuffer"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.clearReadBuffer">[docs]</a>    <span class="k">def</span> <span class="nf">clearReadBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_readBuffer</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.clearWriteBuffer"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.clearWriteBuffer">[docs]</a>    <span class="k">def</span> <span class="nf">clearWriteBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_writer</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+    <span class="c1">#*********************************************************</span>
+    <span class="c1"># Public Functions START</span>
+    <span class="c1">#*********************************************************</span>
+
+<div class="viewcode-block" id="TLSRecordLayer.read"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read some data from the TLS connection.</span>
+
+<span class="sd">        This function will block until at least &#39;min&#39; bytes are</span>
+<span class="sd">        available (or the connection is closed).</span>
+
+<span class="sd">        If an exception is raised, the connection will have been</span>
+<span class="sd">        automatically closed.</span>
+
+<span class="sd">        :type max: int</span>
+<span class="sd">        :param max: The maximum number of bytes to return.</span>
+
+<span class="sd">        :type min: int</span>
+<span class="sd">        :param min: The minimum number of bytes to return</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: A string of no more than &#39;max&#39; bytes, and no fewer</span>
+<span class="sd">            than &#39;min&#39; (unless the connection has been closed, in which</span>
+<span class="sd">            case fewer than &#39;min&#39; bytes may be returned).</span>
+
+<span class="sd">        :raises socket.error: If a socket error occurs.</span>
+<span class="sd">        :raises tlslite.errors.TLSAbruptCloseError: If the socket is closed</span>
+<span class="sd">            without a preceding alert.</span>
+<span class="sd">        :raises tlslite.errors.TLSAlert: If a TLS alert is signalled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readAsync</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="nb">min</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.readAsync"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.readAsync">[docs]</a>    <span class="k">def</span> <span class="nf">readAsync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start a read operation on the TLS connection.</span>
+
+<span class="sd">        This function returns a generator which behaves similarly to</span>
+<span class="sd">        read().  Successive invocations of the generator will return 0</span>
+<span class="sd">        if it is waiting to read from the socket, 1 if it is waiting</span>
+<span class="sd">        to write to the socket, or a string if the read operation has</span>
+<span class="sd">        completed.</span>
+
+<span class="sd">        :rtype: iterable</span>
+<span class="sd">        :returns: A generator; see above for details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">constructor_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">allowedTypes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span><span class="p">,</span>
+                            <span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_keypair</span><span class="p">:</span>
+                <span class="n">allowedHsTypes</span> <span class="o">=</span> <span class="p">(</span><span class="n">HandshakeType</span><span class="o">.</span><span class="n">new_session_ticket</span><span class="p">,</span>
+                                  <span class="n">HandshakeType</span><span class="o">.</span><span class="n">key_update</span><span class="p">,</span>
+                                  <span class="n">HandshakeType</span><span class="o">.</span><span class="n">certificate_request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cert_requests</span><span class="p">:</span>
+                <span class="n">allowedHsTypes</span> <span class="o">=</span> <span class="p">(</span><span class="n">HandshakeType</span><span class="o">.</span><span class="n">new_session_ticket</span><span class="p">,</span>
+                                  <span class="n">HandshakeType</span><span class="o">.</span><span class="n">key_update</span><span class="p">,</span>
+                                  <span class="n">HandshakeType</span><span class="o">.</span><span class="n">certificate</span><span class="p">)</span>
+                <span class="n">constructor_type</span> <span class="o">=</span> <span class="n">CertificateType</span><span class="o">.</span><span class="n">x509</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">allowedHsTypes</span> <span class="o">=</span> <span class="p">(</span><span class="n">HandshakeType</span><span class="o">.</span><span class="n">new_session_ticket</span><span class="p">,</span>
+                                  <span class="n">HandshakeType</span><span class="o">.</span><span class="n">key_update</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">allowedTypes</span> <span class="o">=</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span>
+            <span class="n">allowedHsTypes</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">try_once</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="c1"># perform a read even if we were asked to read 0 bytes, but only</span>
+            <span class="c1"># if the buffer is empty; this is used to trigger</span>
+            <span class="c1"># processing of NST, KeyUpdate and PHA</span>
+            <span class="k">while</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_readBuffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">min</span> <span class="ow">or</span>
+                    <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readBuffer</span> <span class="ow">and</span> <span class="n">try_once</span><span class="p">))</span> \
+                    <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+                <span class="n">try_once</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getMsg</span><span class="p">(</span><span class="n">allowedTypes</span><span class="p">,</span>
+                                               <span class="n">allowedHsTypes</span><span class="p">,</span>
+                                               <span class="n">constructor_type</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">result</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">NewSessionTicket</span><span class="p">):</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">tickets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">KeyUpdate</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_keyupdate_request</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">result</span>
+                        <span class="c1"># KeyUpdate messages are not solicited, while call with</span>
+                        <span class="c1"># min==0 are done to perform PHA</span>
+                        <span class="n">try_once</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Certificate</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_srv_pha</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">result</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">CertificateRequest</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_pha</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">result</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ApplicationData</span><span class="p">)</span>
+                        <span class="n">applicationData</span> <span class="o">=</span> <span class="n">result</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_readBuffer</span> <span class="o">+=</span> <span class="n">applicationData</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+                <span class="k">except</span> <span class="n">TLSRemoteAlert</span> <span class="k">as</span> <span class="n">alert</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">alert</span><span class="o">.</span><span class="n">description</span> <span class="o">!=</span> <span class="n">AlertDescription</span><span class="o">.</span><span class="n">close_notify</span><span class="p">:</span>
+                        <span class="k">raise</span>
+                <span class="k">except</span> <span class="n">TLSAbruptCloseError</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignoreAbruptClose</span><span class="p">:</span>
+                        <span class="k">raise</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">max</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">max</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_readBuffer</span><span class="p">)</span>
+
+            <span class="n">returnBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readBuffer</span><span class="p">[:</span><span class="nb">max</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_readBuffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readBuffer</span><span class="p">[</span><span class="nb">max</span><span class="p">:]</span>
+            <span class="k">yield</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">returnBytes</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">GeneratorExit</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">raise</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.unread"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.unread">[docs]</a>    <span class="k">def</span> <span class="nf">unread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add bytes to the front of the socket read buffer for future</span>
+<span class="sd">        reading. Be careful using this in the context of select(...): if you</span>
+<span class="sd">        unread the last data from a socket, that won&#39;t wake up selected waiters,</span>
+<span class="sd">        and those waiters may hang forever.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_readBuffer</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readBuffer</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.write"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write some data to the TLS connection.</span>
+
+<span class="sd">        This function will block until all the data has been sent.</span>
+
+<span class="sd">        If an exception is raised, the connection will have been</span>
+<span class="sd">        automatically closed.</span>
+
+<span class="sd">        :type s: str</span>
+<span class="sd">        :param s: The data to transmit to the other party.</span>
+
+<span class="sd">        :raises socket.error: If a socket error occurs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">writeAsync</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.writeAsync"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.writeAsync">[docs]</a>    <span class="k">def</span> <span class="nf">writeAsync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start a write operation on the TLS connection.</span>
+
+<span class="sd">        This function returns a generator which behaves similarly to</span>
+<span class="sd">        write().  Successive invocations of the generator will return</span>
+<span class="sd">        1 if it is waiting to write to the socket, or will raise</span>
+<span class="sd">        StopIteration if the write operation has completed.</span>
+
+<span class="sd">        :rtype: iterable</span>
+<span class="sd">        :returns: A generator; see above for details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSClosedConnectionError</span><span class="p">(</span><span class="s2">&quot;attempt to write to closed connection&quot;</span><span class="p">)</span>
+
+            <span class="n">applicationData</span> <span class="o">=</span> <span class="n">ApplicationData</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsg</span><span class="p">(</span><span class="n">applicationData</span><span class="p">,</span> \
+                                        <span class="n">randomizeFirstBlock</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="ne">GeneratorExit</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c1"># Don&#39;t invalidate the session on write failure if abrupt closes are</span>
+            <span class="c1"># okay.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ignoreAbruptClose</span><span class="p">)</span>
+            <span class="k">raise</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.close"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the TLS connection.</span>
+
+<span class="sd">        This function will block until it has exchanged close_notify</span>
+<span class="sd">        alerts with the other party.  After doing so, it will shut down the</span>
+<span class="sd">        TLS connection.  Further attempts to read through this connection</span>
+<span class="sd">        will return &quot;&quot;.  Further attempts to write through this connection</span>
+<span class="sd">        will raise ValueError.</span>
+
+<span class="sd">        If makefile() has been called on this connection, the connection</span>
+<span class="sd">        will be not be closed until the connection object and all file</span>
+<span class="sd">        objects have been closed.</span>
+
+<span class="sd">        Even if an exception is raised, the connection will have been</span>
+<span class="sd">        closed.</span>
+
+<span class="sd">        :raises socket.error: If a socket error occurs.</span>
+<span class="sd">        :raises tlslite.errors.TLSAbruptCloseError: If the socket is closed</span>
+<span class="sd">            without a preceding alert.</span>
+<span class="sd">        :raises tlslite.errors.TLSAlert: If a TLS alert is signalled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decrefAsync</span><span class="p">():</span>
+                <span class="k">pass</span></div>
+
+    <span class="c1"># Python 3 callback</span>
+    <span class="n">_decref_socketios</span> <span class="o">=</span> <span class="n">close</span>
+
+<div class="viewcode-block" id="TLSRecordLayer.closeAsync"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.closeAsync">[docs]</a>    <span class="k">def</span> <span class="nf">closeAsync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start a close operation on the TLS connection.</span>
+
+<span class="sd">        This function returns a generator which behaves similarly to</span>
+<span class="sd">        close().  Successive invocations of the generator will return 0</span>
+<span class="sd">        if it is waiting to read from the socket, 1 if it is waiting</span>
+<span class="sd">        to write to the socket, or will raise StopIteration if the</span>
+<span class="sd">        close operation has completed.</span>
+
+<span class="sd">        :rtype: iterable</span>
+<span class="sd">        :returns: A generator; see above for details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decrefAsync</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="n">result</span></div>
+
+    <span class="k">def</span> <span class="nf">_decrefAsync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refCount</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refCount</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsg</span><span class="p">(</span><span class="n">Alert</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>\
+                        <span class="n">AlertDescription</span><span class="o">.</span><span class="n">close_notify</span><span class="p">,</span> <span class="n">AlertLevel</span><span class="o">.</span><span class="n">warning</span><span class="p">)):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+                <span class="n">alert</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="c1"># By default close the socket, since it&#39;s been observed</span>
+                <span class="c1"># that some other libraries will not respond to the </span>
+                <span class="c1"># close_notify alert, thus leaving us hanging if we&#39;re</span>
+                <span class="c1"># expecting it</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closeSocket</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">while</span> <span class="ow">not</span> <span class="n">alert</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getMsg</span><span class="p">((</span><span class="n">ContentType</span><span class="o">.</span><span class="n">alert</span><span class="p">,</span> \
+                                                  <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span><span class="p">)):</span>
+                            <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
+                                <span class="k">yield</span> <span class="n">result</span>
+                        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">contentType</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">alert</span><span class="p">:</span>
+                            <span class="n">alert</span> <span class="o">=</span> <span class="n">result</span>
+                    <span class="k">if</span> <span class="n">alert</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">AlertDescription</span><span class="o">.</span><span class="n">close_notify</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">TLSRemoteAlert</span><span class="p">(</span><span class="n">alert</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">,</span> <span class="n">TLSAbruptCloseError</span><span class="p">):</span>
+                <span class="c1">#If the other side closes the socket, that&#39;s okay</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">GeneratorExit</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">raise</span>
+
+<div class="viewcode-block" id="TLSRecordLayer.getVersionName"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.getVersionName">[docs]</a>    <span class="k">def</span> <span class="nf">getVersionName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the name of this TLS version.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The name of the TLS version used with this connection.</span>
+<span class="sd">            Either None, &#39;SSL 3.0&#39;, &#39;TLS 1.0&#39;, &#39;TLS 1.1&#39;, &#39;TLS 1.2&#39; or</span>
+<span class="sd">            &#39;TLS 1.3&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ver</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="s2">&quot;SSL 3.0&quot;</span><span class="p">,</span>
+               <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;TLS 1.0&quot;</span><span class="p">,</span>
+               <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;TLS 1.1&quot;</span><span class="p">,</span>
+               <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="s2">&quot;TLS 1.2&quot;</span><span class="p">,</span>
+               <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span> <span class="s2">&quot;TLS 1.3&quot;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">ver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.getCipherName"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.getCipherName">[docs]</a>    <span class="k">def</span> <span class="nf">getCipherName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the name of the cipher used with this connection.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The name of the cipher used with this connection.</span>
+<span class="sd">            Either &#39;aes128&#39;, &#39;aes256&#39;, &#39;rc4&#39;, or &#39;3des&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">getCipherName</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.getCipherImplementation"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.getCipherImplementation">[docs]</a>    <span class="k">def</span> <span class="nf">getCipherImplementation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the name of the cipher implementation used with</span>
+<span class="sd">        this connection.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The name of the cipher implementation used with</span>
+<span class="sd">            this connection.  Either &#39;python&#39;, &#39;openssl&#39;, or &#39;pycrypto&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">getCipherImplementation</span><span class="p">()</span></div>
+
+    <span class="c1">#Emulate a socket, somewhat -</span>
+<div class="viewcode-block" id="TLSRecordLayer.send"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send data to the TLS connection (socket emulation).</span>
+
+<span class="sd">        :raises socket.error: If a socket error occurs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.sendall"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.sendall">[docs]</a>    <span class="k">def</span> <span class="nf">sendall</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send data to the TLS connection (socket emulation).</span>
+
+<span class="sd">        :raises socket.error: If a socket error occurs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.recv"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.recv">[docs]</a>    <span class="k">def</span> <span class="nf">recv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bufsize</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get some data from the TLS connection (socket emulation).</span>
+
+<span class="sd">        :raises socket.error: If a socket error occurs.</span>
+<span class="sd">        :raises tlslite.errors.TLSAbruptCloseError: If the socket is closed</span>
+<span class="sd">            without a preceding alert.</span>
+<span class="sd">        :raises tlslite.errors.TLSAlert: If a TLS alert is signalled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">bufsize</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.recv_into"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.recv_into">[docs]</a>    <span class="k">def</span> <span class="nf">recv_into</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="c1"># XXX doc string</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">b</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+    <span class="c1"># while the SocketIO and _fileobject in socket is private we really need</span>
+    <span class="c1"># to use it as it&#39;s what the real socket does internally</span>
+
+    <span class="c1"># pylint: disable=no-member,protected-access</span>
+<div class="viewcode-block" id="TLSRecordLayer.makefile"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.makefile">[docs]</a>    <span class="k">def</span> <span class="nf">makefile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">bufsize</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a file object for the TLS connection (socket emulation).</span>
+
+<span class="sd">        :rtype: socket._fileobject</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refCount</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># So, it is pretty fragile to be using Python internal objects</span>
+        <span class="c1"># like this, but it is probably the best/easiest way to provide</span>
+        <span class="c1"># matching behavior for socket emulation purposes.  The &#39;close&#39;</span>
+        <span class="c1"># argument is nice, its apparently a recent addition to this</span>
+        <span class="c1"># class, so that when fileobject.close() gets called, it will</span>
+        <span class="c1"># close() us, causing the refcount to be decremented (decrefAsync).</span>
+        <span class="c1">#</span>
+        <span class="c1"># If this is the last close() on the outstanding fileobjects / </span>
+        <span class="c1"># TLSConnection, then the &quot;actual&quot; close alerts will be sent,</span>
+        <span class="c1"># socket closed, etc.</span>
+
+        <span class="c1"># for writes, we MUST buffer otherwise the lengths of headers leak</span>
+        <span class="c1"># through record layer boundaries</span>
+        <span class="k">if</span> <span class="s1">&#39;w&#39;</span> <span class="ow">in</span> <span class="n">mode</span> <span class="ow">and</span> <span class="n">bufsize</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">bufsize</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">14</span>
+
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+            <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">_fileobject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">bufsize</span><span class="p">,</span> <span class="n">close</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;w&#39;</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">BufferedWriter</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SocketIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="n">bufsize</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">SocketIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span></div>
+    <span class="c1"># pylint: enable=no-member,protected-access</span>
+
+<div class="viewcode-block" id="TLSRecordLayer.getsockname"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.getsockname">[docs]</a>    <span class="k">def</span> <span class="nf">getsockname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the socket&#39;s own address (socket emulation).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">getsockname</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.getpeername"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.getpeername">[docs]</a>    <span class="k">def</span> <span class="nf">getpeername</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the remote address to which the socket is connected</span>
+<span class="sd">        (socket emulation).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">getpeername</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.settimeout"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.settimeout">[docs]</a>    <span class="k">def</span> <span class="nf">settimeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a timeout on blocking socket operations (socket emulation).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">settimeout</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.gettimeout"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.gettimeout">[docs]</a>    <span class="k">def</span> <span class="nf">gettimeout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the timeout associated with socket operations (socket</span>
+<span class="sd">        emulation).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">gettimeout</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.setsockopt"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.setsockopt">[docs]</a>    <span class="k">def</span> <span class="nf">setsockopt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">optname</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the value of the given socket option (socket emulation).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">optname</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.shutdown"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.shutdown">[docs]</a>    <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">how</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shutdown the underlying socket.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">how</span><span class="p">)</span></div>
+    	
+<div class="viewcode-block" id="TLSRecordLayer.fileno"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.fileno">[docs]</a>    <span class="k">def</span> <span class="nf">fileno</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Not implement in TLS Lite.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+    	
+
+     <span class="c1">#*********************************************************</span>
+     <span class="c1"># Public Functions END</span>
+     <span class="c1">#*********************************************************</span>
+
+    <span class="k">def</span> <span class="nf">_handle_pha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cert_request</span><span class="p">):</span>
+        <span class="n">cert</span><span class="p">,</span> <span class="n">p_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_keypair</span>
+
+        <span class="n">handshake_context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_handshake_hashes</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">handshake_context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cert_request</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>
+
+        <span class="n">prf_name</span> <span class="o">=</span> <span class="s1">&#39;sha256&#39;</span>
+        <span class="n">prf_size</span> <span class="o">=</span> <span class="mi">32</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">sha384PrfSuites</span><span class="p">:</span>
+            <span class="n">prf_name</span> <span class="o">=</span> <span class="s1">&#39;sha384&#39;</span>
+            <span class="n">prf_size</span> <span class="o">=</span> <span class="mi">48</span>
+
+        <span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Certificate</span><span class="p">(</span><span class="n">CertificateType</span><span class="o">.</span><span class="n">x509</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">cert</span><span class="p">,</span> <span class="n">cert_request</span><span class="o">.</span><span class="n">certificate_request_context</span><span class="p">))</span>
+        <span class="n">handshake_context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">msgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">cert</span><span class="o">.</span><span class="n">x509List</span> <span class="ow">and</span> <span class="n">p_key</span><span class="p">:</span>
+            <span class="c1"># sign the CertificateVerify only when we have a private key to do</span>
+            <span class="c1"># that</span>
+            <span class="n">valid_sig_algs</span> <span class="o">=</span> <span class="n">cert_request</span><span class="o">.</span><span class="n">supported_signature_algs</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_sig_algs</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                        <span class="n">AlertDescription</span><span class="o">.</span><span class="n">missing_extension</span><span class="p">,</span>
+                        <span class="s2">&quot;No signature algorithms found in CertificateRequest&quot;</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+            <span class="n">avail_sig_algs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sigHashesToList</span><span class="p">(</span><span class="n">HandshakeSettings</span><span class="p">(),</span> <span class="n">p_key</span><span class="p">,</span>
+                                                   <span class="n">cert</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+            <span class="n">sig_scheme</span> <span class="o">=</span> <span class="n">getFirstMatching</span><span class="p">(</span><span class="n">avail_sig_algs</span><span class="p">,</span> <span class="n">valid_sig_algs</span><span class="p">)</span>
+            <span class="n">scheme</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">sig_scheme</span><span class="p">)</span>
+            <span class="n">sig_scheme</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">SignatureScheme</span><span class="p">,</span> <span class="n">scheme</span><span class="p">)</span>
+
+            <span class="n">signature_context</span> <span class="o">=</span> \
+                <span class="n">KeyExchange</span><span class="o">.</span><span class="n">calcVerifyBytes</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+                                            <span class="n">handshake_context</span><span class="p">,</span>
+                                            <span class="n">sig_scheme</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+                                            <span class="n">prf_name</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;client&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">sig_scheme</span> <span class="ow">in</span> <span class="p">(</span><span class="n">SignatureScheme</span><span class="o">.</span><span class="n">ed25519</span><span class="p">,</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">ed448</span><span class="p">):</span>
+                <span class="n">pad_type</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">hash_name</span> <span class="o">=</span> <span class="s2">&quot;intrinsic&quot;</span>
+                <span class="n">salt_len</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">sig_func</span> <span class="o">=</span> <span class="n">p_key</span><span class="o">.</span><span class="n">hashAndSign</span>
+                <span class="n">ver_func</span> <span class="o">=</span> <span class="n">p_key</span><span class="o">.</span><span class="n">hashAndVerify</span>
+            <span class="k">elif</span> <span class="n">sig_scheme</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">ecdsa</span><span class="p">:</span>
+                <span class="n">pad_type</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">hash_name</span> <span class="o">=</span> <span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">sig_scheme</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">salt_len</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">sig_func</span> <span class="o">=</span> <span class="n">p_key</span><span class="o">.</span><span class="n">sign</span>
+                <span class="n">ver_func</span> <span class="o">=</span> <span class="n">p_key</span><span class="o">.</span><span class="n">verify</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pad_type</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getPadding</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+                <span class="n">hash_name</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getHash</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+                <span class="n">salt_len</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">hash_name</span><span class="p">)()</span><span class="o">.</span><span class="n">digest_size</span>
+                <span class="n">sig_func</span> <span class="o">=</span> <span class="n">p_key</span><span class="o">.</span><span class="n">sign</span>
+                <span class="n">ver_func</span> <span class="o">=</span> <span class="n">p_key</span><span class="o">.</span><span class="n">verify</span>
+
+            <span class="n">signature</span> <span class="o">=</span> <span class="n">sig_func</span><span class="p">(</span><span class="n">signature_context</span><span class="p">,</span>
+                                 <span class="n">pad_type</span><span class="p">,</span>
+                                 <span class="n">hash_name</span><span class="p">,</span>
+                                 <span class="n">salt_len</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ver_func</span><span class="p">(</span><span class="n">signature</span><span class="p">,</span> <span class="n">signature_context</span><span class="p">,</span>
+                            <span class="n">pad_type</span><span class="p">,</span>
+                            <span class="n">hash_name</span><span class="p">,</span>
+                            <span class="n">salt_len</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                        <span class="n">AlertDescription</span><span class="o">.</span><span class="n">internal_error</span><span class="p">,</span>
+                        <span class="s2">&quot;Certificate Verify signature failed&quot;</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+            <span class="n">certificate_verify</span> <span class="o">=</span> <span class="n">CertificateVerify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+            <span class="n">certificate_verify</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">signature</span><span class="p">,</span> <span class="n">sig_scheme</span><span class="p">)</span>
+
+            <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">certificate_verify</span><span class="p">)</span>
+            <span class="n">handshake_context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">certificate_verify</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>
+
+        <span class="n">finished_key</span> <span class="o">=</span> <span class="n">HKDF_expand_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cl_app_secret</span><span class="p">,</span>
+                                         <span class="sa">b</span><span class="s2">&quot;finished&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                         <span class="n">prf_size</span><span class="p">,</span> <span class="n">prf_name</span><span class="p">)</span>
+        <span class="n">verify_data</span> <span class="o">=</span> <span class="n">secureHMAC</span><span class="p">(</span><span class="n">finished_key</span><span class="p">,</span>
+                                 <span class="n">handshake_context</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="n">prf_name</span><span class="p">),</span>
+                                 <span class="n">prf_name</span><span class="p">)</span>
+
+        <span class="n">finished</span> <span class="o">=</span> <span class="n">Finished</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">prf_size</span><span class="p">)</span>
+        <span class="n">finished</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">verify_data</span><span class="p">)</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">finished</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsgs</span><span class="p">(</span><span class="n">msgs</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_handle_srv_pha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cert</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the post-handshake authentication from client.&quot;&quot;&quot;</span>
+        <span class="n">prf_name</span> <span class="o">=</span> <span class="s1">&#39;sha256&#39;</span>
+        <span class="n">prf_size</span> <span class="o">=</span> <span class="mi">32</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">sha384PrfSuites</span><span class="p">:</span>
+            <span class="n">prf_name</span> <span class="o">=</span> <span class="s1">&#39;sha384&#39;</span>
+            <span class="n">prf_size</span> <span class="o">=</span> <span class="mi">48</span>
+
+        <span class="n">cr_context</span> <span class="o">=</span> <span class="n">cert</span><span class="o">.</span><span class="n">certificate_request_context</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cr_context</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                    <span class="n">AlertDescription</span><span class="o">.</span><span class="n">illegal_parameter</span><span class="p">,</span>
+                    <span class="s2">&quot;Certificate Request context missing in Certificate &quot;</span>
+                    <span class="s2">&quot;message from client&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cert_requests</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">cr_context</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                    <span class="n">AlertDescription</span><span class="o">.</span><span class="n">illegal_parameter</span><span class="p">,</span>
+                    <span class="s2">&quot;Certificiate Request context is incorrect or was already &quot;</span>
+                    <span class="s2">&quot;handled previously&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="c1"># TODO: verify that the extensions used by client were sent by us in</span>
+        <span class="c1"># CertificateReuest</span>
+
+        <span class="n">handshake_context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_handshake_hashes</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">handshake_context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cr</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>
+        <span class="n">handshake_context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cert</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">cert</span><span class="o">.</span><span class="n">cert_chain</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getMsg</span><span class="p">(</span><span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span><span class="p">,</span>
+                                       <span class="n">HandshakeType</span><span class="o">.</span><span class="n">certificate_verify</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">CertificateVerify</span><span class="p">)</span>
+            <span class="n">cert_verify</span> <span class="o">=</span> <span class="n">result</span>
+
+            <span class="n">valid_sig_algs</span> <span class="o">=</span> <span class="n">cr</span><span class="o">.</span><span class="n">supported_signature_algs</span>
+            <span class="k">if</span> <span class="n">cert_verify</span><span class="o">.</span><span class="n">signatureAlgorithm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_sig_algs</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                        <span class="n">AlertDescription</span><span class="o">.</span><span class="n">illegal_parameter</span><span class="p">,</span>
+                        <span class="s2">&quot;Client selected signature algorithm we didn&#39;t &quot;</span>
+                        <span class="s2">&quot;advertise&quot;</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+            <span class="n">avail_sig_algs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sigHashesToList</span><span class="p">(</span><span class="n">HandshakeSettings</span><span class="p">(),</span> <span class="kc">None</span><span class="p">,</span>
+                                                   <span class="n">cert</span><span class="o">.</span><span class="n">cert_chain</span><span class="p">,</span>
+                                                   <span class="n">version</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">cert_verify</span><span class="o">.</span><span class="n">signatureAlgorithm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">avail_sig_algs</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                        <span class="n">AlertDescription</span><span class="o">.</span><span class="n">illegal_parameter</span><span class="p">,</span>
+                        <span class="s2">&quot;Client selected signature algorithm not consistent &quot;</span>
+                        <span class="s2">&quot;with public key in its certificate&quot;</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+            <span class="n">scheme</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">cert_verify</span><span class="o">.</span><span class="n">signatureAlgorithm</span><span class="p">)</span>
+            <span class="n">sig_scheme</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">SignatureScheme</span><span class="p">,</span> <span class="n">scheme</span><span class="p">)</span>
+
+            <span class="n">signature_context</span> <span class="o">=</span> \
+                <span class="n">KeyExchange</span><span class="o">.</span><span class="n">calcVerifyBytes</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+                                            <span class="n">handshake_context</span><span class="p">,</span>
+                                            <span class="n">sig_scheme</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+                                            <span class="n">prf_name</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;client&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">sig_scheme</span> <span class="ow">in</span> <span class="p">(</span><span class="n">SignatureScheme</span><span class="o">.</span><span class="n">ed25519</span><span class="p">,</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">ed448</span><span class="p">):</span>
+                <span class="n">pad_type</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">hash_name</span> <span class="o">=</span> <span class="s2">&quot;intrinsic&quot;</span>
+                <span class="n">salt_len</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">ver_func</span> <span class="o">=</span> <span class="n">cert</span><span class="o">.</span><span class="n">cert_chain</span><span class="o">.</span><span class="n">getEndEntityPublicKey</span><span class="p">()</span><span class="o">.</span><span class="n">hashAndVerify</span>
+            <span class="k">elif</span> <span class="n">sig_scheme</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">ecdsa</span><span class="p">:</span>
+                <span class="n">pad_type</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">hash_name</span> <span class="o">=</span> <span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">sig_scheme</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">salt_len</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">ver_func</span> <span class="o">=</span> <span class="n">cert</span><span class="o">.</span><span class="n">cert_chain</span><span class="o">.</span><span class="n">getEndEntityPublicKey</span><span class="p">()</span><span class="o">.</span><span class="n">verify</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pad_type</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getPadding</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+                <span class="n">hash_name</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getHash</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+                <span class="n">salt_len</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">hash_name</span><span class="p">)()</span><span class="o">.</span><span class="n">digest_size</span>
+                <span class="n">ver_func</span> <span class="o">=</span> <span class="n">cert</span><span class="o">.</span><span class="n">cert_chain</span><span class="o">.</span><span class="n">getEndEntityPublicKey</span><span class="p">()</span><span class="o">.</span><span class="n">verify</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ver_func</span><span class="p">(</span>
+                    <span class="n">cert_verify</span><span class="o">.</span><span class="n">signature</span><span class="p">,</span> <span class="n">signature_context</span><span class="p">,</span> <span class="n">pad_type</span><span class="p">,</span>
+                    <span class="n">hash_name</span><span class="p">,</span> <span class="n">salt_len</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                        <span class="n">AlertDescription</span><span class="o">.</span><span class="n">decrypt_error</span><span class="p">,</span>
+                        <span class="s2">&quot;Signature verification failed&quot;</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+            <span class="n">handshake_context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cert_verify</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_cert_required</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                    <span class="n">AlertDescription</span><span class="o">.</span><span class="n">certificate_required</span><span class="p">,</span>
+                    <span class="s2">&quot;Client did not provide a certificate in post-handshake &quot;</span>
+                    <span class="s2">&quot;authentication&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="n">finished_key</span> <span class="o">=</span> <span class="n">HKDF_expand_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cl_app_secret</span><span class="p">,</span>
+                                         <span class="sa">b</span><span class="s1">&#39;finished&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                                         <span class="n">prf_size</span><span class="p">,</span> <span class="n">prf_name</span><span class="p">)</span>
+        <span class="n">verify_data</span> <span class="o">=</span> <span class="n">secureHMAC</span><span class="p">(</span><span class="n">finished_key</span><span class="p">,</span>
+                                 <span class="n">handshake_context</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="n">prf_name</span><span class="p">),</span>
+                                 <span class="n">prf_name</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getMsg</span><span class="p">(</span><span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span><span class="p">,</span>
+                                   <span class="n">HandshakeType</span><span class="o">.</span><span class="n">finished</span><span class="p">,</span>
+                                   <span class="n">prf_size</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Finished</span><span class="p">)</span>
+
+        <span class="n">finished</span> <span class="o">=</span> <span class="n">result</span>
+
+        <span class="k">if</span> <span class="n">finished</span><span class="o">.</span><span class="n">verify_data</span> <span class="o">!=</span> <span class="n">verify_data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                    <span class="n">AlertDescription</span><span class="o">.</span><span class="n">decrypt_error</span><span class="p">,</span>
+                    <span class="s2">&quot;Invalid Finished verify_data from client&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">clientCertChain</span> <span class="o">=</span> <span class="n">cert</span><span class="o">.</span><span class="n">cert_chain</span>
+
+    <span class="k">def</span> <span class="nf">_shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resumable</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closeSocket</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1">#Even if resumable is False, we&#39;ll never toggle this on</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">resumable</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">resumable</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+    <span class="k">def</span> <span class="nf">_sendError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alertDescription</span><span class="p">,</span> <span class="n">errorStr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># make sure that the message goes out</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">buffer_writes</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">alert</span> <span class="o">=</span> <span class="n">Alert</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">alertDescription</span><span class="p">,</span> <span class="n">AlertLevel</span><span class="o">.</span><span class="n">fatal</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsg</span><span class="p">(</span><span class="n">alert</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">TLSLocalAlert</span><span class="p">(</span><span class="n">alert</span><span class="p">,</span> <span class="n">errorStr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_sendMsgs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msgs</span><span class="p">):</span>
+        <span class="c1"># send messages together in a single TCP write</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">buffer_writes</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">randomizeFirstBlock</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msgs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">randomizeFirstBlock</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+            <span class="n">randomizeFirstBlock</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">buffer_writes</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_sendMsg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">randomizeFirstBlock</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">update_hashes</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fragment and send message through socket&quot;&quot;&quot;</span>
+        <span class="c1">#Whenever we&#39;re connected and asked to send an app data message,</span>
+        <span class="c1">#we first send the first byte of the message.  This prevents</span>
+        <span class="c1">#an attacker from launching a chosen-plaintext attack based on</span>
+        <span class="c1">#knowing the next IV (a la BEAST).</span>
+        <span class="k">if</span> <span class="n">randomizeFirstBlock</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> \
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">isCBCMode</span><span class="p">()</span> \
+                <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span><span class="p">:</span>
+            <span class="n">msgFirstByte</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">splitFirstByte</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsgThroughSocket</span><span class="p">(</span><span class="n">msgFirstByte</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">write</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span>
+
+        <span class="n">buf</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+        <span class="n">contentType</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span>
+        <span class="c1">#Update handshake hashes</span>
+        <span class="k">if</span> <span class="n">update_hashes</span> <span class="ow">and</span> <span class="n">contentType</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+
+        <span class="c1">#Fragment big messages</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">recordSize</span><span class="p">:</span>
+            <span class="n">newB</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">recordSize</span><span class="p">]</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">recordSize</span><span class="p">:]</span>
+
+            <span class="n">msgFragment</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">contentType</span><span class="p">,</span> <span class="n">newB</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsgThroughSocket</span><span class="p">(</span><span class="n">msgFragment</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="n">msgFragment</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">contentType</span><span class="p">,</span> <span class="n">buf</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsgThroughSocket</span><span class="p">(</span><span class="n">msgFragment</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_queue_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Just queue message for sending, for record layer coalescing.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_content_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_content_type</span> <span class="o">!=</span> <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Queuing of wrong message types&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_content_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_content_type</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span>
+
+        <span class="n">serialised_msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">+=</span> <span class="n">serialised_msg</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">serialised_msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_queue_flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send the queued messages.&quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer_content_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">update_hashes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_content_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_sendMsgThroughSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send message, handle errors&quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">sendRecord</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+            <span class="c1"># The socket was unexpectedly closed.  The tricky part</span>
+            <span class="c1"># is that there may be an alert sent by the other party</span>
+            <span class="c1"># sitting in the read buffer.  So, if we get here after</span>
+            <span class="c1"># handshaking, we will just raise the error and let the</span>
+            <span class="c1"># caller read more data if it would like, thus stumbling</span>
+            <span class="c1"># upon the error.</span>
+            <span class="c1">#</span>
+            <span class="c1"># However, if we get here DURING handshaking, we take</span>
+            <span class="c1"># it upon ourselves to see if the next message is an</span>
+            <span class="c1"># Alert.</span>
+            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span><span class="p">:</span>
+
+                <span class="c1"># See if there&#39;s an alert record</span>
+                <span class="c1"># Could raise socket.error or TLSAbruptCloseError</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getNextRecord</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">result</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+                <span class="c1"># Closes the socket</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+                <span class="c1"># If we got an alert, raise it</span>
+                <span class="n">recordHeader</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">result</span>
+                <span class="k">if</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">alert</span><span class="p">:</span>
+                    <span class="n">alert</span> <span class="o">=</span> <span class="n">Alert</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">TLSRemoteAlert</span><span class="p">(</span><span class="n">alert</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If we got some other message who know what</span>
+                <span class="c1"># the remote side is doing, just go ahead and</span>
+                <span class="c1"># raise the socket.error</span>
+                <span class="k">raise</span>
+
+    <span class="k">def</span> <span class="nf">_getMsg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expectedType</span><span class="p">,</span> <span class="n">secondaryType</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">constructorType</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expectedType</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">expectedType</span> <span class="o">=</span> <span class="p">(</span><span class="n">expectedType</span><span class="p">,)</span>
+
+            <span class="c1">#Spin in a loop, until we&#39;ve got a non-empty record of a type we</span>
+            <span class="c1">#expect.  The loop will be repeated if:</span>
+            <span class="c1">#  - we receive a renegotiation attempt; we send no_renegotiation,</span>
+            <span class="c1">#    then try again</span>
+            <span class="c1">#  - we receive an empty application-data fragment; we try again</span>
+            <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getNextRecord</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">result</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">break</span>
+                <span class="n">recordHeader</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">result</span>
+
+                <span class="c1"># if this is a CCS message in TLS 1.3, sanity check and</span>
+                <span class="c1"># continue</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">and</span> \
+                        <span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span> <span class="ow">in</span> <span class="n">expectedType</span> <span class="ow">and</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_middlebox_compat_mode</span> <span class="ow">and</span> \
+                        <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">change_cipher_spec</span><span class="p">:</span>
+                    <span class="n">ccs</span> <span class="o">=</span> <span class="n">ChangeCipherSpec</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">ccs</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                                <span class="n">AlertDescription</span><span class="o">.</span><span class="n">unexpected_message</span><span class="p">,</span>
+                                <span class="s2">&quot;Invalid CCS message received&quot;</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">result</span>
+                    <span class="c1"># ignore the message</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># TLS 1.3 Handshake messages MUST NOT be interleaved with</span>
+                <span class="c1"># other messages, Section 5.1 RFC 8446</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">and</span> \
+                        <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span> <span class="ow">and</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_defragmenter</span><span class="o">.</span><span class="n">buffers</span><span class="p">[</span><span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span><span class="p">]:</span>
+                    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                            <span class="n">AlertDescription</span><span class="o">.</span><span class="n">unexpected_message</span><span class="p">,</span>
+                            <span class="s2">&quot;Interleaved Handshake and &quot;</span>
+                            <span class="s2">&quot;non-handshake messages&quot;</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">result</span>
+
+                <span class="c1">#If we received an unexpected record type...</span>
+                <span class="k">if</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expectedType</span><span class="p">:</span>
+
+                    <span class="c1">#If we received an alert...</span>
+                    <span class="k">if</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">alert</span><span class="p">:</span>
+                        <span class="n">alert</span> <span class="o">=</span> <span class="n">Alert</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+                        <span class="c1">#We either received a fatal error, a warning, or a</span>
+                        <span class="c1">#close_notify.  In any case, we&#39;re going to close the</span>
+                        <span class="c1">#connection.  In the latter two cases we respond with</span>
+                        <span class="c1">#a close_notify, but ignore any socket errors, since</span>
+                        <span class="c1">#the other side might have already closed the socket.</span>
+                        <span class="k">if</span> <span class="n">alert</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="n">AlertLevel</span><span class="o">.</span><span class="n">warning</span> <span class="ow">or</span> \
+                           <span class="n">alert</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">AlertDescription</span><span class="o">.</span><span class="n">close_notify</span><span class="p">:</span>
+
+                            <span class="c1">#If the sendMsg() call fails because the socket has</span>
+                            <span class="c1">#already been closed, we will be forgiving and not</span>
+                            <span class="c1">#report the error nor invalidate the &quot;resumability&quot;</span>
+                            <span class="c1">#of the session.</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">alertMsg</span> <span class="o">=</span> <span class="n">Alert</span><span class="p">()</span>
+                                <span class="n">alertMsg</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">AlertDescription</span><span class="o">.</span><span class="n">close_notify</span><span class="p">,</span>
+                                                <span class="n">AlertLevel</span><span class="o">.</span><span class="n">warning</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsg</span><span class="p">(</span><span class="n">alertMsg</span><span class="p">):</span>
+                                    <span class="k">yield</span> <span class="n">result</span>
+                            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+                                <span class="k">pass</span>
+
+                            <span class="k">if</span> <span class="n">alert</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> \
+                                   <span class="n">AlertDescription</span><span class="o">.</span><span class="n">close_notify</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                            <span class="k">elif</span> <span class="n">alert</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="n">AlertLevel</span><span class="o">.</span><span class="n">warning</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+                        <span class="k">else</span><span class="p">:</span> <span class="c1">#Fatal alert:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+                        <span class="c1">#Raise the alert as an exception</span>
+                        <span class="k">raise</span> <span class="n">TLSRemoteAlert</span><span class="p">(</span><span class="n">alert</span><span class="p">)</span>
+
+                    <span class="c1">#If we received a renegotiation attempt...</span>
+                    <span class="k">if</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span><span class="p">:</span>
+                        <span class="n">subType</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="n">reneg</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">hello_request</span><span class="p">:</span>
+                                <span class="n">reneg</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">client_hello</span><span class="p">:</span>
+                                <span class="n">reneg</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="c1"># Send no_renegotiation if we&#39;re not negotiating</span>
+                        <span class="c1"># a connection now, then try again</span>
+                        <span class="k">if</span> <span class="n">reneg</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
+                            <span class="n">alertMsg</span> <span class="o">=</span> <span class="n">Alert</span><span class="p">()</span>
+                            <span class="n">alertMsg</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">AlertDescription</span><span class="o">.</span><span class="n">no_renegotiation</span><span class="p">,</span>
+                                            <span class="n">AlertLevel</span><span class="o">.</span><span class="n">warning</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsg</span><span class="p">(</span><span class="n">alertMsg</span><span class="p">):</span>
+                                <span class="k">yield</span> <span class="n">result</span>
+                            <span class="k">continue</span>
+
+                    <span class="c1"># If we received a heartbeat request and heartbeat</span>
+                    <span class="c1"># extension was negotiated</span>
+                    <span class="k">if</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">heartbeat</span> <span class="ow">and</span> \
+                            <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_supported</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">heartbeat_message</span> <span class="o">=</span> <span class="n">Heartbeat</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                            <span class="c1"># If we received heartbeat request, then we</span>
+                            <span class="c1"># response with response create from request</span>
+                            <span class="k">if</span> <span class="n">heartbeat_message</span><span class="o">.</span><span class="n">message_type</span> <span class="o">==</span> \
+                                    <span class="n">HeartbeatMessageType</span><span class="o">.</span><span class="n">heartbeat_request</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_can_receive</span><span class="p">:</span>
+                                    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                                            <span class="n">AlertDescription</span><span class="o">.</span>
+                                            <span class="n">unexpected_message</span><span class="p">,</span>
+                                            <span class="s2">&quot;Received heartbeat_request to &quot;</span>
+                                            <span class="s2">&quot;peer_not_allowed_to_send mode&quot;</span><span class="p">):</span>
+                                        <span class="k">yield</span> <span class="n">result</span>
+                                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">heartbeat_message</span><span class="o">.</span><span class="n">padding</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">:</span>
+                                    <span class="c1"># per RFC, silently ignore if the message</span>
+                                    <span class="c1"># is malformed</span>
+                                    <span class="k">continue</span>
+                                <span class="n">heartbeat_response</span> <span class="o">=</span> <span class="n">heartbeat_message</span><span class="o">.</span>\
+                                    <span class="n">create_response</span><span class="p">()</span>
+                                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsg</span><span class="p">(</span>
+                                        <span class="n">heartbeat_response</span><span class="p">):</span>
+                                    <span class="k">yield</span> <span class="n">result</span>
+                            <span class="c1"># If we received heartbeat response, then we</span>
+                            <span class="c1"># check, if its payload is same as payload of</span>
+                            <span class="c1"># request we sent</span>
+                            <span class="k">elif</span> <span class="n">heartbeat_message</span><span class="o">.</span><span class="n">message_type</span> <span class="o">==</span> \
+                                    <span class="n">HeartbeatMessageType</span><span class="o">.</span><span class="n">heartbeat_response</span> \
+                                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_response_callback</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_response_callback</span><span class="p">(</span>
+                                    <span class="n">heartbeat_message</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">,</span> <span class="ne">SyntaxError</span><span class="p">):</span>
+                            <span class="k">pass</span>
+                        <span class="k">continue</span>
+
+                    <span class="c1">#Otherwise: this is an unexpected record, but neither an</span>
+                    <span class="c1">#alert nor renegotiation</span>
+                    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>\
+                            <span class="n">AlertDescription</span><span class="o">.</span><span class="n">unexpected_message</span><span class="p">,</span>
+                            <span class="s2">&quot;received type=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">result</span>
+
+                <span class="c1">#If this is an empty application-data fragment, try again</span>
+                <span class="k">if</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">bytes</span><span class="p">):</span>
+                        <span class="k">continue</span>
+
+                <span class="k">break</span>
+
+            <span class="c1">#Parse based on content_type</span>
+            <span class="k">if</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">change_cipher_spec</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">ChangeCipherSpec</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">alert</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">Alert</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">ApplicationData</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">handshake</span><span class="p">:</span>
+                <span class="c1">#Convert secondaryType to tuple, if it isn&#39;t already</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">secondaryType</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="n">secondaryType</span> <span class="o">=</span> <span class="p">(</span><span class="n">secondaryType</span><span class="p">,)</span>
+
+                <span class="c1">#If it&#39;s a handshake message, check handshake header</span>
+                <span class="k">if</span> <span class="n">recordHeader</span><span class="o">.</span><span class="n">ssl2</span><span class="p">:</span>
+                    <span class="n">subType</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">subType</span> <span class="o">!=</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">client_hello</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>\
+                                <span class="n">AlertDescription</span><span class="o">.</span><span class="n">unexpected_message</span><span class="p">,</span>
+                                <span class="s2">&quot;Can only handle SSLv2 ClientHello messages&quot;</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">result</span>
+                    <span class="k">if</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">client_hello</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">secondaryType</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>\
+                                <span class="n">AlertDescription</span><span class="o">.</span><span class="n">unexpected_message</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">result</span>
+                    <span class="n">subType</span> <span class="o">=</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">client_hello</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">subType</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">subType</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">secondaryType</span><span class="p">:</span>
+                        <span class="n">exp</span> <span class="o">=</span> <span class="n">to_str_delimiter</span><span class="p">(</span><span class="n">HandshakeType</span><span class="o">.</span><span class="n">toStr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                                               <span class="n">secondaryType</span><span class="p">)</span>
+                        <span class="n">rec</span> <span class="o">=</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">toStr</span><span class="p">(</span><span class="n">subType</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span><span class="n">AlertDescription</span>
+                                                      <span class="o">.</span><span class="n">unexpected_message</span><span class="p">,</span>
+                                                      <span class="s2">&quot;Expecting </span><span class="si">{0}</span><span class="s2">, got </span><span class="si">{1}</span><span class="s2">&quot;</span>
+                                                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">rec</span><span class="p">)):</span>
+                            <span class="k">yield</span> <span class="n">result</span>
+
+                <span class="c1"># in TLS 1.3 some Handshake messages MUST NOT span key changes</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">and</span> \
+                        <span class="n">subType</span> <span class="ow">in</span> <span class="p">(</span><span class="n">HandshakeType</span><span class="o">.</span><span class="n">client_hello</span><span class="p">,</span>
+                                    <span class="n">HandshakeType</span><span class="o">.</span><span class="n">end_of_early_data</span><span class="p">,</span>
+                                    <span class="n">HandshakeType</span><span class="o">.</span><span class="n">server_hello</span><span class="p">,</span>
+                                    <span class="n">HandshakeType</span><span class="o">.</span><span class="n">finished</span><span class="p">,</span>
+                                    <span class="n">HandshakeType</span><span class="o">.</span><span class="n">key_update</span><span class="p">)</span> <span class="ow">and</span> \
+                        <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defragmenter</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                            <span class="n">AlertDescription</span><span class="o">.</span><span class="n">unexpected_message</span><span class="p">,</span>
+                            <span class="s2">&quot;CH, EOED, SH, Finished, or KU not aligned with &quot;</span>
+                            <span class="s2">&quot;record boundary&quot;</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">result</span>
+
+                <span class="c1">#Update handshake hashes</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">bytes</span><span class="p">)</span>
+
+                <span class="c1">#Parse based on handshake type</span>
+                <span class="k">if</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">client_hello</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">ClientHello</span><span class="p">(</span><span class="n">recordHeader</span><span class="o">.</span><span class="n">ssl2</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">server_hello</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">ServerHello</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">certificate</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">Certificate</span><span class="p">(</span><span class="n">constructorType</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">certificate_request</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">CertificateRequest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">certificate_verify</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">CertificateVerify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">server_key_exchange</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">ServerKeyExchange</span><span class="p">(</span><span class="n">constructorType</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">server_hello_done</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">ServerHelloDone</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">client_key_exchange</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">ClientKeyExchange</span><span class="p">(</span><span class="n">constructorType</span><span class="p">,</span> \
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">Finished</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">constructorType</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">next_protocol</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">NextProtocol</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">encrypted_extensions</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">EncryptedExtensions</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">new_session_ticket</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">NewSessionTicket1_0</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">NewSessionTicket</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">subType</span> <span class="o">==</span> <span class="n">HandshakeType</span><span class="o">.</span><span class="n">key_update</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">KeyUpdate</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="c1">#If an exception was raised by a Parser or Message instance:</span>
+        <span class="k">except</span> <span class="n">BadCertificateError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span><span class="n">AlertDescription</span><span class="o">.</span><span class="n">bad_certificate</span><span class="p">,</span>
+                                          <span class="n">formatExceptionTrace</span><span class="p">(</span><span class="n">e</span><span class="p">)):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="ne">SyntaxError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span><span class="n">AlertDescription</span><span class="o">.</span><span class="n">decode_error</span><span class="p">,</span>
+                                          <span class="n">formatExceptionTrace</span><span class="p">(</span><span class="n">e</span><span class="p">)):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+
+    <span class="c1">#Returns next record or next handshake message</span>
+    <span class="k">def</span> <span class="nf">_getNextRecord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;read next message from socket, defragment message&quot;&quot;&quot;</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># support for fragmentation</span>
+            <span class="c1"># (RFC 5246 Section 6.2.1)</span>
+            <span class="c1"># Because the Record Layer is completely separate from the messages</span>
+            <span class="c1"># that traverse it, it should handle both application data and</span>
+            <span class="c1"># hadshake data in the same way. For that we buffer the handshake</span>
+            <span class="c1"># messages until they are completely read.</span>
+            <span class="c1"># This makes it possible to handle both handshake data not aligned</span>
+            <span class="c1"># to record boundary as well as handshakes longer than single</span>
+            <span class="c1"># record.</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># empty message buffer</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defragmenter</span><span class="o">.</span><span class="n">get_message</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">ret</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">RecordHeader3</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">header</span><span class="p">,</span> <span class="n">Parser</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="c1"># CCS can be sent before early_data but processing it will</span>
+            <span class="c1"># remove the flag from record layer, so reset it</span>
+            <span class="n">early_data_ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">early_data_ok</span>
+
+            <span class="c1"># when the message buffer is empty, read next record from socket</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getNextRecordFromSocket</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+            <span class="n">header</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">result</span>
+
+            <span class="c1"># application data (and CCS in TLS1.3) isn&#39;t made out of messages,</span>
+            <span class="c1"># pass it through</span>
+            <span class="k">if</span> <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span> <span class="ow">or</span> \
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">and</span>
+                     <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">change_cipher_spec</span><span class="p">):</span>
+                <span class="c1"># CCS doesn&#39;t change the status of undecryptable</span>
+                <span class="c1"># records</span>
+                <span class="k">if</span> <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">change_cipher_spec</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">early_data_ok</span> <span class="o">=</span> <span class="n">early_data_ok</span>
+                <span class="k">yield</span> <span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+            <span class="c1"># heartbeat message isn&#39;t made out of messages, too</span>
+            <span class="k">elif</span> <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">heartbeat</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+            <span class="c1"># If it&#39;s an SSLv2 ClientHello, we can return it as well, since</span>
+            <span class="c1"># it&#39;s the only ssl2 type we support</span>
+            <span class="k">elif</span> <span class="n">header</span><span class="o">.</span><span class="n">ssl2</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># other types need to be put into buffers</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_defragmenter</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">parser</span><span class="o">.</span><span class="n">bytes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_getNextRecordFromSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a record, handle errors&quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># otherwise... read the next record</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">recvRecord</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span>
+        <span class="k">except</span> <span class="n">TLSUnexpectedMessage</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span><span class="n">AlertDescription</span><span class="o">.</span><span class="n">unexpected_message</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="n">TLSRecordOverflow</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span><span class="n">AlertDescription</span><span class="o">.</span><span class="n">record_overflow</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="n">TLSIllegalParameterException</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span><span class="n">AlertDescription</span><span class="o">.</span><span class="n">illegal_parameter</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="n">TLSDecryptionFailed</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                    <span class="n">AlertDescription</span><span class="o">.</span><span class="n">decryption_failed</span><span class="p">,</span>
+                    <span class="s2">&quot;Encrypted data not a multiple of blocksize&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="n">TLSBadRecordMAC</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                    <span class="n">AlertDescription</span><span class="o">.</span><span class="n">bad_record_mac</span><span class="p">,</span>
+                    <span class="s2">&quot;MAC failure (or padding failure)&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="n">header</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">result</span>
+
+        <span class="c1"># RFC5246 section 6.2.1: Implementations MUST NOT send</span>
+        <span class="c1"># zero-length fragments of content types other than Application</span>
+        <span class="c1"># Data.</span>
+        <span class="k">if</span> <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span> \
+                <span class="ow">and</span> <span class="n">parser</span><span class="o">.</span><span class="n">getRemainingLength</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                    <span class="n">AlertDescription</span><span class="o">.</span><span class="n">unexpected_message</span><span class="p">,</span>
+                    <span class="s2">&quot;Received empty non-application data record&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="k">if</span> <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>\
+                    <span class="n">AlertDescription</span><span class="o">.</span><span class="n">unexpected_message</span><span class="p">,</span> \
+                    <span class="s2">&quot;Received record with unknown ContentType&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="k">yield</span> <span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_handshakeStart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Renegotiation disallowed for security reasons&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_hash</span> <span class="o">=</span> <span class="n">HandshakeHashes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_certificate_verify_handshake_hash</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_client_hello_handshake_hash</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_defragmenter</span><span class="o">.</span><span class="n">clear_buffers</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allegedSrpUsername</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refCount</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_handshakeDone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resumed</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resumed</span> <span class="o">=</span> <span class="n">resumed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closed</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_calcPendingStates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">masterSecret</span><span class="p">,</span>
+                           <span class="n">clientRandom</span><span class="p">,</span> <span class="n">serverRandom</span><span class="p">,</span> <span class="n">implementations</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">calcPendingStates</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">,</span> <span class="n">masterSecret</span><span class="p">,</span>
+                                            <span class="n">clientRandom</span><span class="p">,</span> <span class="n">serverRandom</span><span class="p">,</span>
+                                            <span class="n">implementations</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_changeWriteState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">changeWriteState</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_changeReadState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">changeReadState</span><span class="p">()</span>
+
+<div class="viewcode-block" id="TLSRecordLayer.write_heartbeat"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.write_heartbeat">[docs]</a>    <span class="k">def</span> <span class="nf">write_heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">padding_length</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start a write operation of heartbeat_request.</span>
+
+<span class="sd">        :type payload: bytes</span>
+<span class="sd">        :param payload: Payload, that we want send in request and</span>
+<span class="sd">                        get at response.</span>
+
+<span class="sd">        :type padding_length: int</span>
+<span class="sd">        :param padding_length: Length of padding.</span>
+
+<span class="sd">        :raise socket.error: If a socket error occurs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSClosedConnectionError</span><span class="p">(</span>
+                <span class="s2">&quot;attempt to write to closed connection&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_supported</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_can_send</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;attempt to send Heartbeat request when &quot;</span>
+                                   <span class="s2">&quot;we cant send it to other side&quot;</span><span class="p">)</span>
+        <span class="n">heartbeat_request</span> <span class="o">=</span> <span class="n">Heartbeat</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">HeartbeatMessageType</span><span class="o">.</span><span class="n">heartbeat_request</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">padding_length</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsg</span><span class="p">(</span><span class="n">heartbeat_request</span><span class="p">,</span>
+                                    <span class="n">randomizeFirstBlock</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="TLSRecordLayer.send_heartbeat_request"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.send_heartbeat_request">[docs]</a>    <span class="k">def</span> <span class="nf">send_heartbeat_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">padding_length</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Synchronous version of write_heartbeat function.</span>
+
+<span class="sd">        :type payload: bytes</span>
+<span class="sd">        :param payload: Payload, that we want send in request and</span>
+<span class="sd">             get at response.</span>
+
+<span class="sd">        :type padding_length: int</span>
+<span class="sd">        :param padding_length: Length of padding.</span>
+
+<span class="sd">        :raise socket.error: If a socket error occurs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_heartbeat</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">padding_length</span><span class="p">):</span>
+            <span class="k">pass</span></div>
+
+    <span class="k">def</span> <span class="nf">_handle_keyupdate_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the KeyUpdate request.</span>
+
+<span class="sd">        :type request: KeyUpdate</span>
+<span class="sd">        :param request: Recieved KeyUpdate message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">message_type</span> <span class="o">==</span> <span class="n">KeyUpdateMessageType</span><span class="o">.</span><span class="n">update_not_requested</span> <span class="ow">or</span>\
+                <span class="n">request</span><span class="o">.</span><span class="n">message_type</span> <span class="o">==</span> <span class="n">KeyUpdateMessageType</span><span class="o">.</span><span class="n">update_requested</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cl_app_secret</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">sr_app_secret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span>\
+                <span class="n">calcTLS1_3KeyUpdate_sender</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cipherSuite</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cl_app_secret</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">sr_app_secret</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">message_type</span> <span class="o">==</span> <span class="n">KeyUpdateMessageType</span><span class="o">.</span><span class="n">update_requested</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_keyupdate_request</span><span class="p">(</span>
+                        <span class="n">KeyUpdateMessageType</span><span class="o">.</span><span class="n">update_not_requested</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendError</span><span class="p">(</span>
+                    <span class="n">AlertDescription</span><span class="o">.</span><span class="n">illegal_parameter</span><span class="p">,</span>
+                    <span class="s2">&quot;Received KeyUpdate request with unknown message_type&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+
+<div class="viewcode-block" id="TLSRecordLayer.send_keyupdate_request"><a class="viewcode-back" href="../../tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer.send_keyupdate_request">[docs]</a>    <span class="k">def</span> <span class="nf">send_keyupdate_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_type</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send a KeyUpdate message.</span>
+
+<span class="sd">        :type payload: int</span>
+<span class="sd">        :param payload: Type of KeyUpdate message.</span>
+
+<span class="sd">        :raise socket.error: If a socket error occurs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSClosedConnectionError</span><span class="p">(</span>
+                <span class="s2">&quot;attempt to write to closed connection&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;KeyUpdate is a TLS 1.3 specific&quot;</span>
+                                               <span class="s2">&quot; feature&quot;</span><span class="p">)</span>
+
+        <span class="n">keyupdate_request</span> <span class="o">=</span> <span class="n">KeyUpdate</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">message_type</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendMsg</span><span class="p">(</span><span class="n">keyupdate_request</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cl_app_secret</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">sr_app_secret</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recordLayer</span><span class="o">.</span><span class="n">calcTLS1_3KeyUpdate_reciever</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cipherSuite</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cl_app_secret</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">sr_app_secret</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

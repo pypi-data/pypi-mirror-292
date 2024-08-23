@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.handshakesettings &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.handshakesettings</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.handshakesettings</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Authors:</span>
+<span class="c1">#   Trevor Perrin</span>
+<span class="c1">#   Dave Baggett (Arcode Corporation) - cleanup handling of constants</span>
+<span class="c1">#   Yngve Pettersen (ported by Paul Sokolovsky) - TLS 1.2</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Class for setting handshake parameters.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">CertificateType</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">cryptomath</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">cipherfactory</span>
+<span class="kn">from</span> <span class="nn">.utils.compat</span> <span class="kn">import</span> <span class="n">ecdsaAllCurves</span><span class="p">,</span> <span class="n">int_types</span>
+
+<span class="n">CIPHER_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;chacha20-poly1305&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;aes256gcm&quot;</span><span class="p">,</span> <span class="s2">&quot;aes128gcm&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;aes256ccm&quot;</span><span class="p">,</span> <span class="s2">&quot;aes128ccm&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;aes256&quot;</span><span class="p">,</span> <span class="s2">&quot;aes128&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;3des&quot;</span><span class="p">]</span>
+<span class="n">ALL_CIPHER_NAMES</span> <span class="o">=</span> <span class="n">CIPHER_NAMES</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;chacha20-poly1305_draft00&quot;</span><span class="p">,</span>
+                                   <span class="s2">&quot;aes128ccm_8&quot;</span><span class="p">,</span> <span class="s2">&quot;aes256ccm_8&quot;</span><span class="p">,</span>
+                                   <span class="s2">&quot;rc4&quot;</span><span class="p">,</span> <span class="s2">&quot;null&quot;</span><span class="p">]</span>
+<span class="c1"># Don&#39;t allow &quot;md5&quot; by default</span>
+<span class="n">MAC_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sha&quot;</span><span class="p">,</span> <span class="s2">&quot;sha256&quot;</span><span class="p">,</span> <span class="s2">&quot;sha384&quot;</span><span class="p">,</span> <span class="s2">&quot;aead&quot;</span><span class="p">]</span>
+<span class="n">ALL_MAC_NAMES</span> <span class="o">=</span> <span class="n">MAC_NAMES</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;md5&quot;</span><span class="p">]</span>
+<span class="n">KEY_EXCHANGE_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ecdhe_ecdsa&quot;</span><span class="p">,</span> <span class="s2">&quot;rsa&quot;</span><span class="p">,</span> <span class="s2">&quot;dhe_rsa&quot;</span><span class="p">,</span> <span class="s2">&quot;ecdhe_rsa&quot;</span><span class="p">,</span> <span class="s2">&quot;srp_sha&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;srp_sha_rsa&quot;</span><span class="p">,</span> <span class="s2">&quot;ecdh_anon&quot;</span><span class="p">,</span> <span class="s2">&quot;dh_anon&quot;</span><span class="p">,</span> <span class="s2">&quot;dhe_dsa&quot;</span><span class="p">]</span>
+<span class="n">CIPHER_IMPLEMENTATIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;openssl&quot;</span><span class="p">,</span> <span class="s2">&quot;pycrypto&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">]</span>
+<span class="n">CERTIFICATE_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;x509&quot;</span><span class="p">]</span>
+<span class="n">RSA_SIGNATURE_HASHES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sha512&quot;</span><span class="p">,</span> <span class="s2">&quot;sha384&quot;</span><span class="p">,</span> <span class="s2">&quot;sha256&quot;</span><span class="p">,</span> <span class="s2">&quot;sha224&quot;</span><span class="p">,</span> <span class="s2">&quot;sha1&quot;</span><span class="p">]</span>
+<span class="n">DSA_SIGNATURE_HASHES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sha512&quot;</span><span class="p">,</span> <span class="s2">&quot;sha384&quot;</span><span class="p">,</span> <span class="s2">&quot;sha256&quot;</span><span class="p">,</span> <span class="s2">&quot;sha224&quot;</span><span class="p">,</span> <span class="s2">&quot;sha1&quot;</span><span class="p">]</span>
+<span class="n">ECDSA_SIGNATURE_HASHES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sha512&quot;</span><span class="p">,</span> <span class="s2">&quot;sha384&quot;</span><span class="p">,</span> <span class="s2">&quot;sha256&quot;</span><span class="p">,</span> <span class="s2">&quot;sha224&quot;</span><span class="p">,</span> <span class="s2">&quot;sha1&quot;</span><span class="p">]</span>
+<span class="n">ALL_RSA_SIGNATURE_HASHES</span> <span class="o">=</span> <span class="n">RSA_SIGNATURE_HASHES</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;md5&quot;</span><span class="p">]</span>
+<span class="n">SIGNATURE_SCHEMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Ed25519&quot;</span><span class="p">,</span> <span class="s2">&quot;Ed448&quot;</span><span class="p">]</span>
+<span class="n">RSA_SCHEMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pss&quot;</span><span class="p">,</span> <span class="s2">&quot;pkcs1&quot;</span><span class="p">]</span>
+<span class="c1"># while secp521r1 is the most secure, it&#39;s also much slower than the others</span>
+<span class="c1"># so place it as the last one</span>
+<span class="n">CURVE_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;x25519&quot;</span><span class="p">,</span> <span class="s2">&quot;x448&quot;</span><span class="p">,</span> <span class="s2">&quot;secp384r1&quot;</span><span class="p">,</span> <span class="s2">&quot;secp256r1&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;secp521r1&quot;</span><span class="p">]</span>
+<span class="n">ALL_CURVE_NAMES</span> <span class="o">=</span> <span class="n">CURVE_NAMES</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;secp256k1&quot;</span><span class="p">,</span> <span class="s2">&quot;brainpoolP512r1&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;brainpoolP384r1&quot;</span><span class="p">,</span> <span class="s2">&quot;brainpoolP256r1&quot;</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">ecdsaAllCurves</span><span class="p">:</span>
+    <span class="n">ALL_CURVE_NAMES</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;secp224r1&quot;</span><span class="p">,</span> <span class="s2">&quot;secp192r1&quot;</span><span class="p">]</span>
+<span class="n">ALL_DH_GROUP_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ffdhe2048&quot;</span><span class="p">,</span> <span class="s2">&quot;ffdhe3072&quot;</span><span class="p">,</span> <span class="s2">&quot;ffdhe4096&quot;</span><span class="p">,</span> <span class="s2">&quot;ffdhe6144&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;ffdhe8192&quot;</span><span class="p">]</span>
+<span class="n">CURVE_ALIASES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;secp256r1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;NIST256p&#39;</span><span class="p">,</span> <span class="s1">&#39;prime256v1&#39;</span><span class="p">,</span> <span class="s1">&#39;P-256&#39;</span><span class="p">),</span>
+                 <span class="s2">&quot;secp384r1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;NIST384p&#39;</span><span class="p">,</span> <span class="s1">&#39;P-384&#39;</span><span class="p">),</span>
+                 <span class="s2">&quot;secp521r1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;NIST521p&#39;</span><span class="p">,</span> <span class="s1">&#39;P-521&#39;</span><span class="p">),</span>
+                 <span class="s2">&quot;secp256k1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;SECP256k1&#39;</span><span class="p">,),</span>
+                 <span class="s2">&quot;secp192r1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;NIST192p&#39;</span><span class="p">,</span> <span class="s1">&#39;P-192&#39;</span><span class="p">),</span>
+                 <span class="s2">&quot;secp224r1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;NIST224p&#39;</span><span class="p">,</span> <span class="s1">&#39;P-224&#39;</span><span class="p">),</span>
+                 <span class="s2">&quot;brainpoolP256r1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;BRAINPOOLP256r1&#39;</span><span class="p">,),</span>
+                 <span class="s2">&quot;brainpoolP384r1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;BRAINPOOLP384r1&#39;</span><span class="p">,),</span>
+                 <span class="s2">&quot;brainpoolP512r1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;BRAINPOOLP512r1&#39;</span><span class="p">,)}</span>
+<span class="c1"># list of supported groups in TLS 1.3 as per RFC 8446, chapter 4.2.7. (excluding private use here)</span>
+<span class="n">TLS13_PERMITTED_GROUPS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;secp256r1&quot;</span><span class="p">,</span> <span class="s2">&quot;secp384r1&quot;</span><span class="p">,</span> <span class="s2">&quot;secp521r1&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;x25519&quot;</span><span class="p">,</span> <span class="s2">&quot;x448&quot;</span><span class="p">,</span> <span class="s2">&quot;ffdhe2048&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;ffdhe3072&quot;</span><span class="p">,</span> <span class="s2">&quot;ffdhe4096&quot;</span><span class="p">,</span> <span class="s2">&quot;ffdhe6144&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;ffdhe8192&quot;</span><span class="p">]</span>
+<span class="n">KNOWN_VERSIONS</span> <span class="o">=</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">TICKET_CIPHERS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;chacha20-poly1305&quot;</span><span class="p">,</span> <span class="s2">&quot;aes256gcm&quot;</span><span class="p">,</span> <span class="s2">&quot;aes128gcm&quot;</span><span class="p">,</span> <span class="s2">&quot;aes128ccm&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;aes128ccm_8&quot;</span><span class="p">,</span> <span class="s2">&quot;aes256ccm&quot;</span><span class="p">,</span> <span class="s2">&quot;aes256ccm_8&quot;</span><span class="p">]</span>
+<span class="n">PSK_MODES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;psk_dhe_ke&quot;</span><span class="p">,</span> <span class="s2">&quot;psk_ke&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Keypair"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.Keypair">[docs]</a><span class="k">class</span> <span class="nc">Keypair</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Key, certificate and related data.</span>
+
+<span class="sd">    Stores also certificate associate data like OCSPs and transparency info.</span>
+<span class="sd">    TODO: add the above</span>
+
+<span class="sd">    First certificate in certificates needs to match key, remaining should</span>
+<span class="sd">    build a trust path to a root CA.</span>
+
+<span class="sd">    :vartype key: RSAKey or ECDSAKey</span>
+<span class="sd">    :ivar key: private key</span>
+
+<span class="sd">    :vartype certificates: list(X509)</span>
+<span class="sd">    :ivar certificates: the certificates to send to peer if the key is selected</span>
+<span class="sd">        for use. The first one MUST include the public key of the ``key``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Keypair.__init__"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.Keypair.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">certificates</span><span class="o">=</span><span class="nb">tuple</span><span class="p">()):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">certificates</span> <span class="o">=</span> <span class="n">certificates</span></div>
+
+<div class="viewcode-block" id="Keypair.validate"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.Keypair.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sanity check the keypair.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">certificates</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Key or certificate missing in Keypair&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="VirtualHost"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.VirtualHost">[docs]</a><span class="k">class</span> <span class="nc">VirtualHost</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration of keys and certs for a single virual server.</span>
+
+<span class="sd">    This class encapsulates keys and certificates for hosts specified by</span>
+<span class="sd">    server_name (SNI) and ALPN extensions.</span>
+
+<span class="sd">    TODO: support SRP as alternative to certificates</span>
+<span class="sd">    TODO: support PSK as alternative to certificates</span>
+
+<span class="sd">    :vartype keys: list(Keypair)</span>
+<span class="sd">    :ivar keys: List of certificates and keys to be used in this</span>
+<span class="sd">        virtual host. First keypair able to server ClientHello will be used.</span>
+
+<span class="sd">    :vartype hostnames: set(bytes)</span>
+<span class="sd">    :ivar hostnames: all the hostnames that server supports</span>
+<span class="sd">        please use :py:meth:`matches_hostname` to verify if the VirtualHost</span>
+<span class="sd">        can serve a request to a given hostname as that allows wildcard hosts</span>
+<span class="sd">        that always reply True.</span>
+
+<span class="sd">    :vartype trust_anchors: list(X509)</span>
+<span class="sd">    :ivar trust_anchors: list of CA certificates supported for client</span>
+<span class="sd">        certificate authentication, sent in CertificateRequest</span>
+
+<span class="sd">    :ivar list(bytes) app_protocols: all the application protocols that the</span>
+<span class="sd">        server supports (for ALPN)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="VirtualHost.__init__"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.VirtualHost.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up default configuration.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hostnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trust_anchors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app_protocols</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="VirtualHost.matches_hostname"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.VirtualHost.matches_hostname">[docs]</a>    <span class="k">def</span> <span class="nf">matches_hostname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hostname</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if the virtual host can serve hostname&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">hostname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostnames</span></div>
+
+<div class="viewcode-block" id="VirtualHost.validate"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.VirtualHost.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sanity check the settings&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Virtual host missing keys&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">:</span>
+            <span class="n">i</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="HandshakeSettings"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.HandshakeSettings">[docs]</a><span class="k">class</span> <span class="nc">HandshakeSettings</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class encapsulates various parameters that can be used with</span>
+<span class="sd">    a TLS handshake.</span>
+
+<span class="sd">    :vartype minKeySize: int</span>
+<span class="sd">    :ivar minKeySize: The minimum bit length for asymmetric keys.</span>
+
+<span class="sd">        If the other party tries to use SRP, RSA, DSA, or Diffie-Hellman</span>
+<span class="sd">        parameters smaller than this length, an alert will be</span>
+<span class="sd">        signalled.  The default is 1023.</span>
+
+
+<span class="sd">    :vartype maxKeySize: int</span>
+<span class="sd">    :ivar maxKeySize: The maximum bit length for asymmetric keys.</span>
+
+<span class="sd">        If the other party tries to use SRP, RSA, DSA, or Diffie-Hellman</span>
+<span class="sd">        parameters larger than this length, an alert will be signalled.</span>
+<span class="sd">        The default is 8193.</span>
+
+<span class="sd">    :vartype cipherNames: list(str)</span>
+<span class="sd">    :ivar cipherNames: The allowed ciphers.</span>
+
+<span class="sd">        The allowed values in this list are &#39;chacha20-poly1305&#39;, &#39;aes256gcm&#39;,</span>
+<span class="sd">        &#39;aes128gcm&#39;, &#39;aes256&#39;, &#39;aes128&#39;, &#39;3des&#39;, &#39;chacha20-poly1305_draft00&#39;,</span>
+<span class="sd">        &#39;null&#39; and</span>
+<span class="sd">        &#39;rc4&#39;.  If these settings are used with a client handshake, they</span>
+<span class="sd">        determine the order of the ciphersuites offered in the ClientHello</span>
+<span class="sd">        message.</span>
+
+<span class="sd">        If these settings are used with a server handshake, the server will</span>
+<span class="sd">        choose whichever ciphersuite matches the earliest entry in this</span>
+<span class="sd">        list.</span>
+
+<span class="sd">        The default value is list that excludes &#39;rc4&#39;, &#39;null&#39; and</span>
+<span class="sd">        &#39;chacha20-poly1305_draft00&#39;.</span>
+
+<span class="sd">    :vartype macNames: list(str)</span>
+<span class="sd">    :ivar macNames: The allowed MAC algorithms.</span>
+
+<span class="sd">        The allowed values in this list are &#39;sha384&#39;, &#39;sha256&#39;, &#39;aead&#39;, &#39;sha&#39;</span>
+<span class="sd">        and &#39;md5&#39;.</span>
+
+<span class="sd">        The default value is list that excludes &#39;md5&#39;.</span>
+
+<span class="sd">    :vartype certificateTypes: list(str)</span>
+<span class="sd">    :ivar certificateTypes: The allowed certificate types.</span>
+
+<span class="sd">        The only allowed certificate type is &#39;x509&#39;.  This list is only used</span>
+<span class="sd">        with a</span>
+<span class="sd">        client handshake.  The client will advertise to the server which</span>
+<span class="sd">        certificate</span>
+<span class="sd">        types are supported, and will check that the server uses one of the</span>
+<span class="sd">        appropriate types.</span>
+
+
+<span class="sd">    :vartype minVersion: tuple</span>
+<span class="sd">    :ivar minVersion: The minimum allowed SSL/TLS version.</span>
+
+<span class="sd">        This variable can be set to (3, 0) for SSL 3.0, (3, 1) for TLS 1.0,</span>
+<span class="sd">        (3, 2) for</span>
+<span class="sd">        TLS 1.1, or (3, 3) for TLS 1.2.  If the other party wishes to use a</span>
+<span class="sd">        lower</span>
+<span class="sd">        version, a protocol_version alert will be signalled.  The default is</span>
+<span class="sd">        (3, 1).</span>
+
+<span class="sd">    :vartype maxVersion: tuple</span>
+<span class="sd">    :ivar maxVersion: The maximum allowed SSL/TLS version.</span>
+
+<span class="sd">        This variable can be set to (3, 0) for SSL 3.0, (3, 1) for TLS 1.0,</span>
+<span class="sd">        (3, 2) for TLS 1.1, or (3, 3) for TLS 1.2.  If the other party wishes</span>
+<span class="sd">        to use a</span>
+<span class="sd">        higher version, a protocol_version alert will be signalled.  The</span>
+<span class="sd">        default is (3, 3).</span>
+
+<span class="sd">        .. warning:: Some servers may (improperly) reject clients which offer</span>
+<span class="sd">            support</span>
+<span class="sd">            for TLS 1.1 or higher.  In this case, try lowering maxVersion to</span>
+<span class="sd">            (3, 1).</span>
+
+<span class="sd">    :vartype useExperimentalTackExtension: bool</span>
+<span class="sd">    :ivar useExperimentalTackExtension: Whether to enabled TACK support.</span>
+
+<span class="sd">        Note that TACK support is not standardized by IETF and uses a temporary</span>
+<span class="sd">        TLS Extension number, so should NOT be used in production software.</span>
+
+<span class="sd">    :vartype sendFallbackSCSV: bool</span>
+<span class="sd">    :ivar sendFallbackSCSV: Whether to, as a client, send FALLBACK_SCSV.</span>
+
+<span class="sd">    :vartype rsaSigHashes: list(str)</span>
+<span class="sd">    :ivar rsaSigHashes: List of hashes supported (and advertised as such) for</span>
+<span class="sd">        TLS 1.2 signatures over Server Key Exchange or Certificate Verify with</span>
+<span class="sd">        RSA signature algorithm.</span>
+
+<span class="sd">        The list is sorted from most wanted to least wanted algorithm.</span>
+
+<span class="sd">        The allowed hashes are: &quot;md5&quot;, &quot;sha1&quot;, &quot;sha224&quot;, &quot;sha256&quot;,</span>
+<span class="sd">        &quot;sha384&quot; and &quot;sha512&quot;. The default list does not include md5.</span>
+
+<span class="sd">    :vartype dsaSigHashes: list(str)</span>
+<span class="sd">    :ivar dsaSigHashes: List of hashes supported (and advertised as such) for</span>
+<span class="sd">        TLS 1.2 signatures over Server Key Exchange or Certificate Verify with</span>
+<span class="sd">        DSA signature algorithm.</span>
+
+<span class="sd">        The list is sorted from most wanted to least wanted algorithm.</span>
+
+<span class="sd">        The allowed hashes are: &quot;sha1&quot;, &quot;sha224&quot;, &quot;sha256&quot;,</span>
+<span class="sd">        &quot;sha384&quot; and &quot;sha512&quot;.</span>
+
+<span class="sd">    :vartype ecdsaSigHashes: list(str)</span>
+<span class="sd">    :ivar ecdsaSigHashes: List of hashes supported (and advertised as such) for</span>
+<span class="sd">        TLS 1.2 signatures over Server Key Exchange or Certificate Verify with</span>
+<span class="sd">        ECDSA signature algorithm.</span>
+
+<span class="sd">        The list is sorted from most wanted to least wanted algorithm.</span>
+
+<span class="sd">        The allowed hashes are: &quot;sha1&quot;, &quot;sha224&quot;, &quot;sha256&quot;,</span>
+<span class="sd">        &quot;sha384&quot; and &quot;sha512&quot;.</span>
+
+<span class="sd">    &quot;vartype more_sig_schemes: list(str)</span>
+<span class="sd">    :ivar more_sig_schemes: List of additional signatures schemes (ones</span>
+<span class="sd">        that don&#39;t use RSA-PKCS#1 v1.5, RSA-PSS, DSA, or ECDSA) to advertise</span>
+<span class="sd">        as supported.</span>
+<span class="sd">        Currently supported are: &quot;Ed25519&quot;, and &quot;Ed448&quot;.</span>
+
+<span class="sd">    :vartype eccCurves: list(str)</span>
+<span class="sd">    :ivar eccCurves: List of named curves that are to be advertised as</span>
+<span class="sd">        supported in supported_groups extension.</span>
+
+<span class="sd">    :vartype useEncryptThenMAC: bool</span>
+<span class="sd">    :ivar useEncryptThenMAC: whether to support the encrypt then MAC extension</span>
+<span class="sd">        from RFC 7366. True by default.</span>
+
+<span class="sd">    :vartype useExtendedMasterSecret: bool</span>
+<span class="sd">    :ivar useExtendedMasterSecret: whether to support the extended master</span>
+<span class="sd">        secret calculation from RFC 7627. True by default.</span>
+
+<span class="sd">    :vartype requireExtendedMasterSecret: bool</span>
+<span class="sd">    :ivar requireExtendedMasterSecret: whether to require negotiation of</span>
+<span class="sd">        extended master secret calculation for successful connection. Requires</span>
+<span class="sd">        useExtendedMasterSecret to be set to true. False by default.</span>
+
+<span class="sd">    :vartype defaultCurve: str</span>
+<span class="sd">    :ivar defaultCurve: curve that will be used by server in case the client</span>
+<span class="sd">        did not advertise support for any curves. It does not have to be the</span>
+<span class="sd">        first curve for eccCurves and may be distinct from curves from that</span>
+<span class="sd">        list.</span>
+
+<span class="sd">    :vartype keyShares: list(str)</span>
+<span class="sd">    :ivar keyShares: list of TLS 1.3 key shares to include in Client Hello</span>
+
+<span class="sd">    :vartype padding_cb: func</span>
+<span class="sd">    :ivar padding_cb: Callback to function computing number of padding bytes</span>
+<span class="sd">        for TLS 1.3. Signature is cb_func(msg_size, content_type, max_size).</span>
+
+<span class="sd">    :vartype pskConfigs: list(tuple(bytearray, bytearray, bytearray))</span>
+<span class="sd">    :ivar pskConfigs: list of tuples, first element of the tuple is the</span>
+<span class="sd">        human readable, UTF-8 encoded, &quot;identity&quot; of the associated secret</span>
+<span class="sd">        (bytearray, can be empty for TLS 1.2 and earlier), second element is</span>
+<span class="sd">        the binary secret (bytearray), third is an optional parameter</span>
+<span class="sd">        specifying the PRF hash to be used in TLS 1.3 (``sha256`` or</span>
+<span class="sd">        ``sha384``, with ``sha256`` being the default)</span>
+
+<span class="sd">    :vartype ticketKeys: list(bytearray)</span>
+<span class="sd">    :ivar ticketKeys: keys to be used for encrypting and decrypting session</span>
+<span class="sd">        tickets. First entry is the encryption key for new tickets and the</span>
+<span class="sd">        default decryption key, subsequent entries are the fallback keys</span>
+<span class="sd">        allowing for key rollover. The keys need to be of size appropriate</span>
+<span class="sd">        for a selected cipher in ticketCipher, 32 bytes for &#39;aes256gcm&#39; and</span>
+<span class="sd">        &#39;chacha20-poly1305&#39;, 16 bytes for &#39;aes128-gcm&#39;.</span>
+<span class="sd">        New keys should be generated regularly and replace old ones. Key use</span>
+<span class="sd">        time should generally not be longer than 24h and key life-time should</span>
+<span class="sd">        not be longer than 48h.</span>
+<span class="sd">        Leave empty to disable session ticket support on server side.</span>
+
+<span class="sd">    :vartype ticketCipher: str</span>
+<span class="sd">    :ivar ticketCipher: name of the cipher used for encrypting the session</span>
+<span class="sd">        tickets. &#39;aes256gcm&#39; by default, &#39;aes128gcm&#39; or &#39;chacha20-poly1305&#39;</span>
+<span class="sd">        alternatively.</span>
+
+<span class="sd">    :vartype ticketLifetime: int</span>
+<span class="sd">    :ivar ticketLifetime: maximum allowed lifetime of ticket encryption key,</span>
+<span class="sd">        in seconds. 1 day by default</span>
+
+<span class="sd">    :vartype ticket_count: int</span>
+<span class="sd">    :ivar ticket_count: number of tickets the server will send to the client</span>
+<span class="sd">        after establishing the connection in TLS 1.3. If a positive integer,</span>
+<span class="sd">        it enabled support for ticket based resumption in TLS 1.2 and earlier.</span>
+
+<span class="sd">    :vartype psk_modes: list(str)</span>
+<span class="sd">    :ivar psk_modes: acceptable modes for the PSK key exchange in TLS 1.3</span>
+
+<span class="sd">    :ivar int max_early_data: maximum number of bytes acceptable for 0-RTT</span>
+<span class="sd">        early_data processing. In other words, how many bytes will the server</span>
+<span class="sd">        try to process, but ignore, in case the Client Hello includes</span>
+<span class="sd">        early_data extension.</span>
+
+<span class="sd">    :vartype use_heartbeat_extension: bool</span>
+<span class="sd">    :ivar use_heartbeat_extension: whether to support heartbeat extension from</span>
+<span class="sd">        RFC 6520. True by default.</span>
+
+<span class="sd">    :vartype heartbeat_response_callback: func</span>
+<span class="sd">    :ivar heartbeat_response_callback: Callback to function when Heartbeat</span>
+<span class="sd">        response is received.</span>
+
+<span class="sd">    :vartype ~.record_size_limit: int</span>
+<span class="sd">    :ivar ~.record_size_limit: maximum size of records we are willing to process</span>
+<span class="sd">        (value advertised to the other side). It must not be larger than</span>
+<span class="sd">        2**14+1 (the maximum for TLS 1.3) and will be reduced to 2**14 if TLS</span>
+<span class="sd">        1.2 or lower is the highest enabled version. Must not be set to values</span>
+<span class="sd">        smaller than 64. Set to None to disable support for the extension.</span>
+<span class="sd">        See also: RFC 8449.</span>
+
+<span class="sd">    :vartype keyExchangeNames: list</span>
+<span class="sd">    :ivar keyExchangeNames: Enabled key exchange types for the connection,</span>
+<span class="sd">        influences selected cipher suites.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_init_key_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create default variables for key-related settings.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minKeySize</span> <span class="o">=</span> <span class="mi">1023</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxKeySize</span> <span class="o">=</span> <span class="mi">8193</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rsaSigHashes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">RSA_SIGNATURE_HASHES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rsaSchemes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">RSA_SCHEMES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dsaSigHashes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DSA_SIGNATURE_HASHES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">virtual_hosts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># DH key settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eccCurves</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">CURVE_NAMES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dhParams</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dhGroups</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ALL_DH_GROUP_NAMES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defaultCurve</span> <span class="o">=</span> <span class="s2">&quot;secp256r1&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyShares</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;secp256r1&quot;</span><span class="p">,</span> <span class="s2">&quot;x25519&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">padding_cb</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_heartbeat_extension</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_response_callback</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_init_misc_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Default variables for assorted extensions.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">certificateTypes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">CERTIFICATE_TYPES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">useExperimentalTackExtension</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendFallbackSCSV</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">useEncryptThenMAC</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ecdsaSigHashes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ECDSA_SIGNATURE_HASHES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">more_sig_schemes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">SIGNATURE_SCHEMES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usePaddingExtension</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">useExtendedMasterSecret</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requireExtendedMasterSecret</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># PSKs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pskConfigs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psk_modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">PSK_MODES</span><span class="p">)</span>
+        <span class="c1"># session tickets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticketKeys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticketCipher</span> <span class="o">=</span> <span class="s2">&quot;aes256gcm&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticketLifetime</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_early_data</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">14</span> <span class="o">+</span> <span class="mi">16</span>  <span class="c1"># full record + tag</span>
+        <span class="c1"># send two tickets so that client can quickly ramp up number of</span>
+        <span class="c1"># resumed connections (as tickets are single-use in TLS 1.3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticket_count</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">record_size_limit</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">14</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># TLS 1.3 includes content type</span>
+
+<div class="viewcode-block" id="HandshakeSettings.__init__"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.HandshakeSettings.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise default values for settings.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_key_settings</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_misc_extensions</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minVersion</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxVersion</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">versions</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cipherNames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">CIPHER_NAMES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">macNames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">MAC_NAMES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyExchangeNames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">KEY_EXCHANGE_NAMES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cipherImplementations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">CIPHER_IMPLEMENTATIONS</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sanityCheckKeySizes</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if key size limits are sane&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">minKeySize</span> <span class="o">&lt;</span> <span class="mi">512</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;minKeySize too small&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">minKeySize</span> <span class="o">&gt;</span> <span class="mi">16384</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;minKeySize too large&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">maxKeySize</span> <span class="o">&lt;</span> <span class="mi">512</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;maxKeySize too small&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">maxKeySize</span> <span class="o">&gt;</span> <span class="mi">16384</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;maxKeySize too large&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">maxKeySize</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">minKeySize</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;maxKeySize smaller than minKeySize&quot;</span><span class="p">)</span>
+        <span class="c1"># check also keys of virtual hosts</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">virtual_hosts</span><span class="p">:</span>
+            <span class="n">i</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_not_matching</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">sieve</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of items from values that are not in sieve.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sieve</span><span class="p">]</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sanityCheckCipherSettings</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if specified cipher settings are known.&quot;&quot;&quot;</span>
+        <span class="n">not_matching</span> <span class="o">=</span> <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_not_matching</span>
+        <span class="n">unknownCiph</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">cipherNames</span><span class="p">,</span> <span class="n">ALL_CIPHER_NAMES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownCiph</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown cipher name: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownCiph</span><span class="p">))</span>
+
+        <span class="n">unknownMac</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">macNames</span><span class="p">,</span> <span class="n">ALL_MAC_NAMES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownMac</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown MAC name: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownMac</span><span class="p">))</span>
+
+        <span class="n">unknownKex</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">keyExchangeNames</span><span class="p">,</span> <span class="n">KEY_EXCHANGE_NAMES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownKex</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown key exchange name: </span><span class="si">{0}</span><span class="s2">&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownKex</span><span class="p">))</span>
+
+        <span class="n">unknownImpl</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">cipherImplementations</span><span class="p">,</span>
+                                   <span class="n">CIPHER_IMPLEMENTATIONS</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownImpl</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown cipher implementation: </span><span class="si">{0}</span><span class="s2">&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownImpl</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sanityCheckECDHSettings</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check ECDHE settings if they are sane.&quot;&quot;&quot;</span>
+        <span class="n">not_matching</span> <span class="o">=</span> <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_not_matching</span>
+
+        <span class="n">unknownCurve</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">eccCurves</span><span class="p">,</span> <span class="n">ALL_CURVE_NAMES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownCurve</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown ECC Curve name: </span><span class="si">{0}</span><span class="s2">&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownCurve</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">defaultCurve</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ALL_CURVE_NAMES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown default ECC Curve name: </span><span class="si">{0}</span><span class="s2">&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">defaultCurve</span><span class="p">))</span>
+
+        <span class="n">nonAdvertisedGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">keyShares</span>
+                              <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">eccCurves</span> <span class="ow">and</span>
+                              <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">dhGroups</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">nonAdvertisedGroup</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Key shares for not enabled groups specified: </span><span class="si">{0}</span><span class="s2">&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nonAdvertisedGroup</span><span class="p">))</span>
+
+        <span class="n">unknownSigHash</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">ecdsaSigHashes</span><span class="p">,</span>
+                                      <span class="n">ECDSA_SIGNATURE_HASHES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownSigHash</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown ECDSA signature hash: &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span><span class="o">.</span>\
+                             <span class="nb">format</span><span class="p">(</span><span class="n">unknownSigHash</span><span class="p">))</span>
+
+        <span class="n">unknownSigHash</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">more_sig_schemes</span><span class="p">,</span>
+                                      <span class="n">SIGNATURE_SCHEMES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownSigHash</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unkonwn more_sig_schemes specified: &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownSigHash</span><span class="p">))</span>
+
+        <span class="n">unknownDHGroup</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">dhGroups</span><span class="p">,</span> <span class="n">ALL_DH_GROUP_NAMES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownDHGroup</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown FFDHE group name: &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownDHGroup</span><span class="p">))</span>
+
+        <span class="c1"># TLS 1.3 limits the allowed groups (RFC 8446,ch. 4.2.7.)</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">maxVersion</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="n">forbiddenGroup</span> <span class="o">=</span> <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">eccCurves</span><span class="p">,</span> <span class="n">TLS13_PERMITTED_GROUPS</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">forbiddenGroup</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The following enabled groups are forbidden in TLS 1.3: </span><span class="si">{0}</span><span class="s2">&quot;</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">forbiddenGroup</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sanityCheckDHSettings</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if (EC)DHE settings are sane.&quot;&quot;&quot;</span>
+        <span class="n">not_matching</span> <span class="o">=</span> <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_not_matching</span>
+
+        <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_sanityCheckECDHSettings</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="n">unknownKeyShare</span> <span class="o">=</span> <span class="p">[</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">keyShares</span>
+                           <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ALL_DH_GROUP_NAMES</span> <span class="ow">and</span>
+                           <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ALL_CURVE_NAMES</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">unknownKeyShare</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown key share: &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownKeyShare</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">dhParams</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">dhParams</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span>
+                               <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">dhParams</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">int_types</span><span class="p">)</span> <span class="ow">or</span>
+                               <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">dhParams</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">int_types</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;DH parameters need to be a tuple of integers&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sanityCheckPrimitivesNames</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if specified cryptographic primitive names are known&quot;&quot;&quot;</span>
+        <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_sanityCheckCipherSettings</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_sanityCheckDHSettings</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="n">not_matching</span> <span class="o">=</span> <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_not_matching</span>
+
+        <span class="n">unknownType</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">certificateTypes</span><span class="p">,</span> <span class="n">CERTIFICATE_TYPES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownType</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown certificate type: </span><span class="si">{0}</span><span class="s2">&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownType</span><span class="p">))</span>
+
+        <span class="n">unknownSigHash</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">rsaSigHashes</span><span class="p">,</span>
+                                      <span class="n">ALL_RSA_SIGNATURE_HASHES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownSigHash</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown RSA signature hash: &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownSigHash</span><span class="p">))</span>
+
+        <span class="n">unknownRSAPad</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">rsaSchemes</span><span class="p">,</span> <span class="n">RSA_SCHEMES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownRSAPad</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown RSA padding mode: &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownRSAPad</span><span class="p">))</span>
+
+        <span class="n">unknownSigHash</span> <span class="o">=</span> <span class="n">not_matching</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">dsaSigHashes</span><span class="p">,</span>
+                                      <span class="n">DSA_SIGNATURE_HASHES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknownSigHash</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown DSA signature hash: &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknownSigHash</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">other</span><span class="o">.</span><span class="n">rsaSigHashes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">other</span><span class="o">.</span><span class="n">ecdsaSigHashes</span> <span class="ow">and</span> \
+                <span class="ow">not</span> <span class="n">other</span><span class="o">.</span><span class="n">dsaSigHashes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">other</span><span class="o">.</span><span class="n">more_sig_schemes</span> <span class="ow">and</span> \
+                <span class="n">other</span><span class="o">.</span><span class="n">maxVersion</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;TLS 1.2 requires signature algorithms to be set&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sanityCheckProtocolVersions</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if set protocol version are sane&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">minVersion</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">maxVersion</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Versions set incorrectly&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">minVersion</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">KNOWN_VERSIONS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;minVersion set incorrectly&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">maxVersion</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">KNOWN_VERSIONS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;maxVersion set incorrectly&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">maxVersion</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="n">other</span><span class="o">.</span><span class="n">versions</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">versions</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sanityCheckEMSExtension</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if settings for EMS are sane.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">useExtendedMasterSecret</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;useExtendedMasterSecret must be True or False&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">requireExtendedMasterSecret</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;requireExtendedMasterSecret must be True &quot;</span>
+                             <span class="s2">&quot;or False&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">requireExtendedMasterSecret</span> <span class="ow">and</span> \
+                <span class="ow">not</span> <span class="n">other</span><span class="o">.</span><span class="n">useExtendedMasterSecret</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;requireExtendedMasterSecret requires &quot;</span>
+                             <span class="s2">&quot;useExtendedMasterSecret&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sanityCheckExtensions</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if set extension settings are sane&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">useEncryptThenMAC</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;useEncryptThenMAC can only be True or False&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">usePaddingExtension</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;usePaddingExtension must be True or False&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">use_heartbeat_extension</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;use_heartbeat_extension must be True or False&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">heartbeat_response_callback</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">other</span><span class="o">.</span><span class="n">use_heartbeat_extension</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;heartbeat_response_callback requires &quot;</span>
+                             <span class="s2">&quot;use_heartbeat_extension&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">record_size_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> \
+                <span class="ow">not</span> <span class="mi">64</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">record_size_limit</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">14</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;record_size_limit cannot exceed 2**14+1 bytes&quot;</span><span class="p">)</span>
+
+        <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_sanityCheckEMSExtension</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_not_allowed_len</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">sieve</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if length of any item in values is not in sieve.&quot;&quot;&quot;</span>
+        <span class="n">sieve</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">sieve</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sieve</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sanityCheckPsks</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the set PSKs are sane.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_not_allowed_len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">pskConfigs</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;pskConfigs items must be a 2 or 3-element&quot;</span>
+                             <span class="s2">&quot;tuples&quot;</span><span class="p">)</span>
+
+        <span class="n">badHashes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">pskConfigs</span> <span class="k">if</span>
+                     <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;sha256&#39;</span><span class="p">,</span> <span class="s1">&#39;sha384&#39;</span><span class="p">])]</span>
+        <span class="k">if</span> <span class="n">badHashes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;pskConfigs include invalid hash specifications: &quot;</span>
+                             <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">badHashes</span><span class="p">))</span>
+
+        <span class="n">bad_psk_modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">psk_modes</span> <span class="k">if</span>
+                         <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PSK_MODES</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">bad_psk_modes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;psk_modes includes invalid key exchange modes: &quot;</span>
+                             <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bad_psk_modes</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sanityCheckTicketSettings</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the session ticket settings are sane.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">ticketCipher</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">TICKET_CIPHERS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid cipher for session ticket encryption: &quot;</span>
+                             <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">ticketCipher</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">HandshakeSettings</span><span class="o">.</span><span class="n">_not_allowed_len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">ticketKeys</span><span class="p">,</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Session ticket encryption keys must be 16 or 32&quot;</span>
+                             <span class="s2">&quot;bytes long&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">ticketLifetime</span> <span class="o">&lt;=</span> <span class="mi">7</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Ticket lifetime must be a positive integer &quot;</span>
+                             <span class="s2">&quot;smaller or equal 604800 (7 days)&quot;</span><span class="p">)</span>
+
+        <span class="c1"># while not ticket setting per-se, it is related to session tickets</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">max_early_data</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">64</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;max_early_data must be between 0 and 2GiB&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">ticket_count</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Incorrect amount for number of new session &quot;</span>
+                             <span class="s2">&quot;tickets to send&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_copy_cipher_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Copy values related to cipher selection.&quot;&quot;&quot;</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">cipherNames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cipherNames</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">macNames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">macNames</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">keyExchangeNames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyExchangeNames</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">cipherImplementations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cipherImplementations</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">minVersion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minVersion</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">maxVersion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxVersion</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">versions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">versions</span>
+
+    <span class="k">def</span> <span class="nf">_copy_extension_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Copy values of settings related to extensions.&quot;&quot;&quot;</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">useExtendedMasterSecret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">useExtendedMasterSecret</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">requireExtendedMasterSecret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">requireExtendedMasterSecret</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">useExperimentalTackExtension</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">useExperimentalTackExtension</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">sendFallbackSCSV</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sendFallbackSCSV</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">useEncryptThenMAC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">useEncryptThenMAC</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">usePaddingExtension</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">usePaddingExtension</span>
+        <span class="c1"># session tickets</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">padding_cb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_cb</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">ticketKeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticketKeys</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">ticketCipher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticketCipher</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">ticketLifetime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticketLifetime</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">max_early_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_early_data</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">ticket_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticket_count</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">record_size_limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">record_size_limit</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_remove_all_matches</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">needle</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all instances of needle from values.&quot;&quot;&quot;</span>
+        <span class="n">values</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">needle</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_sanity_check_ciphers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove unsupported ciphers in current configuration.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cipherfactory</span><span class="o">.</span><span class="n">tripleDESPresent</span><span class="p">:</span>
+            <span class="n">other</span><span class="o">.</span><span class="n">cipherNames</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">cipherNames</span><span class="p">[:]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_all_matches</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">cipherNames</span><span class="p">,</span> <span class="s2">&quot;3des&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">other</span><span class="o">.</span><span class="n">cipherNames</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No supported ciphers&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_sanity_check_implementations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all backends that are not loaded.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cryptomath</span><span class="o">.</span><span class="n">m2cryptoLoaded</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_all_matches</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">cipherImplementations</span><span class="p">,</span> <span class="s2">&quot;openssl&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cryptomath</span><span class="o">.</span><span class="n">pycryptoLoaded</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_all_matches</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">cipherImplementations</span><span class="p">,</span> <span class="s2">&quot;pycrypto&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">other</span><span class="o">.</span><span class="n">cipherImplementations</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No supported cipher implementations&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_copy_key_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Copy key-related settings.&quot;&quot;&quot;</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">minKeySize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minKeySize</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">maxKeySize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxKeySize</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">certificateTypes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">certificateTypes</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">rsaSigHashes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rsaSigHashes</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">rsaSchemes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rsaSchemes</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">dsaSigHashes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dsaSigHashes</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">ecdsaSigHashes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecdsaSigHashes</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">more_sig_schemes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">more_sig_schemes</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">virtual_hosts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_hosts</span>
+        <span class="c1"># DH key params</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">eccCurves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eccCurves</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">dhParams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dhParams</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">dhGroups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dhGroups</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">defaultCurve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultCurve</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">keyShares</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyShares</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">use_heartbeat_extension</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_heartbeat_extension</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">heartbeat_response_callback</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">heartbeat_response_callback</span>
+
+<div class="viewcode-block" id="HandshakeSettings.validate"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.HandshakeSettings.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate the settings, filter out unsupported ciphersuites and return</span>
+<span class="sd">        a copy of object. Does not modify the original object.</span>
+
+<span class="sd">        :rtype: HandshakeSettings</span>
+<span class="sd">        :returns: a self-consistent copy of settings</span>
+<span class="sd">        :raises ValueError: when settings are invalid, insecure or unsupported.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="n">HandshakeSettings</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_copy_cipher_settings</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_copy_extension_settings</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_copy_key_settings</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="n">other</span><span class="o">.</span><span class="n">pskConfigs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pskConfigs</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">psk_modes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">psk_modes</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">other</span><span class="o">.</span><span class="n">certificateTypes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No supported certificate types&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sanityCheckKeySizes</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sanityCheckPrimitivesNames</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sanityCheckProtocolVersions</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sanityCheckExtensions</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">maxVersion</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="c1"># No sha-2 and AEAD pre TLS 1.2</span>
+            <span class="n">other</span><span class="o">.</span><span class="n">macNames</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">macNames</span> <span class="k">if</span>
+                              <span class="n">e</span> <span class="o">==</span> <span class="s2">&quot;sha&quot;</span> <span class="ow">or</span> <span class="n">e</span> <span class="o">==</span> <span class="s2">&quot;md5&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sanityCheckPsks</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sanityCheckTicketSettings</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sanity_check_implementations</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sanity_check_ciphers</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">other</span></div>
+
+<div class="viewcode-block" id="HandshakeSettings.getCertificateTypes"><a class="viewcode-back" href="../../tlslite.handshakesettings.html#tlslite.handshakesettings.HandshakeSettings.getCertificateTypes">[docs]</a>    <span class="k">def</span> <span class="nf">getCertificateTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get list of certificate types as IDs&quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ct</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">certificateTypes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ct</span> <span class="o">==</span> <span class="s2">&quot;x509&quot;</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CertificateType</span><span class="o">.</span><span class="n">x509</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ret</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

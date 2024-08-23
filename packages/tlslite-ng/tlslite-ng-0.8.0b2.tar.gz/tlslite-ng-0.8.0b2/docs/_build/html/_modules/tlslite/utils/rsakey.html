@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.utils.rsakey &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.utils.rsakey</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.utils.rsakey</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Trevor Perrin</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Abstract class for RSA.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.cryptomath</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tlshashlib</span> <span class="k">as</span> <span class="n">hashlib</span>
+<span class="kn">from</span> <span class="nn">..errors</span> <span class="kn">import</span> <span class="n">MaskTooLongError</span><span class="p">,</span> <span class="n">MessageTooLongError</span><span class="p">,</span> <span class="n">EncodingError</span><span class="p">,</span> \
+    <span class="n">InvalidSignature</span><span class="p">,</span> <span class="n">UnknownRSAType</span>
+<span class="kn">from</span> <span class="nn">.constanttime</span> <span class="kn">import</span> <span class="n">ct_isnonzero_u32</span><span class="p">,</span> <span class="n">ct_neq_u32</span><span class="p">,</span> <span class="n">ct_lsb_prop_u8</span><span class="p">,</span> \
+    <span class="n">ct_lsb_prop_u16</span><span class="p">,</span> <span class="n">ct_lt_u32</span>
+
+
+<div class="viewcode-block" id="RSAKey"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey">[docs]</a><span class="k">class</span> <span class="nc">RSAKey</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is an abstract base class for RSA keys.</span>
+
+<span class="sd">    Particular implementations of RSA keys, such as</span>
+<span class="sd">    :py:class:`~.openssl_rsakey.OpenSSL_RSAKey`,</span>
+<span class="sd">    :py:class:`~.python_rsakey.Python_RSAKey`, and</span>
+<span class="sd">    :py:class:`~.pycrypto_rsakey.PyCrypto_RSAKey`,</span>
+<span class="sd">    inherit from this.</span>
+
+<span class="sd">    To create or parse an RSA key, don&#39;t use one of these classes</span>
+<span class="sd">    directly.  Instead, use the factory functions in</span>
+<span class="sd">    :py:class:`~tlslite.utils.keyfactory`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RSAKey.__init__"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key_type</span><span class="o">=</span><span class="s2">&quot;rsa&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new RSA key.</span>
+
+<span class="sd">        If n and e are passed in, the new key will be initialized.</span>
+
+<span class="sd">        :type n: int</span>
+<span class="sd">        :param n: RSA modulus.</span>
+
+<span class="sd">        :type e: int</span>
+<span class="sd">        :param e: RSA public exponent.</span>
+
+<span class="sd">        :type key_type: str</span>
+<span class="sd">        :param key_type: type of the RSA key, &quot;rsa&quot; for rsaEncryption</span>
+<span class="sd">            (universal, able to perform all operations) or &quot;rsa-pss&quot; for a</span>
+<span class="sd">            RSASSA-PSS key (able to perform only RSA-PSS signature verification</span>
+<span class="sd">            and creation)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># pylint: disable=invalid-name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">e</span>
+        <span class="c1"># pylint: enable=invalid-name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key_type</span> <span class="o">=</span> <span class="n">key_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_key_hash</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the length of this key in bits.</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numBits</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RSAKey.hasPrivateKey"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.hasPrivateKey">[docs]</a>    <span class="k">def</span> <span class="nf">hasPrivateKey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return whether or not this key has a private component.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RSAKey.hashAndSign"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.hashAndSign">[docs]</a>    <span class="k">def</span> <span class="nf">hashAndSign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">rsaScheme</span><span class="o">=</span><span class="s1">&#39;PKCS1&#39;</span><span class="p">,</span> <span class="n">hAlg</span><span class="o">=</span><span class="s1">&#39;sha1&#39;</span><span class="p">,</span> <span class="n">sLen</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Hash and sign the passed-in bytes.</span>
+
+<span class="sd">        This requires the key to have a private component.  It performs</span>
+<span class="sd">        a PKCS1 or PSS signature on the passed-in data with selected hash</span>
+<span class="sd">        algorithm.</span>
+
+<span class="sd">        :type bytes: bytes-like object</span>
+<span class="sd">        :param bytes: The value which will be hashed and signed.</span>
+
+<span class="sd">        :type rsaScheme: str</span>
+<span class="sd">        :param rsaScheme: The type of RSA scheme that will be applied,</span>
+<span class="sd">                          &quot;PKCS1&quot; for RSASSA-PKCS#1 v1.5 signature and &quot;PSS&quot;</span>
+<span class="sd">                          for RSASSA-PSS with MGF1 signature method</span>
+
+<span class="sd">        :type hAlg: str</span>
+<span class="sd">        :param hAlg: The hash algorithm that will be used</span>
+
+<span class="sd">        :type sLen: int</span>
+<span class="sd">        :param sLen: The length of intended salt value, applicable only</span>
+<span class="sd">                     for RSASSA-PSS signatures</span>
+
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        :returns: A PKCS1 or PSS signature on the passed-in data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rsaScheme</span> <span class="o">=</span> <span class="n">rsaScheme</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">hAlg</span> <span class="o">=</span> <span class="n">hAlg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">secureHash</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="nb">bytes</span><span class="p">),</span> <span class="n">hAlg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">hashBytes</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">rsaScheme</span><span class="p">,</span> <span class="n">hashAlg</span><span class="o">=</span><span class="n">hAlg</span><span class="p">,</span>
+                         <span class="n">saltLen</span><span class="o">=</span><span class="n">sLen</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RSAKey.hashAndVerify"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.hashAndVerify">[docs]</a>    <span class="k">def</span> <span class="nf">hashAndVerify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigBytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">rsaScheme</span><span class="o">=</span><span class="s1">&#39;PKCS1&#39;</span><span class="p">,</span> <span class="n">hAlg</span><span class="o">=</span><span class="s1">&#39;sha1&#39;</span><span class="p">,</span>
+                      <span class="n">sLen</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Hash and verify the passed-in bytes with the signature.</span>
+
+<span class="sd">        This verifies a PKCS1 or PSS signature on the passed-in data</span>
+<span class="sd">        with selected hash algorithm.</span>
+
+<span class="sd">        :type sigBytes: bytes-like object</span>
+<span class="sd">        :param sigBytes: A PKCS1 or PSS signature.</span>
+
+<span class="sd">        :type bytes: bytes-like object</span>
+<span class="sd">        :param bytes: The value which will be hashed and verified.</span>
+
+<span class="sd">        :type rsaScheme: str</span>
+<span class="sd">        :param rsaScheme: The type of RSA scheme that will be applied,</span>
+<span class="sd">                          &quot;PKCS1&quot; for RSASSA-PKCS#1 v1.5 signature and &quot;PSS&quot;</span>
+<span class="sd">                          for RSASSA-PSS with MGF1 signature method</span>
+
+<span class="sd">        :type hAlg: str</span>
+<span class="sd">        :param hAlg: The hash algorithm that will be used</span>
+
+<span class="sd">        :type sLen: int</span>
+<span class="sd">        :param sLen: The length of intended salt value, applicable only</span>
+<span class="sd">                     for RSASSA-PSS signatures</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: Whether the signature matches the passed-in data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rsaScheme</span> <span class="o">=</span> <span class="n">rsaScheme</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">hAlg</span> <span class="o">=</span> <span class="n">hAlg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">secureHash</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="nb">bytes</span><span class="p">),</span> <span class="n">hAlg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">sigBytes</span><span class="p">,</span> <span class="n">hashBytes</span><span class="p">,</span> <span class="n">rsaScheme</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">,</span> <span class="n">sLen</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RSAKey.MGF1"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.MGF1">[docs]</a>    <span class="k">def</span> <span class="nf">MGF1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mgfSeed</span><span class="p">,</span> <span class="n">maskLen</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate mask from passed-in seed.</span>
+
+<span class="sd">        This generates mask based on passed-in seed and output maskLen.</span>
+
+<span class="sd">        :type mgfSeed: bytearray</span>
+<span class="sd">        :param mgfSeed: Seed from which mask will be generated.</span>
+
+<span class="sd">        :type maskLen: int</span>
+<span class="sd">        :param maskLen: Wished length of the mask, in octets</span>
+
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        :returns: Mask</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hashLen</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">)()</span><span class="o">.</span><span class="n">digest_size</span>
+        <span class="k">if</span> <span class="n">maskLen</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">32</span><span class="p">)</span> <span class="o">*</span> <span class="n">hashLen</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MaskTooLongError</span><span class="p">(</span><span class="s2">&quot;Incorrect parameter maskLen&quot;</span><span class="p">)</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">divceil</span><span class="p">(</span><span class="n">maskLen</span><span class="p">,</span> <span class="n">hashLen</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+            <span class="n">C</span> <span class="o">=</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="n">T</span> <span class="o">+=</span> <span class="n">secureHash</span><span class="p">(</span><span class="n">mgfSeed</span> <span class="o">+</span> <span class="n">C</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">T</span><span class="p">[:</span><span class="n">maskLen</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="RSAKey.EMSA_PSS_encode"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.EMSA_PSS_encode">[docs]</a>    <span class="k">def</span> <span class="nf">EMSA_PSS_encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mHash</span><span class="p">,</span> <span class="n">emBits</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">,</span> <span class="n">sLen</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode the passed in message</span>
+
+<span class="sd">        This encodes the message using selected hash algorithm</span>
+
+<span class="sd">        :type mHash: bytearray</span>
+<span class="sd">        :param mHash: Hash of message to be encoded</span>
+
+<span class="sd">        :type emBits: int</span>
+<span class="sd">        :param emBits: maximal length of returned EM</span>
+
+<span class="sd">        :type hAlg: str</span>
+<span class="sd">        :param hAlg: hash algorithm to be used</span>
+
+<span class="sd">        :type sLen: int</span>
+<span class="sd">        :param sLen: length of salt&quot;&quot;&quot;</span>
+        <span class="n">hashLen</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">)()</span><span class="o">.</span><span class="n">digest_size</span>
+        <span class="n">emLen</span> <span class="o">=</span> <span class="n">divceil</span><span class="p">(</span><span class="n">emBits</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">emLen</span> <span class="o">&lt;</span> <span class="n">hashLen</span> <span class="o">+</span> <span class="n">sLen</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EncodingError</span><span class="p">(</span><span class="s2">&quot;The ending limit too short for &quot;</span> <span class="o">+</span>
+                                <span class="s2">&quot;selected hash and salt length&quot;</span><span class="p">)</span>
+        <span class="n">salt</span> <span class="o">=</span> <span class="n">getRandomBytes</span><span class="p">(</span><span class="n">sLen</span><span class="p">)</span>
+        <span class="n">M2</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">mHash</span> <span class="o">+</span> <span class="n">salt</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">secureHash</span><span class="p">(</span><span class="n">M2</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">)</span>
+        <span class="n">PS</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">emLen</span> <span class="o">-</span> <span class="n">sLen</span> <span class="o">-</span> <span class="n">hashLen</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">DB</span> <span class="o">=</span> <span class="n">PS</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x01</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">salt</span>
+        <span class="n">dbMask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MGF1</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">emLen</span> <span class="o">-</span> <span class="n">hashLen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">)</span>
+        <span class="n">maskedDB</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">i</span> <span class="o">^</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">DB</span><span class="p">,</span> <span class="n">dbMask</span><span class="p">))</span>
+        <span class="n">mLen</span> <span class="o">=</span> <span class="n">emLen</span><span class="o">*</span><span class="mi">8</span> <span class="o">-</span> <span class="n">emBits</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span> <span class="o">-</span> <span class="n">mLen</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">maskedDB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;=</span> <span class="n">mask</span>
+        <span class="n">EM</span> <span class="o">=</span> <span class="n">maskedDB</span> <span class="o">+</span> <span class="n">H</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xbc</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">EM</span></div>
+
+<div class="viewcode-block" id="RSAKey.RSASSA_PSS_sign"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.RSASSA_PSS_sign">[docs]</a>    <span class="k">def</span> <span class="nf">RSASSA_PSS_sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mHash</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">,</span> <span class="n">sLen</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;Sign the passed in message</span>
+
+<span class="sd">        This signs the message using selected hash algorithm</span>
+
+<span class="sd">        :type mHash: bytes-like object</span>
+<span class="sd">        :param mHash: Hash of message to be signed</span>
+
+<span class="sd">        :type hAlg: str</span>
+<span class="sd">        :param hAlg: hash algorithm to be used</span>
+
+<span class="sd">        :type sLen: int</span>
+<span class="sd">        :param sLen: length of salt&quot;&quot;&quot;</span>
+        <span class="n">EM</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">EMSA_PSS_encode</span><span class="p">(</span><span class="n">mHash</span><span class="p">,</span> <span class="n">numBits</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">,</span> <span class="n">sLen</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_private_key_op_bytes</span><span class="p">(</span><span class="n">EM</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MessageTooLongError</span><span class="p">(</span><span class="s2">&quot;Encode output too long&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="RSAKey.EMSA_PSS_verify"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.EMSA_PSS_verify">[docs]</a>    <span class="k">def</span> <span class="nf">EMSA_PSS_verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mHash</span><span class="p">,</span> <span class="n">EM</span><span class="p">,</span> <span class="n">emBits</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">,</span> <span class="n">sLen</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify signature in passed in encoded message</span>
+
+<span class="sd">        This verifies the signature in encoded message</span>
+
+<span class="sd">        :type mHash: bytes-like object</span>
+<span class="sd">        :param mHash: Hash of the original not signed message</span>
+
+<span class="sd">        :type EM: bytes-like object</span>
+<span class="sd">        :param EM: Encoded message</span>
+
+<span class="sd">        :type emBits: int</span>
+<span class="sd">        :param emBits: Length of the encoded message in bits</span>
+
+<span class="sd">        :type hAlg: str</span>
+<span class="sd">        :param hAlg: hash algorithm to be used</span>
+
+<span class="sd">        :type sLen: int</span>
+<span class="sd">        :param sLen: Length of salt</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hashLen</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">)()</span><span class="o">.</span><span class="n">digest_size</span>
+        <span class="n">emLen</span> <span class="o">=</span> <span class="n">divceil</span><span class="p">(</span><span class="n">emBits</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">emLen</span> <span class="o">&lt;</span> <span class="n">hashLen</span> <span class="o">+</span> <span class="n">sLen</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidSignature</span><span class="p">(</span><span class="s2">&quot;Invalid signature&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">EM</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mh">0xbc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidSignature</span><span class="p">(</span><span class="s2">&quot;Invalid signature&quot;</span><span class="p">)</span>
+        <span class="n">maskedDB</span> <span class="o">=</span> <span class="n">EM</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">emLen</span> <span class="o">-</span> <span class="n">hashLen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">EM</span><span class="p">[</span><span class="n">emLen</span> <span class="o">-</span> <span class="n">hashLen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span><span class="n">emLen</span> <span class="o">-</span> <span class="n">hashLen</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">hashLen</span><span class="p">]</span>
+        <span class="n">DBHelpMask</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span> <span class="o">-</span> <span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">emLen</span> <span class="o">-</span> <span class="n">emBits</span><span class="p">)</span>
+        <span class="n">DBHelpMask</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">DBHelpMask</span> <span class="o">=</span> <span class="p">(</span><span class="o">~</span><span class="n">DBHelpMask</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+        <span class="k">if</span> <span class="n">maskedDB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">DBHelpMask</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidSignature</span><span class="p">(</span><span class="s2">&quot;Invalid signature&quot;</span><span class="p">)</span>
+        <span class="n">dbMask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MGF1</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">emLen</span> <span class="o">-</span> <span class="n">hashLen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">)</span>
+        <span class="n">DB</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">i</span> <span class="o">^</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">maskedDB</span><span class="p">,</span> <span class="n">dbMask</span><span class="p">))</span>
+        <span class="n">mLen</span> <span class="o">=</span> <span class="n">emLen</span><span class="o">*</span><span class="mi">8</span> <span class="o">-</span> <span class="n">emBits</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span> <span class="o">-</span> <span class="n">mLen</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">DB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;=</span> <span class="n">mask</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">DB</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">emLen</span> <span class="o">-</span> <span class="n">hashLen</span> <span class="o">-</span> <span class="n">sLen</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">InvalidSignature</span><span class="p">(</span><span class="s2">&quot;Invalid signature&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">DB</span><span class="p">[</span><span class="n">emLen</span> <span class="o">-</span> <span class="n">hashLen</span> <span class="o">-</span> <span class="n">sLen</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidSignature</span><span class="p">(</span><span class="s2">&quot;Invalid signature&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sLen</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">salt</span> <span class="o">=</span> <span class="n">DB</span><span class="p">[</span><span class="o">-</span><span class="n">sLen</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">salt</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+        <span class="n">newM</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">mHash</span> <span class="o">+</span> <span class="n">salt</span>
+        <span class="n">newH</span> <span class="o">=</span> <span class="n">secureHash</span><span class="p">(</span><span class="n">newM</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">H</span> <span class="o">==</span> <span class="n">newH</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidSignature</span><span class="p">(</span><span class="s2">&quot;Invalid signature&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RSAKey.RSASSA_PSS_verify"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.RSASSA_PSS_verify">[docs]</a>    <span class="k">def</span> <span class="nf">RSASSA_PSS_verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mHash</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">,</span> <span class="n">sLen</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify the signature in passed in message</span>
+
+<span class="sd">        This verifies the signature in the signed message</span>
+
+<span class="sd">        :type mHash: bytes-like object</span>
+<span class="sd">        :param mHash: Hash of original message</span>
+
+<span class="sd">        :type S: bytes-like object</span>
+<span class="sd">        :param S: Signed message</span>
+
+<span class="sd">        :type hAlg: str</span>
+<span class="sd">        :param hAlg: Hash algorithm to be used</span>
+
+<span class="sd">        :type sLen: int</span>
+<span class="sd">        :param sLen: Length of salt</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">EM</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_public_key_op_bytes</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidSignature</span><span class="p">(</span><span class="s2">&quot;Invalid signature&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">EMSA_PSS_verify</span><span class="p">(</span><span class="n">mHash</span><span class="p">,</span> <span class="n">EM</span><span class="p">,</span> <span class="n">numBits</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+                                      <span class="n">hAlg</span><span class="p">,</span> <span class="n">sLen</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidSignature</span><span class="p">(</span><span class="s2">&quot;Invalid signature&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_raw_pkcs1_sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform signature on raw data, add PKCS#1 padding.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasPrivateKey</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+        <span class="n">paddedBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_addPKCS1Padding</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_private_key_op_bytes</span><span class="p">(</span><span class="n">paddedBytes</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RSAKey.sign"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.sign">[docs]</a>    <span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;pkcs1&#39;</span><span class="p">,</span> <span class="n">hashAlg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saltLen</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sign the passed-in bytes.</span>
+
+<span class="sd">        This requires the key to have a private component.  It performs</span>
+<span class="sd">        a PKCS1 signature on the passed-in data.</span>
+
+<span class="sd">        :type bytes: bytes-like object</span>
+<span class="sd">        :param bytes: The value which will be signed.</span>
+
+<span class="sd">        :type padding: str</span>
+<span class="sd">        :param padding: name of the rsa padding mode to use, supported:</span>
+<span class="sd">            &quot;pkcs1&quot; for RSASSA-PKCS1_1_5 and &quot;pss&quot; for RSASSA-PSS.</span>
+
+<span class="sd">        :type hashAlg: str</span>
+<span class="sd">        :param hashAlg: name of hash to be encoded using the PKCS#1 prefix</span>
+<span class="sd">            for &quot;pkcs1&quot; padding or the hash used for MGF1 in &quot;pss&quot;. Parameter</span>
+<span class="sd">            is mandatory for &quot;pss&quot; padding.</span>
+
+<span class="sd">        :type saltLen: int</span>
+<span class="sd">        :param saltLen: length of salt used for the PSS padding. Default</span>
+<span class="sd">            is the length of the hash output used.</span>
+
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        :returns: A PKCS1 signature on the passed-in data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">padding</span> <span class="o">==</span> <span class="s1">&#39;pkcs1&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">hashAlg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addPKCS1Prefix</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">hashAlg</span><span class="p">)</span>
+            <span class="n">sigBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_pkcs1_sign</span><span class="p">(</span><span class="nb">bytes</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">padding</span> <span class="o">==</span> <span class="s2">&quot;pss&quot;</span><span class="p">:</span>
+            <span class="n">sigBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RSASSA_PSS_sign</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">hashAlg</span><span class="p">,</span> <span class="n">saltLen</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnknownRSAType</span><span class="p">(</span><span class="s2">&quot;Unknown RSA algorithm type&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sigBytes</span></div>
+
+    <span class="k">def</span> <span class="nf">_raw_pkcs1_verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigBytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform verification operation on raw PKCS#1 padded signature&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">checkBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_public_key_op_bytes</span><span class="p">(</span><span class="n">sigBytes</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">paddedBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_addPKCS1Padding</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">checkBytes</span> <span class="o">==</span> <span class="n">paddedBytes</span>
+
+<div class="viewcode-block" id="RSAKey.verify"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.verify">[docs]</a>    <span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigBytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;pkcs1&#39;</span><span class="p">,</span> <span class="n">hashAlg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">saltLen</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify the passed-in bytes with the signature.</span>
+
+<span class="sd">        This verifies a PKCS1 signature on the passed-in data.</span>
+
+<span class="sd">        :type sigBytes: bytes-like object</span>
+<span class="sd">        :param sigBytes: A PKCS1 signature.</span>
+
+<span class="sd">        :type bytes: bytes-like object</span>
+<span class="sd">        :param bytes: The value which will be verified.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: Whether the signature matches the passed-in data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">padding</span> <span class="o">==</span> <span class="s2">&quot;pkcs1&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_type</span> <span class="o">==</span> <span class="s2">&quot;rsa-pss&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">padding</span> <span class="o">==</span> <span class="s2">&quot;pkcs1&quot;</span> <span class="ow">and</span> <span class="n">hashAlg</span> <span class="o">==</span> <span class="s1">&#39;sha1&#39;</span><span class="p">:</span>
+            <span class="c1"># Try it with/without the embedded NULL</span>
+            <span class="n">prefixedHashBytes1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addPKCS1SHA1Prefix</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="n">prefixedHashBytes2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addPKCS1SHA1Prefix</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">result1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_pkcs1_verify</span><span class="p">(</span><span class="n">sigBytes</span><span class="p">,</span> <span class="n">prefixedHashBytes1</span><span class="p">)</span>
+            <span class="n">result2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_pkcs1_verify</span><span class="p">(</span><span class="n">sigBytes</span><span class="p">,</span> <span class="n">prefixedHashBytes2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">result1</span> <span class="ow">or</span> <span class="n">result2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">padding</span> <span class="o">==</span> <span class="s1">&#39;pkcs1&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">hashAlg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addPKCS1Prefix</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">hashAlg</span><span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_pkcs1_verify</span><span class="p">(</span><span class="n">sigBytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">elif</span> <span class="n">padding</span> <span class="o">==</span> <span class="s2">&quot;pss&quot;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RSASSA_PSS_verify</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">sigBytes</span><span class="p">,</span> <span class="n">hashAlg</span><span class="p">,</span> <span class="n">saltLen</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">InvalidSignature</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnknownRSAType</span><span class="p">(</span><span class="s2">&quot;Unknown RSA algorithm type&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RSAKey.encrypt"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.encrypt">[docs]</a>    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encrypt the passed-in bytes.</span>
+
+<span class="sd">        This performs PKCS1 encryption of the passed-in data.</span>
+
+<span class="sd">        :type bytes: bytes-like object</span>
+<span class="sd">        :param bytes: The value which will be encrypted.</span>
+
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        :returns: A PKCS1 encryption of the passed-in data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">paddedBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_addPKCS1Padding</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_public_key_op_bytes</span><span class="p">(</span><span class="n">paddedBytes</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_dec_prf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">out_len</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;PRF for deterministic implicit rejection in the RSA decryption.</span>
+
+<span class="sd">        :param bytes key: key to use for derivation</span>
+<span class="sd">        :param bytes label: name of the keystream generated</span>
+<span class="sd">        :param int out_len: length of output, in bits</span>
+<span class="sd">        :rtype: bytes</span>
+<span class="sd">        :returns: a random bytestring</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">out_len</span> <span class="o">%</span> <span class="mi">8</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;only multiples of 8 supported as output size&quot;</span><span class="p">)</span>
+
+        <span class="n">iterator</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">out_len</span> <span class="o">//</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">+=</span> <span class="n">secureHMAC</span><span class="p">(</span>
+                <span class="n">key</span><span class="p">,</span>
+                <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span>
+                <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">out_len</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                <span class="s2">&quot;sha256&quot;</span><span class="p">)</span>
+            <span class="n">iterator</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">out</span><span class="p">[:</span><span class="n">out_len</span><span class="o">//</span><span class="mi">8</span><span class="p">]</span>
+
+<div class="viewcode-block" id="RSAKey.decrypt"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.decrypt">[docs]</a>    <span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encBytes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decrypt the passed-in bytes.</span>
+
+<span class="sd">        This requires the key to have a private component.  It performs</span>
+<span class="sd">        PKCS#1 v1.5 decryption operation of the passed-in data.</span>
+
+<span class="sd">        Note: as a workaround against Bleichenbacher-like attacks, it will</span>
+<span class="sd">        return a deterministically selected random message in case the padding</span>
+<span class="sd">        checks failed. It returns an error (None) only in case the ciphertext</span>
+<span class="sd">        is of incorrect length or encodes an integer bigger than the modulus</span>
+<span class="sd">        of the key (i.e. it&#39;s publically invalid).</span>
+
+<span class="sd">        :type encBytes: bytes-like object</span>
+<span class="sd">        :param encBytes: The value which will be decrypted.</span>
+
+<span class="sd">        :rtype: bytearray or None</span>
+<span class="sd">        :returns: A PKCS#1 v1.5 decryption of the passed-in data or None if</span>
+<span class="sd">            the provided data is not properly formatted. Note: encrypting</span>
+<span class="sd">            an empty string is correct, so it may return an empty bytearray</span>
+<span class="sd">            for some ciphertexts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasPrivateKey</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_type</span> <span class="o">!=</span> <span class="s2">&quot;rsa&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Decryption requires RSA key, </span><span class="se">\&quot;</span><span class="si">{0}</span><span class="se">\&quot;</span><span class="s2"> present&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key_type</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dec_bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_private_key_op_bytes</span><span class="p">(</span><span class="n">encBytes</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="c1"># _raw_private_key_op_bytes fails only when encBytes &gt;= self.n,</span>
+            <span class="c1"># or when len(encBytes) != numBytes(self.n) and that&#39;s public</span>
+            <span class="c1"># information, so we don&#39;t have to handle it</span>
+            <span class="c1"># in sidechannel secure way</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1">###################</span>
+        <span class="c1"># here be dragons #</span>
+        <span class="c1">###################</span>
+        <span class="c1"># While the code is written as-if it was side-channel secure, in</span>
+        <span class="c1"># practice, because of cPython implementation details IT IS NOT</span>
+        <span class="c1"># see:</span>
+        <span class="c1"># https://securitypitfalls.wordpress.com/2018/08/03/constant-time-compare-in-python/</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+
+        <span class="c1"># maximum length we can return is reduced by the mandatory prefix:</span>
+        <span class="c1"># (0x00 0x02), 8 bytes of padding, so this is the position of the</span>
+        <span class="c1"># null separator byte, as counted from the last position</span>
+        <span class="n">max_sep_offset</span> <span class="o">=</span> <span class="n">numBytes</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span>
+
+        <span class="c1"># the private exponent (d) doesn&#39;t change so `_key_hash` doesn&#39;t</span>
+        <span class="c1"># change, calculate it only once</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_key_hash&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_hash</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_key_hash</span> <span class="o">=</span> <span class="n">secureHash</span><span class="p">(</span><span class="n">numberToByteArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">numBytes</span><span class="p">(</span><span class="n">n</span><span class="p">)),</span>
+                                        <span class="s2">&quot;sha256&quot;</span><span class="p">)</span>
+
+        <span class="n">kdk</span> <span class="o">=</span> <span class="n">secureHMAC</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key_hash</span><span class="p">,</span> <span class="n">encBytes</span><span class="p">,</span> <span class="s2">&quot;sha256&quot;</span><span class="p">)</span>
+
+        <span class="c1"># we need 128 2-byte numbers, encoded as the number of bits</span>
+        <span class="n">length_randoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dec_prf</span><span class="p">(</span><span class="n">kdk</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;length&quot;</span><span class="p">,</span> <span class="mi">128</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+
+        <span class="n">message_random</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dec_prf</span><span class="p">(</span><span class="n">kdk</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="n">numBytes</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+
+        <span class="c1"># select the last length that&#39;s not too large to return</span>
+        <span class="n">synth_length</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">length_rand_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">length_randoms</span><span class="p">)</span>
+        <span class="n">length_mask</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">numBits</span><span class="p">(</span><span class="n">max_sep_offset</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">high</span><span class="p">,</span> <span class="n">low</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">length_rand_iter</span><span class="p">,</span> <span class="n">length_rand_iter</span><span class="p">):</span>
+            <span class="c1"># interpret the two bytes from the PRF output as 16-bit big-endian</span>
+            <span class="c1"># integer</span>
+            <span class="n">len_candidate</span> <span class="o">=</span> <span class="p">(</span><span class="n">high</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">low</span>
+            <span class="n">len_candidate</span> <span class="o">&amp;=</span> <span class="n">length_mask</span>
+            <span class="c1"># equivalent to:</span>
+            <span class="c1"># if len_candidate &lt; max_sep_offset:</span>
+            <span class="c1">#    synth_length = len_candidate</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">ct_lt_u32</span><span class="p">(</span><span class="n">len_candidate</span><span class="p">,</span> <span class="n">max_sep_offset</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">ct_lsb_prop_u16</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+            <span class="n">synth_length</span> <span class="o">=</span> <span class="n">synth_length</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mh">0xffff</span> <span class="o">^</span> <span class="n">mask</span><span class="p">)</span> \
+                <span class="o">|</span> <span class="n">len_candidate</span> <span class="o">&amp;</span> <span class="n">mask</span>
+
+        <span class="n">synth_msg_start</span> <span class="o">=</span> <span class="n">numBytes</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="n">synth_length</span>
+
+        <span class="n">error_detected</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># enumerate over all decrypted bytes</span>
+        <span class="n">em_bytes</span> <span class="o">=</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dec_bytes</span><span class="p">)</span>
+        <span class="c1"># first check if first two bytes specify PKCS#1 v1.5 encryption padding</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">em_bytes</span><span class="p">)</span>
+        <span class="n">error_detected</span> <span class="o">|=</span> <span class="n">ct_isnonzero_u32</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">em_bytes</span><span class="p">)</span>
+        <span class="n">error_detected</span> <span class="o">|=</span> <span class="n">ct_neq_u32</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">)</span>
+        <span class="c1"># then look for for the null separator byte among the padding bytes</span>
+        <span class="c1"># but inspect all decrypted bytes, even if we already find the</span>
+        <span class="c1"># separator earlier</span>
+        <span class="n">msg_start</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">em_bytes</span><span class="p">:</span>
+            <span class="c1"># padding must be at least 8 bytes long, fail if any of the first</span>
+            <span class="c1"># 8 bytes of it are zero</span>
+            <span class="c1"># equivalent to:</span>
+            <span class="c1"># if pos &lt; 10 and not val:</span>
+            <span class="c1">#     error_detected = 0x01</span>
+            <span class="n">error_detected</span> <span class="o">|=</span> <span class="n">ct_lt_u32</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">^</span> <span class="n">ct_isnonzero_u32</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+
+            <span class="c1"># update the msg_start only once; when it&#39;s 0</span>
+            <span class="c1"># (pos+1) because we want to skip the null separator</span>
+            <span class="c1"># equivalent to:</span>
+            <span class="c1"># if pos &gt;= 10 and not msg_start and not val:</span>
+            <span class="c1">#     msg_start = pos+1</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">^</span> <span class="n">ct_lt_u32</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">^</span> <span class="n">ct_isnonzero_u32</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> \
+                <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">^</span> <span class="n">ct_isnonzero_u32</span><span class="p">(</span><span class="n">msg_start</span><span class="p">))</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">ct_lsb_prop_u16</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+            <span class="n">msg_start</span> <span class="o">=</span> <span class="n">msg_start</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mh">0xffff</span> <span class="o">^</span> <span class="n">mask</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">pos</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">mask</span>
+
+        <span class="c1"># if separator wasn&#39;t found, it&#39;s an error</span>
+        <span class="c1"># equivalent to:</span>
+        <span class="c1"># if not msg_start:</span>
+        <span class="c1">#     error_detected = 0x01</span>
+        <span class="n">error_detected</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">^</span> <span class="n">ct_isnonzero_u32</span><span class="p">(</span><span class="n">msg_start</span><span class="p">)</span>
+
+        <span class="c1"># equivalent to:</span>
+        <span class="c1"># if error_detected:</span>
+        <span class="c1">#     ret_msg_start = synth_msg_start</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     ret_msg_start = msg_start</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">ct_lsb_prop_u16</span><span class="p">(</span><span class="n">error_detected</span><span class="p">)</span>
+        <span class="n">ret_msg_start</span> <span class="o">=</span> <span class="n">msg_start</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mh">0xffff</span> <span class="o">^</span> <span class="n">mask</span><span class="p">)</span> <span class="o">|</span> <span class="n">synth_msg_start</span> <span class="o">&amp;</span> <span class="n">mask</span>
+
+        <span class="c1"># as at this point the length doesn&#39;t leak the information if the</span>
+        <span class="c1"># padding was correct or not, we don&#39;t have to worry about the</span>
+        <span class="c1"># length of the returned value (and thus the size of the buffer we</span>
+        <span class="c1"># pass to the caller); but we still need to read both buffers</span>
+        <span class="c1"># to ensure that the memory access patern is preserved (that both</span>
+        <span class="c1"># buffers are accessed, not just the one we return)</span>
+
+        <span class="c1"># equivalent to:</span>
+        <span class="c1"># if error_detected:</span>
+        <span class="c1">#     return message_random[ret_msg_start:]</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     return dec_bytes[ret_msg_start:]</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">ct_lsb_prop_u8</span><span class="p">(</span><span class="n">error_detected</span><span class="p">)</span>
+        <span class="n">not_mask</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">^</span> <span class="n">mask</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span>
+            <span class="n">x</span> <span class="o">&amp;</span> <span class="n">not_mask</span> <span class="o">|</span> <span class="n">y</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span>
+            <span class="nb">zip</span><span class="p">(</span><span class="n">dec_bytes</span><span class="p">[</span><span class="n">ret_msg_start</span><span class="p">:],</span> <span class="n">message_random</span><span class="p">[</span><span class="n">ret_msg_start</span><span class="p">:]))</span>
+
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+    <span class="k">def</span> <span class="nf">_rawPrivateKeyOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_rawPublicKeyOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_raw_private_key_op_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">!=</span> <span class="n">numBytes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Message has incorrect length for the key size&quot;</span><span class="p">)</span>
+        <span class="n">m_int</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m_int</span> <span class="o">&gt;=</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provided message value exceeds modulus&quot;</span><span class="p">)</span>
+        <span class="n">dec_int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rawPrivateKeyOp</span><span class="p">(</span><span class="n">m_int</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">dec_int</span><span class="p">,</span> <span class="n">numBytes</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_raw_public_key_op_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span> <span class="o">!=</span> <span class="n">numBytes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Message has incorrect length for the key size&quot;</span><span class="p">)</span>
+        <span class="n">c_int</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">c_int</span> <span class="o">&gt;=</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provided message value exceeds modulus&quot;</span><span class="p">)</span>
+        <span class="n">enc_int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rawPublicKeyOp</span><span class="p">(</span><span class="n">c_int</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">enc_int</span><span class="p">,</span> <span class="n">numBytes</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+<div class="viewcode-block" id="RSAKey.acceptsPassword"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.acceptsPassword">[docs]</a>    <span class="k">def</span> <span class="nf">acceptsPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if the write() method accepts a password for use</span>
+<span class="sd">        in encrypting the private key.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RSAKey.write"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a string containing the key.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: A string describing the key, in whichever format (PEM)</span>
+<span class="sd">            is native to the implementation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RSAKey.generate"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.generate">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">key_type</span><span class="o">=</span><span class="s2">&quot;rsa&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a new key with the specified bit length.</span>
+
+<span class="sd">        :rtype: ~tlslite.utils.RSAKey.RSAKey</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+
+    <span class="c1"># **************************************************************************</span>
+    <span class="c1"># Helper Functions for RSA Keys</span>
+    <span class="c1"># **************************************************************************</span>
+
+<div class="viewcode-block" id="RSAKey.addPKCS1SHA1Prefix"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.addPKCS1SHA1Prefix">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">addPKCS1SHA1Prefix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">hashBytes</span><span class="p">,</span> <span class="n">withNULL</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add PKCS#1 v1.5 algorithm identifier prefix to SHA1 hash bytes&quot;&quot;&quot;</span>
+        <span class="c1"># There is a long history of confusion over whether the SHA1 </span>
+        <span class="c1"># algorithmIdentifier should be encoded with a NULL parameter or </span>
+        <span class="c1"># with the parameter omitted.  While the original intention was </span>
+        <span class="c1"># apparently to omit it, many toolkits went the other way.  TLS 1.2</span>
+        <span class="c1"># specifies the NULL should be included, and this behavior is also</span>
+        <span class="c1"># mandated in recent versions of PKCS #1, and is what tlslite has</span>
+        <span class="c1"># always implemented.  Anyways, verification code should probably </span>
+        <span class="c1"># accept both.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">withNULL</span><span class="p">:</span>
+            <span class="n">prefixBytes</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x1f</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x2b</span><span class="p">,</span>
+                                     <span class="mh">0x0e</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x1a</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x14</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prefixBytes</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_pkcs1Prefixes</span><span class="p">[</span><span class="s1">&#39;sha1&#39;</span><span class="p">]</span>
+        <span class="n">prefixedBytes</span> <span class="o">=</span> <span class="n">prefixBytes</span> <span class="o">+</span> <span class="n">hashBytes</span>
+        <span class="k">return</span> <span class="n">prefixedBytes</span></div>
+
+    <span class="n">_pkcs1Prefixes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;md5&#39;</span> <span class="p">:</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x0c</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x08</span><span class="p">,</span>
+                                         <span class="mh">0x2a</span><span class="p">,</span> <span class="mh">0x86</span><span class="p">,</span> <span class="mh">0x48</span><span class="p">,</span> <span class="mh">0x86</span><span class="p">,</span> <span class="mh">0xf7</span><span class="p">,</span> <span class="mh">0x0d</span><span class="p">,</span>
+                                         <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">]),</span>
+                      <span class="s1">&#39;sha1&#39;</span> <span class="p">:</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x21</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x09</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span>
+                                          <span class="mh">0x2b</span><span class="p">,</span> <span class="mh">0x0e</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x1a</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span>
+                                          <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x14</span><span class="p">]),</span>
+                      <span class="s1">&#39;sha224&#39;</span> <span class="p">:</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x2d</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x0d</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x09</span><span class="p">,</span>
+                                            <span class="mh">0x60</span><span class="p">,</span> <span class="mh">0x86</span><span class="p">,</span> <span class="mh">0x48</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span>
+                                            <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span>
+                                            <span class="mh">0x1c</span><span class="p">]),</span>
+                      <span class="s1">&#39;sha256&#39;</span> <span class="p">:</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x31</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x0d</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x09</span><span class="p">,</span>
+                                            <span class="mh">0x60</span><span class="p">,</span> <span class="mh">0x86</span><span class="p">,</span> <span class="mh">0x48</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span>
+                                            <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span>
+                                            <span class="mh">0x20</span><span class="p">]),</span>
+                      <span class="s1">&#39;sha384&#39;</span> <span class="p">:</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x41</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x0d</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x09</span><span class="p">,</span>
+                                            <span class="mh">0x60</span><span class="p">,</span> <span class="mh">0x86</span><span class="p">,</span> <span class="mh">0x48</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span>
+                                            <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span>
+                                            <span class="mh">0x30</span><span class="p">]),</span>
+                      <span class="s1">&#39;sha512&#39;</span> <span class="p">:</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x51</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x0d</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x09</span><span class="p">,</span>
+                                            <span class="mh">0x60</span><span class="p">,</span> <span class="mh">0x86</span><span class="p">,</span> <span class="mh">0x48</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span>
+                                            <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span>
+                                            <span class="mh">0x40</span><span class="p">])}</span>
+
+<div class="viewcode-block" id="RSAKey.addPKCS1Prefix"><a class="viewcode-back" href="../../../tlslite.utils.rsakey.html#tlslite.utils.rsakey.RSAKey.addPKCS1Prefix">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">addPKCS1Prefix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hashName</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the PKCS#1 v1.5 algorithm identifier prefix to hash bytes&quot;&quot;&quot;</span>
+        <span class="n">hashName</span> <span class="o">=</span> <span class="n">hashName</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">hashName</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_pkcs1Prefixes</span>
+        <span class="n">prefixBytes</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_pkcs1Prefixes</span><span class="p">[</span><span class="n">hashName</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">prefixBytes</span> <span class="o">+</span> <span class="n">data</span></div>
+
+    <span class="k">def</span> <span class="nf">_addPKCS1Padding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">blockType</span><span class="p">):</span>
+        <span class="n">padLength</span> <span class="o">=</span> <span class="p">(</span><span class="n">numBytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">bytes</span><span class="p">)</span><span class="o">+</span><span class="mi">3</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">blockType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1">#Signature padding</span>
+            <span class="n">pad</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0xFF</span><span class="p">]</span> <span class="o">*</span> <span class="n">padLength</span>
+        <span class="k">elif</span> <span class="n">blockType</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="c1">#Encryption padding</span>
+            <span class="n">pad</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">pad</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">padLength</span><span class="p">:</span>
+                <span class="n">padBytes</span> <span class="o">=</span> <span class="n">getRandomBytes</span><span class="p">(</span><span class="n">padLength</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">pad</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">padBytes</span> <span class="k">if</span> <span class="n">b</span><span class="p">]</span>
+                <span class="n">pad</span> <span class="o">=</span> <span class="n">pad</span><span class="p">[:</span><span class="n">padLength</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="n">padding</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">blockType</span><span class="p">]</span> <span class="o">+</span> <span class="n">pad</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">padding</span> <span class="o">+</span> <span class="nb">bytes</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

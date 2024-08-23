@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.utils.codec &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.utils.codec</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.utils.codec</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Trevor Perrin</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Classes for reading/writing binary data (such as TLS records).&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">pack</span>
+<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">bytes_to_int</span>
+
+
+<div class="viewcode-block" id="DecodeError"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.DecodeError">[docs]</a><span class="k">class</span> <span class="nc">DecodeError</span><span class="p">(</span><span class="ne">SyntaxError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised in case of decoding errors.&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BadCertificateError"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.BadCertificateError">[docs]</a><span class="k">class</span> <span class="nc">BadCertificateError</span><span class="p">(</span><span class="ne">SyntaxError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised in case of bad certificate.&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Writer"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer">[docs]</a><span class="k">class</span> <span class="nc">Writer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serialisation helper for complex byte-based structures.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Writer.__init__"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the serializer with no data.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Writer.addOne"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer.addOne">[docs]</a>    <span class="k">def</span> <span class="nf">addOne</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a single-byte wide element to buffer, see add().&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+        <span class="c1"># struct.pack on Python2.6 does not raise exception if the value</span>
+        <span class="c1"># is larger than can fit inside the specified size</span>
+        <span class="k">def</span> <span class="nf">addTwo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Add a double-byte wide element to buffer, see add().&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="mh">0xffff</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t represent value in specified length&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&gt;H&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">addThree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Add a three-byte wide element to buffer, see add().&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="mh">0xffffff</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t represent value in specified length&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&gt;BH&#39;</span><span class="p">,</span> <span class="n">val</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">,</span> <span class="n">val</span> <span class="o">&amp;</span> <span class="mh">0xffff</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">addFour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Add a four-byte wide element to buffer, see add().&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="mh">0xffffffff</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t represent value in specified length&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&gt;I&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+<div class="viewcode-block" id="Writer.addTwo"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer.addTwo">[docs]</a>        <span class="k">def</span> <span class="nf">addTwo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Add a double-byte wide element to buffer, see add().&quot;&quot;&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&gt;H&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">struct</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t represent value in specified length&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Writer.addThree"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer.addThree">[docs]</a>        <span class="k">def</span> <span class="nf">addThree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Add a three-byte wide element to buffer, see add().&quot;&quot;&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&gt;BH&#39;</span><span class="p">,</span> <span class="n">val</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">,</span> <span class="n">val</span> <span class="o">&amp;</span> <span class="mh">0xffff</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">struct</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t represent value in specified length&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Writer.addFour"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer.addFour">[docs]</a>        <span class="k">def</span> <span class="nf">addFour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Add a four-byte wide element to buffer, see add().&quot;&quot;&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&gt;I&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">struct</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t represent value in specified length&quot;</span><span class="p">)</span></div>
+
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># the method is called thousands of times, so it&#39;s better to extern</span>
+        <span class="c1"># the version info check</span>
+        <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Add a single positive integer value x, encode it in length bytes</span>
+
+<span class="sd">            Encode positive integer x in big-endian format using length bytes,</span>
+<span class="sd">            add to the internal buffer.</span>
+
+<span class="sd">            :type x: int</span>
+<span class="sd">            :param x: value to encode</span>
+
+<span class="sd">            :type length: int</span>
+<span class="sd">            :param length: number of bytes to use for encoding the value</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="n">x</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OverflowError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t represent value in specified length&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_addMethods</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">addOne</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">addTwo</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="n">addThree</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="n">addFour</span><span class="p">}</span>
+
+<div class="viewcode-block" id="Writer.add"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer.add">[docs]</a>        <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Add a single positive integer value x, encode it in length bytes</span>
+
+<span class="sd">            Encode positive iteger x in big-endian format using length bytes,</span>
+<span class="sd">            add to the internal buffer.</span>
+
+<span class="sd">            :type x: int</span>
+<span class="sd">            :param x: value to encode</span>
+
+<span class="sd">            :type length: int</span>
+<span class="sd">            :param length: number of bytes to use for encoding the value</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_addMethods</span><span class="p">[</span><span class="n">length</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+                <span class="n">newIndex</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">newIndex</span><span class="p">,</span> <span class="n">newIndex</span> <span class="o">-</span> <span class="n">length</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+                    <span class="n">x</span> <span class="o">&gt;&gt;=</span> <span class="mi">8</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t represent value in specified &quot;</span>
+                                     <span class="s2">&quot;length&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Writer.addFixSeq"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer.addFixSeq">[docs]</a>    <span class="k">def</span> <span class="nf">addFixSeq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a list of items, encode every item in length bytes</span>
+
+<span class="sd">        Uses the unbounded iterable seq to produce items, each of</span>
+<span class="sd">        which is then encoded to length bytes</span>
+
+<span class="sd">        :type seq: iterable of int</span>
+<span class="sd">        :param seq: list of positive integers to encode</span>
+
+<span class="sd">        :type length: int</span>
+<span class="sd">        :param length: number of bytes to which encode every element</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span></div>
+
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+        <span class="c1"># struct.pack on Python2.6 does not raise exception if the value</span>
+        <span class="c1"># is larger than can fit inside the specified size</span>
+        <span class="k">def</span> <span class="nf">_addVarSeqTwo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seq</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Helper method for addVarSeq&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mh">0xffff</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t represent value in specified &quot;</span>
+                                 <span class="s2">&quot;length&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;H&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">),</span> <span class="o">*</span><span class="n">seq</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">addVarSeq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Add a bounded list of same-sized values</span>
+
+<span class="sd">            Create a list of specific length with all items being of the same</span>
+<span class="sd">            size</span>
+
+<span class="sd">            :type seq: list of int</span>
+<span class="sd">            :param seq: list of positive integers to encode</span>
+
+<span class="sd">            :type length: int</span>
+<span class="sd">            :param length: amount of bytes in which to encode every item</span>
+
+<span class="sd">            :type lengthLength: int</span>
+<span class="sd">            :param lengthLength: amount of bytes in which to encode the overall</span>
+<span class="sd">                length of the array</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">*</span><span class="n">length</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_addVarSeqTwo</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+<div class="viewcode-block" id="Writer.addVarSeq"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer.addVarSeq">[docs]</a>        <span class="k">def</span> <span class="nf">addVarSeq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Add a bounded list of same-sized values</span>
+
+<span class="sd">            Create a list of specific length with all items being of the same</span>
+<span class="sd">            size</span>
+
+<span class="sd">            :type seq: list of int</span>
+<span class="sd">            :param seq: list of positive integers to encode</span>
+
+<span class="sd">            :type length: int</span>
+<span class="sd">            :param length: amount of bytes in which to encode every item</span>
+
+<span class="sd">            :type lengthLength: int</span>
+<span class="sd">            :param lengthLength: amount of bytes in which to encode the overall</span>
+<span class="sd">                length of the array</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">seqLen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">seqLen</span><span class="o">*</span><span class="n">length</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;H&#39;</span> <span class="o">*</span> <span class="n">seqLen</span><span class="p">,</span> <span class="o">*</span><span class="n">seq</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">struct</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t represent value in specified &quot;</span>
+                                     <span class="s2">&quot;length&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Writer.addVarTupleSeq"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer.addVarTupleSeq">[docs]</a>    <span class="k">def</span> <span class="nf">addVarTupleSeq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a variable length list of same-sized element tuples.</span>
+
+<span class="sd">        Note that all tuples must have the same size.</span>
+
+<span class="sd">        Inverse of Parser.getVarTupleList()</span>
+
+<span class="sd">        :type seq: enumerable</span>
+<span class="sd">        :param seq: list of tuples</span>
+
+<span class="sd">        :type length: int</span>
+<span class="sd">        :param length: length of single element in tuple</span>
+
+<span class="sd">        :type lengthLength: int</span>
+<span class="sd">        :param lengthLength: length in bytes of overall length field</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">seq</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">startPos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">)</span>
+            <span class="n">dataLength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">length</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dataLength</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">)</span>
+            <span class="c1"># since at the time of writing, all the calls encode single byte</span>
+            <span class="c1"># elements, and it&#39;s very easy to speed up that case, give it</span>
+            <span class="c1"># special case</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">elemTuple</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">elemTuple</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">elemTuple</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">addFixSeq</span><span class="p">(</span><span class="n">elemTuple</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">startPos</span> <span class="o">+</span> <span class="n">dataLength</span> <span class="o">+</span> <span class="n">lengthLength</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Tuples of different lengths&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Writer.add_var_bytes"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Writer.add_var_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">add_var_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">length_length</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a variable length array of bytes.</span>
+
+<span class="sd">        Inverse of Parser.getVarBytes()</span>
+
+<span class="sd">        :type data: bytes</span>
+<span class="sd">        :param data: bytes to add to the buffer</span>
+
+<span class="sd">        :param int length_length: size of the field to represent the length</span>
+<span class="sd">            of the data string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">length_length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">+=</span> <span class="n">data</span></div></div>
+
+
+<div class="viewcode-block" id="Parser"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser">[docs]</a><span class="k">class</span> <span class="nc">Parser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parser for TLV and LV byte-based encodings.</span>
+
+<span class="sd">    Parser that can handle arbitrary byte-based encodings usually employed in</span>
+<span class="sd">    Type-Length-Value or Length-Value binary encoding protocols like ASN.1</span>
+<span class="sd">    or TLS</span>
+
+<span class="sd">    Note: if the raw bytes don&#39;t match expected values (like trying to</span>
+<span class="sd">    read a 4-byte integer from a 2-byte buffer), most methods will raise a</span>
+<span class="sd">    DecodeError exception.</span>
+
+<span class="sd">    TODO: don&#39;t use an exception used by language parser to indicate errors</span>
+<span class="sd">    in application code.</span>
+
+<span class="sd">    :vartype bytes: bytearray</span>
+<span class="sd">    :ivar bytes: data to be interpreted (buffer)</span>
+
+<span class="sd">    :vartype index: int</span>
+<span class="sd">    :ivar index: current position in the buffer</span>
+
+<span class="sd">    :vartype lengthCheck: int</span>
+<span class="sd">    :ivar lengthCheck: size of struct being parsed</span>
+
+<span class="sd">    :vartype indexCheck: int</span>
+<span class="sd">    :ivar indexCheck: position at which the structure begins in buffer</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Parser.__init__"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Bind raw bytes with parser.</span>
+
+<span class="sd">        :type bytes: bytearray</span>
+<span class="sd">        :param bytes: bytes to be parsed/interpreted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">=</span> <span class="nb">bytes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexCheck</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lengthCheck</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Parser.get"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a single big-endian integer value encoded in &#39;length&#39; bytes.</span>
+
+<span class="sd">        :type length: int</span>
+<span class="sd">        :param length: number of bytes in which the value is encoded in</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFixBytes</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bytes_to_int</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.getFixBytes"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.getFixBytes">[docs]</a>    <span class="k">def</span> <span class="nf">getFixBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lengthBytes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a string of bytes encoded in &#39;lengthBytes&#39; bytes.</span>
+
+<span class="sd">        :type lengthBytes: int</span>
+<span class="sd">        :param lengthBytes: number of bytes to return</span>
+
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="n">lengthBytes</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">DecodeError</span><span class="p">(</span><span class="s2">&quot;Read past end of buffer&quot;</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="p">:</span> <span class="n">end</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="n">lengthBytes</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="Parser.skip_bytes"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.skip_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">skip_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Move the internal pointer ahead length bytes.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="n">length</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">DecodeError</span><span class="p">(</span><span class="s2">&quot;Read past end of buffer&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="n">length</span></div>
+
+<div class="viewcode-block" id="Parser.getVarBytes"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.getVarBytes">[docs]</a>    <span class="k">def</span> <span class="nf">getVarBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a variable length string with a fixed length.</span>
+
+<span class="sd">        see Writer.add_var_bytes() for an inverse of this method</span>
+
+<span class="sd">        :type lengthLength: int</span>
+<span class="sd">        :param lengthLength: number of bytes in which the length of the string</span>
+<span class="sd">            is encoded in</span>
+
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lengthBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lengthLength</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFixBytes</span><span class="p">(</span><span class="n">lengthBytes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.getFixList"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.getFixList">[docs]</a>    <span class="k">def</span> <span class="nf">getFixList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">lengthList</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a list of static length with same-sized ints.</span>
+
+<span class="sd">        :type length: int</span>
+<span class="sd">        :param length: size in bytes of a single element in list</span>
+
+<span class="sd">        :type lengthList: int</span>
+<span class="sd">        :param lengthList: number of elements in list</span>
+
+<span class="sd">        :rtype: list of int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">lengthList</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lengthList</span><span class="p">):</span>
+            <span class="n">l</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">l</span></div>
+
+<div class="viewcode-block" id="Parser.getVarList"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.getVarList">[docs]</a>    <span class="k">def</span> <span class="nf">getVarList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a variable length list of same-sized integers.</span>
+
+<span class="sd">        :type length: int</span>
+<span class="sd">        :param length: size in bytes of a single element</span>
+
+<span class="sd">        :type lengthLength: int</span>
+<span class="sd">        :param lengthLength: size of the encoded length of the list</span>
+
+<span class="sd">        :rtype: list of int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lengthList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lengthLength</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lengthList</span> <span class="o">%</span> <span class="n">length</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DecodeError</span><span class="p">(</span><span class="s2">&quot;Encoded length not a multiple of element &quot;</span>
+                              <span class="s2">&quot;length&quot;</span><span class="p">)</span>
+        <span class="n">lengthList</span> <span class="o">=</span> <span class="n">lengthList</span> <span class="o">//</span> <span class="n">length</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">lengthList</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lengthList</span><span class="p">):</span>
+            <span class="n">l</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">l</span></div>
+
+<div class="viewcode-block" id="Parser.getVarTupleList"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.getVarTupleList">[docs]</a>    <span class="k">def</span> <span class="nf">getVarTupleList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elemLength</span><span class="p">,</span> <span class="n">elemNum</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a variable length list of same sized tuples.</span>
+
+<span class="sd">        :type elemLength: int</span>
+<span class="sd">        :param elemLength: length in bytes of single tuple element</span>
+
+<span class="sd">        :type elemNum: int</span>
+<span class="sd">        :param elemNum: number of elements in tuple</span>
+
+<span class="sd">        :type lengthLength: int</span>
+<span class="sd">        :param lengthLength: length in bytes of the list length variable</span>
+
+<span class="sd">        :rtype: list of tuple of int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lengthList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lengthLength</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lengthList</span> <span class="o">%</span> <span class="p">(</span><span class="n">elemLength</span> <span class="o">*</span> <span class="n">elemNum</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DecodeError</span><span class="p">(</span><span class="s2">&quot;Encoded length not a multiple of element &quot;</span>
+                              <span class="s2">&quot;length&quot;</span><span class="p">)</span>
+        <span class="n">tupleCount</span> <span class="o">=</span> <span class="n">lengthList</span> <span class="o">//</span> <span class="p">(</span><span class="n">elemLength</span> <span class="o">*</span> <span class="n">elemNum</span><span class="p">)</span>
+        <span class="n">tupleList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tupleCount</span><span class="p">):</span>
+            <span class="n">currentTuple</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">elemNum</span><span class="p">):</span>
+                <span class="n">currentTuple</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elemLength</span><span class="p">))</span>
+            <span class="n">tupleList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">currentTuple</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">tupleList</span></div>
+
+<div class="viewcode-block" id="Parser.startLengthCheck"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.startLengthCheck">[docs]</a>    <span class="k">def</span> <span class="nf">startLengthCheck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lengthLength</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read length of struct and start a length check for parsing.</span>
+
+<span class="sd">        :type lengthLength: int</span>
+<span class="sd">        :param lengthLength: number of bytes in which the length is encoded</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lengthCheck</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lengthLength</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexCheck</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span></div>
+
+<div class="viewcode-block" id="Parser.setLengthCheck"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.setLengthCheck">[docs]</a>    <span class="k">def</span> <span class="nf">setLengthCheck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set length of struct and start a length check for parsing.</span>
+
+<span class="sd">        :type length: int</span>
+<span class="sd">        :param length: expected size of parsed struct in bytes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lengthCheck</span> <span class="o">=</span> <span class="n">length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexCheck</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span></div>
+
+<div class="viewcode-block" id="Parser.stopLengthCheck"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.stopLengthCheck">[docs]</a>    <span class="k">def</span> <span class="nf">stopLengthCheck</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stop struct parsing, verify that no under- or overflow occurred.</span>
+
+<span class="sd">        In case the expected length was mismatched with actual length of</span>
+<span class="sd">        processed data, raises an exception.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexCheck</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengthCheck</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DecodeError</span><span class="p">(</span><span class="s2">&quot;Under- or over-flow while reading buffer&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.atLengthCheck"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.atLengthCheck">[docs]</a>    <span class="k">def</span> <span class="nf">atLengthCheck</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if there is data in structure left for parsing.</span>
+
+<span class="sd">        Returns True if the whole structure was parsed, False if there is</span>
+<span class="sd">        some data left.</span>
+
+<span class="sd">        Will raise an exception if overflow occured (amount of data read was</span>
+<span class="sd">        greater than expected size)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexCheck</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengthCheck</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexCheck</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">lengthCheck</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DecodeError</span><span class="p">(</span><span class="s2">&quot;Read past end of buffer&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.getRemainingLength"><a class="viewcode-back" href="../../../tlslite.utils.codec.html#tlslite.utils.codec.Parser.getRemainingLength">[docs]</a>    <span class="k">def</span> <span class="nf">getRemainingLength</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return amount of data remaining in struct being parsed.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.recordlayer &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.recordlayer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.recordlayer</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2014, Hubert Kario</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Implementation of the TLS Record Layer protocol&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">errno</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># in python 3 the native zip() returns iterator</span>
+    <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">izip</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">izip</span> <span class="o">=</span> <span class="nb">zip</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># in python 3 the native range() returns an object/iterator</span>
+    <span class="n">xrange</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="n">xrange</span> <span class="o">=</span> <span class="nb">range</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">tlshashlib</span> <span class="k">as</span> <span class="n">hashlib</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">ContentType</span><span class="p">,</span> <span class="n">CipherSuite</span>
+<span class="kn">from</span> <span class="nn">.messages</span> <span class="kn">import</span> <span class="n">RecordHeader3</span><span class="p">,</span> <span class="n">RecordHeader2</span><span class="p">,</span> <span class="n">Message</span>
+<span class="kn">from</span> <span class="nn">.utils.cipherfactory</span> <span class="kn">import</span> <span class="n">createAESCCM</span><span class="p">,</span> <span class="n">createAESCCM_8</span><span class="p">,</span> <span class="n">createAESGCM</span><span class="p">,</span>\
+        <span class="n">createAES</span><span class="p">,</span> <span class="n">createRC4</span><span class="p">,</span> <span class="n">createTripleDES</span><span class="p">,</span> <span class="n">createCHACHA20</span>
+<span class="kn">from</span> <span class="nn">.utils.codec</span> <span class="kn">import</span> <span class="n">Parser</span><span class="p">,</span> <span class="n">Writer</span>
+<span class="kn">from</span> <span class="nn">.utils.compat</span> <span class="kn">import</span> <span class="n">compatHMAC</span>
+<span class="kn">from</span> <span class="nn">.utils.cryptomath</span> <span class="kn">import</span> <span class="n">getRandomBytes</span><span class="p">,</span> <span class="n">MD5</span><span class="p">,</span> <span class="n">HKDF_expand_label</span>
+<span class="kn">from</span> <span class="nn">.utils.constanttime</span> <span class="kn">import</span> <span class="n">ct_compare_digest</span><span class="p">,</span> <span class="n">ct_check_cbc_mac_and_pad</span>
+<span class="kn">from</span> <span class="nn">.errors</span> <span class="kn">import</span> <span class="n">TLSRecordOverflow</span><span class="p">,</span> <span class="n">TLSIllegalParameterException</span><span class="p">,</span>\
+        <span class="n">TLSAbruptCloseError</span><span class="p">,</span> <span class="n">TLSDecryptionFailed</span><span class="p">,</span> <span class="n">TLSBadRecordMAC</span><span class="p">,</span> \
+        <span class="n">TLSUnexpectedMessage</span>
+<span class="kn">from</span> <span class="nn">.mathtls</span> <span class="kn">import</span> <span class="n">createMAC_SSL</span><span class="p">,</span> <span class="n">createHMAC</span><span class="p">,</span> <span class="n">calc_key</span>
+
+<div class="viewcode-block" id="RecordSocket"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordSocket">[docs]</a><span class="k">class</span> <span class="nc">RecordSocket</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Socket wrapper for reading and writing TLS Records.</span>
+
+<span class="sd">    :ivar sock: wrapped socket</span>
+<span class="sd">    :ivar ~.version: version for the records to be encoded on the wire</span>
+<span class="sd">    :ivar tls13record: flag to indicate that TLS 1.3 specific record limits</span>
+<span class="sd">        should be used for received records</span>
+<span class="sd">    :ivar int recv_record_limit: negotiated maximum size of record plaintext</span>
+<span class="sd">        size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RecordSocket.__init__"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordSocket.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assign socket to wrapper</span>
+
+<span class="sd">        :type sock: socket.socket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">sock</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tls13record</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recv_record_limit</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">14</span></div>
+
+    <span class="k">def</span> <span class="nf">_sockSendAll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send all data through socket</span>
+
+<span class="sd">        :type data: bytearray</span>
+<span class="sd">        :param data: data to send</span>
+<span class="sd">        :raises socket.error: when write to socket failed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">bytesSent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">why</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">why</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="n">errno</span><span class="o">.</span><span class="n">EWOULDBLOCK</span><span class="p">,</span> <span class="n">errno</span><span class="o">.</span><span class="n">EAGAIN</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="mi">1</span>
+                    <span class="k">continue</span>
+                <span class="k">raise</span>
+
+            <span class="k">if</span> <span class="n">bytesSent</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                <span class="k">return</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">bytesSent</span><span class="p">:]</span>
+            <span class="k">yield</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="RecordSocket.send"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordSocket.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send the message through socket.</span>
+
+<span class="sd">        :type msg: bytearray</span>
+<span class="sd">        :param msg: TLS message to send</span>
+<span class="sd">        :type padding: int</span>
+<span class="sd">        :param padding: amount of padding to specify for SSLv2</span>
+<span class="sd">        :raises socket.error: when write to socket failed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)):</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">RecordHeader2</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+                                            <span class="n">padding</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">RecordHeader3</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+                                            <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span><span class="p">,</span>
+                                            <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">write</span><span class="p">()</span> <span class="o">+</span> <span class="n">data</span>
+
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sockSendAll</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">result</span></div>
+
+    <span class="k">def</span> <span class="nf">_sockRecvAll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read exactly the amount of bytes specified in L{length} from raw socket.</span>
+
+<span class="sd">        :rtype: generator</span>
+<span class="sd">        :returns: generator that will return 0 or 1 in case the socket is non</span>
+<span class="sd">            blocking and would block and bytearray in case the read finished</span>
+<span class="sd">        :raises TLSAbruptCloseError: when the socket closed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">buf</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">socketBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">why</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">why</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="n">errno</span><span class="o">.</span><span class="n">EWOULDBLOCK</span><span class="p">,</span> <span class="n">errno</span><span class="o">.</span><span class="n">EAGAIN</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="mi">0</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span>
+
+            <span class="c1">#if the connection closed, raise socket error</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">socketBytes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSAbruptCloseError</span><span class="p">()</span>
+
+            <span class="n">buf</span> <span class="o">+=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">socketBytes</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">==</span> <span class="n">length</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">buf</span>
+
+    <span class="k">def</span> <span class="nf">_recvHeader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a single record header from socket&quot;&quot;&quot;</span>
+        <span class="c1">#Read the next record header</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ssl2</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sockRecvAll</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+            <span class="k">else</span><span class="p">:</span> <span class="k">break</span>
+        <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="n">buf</span> <span class="o">+=</span> <span class="n">result</span>
+
+        <span class="k">if</span> <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">all</span><span class="p">:</span>
+            <span class="n">ssl2</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># SSLv3 record layer header is 5 bytes long, we already read 1</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sockRecvAll</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+                <span class="k">else</span><span class="p">:</span> <span class="k">break</span>
+            <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">buf</span> <span class="o">+=</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># if header has no pading the header is 2 bytes long, 3 otherwise</span>
+            <span class="c1"># at the same time we already read 1 byte</span>
+            <span class="n">ssl2</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x80</span><span class="p">:</span>
+                <span class="n">readLen</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">readLen</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sockRecvAll</span><span class="p">(</span><span class="n">readLen</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+                <span class="k">else</span><span class="p">:</span> <span class="k">break</span>
+            <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">buf</span> <span class="o">+=</span> <span class="n">result</span>
+
+
+        <span class="c1">#Parse the record header</span>
+        <span class="k">if</span> <span class="n">ssl2</span><span class="p">:</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="n">RecordHeader2</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">Parser</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+            <span class="c1"># padding can&#39;t be longer than overall length and if it is present</span>
+            <span class="c1"># the overall size must be a multiple of cipher block size</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">record</span><span class="o">.</span><span class="n">padding</span> <span class="o">&gt;</span> <span class="n">record</span><span class="o">.</span><span class="n">length</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">padding</span> <span class="ow">and</span> <span class="n">record</span><span class="o">.</span><span class="n">length</span> <span class="o">%</span> <span class="mi">8</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span>\
+                        <span class="s2">&quot;Malformed record layer header&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="n">RecordHeader3</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">Parser</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+
+        <span class="k">yield</span> <span class="n">record</span>
+
+<div class="viewcode-block" id="RecordSocket.recv"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordSocket.recv">[docs]</a>    <span class="k">def</span> <span class="nf">recv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a single record from socket, handle SSLv2 and SSLv3 record layer</span>
+
+<span class="sd">        :rtype: generator</span>
+<span class="sd">        :returns: generator that returns 0 or 1 in case the read would be</span>
+<span class="sd">            blocking or a tuple containing record header (object) and record</span>
+<span class="sd">            data (bytearray) read from socket</span>
+<span class="sd">        :raises socket.error: In case of network error</span>
+<span class="sd">        :raises TLSAbruptCloseError: When the socket was closed on the other</span>
+<span class="sd">            side in middle of record receiving</span>
+<span class="sd">        :raises TLSRecordOverflow: When the received record was longer than</span>
+<span class="sd">            allowed by TLS</span>
+<span class="sd">        :raises TLSIllegalParameterException: When the record header was</span>
+<span class="sd">            malformed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recvHeader</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">record</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">record</span>
+            <span class="k">else</span><span class="p">:</span> <span class="k">break</span>
+        <span class="k">assert</span> <span class="n">record</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="c1">#Check the record header fields</span>
+        <span class="c1"># 18432 = 2**14 (default record size limit) + 1024 (maximum compression</span>
+        <span class="c1"># overhead) + 1024 (maximum encryption overhead)</span>
+        <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_record_limit</span> <span class="o">+</span> <span class="mi">1024</span> <span class="o">+</span> <span class="mi">1024</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSRecordOverflow</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tls13record</span> <span class="ow">and</span> <span class="n">record</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_record_limit</span> <span class="o">+</span> <span class="mi">256</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSRecordOverflow</span><span class="p">()</span>
+
+        <span class="c1">#Read the record contents</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sockRecvAll</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">length</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+            <span class="k">else</span><span class="p">:</span> <span class="k">break</span>
+        <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="n">buf</span> <span class="o">+=</span> <span class="n">result</span>
+
+        <span class="k">yield</span> <span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">buf</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ConnectionState"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.ConnectionState">[docs]</a><span class="k">class</span> <span class="nc">ConnectionState</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Preserve the connection state for reading and writing data to records&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConnectionState.__init__"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.ConnectionState.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance with empty encryption and MACing contexts&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixedNonce</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ConnectionState.getSeqNumBytes"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.ConnectionState.getSeqNumBytes">[docs]</a>    <span class="k">def</span> <span class="nf">getSeqNumBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return encoded sequence number and increment it.&quot;&quot;&quot;</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">Writer</span><span class="p">()</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">writer</span><span class="o">.</span><span class="n">bytes</span></div>
+
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a copy of the object.&quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macContext</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encContext</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">fixedNonce</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixedNonce</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seqnum</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encryptThenMAC</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<div class="viewcode-block" id="RecordLayer"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer">[docs]</a><span class="k">class</span> <span class="nc">RecordLayer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implementation of TLS record layer protocol</span>
+
+<span class="sd">    :ivar ~.version: the TLS version to use (tuple encoded as on the wire)</span>
+<span class="sd">    :ivar sock: underlying socket</span>
+<span class="sd">    :ivar client: whether the connection should use encryption</span>
+<span class="sd">    :ivar handshake_finished: used in SSL2, True if handshake protocol is over</span>
+<span class="sd">    :ivar tls13record: if True, the record layer will use the TLS 1.3 version</span>
+<span class="sd">        and content type hiding</span>
+<span class="sd">    :ivar bool early_data_ok: if True, it&#39;s ok to ignore undecryptable records</span>
+<span class="sd">        up to the size of max_early_data (sum of payloads)</span>
+<span class="sd">    :ivar int max_early_data: maximum number of bytes that will be processed</span>
+<span class="sd">        before aborting the connection on data that can not be validated,</span>
+<span class="sd">        works only if early_data_ok is set to True</span>
+<span class="sd">    :ivar callable padding_cb: callback used for calculating the size of</span>
+<span class="sd">        padding to add in TLSv1.3 records</span>
+<span class="sd">    :ivar int send_record_limit: hint provided to padding callback to not</span>
+<span class="sd">        generate records larger than the receiving size expects</span>
+<span class="sd">    :ivar int recv_record_limit: negotiated size of records we are willing to</span>
+<span class="sd">        accept, TLSRecordOverflow will be raised when records with larger</span>
+<span class="sd">        plaintext size are received (in TLS 1.3 padding is included in this</span>
+<span class="sd">        size but encrypted content type is not)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RecordLayer.__init__"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">sock</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordSocket</span> <span class="o">=</span> <span class="n">RecordSocket</span><span class="p">(</span><span class="n">sock</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_version</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tls13record</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixedIVBlock</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handshake_finished</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">padding_cb</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_early_data_ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_early_data</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_early_data_processed</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_record_limit</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">14</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">recv_record_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maximum record size that is permitted for receiving.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordSocket</span><span class="o">.</span><span class="n">recv_record_limit</span>
+
+    <span class="nd">@recv_record_limit</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">recv_record_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordSocket</span><span class="o">.</span><span class="n">recv_record_limit</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">early_data_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set or get the state of early data acceptability.</span>
+
+<span class="sd">        If processing of the early_data records is to suceed, even if the</span>
+<span class="sd">        encryption is not correct, set this property to True. It will be</span>
+<span class="sd">        automatically reset to False as soon as a decryptable record is</span>
+<span class="sd">        processed.</span>
+
+<span class="sd">        Use max_early_data to set the limit of the total size of records</span>
+<span class="sd">        that will be processed like this.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_early_data_ok</span>
+
+    <span class="nd">@early_data_ok</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">early_data_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_early_data_processed</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_early_data_ok</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">encryptThenMAC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set or get the setting of Encrypt Then MAC mechanism.</span>
+
+<span class="sd">        set the encrypt-then-MAC mechanism for record</span>
+<span class="sd">        integrity for next parameter change (after CCS),</span>
+<span class="sd">        gets current state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encryptThenMAC</span>
+
+    <span class="nd">@encryptThenMAC</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">encryptThenMAC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_get_pending_state_etm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the state of encrypt then MAC for the connection after</span>
+<span class="sd">        CCS will be exchanged</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span><span class="o">.</span><span class="n">encryptThenMAC</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blockSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the size of block used by current symmetric cipher (R/O)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">block_size</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tls13record</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the value of the tls13record state.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tls13record</span>
+
+    <span class="nd">@tls13record</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">tls13record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the record layer to TLS1.3-like operation, if applicable.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tls13record</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recordSocket</span><span class="o">.</span><span class="n">tls13record</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_tls13_record</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_is_tls13_plus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if we&#39;re doing real TLS 1.3.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tls13record</span>
+
+    <span class="k">def</span> <span class="nf">_handle_tls13_record</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make sure that the version and tls13record setting is consistent.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_tls13_plus</span><span class="p">():</span>
+            <span class="c1"># in TLS 1.3 all records need to be sent with the generic version</span>
+            <span class="c1"># which is the same as TLS 1.2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recordSocket</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recordSocket</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the TLS version used by record layer&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version</span>
+
+    <span class="nd">@version</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the TLS version used by record layer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_version</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_tls13_record</span><span class="p">()</span>
+
+<div class="viewcode-block" id="RecordLayer.getCipherName"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.getCipherName">[docs]</a>    <span class="k">def</span> <span class="nf">getCipherName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the name of the bulk cipher used by this connection</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The name of the cipher, like &#39;aes128&#39;, &#39;rc4&#39;, etc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="RecordLayer.getCipherImplementation"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.getCipherImplementation">[docs]</a>    <span class="k">def</span> <span class="nf">getCipherImplementation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the name of the implementation used for the connection</span>
+
+<span class="sd">        &#39;python&#39; for tlslite internal implementation, &#39;openssl&#39; for M2crypto</span>
+<span class="sd">        and &#39;pycrypto&#39; for pycrypto</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: Name of cipher implementation used, None if not initialised</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">implementation</span></div>
+
+<div class="viewcode-block" id="RecordLayer.shutdown"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.shutdown">[docs]</a>    <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear read and write states&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RecordLayer.isCBCMode"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.isCBCMode">[docs]</a>    <span class="k">def</span> <span class="nf">isCBCMode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if cipher uses CBC mode&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span> <span class="ow">and</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">isBlockCipher</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+    <span class="c1">#</span>
+    <span class="c1"># sending messages</span>
+    <span class="c1">#</span>
+
+<div class="viewcode-block" id="RecordLayer.addPadding"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.addPadding">[docs]</a>    <span class="k">def</span> <span class="nf">addPadding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add padding to data so that it is multiple of block size&quot;&quot;&quot;</span>
+        <span class="n">currentLength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">blockLength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockSize</span>
+        <span class="n">paddingLength</span> <span class="o">=</span> <span class="n">blockLength</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">currentLength</span> <span class="o">%</span> <span class="n">blockLength</span><span class="p">)</span>
+
+        <span class="n">paddingBytes</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="n">paddingLength</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">paddingLength</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">+=</span> <span class="n">paddingBytes</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="RecordLayer.calculateMAC"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.calculateMAC">[docs]</a>    <span class="k">def</span> <span class="nf">calculateMAC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mac</span><span class="p">,</span> <span class="n">seqnumBytes</span><span class="p">,</span> <span class="n">contentType</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the SSL/TLS version of a MAC&quot;&quot;&quot;</span>
+        <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">seqnumBytes</span><span class="p">))</span>
+        <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="n">contentType</span><span class="p">])))</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">]])))</span>
+            <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">1</span><span class="p">]])))</span>
+        <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">//</span><span class="mi">256</span><span class="p">])))</span>
+        <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">%</span><span class="mi">256</span><span class="p">])))</span>
+        <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">mac</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">_macThenEncrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">contentType</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;MAC, pad then encrypt data&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">macContext</span><span class="p">:</span>
+            <span class="n">seqnumBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">getSeqNumBytes</span><span class="p">()</span>
+            <span class="n">mac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">macBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateMAC</span><span class="p">(</span><span class="n">mac</span><span class="p">,</span> <span class="n">seqnumBytes</span><span class="p">,</span> <span class="n">contentType</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">+=</span> <span class="n">macBytes</span>
+
+        <span class="c1">#Encrypt for Block or Stream Cipher</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="p">:</span>
+            <span class="c1">#Add padding (for Block Cipher):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">isBlockCipher</span><span class="p">:</span>
+
+                <span class="c1">#Add TLS 1.1 fixed block</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixedIVBlock</span> <span class="o">+</span> <span class="n">data</span>
+
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addPadding</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="c1">#Encrypt</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">_encryptThenMAC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">contentType</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pad, encrypt and then MAC the data&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="p">:</span>
+            <span class="c1"># add IV for TLS1.1+</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="n">buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixedIVBlock</span> <span class="o">+</span> <span class="n">buf</span>
+
+            <span class="n">buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addPadding</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+
+            <span class="n">buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+
+        <span class="c1"># add MAC</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">macContext</span><span class="p">:</span>
+            <span class="n">seqnumBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">getSeqNumBytes</span><span class="p">()</span>
+            <span class="n">mac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="c1"># append MAC</span>
+            <span class="n">macBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateMAC</span><span class="p">(</span><span class="n">mac</span><span class="p">,</span> <span class="n">seqnumBytes</span><span class="p">,</span> <span class="n">contentType</span><span class="p">,</span> <span class="n">buf</span><span class="p">)</span>
+            <span class="n">buf</span> <span class="o">+=</span> <span class="n">macBytes</span>
+
+        <span class="k">return</span> <span class="n">buf</span>
+
+    <span class="k">def</span> <span class="nf">_getNonce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">seqnum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate a nonce for a given enc/dec context&quot;&quot;&quot;</span>
+        <span class="c1"># ChaCha is using the draft-TLS1.3-like nonce derivation</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;chacha20-poly1305&quot;</span> <span class="ow">and</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">fixedNonce</span><span class="p">)</span> <span class="o">==</span> <span class="mi">12</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_tls13_plus</span><span class="p">():</span>
+            <span class="c1"># 4 byte nonce is used by the draft cipher</span>
+            <span class="n">pad</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">fixedNonce</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">seqnum</span><span class="p">))</span>
+            <span class="n">nonce</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">i</span> <span class="o">^</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pad</span> <span class="o">+</span> <span class="n">seqnum</span><span class="p">,</span>
+                                                    <span class="n">state</span><span class="o">.</span><span class="n">fixedNonce</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nonce</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">fixedNonce</span> <span class="o">+</span> <span class="n">seqnum</span>
+        <span class="k">return</span> <span class="n">nonce</span>
+
+
+    <span class="k">def</span> <span class="nf">_encryptThenSeal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">contentType</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encrypt with AEAD cipher&quot;&quot;&quot;</span>
+        <span class="c1">#Assemble the authenticated data.</span>
+        <span class="n">seqNumBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">getSeqNumBytes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_tls13_plus</span><span class="p">():</span>
+            <span class="n">authData</span> <span class="o">=</span> <span class="n">seqNumBytes</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">([</span><span class="n">contentType</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                                <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span><span class="o">//</span><span class="mi">256</span><span class="p">,</span>
+                                                <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span><span class="o">%</span><span class="mi">256</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># TLS 1.3</span>
+            <span class="n">out_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">tagLength</span>
+            <span class="c1"># this is just recreated Record Layer header</span>
+            <span class="n">authData</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="n">contentType</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">_recordSocket</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">_recordSocket</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                  <span class="n">out_len</span> <span class="o">//</span> <span class="mi">256</span><span class="p">,</span> <span class="n">out_len</span> <span class="o">%</span> <span class="mi">256</span><span class="p">])</span>
+
+        <span class="n">nonce</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getNonce</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="p">,</span> <span class="n">seqNumBytes</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">nonce</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">nonceLength</span>
+
+        <span class="n">buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">seal</span><span class="p">(</span><span class="n">nonce</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">authData</span><span class="p">)</span>
+
+        <span class="c1">#AES-GCM, has an explicit variable nonce.</span>
+        <span class="k">if</span> <span class="s2">&quot;aes&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> \
+                <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_tls13_plus</span><span class="p">():</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="n">seqNumBytes</span> <span class="o">+</span> <span class="n">buf</span>
+
+        <span class="k">return</span> <span class="n">buf</span>
+
+    <span class="k">def</span> <span class="nf">_ssl2Encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encrypt in SSL2 mode&quot;&quot;&quot;</span>
+        <span class="c1"># in SSLv2 sequence numbers are incremented for plaintext records too</span>
+        <span class="n">seqnumBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">getSeqNumBytes</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">isBlockCipher</span><span class="p">):</span>
+            <span class="n">plaintext_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addPadding</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">padding</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">plaintext_len</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">padding</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">macContext</span><span class="p">:</span>
+            <span class="n">mac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">seqnumBytes</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]))</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">mac</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span> <span class="o">+</span> <span class="n">data</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">padding</span>
+
+<div class="viewcode-block" id="RecordLayer.sendRecord"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.sendRecord">[docs]</a>    <span class="k">def</span> <span class="nf">sendRecord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Encrypt, MAC and send arbitrary message as-is through socket.</span>
+
+<span class="sd">        Note that if the message was not fragmented to below 2**14 bytes</span>
+<span class="sd">        it will be rejected by the other connection side.</span>
+
+<span class="sd">        :param msg: TLS message to send</span>
+<span class="sd">        :type msg: ApplicationData, HandshakeMessage, etc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+        <span class="n">contentType</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span>
+
+        <span class="c1"># TLS 1.3 hides the content type of messages</span>
+        <span class="c1"># but CCS is always not encrypted</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_tls13_plus</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span> <span class="ow">and</span> \
+                <span class="n">contentType</span> <span class="o">!=</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">change_cipher_spec</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">+=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="n">contentType</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_cb</span><span class="p">:</span>
+                <span class="n">max_padding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_record_limit</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="c1"># add number of zero bytes specified by padding_cb()</span>
+                <span class="n">data</span> <span class="o">+=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">padding_cb</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+                                                  <span class="n">contentType</span><span class="p">,</span>
+                                                  <span class="n">max_padding</span><span class="p">))</span>
+            <span class="c1"># in TLS 1.3 contentType is ignored by _encryptThenSeal</span>
+            <span class="n">contentType</span> <span class="o">=</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span>
+
+        <span class="n">padding</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">padding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ssl2Encrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">and</span> \
+                <span class="n">contentType</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">change_cipher_spec</span><span class="p">:</span>
+            <span class="c1"># TLS 1.3 does not encrypt CCS messages</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span> <span class="ow">and</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">isAEAD</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encryptThenSeal</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">contentType</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">encryptThenMAC</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encryptThenMAC</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">contentType</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macThenEncrypt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">contentType</span><span class="p">)</span>
+
+        <span class="n">encryptedMessage</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">contentType</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordSocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">encryptedMessage</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">result</span></div>
+
+    <span class="c1">#</span>
+    <span class="c1"># receiving messages</span>
+    <span class="c1">#</span>
+
+    <span class="k">def</span> <span class="nf">_decryptStreamThenMAC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recordType</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decrypt a stream cipher and check MAC&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span><span class="p">:</span>
+            <span class="c1">#Check MAC</span>
+            <span class="n">macGood</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">macLength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">digest_size</span>
+            <span class="n">endLength</span> <span class="o">=</span> <span class="n">macLength</span>
+            <span class="k">if</span> <span class="n">endLength</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                <span class="n">macGood</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1">#Read MAC</span>
+                <span class="n">startIndex</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">endLength</span>
+                <span class="n">endIndex</span> <span class="o">=</span> <span class="n">startIndex</span> <span class="o">+</span> <span class="n">macLength</span>
+                <span class="n">checkBytes</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">startIndex</span> <span class="p">:</span> <span class="n">endIndex</span><span class="p">]</span>
+
+                <span class="c1">#Calculate MAC</span>
+                <span class="n">seqnumBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">getSeqNumBytes</span><span class="p">()</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="n">endLength</span><span class="p">]</span>
+                <span class="n">mac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">macBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateMAC</span><span class="p">(</span><span class="n">mac</span><span class="p">,</span> <span class="n">seqnumBytes</span><span class="p">,</span> <span class="n">recordType</span><span class="p">,</span>
+                                             <span class="n">data</span><span class="p">)</span>
+
+                <span class="c1">#Compare MACs</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">ct_compare_digest</span><span class="p">(</span><span class="n">macBytes</span><span class="p">,</span> <span class="n">checkBytes</span><span class="p">):</span>
+                    <span class="n">macGood</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">macGood</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+
+
+    <span class="k">def</span> <span class="nf">_decryptThenMAC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recordType</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decrypt data, check padding and MAC&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">isBlockCipher</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span>
+
+            <span class="c1">#</span>
+            <span class="c1"># decrypt the record</span>
+            <span class="c1">#</span>
+            <span class="n">blockLength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">block_size</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="n">blockLength</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSDecryptionFailed</span><span class="p">()</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="c1">#For TLS 1.1, remove explicit IV</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">block_size</span> <span class="p">:</span> <span class="p">]</span>
+
+            <span class="c1">#</span>
+            <span class="c1"># check padding and MAC</span>
+            <span class="c1">#</span>
+            <span class="n">seqnumBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">getSeqNumBytes</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ct_check_cbc_mac_and_pad</span><span class="p">(</span>
+                    <span class="n">data</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span><span class="p">,</span>
+                    <span class="n">seqnumBytes</span><span class="p">,</span>
+                    <span class="n">recordType</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">block_size</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">()</span>
+
+            <span class="c1">#</span>
+            <span class="c1"># strip padding and MAC</span>
+            <span class="c1">#</span>
+
+            <span class="n">endLength</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">digest_size</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="n">endLength</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">_macThenDecrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recordType</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check MAC of data, then decrypt and remove padding</span>
+
+<span class="sd">        :raises TLSBadRecordMAC: when the mac value is invalid</span>
+<span class="sd">        :raises TLSDecryptionFailed: when the data to decrypt has invalid size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span><span class="p">:</span>
+            <span class="n">macLength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">digest_size</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">macLength</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">(</span><span class="s2">&quot;Truncated data&quot;</span><span class="p">)</span>
+
+            <span class="n">checkBytes</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="o">-</span><span class="n">macLength</span><span class="p">:]</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[:</span><span class="o">-</span><span class="n">macLength</span><span class="p">]</span>
+
+            <span class="n">seqnumBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">getSeqNumBytes</span><span class="p">()</span>
+            <span class="n">mac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="n">macBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateMAC</span><span class="p">(</span><span class="n">mac</span><span class="p">,</span> <span class="n">seqnumBytes</span><span class="p">,</span> <span class="n">recordType</span><span class="p">,</span> <span class="n">buf</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ct_compare_digest</span><span class="p">(</span><span class="n">macBytes</span><span class="p">,</span> <span class="n">checkBytes</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">(</span><span class="s2">&quot;MAC mismatch&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="p">:</span>
+            <span class="n">blockLength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">block_size</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">%</span> <span class="n">blockLength</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSDecryptionFailed</span><span class="p">(</span><span class="s2">&quot;data length not multiple of &quot;</span>\
+                                          <span class="s2">&quot;block size&quot;</span><span class="p">)</span>
+
+            <span class="n">buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+
+            <span class="c1"># remove explicit IV</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="n">buf</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="n">blockLength</span><span class="p">:]</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">(</span><span class="s2">&quot;No data left after IV removal&quot;</span><span class="p">)</span>
+
+            <span class="c1"># check padding</span>
+            <span class="n">paddingLength</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">paddingLength</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">(</span><span class="s2">&quot;Invalid padding length&quot;</span><span class="p">)</span>
+
+            <span class="n">paddingGood</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">totalPaddingLength</span> <span class="o">=</span> <span class="n">paddingLength</span><span class="o">+</span><span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">paddingBytes</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="o">-</span><span class="n">totalPaddingLength</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">byte</span> <span class="ow">in</span> <span class="n">paddingBytes</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">byte</span> <span class="o">!=</span> <span class="n">paddingLength</span><span class="p">:</span>
+                        <span class="n">paddingGood</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">paddingGood</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">(</span><span class="s2">&quot;Invalid padding byte values&quot;</span><span class="p">)</span>
+
+            <span class="c1"># remove padding</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[:</span><span class="o">-</span><span class="n">totalPaddingLength</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">buf</span>
+
+    <span class="k">def</span> <span class="nf">_decryptAndUnseal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decrypt AEAD encrypted data&quot;&quot;&quot;</span>
+        <span class="n">seqnumBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">getSeqNumBytes</span><span class="p">()</span>
+        <span class="c1"># AES-GCM has an explicit variable nonce in TLS 1.2</span>
+        <span class="k">if</span> <span class="s2">&quot;aes&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> \
+                <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_tls13_plus</span><span class="p">():</span>
+            <span class="n">explicitNonceLength</span> <span class="o">=</span> <span class="mi">8</span>
+            <span class="k">if</span> <span class="n">explicitNonceLength</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">):</span>
+                <span class="c1">#Publicly invalid.</span>
+                <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">(</span><span class="s2">&quot;Truncated nonce&quot;</span><span class="p">)</span>
+            <span class="n">nonce</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">fixedNonce</span> <span class="o">+</span> <span class="n">buf</span><span class="p">[:</span><span class="n">explicitNonceLength</span><span class="p">]</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># for TLS 1.3 and Chacha20 in TLS 1.2 share nonce generation</span>
+            <span class="c1"># algorithm</span>
+            <span class="n">nonce</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getNonce</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="p">,</span> <span class="n">seqnumBytes</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">tagLength</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">):</span>
+            <span class="c1">#Publicly invalid.</span>
+            <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">(</span><span class="s2">&quot;Truncated tag&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_tls13_plus</span><span class="p">():</span>
+            <span class="n">plaintextLen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">tagLength</span>
+            <span class="n">authData</span> <span class="o">=</span> <span class="n">seqnumBytes</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">([</span><span class="n">header</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                                <span class="n">plaintextLen</span><span class="o">//</span><span class="mi">256</span><span class="p">,</span>
+                                                <span class="n">plaintextLen</span><span class="o">%</span><span class="mi">256</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># TLS 1.3</span>
+            <span class="c1"># enforce the checks for encrypted records</span>
+            <span class="k">if</span> <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSUnexpectedMessage</span><span class="p">(</span>
+                    <span class="s2">&quot;Invalid ContentType for encrypted record: </span><span class="si">{0}</span><span class="s2">&quot;</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ContentType</span><span class="o">.</span><span class="n">toStr</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">type</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">header</span><span class="o">.</span><span class="n">version</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span>
+                    <span class="s2">&quot;Unexpected version in encrypted record: </span><span class="si">{0}</span><span class="s2">&quot;</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">header</span><span class="o">.</span><span class="n">length</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">(</span><span class="s2">&quot;Length mismatch&quot;</span><span class="p">)</span>
+            <span class="n">authData</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+        <span class="n">buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">nonce</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">authData</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">buf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">(</span><span class="s2">&quot;Invalid tag, decryption failure&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">buf</span>
+
+    <span class="k">def</span> <span class="nf">_decryptSSL2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decrypt SSL2 encrypted data&quot;&quot;&quot;</span>
+        <span class="c1"># sequence numbers are incremented for plaintext records too</span>
+        <span class="n">seqnumBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">getSeqNumBytes</span><span class="p">()</span>
+
+        <span class="c1">#</span>
+        <span class="c1"># decrypt</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">isBlockCipher</span><span class="p">:</span>
+                <span class="n">blockLength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">block_size</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="n">blockLength</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">TLSDecryptionFailed</span><span class="p">()</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1">#</span>
+        <span class="c1"># strip and check MAC</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span><span class="p">:</span>
+            <span class="n">macBytes</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="mi">16</span><span class="p">]</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">16</span><span class="p">:]</span>
+
+            <span class="n">mac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="n">mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">seqnumBytes</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]))</span>
+            <span class="n">calcMac</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">mac</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">macBytes</span> <span class="o">!=</span> <span class="n">calcMac</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">()</span>
+
+        <span class="c1">#</span>
+        <span class="c1"># strip padding</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="n">padding</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="n">padding</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_tls13_de_pad</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove the padding and extract content type from TLSInnerPlaintext.</span>
+
+<span class="sd">        :param bytearray data: decrypted plaintext TLS 1.3 record payload</span>
+<span class="sd">            (the serialised TLSInnerPlaintext data structure)</span>
+
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># the padding is at the end and the first non-zero byte is the</span>
+        <span class="c1"># padding</span>
+        <span class="c1"># could be reversed(enumerate(data)), if that worked at all</span>
+        <span class="c1"># could be reversed(list(enumerate(data))), if that didn&#39;t double</span>
+        <span class="c1"># memory usage</span>
+        <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))),</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSUnexpectedMessage</span><span class="p">(</span><span class="s2">&quot;Malformed record layer inner plaintext&quot;</span>
+                                       <span class="s2">&quot; - content type missing&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span><span class="p">[:</span><span class="n">pos</span><span class="p">],</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="RecordLayer.recvRecord"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.recvRecord">[docs]</a>    <span class="k">def</span> <span class="nf">recvRecord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read, decrypt and check integrity of a single record</span>
+
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        :returns: message header and decrypted message payload</span>
+<span class="sd">        :raises TLSDecryptionFailed: when decryption of data failed</span>
+<span class="sd">        :raises TLSBadRecordMAC: when record has bad MAC or padding</span>
+<span class="sd">        :raises socket.error: when reading from socket was unsuccessful</span>
+<span class="sd">        :raises TLSRecordOverflow: when the received record was longer than</span>
+<span class="sd">            allowed by negotiated version of TLS</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recordSocket</span><span class="o">.</span><span class="n">recv</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+                <span class="k">else</span><span class="p">:</span> <span class="k">break</span>
+            <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+            <span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">=</span> <span class="n">result</span>
+            <span class="c1"># as trying decryption increments sequence number, we need to</span>
+            <span class="c1"># keep the old one (we do copy of the whole object in case</span>
+            <span class="c1"># some cipher has an internal state itself)</span>
+            <span class="n">read_state_copy</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">early_data_ok</span><span class="p">:</span>
+                <span class="c1"># do the copy only when needed</span>
+                <span class="n">read_state_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">RecordHeader2</span><span class="p">):</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decryptSSL2</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="o">.</span><span class="n">padding</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handshake_finished</span><span class="p">:</span>
+                        <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span>
+                <span class="c1"># in TLS 1.3, the other party may send an unprotected CCS</span>
+                <span class="c1"># message at any point in connection</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_tls13_plus</span><span class="p">()</span> <span class="ow">and</span> \
+                        <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">change_cipher_spec</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="c1"># when we&#39;re in the early handshake, then unencrypted alerts</span>
+                <span class="c1"># are fine too</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_tls13_plus</span><span class="p">()</span> <span class="ow">and</span> \
+                        <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">alert</span> <span class="ow">and</span> \
+                        <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">and</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="ow">and</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span> <span class="ow">and</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="ow">and</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span> <span class="ow">and</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">isAEAD</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decryptAndUnseal</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encryptThenMAC</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macThenDecrypt</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="ow">and</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span> <span class="ow">and</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span><span class="o">.</span><span class="n">isBlockCipher</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decryptThenMAC</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decryptStreamThenMAC</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                <span class="c1"># if we don&#39;t have an encryption context established</span>
+                <span class="c1"># and early data is ok, that means we have received</span>
+                <span class="c1"># encrypted record in case the type of record is</span>
+                <span class="c1"># application_data (from TLS 1.3)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span> \
+                        <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">macContext</span> \
+                        <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">early_data_ok</span> <span class="ow">and</span> \
+                        <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">TLSBadRecordMAC</span><span class="p">(</span><span class="s2">&quot;early data received&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">TLSBadRecordMAC</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">early_data_ok</span> <span class="ow">and</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_early_data_processed</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                        <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_early_data</span><span class="p">):</span>
+                    <span class="c1"># ignore exception, retry reading</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_early_data_processed</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                    <span class="c1"># reload state for decryption</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="o">=</span> <span class="n">read_state_copy</span>
+                    <span class="k">continue</span>
+                <span class="k">raise</span>
+            <span class="c1"># as soon as we&#39;re able to decrypt messages again, we must</span>
+            <span class="c1"># start checking the MACs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">early_data_ok</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="c1"># TLS 1.3 encrypts the type, CCS and Alerts are not encrypted</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_tls13_plus</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="ow">and</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">encContext</span> <span class="ow">and</span>\
+                    <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span><span class="p">:</span>
+                <span class="c1"># check if plaintext is not too big, RFC 8446, section 5.4</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_record_limit</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">TLSRecordOverflow</span><span class="p">()</span>
+                <span class="n">data</span><span class="p">,</span> <span class="n">contentType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tls13_de_pad</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">RecordHeader3</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">contentType</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+            <span class="c1"># RFC 5246, section 6.2.1</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_record_limit</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSRecordOverflow</span><span class="p">()</span>
+
+            <span class="k">yield</span> <span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">Parser</span><span class="p">(</span><span class="n">data</span><span class="p">))</span></div>
+
+    <span class="c1">#</span>
+    <span class="c1"># cryptography state methods</span>
+    <span class="c1">#</span>
+
+<div class="viewcode-block" id="RecordLayer.changeWriteState"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.changeWriteState">[docs]</a>    <span class="k">def</span> <span class="nf">changeWriteState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change the cipher state to the pending one for write operations.</span>
+
+<span class="sd">        This should be done only once after a call to</span>
+<span class="sd">        :py:meth:`calcPendingStates` was</span>
+<span class="sd">        performed and directly after sending a :py:class:`ChangeCipherSpec`</span>
+<span class="sd">        message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+            <span class="c1"># in SSLv2 sequence numbers carry over from plaintext to encrypted</span>
+            <span class="c1"># context</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span><span class="o">.</span><span class="n">seqnum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RecordLayer.changeReadState"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.changeReadState">[docs]</a>    <span class="k">def</span> <span class="nf">changeReadState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change the cipher state to the pending one for read operations.</span>
+
+<span class="sd">        This should be done only once after a call to</span>
+<span class="sd">        :py:meth:`calcPendingStates` was</span>
+<span class="sd">        performed and directly after receiving a :py:class:`ChangeCipherSpec`</span>
+<span class="sd">        message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+            <span class="c1"># in SSLv2 sequence numbers carry over from plaintext to encrypted</span>
+            <span class="c1"># context</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span><span class="o">.</span><span class="n">seqnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span><span class="o">.</span><span class="n">seqnum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_getCipherSettings</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the settings for cipher suite used&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">aes256GcmSuites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">32</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">4</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createAESGCM</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">aes128GcmSuites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">16</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">4</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createAESGCM</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">aes256Ccm_8Suites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">32</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">4</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createAESCCM_8</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">aes256CcmSuites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">32</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">4</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createAESCCM</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">aes128Ccm_8Suites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">16</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">4</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createAESCCM_8</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">aes128CcmSuites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">16</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">4</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createAESCCM</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">chacha20Suites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">32</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">12</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createCHACHA20</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">chacha20draft00Suites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">32</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">4</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createCHACHA20</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">aes128Suites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">16</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">16</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createAES</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">aes256Suites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">32</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">16</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createAES</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">rc4Suites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">16</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createRC4</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">tripleDESSuites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">24</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">8</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="n">createTripleDES</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">nullSuites</span><span class="p">:</span>
+            <span class="n">keyLength</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">ivLength</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">createCipherFunc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">keyLength</span><span class="p">,</span> <span class="n">ivLength</span><span class="p">,</span> <span class="n">createCipherFunc</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_getMacSettings</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get settings for HMAC used&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">aeadSuites</span><span class="p">:</span>
+            <span class="n">macLength</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">digestmod</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">shaSuites</span><span class="p">:</span>
+            <span class="n">macLength</span> <span class="o">=</span> <span class="mi">20</span>
+            <span class="n">digestmod</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">sha256Suites</span><span class="p">:</span>
+            <span class="n">macLength</span> <span class="o">=</span> <span class="mi">32</span>
+            <span class="n">digestmod</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">sha384Suites</span><span class="p">:</span>
+            <span class="n">macLength</span> <span class="o">=</span> <span class="mi">48</span>
+            <span class="n">digestmod</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">md5Suites</span><span class="p">:</span>
+            <span class="n">macLength</span> <span class="o">=</span> <span class="mi">16</span>
+            <span class="n">digestmod</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">macLength</span><span class="p">,</span> <span class="n">digestmod</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_getHMACMethod</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the HMAC method&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">createMACFunc</span> <span class="o">=</span> <span class="n">createMAC_SSL</span>
+        <span class="k">elif</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)):</span>
+            <span class="n">createMACFunc</span> <span class="o">=</span> <span class="n">createHMAC</span>
+
+        <span class="k">return</span> <span class="n">createMACFunc</span>
+
+<div class="viewcode-block" id="RecordLayer.calcSSL2PendingStates"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.calcSSL2PendingStates">[docs]</a>    <span class="k">def</span> <span class="nf">calcSSL2PendingStates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">masterSecret</span><span class="p">,</span> <span class="n">clientRandom</span><span class="p">,</span>
+                              <span class="n">serverRandom</span><span class="p">,</span> <span class="n">implementations</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the keys for encryption and decryption in SSLv2</span>
+
+<span class="sd">        While we could reuse calcPendingStates(), we need to provide the</span>
+<span class="sd">        key-arg data for the server that needs to be passed up to handshake</span>
+<span class="sd">        protocol.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">ssl2_128Key</span><span class="p">:</span>
+            <span class="n">key_length</span> <span class="o">=</span> <span class="mi">16</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">ssl2_192Key</span><span class="p">:</span>
+            <span class="n">key_length</span> <span class="o">=</span> <span class="mi">24</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">ssl2_64Key</span><span class="p">:</span>
+            <span class="n">key_length</span> <span class="o">=</span> <span class="mi">8</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown cipher specified&quot;</span><span class="p">)</span>
+
+        <span class="n">key_material</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">key_length</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">md5_output_size</span> <span class="o">=</span> <span class="mi">16</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">key_length</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">md5_output_size</span><span class="p">)):</span>
+            <span class="n">key_material</span><span class="p">[</span><span class="n">pos</span><span class="p">:</span><span class="n">pos</span><span class="o">+</span><span class="n">md5_output_size</span><span class="p">]</span> <span class="o">=</span> <span class="n">MD5</span><span class="p">(</span>\
+                    <span class="n">masterSecret</span> <span class="o">+</span>
+                    <span class="nb">bytearray</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="o">+</span>
+                    <span class="n">clientRandom</span> <span class="o">+</span> <span class="n">serverRandom</span><span class="p">)</span>
+
+        <span class="n">serverWriteKey</span> <span class="o">=</span> <span class="n">key_material</span><span class="p">[:</span><span class="n">key_length</span><span class="p">]</span>
+        <span class="n">clientWriteKey</span> <span class="o">=</span> <span class="n">key_material</span><span class="p">[</span><span class="n">key_length</span><span class="p">:]</span>
+
+        <span class="c1"># specification draft says that DES key should not use the</span>
+        <span class="c1"># incrementing label but all implementations use it anyway</span>
+        <span class="c1">#elif cipherSuite in CipherSuite.ssl2_64Key:</span>
+        <span class="c1">#    key_material = MD5(masterSecret + clientRandom + serverRandom)</span>
+        <span class="c1">#    serverWriteKey = key_material[0:8]</span>
+        <span class="c1">#    clientWriteKey = key_material[8:16]</span>
+
+        <span class="c1"># RC4 cannot use initialisation vector</span>
+        <span class="k">if</span> <span class="n">cipherSuite</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">ssl2rc4</span><span class="p">:</span>
+            <span class="n">iv</span> <span class="o">=</span> <span class="n">getRandomBytes</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">iv</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">clientPendingState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="n">serverPendingState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+
+        <span class="c1"># MAC</span>
+        <span class="n">clientPendingState</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">()</span>
+        <span class="n">clientPendingState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">clientWriteKey</span><span class="p">))</span>
+        <span class="n">serverPendingState</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">()</span>
+        <span class="n">serverPendingState</span><span class="o">.</span><span class="n">macContext</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">serverWriteKey</span><span class="p">))</span>
+
+        <span class="c1"># ciphers</span>
+        <span class="k">if</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">ssl2rc4</span><span class="p">:</span>
+            <span class="n">cipherMethod</span> <span class="o">=</span> <span class="n">createRC4</span>
+        <span class="k">elif</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">ssl2_3des</span><span class="p">:</span>
+            <span class="n">cipherMethod</span> <span class="o">=</span> <span class="n">createTripleDES</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Unknown cipher&quot;</span><span class="p">)</span>
+
+        <span class="n">clientPendingState</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> <span class="n">cipherMethod</span><span class="p">(</span><span class="n">clientWriteKey</span><span class="p">,</span> <span class="n">iv</span><span class="p">,</span>
+                                                     <span class="n">implementations</span><span class="p">)</span>
+        <span class="n">serverPendingState</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> <span class="n">cipherMethod</span><span class="p">(</span><span class="n">serverWriteKey</span><span class="p">,</span> <span class="n">iv</span><span class="p">,</span>
+                                                     <span class="n">implementations</span><span class="p">)</span>
+
+        <span class="c1"># Assign new connection states to pending states</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span> <span class="o">=</span> <span class="n">clientPendingState</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span> <span class="o">=</span> <span class="n">serverPendingState</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span> <span class="o">=</span> <span class="n">serverPendingState</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span> <span class="o">=</span> <span class="n">clientPendingState</span>
+
+        <span class="k">return</span> <span class="n">iv</span></div>
+
+<div class="viewcode-block" id="RecordLayer.calcPendingStates"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.calcPendingStates">[docs]</a>    <span class="k">def</span> <span class="nf">calcPendingStates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">masterSecret</span><span class="p">,</span> <span class="n">clientRandom</span><span class="p">,</span>
+                          <span class="n">serverRandom</span><span class="p">,</span> <span class="n">implementations</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create pending states for encryption and decryption.&quot;&quot;&quot;</span>
+        <span class="n">keyLength</span><span class="p">,</span> <span class="n">ivLength</span><span class="p">,</span> <span class="n">createCipherFunc</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_getCipherSettings</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">)</span>
+
+        <span class="n">macLength</span><span class="p">,</span> <span class="n">digestmod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getMacSettings</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">digestmod</span><span class="p">:</span>
+            <span class="n">createMACFunc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">createMACFunc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getHMACMethod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+
+        <span class="n">outputLength</span> <span class="o">=</span> <span class="p">(</span><span class="n">macLength</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">keyLength</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">ivLength</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1">#Calculate Keying Material from Master Secret</span>
+        <span class="n">keyBlock</span> <span class="o">=</span> <span class="n">calc_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">masterSecret</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span>
+                            <span class="sa">b</span><span class="s2">&quot;key expansion&quot;</span><span class="p">,</span> <span class="n">client_random</span><span class="o">=</span><span class="n">clientRandom</span><span class="p">,</span>
+                            <span class="n">server_random</span><span class="o">=</span><span class="n">serverRandom</span><span class="p">,</span>
+                            <span class="n">output_length</span><span class="o">=</span><span class="n">outputLength</span><span class="p">)</span>
+
+        <span class="c1">#Slice up Keying Material</span>
+        <span class="n">clientPendingState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="n">serverPendingState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span><span class="n">keyBlock</span><span class="p">)</span>
+        <span class="n">clientMACBlock</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">getFixBytes</span><span class="p">(</span><span class="n">macLength</span><span class="p">)</span>
+        <span class="n">serverMACBlock</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">getFixBytes</span><span class="p">(</span><span class="n">macLength</span><span class="p">)</span>
+        <span class="n">clientKeyBlock</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">getFixBytes</span><span class="p">(</span><span class="n">keyLength</span><span class="p">)</span>
+        <span class="n">serverKeyBlock</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">getFixBytes</span><span class="p">(</span><span class="n">keyLength</span><span class="p">)</span>
+        <span class="n">clientIVBlock</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">getFixBytes</span><span class="p">(</span><span class="n">ivLength</span><span class="p">)</span>
+        <span class="n">serverIVBlock</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">getFixBytes</span><span class="p">(</span><span class="n">ivLength</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">digestmod</span><span class="p">:</span>
+            <span class="c1"># Legacy cipher</span>
+            <span class="n">clientPendingState</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="n">createMACFunc</span><span class="p">(</span>
+                <span class="n">compatHMAC</span><span class="p">(</span><span class="n">clientMACBlock</span><span class="p">),</span> <span class="n">digestmod</span><span class="o">=</span><span class="n">digestmod</span><span class="p">)</span>
+            <span class="n">serverPendingState</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="n">createMACFunc</span><span class="p">(</span>
+                <span class="n">compatHMAC</span><span class="p">(</span><span class="n">serverMACBlock</span><span class="p">),</span> <span class="n">digestmod</span><span class="o">=</span><span class="n">digestmod</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">createCipherFunc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">clientPendingState</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> \
+                                            <span class="n">createCipherFunc</span><span class="p">(</span><span class="n">clientKeyBlock</span><span class="p">,</span>
+                                                             <span class="n">clientIVBlock</span><span class="p">,</span>
+                                                             <span class="n">implementations</span><span class="p">)</span>
+                <span class="n">serverPendingState</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> \
+                                            <span class="n">createCipherFunc</span><span class="p">(</span><span class="n">serverKeyBlock</span><span class="p">,</span>
+                                                             <span class="n">serverIVBlock</span><span class="p">,</span>
+                                                             <span class="n">implementations</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># AEAD</span>
+            <span class="n">clientPendingState</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">serverPendingState</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">clientPendingState</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> <span class="n">createCipherFunc</span><span class="p">(</span><span class="n">clientKeyBlock</span><span class="p">,</span>
+                                                             <span class="n">implementations</span><span class="p">)</span>
+            <span class="n">serverPendingState</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> <span class="n">createCipherFunc</span><span class="p">(</span><span class="n">serverKeyBlock</span><span class="p">,</span>
+                                                             <span class="n">implementations</span><span class="p">)</span>
+            <span class="n">clientPendingState</span><span class="o">.</span><span class="n">fixedNonce</span> <span class="o">=</span> <span class="n">clientIVBlock</span>
+            <span class="n">serverPendingState</span><span class="o">.</span><span class="n">fixedNonce</span> <span class="o">=</span> <span class="n">serverIVBlock</span>
+
+        <span class="c1">#Assign new connection states to pending states</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">:</span>
+            <span class="n">clientPendingState</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span><span class="o">.</span><span class="n">encryptThenMAC</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span> <span class="o">=</span> <span class="n">clientPendingState</span>
+            <span class="n">serverPendingState</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span><span class="o">.</span><span class="n">encryptThenMAC</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span> <span class="o">=</span> <span class="n">serverPendingState</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">serverPendingState</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span><span class="o">.</span><span class="n">encryptThenMAC</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span> <span class="o">=</span> <span class="n">serverPendingState</span>
+            <span class="n">clientPendingState</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span><span class="o">.</span><span class="n">encryptThenMAC</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span> <span class="o">=</span> <span class="n">clientPendingState</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ivLength</span><span class="p">:</span>
+            <span class="c1">#Choose fixedIVBlock for TLS 1.1 (this is encrypted with the CBC</span>
+            <span class="c1">#residue to create the IV for each sent block)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fixedIVBlock</span> <span class="o">=</span> <span class="n">getRandomBytes</span><span class="p">(</span><span class="n">ivLength</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RecordLayer.calcTLS1_3PendingState"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.calcTLS1_3PendingState">[docs]</a>    <span class="k">def</span> <span class="nf">calcTLS1_3PendingState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">cl_traffic_secret</span><span class="p">,</span>
+                               <span class="n">sr_traffic_secret</span><span class="p">,</span>
+                               <span class="n">implementations</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create pending state for encryption in TLS 1.3.</span>
+
+<span class="sd">        :param int cipherSuite: cipher suite that will be used for encrypting</span>
+<span class="sd">            and decrypting data</span>
+<span class="sd">        :param bytearray cl_traffic_secret: Client Traffic Secret, either</span>
+<span class="sd">            handshake secret or application data secret</span>
+<span class="sd">        :param bytearray sr_traffic_secret: Server Traffic Secret, either</span>
+<span class="sd">            handshake secret or application data secret</span>
+<span class="sd">        :param list implementations: list of names of implementations that</span>
+<span class="sd">            are permitted for the connection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prf_name</span> <span class="o">=</span> <span class="s1">&#39;sha384&#39;</span> <span class="k">if</span> <span class="n">cipherSuite</span> \
+                   <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">sha384PrfSuites</span> \
+                   <span class="k">else</span> <span class="s1">&#39;sha256&#39;</span>
+
+        <span class="n">key_length</span><span class="p">,</span> <span class="n">iv_length</span><span class="p">,</span> <span class="n">cipher_func</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">_getCipherSettings</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">)</span>
+        <span class="n">iv_length</span> <span class="o">=</span> <span class="mi">12</span>
+
+        <span class="n">clientPendingState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="n">serverPendingState</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+
+        <span class="n">clientPendingState</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">clientPendingState</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> \
+            <span class="n">cipher_func</span><span class="p">(</span><span class="n">HKDF_expand_label</span><span class="p">(</span><span class="n">cl_traffic_secret</span><span class="p">,</span>
+                                          <span class="sa">b</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                          <span class="n">key_length</span><span class="p">,</span>
+                                          <span class="n">prf_name</span><span class="p">),</span>
+                        <span class="n">implementations</span><span class="p">)</span>
+        <span class="n">clientPendingState</span><span class="o">.</span><span class="n">fixedNonce</span> <span class="o">=</span> <span class="n">HKDF_expand_label</span><span class="p">(</span><span class="n">cl_traffic_secret</span><span class="p">,</span>
+                                                          <span class="sa">b</span><span class="s2">&quot;iv&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                                          <span class="n">iv_length</span><span class="p">,</span>
+                                                          <span class="n">prf_name</span><span class="p">)</span>
+
+        <span class="n">serverPendingState</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">serverPendingState</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> \
+            <span class="n">cipher_func</span><span class="p">(</span><span class="n">HKDF_expand_label</span><span class="p">(</span><span class="n">sr_traffic_secret</span><span class="p">,</span>
+                                          <span class="sa">b</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                          <span class="n">key_length</span><span class="p">,</span>
+                                          <span class="n">prf_name</span><span class="p">),</span>
+                        <span class="n">implementations</span><span class="p">)</span>
+        <span class="n">serverPendingState</span><span class="o">.</span><span class="n">fixedNonce</span> <span class="o">=</span> <span class="n">HKDF_expand_label</span><span class="p">(</span><span class="n">sr_traffic_secret</span><span class="p">,</span>
+                                                          <span class="sa">b</span><span class="s2">&quot;iv&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                                          <span class="n">iv_length</span><span class="p">,</span>
+                                                          <span class="n">prf_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span> <span class="o">=</span> <span class="n">clientPendingState</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span> <span class="o">=</span> <span class="n">serverPendingState</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingWriteState</span> <span class="o">=</span> <span class="n">serverPendingState</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pendingReadState</span> <span class="o">=</span> <span class="n">clientPendingState</span></div>
+
+    <span class="k">def</span> <span class="nf">_calcTLS1_3KeyUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">app_secret</span><span class="p">):</span>
+        <span class="n">prf_name</span><span class="p">,</span> <span class="n">prf_length</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;sha384&#39;</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span> <span class="k">if</span> <span class="n">cipherSuite</span> \
+                                <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">sha384PrfSuites</span> \
+                                <span class="k">else</span> <span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+        <span class="n">key_length</span><span class="p">,</span> <span class="n">iv_length</span><span class="p">,</span> <span class="n">cipher_func</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">_getCipherSettings</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">)</span>
+        <span class="n">iv_length</span> <span class="o">=</span> <span class="mi">12</span>
+
+        <span class="n">new_app_secret</span> <span class="o">=</span> <span class="n">HKDF_expand_label</span><span class="p">(</span><span class="n">app_secret</span><span class="p">,</span>
+                                           <span class="sa">b</span><span class="s2">&quot;traffic upd&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                           <span class="n">prf_length</span><span class="p">,</span>
+                                           <span class="n">prf_name</span><span class="p">)</span>
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">ConnectionState</span><span class="p">()</span>
+        <span class="n">new_state</span><span class="o">.</span><span class="n">macContext</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">new_state</span><span class="o">.</span><span class="n">encContext</span> <span class="o">=</span> \
+            <span class="n">cipher_func</span><span class="p">(</span><span class="n">HKDF_expand_label</span><span class="p">(</span><span class="n">new_app_secret</span><span class="p">,</span>
+                                          <span class="sa">b</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                          <span class="n">key_length</span><span class="p">,</span>
+                                          <span class="n">prf_name</span><span class="p">),</span>
+                        <span class="kc">None</span><span class="p">)</span>
+        <span class="n">new_state</span><span class="o">.</span><span class="n">fixedNonce</span> <span class="o">=</span> <span class="n">HKDF_expand_label</span><span class="p">(</span><span class="n">new_app_secret</span><span class="p">,</span>
+                                                 <span class="sa">b</span><span class="s2">&quot;iv&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                                 <span class="n">iv_length</span><span class="p">,</span>
+                                                 <span class="n">prf_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_app_secret</span><span class="p">,</span> <span class="n">new_state</span>
+
+<div class="viewcode-block" id="RecordLayer.calcTLS1_3KeyUpdate_sender"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.calcTLS1_3KeyUpdate_sender">[docs]</a>    <span class="k">def</span> <span class="nf">calcTLS1_3KeyUpdate_sender</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">cl_app_secret</span><span class="p">,</span>
+                                   <span class="n">sr_app_secret</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">:</span>
+            <span class="n">new_sr_app_secret</span><span class="p">,</span> <span class="n">server_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcTLS1_3KeyUpdate</span><span class="p">(</span>
+                <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">sr_app_secret</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="o">=</span> <span class="n">server_state</span>
+            <span class="k">return</span> <span class="n">cl_app_secret</span><span class="p">,</span> <span class="n">new_sr_app_secret</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_cl_app_secret</span><span class="p">,</span> <span class="n">client_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcTLS1_3KeyUpdate</span><span class="p">(</span>
+                <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">cl_app_secret</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_readState</span> <span class="o">=</span> <span class="n">client_state</span>
+            <span class="k">return</span> <span class="n">new_cl_app_secret</span><span class="p">,</span> <span class="n">sr_app_secret</span></div>
+
+<div class="viewcode-block" id="RecordLayer.calcTLS1_3KeyUpdate_reciever"><a class="viewcode-back" href="../../tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer.calcTLS1_3KeyUpdate_reciever">[docs]</a>    <span class="k">def</span> <span class="nf">calcTLS1_3KeyUpdate_reciever</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">cl_app_secret</span><span class="p">,</span>
+                                     <span class="n">sr_app_secret</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">:</span>
+            <span class="n">new_cl_app_secret</span><span class="p">,</span> <span class="n">client_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcTLS1_3KeyUpdate</span><span class="p">(</span>
+                <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">cl_app_secret</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span> <span class="o">=</span> <span class="n">client_state</span>
+            <span class="k">return</span> <span class="n">new_cl_app_secret</span><span class="p">,</span> <span class="n">sr_app_secret</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_sr_app_secret</span><span class="p">,</span> <span class="n">server_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calcTLS1_3KeyUpdate</span><span class="p">(</span>
+                <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">sr_app_secret</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_writeState</span> <span class="o">=</span> <span class="n">server_state</span>
+            <span class="k">return</span> <span class="n">cl_app_secret</span><span class="p">,</span> <span class="n">new_sr_app_secret</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.integration.tlssocketservermixin &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.integration.tlssocketservermixin</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.integration.tlssocketservermixin</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Trevor Perrin</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;TLS Lite + SocketServer.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">tlslite.tlsconnection</span> <span class="kn">import</span> <span class="n">TLSConnection</span>
+
+<div class="viewcode-block" id="TLSSocketServerMixIn"><a class="viewcode-back" href="../../../tlslite.integration.tlssocketservermixin.html#tlslite.integration.tlssocketservermixin.TLSSocketServerMixIn">[docs]</a><span class="k">class</span> <span class="nc">TLSSocketServerMixIn</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class can be mixed in with any :py:class:`SocketServer.TCPServer` to</span>
+<span class="sd">    add TLS support.</span>
+
+<span class="sd">    To use this class, define a new class that inherits from it and</span>
+<span class="sd">    some :py:class:`SocketServer.TCPServer` (with the mix-in first). Then</span>
+<span class="sd">    implement the :py:meth:`handshake` method, doing some sort of server</span>
+<span class="sd">    handshake on the connection argument.  If the handshake method</span>
+<span class="sd">    returns True, the RequestHandler will be triggered.  Below is a</span>
+<span class="sd">    complete example of a threaded HTTPS server::</span>
+
+<span class="sd">        from SocketServer import *</span>
+<span class="sd">        from BaseHTTPServer import *</span>
+<span class="sd">        from SimpleHTTPServer import *</span>
+<span class="sd">        from tlslite import *</span>
+
+<span class="sd">        s = open(&quot;./serverX509Cert.pem&quot;).read()</span>
+<span class="sd">        x509 = X509()</span>
+<span class="sd">        x509.parse(s)</span>
+<span class="sd">        cert_chain = X509CertChain([x509])</span>
+
+<span class="sd">        s = open(&quot;./serverX509Key.pem&quot;).read()</span>
+<span class="sd">        privateKey = parsePEMKey(s, private=True)</span>
+
+<span class="sd">        sessionCache = SessionCache()</span>
+
+<span class="sd">        class MyHTTPServer(ThreadingMixIn, TLSSocketServerMixIn,</span>
+<span class="sd">                           HTTPServer):</span>
+<span class="sd">          def handshake(self, tlsConnection):</span>
+<span class="sd">              try:</span>
+<span class="sd">                  tlsConnection.handshakeServer(certChain=cert_chain,</span>
+<span class="sd">                                                privateKey=privateKey,</span>
+<span class="sd">                                                sessionCache=sessionCache)</span>
+<span class="sd">                  tlsConnection.ignoreAbruptClose = True</span>
+<span class="sd">                  return True</span>
+<span class="sd">              except TLSError, error:</span>
+<span class="sd">                  print &quot;Handshake failure:&quot;, str(error)</span>
+<span class="sd">                  return False</span>
+
+<span class="sd">        httpd = MyHTTPServer((&#39;localhost&#39;, 443), SimpleHTTPRequestHandler)</span>
+<span class="sd">        httpd.serve_forever()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="TLSSocketServerMixIn.finish_request"><a class="viewcode-back" href="../../../tlslite.integration.tlssocketservermixin.html#tlslite.integration.tlssocketservermixin.TLSSocketServerMixIn.finish_request">[docs]</a>    <span class="k">def</span> <span class="nf">finish_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">client_address</span><span class="p">):</span>
+        <span class="n">tlsConnection</span> <span class="o">=</span> <span class="n">TLSConnection</span><span class="p">(</span><span class="n">sock</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handshake</span><span class="p">(</span><span class="n">tlsConnection</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">RequestHandlerClass</span><span class="p">(</span><span class="n">tlsConnection</span><span class="p">,</span> <span class="n">client_address</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">tlsConnection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+    <span class="c1">#Implement this method to do some form of handshaking.  Return True</span>
+    <span class="c1">#if the handshake finishes properly and the request is authorized.</span>
+<div class="viewcode-block" id="TLSSocketServerMixIn.handshake"><a class="viewcode-back" href="../../../tlslite.integration.tlssocketservermixin.html#tlslite.integration.tlssocketservermixin.TLSSocketServerMixIn.handshake">[docs]</a>    <span class="k">def</span> <span class="nf">handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tlsConnection</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

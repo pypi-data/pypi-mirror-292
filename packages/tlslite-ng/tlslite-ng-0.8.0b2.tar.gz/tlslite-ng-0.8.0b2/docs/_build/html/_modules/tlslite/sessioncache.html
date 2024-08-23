@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.sessioncache &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.sessioncache</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.sessioncache</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Authors: </span>
+<span class="c1">#   Trevor Perrin</span>
+<span class="c1">#   Martin von Loewis - python 3 port</span>
+<span class="c1">#   Mirko Dziadzka - bugfix</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Class for caching TLS sessions.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<div class="viewcode-block" id="SessionCache"><a class="viewcode-back" href="../../tlslite.sessioncache.html#tlslite.sessioncache.SessionCache">[docs]</a><span class="k">class</span> <span class="nc">SessionCache</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class is used by the server to cache TLS sessions.</span>
+
+<span class="sd">    Caching sessions allows the client to use TLS session resumption</span>
+<span class="sd">    and avoid the expense of a full handshake.  To use this class,</span>
+<span class="sd">    simply pass a SessionCache instance into the server handshake</span>
+<span class="sd">    function.</span>
+
+<span class="sd">    This class is thread-safe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#References to these instances</span>
+    <span class="c1">#are also held by the caller, who may change the &#39;resumable&#39;</span>
+    <span class="c1">#flag, so the SessionCache must return the same instances</span>
+    <span class="c1">#it was passed in.</span>
+
+<div class="viewcode-block" id="SessionCache.__init__"><a class="viewcode-back" href="../../tlslite.sessioncache.html#tlslite.sessioncache.SessionCache.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxEntries</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">maxAge</span><span class="o">=</span><span class="mi">14400</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new SessionCache.</span>
+
+<span class="sd">        :type maxEntries: int</span>
+<span class="sd">        :param maxEntries: The maximum size of the cache.  When this</span>
+<span class="sd">            limit is reached, the oldest sessions will be deleted as</span>
+<span class="sd">            necessary to make room for new ones.  The default is 10000.</span>
+
+<span class="sd">        :type maxAge: int</span>
+<span class="sd">        :param maxAge:  The number of seconds before a session expires</span>
+<span class="sd">            from the cache.  The default is 14400 (i.e. 4 hours).&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
+        <span class="c1"># Maps sessionIDs to sessions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entriesDict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1">#Circular list of (sessionID, timestamp) pairs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entriesList</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">maxEntries</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">firstIndex</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastIndex</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxAge</span> <span class="o">=</span> <span class="n">maxAge</span></div>
+
+<div class="viewcode-block" id="SessionCache.__getitem__"><a class="viewcode-back" href="../../tlslite.sessioncache.html#tlslite.sessioncache.SessionCache.__getitem__">[docs]</a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sessionID</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_purge</span><span class="p">()</span> <span class="c1">#Delete old items, so we&#39;re assured of a new one</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">entriesDict</span><span class="p">[</span><span class="nb">bytes</span><span class="p">(</span><span class="n">sessionID</span><span class="p">)]</span>
+
+            <span class="c1">#When we add sessions they&#39;re resumable, but it&#39;s possible</span>
+            <span class="c1">#for the session to be invalidated later on (if a fatal alert</span>
+            <span class="c1">#is returned), so we have to check for resumability before</span>
+            <span class="c1">#returning the session.</span>
+
+            <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">valid</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">session</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SessionCache.__setitem__"><a class="viewcode-back" href="../../tlslite.sessioncache.html#tlslite.sessioncache.SessionCache.__setitem__">[docs]</a>    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sessionID</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1">#Add the new element</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entriesDict</span><span class="p">[</span><span class="nb">bytes</span><span class="p">(</span><span class="n">sessionID</span><span class="p">)]</span> <span class="o">=</span> <span class="n">session</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entriesList</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lastIndex</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">sessionID</span><span class="p">),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lastIndex</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastIndex</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entriesList</span><span class="p">)</span>
+
+            <span class="c1">#If the cache is full, we delete the oldest element to make an</span>
+            <span class="c1">#empty space</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastIndex</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">firstIndex</span><span class="p">:</span>
+                <span class="k">del</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entriesDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">entriesList</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">firstIndex</span><span class="p">][</span><span class="mi">0</span><span class="p">]])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">firstIndex</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">firstIndex</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entriesList</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+
+    <span class="c1">#Delete expired items</span>
+    <span class="k">def</span> <span class="nf">_purge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">currentTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="c1">#Search through the circular list, deleting expired elements until</span>
+        <span class="c1">#we reach a non-expired element.  Since elements in list are</span>
+        <span class="c1">#ordered in time, we can break once we reach the first non-expired</span>
+        <span class="c1">#element</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">firstIndex</span>
+        <span class="k">while</span> <span class="n">index</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastIndex</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">currentTime</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">entriesList</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxAge</span><span class="p">:</span>
+                <span class="k">del</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entriesDict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">entriesList</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]])</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entriesList</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">firstIndex</span> <span class="o">=</span> <span class="n">index</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

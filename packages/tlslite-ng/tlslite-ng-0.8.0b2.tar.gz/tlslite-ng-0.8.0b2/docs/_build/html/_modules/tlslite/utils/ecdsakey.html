@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.utils.ecdsakey &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.utils.ecdsakey</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.utils.ecdsakey</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Stanislav Zidek</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Abstract class for ECDSA.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.cryptomath</span> <span class="kn">import</span> <span class="n">secureHash</span>
+
+
+<div class="viewcode-block" id="ECDSAKey"><a class="viewcode-back" href="../../../tlslite.utils.ecdsakey.html#tlslite.utils.ecdsakey.ECDSAKey">[docs]</a><span class="k">class</span> <span class="nc">ECDSAKey</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is an abstract base class for ECDSA keys.</span>
+
+<span class="sd">    Particular implementations of ECDSA keys, such as</span>
+<span class="sd">    :py:class:`~.python_ecdsakey.Python_ECDSAKey`</span>
+<span class="sd">    ... more coming</span>
+<span class="sd">    inherit from this.</span>
+
+<span class="sd">    To create or parse an ECDSA key, don&#39;t use one of these classes</span>
+<span class="sd">    directly.  Instead, use the factory functions in</span>
+<span class="sd">    :py:class:`~tlslite.utils.keyfactory`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ECDSAKey.__init__"><a class="viewcode-back" href="../../../tlslite.utils.ecdsakey.html#tlslite.utils.ecdsakey.ECDSAKey.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">public_key</span><span class="p">,</span> <span class="n">private_key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new ECDSA key.</span>
+
+<span class="sd">        If public_key or private_key are passed in, the new key</span>
+<span class="sd">        will be initialized.</span>
+
+<span class="sd">        :param public_key: ECDSA public key.</span>
+
+<span class="sd">        :param private_key: ECDSA private key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the size of the order of the curve of this key, in bits.</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ECDSAKey.hasPrivateKey"><a class="viewcode-back" href="../../../tlslite.utils.ecdsakey.html#tlslite.utils.ecdsakey.ECDSAKey.hasPrivateKey">[docs]</a>    <span class="k">def</span> <span class="nf">hasPrivateKey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return whether or not this key has a private component.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hash_alg</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_hashAndSign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">hash_bytes</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ECDSAKey.hashAndSign"><a class="viewcode-back" href="../../../tlslite.utils.ecdsakey.html#tlslite.utils.ecdsakey.ECDSAKey.hashAndSign">[docs]</a>    <span class="k">def</span> <span class="nf">hashAndSign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">rsaScheme</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hAlg</span><span class="o">=</span><span class="s1">&#39;sha1&#39;</span><span class="p">,</span> <span class="n">sLen</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Hash and sign the passed-in bytes.</span>
+
+<span class="sd">        This requires the key to have a private component. It performs</span>
+<span class="sd">        a signature on the passed-in data with selected hash algorithm.</span>
+
+<span class="sd">        :type bytes: bytes-like object</span>
+<span class="sd">        :param bytes: The value which will be hashed and signed.</span>
+
+<span class="sd">        :type rsaScheme: str</span>
+<span class="sd">        :param rsaScheme: Ignored, present for API compatibility with RSA</span>
+
+<span class="sd">        :type hAlg: str</span>
+<span class="sd">        :param hAlg: The hash algorithm that will be used to hash data</span>
+
+<span class="sd">        :type sLen: int</span>
+<span class="sd">        :param sLen: Ignored, present for API compatibility with RSA</span>
+
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        :returns: An ECDSA signature on the passed-in data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hAlg</span> <span class="o">=</span> <span class="n">hAlg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">secureHash</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="nb">bytes</span><span class="p">),</span> <span class="n">hAlg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">hashBytes</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">rsaScheme</span><span class="p">,</span> <span class="n">hashAlg</span><span class="o">=</span><span class="n">hAlg</span><span class="p">,</span>
+                         <span class="n">saltLen</span><span class="o">=</span><span class="n">sLen</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ECDSAKey.hashAndVerify"><a class="viewcode-back" href="../../../tlslite.utils.ecdsakey.html#tlslite.utils.ecdsakey.ECDSAKey.hashAndVerify">[docs]</a>    <span class="k">def</span> <span class="nf">hashAndVerify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigBytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">rsaScheme</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hAlg</span><span class="o">=</span><span class="s1">&#39;sha1&#39;</span><span class="p">,</span>
+                      <span class="n">sLen</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Hash and verify the passed-in bytes with the signature.</span>
+
+<span class="sd">        This verifies an ECDSA signature on the passed-in data</span>
+<span class="sd">        with selected hash algorithm.</span>
+
+<span class="sd">        :type sigBytes: bytearray</span>
+<span class="sd">        :param sigBytes: An ECDSA signature, DER encoded.</span>
+
+<span class="sd">        :type bytes: str or bytearray</span>
+<span class="sd">        :param bytes: The value which will be hashed and verified.</span>
+
+<span class="sd">        :type rsaScheme: str</span>
+<span class="sd">        :param rsaScheme: Ignored, present for API compatibility with RSA</span>
+
+<span class="sd">        :type hAlg: str</span>
+<span class="sd">        :param hAlg: The hash algorithm that will be used</span>
+
+<span class="sd">        :type sLen: int</span>
+<span class="sd">        :param sLen: Ignored, present for API compatibility with RSA</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: Whether the signature matches the passed-in data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hAlg</span> <span class="o">=</span> <span class="n">hAlg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">secureHash</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="nb">bytes</span><span class="p">),</span> <span class="n">hAlg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">sigBytes</span><span class="p">,</span> <span class="n">hashBytes</span><span class="p">,</span> <span class="n">rsaScheme</span><span class="p">,</span> <span class="n">hAlg</span><span class="p">,</span> <span class="n">sLen</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ECDSAKey.sign"><a class="viewcode-back" href="../../../tlslite.utils.ecdsakey.html#tlslite.utils.ecdsakey.ECDSAKey.sign">[docs]</a>    <span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hashAlg</span><span class="o">=</span><span class="s2">&quot;sha1&quot;</span><span class="p">,</span> <span class="n">saltLen</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sign the passed-in bytes.</span>
+
+<span class="sd">        This requires the key to have a private component.  It performs</span>
+<span class="sd">        an ECDSA signature on the passed-in data.</span>
+
+<span class="sd">        :type bytes: bytearray</span>
+<span class="sd">        :param bytes: The value which will be signed (generally a binary</span>
+<span class="sd">            encoding of hash output.</span>
+
+<span class="sd">        :type padding: str</span>
+<span class="sd">        :param padding: Ignored, present for API compatibility with RSA</span>
+
+<span class="sd">        :type hashAlg: str</span>
+<span class="sd">        :param hashAlg: name of hash that was used for calculating the bytes</span>
+
+<span class="sd">        :type saltLen: int</span>
+<span class="sd">        :param saltLen: Ignored, present for API compatibility with RSA</span>
+
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        :returns: An ECDSA signature on the passed-in data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sigBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sign</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">hashAlg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sigBytes</span></div>
+
+<div class="viewcode-block" id="ECDSAKey.verify"><a class="viewcode-back" href="../../../tlslite.utils.ecdsakey.html#tlslite.utils.ecdsakey.ECDSAKey.verify">[docs]</a>    <span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigBytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hashAlg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">saltLen</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify the passed-in bytes with the signature.</span>
+
+<span class="sd">        This verifies a PKCS1 signature on the passed-in data.</span>
+
+<span class="sd">        :type sigBytes: bytearray</span>
+<span class="sd">        :param sigBytes: A PKCS1 signature.</span>
+
+<span class="sd">        :type bytes: bytearray</span>
+<span class="sd">        :param bytes: The value which will be verified.</span>
+
+<span class="sd">        :type padding: str</span>
+<span class="sd">        :param padding: Ignored, present for API compatibility with RSA</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: Whether the signature matches the passed-in data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verify</span><span class="p">(</span><span class="n">sigBytes</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ECDSAKey.acceptsPassword"><a class="viewcode-back" href="../../../tlslite.utils.ecdsakey.html#tlslite.utils.ecdsakey.ECDSAKey.acceptsPassword">[docs]</a>    <span class="k">def</span> <span class="nf">acceptsPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if the write() method accepts a password for use</span>
+<span class="sd">        in encrypting the private key.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ECDSAKey.write"><a class="viewcode-back" href="../../../tlslite.utils.ecdsakey.html#tlslite.utils.ecdsakey.ECDSAKey.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a string containing the key.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: A string describing the key, in whichever format (PEM)</span>
+<span class="sd">            is native to the implementation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ECDSAKey.generate"><a class="viewcode-back" href="../../../tlslite.utils.ecdsakey.html#tlslite.utils.ecdsakey.ECDSAKey.generate">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">bits</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a new key with the specified curve.</span>
+
+<span class="sd">        :rtype: ~tlslite.utils.ECDSAKey.ECDSAKey</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.keyexchange &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.keyexchange</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.keyexchange</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Authors:</span>
+<span class="c1">#   Hubert Kario (2015)</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+<span class="sd">&quot;&quot;&quot;Handling of cryptographic operations for key exchange&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">ecdsa</span>
+<span class="kn">from</span> <span class="nn">.mathtls</span> <span class="kn">import</span> <span class="n">goodGroupParameters</span><span class="p">,</span> <span class="n">makeK</span><span class="p">,</span> <span class="n">makeU</span><span class="p">,</span> <span class="n">makeX</span><span class="p">,</span> \
+        <span class="n">paramStrength</span><span class="p">,</span> <span class="n">RFC7919_GROUPS</span><span class="p">,</span> <span class="n">calc_key</span>
+<span class="kn">from</span> <span class="nn">.errors</span> <span class="kn">import</span> <span class="n">TLSInsufficientSecurity</span><span class="p">,</span> <span class="n">TLSUnknownPSKIdentity</span><span class="p">,</span> \
+        <span class="n">TLSIllegalParameterException</span><span class="p">,</span> <span class="n">TLSDecryptionFailed</span><span class="p">,</span> <span class="n">TLSInternalError</span><span class="p">,</span> \
+        <span class="n">TLSDecodeError</span>
+<span class="kn">from</span> <span class="nn">.messages</span> <span class="kn">import</span> <span class="n">ServerKeyExchange</span><span class="p">,</span> <span class="n">ClientKeyExchange</span><span class="p">,</span> <span class="n">CertificateVerify</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">SignatureAlgorithm</span><span class="p">,</span> <span class="n">HashAlgorithm</span><span class="p">,</span> <span class="n">CipherSuite</span><span class="p">,</span> \
+        <span class="n">ExtensionType</span><span class="p">,</span> <span class="n">GroupName</span><span class="p">,</span> <span class="n">ECCurveType</span><span class="p">,</span> <span class="n">SignatureScheme</span>
+<span class="kn">from</span> <span class="nn">.utils.ecc</span> <span class="kn">import</span> <span class="n">getCurveByName</span><span class="p">,</span> <span class="n">getPointByteSize</span>
+<span class="kn">from</span> <span class="nn">.utils.rsakey</span> <span class="kn">import</span> <span class="n">RSAKey</span>
+<span class="kn">from</span> <span class="nn">.utils.cryptomath</span> <span class="kn">import</span> <span class="n">bytesToNumber</span><span class="p">,</span> <span class="n">getRandomBytes</span><span class="p">,</span> <span class="n">powMod</span><span class="p">,</span> \
+        <span class="n">numBits</span><span class="p">,</span> <span class="n">numberToByteArray</span><span class="p">,</span> <span class="n">divceil</span><span class="p">,</span> <span class="n">numBytes</span><span class="p">,</span> <span class="n">secureHash</span>
+<span class="kn">from</span> <span class="nn">.utils.lists</span> <span class="kn">import</span> <span class="n">getFirstMatching</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">tlshashlib</span> <span class="k">as</span> <span class="n">hashlib</span>
+<span class="kn">from</span> <span class="nn">.utils.x25519</span> <span class="kn">import</span> <span class="n">x25519</span><span class="p">,</span> <span class="n">x448</span><span class="p">,</span> <span class="n">X25519_G</span><span class="p">,</span> <span class="n">X448_G</span><span class="p">,</span> <span class="n">X25519_ORDER_SIZE</span><span class="p">,</span> \
+        <span class="n">X448_ORDER_SIZE</span>
+<span class="kn">from</span> <span class="nn">.utils.compat</span> <span class="kn">import</span> <span class="n">int_types</span>
+<span class="kn">from</span> <span class="nn">.utils.codec</span> <span class="kn">import</span> <span class="n">DecodeError</span>
+
+<div class="viewcode-block" id="KeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange">[docs]</a><span class="k">class</span> <span class="nc">KeyExchange</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Common API for calculating Premaster secret</span>
+
+<span class="sd">    NOT stable, will get moved from this file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="KeyExchange.__init__"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span> <span class="n">serverHello</span><span class="p">,</span> <span class="n">privateKey</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize KeyExchange. privateKey is the signing private key&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span> <span class="o">=</span> <span class="n">cipherSuite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span> <span class="o">=</span> <span class="n">clientHello</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span> <span class="o">=</span> <span class="n">serverHello</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span> <span class="o">=</span> <span class="n">privateKey</span></div>
+
+<div class="viewcode-block" id="KeyExchange.makeServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange.makeServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigHash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a ServerKeyExchange object</span>
+
+<span class="sd">        Returns a ServerKeyExchange object for the server&#39;s initial leg in the</span>
+<span class="sd">        handshake. If the key exchange method does not send ServerKeyExchange</span>
+<span class="sd">        (e.g. RSA), it returns None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="KeyExchange.makeClientKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange.makeClientKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a ClientKeyExchange object</span>
+
+<span class="sd">        Returns a ClientKeyExchange for the second flight from client in the</span>
+<span class="sd">        handshake.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="KeyExchange.processClientKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange.processClientKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">processClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clientKeyExchange</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Process ClientKeyExchange and return premaster secret</span>
+
+<span class="sd">        Processes the client&#39;s ClientKeyExchange message and returns the</span>
+<span class="sd">        premaster secret. Raises TLSLocalAlert on error.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="KeyExchange.processServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange.processServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">processServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srvPublicKey</span><span class="p">,</span>
+                                 <span class="n">serverKeyExchange</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the server KEX and return premaster secret&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_tls12_sign_ecdsa_SKE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">sigHash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">=</span> \
+                    <span class="nb">getattr</span><span class="p">(</span><span class="n">SignatureScheme</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+            <span class="n">hashName</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getHash</span><span class="p">(</span><span class="n">sigHash</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">HashAlgorithm</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+            <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">=</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">ecdsa</span>
+            <span class="n">hashName</span> <span class="o">=</span> <span class="n">sigHash</span>
+
+        <span class="n">hash_bytes</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">random</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">random</span><span class="p">)</span>
+
+        <span class="n">hash_bytes</span> <span class="o">=</span> <span class="n">hash_bytes</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">private_key</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">baselen</span><span class="p">]</span>
+
+        <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">hash_bytes</span><span class="p">,</span> <span class="n">hashAlg</span><span class="o">=</span><span class="n">hashName</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Empty signature&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span><span class="p">,</span>
+                                             <span class="n">hash_bytes</span><span class="p">,</span>
+                                             <span class="n">ecdsa</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">sigdecode_der</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;signature validation failure&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_tls12_sign_dsa_SKE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">sigHash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sign a TLSv1.2 SKE message.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">=</span> \
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">SignatureScheme</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">=</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">dsa</span>
+            <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">HashAlgorithm</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+
+        <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">random</span><span class="p">,</span>
+                                           <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">random</span><span class="p">)</span>
+
+        <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">hashBytes</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Empty signature&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span><span class="p">,</span>
+                                      <span class="n">hashBytes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Server Key Exchange signature invalid&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_tls12_sign_eddsa_ske</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_key_exchange</span><span class="p">,</span> <span class="n">sig_hash</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sign a TLSv1.2 SKE message.&quot;&quot;&quot;</span>
+        <span class="n">server_key_exchange</span><span class="o">.</span><span class="n">hashAlg</span><span class="p">,</span> <span class="n">server_key_exchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">=</span> \
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">SignatureScheme</span><span class="p">,</span> <span class="n">sig_hash</span><span class="p">)</span>
+        <span class="n">pad_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">hash_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">salt_len</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">hash_bytes</span> <span class="o">=</span> <span class="n">server_key_exchange</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">random</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">random</span><span class="p">)</span>
+
+        <span class="n">server_key_exchange</span><span class="o">.</span><span class="n">signature</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">hashAndSign</span><span class="p">(</span><span class="n">hash_bytes</span><span class="p">,</span>
+                                        <span class="n">pad_type</span><span class="p">,</span>
+                                        <span class="n">hash_name</span><span class="p">,</span>
+                                        <span class="n">salt_len</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">server_key_exchange</span><span class="o">.</span><span class="n">signature</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Empty signature&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">hashAndVerify</span><span class="p">(</span>
+                <span class="n">server_key_exchange</span><span class="o">.</span><span class="n">signature</span><span class="p">,</span>
+                <span class="n">hash_bytes</span><span class="p">,</span>
+                <span class="n">pad_type</span><span class="p">,</span>
+                <span class="n">hash_name</span><span class="p">,</span>
+                <span class="n">salt_len</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Server Key Exchange signature invalid&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_tls12_signSKE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">sigHash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sign a TLSv1.2 SKE message.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">=</span> \
+                    <span class="nb">getattr</span><span class="p">(</span><span class="n">SignatureScheme</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+            <span class="n">keyType</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getKeyType</span><span class="p">(</span><span class="n">sigHash</span><span class="p">)</span>
+            <span class="n">padType</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getPadding</span><span class="p">(</span><span class="n">sigHash</span><span class="p">)</span>
+            <span class="n">hashName</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getHash</span><span class="p">(</span><span class="n">sigHash</span><span class="p">)</span>
+            <span class="n">saltLen</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">hashName</span><span class="p">)()</span><span class="o">.</span><span class="n">digest_size</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">=</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">rsa</span>
+            <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">HashAlgorithm</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+            <span class="n">keyType</span> <span class="o">=</span> <span class="s1">&#39;rsa&#39;</span>
+            <span class="n">padType</span> <span class="o">=</span> <span class="s1">&#39;pkcs1&#39;</span>
+            <span class="n">hashName</span> <span class="o">=</span> <span class="n">sigHash</span>
+            <span class="n">saltLen</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">assert</span> <span class="n">keyType</span> <span class="o">==</span> <span class="s1">&#39;rsa&#39;</span>
+
+        <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">random</span><span class="p">,</span>
+                                           <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">random</span><span class="p">)</span>
+
+        <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">hashBytes</span><span class="p">,</span>
+                                 <span class="n">padding</span><span class="o">=</span><span class="n">padType</span><span class="p">,</span>
+                                 <span class="n">hashAlg</span><span class="o">=</span><span class="n">hashName</span><span class="p">,</span>
+                                 <span class="n">saltLen</span><span class="o">=</span><span class="n">saltLen</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Empty signature&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span><span class="p">,</span>
+                                      <span class="n">hashBytes</span><span class="p">,</span>
+                                      <span class="n">padding</span><span class="o">=</span><span class="n">padType</span><span class="p">,</span>
+                                      <span class="n">hashAlg</span><span class="o">=</span><span class="n">hashName</span><span class="p">,</span>
+                                      <span class="n">saltLen</span><span class="o">=</span><span class="n">saltLen</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Server Key Exchange signature invalid&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="KeyExchange.signServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange.signServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">signServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">sigHash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sign a server key exchange using default or specified algorithm</span>
+
+<span class="sd">        :type sigHash: str</span>
+<span class="sd">        :param sigHash: name of the signature hash to be used for signing</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">key_type</span> <span class="o">==</span> <span class="s2">&quot;ecdsa&quot;</span><span class="p">:</span>
+                <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">=</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">ecdsa</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">key_type</span> <span class="o">==</span> <span class="s2">&quot;dsa&quot;</span><span class="p">:</span>
+                <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">=</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">dsa</span>
+            <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">random</span><span class="p">,</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">random</span><span class="p">)</span>
+
+            <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">hashBytes</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Empty signature&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span><span class="p">,</span>
+                                          <span class="n">hashBytes</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Server Key Exchange signature invalid&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">key_type</span> <span class="o">==</span> <span class="s2">&quot;ecdsa&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tls12_sign_ecdsa_SKE</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">key_type</span> <span class="o">==</span> <span class="s2">&quot;dsa&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tls12_sign_dsa_SKE</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">key_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Ed25519&quot;</span><span class="p">,</span> <span class="s2">&quot;Ed448&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tls12_sign_eddsa_ske</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tls12_signSKE</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_tls12_verify_ecdsa_SKE</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">publicKey</span><span class="p">,</span> <span class="n">clientRandom</span><span class="p">,</span>
+                                <span class="n">serverRandom</span><span class="p">,</span> <span class="n">validSigAlgs</span><span class="p">):</span>
+        <span class="n">hashName</span> <span class="o">=</span> <span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">hashName</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Unknown hash algorithm&quot;</span><span class="p">)</span>
+
+        <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">clientRandom</span><span class="p">,</span> <span class="n">serverRandom</span><span class="p">)</span>
+
+        <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">hashBytes</span><span class="p">[:</span><span class="n">publicKey</span><span class="o">.</span><span class="n">public_key</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">baselen</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">publicKey</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span><span class="p">,</span> <span class="n">hashBytes</span><span class="p">,</span>
+                                <span class="n">padding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                <span class="n">hashAlg</span><span class="o">=</span><span class="n">hashName</span><span class="p">,</span>
+                                <span class="n">saltLen</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSDecryptionFailed</span><span class="p">(</span><span class="s2">&quot;Server Key Exchange signature &quot;</span>
+                                      <span class="s2">&quot;invalid&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_tls12_verify_eddsa_ske</span><span class="p">(</span><span class="n">server_key_exchange</span><span class="p">,</span> <span class="n">public_key</span><span class="p">,</span> <span class="n">client_random</span><span class="p">,</span>
+                                <span class="n">server_random</span><span class="p">,</span> <span class="n">valid_sig_algs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify SeverKeyExchange messages with EdDSA signatures.&quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="n">valid_sig_algs</span>
+        <span class="n">sig_bytes</span> <span class="o">=</span> <span class="n">server_key_exchange</span><span class="o">.</span><span class="n">signature</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sig_bytes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Empty signature&quot;</span><span class="p">)</span>
+
+        <span class="n">hash_bytes</span> <span class="o">=</span> <span class="n">server_key_exchange</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">client_random</span><span class="p">,</span> <span class="n">server_random</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">public_key</span><span class="o">.</span><span class="n">hashAndVerify</span><span class="p">(</span><span class="n">sig_bytes</span><span class="p">,</span>
+                                        <span class="n">hash_bytes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSDecryptionFailed</span><span class="p">(</span><span class="s2">&quot;Server Key Exchange signature invalid&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_tls12_verify_dsa_SKE</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">publicKey</span><span class="p">,</span> <span class="n">clientRandom</span><span class="p">,</span>
+                              <span class="n">serverRandom</span><span class="p">,</span> <span class="n">validSigAlgs</span><span class="p">):</span>
+
+        <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">clientRandom</span><span class="p">,</span> <span class="n">serverRandom</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">publicKey</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span><span class="p">,</span> <span class="n">hashBytes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSDecryptionFailed</span><span class="p">(</span><span class="s2">&quot;Server Key Exchange signature &quot;</span>
+                                      <span class="s2">&quot;invalid&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_tls12_verify_SKE</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">publicKey</span><span class="p">,</span> <span class="n">clientRandom</span><span class="p">,</span>
+                          <span class="n">serverRandom</span><span class="p">,</span> <span class="n">validSigAlgs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify TLSv1.2 version of SKE.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> \
+                <span class="n">validSigAlgs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Server selected &quot;</span>
+                                               <span class="s2">&quot;invalid signature &quot;</span>
+                                               <span class="s2">&quot;algorithm&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">ed25519</span><span class="p">,</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">ed448</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">KeyExchange</span><span class="o">.</span><span class="n">_tls12_verify_eddsa_ske</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span>
+                                                       <span class="n">publicKey</span><span class="p">,</span>
+                                                       <span class="n">clientRandom</span><span class="p">,</span>
+                                                       <span class="n">serverRandom</span><span class="p">,</span>
+                                                       <span class="n">validSigAlgs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">==</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">ecdsa</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">KeyExchange</span><span class="o">.</span><span class="n">_tls12_verify_ecdsa_SKE</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span>
+                                                       <span class="n">publicKey</span><span class="p">,</span>
+                                                       <span class="n">clientRandom</span><span class="p">,</span>
+                                                       <span class="n">serverRandom</span><span class="p">,</span>
+                                                       <span class="n">validSigAlgs</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">==</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">dsa</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">KeyExchange</span><span class="o">.</span><span class="n">_tls12_verify_dsa_SKE</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span>
+                                                     <span class="n">publicKey</span><span class="p">,</span>
+                                                     <span class="n">clientRandom</span><span class="p">,</span>
+                                                     <span class="n">serverRandom</span><span class="p">,</span>
+                                                     <span class="n">validSigAlgs</span><span class="p">)</span>
+
+        <span class="n">schemeID</span> <span class="o">=</span> <span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span><span class="p">,</span>
+                    <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span><span class="p">)</span>
+        <span class="n">scheme</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">schemeID</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">scheme</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">keyType</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getKeyType</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+            <span class="n">padType</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getPadding</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+            <span class="n">hashName</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getHash</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+            <span class="n">saltLen</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">hashName</span><span class="p">)()</span><span class="o">.</span><span class="n">digest_size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signAlg</span> <span class="o">!=</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">rsa</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;non-RSA sigs are not supported&quot;</span><span class="p">)</span>
+            <span class="n">keyType</span> <span class="o">=</span> <span class="s1">&#39;rsa&#39;</span>
+            <span class="n">padType</span> <span class="o">=</span> <span class="s1">&#39;pkcs1&#39;</span>
+            <span class="n">saltLen</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">hashName</span> <span class="o">=</span> <span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">hashName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Unknown hash ID: </span><span class="si">{0}</span><span class="s2">&quot;</span>\
+                        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hashAlg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">keyType</span> <span class="o">==</span> <span class="s1">&#39;rsa&#39;</span>
+
+        <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">clientRandom</span><span class="p">,</span> <span class="n">serverRandom</span><span class="p">)</span>
+
+        <span class="n">sigBytes</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sigBytes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Empty signature&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">publicKey</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">sigBytes</span><span class="p">,</span> <span class="n">hashBytes</span><span class="p">,</span>
+                                <span class="n">padding</span><span class="o">=</span><span class="n">padType</span><span class="p">,</span>
+                                <span class="n">hashAlg</span><span class="o">=</span><span class="n">hashName</span><span class="p">,</span>
+                                <span class="n">saltLen</span><span class="o">=</span><span class="n">saltLen</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSDecryptionFailed</span><span class="p">(</span><span class="s2">&quot;Server Key Exchange signature &quot;</span>
+                                      <span class="s2">&quot;invalid&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="KeyExchange.verifyServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange.verifyServerKeyExchange">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">verifyServerKeyExchange</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">publicKey</span><span class="p">,</span> <span class="n">clientRandom</span><span class="p">,</span>
+                                <span class="n">serverRandom</span><span class="p">,</span> <span class="n">validSigAlgs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify signature on the Server Key Exchange message</span>
+
+<span class="sd">        the only acceptable signature algorithms are specified by validSigAlgs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">version</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">hashBytes</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="n">clientRandom</span><span class="p">,</span> <span class="n">serverRandom</span><span class="p">)</span>
+            <span class="n">sigBytes</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">signature</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sigBytes</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Empty signature&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">publicKey</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">sigBytes</span><span class="p">,</span> <span class="n">hashBytes</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TLSDecryptionFailed</span><span class="p">(</span><span class="s2">&quot;Server Key Exchange signature &quot;</span>
+                                          <span class="s2">&quot;invalid&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">KeyExchange</span><span class="o">.</span><span class="n">_tls12_verify_SKE</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">publicKey</span><span class="p">,</span>
+                                          <span class="n">clientRandom</span><span class="p">,</span> <span class="n">serverRandom</span><span class="p">,</span>
+                                          <span class="n">validSigAlgs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="KeyExchange.calcVerifyBytes"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange.calcVerifyBytes">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">calcVerifyBytes</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">handshakeHashes</span><span class="p">,</span> <span class="n">signatureAlg</span><span class="p">,</span>
+                        <span class="n">premasterSecret</span><span class="p">,</span> <span class="n">clientRandom</span><span class="p">,</span> <span class="n">serverRandom</span><span class="p">,</span>
+                        <span class="n">prf_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">peer_tag</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;client&#39;</span><span class="p">,</span> <span class="n">key_type</span><span class="o">=</span><span class="s2">&quot;rsa&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate signed bytes for Certificate Verify&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">masterSecret</span> <span class="o">=</span> <span class="n">calc_key</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">premasterSecret</span><span class="p">,</span>
+                                    <span class="mi">0</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;master secret&quot;</span><span class="p">,</span>
+                                    <span class="n">client_random</span><span class="o">=</span><span class="n">clientRandom</span><span class="p">,</span>
+                                    <span class="n">server_random</span><span class="o">=</span><span class="n">serverRandom</span><span class="p">,</span>
+                                    <span class="n">output_length</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
+            <span class="n">verifyBytes</span> <span class="o">=</span> <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digestSSL</span><span class="p">(</span><span class="n">masterSecret</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">key_type</span> <span class="o">!=</span> <span class="s2">&quot;ecdsa&quot;</span><span class="p">:</span>
+                <span class="n">verifyBytes</span> <span class="o">=</span> <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">verifyBytes</span> <span class="o">=</span> <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s2">&quot;sha1&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">signatureAlg</span> <span class="ow">in</span> <span class="p">(</span><span class="n">SignatureScheme</span><span class="o">.</span><span class="n">ed25519</span><span class="p">,</span>
+                    <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">ed448</span><span class="p">):</span>
+                <span class="n">hashName</span> <span class="o">=</span> <span class="s2">&quot;intrinsic&quot;</span>
+                <span class="n">padding</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">elif</span> <span class="n">signatureAlg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">dsa</span><span class="p">:</span>
+                <span class="n">hashName</span> <span class="o">=</span> <span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">signatureAlg</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">padding</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">elif</span> <span class="n">signatureAlg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">ecdsa</span><span class="p">:</span>
+                <span class="n">scheme</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">signatureAlg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">scheme</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">hashName</span> <span class="o">=</span> <span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">signatureAlg</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">padding</span> <span class="o">=</span> <span class="s1">&#39;pkcs1&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">hashName</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getHash</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+                    <span class="n">padding</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getPadding</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">padding</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">hashName</span> <span class="o">=</span> <span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">signatureAlg</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">verifyBytes</span> <span class="o">=</span> <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="n">hashName</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">padding</span> <span class="o">==</span> <span class="s1">&#39;pkcs1&#39;</span><span class="p">:</span>
+                <span class="n">verifyBytes</span> <span class="o">=</span> <span class="n">RSAKey</span><span class="o">.</span><span class="n">addPKCS1Prefix</span><span class="p">(</span><span class="n">verifyBytes</span><span class="p">,</span> <span class="n">hashName</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="n">scheme</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">signatureAlg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">scheme</span><span class="p">:</span>
+                <span class="n">hash_name</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getHash</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># handles negative test cases when we try to pass in</span>
+                <span class="c1"># schemes that are not supported in TLS1.3</span>
+                <span class="n">hash_name</span> <span class="o">=</span> <span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">signatureAlg</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">verifyBytes</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x20</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="mi">64</span> <span class="o">+</span>
+                                    <span class="sa">b</span><span class="s1">&#39;TLS 1.3, &#39;</span> <span class="o">+</span> <span class="n">peer_tag</span> <span class="o">+</span>
+                                    <span class="sa">b</span><span class="s1">&#39; CertificateVerify&#39;</span> <span class="o">+</span>
+                                    <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span> \
+                          <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="n">prf_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">hash_name</span> <span class="o">!=</span> <span class="s2">&quot;intrinsic&quot;</span><span class="p">:</span>
+                <span class="n">verifyBytes</span> <span class="o">=</span> <span class="n">secureHash</span><span class="p">(</span><span class="n">verifyBytes</span><span class="p">,</span> <span class="n">hash_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported TLS version </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">verifyBytes</span></div>
+
+<div class="viewcode-block" id="KeyExchange.makeCertificateVerify"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange.makeCertificateVerify">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">makeCertificateVerify</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">handshakeHashes</span><span class="p">,</span> <span class="n">validSigAlgs</span><span class="p">,</span>
+                              <span class="n">privateKey</span><span class="p">,</span> <span class="n">certificateRequest</span><span class="p">,</span> <span class="n">premasterSecret</span><span class="p">,</span>
+                              <span class="n">clientRandom</span><span class="p">,</span> <span class="n">serverRandom</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Certificate Verify message</span>
+
+<span class="sd">        :param version: protocol version in use</span>
+<span class="sd">        :param handshakeHashes: the running hash of all handshake messages</span>
+<span class="sd">        :param validSigAlgs: acceptable signature algorithms for client side,</span>
+<span class="sd">            applicable only to TLSv1.2 (or later)</span>
+<span class="sd">        :param certificateRequest: the server provided Certificate Request</span>
+<span class="sd">            message</span>
+<span class="sd">        :param premasterSecret: the premaster secret, needed only for SSLv3</span>
+<span class="sd">        :param clientRandom: client provided random value, needed only for</span>
+<span class="sd">            SSLv3</span>
+<span class="sd">        :param serverRandom: server provided random value, needed only for</span>
+<span class="sd">            SSLv3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">signatureAlgorithm</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">privateKey</span><span class="o">.</span><span class="n">key_type</span> <span class="o">==</span> <span class="s2">&quot;ecdsa&quot;</span> <span class="ow">and</span> <span class="n">version</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">signatureAlgorithm</span> <span class="o">=</span> <span class="p">(</span><span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">sha1</span><span class="p">,</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">ecdsa</span><span class="p">)</span>
+        <span class="c1"># in TLS 1.2 we must decide which algorithm to use for signing</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">serverSigAlgs</span> <span class="o">=</span> <span class="n">certificateRequest</span><span class="o">.</span><span class="n">supported_signature_algs</span>
+            <span class="n">signatureAlgorithm</span> <span class="o">=</span> <span class="n">getFirstMatching</span><span class="p">(</span><span class="n">validSigAlgs</span><span class="p">,</span> <span class="n">serverSigAlgs</span><span class="p">)</span>
+            <span class="c1"># if none acceptable, do a last resort:</span>
+            <span class="k">if</span> <span class="n">signatureAlgorithm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">signatureAlgorithm</span> <span class="o">=</span> <span class="n">validSigAlgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">verifyBytes</span> <span class="o">=</span> <span class="n">KeyExchange</span><span class="o">.</span><span class="n">calcVerifyBytes</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">handshakeHashes</span><span class="p">,</span>
+                                                  <span class="n">signatureAlgorithm</span><span class="p">,</span>
+                                                  <span class="n">premasterSecret</span><span class="p">,</span>
+                                                  <span class="n">clientRandom</span><span class="p">,</span>
+                                                  <span class="n">serverRandom</span><span class="p">,</span>
+                                                  <span class="n">key_type</span><span class="o">=</span><span class="n">privateKey</span><span class="o">.</span><span class="n">key_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">signatureAlgorithm</span> <span class="ow">and</span> <span class="n">signatureAlgorithm</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">ed25519</span><span class="p">,</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">ed448</span><span class="p">):</span>
+            <span class="n">padding</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">hashName</span> <span class="o">=</span> <span class="s2">&quot;intrinsic&quot;</span>
+            <span class="n">saltLen</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">sig_func</span> <span class="o">=</span> <span class="n">privateKey</span><span class="o">.</span><span class="n">hashAndSign</span>
+            <span class="n">ver_func</span> <span class="o">=</span> <span class="n">privateKey</span><span class="o">.</span><span class="n">hashAndVerify</span>
+        <span class="k">elif</span> <span class="n">signatureAlgorithm</span> <span class="ow">and</span> \
+                <span class="n">signatureAlgorithm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">ecdsa</span><span class="p">:</span>
+            <span class="n">padding</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">hashName</span> <span class="o">=</span> <span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">signatureAlgorithm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">saltLen</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">verifyBytes</span> <span class="o">=</span> <span class="n">verifyBytes</span><span class="p">[:</span><span class="n">privateKey</span><span class="o">.</span><span class="n">private_key</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">baselen</span><span class="p">]</span>
+            <span class="n">sig_func</span> <span class="o">=</span> <span class="n">privateKey</span><span class="o">.</span><span class="n">sign</span>
+            <span class="n">ver_func</span> <span class="o">=</span> <span class="n">privateKey</span><span class="o">.</span><span class="n">verify</span>
+        <span class="k">elif</span> <span class="n">signatureAlgorithm</span> <span class="ow">and</span> \
+                <span class="n">signatureAlgorithm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">SignatureAlgorithm</span><span class="o">.</span><span class="n">dsa</span><span class="p">:</span>
+            <span class="n">padding</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">hashName</span> <span class="o">=</span> <span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">signatureAlgorithm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">saltLen</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">sig_func</span> <span class="o">=</span> <span class="n">privateKey</span><span class="o">.</span><span class="n">sign</span>
+            <span class="n">ver_func</span> <span class="o">=</span> <span class="n">privateKey</span><span class="o">.</span><span class="n">verify</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scheme</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="n">signatureAlgorithm</span><span class="p">)</span>
+            <span class="c1"># for pkcs1 signatures hash is used to add PKCS#1 prefix, but</span>
+            <span class="c1"># that was already done by calcVerifyBytes</span>
+            <span class="n">hashName</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">saltLen</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">scheme</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">padding</span> <span class="o">=</span> <span class="s1">&#39;pkcs1&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">padding</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getPadding</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">padding</span> <span class="o">==</span> <span class="s1">&#39;pss&#39;</span><span class="p">:</span>
+                    <span class="n">hashName</span> <span class="o">=</span> <span class="n">SignatureScheme</span><span class="o">.</span><span class="n">getHash</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+                    <span class="n">saltLen</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">hashlib</span><span class="p">,</span> <span class="n">hashName</span><span class="p">)()</span><span class="o">.</span><span class="n">digest_size</span>
+            <span class="n">sig_func</span> <span class="o">=</span> <span class="n">privateKey</span><span class="o">.</span><span class="n">sign</span>
+            <span class="n">ver_func</span> <span class="o">=</span> <span class="n">privateKey</span><span class="o">.</span><span class="n">verify</span>
+
+        <span class="n">signedBytes</span> <span class="o">=</span> <span class="n">sig_func</span><span class="p">(</span><span class="n">verifyBytes</span><span class="p">,</span>
+                               <span class="n">padding</span><span class="p">,</span>
+                               <span class="n">hashName</span><span class="p">,</span>
+                               <span class="n">saltLen</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ver_func</span><span class="p">(</span><span class="n">signedBytes</span><span class="p">,</span> <span class="n">verifyBytes</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">hashName</span><span class="p">,</span>
+                        <span class="n">saltLen</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Certificate Verify signature invalid&quot;</span><span class="p">)</span>
+        <span class="n">certificateVerify</span> <span class="o">=</span> <span class="n">CertificateVerify</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
+        <span class="n">certificateVerify</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">signedBytes</span><span class="p">,</span> <span class="n">signatureAlgorithm</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">certificateVerify</span></div></div>
+
+
+<div class="viewcode-block" id="AuthenticatedKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.AuthenticatedKeyExchange">[docs]</a><span class="k">class</span> <span class="nc">AuthenticatedKeyExchange</span><span class="p">(</span><span class="n">KeyExchange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Common methods for key exchanges that authenticate Server Key Exchange</span>
+
+<span class="sd">    Methods for signing Server Key Exchange message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AuthenticatedKeyExchange.makeServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.AuthenticatedKeyExchange.makeServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigHash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare server side of key exchange with selected parameters&quot;&quot;&quot;</span>
+        <span class="n">ske</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">AuthenticatedKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">makeServerKeyExchange</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signServerKeyExchange</span><span class="p">(</span><span class="n">ske</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ske</span></div></div>
+
+
+<div class="viewcode-block" id="RSAKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RSAKeyExchange">[docs]</a><span class="k">class</span> <span class="nc">RSAKeyExchange</span><span class="p">(</span><span class="n">KeyExchange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handling of RSA key exchange</span>
+
+<span class="sd">    NOT stable API, do NOT use</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RSAKeyExchange.__init__"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RSAKeyExchange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span> <span class="n">serverHello</span><span class="p">,</span> <span class="n">privateKey</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RSAKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span>
+                                             <span class="n">serverHello</span><span class="p">,</span> <span class="n">privateKey</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encPremasterSecret</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="RSAKeyExchange.makeServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RSAKeyExchange.makeServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigHash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Don&#39;t create a server key exchange for RSA key exchange&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="RSAKeyExchange.processClientKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RSAKeyExchange.processClientKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">processClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clientKeyExchange</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decrypt client key exchange, return premaster secret&quot;&quot;&quot;</span>
+        <span class="n">premasterSecret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span>\
+            <span class="n">clientKeyExchange</span><span class="o">.</span><span class="n">encryptedPreMasterSecret</span><span class="p">)</span>
+
+        <span class="c1"># On decryption failure randomize premaster secret to avoid</span>
+        <span class="c1"># Bleichenbacher&#39;s &quot;million message&quot; attack</span>
+        <span class="n">randomPreMasterSecret</span> <span class="o">=</span> <span class="n">getRandomBytes</span><span class="p">(</span><span class="mi">48</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">premasterSecret</span><span class="p">:</span>
+            <span class="n">premasterSecret</span> <span class="o">=</span> <span class="n">randomPreMasterSecret</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">premasterSecret</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">48</span><span class="p">:</span>
+            <span class="n">premasterSecret</span> <span class="o">=</span> <span class="n">randomPreMasterSecret</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">versionCheck</span> <span class="o">=</span> <span class="p">(</span><span class="n">premasterSecret</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">premasterSecret</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">versionCheck</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">client_version</span><span class="p">:</span>
+                <span class="c1">#Tolerate buggy IE clients</span>
+                <span class="k">if</span> <span class="n">versionCheck</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span><span class="p">:</span>
+                    <span class="n">premasterSecret</span> <span class="o">=</span> <span class="n">randomPreMasterSecret</span>
+        <span class="k">return</span> <span class="n">premasterSecret</span></div>
+
+<div class="viewcode-block" id="RSAKeyExchange.processServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RSAKeyExchange.processServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">processServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srvPublicKey</span><span class="p">,</span>
+                                 <span class="n">serverKeyExchange</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate premaster secret for server&quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="n">serverKeyExchange</span> <span class="c1"># not present in RSA key exchange</span>
+        <span class="n">premasterSecret</span> <span class="o">=</span> <span class="n">getRandomBytes</span><span class="p">(</span><span class="mi">48</span><span class="p">)</span>
+        <span class="n">premasterSecret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">client_version</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">premasterSecret</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">client_version</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">encPremasterSecret</span> <span class="o">=</span> <span class="n">srvPublicKey</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">premasterSecret</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">premasterSecret</span></div>
+
+<div class="viewcode-block" id="RSAKeyExchange.makeClientKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RSAKeyExchange.makeClientKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a client key exchange with clients key share&quot;&quot;&quot;</span>
+        <span class="n">clientKeyExchange</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">RSAKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">makeClientKeyExchange</span><span class="p">()</span>
+        <span class="n">clientKeyExchange</span><span class="o">.</span><span class="n">createRSA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encPremasterSecret</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clientKeyExchange</span></div></div>
+
+
+<div class="viewcode-block" id="ADHKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ADHKeyExchange">[docs]</a><span class="k">class</span> <span class="nc">ADHKeyExchange</span><span class="p">(</span><span class="n">KeyExchange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handling of anonymous Diffie-Hellman Key exchange</span>
+
+<span class="sd">    FFDHE without signing serverKeyExchange useful for anonymous DH</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ADHKeyExchange.__init__"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ADHKeyExchange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span> <span class="n">serverHello</span><span class="p">,</span>
+                 <span class="n">dhParams</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dhGroups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ADHKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span>
+                                             <span class="n">serverHello</span><span class="p">)</span>
+<span class="c1">#pylint: enable = invalid-name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dh_Xs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dh_Yc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">dhParams</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dh_g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh_p</span> <span class="o">=</span> <span class="n">dhParams</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 2048-bit MODP Group (RFC 5054, group 3)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dh_g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh_p</span> <span class="o">=</span> <span class="n">goodGroupParameters</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dhGroups</span> <span class="o">=</span> <span class="n">dhGroups</span></div>
+
+<div class="viewcode-block" id="ADHKeyExchange.makeServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ADHKeyExchange.makeServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepare server side of anonymous key exchange with selected parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check for RFC 7919 support</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">getExtension</span><span class="p">(</span><span class="n">ExtensionType</span><span class="o">.</span><span class="n">supported_groups</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ext</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dhGroups</span><span class="p">:</span>
+            <span class="n">commonGroup</span> <span class="o">=</span> <span class="n">getFirstMatching</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">groups</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dhGroups</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">commonGroup</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dh_g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh_p</span> <span class="o">=</span> <span class="n">RFC7919_GROUPS</span><span class="p">[</span><span class="n">commonGroup</span> <span class="o">-</span> <span class="mi">256</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">getFirstMatching</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">groups</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;DHE key exchange attempted despite no &quot;</span>
+                                       <span class="s2">&quot;overlap between supported groups&quot;</span><span class="p">)</span>
+
+        <span class="c1"># for TLS &lt; 1.3 we need special algorithm to select params (see above)</span>
+        <span class="c1"># so do not pass in the group, if we selected one</span>
+        <span class="n">kex</span> <span class="o">=</span> <span class="n">FFDHKeyExchange</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">dh_g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh_p</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dh_Xs</span> <span class="o">=</span> <span class="n">kex</span><span class="o">.</span><span class="n">get_random_private_key</span><span class="p">()</span>
+        <span class="n">dh_Ys</span> <span class="o">=</span> <span class="n">kex</span><span class="o">.</span><span class="n">calc_public_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh_Xs</span><span class="p">)</span>
+
+        <span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span>
+        <span class="n">serverKeyExchange</span> <span class="o">=</span> <span class="n">ServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+        <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">createDH</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh_p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh_g</span><span class="p">,</span> <span class="n">dh_Ys</span><span class="p">)</span>
+        <span class="c1"># No sign for anonymous ServerKeyExchange.</span>
+        <span class="k">return</span> <span class="n">serverKeyExchange</span></div>
+
+<div class="viewcode-block" id="ADHKeyExchange.processClientKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ADHKeyExchange.processClientKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">processClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clientKeyExchange</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use client provided parameters to establish premaster secret&quot;&quot;&quot;</span>
+        <span class="n">dh_Yc</span> <span class="o">=</span> <span class="n">clientKeyExchange</span><span class="o">.</span><span class="n">dh_Yc</span>
+
+        <span class="n">kex</span> <span class="o">=</span> <span class="n">FFDHKeyExchange</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">dh_g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh_p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kex</span><span class="o">.</span><span class="n">calc_shared_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh_Xs</span><span class="p">,</span> <span class="n">dh_Yc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ADHKeyExchange.processServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ADHKeyExchange.processServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">processServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srvPublicKey</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the server key exchange, return premaster secret.&quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="n">srvPublicKey</span>
+        <span class="n">dh_p</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">dh_p</span>
+        <span class="c1"># TODO make the minimum changeable</span>
+        <span class="k">if</span> <span class="n">dh_p</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">1023</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSInsufficientSecurity</span><span class="p">(</span><span class="s2">&quot;DH prime too small&quot;</span><span class="p">)</span>
+        <span class="n">dh_g</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">dh_g</span>
+        <span class="n">dh_Ys</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">dh_Ys</span>
+
+        <span class="n">kex</span> <span class="o">=</span> <span class="n">FFDHKeyExchange</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span>
+                              <span class="n">dh_g</span><span class="p">,</span> <span class="n">dh_p</span><span class="p">)</span>
+
+        <span class="n">dh_Xc</span> <span class="o">=</span> <span class="n">kex</span><span class="o">.</span><span class="n">get_random_private_key</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dh_Yc</span> <span class="o">=</span> <span class="n">kex</span><span class="o">.</span><span class="n">calc_public_value</span><span class="p">(</span><span class="n">dh_Xc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kex</span><span class="o">.</span><span class="n">calc_shared_key</span><span class="p">(</span><span class="n">dh_Xc</span><span class="p">,</span> <span class="n">dh_Ys</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ADHKeyExchange.makeClientKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ADHKeyExchange.makeClientKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create client key share for the key exchange&quot;&quot;&quot;</span>
+        <span class="n">cke</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ADHKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">makeClientKeyExchange</span><span class="p">()</span>
+        <span class="n">cke</span><span class="o">.</span><span class="n">createDH</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh_Yc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cke</span></div></div>
+
+
+<span class="c1"># the DHE_RSA part comes from IETF ciphersuite names, we want to keep it</span>
+<span class="c1">#pylint: disable = invalid-name</span>
+<div class="viewcode-block" id="DHE_RSAKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.DHE_RSAKeyExchange">[docs]</a><span class="k">class</span> <span class="nc">DHE_RSAKeyExchange</span><span class="p">(</span><span class="n">AuthenticatedKeyExchange</span><span class="p">,</span> <span class="n">ADHKeyExchange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handling of authenticated ephemeral Diffe-Hellman Key exchange.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DHE_RSAKeyExchange.__init__"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.DHE_RSAKeyExchange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span> <span class="n">serverHello</span><span class="p">,</span> <span class="n">privateKey</span><span class="p">,</span>
+                 <span class="n">dhParams</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dhGroups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create helper object for Diffie-Hellamn key exchange.</span>
+
+<span class="sd">        :param dhParams: Diffie-Hellman parameters that will be used by</span>
+<span class="sd">            server. First element of the tuple is the generator, the second</span>
+<span class="sd">            is the prime. If not specified it will use a secure set (currently</span>
+<span class="sd">            a 2048-bit safe prime).</span>
+<span class="sd">        :type dhParams: 2-element tuple of int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DHE_RSAKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span>
+                                                 <span class="n">serverHello</span><span class="p">,</span> <span class="n">dhParams</span><span class="p">,</span>
+                                                 <span class="n">dhGroups</span><span class="p">)</span>
+<span class="c1">#pylint: enable = invalid-name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span> <span class="o">=</span> <span class="n">privateKey</span></div></div>
+
+
+<div class="viewcode-block" id="AECDHKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.AECDHKeyExchange">[docs]</a><span class="k">class</span> <span class="nc">AECDHKeyExchange</span><span class="p">(</span><span class="n">KeyExchange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handling of anonymous Eliptic curve Diffie-Hellman Key exchange</span>
+
+<span class="sd">    ECDHE without signing serverKeyExchange useful for anonymous ECDH</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AECDHKeyExchange.__init__"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.AECDHKeyExchange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span> <span class="n">serverHello</span><span class="p">,</span> <span class="n">acceptedCurves</span><span class="p">,</span>
+                 <span class="n">defaultCurve</span><span class="o">=</span><span class="n">GroupName</span><span class="o">.</span><span class="n">secp256r1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AECDHKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span>
+                                               <span class="n">serverHello</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ecdhXs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acceptedCurves</span> <span class="o">=</span> <span class="n">acceptedCurves</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ecdhYc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defaultCurve</span> <span class="o">=</span> <span class="n">defaultCurve</span></div>
+
+<div class="viewcode-block" id="AECDHKeyExchange.makeServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.AECDHKeyExchange.makeServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigHash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create AECDHE version of Server Key Exchange&quot;&quot;&quot;</span>
+        <span class="c1">#Get client supported groups</span>
+        <span class="n">client_curves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">getExtension</span><span class="p">(</span>
+                <span class="n">ExtensionType</span><span class="o">.</span><span class="n">supported_groups</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">client_curves</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># in case there is no extension, we can pick any curve,</span>
+            <span class="c1"># use the configured one</span>
+            <span class="n">client_curves</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">defaultCurve</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">client_curves</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+            <span class="c1"># extension should have been validated before</span>
+            <span class="k">raise</span> <span class="n">TLSInternalError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t do ECDHE with no client curves&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">client_curves</span> <span class="o">=</span> <span class="n">client_curves</span><span class="o">.</span><span class="n">groups</span>
+
+        <span class="c1">#Pick first client preferred group we support</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="n">getFirstMatching</span><span class="p">(</span><span class="n">client_curves</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">acceptedCurves</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSInsufficientSecurity</span><span class="p">(</span><span class="s2">&quot;No mutual groups&quot;</span><span class="p">)</span>
+
+        <span class="n">kex</span> <span class="o">=</span> <span class="n">ECDHKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ecdhXs</span> <span class="o">=</span> <span class="n">kex</span><span class="o">.</span><span class="n">get_random_private_key</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ecdhXs</span><span class="p">,</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">SigningKey</span><span class="p">):</span>
+            <span class="n">ecdhYs</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ecdhXs</span><span class="o">.</span><span class="n">get_verifying_key</span><span class="p">()</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span>
+                    <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;uncompressed&#39;</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ecdhYs</span> <span class="o">=</span> <span class="n">kex</span><span class="o">.</span><span class="n">calc_public_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ecdhXs</span><span class="p">)</span>
+
+        <span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span>
+        <span class="n">serverKeyExchange</span> <span class="o">=</span> <span class="n">ServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+        <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">createECDH</span><span class="p">(</span><span class="n">ECCurveType</span><span class="o">.</span><span class="n">named_curve</span><span class="p">,</span>
+                                     <span class="n">named_curve</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_id</span><span class="p">,</span>
+                                     <span class="n">point</span><span class="o">=</span><span class="n">ecdhYs</span><span class="p">)</span>
+        <span class="c1"># No sign for anonymous ServerKeyExchange</span>
+        <span class="k">return</span> <span class="n">serverKeyExchange</span></div>
+
+<div class="viewcode-block" id="AECDHKeyExchange.processClientKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.AECDHKeyExchange.processClientKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">processClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clientKeyExchange</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate premaster secret from previously generated SKE and CKE&quot;&quot;&quot;</span>
+        <span class="n">ecdhYc</span> <span class="o">=</span> <span class="n">clientKeyExchange</span><span class="o">.</span><span class="n">ecdh_Yc</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ecdhYc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSDecodeError</span><span class="p">(</span><span class="s2">&quot;No key share&quot;</span><span class="p">)</span>
+
+        <span class="n">kex</span> <span class="o">=</span> <span class="n">ECDHKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kex</span><span class="o">.</span><span class="n">calc_shared_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ecdhXs</span><span class="p">,</span> <span class="n">ecdhYc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AECDHKeyExchange.processServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.AECDHKeyExchange.processServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">processServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srvPublicKey</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the server key exchange, return premaster secret&quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="n">srvPublicKey</span>
+
+        <span class="k">if</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">curve_type</span> <span class="o">!=</span> <span class="n">ECCurveType</span><span class="o">.</span><span class="n">named_curve</span> \
+            <span class="ow">or</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">named_curve</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">acceptedCurves</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Server picked curve we &quot;</span>
+                                               <span class="s2">&quot;didn&#39;t advertise&quot;</span><span class="p">)</span>
+
+        <span class="n">ecdh_Ys</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">ecdh_Ys</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ecdh_Ys</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSDecodeError</span><span class="p">(</span><span class="s2">&quot;Empty server key share&quot;</span><span class="p">)</span>
+
+        <span class="n">kex</span> <span class="o">=</span> <span class="n">ECDHKeyExchange</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">named_curve</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span><span class="p">)</span>
+        <span class="n">ecdhXc</span> <span class="o">=</span> <span class="n">kex</span><span class="o">.</span><span class="n">get_random_private_key</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ecdhXc</span><span class="p">,</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">SigningKey</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ecdhYc</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span>
+                <span class="n">ecdhXc</span><span class="o">.</span><span class="n">get_verifying_key</span><span class="p">()</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span>
+                    <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;uncompressed&#39;</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ecdhYc</span> <span class="o">=</span> <span class="n">kex</span><span class="o">.</span><span class="n">calc_public_value</span><span class="p">(</span><span class="n">ecdhXc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kex</span><span class="o">.</span><span class="n">calc_shared_key</span><span class="p">(</span><span class="n">ecdhXc</span><span class="p">,</span> <span class="n">ecdh_Ys</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AECDHKeyExchange.makeClientKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.AECDHKeyExchange.makeClientKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make client key exchange for ECDHE&quot;&quot;&quot;</span>
+        <span class="n">cke</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">AECDHKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">makeClientKeyExchange</span><span class="p">()</span>
+        <span class="n">cke</span><span class="o">.</span><span class="n">createECDH</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ecdhYc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cke</span></div></div>
+
+
+<span class="c1"># The ECDHE_RSA part comes from the IETF names of ciphersuites, so we want to</span>
+<span class="c1"># keep it</span>
+<span class="c1">#pylint: disable = invalid-name</span>
+<div class="viewcode-block" id="ECDHE_RSAKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ECDHE_RSAKeyExchange">[docs]</a><span class="k">class</span> <span class="nc">ECDHE_RSAKeyExchange</span><span class="p">(</span><span class="n">AuthenticatedKeyExchange</span><span class="p">,</span> <span class="n">AECDHKeyExchange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class for conducting ECDHE key exchange&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ECDHE_RSAKeyExchange.__init__"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ECDHE_RSAKeyExchange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span> <span class="n">serverHello</span><span class="p">,</span> <span class="n">privateKey</span><span class="p">,</span>
+                 <span class="n">acceptedCurves</span><span class="p">,</span> <span class="n">defaultCurve</span><span class="o">=</span><span class="n">GroupName</span><span class="o">.</span><span class="n">secp256r1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ECDHE_RSAKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span>
+                                                   <span class="n">serverHello</span><span class="p">,</span>
+                                                   <span class="n">acceptedCurves</span><span class="p">,</span>
+                                                   <span class="n">defaultCurve</span><span class="p">)</span>
+<span class="c1">#pylint: enable = invalid-name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">privateKey</span> <span class="o">=</span> <span class="n">privateKey</span></div></div>
+
+
+<div class="viewcode-block" id="SRPKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.SRPKeyExchange">[docs]</a><span class="k">class</span> <span class="nc">SRPKeyExchange</span><span class="p">(</span><span class="n">KeyExchange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class for conducting SRP key exchange&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SRPKeyExchange.__init__"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.SRPKeyExchange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span> <span class="n">serverHello</span><span class="p">,</span> <span class="n">privateKey</span><span class="p">,</span>
+                 <span class="n">verifierDB</span><span class="p">,</span> <span class="n">srpUsername</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Link Key Exchange options with verifierDB for SRP&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SRPKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cipherSuite</span><span class="p">,</span> <span class="n">clientHello</span><span class="p">,</span>
+                                             <span class="n">serverHello</span><span class="p">,</span> <span class="n">privateKey</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verifierDB</span> <span class="o">=</span> <span class="n">verifierDB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">srpUsername</span> <span class="o">=</span> <span class="n">srpUsername</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="k">if</span> <span class="n">srpUsername</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">srpUsername</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;srpUsername must be a bytearray object&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">password</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;password must be a bytearray object&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SRPKeyExchange.makeServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.SRPKeyExchange.makeServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigHash</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create SRP version of Server Key Exchange&quot;&quot;&quot;</span>
+        <span class="n">srpUsername</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clientHello</span><span class="o">.</span><span class="n">srp_username</span><span class="p">)</span>
+        <span class="c1">#Get parameters from username</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verifierDB</span><span class="p">[</span><span class="n">srpUsername</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSUnknownPSKIdentity</span><span class="p">(</span><span class="s2">&quot;Unknown identity&quot;</span><span class="p">)</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span> <span class="o">=</span> <span class="n">entry</span>
+
+        <span class="c1">#Calculate server&#39;s ephemeral DH values (b, B)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">getRandomBytes</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">makeK</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="p">(</span><span class="n">powMod</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">))</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span>
+
+        <span class="c1">#Create ServerKeyExchange, signing it if necessary</span>
+        <span class="n">serverKeyExchange</span> <span class="o">=</span> <span class="n">ServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">serverHello</span><span class="o">.</span><span class="n">server_version</span><span class="p">)</span>
+        <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">createSRP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">srpCertSuites</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signServerKeyExchange</span><span class="p">(</span><span class="n">serverKeyExchange</span><span class="p">,</span> <span class="n">sigHash</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">serverKeyExchange</span></div>
+
+<div class="viewcode-block" id="SRPKeyExchange.processClientKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.SRPKeyExchange.processClientKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">processClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clientKeyExchange</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate premaster secret from Client Key Exchange and sent SKE&quot;&quot;&quot;</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">clientKeyExchange</span><span class="o">.</span><span class="n">srp_A</span>
+        <span class="k">if</span> <span class="n">A</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Invalid SRP A value&quot;</span><span class="p">)</span>
+
+        <span class="c1">#Calculate u</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">makeU</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
+
+        <span class="c1">#Calculate premaster secret</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">powMod</span><span class="p">((</span><span class="n">A</span> <span class="o">*</span> <span class="n">powMod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">))</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">S</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SRPKeyExchange.processServerKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.SRPKeyExchange.processServerKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">processServerKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srvPublicKey</span><span class="p">,</span> <span class="n">serverKeyExchange</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate premaster secret from ServerKeyExchange&quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="n">srvPublicKey</span> <span class="c1"># irrelevant for SRP</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">srp_N</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">srp_g</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">srp_s</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">serverKeyExchange</span><span class="o">.</span><span class="n">srp_B</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">goodGroupParameters</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSInsufficientSecurity</span><span class="p">(</span><span class="s2">&quot;Unknown group parameters&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">numBits</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">minKeySize</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSInsufficientSecurity</span><span class="p">(</span><span class="s2">&quot;N value is too small: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span>\
+                                          <span class="nb">format</span><span class="p">(</span><span class="n">numBits</span><span class="p">(</span><span class="n">N</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">numBits</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">maxKeySize</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSInsufficientSecurity</span><span class="p">(</span><span class="s2">&quot;N value is too large: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span>\
+                                          <span class="nb">format</span><span class="p">(</span><span class="n">numBits</span><span class="p">(</span><span class="n">N</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">B</span> <span class="o">%</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Suspicious B value&quot;</span><span class="p">)</span>
+
+        <span class="c1">#Client ephemeral value</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">getRandomBytes</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">powMod</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+        <span class="c1">#Calculate client&#39;s static DH values (x, v)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">makeX</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">srpUsername</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">powMod</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+        <span class="c1">#Calculate u</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">makeU</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+
+        <span class="c1">#Calculate premaster secret</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">makeK</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">powMod</span><span class="p">((</span><span class="n">B</span> <span class="o">-</span> <span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">v</span><span class="p">))</span> <span class="o">%</span> <span class="n">N</span><span class="p">,</span> <span class="n">a</span><span class="o">+</span><span class="p">(</span><span class="n">u</span><span class="o">*</span><span class="n">x</span><span class="p">),</span> <span class="n">N</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">S</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SRPKeyExchange.makeClientKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.SRPKeyExchange.makeClientKeyExchange">[docs]</a>    <span class="k">def</span> <span class="nf">makeClientKeyExchange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create ClientKeyExchange&quot;&quot;&quot;</span>
+        <span class="n">cke</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">SRPKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">makeClientKeyExchange</span><span class="p">()</span>
+        <span class="n">cke</span><span class="o">.</span><span class="n">createSRP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cke</span></div></div>
+
+
+<div class="viewcode-block" id="RawDHKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RawDHKeyExchange">[docs]</a><span class="k">class</span> <span class="nc">RawDHKeyExchange</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract class for performing Diffe-Hellman key exchange.</span>
+
+<span class="sd">    Provides a shared API for X25519, ECDHE and FFDHE key exchange.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RawDHKeyExchange.__init__"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RawDHKeyExchange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the parameters of the key exchange</span>
+
+<span class="sd">        Sets group on which the KEX will take part and protocol version used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span></div>
+
+<div class="viewcode-block" id="RawDHKeyExchange.get_random_private_key"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RawDHKeyExchange.get_random_private_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_random_private_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a random value suitable for use as the private value of KEX.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Abstract class&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RawDHKeyExchange.calc_public_value"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RawDHKeyExchange.calc_public_value">[docs]</a>    <span class="k">def</span> <span class="nf">calc_public_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">private</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the public value from the provided private value.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Abstract class&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RawDHKeyExchange.calc_shared_key"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.RawDHKeyExchange.calc_shared_key">[docs]</a>    <span class="k">def</span> <span class="nf">calc_shared_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">private</span><span class="p">,</span> <span class="n">peer_share</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcualte the shared key given our private and remote share value&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Abstract class&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="FFDHKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.FFDHKeyExchange">[docs]</a><span class="k">class</span> <span class="nc">FFDHKeyExchange</span><span class="p">(</span><span class="n">RawDHKeyExchange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implemenation of the Finite Field Diffie-Hellman key exchange.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FFDHKeyExchange.__init__"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.FFDHKeyExchange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prime</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FFDHKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prime</span> <span class="ow">and</span> <span class="n">group</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t set the RFC7919 group and custom params&quot;</span>
+                             <span class="s2">&quot; at the same time&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prime</span> <span class="o">=</span> <span class="n">RFC7919_GROUPS</span><span class="p">[</span><span class="n">group</span><span class="o">-</span><span class="mi">256</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prime</span> <span class="o">=</span> <span class="n">prime</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="n">generator</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Invalid DH generator&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FFDHKeyExchange.get_random_private_key"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.FFDHKeyExchange.get_random_private_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_random_private_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a random private value for the prime used.</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Per RFC 3526, Section 1, the exponent should have double the entropy</span>
+        <span class="c1"># of the strength of the group.</span>
+        <span class="n">needed_bytes</span> <span class="o">=</span> <span class="n">divceil</span><span class="p">(</span><span class="n">paramStrength</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">getRandomBytes</span><span class="p">(</span><span class="n">needed_bytes</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FFDHKeyExchange.calc_public_value"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.FFDHKeyExchange.calc_public_value">[docs]</a>    <span class="k">def</span> <span class="nf">calc_public_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">private</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the public value for given private value.</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dh_Y</span> <span class="o">=</span> <span class="n">powMod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">,</span> <span class="n">private</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dh_Y</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prime</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Small subgroup capture&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">dh_Y</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">dh_Y</span><span class="p">,</span> <span class="n">numBytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_normalise_peer_share</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_share</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the peer_share to number if necessary.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">peer_share</span><span class="p">,</span> <span class="p">(</span><span class="n">int_types</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">peer_share</span>
+
+        <span class="k">if</span> <span class="n">numBytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">peer_share</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span>
+                <span class="s2">&quot;Key share does not match FFDH prime&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">peer_share</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FFDHKeyExchange.calc_shared_key"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.FFDHKeyExchange.calc_shared_key">[docs]</a>    <span class="k">def</span> <span class="nf">calc_shared_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">private</span><span class="p">,</span> <span class="n">peer_share</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the shared key.&quot;&quot;&quot;</span>
+        <span class="n">peer_share</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalise_peer_share</span><span class="p">(</span><span class="n">peer_share</span><span class="p">)</span>
+        <span class="c1"># First half of RFC 2631, Section 2.1.5. Validate the client&#39;s public</span>
+        <span class="c1"># key.</span>
+        <span class="c1"># use of safe primes also means that the p-1 is invalid</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">peer_share</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">prime</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Invalid peer key share&quot;</span><span class="p">)</span>
+
+        <span class="n">S</span> <span class="o">=</span> <span class="n">powMod</span><span class="p">(</span><span class="n">peer_share</span><span class="p">,</span> <span class="n">private</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">S</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prime</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Small subgroup capture&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">numBytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prime</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="ECDHKeyExchange"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ECDHKeyExchange">[docs]</a><span class="k">class</span> <span class="nc">ECDHKeyExchange</span><span class="p">(</span><span class="n">RawDHKeyExchange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of the Elliptic Curve Diffie-Hellman key exchange.&quot;&quot;&quot;</span>
+
+    <span class="n">_x_groups</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">GroupName</span><span class="o">.</span><span class="n">x25519</span><span class="p">,</span> <span class="n">GroupName</span><span class="o">.</span><span class="n">x448</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_non_zero_check</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verify using constant time operation that the bytearray is not zero</span>
+
+<span class="sd">        :raises TLSIllegalParameterException: if the value is all zero</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">summa</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">summa</span> <span class="o">|=</span> <span class="n">i</span>
+        <span class="k">if</span> <span class="n">summa</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Invalid key share&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ECDHKeyExchange.__init__"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ECDHKeyExchange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ECDHKeyExchange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ECDHKeyExchange.get_random_private_key"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ECDHKeyExchange.get_random_private_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_random_private_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return random private key value for the selected curve.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_groups</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">==</span> <span class="n">GroupName</span><span class="o">.</span><span class="n">x25519</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">getRandomBytes</span><span class="p">(</span><span class="n">X25519_ORDER_SIZE</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">getRandomBytes</span><span class="p">(</span><span class="n">X448_ORDER_SIZE</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">curve</span> <span class="o">=</span> <span class="n">getCurveByName</span><span class="p">(</span><span class="n">GroupName</span><span class="o">.</span><span class="n">toStr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">SigningKey</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_fun_gen_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the function and generator for X25519/X448 KEX.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">==</span> <span class="n">GroupName</span><span class="o">.</span><span class="n">x25519</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x25519</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">X25519_G</span><span class="p">),</span> <span class="n">X25519_ORDER_SIZE</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x448</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">X448_G</span><span class="p">),</span> <span class="n">X448_ORDER_SIZE</span>
+
+<div class="viewcode-block" id="ECDHKeyExchange.calc_public_value"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ECDHKeyExchange.calc_public_value">[docs]</a>    <span class="k">def</span> <span class="nf">calc_public_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">private</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate public value for given private key.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">private</span><span class="p">,</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">SigningKey</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">private</span><span class="o">.</span><span class="n">verifying_key</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="s1">&#39;uncompressed&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_groups</span><span class="p">:</span>
+            <span class="n">fun</span><span class="p">,</span> <span class="n">generator</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_fun_gen_size</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">fun</span><span class="p">(</span><span class="n">private</span><span class="p">,</span> <span class="n">generator</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">curve</span> <span class="o">=</span> <span class="n">getCurveByName</span><span class="p">(</span><span class="n">GroupName</span><span class="o">.</span><span class="n">toStr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">))</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">generator</span> <span class="o">*</span> <span class="n">private</span>
+            <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="s1">&#39;uncompressed&#39;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ECDHKeyExchange.calc_shared_key"><a class="viewcode-back" href="../../tlslite.keyexchange.html#tlslite.keyexchange.ECDHKeyExchange.calc_shared_key">[docs]</a>    <span class="k">def</span> <span class="nf">calc_shared_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">private</span><span class="p">,</span> <span class="n">peer_share</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the shared key,&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_groups</span><span class="p">:</span>
+            <span class="n">fun</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_fun_gen_size</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">peer_share</span><span class="p">)</span> <span class="o">!=</span> <span class="n">size</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Invalid key share&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">private</span><span class="p">,</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">SigningKey</span><span class="p">):</span>
+                <span class="n">private</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">private</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+            <span class="n">S</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">private</span><span class="p">,</span> <span class="n">peer_share</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_non_zero_check</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">S</span>
+
+        <span class="n">curve</span> <span class="o">=</span> <span class="n">getCurveByName</span><span class="p">(</span><span class="n">GroupName</span><span class="o">.</span><span class="n">toRepr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">abstractPoint</span> <span class="o">=</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">ellipticcurve</span><span class="o">.</span><span class="n">AbstractPoint</span><span class="p">()</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">abstractPoint</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">curve</span><span class="p">,</span> <span class="n">peer_share</span><span class="p">)</span>
+            <span class="n">ecdhYc</span> <span class="o">=</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">ellipticcurve</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span>
+                <span class="n">curve</span><span class="o">.</span><span class="n">curve</span><span class="p">,</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">except</span> <span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="n">DecodeError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TLSIllegalParameterException</span><span class="p">(</span><span class="s2">&quot;Invalid ECC point&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">private</span><span class="p">,</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">SigningKey</span><span class="p">):</span>
+            <span class="n">ecdh</span> <span class="o">=</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">ecdh</span><span class="o">.</span><span class="n">ECDH</span><span class="p">(</span><span class="n">curve</span><span class="o">=</span><span class="n">curve</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="n">private</span><span class="p">)</span>
+            <span class="n">ecdh</span><span class="o">.</span><span class="n">load_received_public_key_bytes</span><span class="p">(</span><span class="n">peer_share</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">ecdh</span><span class="o">.</span><span class="n">generate_sharedsecret_bytes</span><span class="p">())</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">ecdhYc</span> <span class="o">*</span> <span class="n">private</span>
+
+        <span class="k">return</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">getPointByteSize</span><span class="p">(</span><span class="n">ecdhYc</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

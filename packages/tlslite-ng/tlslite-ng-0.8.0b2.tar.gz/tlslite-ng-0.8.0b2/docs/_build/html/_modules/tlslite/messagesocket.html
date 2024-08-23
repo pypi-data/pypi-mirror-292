@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.messagesocket &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.messagesocket</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.messagesocket</h1><div class="highlight"><pre>
+<span></span><span class="c1"># vim: set fileencoding=utf8</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2015, Hubert Kario</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Wrapper of TLS RecordLayer providing message-level abstraction&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.recordlayer</span> <span class="kn">import</span> <span class="n">RecordLayer</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">ContentType</span>
+<span class="kn">from</span> <span class="nn">.messages</span> <span class="kn">import</span> <span class="n">RecordHeader3</span><span class="p">,</span> <span class="n">Message</span>
+<span class="kn">from</span> <span class="nn">.utils.codec</span> <span class="kn">import</span> <span class="n">Parser</span>
+
+<div class="viewcode-block" id="MessageSocket"><a class="viewcode-back" href="../../tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket">[docs]</a><span class="k">class</span> <span class="nc">MessageSocket</span><span class="p">(</span><span class="n">RecordLayer</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;TLS Record Layer socket that provides Message level abstraction</span>
+
+<span class="sd">    Because the record layer has a hard size limit on sent messages, they need</span>
+<span class="sd">    to be fragmented before sending. Similarly, a single record layer record</span>
+<span class="sd">    can include multiple handshake protocol messages (very common with</span>
+<span class="sd">    ServerHello, Certificate and ServerHelloDone), as such, the user of</span>
+<span class="sd">    RecordLayer needs to fragment those records into multiple messages.</span>
+<span class="sd">    Unfortunately, fragmentation of messages requires some degree of</span>
+<span class="sd">    knowledge about the messages passed and as such is outside scope of pure</span>
+<span class="sd">    record layer implementation.</span>
+
+<span class="sd">    This class tries to provide a useful abstraction for handling Handshake</span>
+<span class="sd">    protocol messages.</span>
+
+<span class="sd">    :vartype recordSize: int</span>
+<span class="sd">    :ivar recordSize: maximum size of records sent through socket. Messages</span>
+<span class="sd">        bigger than this size will be fragmented to smaller chunks. Setting it</span>
+<span class="sd">        to higher value than the default 2^14 will make the implementation</span>
+<span class="sd">        non RFC compliant and likely not interoperable with other peers.</span>
+
+<span class="sd">    :vartype defragmenter: Defragmenter</span>
+<span class="sd">    :ivar defragmenter: defragmenter used for read records</span>
+
+<span class="sd">    :vartype unfragmentedDataTypes: tuple</span>
+<span class="sd">    :ivar unfragmentedDataTypes: data types which will be passed as-read,</span>
+<span class="sd">        TLS application_data and heartbeat by default</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MessageSocket.__init__"><a class="viewcode-back" href="../../tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">defragmenter</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply TLS Record Layer abstraction to raw network socket.</span>
+
+<span class="sd">        :type sock: socket.socket</span>
+<span class="sd">        :param sock: network socket to wrap</span>
+<span class="sd">        :type defragmenter: Defragmenter</span>
+<span class="sd">        :param defragmenter: defragmenter to apply on the records read</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MessageSocket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">sock</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">defragmenter</span> <span class="o">=</span> <span class="n">defragmenter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unfragmentedDataTypes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ContentType</span><span class="o">.</span><span class="n">application_data</span><span class="p">,</span>
+                                      <span class="n">ContentType</span><span class="o">.</span><span class="n">heartbeat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lastRecordVersion</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sendBuffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sendBufferType</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">recordSize</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">14</span></div>
+
+<div class="viewcode-block" id="MessageSocket.recvMessage"><a class="viewcode-back" href="../../tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket.recvMessage">[docs]</a>    <span class="k">def</span> <span class="nf">recvMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read next message in queue</span>
+
+<span class="sd">        will return a 0 or 1 if the read is blocking, a tuple of</span>
+<span class="sd">        :py:class:`RecordHeader3` and :py:class:`Parser` in case a message was</span>
+<span class="sd">        received.</span>
+
+<span class="sd">        :rtype: generator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defragmenter</span><span class="o">.</span><span class="n">get_message</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">ret</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">RecordHeader3</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lastRecordVersion</span><span class="p">,</span>
+                                                <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                <span class="mi">0</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">header</span><span class="p">,</span> <span class="n">Parser</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="k">for</span> <span class="n">ret</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">recvRecord</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">ret</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">ret</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+            <span class="n">header</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">ret</span>
+            <span class="k">if</span> <span class="n">header</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unfragmentedDataTypes</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">ret</span>
+            <span class="c1"># TODO probably needs a bit better handling...</span>
+            <span class="k">if</span> <span class="n">header</span><span class="o">.</span><span class="n">ssl2</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">ret</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">defragmenter</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">parser</span><span class="o">.</span><span class="n">bytes</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lastRecordVersion</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">version</span></div>
+
+<div class="viewcode-block" id="MessageSocket.recvMessageBlocking"><a class="viewcode-back" href="../../tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket.recvMessageBlocking">[docs]</a>    <span class="k">def</span> <span class="nf">recvMessageBlocking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blocking variant of :py:meth:`recvMessage`.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">recvMessage</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">res</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="MessageSocket.flush"><a class="viewcode-back" href="../../tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Empty the queue of messages to write</span>
+
+<span class="sd">        Will fragment the messages and write them in as little records as</span>
+<span class="sd">        possible.</span>
+
+<span class="sd">        :rtype: generator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sendBuffer</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">recordPayload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendBuffer</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">recordSize</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sendBuffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendBuffer</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">recordSize</span><span class="p">:]</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sendBufferType</span><span class="p">,</span> <span class="n">recordPayload</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sendRecord</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">res</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sendBuffer</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sendBufferType</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="MessageSocket.flushBlocking"><a class="viewcode-back" href="../../tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket.flushBlocking">[docs]</a>    <span class="k">def</span> <span class="nf">flushBlocking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blocking variant of :py:meth:`flush`.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">():</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="MessageSocket.queueMessage"><a class="viewcode-back" href="../../tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket.queueMessage">[docs]</a>    <span class="k">def</span> <span class="nf">queueMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Queue message for sending</span>
+
+<span class="sd">        If the message is of same type as messages in queue, the message is</span>
+<span class="sd">        just added to queue.</span>
+
+<span class="sd">        If the message is of different type as messages in queue, the queue is</span>
+<span class="sd">        flushed and then the message is queued.</span>
+
+<span class="sd">        :rtype: generator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendBufferType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sendBufferType</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span>
+
+        <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendBufferType</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sendBuffer</span> <span class="o">+=</span> <span class="n">msg</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">res</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendBufferType</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sendBufferType</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">contentType</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sendBuffer</span> <span class="o">+=</span> <span class="n">msg</span><span class="o">.</span><span class="n">write</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MessageSocket.queueMessageBlocking"><a class="viewcode-back" href="../../tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket.queueMessageBlocking">[docs]</a>    <span class="k">def</span> <span class="nf">queueMessageBlocking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blocking variant of :py:meth:`queueMessage`.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">queueMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="MessageSocket.sendMessage"><a class="viewcode-back" href="../../tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket.sendMessage">[docs]</a>    <span class="k">def</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fragment and send a message.</span>
+
+<span class="sd">        If a messages already of same type reside in queue, the message if</span>
+<span class="sd">        first added to it and then the queue is flushed.</span>
+
+<span class="sd">        If the message is of different type than the queue, the queue is</span>
+<span class="sd">        flushed, the message is added to queue and the queue is flushed again.</span>
+
+<span class="sd">        Use the sendRecord() message if you want to send a message outside</span>
+<span class="sd">        the queue, or a message of zero size.</span>
+
+<span class="sd">        :rtype: generator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">queueMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">res</span>
+
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="MessageSocket.sendMessageBlocking"><a class="viewcode-back" href="../../tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket.sendMessageBlocking">[docs]</a>    <span class="k">def</span> <span class="nf">sendMessageBlocking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blocking variant of :py:meth:`sendMessage`.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+            <span class="k">pass</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

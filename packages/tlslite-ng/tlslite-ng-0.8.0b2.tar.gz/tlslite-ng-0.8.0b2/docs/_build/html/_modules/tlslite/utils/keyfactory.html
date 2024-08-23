@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.utils.keyfactory &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.utils.keyfactory</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.utils.keyfactory</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Trevor Perrin</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Factory functions for asymmetric cryptography.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">.rsakey</span> <span class="kn">import</span> <span class="n">RSAKey</span>
+<span class="kn">from</span> <span class="nn">.python_rsakey</span> <span class="kn">import</span> <span class="n">Python_RSAKey</span>
+<span class="kn">from</span> <span class="nn">.python_ecdsakey</span> <span class="kn">import</span> <span class="n">Python_ECDSAKey</span>
+<span class="kn">from</span> <span class="nn">.python_dsakey</span> <span class="kn">import</span> <span class="n">Python_DSAKey</span>
+<span class="kn">from</span> <span class="nn">.python_eddsakey</span> <span class="kn">import</span> <span class="n">Python_EdDSAKey</span>
+<span class="kn">from</span> <span class="nn">tlslite.utils</span> <span class="kn">import</span> <span class="n">cryptomath</span>
+
+<span class="k">if</span> <span class="n">cryptomath</span><span class="o">.</span><span class="n">m2cryptoLoaded</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.openssl_rsakey</span> <span class="kn">import</span> <span class="n">OpenSSL_RSAKey</span>
+
+<span class="k">if</span> <span class="n">cryptomath</span><span class="o">.</span><span class="n">pycryptoLoaded</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.pycrypto_rsakey</span> <span class="kn">import</span> <span class="n">PyCrypto_RSAKey</span>
+
+<span class="c1"># **************************************************************************</span>
+<span class="c1"># Factory Functions for RSA Keys</span>
+<span class="c1"># **************************************************************************</span>
+
+<div class="viewcode-block" id="generateRSAKey"><a class="viewcode-back" href="../../../tlslite.utils.keyfactory.html#tlslite.utils.keyfactory.generateRSAKey">[docs]</a><span class="k">def</span> <span class="nf">generateRSAKey</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">implementations</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;openssl&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate an RSA key with the specified bit length.</span>
+
+<span class="sd">    :type bits: int</span>
+<span class="sd">    :param bits: Desired bit length of the new key&#39;s modulus.</span>
+
+<span class="sd">    :rtype: ~tlslite.utils.rsakey.RSAKey</span>
+<span class="sd">    :returns: A new RSA private key.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">implementation</span> <span class="ow">in</span> <span class="n">implementations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s2">&quot;openssl&quot;</span> <span class="ow">and</span> <span class="n">cryptomath</span><span class="o">.</span><span class="n">m2cryptoLoaded</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">OpenSSL_RSAKey</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Python_RSAKey</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No acceptable implementations&quot;</span><span class="p">)</span></div>
+
+<span class="c1">#Parse as an OpenSSL or Python key</span>
+<div class="viewcode-block" id="parsePEMKey"><a class="viewcode-back" href="../../../tlslite.utils.keyfactory.html#tlslite.utils.keyfactory.parsePEMKey">[docs]</a><span class="k">def</span> <span class="nf">parsePEMKey</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">public</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">passwordCallback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">implementations</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;openssl&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a PEM-format key.</span>
+
+<span class="sd">    The PEM format is used by OpenSSL and other tools.  The</span>
+<span class="sd">    format is typically used to store both the public and private</span>
+<span class="sd">    components of a key.  For example::</span>
+
+<span class="sd">       -----BEGIN RSA PRIVATE KEY-----</span>
+<span class="sd">        MIICXQIBAAKBgQDYscuoMzsGmW0pAYsmyHltxB2TdwHS0dImfjCMfaSDkfLdZY5+</span>
+<span class="sd">        dOWORVns9etWnr194mSGA1F0Pls/VJW8+cX9+3vtJV8zSdANPYUoQf0TP7VlJxkH</span>
+<span class="sd">        dSRkUbEoz5bAAs/+970uos7n7iXQIni+3erUTdYEk2iWnMBjTljfgbK/dQIDAQAB</span>
+<span class="sd">        AoGAJHoJZk75aKr7DSQNYIHuruOMdv5ZeDuJvKERWxTrVJqE32/xBKh42/IgqRrc</span>
+<span class="sd">        esBN9ZregRCd7YtxoL+EVUNWaJNVx2mNmezEznrc9zhcYUrgeaVdFO2yBF1889zO</span>
+<span class="sd">        gCOVwrO8uDgeyj6IKa25H6c1N13ih/o7ZzEgWbGG+ylU1yECQQDv4ZSJ4EjSh/Fl</span>
+<span class="sd">        aHdz3wbBa/HKGTjC8iRy476Cyg2Fm8MZUe9Yy3udOrb5ZnS2MTpIXt5AF3h2TfYV</span>
+<span class="sd">        VoFXIorjAkEA50FcJmzT8sNMrPaV8vn+9W2Lu4U7C+K/O2g1iXMaZms5PC5zV5aV</span>
+<span class="sd">        CKXZWUX1fq2RaOzlbQrpgiolhXpeh8FjxwJBAOFHzSQfSsTNfttp3KUpU0LbiVvv</span>
+<span class="sd">        i+spVSnA0O4rq79KpVNmK44Mq67hsW1P11QzrzTAQ6GVaUBRv0YS061td1kCQHnP</span>
+<span class="sd">        wtN2tboFR6lABkJDjxoGRvlSt4SOPr7zKGgrWjeiuTZLHXSAnCY+/hr5L9Q3ZwXG</span>
+<span class="sd">        6x6iBdgLjVIe4BZQNtcCQQDXGv/gWinCNTN3MPWfTW/RGzuMYVmyBFais0/VrgdH</span>
+<span class="sd">        h1dLpztmpQqfyH/zrBXQ9qL/zR4ojS6XYneO/U18WpEe</span>
+<span class="sd">        -----END RSA PRIVATE KEY-----</span>
+
+<span class="sd">    To generate a key like this with OpenSSL, run::</span>
+
+<span class="sd">        openssl genrsa 2048 &gt; key.pem</span>
+
+<span class="sd">    This format also supports password-encrypted private keys.  TLS</span>
+<span class="sd">    Lite can only handle password-encrypted private keys when OpenSSL</span>
+<span class="sd">    and M2Crypto are installed.  In this case, passwordCallback will be</span>
+<span class="sd">    invoked to query the user for the password.</span>
+
+<span class="sd">    :type s: str</span>
+<span class="sd">    :param s: A string containing a PEM-encoded public or private key.</span>
+
+<span class="sd">    :type private: bool</span>
+<span class="sd">    :param private: If True, a :py:class:`SyntaxError` will be raised if the</span>
+<span class="sd">        private key component is not present.</span>
+
+<span class="sd">    :type public: bool</span>
+<span class="sd">    :param public: If True, the private key component (if present) will</span>
+<span class="sd">        be discarded, so this function will always return a public key.</span>
+
+<span class="sd">    :type passwordCallback: callable</span>
+<span class="sd">    :param passwordCallback: This function will be called, with no</span>
+<span class="sd">        arguments, if the PEM-encoded private key is password-encrypted.</span>
+<span class="sd">        The callback should return the password string.  If the password is</span>
+<span class="sd">        incorrect, SyntaxError will be raised.  If no callback is passed</span>
+<span class="sd">        and the key is password-encrypted, a prompt will be displayed at</span>
+<span class="sd">        the console.</span>
+
+<span class="sd">    :rtype: ~tlslite.utils.rsakey.RSAKey</span>
+<span class="sd">    :returns: An RSA key.</span>
+
+<span class="sd">    :raises SyntaxError: If the key is not properly formatted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># as old versions of openssl can&#39;t handle RSA-PSS or ECDSA keys, first</span>
+    <span class="c1"># try to detect what kind of key it is (we ignore errors as the python</span>
+    <span class="c1"># code can&#39;t handle encrypted key files while m2crypto/openssl can)</span>
+    <span class="n">key_type</span> <span class="o">=</span> <span class="s2">&quot;rsa&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">Python_RSAKey</span><span class="o">.</span><span class="n">parsePEM</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">key_type</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">key_type</span>
+        <span class="k">del</span> <span class="n">key</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">for</span> <span class="n">implementation</span> <span class="ow">in</span> <span class="n">implementations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s2">&quot;openssl&quot;</span> <span class="ow">and</span> <span class="n">cryptomath</span><span class="o">.</span><span class="n">m2cryptoLoaded</span> \
+                <span class="ow">and</span> <span class="n">key_type</span> <span class="o">==</span> <span class="s2">&quot;rsa&quot;</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">OpenSSL_RSAKey</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">passwordCallback</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">elif</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">Python_RSAKey</span><span class="o">.</span><span class="n">parsePEM</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No acceptable implementations&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_parseKeyHelper</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">private</span><span class="p">,</span> <span class="n">public</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_parseKeyHelper</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">private</span><span class="p">,</span> <span class="n">public</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">private</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">hasPrivateKey</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s2">&quot;Not a private key!&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">public</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_createPublicKey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">private</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cryptomath</span><span class="o">.</span><span class="n">m2cryptoLoaded</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">Python_RSAKey</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">_createPrivateKey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="n">OpenSSL_RSAKey</span><span class="p">,</span> <span class="n">Python_ECDSAKey</span><span class="p">,</span>
+                <span class="n">Python_DSAKey</span><span class="p">,</span> <span class="n">Python_EdDSAKey</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">key</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">_createPrivateKey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">key</span>
+
+
+<div class="viewcode-block" id="parseAsPublicKey"><a class="viewcode-back" href="../../../tlslite.utils.keyfactory.html#tlslite.utils.keyfactory.parseAsPublicKey">[docs]</a><span class="k">def</span> <span class="nf">parseAsPublicKey</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a PEM-formatted public key.</span>
+
+<span class="sd">    :type s: str</span>
+<span class="sd">    :param s: A string containing a PEM-encoded public or private key.</span>
+
+<span class="sd">    :rtype: ~tlslite.utils.rsakey.RSAKey</span>
+<span class="sd">    :returns: An RSA public key.</span>
+
+<span class="sd">    :raises SyntaxError: If the key is not properly formatted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">parsePEMKey</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">public</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="parsePrivateKey"><a class="viewcode-back" href="../../../tlslite.utils.keyfactory.html#tlslite.utils.keyfactory.parsePrivateKey">[docs]</a><span class="k">def</span> <span class="nf">parsePrivateKey</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a PEM-formatted private key.</span>
+
+<span class="sd">    :type s: str</span>
+<span class="sd">    :param s: A string containing a PEM-encoded private key.</span>
+
+<span class="sd">    :rtype: ~tlslite.utils.rsakey.RSAKey</span>
+<span class="sd">    :returns: An RSA private key.</span>
+
+<span class="sd">    :raises SyntaxError: If the key is not properly formatted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">parsePEMKey</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">_createPublicKey</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a new public key.  Discard any private component,</span>
+<span class="sd">    and return the most efficient key possible.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">RSAKey</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">_createPublicRSAKey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">key_type</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_createPrivateKey</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a new private key.  Return the most efficient key possible.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">RSAKey</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">hasPrivateKey</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">_createPrivateRSAKey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">p</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">dP</span><span class="p">,</span>
+                                <span class="n">key</span><span class="o">.</span><span class="n">dQ</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">qInv</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">key_type</span><span class="p">)</span>
+
+<span class="c1"># n, e, d, etc. are the names used in mathematical proofs for the variables</span>
+<span class="c1"># so using so short names makes it actually more readable</span>
+<span class="c1"># pylint: disable=invalid-name</span>
+<span class="k">def</span> <span class="nf">_createPublicRSAKey</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">key_type</span><span class="p">,</span>
+                        <span class="n">implementations</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;openssl&quot;</span><span class="p">,</span> <span class="s2">&quot;pycrypto&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">implementation</span> <span class="ow">in</span> <span class="n">implementations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s2">&quot;openssl&quot;</span> <span class="ow">and</span> <span class="n">cryptomath</span><span class="o">.</span><span class="n">m2cryptoLoaded</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">OpenSSL_RSAKey</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">key_type</span><span class="o">=</span><span class="n">key_type</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s2">&quot;pycrypto&quot;</span> <span class="ow">and</span> <span class="n">cryptomath</span><span class="o">.</span><span class="n">pycryptoLoaded</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PyCrypto_RSAKey</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">key_type</span><span class="o">=</span><span class="n">key_type</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Python_RSAKey</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">key_type</span><span class="o">=</span><span class="n">key_type</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No acceptable implementations&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_createPrivateRSAKey</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">dP</span><span class="p">,</span> <span class="n">dQ</span><span class="p">,</span> <span class="n">qInv</span><span class="p">,</span> <span class="n">key_type</span><span class="p">,</span>
+                         <span class="n">implementations</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;pycrypto&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">implementation</span> <span class="ow">in</span> <span class="n">implementations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s2">&quot;pycrypto&quot;</span> <span class="ow">and</span> <span class="n">cryptomath</span><span class="o">.</span><span class="n">pycryptoLoaded</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PyCrypto_RSAKey</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">dP</span><span class="p">,</span> <span class="n">dQ</span><span class="p">,</span> <span class="n">qInv</span><span class="p">,</span>
+                                   <span class="n">key_type</span><span class="o">=</span><span class="n">key_type</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Python_RSAKey</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">dP</span><span class="p">,</span> <span class="n">dQ</span><span class="p">,</span> <span class="n">qInv</span><span class="p">,</span>
+                                 <span class="n">key_type</span><span class="o">=</span><span class="n">key_type</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No acceptable implementations&quot;</span><span class="p">)</span>
+<span class="c1"># pylint: enable=invalid-name</span>
+
+
+<span class="k">def</span> <span class="nf">_create_public_ecdsa_key</span><span class="p">(</span><span class="n">point_x</span><span class="p">,</span> <span class="n">point_y</span><span class="p">,</span> <span class="n">curve_name</span><span class="p">,</span>
+                             <span class="n">implementations</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">,)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert public key parameters into concrete implementation of verifier.</span>
+
+<span class="sd">    The public key in ECDSA is a point on elliptic curve, so it consists of</span>
+<span class="sd">    two integers that identify the point and the name of the curve on which</span>
+<span class="sd">    it needs to lie on.</span>
+
+<span class="sd">    :type point_x: int</span>
+<span class="sd">    :param point_x: the &#39;x&#39; coordinate of the point</span>
+<span class="sd">    :type point_y: int</span>
+<span class="sd">    :param point_y: the &#39;y&#39; coordinate of the point</span>
+<span class="sd">    :type curve_name: str</span>
+<span class="sd">    :param curve_name: well known name of the curve (e.g. &#39;NIST256p&#39; or</span>
+<span class="sd">        &#39;SECP256k1&#39;)</span>
+<span class="sd">    :type implementations: iterable of str</span>
+<span class="sd">    :param implementations: list of implementations that can be used as the</span>
+<span class="sd">        concrete implementation of the verifying key (only &#39;python&#39; is</span>
+<span class="sd">        supported currently)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">impl</span> <span class="ow">in</span> <span class="n">implementations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">impl</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Python_ECDSAKey</span><span class="p">(</span><span class="n">point_x</span><span class="p">,</span> <span class="n">point_y</span><span class="p">,</span> <span class="n">curve_name</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No acceptable implementation&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_create_public_eddsa_key</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span>
+                             <span class="n">implementations</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">,)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert the python-ecdsa public key into concrete implementation of</span>
+<span class="sd">    verifier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">impl</span> <span class="ow">in</span> <span class="n">implementations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">impl</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Python_EdDSAKey</span><span class="p">(</span><span class="n">public_key</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No acceptable implementation&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_create_public_dsa_key</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+                           <span class="n">implementations</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">,)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert public key parameters into concrete implementation of verifier.</span>
+
+<span class="sd">    The public key in DSA consists of four integers.</span>
+
+<span class="sd">    :type p: int</span>
+<span class="sd">    :param p: domain parameter, prime num defining Gaolis Field</span>
+<span class="sd">    :type q: int</span>
+<span class="sd">    :param q: domain parameter, prime factor of p-1</span>
+<span class="sd">    :type g: int</span>
+<span class="sd">    :param g: domain parameter, generator of q-order cyclic group GP(p)</span>
+<span class="sd">    :type y: int</span>
+<span class="sd">    :param y: public key</span>
+<span class="sd">    :type implementations: iterable of str</span>
+<span class="sd">    :param implementations: list of implementations that can be used as the</span>
+<span class="sd">        concrete implementation of the verifying key (only &#39;python&#39; is</span>
+<span class="sd">        supported currently)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">impl</span> <span class="ow">in</span> <span class="n">implementations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">impl</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Python_DSAKey</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">q</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No acceptable implementation&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

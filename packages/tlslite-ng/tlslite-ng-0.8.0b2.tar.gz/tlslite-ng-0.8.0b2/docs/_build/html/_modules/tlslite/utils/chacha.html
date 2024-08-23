@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.utils.chacha &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.utils.chacha</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.utils.chacha</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2015, Hubert Kario</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+<span class="sd">&quot;&quot;&quot;Pure Python implementation of ChaCha cipher</span>
+
+<span class="sd">Implementation that follows RFC 7539 closely.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">compat26Str</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># in Python 3 the native zip returns iterator</span>
+    <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">izip</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">izip</span> <span class="o">=</span> <span class="nb">zip</span>
+
+<div class="viewcode-block" id="ChaCha"><a class="viewcode-back" href="../../../tlslite.utils.chacha.html#tlslite.utils.chacha.ChaCha">[docs]</a><span class="k">class</span> <span class="nc">ChaCha</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pure python implementation of ChaCha cipher&quot;&quot;&quot;</span>
+
+    <span class="n">constants</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0x61707865</span><span class="p">,</span> <span class="mh">0x3320646e</span><span class="p">,</span> <span class="mh">0x79622d32</span><span class="p">,</span> <span class="mh">0x6b206574</span><span class="p">]</span>
+
+<div class="viewcode-block" id="ChaCha.rotl32"><a class="viewcode-back" href="../../../tlslite.utils.chacha.html#tlslite.utils.chacha.ChaCha.rotl32">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">rotl32</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotate left a 32 bit integer v by c bits&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">v</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">v</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">32</span> <span class="o">-</span> <span class="n">c</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ChaCha.quarter_round"><a class="viewcode-back" href="../../../tlslite.utils.chacha.html#tlslite.utils.chacha.ChaCha.quarter_round">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">quarter_round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a ChaCha quarter round&quot;&quot;&quot;</span>
+        <span class="n">xa</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+        <span class="n">xb</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+        <span class="n">xc</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+        <span class="n">xd</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
+
+        <span class="n">xa</span> <span class="o">=</span> <span class="p">(</span><span class="n">xa</span> <span class="o">+</span> <span class="n">xb</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+        <span class="n">xd</span> <span class="o">=</span> <span class="n">xd</span> <span class="o">^</span> <span class="n">xa</span>
+        <span class="n">xd</span> <span class="o">=</span> <span class="p">((</span><span class="n">xd</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="o">|</span> <span class="p">(</span><span class="n">xd</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">))</span>
+
+        <span class="n">xc</span> <span class="o">=</span> <span class="p">(</span><span class="n">xc</span> <span class="o">+</span> <span class="n">xd</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+        <span class="n">xb</span> <span class="o">=</span> <span class="n">xb</span> <span class="o">^</span> <span class="n">xc</span>
+        <span class="n">xb</span> <span class="o">=</span> <span class="p">((</span><span class="n">xb</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="o">|</span> <span class="p">(</span><span class="n">xb</span> <span class="o">&gt;&gt;</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="n">xa</span> <span class="o">=</span> <span class="p">(</span><span class="n">xa</span> <span class="o">+</span> <span class="n">xb</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+        <span class="n">xd</span> <span class="o">=</span> <span class="n">xd</span> <span class="o">^</span> <span class="n">xa</span>
+        <span class="n">xd</span> <span class="o">=</span> <span class="p">((</span><span class="n">xd</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="o">|</span> <span class="p">(</span><span class="n">xd</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">))</span>
+
+        <span class="n">xc</span> <span class="o">=</span> <span class="p">(</span><span class="n">xc</span> <span class="o">+</span> <span class="n">xd</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+        <span class="n">xb</span> <span class="o">=</span> <span class="n">xb</span> <span class="o">^</span> <span class="n">xc</span>
+        <span class="n">xb</span> <span class="o">=</span> <span class="p">((</span><span class="n">xb</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="o">|</span> <span class="p">(</span><span class="n">xb</span> <span class="o">&gt;&gt;</span> <span class="mi">25</span><span class="p">))</span>
+
+        <span class="n">x</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">xa</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="n">xb</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">xc</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">xd</span></div>
+
+    <span class="n">_round_mixup_box</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span>
+                        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span>
+                        <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span>
+                        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+                        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+                        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span>
+                        <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span>
+                        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">14</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="ChaCha.double_round"><a class="viewcode-back" href="../../../tlslite.utils.chacha.html#tlslite.utils.chacha.ChaCha.double_round">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">double_round</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform two rounds of ChaCha cipher&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_round_mixup_box</span><span class="p">:</span>
+            <span class="n">xa</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+            <span class="n">xb</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+            <span class="n">xc</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+            <span class="n">xd</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
+
+            <span class="n">xa</span> <span class="o">=</span> <span class="p">(</span><span class="n">xa</span> <span class="o">+</span> <span class="n">xb</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+            <span class="n">xd</span> <span class="o">=</span> <span class="n">xd</span> <span class="o">^</span> <span class="n">xa</span>
+            <span class="n">xd</span> <span class="o">=</span> <span class="p">((</span><span class="n">xd</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="o">|</span> <span class="p">(</span><span class="n">xd</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">))</span>
+
+            <span class="n">xc</span> <span class="o">=</span> <span class="p">(</span><span class="n">xc</span> <span class="o">+</span> <span class="n">xd</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+            <span class="n">xb</span> <span class="o">=</span> <span class="n">xb</span> <span class="o">^</span> <span class="n">xc</span>
+            <span class="n">xb</span> <span class="o">=</span> <span class="p">((</span><span class="n">xb</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="o">|</span> <span class="p">(</span><span class="n">xb</span> <span class="o">&gt;&gt;</span> <span class="mi">20</span><span class="p">))</span>
+
+            <span class="n">xa</span> <span class="o">=</span> <span class="p">(</span><span class="n">xa</span> <span class="o">+</span> <span class="n">xb</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+            <span class="n">xd</span> <span class="o">=</span> <span class="n">xd</span> <span class="o">^</span> <span class="n">xa</span>
+            <span class="n">xd</span> <span class="o">=</span> <span class="p">((</span><span class="n">xd</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="o">|</span> <span class="p">(</span><span class="n">xd</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">))</span>
+
+            <span class="n">xc</span> <span class="o">=</span> <span class="p">(</span><span class="n">xc</span> <span class="o">+</span> <span class="n">xd</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+            <span class="n">xb</span> <span class="o">=</span> <span class="n">xb</span> <span class="o">^</span> <span class="n">xc</span>
+            <span class="n">xb</span> <span class="o">=</span> <span class="p">((</span><span class="n">xb</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="o">|</span> <span class="p">(</span><span class="n">xb</span> <span class="o">&gt;&gt;</span> <span class="mi">25</span><span class="p">))</span>
+
+            <span class="n">x</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">xa</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="n">xb</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">xc</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">xd</span></div>
+
+<div class="viewcode-block" id="ChaCha.chacha_block"><a class="viewcode-back" href="../../../tlslite.utils.chacha.html#tlslite.utils.chacha.ChaCha.chacha_block">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">chacha_block</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">counter</span><span class="p">,</span> <span class="n">nonce</span><span class="p">,</span> <span class="n">rounds</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a state of a single block&quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">ChaCha</span><span class="o">.</span><span class="n">constants</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="p">[</span><span class="n">counter</span><span class="p">]</span> <span class="o">+</span> <span class="n">nonce</span>
+
+        <span class="n">working_state</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:]</span>
+        <span class="n">dbl_round</span> <span class="o">=</span> <span class="n">ChaCha</span><span class="o">.</span><span class="n">double_round</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rounds</span> <span class="o">//</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">dbl_round</span><span class="p">(</span><span class="n">working_state</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[(</span><span class="n">st</span> <span class="o">+</span> <span class="n">wrkSt</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="k">for</span> <span class="n">st</span><span class="p">,</span> <span class="n">wrkSt</span>
+                <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">working_state</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="ChaCha.word_to_bytearray"><a class="viewcode-back" href="../../../tlslite.utils.chacha.html#tlslite.utils.chacha.ChaCha.word_to_bytearray">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">word_to_bytearray</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert state to little endian bytestream&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&lt;LLLLLLLLLLLLLLLL&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">state</span><span class="p">))</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_bytearray_to_words</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a bytearray to array of word sized ints&quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">//</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">&#39;&lt;L&#39;</span><span class="p">,</span>
+                                     <span class="n">compat26Str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">4</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">4</span><span class="p">])))</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+<div class="viewcode-block" id="ChaCha.__init__"><a class="viewcode-back" href="../../../tlslite.utils.chacha.html#tlslite.utils.chacha.ChaCha.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">nonce</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rounds</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the initial state for the ChaCha cipher&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">32</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Key must be 256 bit long&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nonce</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">12</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Nonce must be 96 bit long&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nonce</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rounds</span> <span class="o">=</span> <span class="n">rounds</span>
+
+        <span class="c1"># convert bytearray key and nonce to little endian 32 bit unsigned ints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">ChaCha</span><span class="o">.</span><span class="n">_bytearray_to_words</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nonce</span> <span class="o">=</span> <span class="n">ChaCha</span><span class="o">.</span><span class="n">_bytearray_to_words</span><span class="p">(</span><span class="n">nonce</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChaCha.encrypt"><a class="viewcode-back" href="../../../tlslite.utils.chacha.html#tlslite.utils.chacha.ChaCha.encrypt">[docs]</a>    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encrypt the data&quot;&quot;&quot;</span>
+        <span class="n">encrypted_message</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">64</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span>
+                                  <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">),</span> <span class="mi">64</span><span class="p">)):</span>
+            <span class="n">key_stream</span> <span class="o">=</span> <span class="n">ChaCha</span><span class="o">.</span><span class="n">chacha_block</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">rounds</span><span class="p">)</span>
+            <span class="n">key_stream</span> <span class="o">=</span> <span class="n">ChaCha</span><span class="o">.</span><span class="n">word_to_bytearray</span><span class="p">(</span><span class="n">key_stream</span><span class="p">)</span>
+            <span class="n">encrypted_message</span> <span class="o">+=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">x</span> <span class="o">^</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+                                           <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="n">key_stream</span><span class="p">,</span> <span class="n">block</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">encrypted_message</span></div>
+
+<div class="viewcode-block" id="ChaCha.decrypt"><a class="viewcode-back" href="../../../tlslite.utils.chacha.html#tlslite.utils.chacha.ChaCha.decrypt">[docs]</a>    <span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decrypt the data&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

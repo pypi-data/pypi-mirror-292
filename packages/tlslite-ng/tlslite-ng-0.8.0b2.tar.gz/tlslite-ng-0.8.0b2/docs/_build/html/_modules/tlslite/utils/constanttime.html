@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.utils.constanttime &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.utils.constanttime</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.utils.constanttime</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2015, Hubert Kario</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+<span class="sd">&quot;&quot;&quot;Various constant time functions for processing sensitive data&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">compatHMAC</span>
+<span class="kn">import</span> <span class="nn">hmac</span>
+
+<div class="viewcode-block" id="ct_lt_u32"><a class="viewcode-back" href="../../../tlslite.utils.constanttime.html#tlslite.utils.constanttime.ct_lt_u32">[docs]</a><span class="k">def</span> <span class="nf">ct_lt_u32</span><span class="p">(</span><span class="n">val_a</span><span class="p">,</span> <span class="n">val_b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns 1 if val_a &lt; val_b, 0 otherwise. Constant time.</span>
+
+<span class="sd">    :type val_a: int</span>
+<span class="sd">    :type val_b: int</span>
+<span class="sd">    :param val_a: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :param val_b: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val_a</span> <span class="o">&amp;=</span> <span class="mh">0xffffffff</span>
+    <span class="n">val_b</span> <span class="o">&amp;=</span> <span class="mh">0xffffffff</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">val_a</span><span class="o">^</span><span class="p">((</span><span class="n">val_a</span><span class="o">^</span><span class="n">val_b</span><span class="p">)</span><span class="o">|</span><span class="p">(((</span><span class="n">val_a</span><span class="o">-</span><span class="n">val_b</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0xffffffff</span><span class="p">)</span><span class="o">^</span><span class="n">val_b</span><span class="p">)))</span><span class="o">&gt;&gt;</span><span class="mi">31</span></div>
+
+
+<div class="viewcode-block" id="ct_gt_u32"><a class="viewcode-back" href="../../../tlslite.utils.constanttime.html#tlslite.utils.constanttime.ct_gt_u32">[docs]</a><span class="k">def</span> <span class="nf">ct_gt_u32</span><span class="p">(</span><span class="n">val_a</span><span class="p">,</span> <span class="n">val_b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return 1 if val_a &gt; val_b, 0 otherwise. Constant time.</span>
+
+<span class="sd">    :type val_a: int</span>
+<span class="sd">    :type val_b: int</span>
+<span class="sd">    :param val_a: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :param val_b: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ct_lt_u32</span><span class="p">(</span><span class="n">val_b</span><span class="p">,</span> <span class="n">val_a</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ct_le_u32"><a class="viewcode-back" href="../../../tlslite.utils.constanttime.html#tlslite.utils.constanttime.ct_le_u32">[docs]</a><span class="k">def</span> <span class="nf">ct_le_u32</span><span class="p">(</span><span class="n">val_a</span><span class="p">,</span> <span class="n">val_b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return 1 if val_a &lt;= val_b, 0 otherwise. Constant time.</span>
+
+<span class="sd">    :type val_a: int</span>
+<span class="sd">    :type val_b: int</span>
+<span class="sd">    :param val_a: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :param val_b: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">^</span> <span class="n">ct_gt_u32</span><span class="p">(</span><span class="n">val_a</span><span class="p">,</span> <span class="n">val_b</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ct_lsb_prop_u8"><a class="viewcode-back" href="../../../tlslite.utils.constanttime.html#tlslite.utils.constanttime.ct_lsb_prop_u8">[docs]</a><span class="k">def</span> <span class="nf">ct_lsb_prop_u8</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Propagate LSB to all 8 bits of the returned int. Constant time.&quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">&amp;=</span> <span class="mh">0x01</span>
+    <span class="n">val</span> <span class="o">|=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+    <span class="n">val</span> <span class="o">|=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span>
+    <span class="n">val</span> <span class="o">|=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="ct_lsb_prop_u16"><a class="viewcode-back" href="../../../tlslite.utils.constanttime.html#tlslite.utils.constanttime.ct_lsb_prop_u16">[docs]</a><span class="k">def</span> <span class="nf">ct_lsb_prop_u16</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Propagate LSB to all 16 bits of the returned int. Constant time.&quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">&amp;=</span> <span class="mh">0x01</span>
+    <span class="n">val</span> <span class="o">|=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+    <span class="n">val</span> <span class="o">|=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span>
+    <span class="n">val</span> <span class="o">|=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span>
+    <span class="n">val</span> <span class="o">|=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="ct_isnonzero_u32"><a class="viewcode-back" href="../../../tlslite.utils.constanttime.html#tlslite.utils.constanttime.ct_isnonzero_u32">[docs]</a><span class="k">def</span> <span class="nf">ct_isnonzero_u32</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns 1 if val is != 0, 0 otherwise. Constant time.</span>
+
+<span class="sd">    :type val: int</span>
+<span class="sd">    :param val: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">&amp;=</span> <span class="mh">0xffffffff</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">val</span><span class="o">|</span><span class="p">(</span><span class="o">-</span><span class="n">val</span><span class="o">&amp;</span><span class="mh">0xffffffff</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="mi">31</span></div>
+
+
+<div class="viewcode-block" id="ct_neq_u32"><a class="viewcode-back" href="../../../tlslite.utils.constanttime.html#tlslite.utils.constanttime.ct_neq_u32">[docs]</a><span class="k">def</span> <span class="nf">ct_neq_u32</span><span class="p">(</span><span class="n">val_a</span><span class="p">,</span> <span class="n">val_b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return 1 if val_a != val_b, 0 otherwise. Constant time.</span>
+
+<span class="sd">    :type val_a: int</span>
+<span class="sd">    :type val_b: int</span>
+<span class="sd">    :param val_a: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :param val_b: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val_a</span> <span class="o">&amp;=</span> <span class="mh">0xffffffff</span>
+    <span class="n">val_b</span> <span class="o">&amp;=</span> <span class="mh">0xffffffff</span>
+
+    <span class="k">return</span> <span class="p">(((</span><span class="n">val_a</span><span class="o">-</span><span class="n">val_b</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0xffffffff</span><span class="p">)</span> <span class="o">|</span> <span class="p">((</span><span class="n">val_b</span><span class="o">-</span><span class="n">val_a</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0xffffffff</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="mi">31</span></div>
+
+<div class="viewcode-block" id="ct_eq_u32"><a class="viewcode-back" href="../../../tlslite.utils.constanttime.html#tlslite.utils.constanttime.ct_eq_u32">[docs]</a><span class="k">def</span> <span class="nf">ct_eq_u32</span><span class="p">(</span><span class="n">val_a</span><span class="p">,</span> <span class="n">val_b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return 1 if val_a == val_b, 0 otherwise. Constant time.</span>
+
+<span class="sd">    :type val_a: int</span>
+<span class="sd">    :type val_b: int</span>
+<span class="sd">    :param val_a: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :param val_b: an unsigned integer representable as a 32 bit value</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">^</span> <span class="n">ct_neq_u32</span><span class="p">(</span><span class="n">val_a</span><span class="p">,</span> <span class="n">val_b</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ct_check_cbc_mac_and_pad"><a class="viewcode-back" href="../../../tlslite.utils.constanttime.html#tlslite.utils.constanttime.ct_check_cbc_mac_and_pad">[docs]</a><span class="k">def</span> <span class="nf">ct_check_cbc_mac_and_pad</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mac</span><span class="p">,</span> <span class="n">seqnumBytes</span><span class="p">,</span> <span class="n">contentType</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span>
+                             <span class="n">block_size</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check CBC cipher HMAC and padding. Close to constant time.</span>
+
+<span class="sd">    :type data: bytearray</span>
+<span class="sd">    :param data: data with HMAC value to test and padding</span>
+
+<span class="sd">    :type mac: hashlib mac</span>
+<span class="sd">    :param mac: empty HMAC, initialised with a key</span>
+
+<span class="sd">    :type seqnumBytes: bytearray</span>
+<span class="sd">    :param seqnumBytes: TLS sequence number, used as input to HMAC</span>
+
+<span class="sd">    :type contentType: int</span>
+<span class="sd">    :param contentType: a single byte, used as input to HMAC</span>
+
+<span class="sd">    :type version: tuple of int</span>
+<span class="sd">    :param version: a tuple of two ints, used as input to HMAC and to guide</span>
+<span class="sd">        checking of padding</span>
+
+<span class="sd">    :rtype: boolean</span>
+<span class="sd">    :returns: True if MAC and pad is ok, False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="n">data_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mac</span><span class="o">.</span><span class="n">digest_size</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">data_len</span><span class="p">:</span> <span class="c1"># data_len is public</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># 0 - OK</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># check padding</span>
+    <span class="c1">#</span>
+    <span class="n">pad_length</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_len</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">pad_start</span> <span class="o">=</span> <span class="n">data_len</span> <span class="o">-</span> <span class="n">pad_length</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">pad_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pad_start</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="c1"># version is public</span>
+        <span class="c1"># in SSLv3 we can only check if pad is not longer than the cipher</span>
+        <span class="c1"># block size</span>
+
+        <span class="c1"># subtract 1 for the pad length byte</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">ct_lsb_prop_u8</span><span class="p">(</span><span class="n">ct_lt_u32</span><span class="p">(</span><span class="n">block_size</span><span class="p">,</span> <span class="n">pad_length</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">|=</span> <span class="n">mask</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">start_pos</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_len</span> <span class="o">-</span> <span class="mi">256</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_pos</span><span class="p">,</span> <span class="n">data_len</span><span class="p">):</span>
+            <span class="c1"># if pad_start &lt; i: mask = 0xff; else: mask = 0x00</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">ct_lsb_prop_u8</span><span class="p">(</span><span class="n">ct_le_u32</span><span class="p">(</span><span class="n">pad_start</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+            <span class="c1"># if data[i] != pad_length and &quot;inside_pad&quot;: result = False</span>
+            <span class="n">result</span> <span class="o">|=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="n">pad_length</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">mask</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># check MAC</span>
+    <span class="c1">#</span>
+
+    <span class="c1"># real place where mac starts and data ends</span>
+    <span class="n">mac_start</span> <span class="o">=</span> <span class="n">pad_start</span> <span class="o">-</span> <span class="n">mac</span><span class="o">.</span><span class="n">digest_size</span>
+    <span class="n">mac_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mac_start</span><span class="p">)</span>
+
+    <span class="c1"># place to start processing</span>
+    <span class="n">start_pos</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_len</span> <span class="o">-</span> <span class="p">(</span><span class="mi">256</span> <span class="o">+</span> <span class="n">mac</span><span class="o">.</span><span class="n">digest_size</span><span class="p">))</span> <span class="o">//</span> <span class="n">mac</span><span class="o">.</span><span class="n">block_size</span>
+    <span class="n">start_pos</span> <span class="o">*=</span> <span class="n">mac</span><span class="o">.</span><span class="n">block_size</span>
+
+    <span class="c1"># add start data</span>
+    <span class="n">data_mac</span> <span class="o">=</span> <span class="n">mac</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">data_mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">seqnumBytes</span><span class="p">))</span>
+    <span class="n">data_mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="n">contentType</span><span class="p">])))</span>
+    <span class="k">if</span> <span class="n">version</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="c1"># version is public</span>
+        <span class="n">data_mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">]])))</span>
+        <span class="n">data_mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="n">version</span><span class="p">[</span><span class="mi">1</span><span class="p">]])))</span>
+    <span class="n">data_mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="n">mac_start</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">])))</span>
+    <span class="n">data_mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="n">mac_start</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">])))</span>
+    <span class="n">data_mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">start_pos</span><span class="p">]))</span>
+
+    <span class="c1"># don&#39;t check past the array end (already checked to be &gt;= zero)</span>
+    <span class="n">end_pos</span> <span class="o">=</span> <span class="n">data_len</span> <span class="o">-</span> <span class="n">mac</span><span class="o">.</span><span class="n">digest_size</span>
+
+    <span class="c1"># calculate all possible</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_pos</span><span class="p">,</span> <span class="n">end_pos</span><span class="p">):</span> <span class="c1"># constant for given overall length</span>
+        <span class="n">cur_mac</span> <span class="o">=</span> <span class="n">data_mac</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">cur_mac</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start_pos</span><span class="p">:</span><span class="n">i</span><span class="p">]))</span>
+        <span class="n">mac_compare</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">cur_mac</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span>
+        <span class="c1"># compare the hash for real only if it&#39;s the place where mac is</span>
+        <span class="c1"># supposed to be</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">ct_lsb_prop_u8</span><span class="p">(</span><span class="n">ct_eq_u32</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">mac_start</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mac</span><span class="o">.</span><span class="n">digest_size</span><span class="p">):</span> <span class="c1"># digest_size is public</span>
+            <span class="n">result</span> <span class="o">|=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">]</span> <span class="o">^</span> <span class="n">mac_compare</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">&amp;</span> <span class="n">mask</span>
+
+    <span class="c1"># return python boolean</span>
+    <span class="k">return</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">hmac</span><span class="p">,</span> <span class="s1">&#39;compare_digest&#39;</span><span class="p">):</span>
+    <span class="n">ct_compare_digest</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">compare_digest</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">ct_compare_digest</span><span class="p">(</span><span class="n">val_a</span><span class="p">,</span> <span class="n">val_b</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compares if string like objects are equal. Constant time.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val_a</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">val_b</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">val_a</span><span class="p">,</span> <span class="n">val_b</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">|=</span> <span class="n">x</span> <span class="o">^</span> <span class="n">y</span>
+
+        <span class="k">return</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

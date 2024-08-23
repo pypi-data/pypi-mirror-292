@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.integration.pop3_tls &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.integration.pop3_tls</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.integration.pop3_tls</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Trevor Perrin</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;TLS Lite + poplib.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">poplib</span> <span class="kn">import</span> <span class="n">POP3</span><span class="p">,</span> <span class="n">POP3_SSL_PORT</span>
+<span class="kn">from</span> <span class="nn">tlslite.tlsconnection</span> <span class="kn">import</span> <span class="n">TLSConnection</span>
+<span class="kn">from</span> <span class="nn">tlslite.integration.clienthelper</span> <span class="kn">import</span> <span class="n">ClientHelper</span>
+
+<div class="viewcode-block" id="POP3_TLS"><a class="viewcode-back" href="../../../tlslite.integration.pop3_tls.html#tlslite.integration.pop3_tls.POP3_TLS">[docs]</a><span class="k">class</span> <span class="nc">POP3_TLS</span><span class="p">(</span><span class="n">POP3</span><span class="p">,</span> <span class="n">ClientHelper</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class extends :py:class:`poplib.POP3` with TLS support.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="POP3_TLS.__init__"><a class="viewcode-back" href="../../../tlslite.integration.pop3_tls.html#tlslite.integration.pop3_tls.POP3_TLS.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">POP3_SSL_PORT</span><span class="p">,</span>
+                 <span class="n">timeout</span><span class="o">=</span><span class="n">socket</span><span class="o">.</span><span class="n">_GLOBAL_DEFAULT_TIMEOUT</span><span class="p">,</span>
+                 <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">certChain</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">privateKey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">checker</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new POP3_TLS.</span>
+
+<span class="sd">        For client authentication, use one of these argument</span>
+<span class="sd">        combinations:</span>
+
+<span class="sd">         - username, password (SRP)</span>
+<span class="sd">         - certChain, privateKey (certificate)</span>
+
+<span class="sd">        For server authentication, you can either rely on the</span>
+<span class="sd">        implicit mutual authentication performed by SRP or</span>
+<span class="sd">        you can do certificate-based server</span>
+<span class="sd">        authentication with one of these argument combinations:</span>
+
+<span class="sd">         - x509Fingerprint</span>
+
+<span class="sd">        Certificate-based server authentication is compatible with</span>
+<span class="sd">        SRP or certificate-based client authentication.</span>
+
+<span class="sd">        The caller should be prepared to handle TLS-specific</span>
+<span class="sd">        exceptions.  See the client handshake functions in</span>
+<span class="sd">        :py:class:`~tlslite.tlsconnection.TLSConnection`</span>
+<span class="sd">        for details on which</span>
+<span class="sd">        exceptions might be raised.</span>
+
+<span class="sd">        :type host: str</span>
+<span class="sd">        :param host: Server to connect to.</span>
+
+<span class="sd">        :type port: int</span>
+<span class="sd">        :param port: Port to connect to.</span>
+
+<span class="sd">        :type username: str</span>
+<span class="sd">        :param username: SRP username.</span>
+
+<span class="sd">        :type password: str</span>
+<span class="sd">        :param password: SRP password for mutual authentication.</span>
+<span class="sd">            Requires the &#39;username&#39; argument.</span>
+
+<span class="sd">        :type certChain: ~tlslite.x509certchain.X509CertChain</span>
+<span class="sd">        :param certChain: Certificate chain for client authentication.</span>
+<span class="sd">            Requires the &#39;privateKey&#39; argument.  Excludes the SRP argument.</span>
+
+<span class="sd">        :type privateKey: ~tlslite.utils.rsakey.RSAKey</span>
+<span class="sd">        :param privateKey: Private key for client authentication.</span>
+<span class="sd">            Requires the &#39;certChain&#39; argument.  Excludes the SRP argument.</span>
+
+<span class="sd">        :type checker: ~tlslite.checker.Checker</span>
+<span class="sd">        :param checker: Callable object called after handshaking to</span>
+<span class="sd">            evaluate the connection and raise an Exception if necessary.</span>
+
+<span class="sd">        :type settings: ~tlslite.handshakesettings.HandshakeSettings</span>
+<span class="sd">        :param settings: Various settings which can be used to control</span>
+<span class="sd">            the ciphersuites, certificate types, and SSL/TLS versions</span>
+<span class="sd">            offered by the client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">create_connection</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">),</span> <span class="n">timeout</span><span class="p">)</span>
+        <span class="n">ClientHelper</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span>
+                 <span class="n">certChain</span><span class="p">,</span> <span class="n">privateKey</span><span class="p">,</span>
+                 <span class="n">checker</span><span class="p">,</span>
+                 <span class="n">settings</span><span class="p">)</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">TLSConnection</span><span class="p">(</span><span class="n">sock</span><span class="p">)</span> 
+        <span class="n">ClientHelper</span><span class="o">.</span><span class="n">_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">connection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">makefile</span><span class="p">(</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_debugging</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">welcome</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getresp</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

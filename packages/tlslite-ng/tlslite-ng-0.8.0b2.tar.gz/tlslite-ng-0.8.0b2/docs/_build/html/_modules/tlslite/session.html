@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.session &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.session</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.session</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Authors: </span>
+<span class="c1">#   Trevor Perrin</span>
+<span class="c1">#   Dave Baggett (Arcode Corporation) - canonicalCipherName</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Class representing a TLS session.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.utils.compat</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.mathtls</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="Session"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Session">[docs]</a><span class="k">class</span> <span class="nc">Session</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class represents a TLS session.</span>
+
+<span class="sd">    TLS distinguishes between connections and sessions.  A new</span>
+<span class="sd">    handshake creates both a connection and a session.  Data is</span>
+<span class="sd">    transmitted over the connection.</span>
+
+<span class="sd">    The session contains a more permanent record of the handshake.  The</span>
+<span class="sd">    session can be inspected to determine handshake results.  The</span>
+<span class="sd">    session can also be used to create a new connection through</span>
+<span class="sd">    &quot;session resumption&quot;. If the client and server both support this,</span>
+<span class="sd">    they can create a new connection based on an old session without</span>
+<span class="sd">    the overhead of a full handshake.</span>
+
+<span class="sd">    The session for a :py:class:`~tlslite.tlsconnection.TLSConnection` can be</span>
+<span class="sd">    retrieved from the connection&#39;s &#39;session&#39; attribute.</span>
+
+<span class="sd">    :vartype srpUsername: str</span>
+<span class="sd">    :ivar srpUsername: The client&#39;s SRP username (or None).</span>
+
+<span class="sd">    :vartype clientCertChain: ~tlslite.x509certchain.X509CertChain</span>
+<span class="sd">    :ivar clientCertChain: The client&#39;s certificate chain (or None).</span>
+
+<span class="sd">    :vartype serverCertChain: ~tlslite.x509certchain.X509CertChain</span>
+<span class="sd">    :ivar serverCertChain: The server&#39;s certificate chain (or None).</span>
+
+<span class="sd">    :vartype tackExt: tack.structures.TackExtension.TackExtension</span>
+<span class="sd">    :ivar tackExt: The server&#39;s TackExtension (or None).</span>
+
+<span class="sd">    :vartype tackInHelloExt: bool</span>
+<span class="sd">    :ivar tackInHelloExt: True if a TACK was presented via TLS Extension.</span>
+
+<span class="sd">    :vartype ~.encryptThenMAC: bool</span>
+<span class="sd">    :ivar ~.encryptThenMAC: True if connection uses CBC cipher in</span>
+<span class="sd">        encrypt-then-MAC mode</span>
+
+<span class="sd">    :vartype appProto: bytearray</span>
+<span class="sd">    :ivar appProto: name of the negotiated application level protocol, None</span>
+<span class="sd">        if not negotiated</span>
+
+<span class="sd">    :vartype cl_app_secret: bytearray</span>
+<span class="sd">    :ivar cl_app_secret: key used for deriving keys used by client to encrypt</span>
+<span class="sd">        and protect data in TLS 1.3</span>
+
+<span class="sd">    :vartype sr_app_secret: bytearray</span>
+<span class="sd">    :ivar sr_app_secret: key used for deriving keys used by server to encrypt</span>
+<span class="sd">        and protect data in TLS 1.3</span>
+
+<span class="sd">    :vartype exporterMasterSecret: bytearray</span>
+<span class="sd">    :ivar exporterMasterSecret: master secret used for TLS Exporter in TLS1.3</span>
+
+<span class="sd">    :vartype resumptionMasterSecret: bytearray</span>
+<span class="sd">    :ivar resumptionMasterSecret: master secret used for session resumption in</span>
+<span class="sd">        TLS 1.3</span>
+
+<span class="sd">    :vartype tickets: list</span>
+<span class="sd">    :ivar tickets: list of TLS 1.3 session tickets received from the server</span>
+
+<span class="sd">    :vartype tls_1_0_tickets: list</span>
+<span class="sd">    :ivar tls_1_0_tickets: list of TLS 1.2 and earlier session tickets received</span>
+<span class="sd">        from the server</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Session.__init__"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Session.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masterSecret</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sessionID</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">srpUsername</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clientCertChain</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serverCertChain</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tackExt</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tackInHelloExt</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serverName</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resumable</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extendedMasterSecret</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">appProto</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cl_app_secret</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sr_app_secret</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exporterMasterSecret</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resumptionMasterSecret</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tickets</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tls_1_0_tickets</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Session.create"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Session.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">masterSecret</span><span class="p">,</span> <span class="n">sessionID</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span>
+               <span class="n">srpUsername</span><span class="p">,</span> <span class="n">clientCertChain</span><span class="p">,</span> <span class="n">serverCertChain</span><span class="p">,</span>
+               <span class="n">tackExt</span><span class="p">,</span> <span class="n">tackInHelloExt</span><span class="p">,</span> <span class="n">serverName</span><span class="p">,</span> <span class="n">resumable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+               <span class="n">encryptThenMAC</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extendedMasterSecret</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+               <span class="n">appProto</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">cl_app_secret</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+               <span class="n">sr_app_secret</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">exporterMasterSecret</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+               <span class="n">resumptionMasterSecret</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">tickets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">tls_1_0_tickets</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masterSecret</span> <span class="o">=</span> <span class="n">masterSecret</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sessionID</span> <span class="o">=</span> <span class="n">sessionID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span> <span class="o">=</span> <span class="n">cipherSuite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">srpUsername</span> <span class="o">=</span> <span class="n">srpUsername</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clientCertChain</span> <span class="o">=</span> <span class="n">clientCertChain</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serverCertChain</span> <span class="o">=</span> <span class="n">serverCertChain</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tackExt</span> <span class="o">=</span> <span class="n">tackExt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tackInHelloExt</span> <span class="o">=</span> <span class="n">tackInHelloExt</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">serverName</span> <span class="o">=</span> <span class="n">serverName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resumable</span> <span class="o">=</span> <span class="n">resumable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> <span class="n">encryptThenMAC</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extendedMasterSecret</span> <span class="o">=</span> <span class="n">extendedMasterSecret</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">appProto</span> <span class="o">=</span> <span class="n">appProto</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cl_app_secret</span> <span class="o">=</span> <span class="n">cl_app_secret</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sr_app_secret</span> <span class="o">=</span> <span class="n">sr_app_secret</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exporterMasterSecret</span> <span class="o">=</span> <span class="n">exporterMasterSecret</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resumptionMasterSecret</span> <span class="o">=</span> <span class="n">resumptionMasterSecret</span>
+        <span class="c1"># NOTE we need a reference copy not a copy of object here!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tickets</span> <span class="o">=</span> <span class="n">tickets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tls_1_0_tickets</span> <span class="o">=</span> <span class="n">tls_1_0_tickets</span></div>
+
+    <span class="k">def</span> <span class="nf">_clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">masterSecret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">masterSecret</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">sessionID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sessionID</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">cipherSuite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">srpUsername</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">srpUsername</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">clientCertChain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clientCertChain</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">serverCertChain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverCertChain</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">tackExt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tackExt</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">tackInHelloExt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tackInHelloExt</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">serverName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverName</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">resumable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resumable</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">encryptThenMAC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encryptThenMAC</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">extendedMasterSecret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extendedMasterSecret</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">appProto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">appProto</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">cl_app_secret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cl_app_secret</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">sr_app_secret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sr_app_secret</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">exporterMasterSecret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exporterMasterSecret</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">resumptionMasterSecret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resumptionMasterSecret</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">tickets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tickets</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">tls_1_0_tickets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tls_1_0_tickets</span>
+        <span class="k">return</span> <span class="n">other</span>
+
+<div class="viewcode-block" id="Session.valid"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Session.valid">[docs]</a>    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If this session can be used for session resumption.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: If this session can be used for session resumption.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO add checks for tickets received from server (freshness etc.)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resumable</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sessionID</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">tickets</span> <span class="ow">or</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">tls_1_0_tickets</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_setResumable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boolean</span><span class="p">):</span>
+        <span class="c1">#Only let it be set to True if the sessionID is non-null</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">boolean</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">boolean</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sessionID</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resumable</span> <span class="o">=</span> <span class="n">boolean</span>
+
+<div class="viewcode-block" id="Session.getTackId"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Session.getTackId">[docs]</a>    <span class="k">def</span> <span class="nf">getTackId</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tackExt</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tackExt</span><span class="o">.</span><span class="n">tack</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tackExt</span><span class="o">.</span><span class="n">tack</span><span class="o">.</span><span class="n">getTackId</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+        
+<div class="viewcode-block" id="Session.getBreakSigs"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Session.getBreakSigs">[docs]</a>    <span class="k">def</span> <span class="nf">getBreakSigs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tackExt</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tackExt</span><span class="o">.</span><span class="n">break_sigs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tackExt</span><span class="o">.</span><span class="n">break_sigs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Session.getCipherName"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Session.getCipherName">[docs]</a>    <span class="k">def</span> <span class="nf">getCipherName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the name of the cipher used with this connection.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The name of the cipher used with this connection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">canonicalCipherName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="Session.getMacName"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Session.getMacName">[docs]</a>    <span class="k">def</span> <span class="nf">getMacName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the name of the HMAC hash algo used with this connection.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The name of the HMAC hash algo used with this connection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">canonicalMacName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cipherSuite</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Ticket"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Ticket">[docs]</a><span class="k">class</span> <span class="nc">Ticket</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class holds the ticket and ticket lifetime which are recieved from</span>
+<span class="sd">    the server, together with the session object, it&#39;s all the information</span>
+<span class="sd">    needed to resume a session using SessionTickets in TLSv1.2.</span>
+<span class="sd">    Currently objects of this class are only used in client side session cache</span>
+<span class="sd">    where we can iterate over them and use them for resumption when possible.</span>
+
+<span class="sd">    :vartype ticket: bytearray</span>
+<span class="sd">    :ivar ticket: the actual ticket recieved from the server</span>
+
+<span class="sd">    :vartype ticket_lifetime: int</span>
+<span class="sd">    :ivar ticket_lifetime: lifetime of the ticket defined by the server</span>
+
+<span class="sd">    :vartype master_secret: bytearray</span>
+<span class="sd">    :ivar master_secret: master secret used to resume the session</span>
+
+<span class="sd">    :vartype cipher_suite: int</span>
+<span class="sd">    :ivar cipher_suite: ciphersuite used to resume the session</span>
+
+<span class="sd">    :vartype time_recieved: int</span>
+<span class="sd">    :ivar time_recieved: the actual time when we recieved the ticket</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Ticket.__init__"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Ticket.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ticket</span><span class="p">,</span> <span class="n">ticket_lifetime</span><span class="p">,</span> <span class="n">master_secret</span><span class="p">,</span> <span class="n">cipher_suite</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticket</span> <span class="o">=</span> <span class="n">ticket</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticket_lifetime</span> <span class="o">=</span> <span class="n">ticket_lifetime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">master_secret</span> <span class="o">=</span> <span class="n">master_secret</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cipher_suite</span> <span class="o">=</span> <span class="n">cipher_suite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_received</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Ticket.valid"><a class="viewcode-back" href="../../tlslite.session.html#tlslite.session.Ticket.valid">[docs]</a>    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_received</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticket_lifetime</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

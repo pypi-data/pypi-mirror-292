@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.mathtls &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.mathtls</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.mathtls</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Authors: </span>
+<span class="c1">#   Trevor Perrin</span>
+<span class="c1">#   Dave Baggett (Arcode Corporation) - MD5 support for MAC_SSL</span>
+<span class="c1">#   Yngve Pettersen (ported by Paul Sokolovsky) - TLS 1.2</span>
+<span class="c1">#   Hubert Kario - SHA384 PRF</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Miscellaneous helper functions.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.utils.compat</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.utils.cryptomath</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">CipherSuite</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">tlshashlib</span> <span class="k">as</span> <span class="n">hashlib</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">tlshmac</span> <span class="k">as</span> <span class="n">hmac</span>
+<span class="kn">from</span> <span class="nn">.utils.deprecations</span> <span class="kn">import</span> <span class="n">deprecated_method</span>
+
+
+<span class="n">FFDHE_PARAMETERS</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Listing of all well known FFDH parameters.</span>
+
+<span class="sd">Please note that this dictionary includes all groups that are well-known</span>
+<span class="sd">(i.e. named), irrespective if their use is recommended or not.</span>
+
+<span class="sd">You should use RFC7919_GROUPS for well-known secure groups.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># RFC 2409 section 6.1, First Oakley Group, 768 bit MODP</span>
+<span class="n">RFC2409_GROUP1</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">         FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1</span>
+<span class="s2">         29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD</span>
+<span class="s2">         EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245</span>
+<span class="s2">         E485B576 625E7EC6 F44C42E9 A63A3620 FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC2409 group 1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC2409_GROUP1</span>
+
+
+<span class="c1"># RFC 2409 section 6.2, Second Oakley Group, 1024 bit MODP</span>
+<span class="n">RFC2409_GROUP2</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">         FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1</span>
+<span class="s2">         29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD</span>
+<span class="s2">         EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245</span>
+<span class="s2">         E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED</span>
+<span class="s2">         EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE65381</span>
+<span class="s2">         FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC2409 group 2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC2409_GROUP2</span>
+
+
+<span class="c1"># RFC 3526 section 2, 1536 bit MODP</span>
+<span class="n">RFC3526_GROUP5</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">      FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1</span>
+<span class="s2">      29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD</span>
+<span class="s2">      EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245</span>
+<span class="s2">      E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED</span>
+<span class="s2">      EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE45B3D</span>
+<span class="s2">      C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8 FD24CF5F</span>
+<span class="s2">      83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D</span>
+<span class="s2">      670C354E 4ABC9804 F1746C08 CA237327 FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC3526 group 5&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC3526_GROUP5</span>
+
+
+<span class="c1"># RFC 3526 section 3, 2048 bit MODP</span>
+<span class="n">RFC3526_GROUP14</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">      FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1</span>
+<span class="s2">      29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD</span>
+<span class="s2">      EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245</span>
+<span class="s2">      E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED</span>
+<span class="s2">      EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE45B3D</span>
+<span class="s2">      C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8 FD24CF5F</span>
+<span class="s2">      83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D</span>
+<span class="s2">      670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B</span>
+<span class="s2">      E39E772C 180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9</span>
+<span class="s2">      DE2BCBF6 95581718 3995497C EA956AE5 15D22618 98FA0510</span>
+<span class="s2">      15728E5A 8AACAA68 FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC3526 group 14&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC3526_GROUP14</span>
+
+
+<span class="c1"># RFC 3526 section 4, 3072 bit MODP</span>
+<span class="n">RFC3526_GROUP15</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">      FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1</span>
+<span class="s2">      29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD</span>
+<span class="s2">      EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245</span>
+<span class="s2">      E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED</span>
+<span class="s2">      EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE45B3D</span>
+<span class="s2">      C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8 FD24CF5F</span>
+<span class="s2">      83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D</span>
+<span class="s2">      670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B</span>
+<span class="s2">      E39E772C 180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9</span>
+<span class="s2">      DE2BCBF6 95581718 3995497C EA956AE5 15D22618 98FA0510</span>
+<span class="s2">      15728E5A 8AAAC42D AD33170D 04507A33 A85521AB DF1CBA64</span>
+<span class="s2">      ECFB8504 58DBEF0A 8AEA7157 5D060C7D B3970F85 A6E1E4C7</span>
+<span class="s2">      ABF5AE8C DB0933D7 1E8C94E0 4A25619D CEE3D226 1AD2EE6B</span>
+<span class="s2">      F12FFA06 D98A0864 D8760273 3EC86A64 521F2B18 177B200C</span>
+<span class="s2">      BBE11757 7A615D6C 770988C0 BAD946E2 08E24FA0 74E5AB31</span>
+<span class="s2">      43DB5BFC E0FD108E 4B82D120 A93AD2CA FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC3526 group 15&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC3526_GROUP15</span>
+
+
+<span class="c1"># RFC 3526 section 5, 4096 bit MODP</span>
+<span class="n">RFC3526_GROUP16</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">      FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1</span>
+<span class="s2">      29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD</span>
+<span class="s2">      EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245</span>
+<span class="s2">      E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED</span>
+<span class="s2">      EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE45B3D</span>
+<span class="s2">      C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8 FD24CF5F</span>
+<span class="s2">      83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D</span>
+<span class="s2">      670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B</span>
+<span class="s2">      E39E772C 180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9</span>
+<span class="s2">      DE2BCBF6 95581718 3995497C EA956AE5 15D22618 98FA0510</span>
+<span class="s2">      15728E5A 8AAAC42D AD33170D 04507A33 A85521AB DF1CBA64</span>
+<span class="s2">      ECFB8504 58DBEF0A 8AEA7157 5D060C7D B3970F85 A6E1E4C7</span>
+<span class="s2">      ABF5AE8C DB0933D7 1E8C94E0 4A25619D CEE3D226 1AD2EE6B</span>
+<span class="s2">      F12FFA06 D98A0864 D8760273 3EC86A64 521F2B18 177B200C</span>
+<span class="s2">      BBE11757 7A615D6C 770988C0 BAD946E2 08E24FA0 74E5AB31</span>
+<span class="s2">      43DB5BFC E0FD108E 4B82D120 A9210801 1A723C12 A787E6D7</span>
+<span class="s2">      88719A10 BDBA5B26 99C32718 6AF4E23C 1A946834 B6150BDA</span>
+<span class="s2">      2583E9CA 2AD44CE8 DBBBC2DB 04DE8EF9 2E8EFC14 1FBECAA6</span>
+<span class="s2">      287C5947 4E6BC05D 99B2964F A090C3A2 233BA186 515BE7ED</span>
+<span class="s2">      1F612970 CEE2D7AF B81BDD76 2170481C D0069127 D5B05AA9</span>
+<span class="s2">      93B4EA98 8D8FDDC1 86FFB7DC 90A6C08F 4DF435C9 34063199</span>
+<span class="s2">      FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC3526 group 16&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC3526_GROUP16</span>
+
+
+<span class="c1"># RFC 3526 section 6, 6144 bit MODP</span>
+<span class="n">RFC3526_GROUP17</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">   FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1 29024E08</span>
+<span class="s2">   8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD EF9519B3 CD3A431B</span>
+<span class="s2">   302B0A6D F25F1437 4FE1356D 6D51C245 E485B576 625E7EC6 F44C42E9</span>
+<span class="s2">   A637ED6B 0BFF5CB6 F406B7ED EE386BFB 5A899FA5 AE9F2411 7C4B1FE6</span>
+<span class="s2">   49286651 ECE45B3D C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8</span>
+<span class="s2">   FD24CF5F 83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D</span>
+<span class="s2">   670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B E39E772C</span>
+<span class="s2">   180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9 DE2BCBF6 95581718</span>
+<span class="s2">   3995497C EA956AE5 15D22618 98FA0510 15728E5A 8AAAC42D AD33170D</span>
+<span class="s2">   04507A33 A85521AB DF1CBA64 ECFB8504 58DBEF0A 8AEA7157 5D060C7D</span>
+<span class="s2">   B3970F85 A6E1E4C7 ABF5AE8C DB0933D7 1E8C94E0 4A25619D CEE3D226</span>
+<span class="s2">   1AD2EE6B F12FFA06 D98A0864 D8760273 3EC86A64 521F2B18 177B200C</span>
+<span class="s2">   BBE11757 7A615D6C 770988C0 BAD946E2 08E24FA0 74E5AB31 43DB5BFC</span>
+<span class="s2">   E0FD108E 4B82D120 A9210801 1A723C12 A787E6D7 88719A10 BDBA5B26</span>
+<span class="s2">   99C32718 6AF4E23C 1A946834 B6150BDA 2583E9CA 2AD44CE8 DBBBC2DB</span>
+<span class="s2">   04DE8EF9 2E8EFC14 1FBECAA6 287C5947 4E6BC05D 99B2964F A090C3A2</span>
+<span class="s2">   233BA186 515BE7ED 1F612970 CEE2D7AF B81BDD76 2170481C D0069127</span>
+<span class="s2">   D5B05AA9 93B4EA98 8D8FDDC1 86FFB7DC 90A6C08F 4DF435C9 34028492</span>
+<span class="s2">   36C3FAB4 D27C7026 C1D4DCB2 602646DE C9751E76 3DBA37BD F8FF9406</span>
+<span class="s2">   AD9E530E E5DB382F 413001AE B06A53ED 9027D831 179727B0 865A8918</span>
+<span class="s2">   DA3EDBEB CF9B14ED 44CE6CBA CED4BB1B DB7F1447 E6CC254B 33205151</span>
+<span class="s2">   2BD7AF42 6FB8F401 378CD2BF 5983CA01 C64B92EC F032EA15 D1721D03</span>
+<span class="s2">   F482D7CE 6E74FEF6 D55E702F 46980C82 B5A84031 900B1C9E 59E7C97F</span>
+<span class="s2">   BEC7E8F3 23A97A7E 36CC88BE 0F1D45B7 FF585AC5 4BD407B2 2B4154AA</span>
+<span class="s2">   CC8F6D7E BF48E1D8 14CC5ED2 0F8037E0 A79715EE F29BE328 06A1D58B</span>
+<span class="s2">   B7C5DA76 F550AA3D 8A1FBFF0 EB19CCB1 A313D55C DA56C9EC 2EF29632</span>
+<span class="s2">   387FE8D7 6E3C0468 043E8F66 3F4860EE 12BF2D5B 0B7474D6 E694F91E</span>
+<span class="s2">   6DCC4024 FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC3526 group 17&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC3526_GROUP17</span>
+
+
+<span class="c1"># RFC 3526 section 7, 8192 bit MODP</span>
+<span class="n">RFC3526_GROUP18</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">      FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1</span>
+<span class="s2">      29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD</span>
+<span class="s2">      EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245</span>
+<span class="s2">      E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED</span>
+<span class="s2">      EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE45B3D</span>
+<span class="s2">      C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8 FD24CF5F</span>
+<span class="s2">      83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D</span>
+<span class="s2">      670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B</span>
+<span class="s2">      E39E772C 180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9</span>
+<span class="s2">      DE2BCBF6 95581718 3995497C EA956AE5 15D22618 98FA0510</span>
+<span class="s2">      15728E5A 8AAAC42D AD33170D 04507A33 A85521AB DF1CBA64</span>
+<span class="s2">      ECFB8504 58DBEF0A 8AEA7157 5D060C7D B3970F85 A6E1E4C7</span>
+<span class="s2">      ABF5AE8C DB0933D7 1E8C94E0 4A25619D CEE3D226 1AD2EE6B</span>
+<span class="s2">      F12FFA06 D98A0864 D8760273 3EC86A64 521F2B18 177B200C</span>
+<span class="s2">      BBE11757 7A615D6C 770988C0 BAD946E2 08E24FA0 74E5AB31</span>
+<span class="s2">      43DB5BFC E0FD108E 4B82D120 A9210801 1A723C12 A787E6D7</span>
+<span class="s2">      88719A10 BDBA5B26 99C32718 6AF4E23C 1A946834 B6150BDA</span>
+<span class="s2">      2583E9CA 2AD44CE8 DBBBC2DB 04DE8EF9 2E8EFC14 1FBECAA6</span>
+<span class="s2">      287C5947 4E6BC05D 99B2964F A090C3A2 233BA186 515BE7ED</span>
+<span class="s2">      1F612970 CEE2D7AF B81BDD76 2170481C D0069127 D5B05AA9</span>
+<span class="s2">      93B4EA98 8D8FDDC1 86FFB7DC 90A6C08F 4DF435C9 34028492</span>
+<span class="s2">      36C3FAB4 D27C7026 C1D4DCB2 602646DE C9751E76 3DBA37BD</span>
+<span class="s2">      F8FF9406 AD9E530E E5DB382F 413001AE B06A53ED 9027D831</span>
+<span class="s2">      179727B0 865A8918 DA3EDBEB CF9B14ED 44CE6CBA CED4BB1B</span>
+<span class="s2">      DB7F1447 E6CC254B 33205151 2BD7AF42 6FB8F401 378CD2BF</span>
+<span class="s2">      5983CA01 C64B92EC F032EA15 D1721D03 F482D7CE 6E74FEF6</span>
+<span class="s2">      D55E702F 46980C82 B5A84031 900B1C9E 59E7C97F BEC7E8F3</span>
+<span class="s2">      23A97A7E 36CC88BE 0F1D45B7 FF585AC5 4BD407B2 2B4154AA</span>
+<span class="s2">      CC8F6D7E BF48E1D8 14CC5ED2 0F8037E0 A79715EE F29BE328</span>
+<span class="s2">      06A1D58B B7C5DA76 F550AA3D 8A1FBFF0 EB19CCB1 A313D55C</span>
+<span class="s2">      DA56C9EC 2EF29632 387FE8D7 6E3C0468 043E8F66 3F4860EE</span>
+<span class="s2">      12BF2D5B 0B7474D6 E694F91E 6DBE1159 74A3926F 12FEE5E4</span>
+<span class="s2">      38777CB6 A932DF8C D8BEC4D0 73B931BA 3BC832B6 8D9DD300</span>
+<span class="s2">      741FA7BF 8AFC47ED 2576F693 6BA42466 3AAB639C 5AE4F568</span>
+<span class="s2">      3423B474 2BF1C978 238F16CB E39D652D E3FDB8BE FC848AD9</span>
+<span class="s2">      22222E04 A4037C07 13EB57A8 1A23F0C7 3473FC64 6CEA306B</span>
+<span class="s2">      4BCBC886 2F8385DD FA9D4B7F A2C087E8 79683303 ED5BDD3A</span>
+<span class="s2">      062B3CF5 B3A278A6 6D2A13F8 3F44F82D DF310EE0 74AB6A36</span>
+<span class="s2">      4597E899 A0255DC1 64F31CC5 0846851D F9AB4819 5DED7EA1</span>
+<span class="s2">      B1D510BD 7EE74D73 FAF36BC3 1ECFA268 359046F4 EB879F92</span>
+<span class="s2">      4009438B 481C6CD7 889A002E D5EE382B C9190DA6 FC026E47</span>
+<span class="s2">      9558E447 5677E9AA 9E3050E2 765694DF C81F56E8 80B96E71</span>
+<span class="s2">      60C980DD 98EDD3DF FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC3526 group 18&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC3526_GROUP18</span>
+
+
+<span class="c1"># 1024, 1536, 2048, 3072, 4096, 6144, and 8192 bit groups from RFC 5054</span>
+<span class="c1"># Formatted as in the RFC</span>
+<span class="n">goodGroupParameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># RFC 5054, 1, 1024-bit Group</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">          EEAF0AB9 ADB38DD6 9C33F80A FA8FC5E8 60726187 75FF3C0B 9EA2314C</span>
+<span class="sd">          9C256576 D674DF74 96EA81D3 383B4813 D692C6E0 E0D5D8E2 50B98BE4</span>
+<span class="sd">          8E495C1D 6089DAD1 5DC7D7B4 6154D6B6 CE8EF4AD 69B15D49 82559B29</span>
+<span class="sd">          7BCF1885 C529F566 660E57EC 68EDBC3C 05726CC0 2FD4CBF4 976EAA9A</span>
+<span class="sd">          FD5138FE 8376435B 9FC61D2F C0EB06E3&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span>
+    <span class="c1"># RFC 5054, 2, 1536-bit Group</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">          9DEF3CAF B939277A B1F12A86 17A47BBB DBA51DF4 99AC4C80 BEEEA961</span>
+<span class="sd">          4B19CC4D 5F4F5F55 6E27CBDE 51C6A94B E4607A29 1558903B A0D0F843</span>
+<span class="sd">          80B655BB 9A22E8DC DF028A7C EC67F0D0 8134B1C8 B9798914 9B609E0B</span>
+<span class="sd">          E3BAB63D 47548381 DBC5B1FC 764E3F4B 53DD9DA1 158BFD3E 2B9C8CF5</span>
+<span class="sd">          6EDF0195 39349627 DB2FD53D 24B7C486 65772E43 7D6C7F8C E442734A</span>
+<span class="sd">          F7CCB7AE 837C264A E3A9BEB8 7F8A2FE9 B8B5292E 5A021FFF 5E91479E</span>
+<span class="sd">          8CE7A28C 2442C6F3 15180F93 499A234D CF76E3FE D135F9BB&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span>
+    <span class="c1"># RFC 5054, 3, 2048-bit Group</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">          AC6BDB41 324A9A9B F166DE5E 1389582F AF72B665 1987EE07 FC319294</span>
+<span class="sd">          3DB56050 A37329CB B4A099ED 8193E075 7767A13D D52312AB 4B03310D</span>
+<span class="sd">          CD7F48A9 DA04FD50 E8083969 EDB767B0 CF609517 9A163AB3 661A05FB</span>
+<span class="sd">          D5FAAAE8 2918A996 2F0B93B8 55F97993 EC975EEA A80D740A DBF4FF74</span>
+<span class="sd">          7359D041 D5C33EA7 1D281E44 6B14773B CA97B43A 23FB8016 76BD207A</span>
+<span class="sd">          436C6481 F1D2B907 8717461A 5B9D32E6 88F87748 544523B5 24B0D57D</span>
+<span class="sd">          5EA77A27 75D2ECFA 032CFBDB F52FB378 61602790 04E57AE6 AF874E73</span>
+<span class="sd">          03CE5329 9CCC041C 7BC308D8 2A5698F3 A8D0C382 71AE35F8 E9DBFBB6</span>
+<span class="sd">          94B5C803 D89F7AE4 35DE236D 525F5475 9B65E372 FCD68EF2 0FA7111F</span>
+<span class="sd">          9E4AFF73&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span>
+    <span class="c1"># RFC 5054, 4, 3072-bit Group</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">          FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1 29024E08</span>
+<span class="sd">          8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD EF9519B3 CD3A431B</span>
+<span class="sd">          302B0A6D F25F1437 4FE1356D 6D51C245 E485B576 625E7EC6 F44C42E9</span>
+<span class="sd">          A637ED6B 0BFF5CB6 F406B7ED EE386BFB 5A899FA5 AE9F2411 7C4B1FE6</span>
+<span class="sd">          49286651 ECE45B3D C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8</span>
+<span class="sd">          FD24CF5F 83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D</span>
+<span class="sd">          670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B E39E772C</span>
+<span class="sd">          180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9 DE2BCBF6 95581718</span>
+<span class="sd">          3995497C EA956AE5 15D22618 98FA0510 15728E5A 8AAAC42D AD33170D</span>
+<span class="sd">          04507A33 A85521AB DF1CBA64 ECFB8504 58DBEF0A 8AEA7157 5D060C7D</span>
+<span class="sd">          B3970F85 A6E1E4C7 ABF5AE8C DB0933D7 1E8C94E0 4A25619D CEE3D226</span>
+<span class="sd">          1AD2EE6B F12FFA06 D98A0864 D8760273 3EC86A64 521F2B18 177B200C</span>
+<span class="sd">          BBE11757 7A615D6C 770988C0 BAD946E2 08E24FA0 74E5AB31 43DB5BFC</span>
+<span class="sd">          E0FD108E 4B82D120 A93AD2CA FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span>
+    <span class="c1"># RFC 5054, 5, 4096-bit Group</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">          FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1 29024E08</span>
+<span class="sd">          8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD EF9519B3 CD3A431B</span>
+<span class="sd">          302B0A6D F25F1437 4FE1356D 6D51C245 E485B576 625E7EC6 F44C42E9</span>
+<span class="sd">          A637ED6B 0BFF5CB6 F406B7ED EE386BFB 5A899FA5 AE9F2411 7C4B1FE6</span>
+<span class="sd">          49286651 ECE45B3D C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8</span>
+<span class="sd">          FD24CF5F 83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D</span>
+<span class="sd">          670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B E39E772C</span>
+<span class="sd">          180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9 DE2BCBF6 95581718</span>
+<span class="sd">          3995497C EA956AE5 15D22618 98FA0510 15728E5A 8AAAC42D AD33170D</span>
+<span class="sd">          04507A33 A85521AB DF1CBA64 ECFB8504 58DBEF0A 8AEA7157 5D060C7D</span>
+<span class="sd">          B3970F85 A6E1E4C7 ABF5AE8C DB0933D7 1E8C94E0 4A25619D CEE3D226</span>
+<span class="sd">          1AD2EE6B F12FFA06 D98A0864 D8760273 3EC86A64 521F2B18 177B200C</span>
+<span class="sd">          BBE11757 7A615D6C 770988C0 BAD946E2 08E24FA0 74E5AB31 43DB5BFC</span>
+<span class="sd">          E0FD108E 4B82D120 A9210801 1A723C12 A787E6D7 88719A10 BDBA5B26</span>
+<span class="sd">          99C32718 6AF4E23C 1A946834 B6150BDA 2583E9CA 2AD44CE8 DBBBC2DB</span>
+<span class="sd">          04DE8EF9 2E8EFC14 1FBECAA6 287C5947 4E6BC05D 99B2964F A090C3A2</span>
+<span class="sd">          233BA186 515BE7ED 1F612970 CEE2D7AF B81BDD76 2170481C D0069127</span>
+<span class="sd">          D5B05AA9 93B4EA98 8D8FDDC1 86FFB7DC 90A6C08F 4DF435C9 34063199</span>
+<span class="sd">          FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span>
+    <span class="c1"># RFC 5054, 6, 6144-bit Group</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">          FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1 29024E08</span>
+<span class="sd">          8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD EF9519B3 CD3A431B</span>
+<span class="sd">          302B0A6D F25F1437 4FE1356D 6D51C245 E485B576 625E7EC6 F44C42E9</span>
+<span class="sd">          A637ED6B 0BFF5CB6 F406B7ED EE386BFB 5A899FA5 AE9F2411 7C4B1FE6</span>
+<span class="sd">          49286651 ECE45B3D C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8</span>
+<span class="sd">          FD24CF5F 83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D</span>
+<span class="sd">          670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B E39E772C</span>
+<span class="sd">          180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9 DE2BCBF6 95581718</span>
+<span class="sd">          3995497C EA956AE5 15D22618 98FA0510 15728E5A 8AAAC42D AD33170D</span>
+<span class="sd">          04507A33 A85521AB DF1CBA64 ECFB8504 58DBEF0A 8AEA7157 5D060C7D</span>
+<span class="sd">          B3970F85 A6E1E4C7 ABF5AE8C DB0933D7 1E8C94E0 4A25619D CEE3D226</span>
+<span class="sd">          1AD2EE6B F12FFA06 D98A0864 D8760273 3EC86A64 521F2B18 177B200C</span>
+<span class="sd">          BBE11757 7A615D6C 770988C0 BAD946E2 08E24FA0 74E5AB31 43DB5BFC</span>
+<span class="sd">          E0FD108E 4B82D120 A9210801 1A723C12 A787E6D7 88719A10 BDBA5B26</span>
+<span class="sd">          99C32718 6AF4E23C 1A946834 B6150BDA 2583E9CA 2AD44CE8 DBBBC2DB</span>
+<span class="sd">          04DE8EF9 2E8EFC14 1FBECAA6 287C5947 4E6BC05D 99B2964F A090C3A2</span>
+<span class="sd">          233BA186 515BE7ED 1F612970 CEE2D7AF B81BDD76 2170481C D0069127</span>
+<span class="sd">          D5B05AA9 93B4EA98 8D8FDDC1 86FFB7DC 90A6C08F 4DF435C9 34028492</span>
+<span class="sd">          36C3FAB4 D27C7026 C1D4DCB2 602646DE C9751E76 3DBA37BD F8FF9406</span>
+<span class="sd">          AD9E530E E5DB382F 413001AE B06A53ED 9027D831 179727B0 865A8918</span>
+<span class="sd">          DA3EDBEB CF9B14ED 44CE6CBA CED4BB1B DB7F1447 E6CC254B 33205151</span>
+<span class="sd">          2BD7AF42 6FB8F401 378CD2BF 5983CA01 C64B92EC F032EA15 D1721D03</span>
+<span class="sd">          F482D7CE 6E74FEF6 D55E702F 46980C82 B5A84031 900B1C9E 59E7C97F</span>
+<span class="sd">          BEC7E8F3 23A97A7E 36CC88BE 0F1D45B7 FF585AC5 4BD407B2 2B4154AA</span>
+<span class="sd">          CC8F6D7E BF48E1D8 14CC5ED2 0F8037E0 A79715EE F29BE328 06A1D58B</span>
+<span class="sd">          B7C5DA76 F550AA3D 8A1FBFF0 EB19CCB1 A313D55C DA56C9EC 2EF29632</span>
+<span class="sd">          387FE8D7 6E3C0468 043E8F66 3F4860EE 12BF2D5B 0B7474D6 E694F91E</span>
+<span class="sd">          6DCC4024 FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span>
+    <span class="c1"># RFC 5054, 7, 8192-bit Group</span>
+    <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">          FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1 29024E08</span>
+<span class="sd">          8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD EF9519B3 CD3A431B</span>
+<span class="sd">          302B0A6D F25F1437 4FE1356D 6D51C245 E485B576 625E7EC6 F44C42E9</span>
+<span class="sd">          A637ED6B 0BFF5CB6 F406B7ED EE386BFB 5A899FA5 AE9F2411 7C4B1FE6</span>
+<span class="sd">          49286651 ECE45B3D C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8</span>
+<span class="sd">          FD24CF5F 83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D</span>
+<span class="sd">          670C354E 4ABC9804 F1746C08 CA18217C 32905E46 2E36CE3B E39E772C</span>
+<span class="sd">          180E8603 9B2783A2 EC07A28F B5C55DF0 6F4C52C9 DE2BCBF6 95581718</span>
+<span class="sd">          3995497C EA956AE5 15D22618 98FA0510 15728E5A 8AAAC42D AD33170D</span>
+<span class="sd">          04507A33 A85521AB DF1CBA64 ECFB8504 58DBEF0A 8AEA7157 5D060C7D</span>
+<span class="sd">          B3970F85 A6E1E4C7 ABF5AE8C DB0933D7 1E8C94E0 4A25619D CEE3D226</span>
+<span class="sd">          1AD2EE6B F12FFA06 D98A0864 D8760273 3EC86A64 521F2B18 177B200C</span>
+<span class="sd">          BBE11757 7A615D6C 770988C0 BAD946E2 08E24FA0 74E5AB31 43DB5BFC</span>
+<span class="sd">          E0FD108E 4B82D120 A9210801 1A723C12 A787E6D7 88719A10 BDBA5B26</span>
+<span class="sd">          99C32718 6AF4E23C 1A946834 B6150BDA 2583E9CA 2AD44CE8 DBBBC2DB</span>
+<span class="sd">          04DE8EF9 2E8EFC14 1FBECAA6 287C5947 4E6BC05D 99B2964F A090C3A2</span>
+<span class="sd">          233BA186 515BE7ED 1F612970 CEE2D7AF B81BDD76 2170481C D0069127</span>
+<span class="sd">          D5B05AA9 93B4EA98 8D8FDDC1 86FFB7DC 90A6C08F 4DF435C9 34028492</span>
+<span class="sd">          36C3FAB4 D27C7026 C1D4DCB2 602646DE C9751E76 3DBA37BD F8FF9406</span>
+<span class="sd">          AD9E530E E5DB382F 413001AE B06A53ED 9027D831 179727B0 865A8918</span>
+<span class="sd">          DA3EDBEB CF9B14ED 44CE6CBA CED4BB1B DB7F1447 E6CC254B 33205151</span>
+<span class="sd">          2BD7AF42 6FB8F401 378CD2BF 5983CA01 C64B92EC F032EA15 D1721D03</span>
+<span class="sd">          F482D7CE 6E74FEF6 D55E702F 46980C82 B5A84031 900B1C9E 59E7C97F</span>
+<span class="sd">          BEC7E8F3 23A97A7E 36CC88BE 0F1D45B7 FF585AC5 4BD407B2 2B4154AA</span>
+<span class="sd">          CC8F6D7E BF48E1D8 14CC5ED2 0F8037E0 A79715EE F29BE328 06A1D58B</span>
+<span class="sd">          B7C5DA76 F550AA3D 8A1FBFF0 EB19CCB1 A313D55C DA56C9EC 2EF29632</span>
+<span class="sd">          387FE8D7 6E3C0468 043E8F66 3F4860EE 12BF2D5B 0B7474D6 E694F91E</span>
+<span class="sd">          6DBE1159 74A3926F 12FEE5E4 38777CB6 A932DF8C D8BEC4D0 73B931BA</span>
+<span class="sd">          3BC832B6 8D9DD300 741FA7BF 8AFC47ED 2576F693 6BA42466 3AAB639C</span>
+<span class="sd">          5AE4F568 3423B474 2BF1C978 238F16CB E39D652D E3FDB8BE FC848AD9</span>
+<span class="sd">          22222E04 A4037C07 13EB57A8 1A23F0C7 3473FC64 6CEA306B 4BCBC886</span>
+<span class="sd">          2F8385DD FA9D4B7F A2C087E8 79683303 ED5BDD3A 062B3CF5 B3A278A6</span>
+<span class="sd">          6D2A13F8 3F44F82D DF310EE0 74AB6A36 4597E899 A0255DC1 64F31CC5</span>
+<span class="sd">          0846851D F9AB4819 5DED7EA1 B1D510BD 7EE74D73 FAF36BC3 1ECFA268</span>
+<span class="sd">          359046F4 EB879F92 4009438B 481C6CD7 889A002E D5EE382B C9190DA6</span>
+<span class="sd">          FC026E47 9558E447 5677E9AA 9E3050E2 765694DF C81F56E8 80B96E71</span>
+<span class="sd">          60C980DD 98EDD3DF FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))]</span>
+
+
+<span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">goodGroupParameters</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC5054 group </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num</span><span class="p">)]</span> <span class="o">=</span> <span class="n">group</span>
+
+
+<span class="c1"># old versions of tlslite had an incorrect generator for 3072 bit group</span>
+<span class="c1"># from RFC 5054. Since the group is a safe prime, the generator of &quot;2&quot; is</span>
+<span class="c1"># cryptographically safe, so we don&#39;t have reason to reject connections</span>
+<span class="c1"># from old tlslite, so add the old invalid value to the &quot;known good&quot; list</span>
+<span class="n">goodGroupParameters</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">goodGroupParameters</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+<span class="c1"># we had a bad generator for group 7 (8192 bit) - 5 - while it needs to be 19</span>
+<span class="c1"># same as above, any generator but 1 and p-1 are ok, cryptographically speaking</span>
+<span class="n">goodGroupParameters</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="n">goodGroupParameters</span><span class="p">[</span><span class="mi">6</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+
+
+<span class="c1"># INSECURE groups from RFC 5114, do NOT use</span>
+<span class="c1"># RFC 5114, section 2.1, 1024 bit MODP with 160-bit Prime Order Subgroup</span>
+<span class="n">RFC5114_GROUP22</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">       A4D1CBD5 C3FD3412 6765A442 EFB99905 F8104DD2 58AC507F</span>
+<span class="s2">       D6406CFF 14266D31 266FEA1E 5C41564B 777E690F 5504F213</span>
+<span class="s2">       160217B4 B01B886A 5E91547F 9E2749F4 D7FBD7D3 B9A92EE1</span>
+<span class="s2">       909D0D22 63F80A76 A6A24C08 7A091F53 1DBF0A01 69B6A28A</span>
+<span class="s2">       D662A4D1 8E73AFA3 2D779D59 18D08BC8 858F4DCE F97C2A24</span>
+<span class="s2">       855E6EEB 22B3B2E5&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">       B10B8F96 A080E01D DE92DE5E AE5D54EC 52C99FBC FB06A3C6</span>
+<span class="s2">       9A6A9DCA 52D23B61 6073E286 75A23D18 9838EF1E 2EE652C0</span>
+<span class="s2">       13ECB4AE A9061123 24975C3C D49B83BF ACCBDD7D 90C4BD70</span>
+<span class="s2">       98488E9C 219A7372 4EFFD6FA E5644738 FAA31A4F F55BCCC0</span>
+<span class="s2">       A151AF5F 0DC8B4BD 45BF37DF 365C1A65 E68CFDA7 6D4DA708</span>
+<span class="s2">       DF1FB2BC 2E4A4371&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC5114 group 22&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC5114_GROUP22</span>
+
+
+<span class="c1"># RFC 5114, section 2.2, 2048 bit MODP with 224-bit Prime Order Subgroup</span>
+<span class="c1"># INSECURE, do not use</span>
+<span class="n">RFC5114_GROUP23</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        AC4032EF 4F2D9AE3 9DF30B5C 8FFDAC50 6CDEBE7B 89998CAF</span>
+<span class="s2">        74866A08 CFE4FFE3 A6824A4E 10B9A6F0 DD921F01 A70C4AFA</span>
+<span class="s2">        AB739D77 00C29F52 C57DB17C 620A8652 BE5E9001 A8D66AD7</span>
+<span class="s2">        C1766910 1999024A F4D02727 5AC1348B B8A762D0 521BC98A</span>
+<span class="s2">        E2471504 22EA1ED4 09939D54 DA7460CD B5F6C6B2 50717CBE</span>
+<span class="s2">        F180EB34 118E98D1 19529A45 D6F83456 6E3025E3 16A330EF</span>
+<span class="s2">        BB77A86F 0C1AB15B 051AE3D4 28C8F8AC B70A8137 150B8EEB</span>
+<span class="s2">        10E183ED D19963DD D9E263E4 770589EF 6AA21E7F 5F2FF381</span>
+<span class="s2">        B539CCE3 409D13CD 566AFBB4 8D6C0191 81E1BCFE 94B30269</span>
+<span class="s2">        EDFE72FE 9B6AA4BD 7B5A0F1C 71CFFF4C 19C418E1 F6EC0179</span>
+<span class="s2">        81BC087F 2A7065B3 84B890D3 191F2BFA&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        AD107E1E 9123A9D0 D660FAA7 9559C51F A20D64E5 683B9FD1</span>
+<span class="s2">        B54B1597 B61D0A75 E6FA141D F95A56DB AF9A3C40 7BA1DF15</span>
+<span class="s2">        EB3D688A 309C180E 1DE6B85A 1274A0A6 6D3F8152 AD6AC212</span>
+<span class="s2">        9037C9ED EFDA4DF8 D91E8FEF 55B7394B 7AD5B7D0 B6C12207</span>
+<span class="s2">        C9F98D11 ED34DBF6 C6BA0B2C 8BBC27BE 6A00E0A0 B9C49708</span>
+<span class="s2">        B3BF8A31 70918836 81286130 BC8985DB 1602E714 415D9330</span>
+<span class="s2">        278273C7 DE31EFDC 7310F712 1FD5A074 15987D9A DC0A486D</span>
+<span class="s2">        CDF93ACC 44328387 315D75E1 98C641A4 80CD86A1 B9E587E8</span>
+<span class="s2">        BE60E69C C928B2B9 C52172E4 13042E9B 23F10B0E 16E79763</span>
+<span class="s2">        C9B53DCF 4BA80A29 E3FB73C1 6B8E75B9 7EF363E2 FFA31F71</span>
+<span class="s2">        CF9DE538 4E71B81C 0AC4DFFE 0C10E64F&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC5114 group 23&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC5114_GROUP23</span>
+
+
+<span class="c1"># RFC 5114, section 2.3, 2048 bit MODP with 256-bit Prime Order Subgroup</span>
+<span class="c1"># INSECURE, do not use</span>
+<span class="n">RFC5114_GROUP24</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">       3FB32C9B 73134D0B 2E775066 60EDBD48 4CA7B18F 21EF2054</span>
+<span class="s2">       07F4793A 1A0BA125 10DBC150 77BE463F FF4FED4A AC0BB555</span>
+<span class="s2">       BE3A6C1B 0C6B47B1 BC3773BF 7E8C6F62 901228F8 C28CBB18</span>
+<span class="s2">       A55AE313 41000A65 0196F931 C77A57F2 DDF463E5 E9EC144B</span>
+<span class="s2">       777DE62A AAB8A862 8AC376D2 82D6ED38 64E67982 428EBC83</span>
+<span class="s2">       1D14348F 6F2F9193 B5045AF2 767164E1 DFC967C1 FB3F2E55</span>
+<span class="s2">       A4BD1BFF E83B9C80 D052B985 D182EA0A DB2A3B73 13D3FE14</span>
+<span class="s2">       C8484B1E 052588B9 B7D2BBD2 DF016199 ECD06E15 57CD0915</span>
+<span class="s2">       B3353BBB 64E0EC37 7FD02837 0DF92B52 C7891428 CDC67EB6</span>
+<span class="s2">       184B523D 1DB246C3 2F630784 90F00EF8 D647D148 D4795451</span>
+<span class="s2">       5E2327CF EF98C582 664B4C0F 6CC41659&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">       87A8E61D B4B6663C FFBBD19C 65195999 8CEEF608 660DD0F2</span>
+<span class="s2">       5D2CEED4 435E3B00 E00DF8F1 D61957D4 FAF7DF45 61B2AA30</span>
+<span class="s2">       16C3D911 34096FAA 3BF4296D 830E9A7C 209E0C64 97517ABD</span>
+<span class="s2">       5A8A9D30 6BCF67ED 91F9E672 5B4758C0 22E0B1EF 4275BF7B</span>
+<span class="s2">       6C5BFC11 D45F9088 B941F54E B1E59BB8 BC39A0BF 12307F5C</span>
+<span class="s2">       4FDB70C5 81B23F76 B63ACAE1 CAA6B790 2D525267 35488A0E</span>
+<span class="s2">       F13C6D9A 51BFA4AB 3AD83477 96524D8E F6A167B5 A41825D9</span>
+<span class="s2">       67E144E5 14056425 1CCACB83 E6B486F6 B3CA3F79 71506026</span>
+<span class="s2">       C0B857F6 89962856 DED4010A BD0BE621 C3A3960A 54E710C3</span>
+<span class="s2">       75F26375 D7014103 A4B54330 C198AF12 6116D227 6E11715F</span>
+<span class="s2">       693877FA D7EF09CA DB094AE9 1E1A1597&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC5114 group 24&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RFC5114_GROUP24</span>
+
+
+<span class="n">RFC7919_GROUPS</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">All DH parameters specified in RFC 7919.</span>
+
+<span class="sd">Those are the parameters recommended for use in TLS.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># RFC 7919 ffdhe2048 bit group</span>
+<span class="n">FFDHE2048</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    FFFFFFFF FFFFFFFF ADF85458 A2BB4A9A AFDC5620 273D3CF1</span>
+<span class="s2">    D8B9C583 CE2D3695 A9E13641 146433FB CC939DCE 249B3EF9</span>
+<span class="s2">    7D2FE363 630C75D8 F681B202 AEC4617A D3DF1ED5 D5FD6561</span>
+<span class="s2">    2433F51F 5F066ED0 85636555 3DED1AF3 B557135E 7F57C935</span>
+<span class="s2">    984F0C70 E0E68B77 E2A689DA F3EFE872 1DF158A1 36ADE735</span>
+<span class="s2">    30ACCA4F 483A797A BC0AB182 B324FB61 D108A94B B2C8E3FB</span>
+<span class="s2">    B96ADAB7 60D7F468 1D4F42A3 DE394DF4 AE56EDE7 6372BB19</span>
+<span class="s2">    0B07A7C8 EE0A6D70 9E02FCE1 CDF7E2EC C03404CD 28342F61</span>
+<span class="s2">    9172FE9C E98583FF 8E4F1232 EEF28183 C3FE3B1B 4C6FAD73</span>
+<span class="s2">    3BB5FCBC 2EC22005 C58EF183 7D1683B2 C6F34A26 C1B2EFFA</span>
+<span class="s2">    886B4238 61285C97 FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">goodGroupParameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FFDHE2048</span><span class="p">)</span>
+<span class="n">RFC7919_GROUPS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FFDHE2048</span><span class="p">)</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC7919 ffdhe2048&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FFDHE2048</span>
+
+
+<span class="c1"># RFC 7919 ffdhe3072 bit group</span>
+<span class="n">FFDHE3072</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    FFFFFFFF FFFFFFFF ADF85458 A2BB4A9A AFDC5620 273D3CF1</span>
+<span class="s2">    D8B9C583 CE2D3695 A9E13641 146433FB CC939DCE 249B3EF9</span>
+<span class="s2">    7D2FE363 630C75D8 F681B202 AEC4617A D3DF1ED5 D5FD6561</span>
+<span class="s2">    2433F51F 5F066ED0 85636555 3DED1AF3 B557135E 7F57C935</span>
+<span class="s2">    984F0C70 E0E68B77 E2A689DA F3EFE872 1DF158A1 36ADE735</span>
+<span class="s2">    30ACCA4F 483A797A BC0AB182 B324FB61 D108A94B B2C8E3FB</span>
+<span class="s2">    B96ADAB7 60D7F468 1D4F42A3 DE394DF4 AE56EDE7 6372BB19</span>
+<span class="s2">    0B07A7C8 EE0A6D70 9E02FCE1 CDF7E2EC C03404CD 28342F61</span>
+<span class="s2">    9172FE9C E98583FF 8E4F1232 EEF28183 C3FE3B1B 4C6FAD73</span>
+<span class="s2">    3BB5FCBC 2EC22005 C58EF183 7D1683B2 C6F34A26 C1B2EFFA</span>
+<span class="s2">    886B4238 611FCFDC DE355B3B 6519035B BC34F4DE F99C0238</span>
+<span class="s2">    61B46FC9 D6E6C907 7AD91D26 91F7F7EE 598CB0FA C186D91C</span>
+<span class="s2">    AEFE1309 85139270 B4130C93 BC437944 F4FD4452 E2D74DD3</span>
+<span class="s2">    64F2E21E 71F54BFF 5CAE82AB 9C9DF69E E86D2BC5 22363A0D</span>
+<span class="s2">    ABC52197 9B0DEADA 1DBF9A42 D5C4484E 0ABCD06B FA53DDEF</span>
+<span class="s2">    3C1B20EE 3FD59D7C 25E41D2B 66C62E37 FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">goodGroupParameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FFDHE3072</span><span class="p">)</span>
+<span class="n">RFC7919_GROUPS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FFDHE3072</span><span class="p">)</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC7919 ffdhe3072&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FFDHE3072</span>
+
+
+<span class="c1"># RFC 7919 ffdhe4096 bit group</span>
+<span class="n">FFDHE4096</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    FFFFFFFF FFFFFFFF ADF85458 A2BB4A9A AFDC5620 273D3CF1</span>
+<span class="s2">    D8B9C583 CE2D3695 A9E13641 146433FB CC939DCE 249B3EF9</span>
+<span class="s2">    7D2FE363 630C75D8 F681B202 AEC4617A D3DF1ED5 D5FD6561</span>
+<span class="s2">    2433F51F 5F066ED0 85636555 3DED1AF3 B557135E 7F57C935</span>
+<span class="s2">    984F0C70 E0E68B77 E2A689DA F3EFE872 1DF158A1 36ADE735</span>
+<span class="s2">    30ACCA4F 483A797A BC0AB182 B324FB61 D108A94B B2C8E3FB</span>
+<span class="s2">    B96ADAB7 60D7F468 1D4F42A3 DE394DF4 AE56EDE7 6372BB19</span>
+<span class="s2">    0B07A7C8 EE0A6D70 9E02FCE1 CDF7E2EC C03404CD 28342F61</span>
+<span class="s2">    9172FE9C E98583FF 8E4F1232 EEF28183 C3FE3B1B 4C6FAD73</span>
+<span class="s2">    3BB5FCBC 2EC22005 C58EF183 7D1683B2 C6F34A26 C1B2EFFA</span>
+<span class="s2">    886B4238 611FCFDC DE355B3B 6519035B BC34F4DE F99C0238</span>
+<span class="s2">    61B46FC9 D6E6C907 7AD91D26 91F7F7EE 598CB0FA C186D91C</span>
+<span class="s2">    AEFE1309 85139270 B4130C93 BC437944 F4FD4452 E2D74DD3</span>
+<span class="s2">    64F2E21E 71F54BFF 5CAE82AB 9C9DF69E E86D2BC5 22363A0D</span>
+<span class="s2">    ABC52197 9B0DEADA 1DBF9A42 D5C4484E 0ABCD06B FA53DDEF</span>
+<span class="s2">    3C1B20EE 3FD59D7C 25E41D2B 669E1EF1 6E6F52C3 164DF4FB</span>
+<span class="s2">    7930E9E4 E58857B6 AC7D5F42 D69F6D18 7763CF1D 55034004</span>
+<span class="s2">    87F55BA5 7E31CC7A 7135C886 EFB4318A ED6A1E01 2D9E6832</span>
+<span class="s2">    A907600A 918130C4 6DC778F9 71AD0038 092999A3 33CB8B7A</span>
+<span class="s2">    1A1DB93D 7140003C 2A4ECEA9 F98D0ACC 0A8291CD CEC97DCF</span>
+<span class="s2">    8EC9B55A 7F88A46B 4DB5A851 F44182E1 C68A007E 5E655F6A</span>
+<span class="s2">    FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">goodGroupParameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FFDHE4096</span><span class="p">)</span>
+<span class="n">RFC7919_GROUPS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FFDHE4096</span><span class="p">)</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC7919 ffdhe4096&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FFDHE4096</span>
+
+
+<span class="c1"># RFC 7919 ffdhe6144 bit group</span>
+<span class="n">FFDHE6144</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    FFFFFFFF FFFFFFFF ADF85458 A2BB4A9A AFDC5620 273D3CF1</span>
+<span class="s2">    D8B9C583 CE2D3695 A9E13641 146433FB CC939DCE 249B3EF9</span>
+<span class="s2">    7D2FE363 630C75D8 F681B202 AEC4617A D3DF1ED5 D5FD6561</span>
+<span class="s2">    2433F51F 5F066ED0 85636555 3DED1AF3 B557135E 7F57C935</span>
+<span class="s2">    984F0C70 E0E68B77 E2A689DA F3EFE872 1DF158A1 36ADE735</span>
+<span class="s2">    30ACCA4F 483A797A BC0AB182 B324FB61 D108A94B B2C8E3FB</span>
+<span class="s2">    B96ADAB7 60D7F468 1D4F42A3 DE394DF4 AE56EDE7 6372BB19</span>
+<span class="s2">    0B07A7C8 EE0A6D70 9E02FCE1 CDF7E2EC C03404CD 28342F61</span>
+<span class="s2">    9172FE9C E98583FF 8E4F1232 EEF28183 C3FE3B1B 4C6FAD73</span>
+<span class="s2">    3BB5FCBC 2EC22005 C58EF183 7D1683B2 C6F34A26 C1B2EFFA</span>
+<span class="s2">    886B4238 611FCFDC DE355B3B 6519035B BC34F4DE F99C0238</span>
+<span class="s2">    61B46FC9 D6E6C907 7AD91D26 91F7F7EE 598CB0FA C186D91C</span>
+<span class="s2">    AEFE1309 85139270 B4130C93 BC437944 F4FD4452 E2D74DD3</span>
+<span class="s2">    64F2E21E 71F54BFF 5CAE82AB 9C9DF69E E86D2BC5 22363A0D</span>
+<span class="s2">    ABC52197 9B0DEADA 1DBF9A42 D5C4484E 0ABCD06B FA53DDEF</span>
+<span class="s2">    3C1B20EE 3FD59D7C 25E41D2B 669E1EF1 6E6F52C3 164DF4FB</span>
+<span class="s2">    7930E9E4 E58857B6 AC7D5F42 D69F6D18 7763CF1D 55034004</span>
+<span class="s2">    87F55BA5 7E31CC7A 7135C886 EFB4318A ED6A1E01 2D9E6832</span>
+<span class="s2">    A907600A 918130C4 6DC778F9 71AD0038 092999A3 33CB8B7A</span>
+<span class="s2">    1A1DB93D 7140003C 2A4ECEA9 F98D0ACC 0A8291CD CEC97DCF</span>
+<span class="s2">    8EC9B55A 7F88A46B 4DB5A851 F44182E1 C68A007E 5E0DD902</span>
+<span class="s2">    0BFD64B6 45036C7A 4E677D2C 38532A3A 23BA4442 CAF53EA6</span>
+<span class="s2">    3BB45432 9B7624C8 917BDD64 B1C0FD4C B38E8C33 4C701C3A</span>
+<span class="s2">    CDAD0657 FCCFEC71 9B1F5C3E 4E46041F 388147FB 4CFDB477</span>
+<span class="s2">    A52471F7 A9A96910 B855322E DB6340D8 A00EF092 350511E3</span>
+<span class="s2">    0ABEC1FF F9E3A26E 7FB29F8C 183023C3 587E38DA 0077D9B4</span>
+<span class="s2">    763E4E4B 94B2BBC1 94C6651E 77CAF992 EEAAC023 2A281BF6</span>
+<span class="s2">    B3A739C1 22611682 0AE8DB58 47A67CBE F9C9091B 462D538C</span>
+<span class="s2">    D72B0374 6AE77F5E 62292C31 1562A846 505DC82D B854338A</span>
+<span class="s2">    E49F5235 C95B9117 8CCF2DD5 CACEF403 EC9D1810 C6272B04</span>
+<span class="s2">    5B3B71F9 DC6B80D6 3FDD4A8E 9ADB1E69 62A69526 D43161C1</span>
+<span class="s2">    A41D570D 7938DAD4 A40E329C D0E40E65 FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">goodGroupParameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FFDHE6144</span><span class="p">)</span>
+<span class="n">RFC7919_GROUPS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FFDHE6144</span><span class="p">)</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC7919 ffdhe6144&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FFDHE6144</span>
+
+
+<span class="c1"># RFC 7919 ffdhe8192 bit group</span>
+<span class="n">FFDHE8192</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    FFFFFFFF FFFFFFFF ADF85458 A2BB4A9A AFDC5620 273D3CF1</span>
+<span class="s2">    D8B9C583 CE2D3695 A9E13641 146433FB CC939DCE 249B3EF9</span>
+<span class="s2">    7D2FE363 630C75D8 F681B202 AEC4617A D3DF1ED5 D5FD6561</span>
+<span class="s2">    2433F51F 5F066ED0 85636555 3DED1AF3 B557135E 7F57C935</span>
+<span class="s2">    984F0C70 E0E68B77 E2A689DA F3EFE872 1DF158A1 36ADE735</span>
+<span class="s2">    30ACCA4F 483A797A BC0AB182 B324FB61 D108A94B B2C8E3FB</span>
+<span class="s2">    B96ADAB7 60D7F468 1D4F42A3 DE394DF4 AE56EDE7 6372BB19</span>
+<span class="s2">    0B07A7C8 EE0A6D70 9E02FCE1 CDF7E2EC C03404CD 28342F61</span>
+<span class="s2">    9172FE9C E98583FF 8E4F1232 EEF28183 C3FE3B1B 4C6FAD73</span>
+<span class="s2">    3BB5FCBC 2EC22005 C58EF183 7D1683B2 C6F34A26 C1B2EFFA</span>
+<span class="s2">    886B4238 611FCFDC DE355B3B 6519035B BC34F4DE F99C0238</span>
+<span class="s2">    61B46FC9 D6E6C907 7AD91D26 91F7F7EE 598CB0FA C186D91C</span>
+<span class="s2">    AEFE1309 85139270 B4130C93 BC437944 F4FD4452 E2D74DD3</span>
+<span class="s2">    64F2E21E 71F54BFF 5CAE82AB 9C9DF69E E86D2BC5 22363A0D</span>
+<span class="s2">    ABC52197 9B0DEADA 1DBF9A42 D5C4484E 0ABCD06B FA53DDEF</span>
+<span class="s2">    3C1B20EE 3FD59D7C 25E41D2B 669E1EF1 6E6F52C3 164DF4FB</span>
+<span class="s2">    7930E9E4 E58857B6 AC7D5F42 D69F6D18 7763CF1D 55034004</span>
+<span class="s2">    87F55BA5 7E31CC7A 7135C886 EFB4318A ED6A1E01 2D9E6832</span>
+<span class="s2">    A907600A 918130C4 6DC778F9 71AD0038 092999A3 33CB8B7A</span>
+<span class="s2">    1A1DB93D 7140003C 2A4ECEA9 F98D0ACC 0A8291CD CEC97DCF</span>
+<span class="s2">    8EC9B55A 7F88A46B 4DB5A851 F44182E1 C68A007E 5E0DD902</span>
+<span class="s2">    0BFD64B6 45036C7A 4E677D2C 38532A3A 23BA4442 CAF53EA6</span>
+<span class="s2">    3BB45432 9B7624C8 917BDD64 B1C0FD4C B38E8C33 4C701C3A</span>
+<span class="s2">    CDAD0657 FCCFEC71 9B1F5C3E 4E46041F 388147FB 4CFDB477</span>
+<span class="s2">    A52471F7 A9A96910 B855322E DB6340D8 A00EF092 350511E3</span>
+<span class="s2">    0ABEC1FF F9E3A26E 7FB29F8C 183023C3 587E38DA 0077D9B4</span>
+<span class="s2">    763E4E4B 94B2BBC1 94C6651E 77CAF992 EEAAC023 2A281BF6</span>
+<span class="s2">    B3A739C1 22611682 0AE8DB58 47A67CBE F9C9091B 462D538C</span>
+<span class="s2">    D72B0374 6AE77F5E 62292C31 1562A846 505DC82D B854338A</span>
+<span class="s2">    E49F5235 C95B9117 8CCF2DD5 CACEF403 EC9D1810 C6272B04</span>
+<span class="s2">    5B3B71F9 DC6B80D6 3FDD4A8E 9ADB1E69 62A69526 D43161C1</span>
+<span class="s2">    A41D570D 7938DAD4 A40E329C CFF46AAA 36AD004C F600C838</span>
+<span class="s2">    1E425A31 D951AE64 FDB23FCE C9509D43 687FEB69 EDD1CC5E</span>
+<span class="s2">    0B8CC3BD F64B10EF 86B63142 A3AB8829 555B2F74 7C932665</span>
+<span class="s2">    CB2C0F1C C01BD702 29388839 D2AF05E4 54504AC7 8B758282</span>
+<span class="s2">    2846C0BA 35C35F5C 59160CC0 46FD8251 541FC68C 9C86B022</span>
+<span class="s2">    BB709987 6A460E74 51A8A931 09703FEE 1C217E6C 3826E52C</span>
+<span class="s2">    51AA691E 0E423CFC 99E9E316 50C1217B 624816CD AD9A95F9</span>
+<span class="s2">    D5B80194 88D9C0A0 A1FE3075 A577E231 83F81D4A 3F2FA457</span>
+<span class="s2">    1EFC8CE0 BA8A4FE8 B6855DFE 72B0A66E DED2FBAB FBE58A30</span>
+<span class="s2">    FAFABE1C 5D71A87E 2F741EF8 C1FE86FE A6BBFDE5 30677F0D</span>
+<span class="s2">    97D11D49 F7A8443D 0822E506 A9F4614E 011E2A94 838FF88C</span>
+<span class="s2">    D68C8BB7 C5C6424C FFFFFFFF FFFFFFFF&quot;&quot;&quot;</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">goodGroupParameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FFDHE8192</span><span class="p">)</span>
+<span class="n">RFC7919_GROUPS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FFDHE8192</span><span class="p">)</span>
+<span class="n">FFDHE_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;RFC7919 ffdhe8192&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FFDHE8192</span>
+
+
+<div class="viewcode-block" id="paramStrength"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.paramStrength">[docs]</a><span class="k">def</span> <span class="nf">paramStrength</span><span class="p">(</span><span class="n">param</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return level of security for DH, DSA and RSA parameters.</span>
+
+<span class="sd">    Provide the approximate level of security for algorithms based on finite</span>
+<span class="sd">    field (DSA, DH) or integer factorisation cryptography (RSA) when provided</span>
+<span class="sd">    with the prime defining the field or the modulus of the public key.</span>
+
+<span class="sd">    :param param: prime or modulus</span>
+<span class="sd">    :type param: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">numBits</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">512</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">48</span>
+    <span class="k">elif</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">768</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">56</span>
+    <span class="k">elif</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">816</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">64</span>
+    <span class="k">elif</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1023</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">72</span>
+    <span class="k">elif</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1535</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">80</span>  <span class="c1"># NIST SP 800-57</span>
+    <span class="k">elif</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">2047</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">88</span>  <span class="c1"># rounded RFC 3526</span>
+    <span class="k">elif</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">3071</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">112</span>  <span class="c1"># NIST SP 800-57</span>
+    <span class="k">elif</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">4095</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">128</span>  <span class="c1"># NIST SP 800-57</span>
+    <span class="k">elif</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">6144</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">152</span>  <span class="c1"># rounded RFC 3526</span>
+    <span class="k">elif</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">7679</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">168</span>  <span class="c1"># rounded RFC 3526</span>
+    <span class="k">elif</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">15359</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">192</span>  <span class="c1"># NIST SP 800-57</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">256</span>  <span class="c1"># NIST SP 800-57</span></div>
+
+
+<div class="viewcode-block" id="P_hash"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.P_hash">[docs]</a><span class="k">def</span> <span class="nf">P_hash</span><span class="p">(</span><span class="n">mac_name</span><span class="p">,</span> <span class="n">secret</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal method for calculation the PRF in TLS.&quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">compatHMAC</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">seed</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">mac</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">HMAC</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">secret</span><span class="p">),</span> <span class="n">digestmod</span><span class="o">=</span><span class="n">mac_name</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">:</span>
+        <span class="n">a_fun</span> <span class="o">=</span> <span class="n">mac</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">a_fun</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">a_fun</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="n">out_fun</span> <span class="o">=</span> <span class="n">mac</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">out_fun</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">out_fun</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">out_fun</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+
+        <span class="n">how_many</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="n">index</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
+        <span class="n">ret</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span><span class="o">+</span><span class="n">how_many</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:</span><span class="n">how_many</span><span class="p">]</span>
+        <span class="n">index</span> <span class="o">+=</span> <span class="n">how_many</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<div class="viewcode-block" id="PRF"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.PRF">[docs]</a><span class="k">def</span> <span class="nf">PRF</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="c1">#Split the secret into left and right halves</span>
+    <span class="c1"># which may share a byte if len is odd</span>
+    <span class="n">S1</span> <span class="o">=</span> <span class="n">secret</span><span class="p">[</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">secret</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">))]</span>
+    <span class="n">S2</span> <span class="o">=</span> <span class="n">secret</span><span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">secret</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">))</span> <span class="p">:</span> <span class="p">]</span>
+
+    <span class="c1">#Run the left half through P_MD5 and the right half through P_SHA1</span>
+    <span class="n">p_md5</span> <span class="o">=</span> <span class="n">P_hash</span><span class="p">(</span><span class="s2">&quot;md5&quot;</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">label</span> <span class="o">+</span> <span class="n">seed</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="n">p_sha1</span> <span class="o">=</span> <span class="n">P_hash</span><span class="p">(</span><span class="s2">&quot;sha1&quot;</span><span class="p">,</span> <span class="n">S2</span><span class="p">,</span> <span class="n">label</span> <span class="o">+</span> <span class="n">seed</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+
+    <span class="c1">#XOR the output values and return the result</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+        <span class="n">p_md5</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">^=</span> <span class="n">p_sha1</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">p_md5</span></div>
+
+<div class="viewcode-block" id="PRF_1_2"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.PRF_1_2">[docs]</a><span class="k">def</span> <span class="nf">PRF_1_2</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pseudo Random Function for TLS1.2 ciphers that use SHA256&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">P_hash</span><span class="p">(</span><span class="s2">&quot;sha256&quot;</span><span class="p">,</span> <span class="n">secret</span><span class="p">,</span> <span class="n">label</span> <span class="o">+</span> <span class="n">seed</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PRF_1_2_SHA384"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.PRF_1_2_SHA384">[docs]</a><span class="k">def</span> <span class="nf">PRF_1_2_SHA384</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pseudo Random Function for TLS1.2 ciphers that use SHA384&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">P_hash</span><span class="p">(</span><span class="s2">&quot;sha384&quot;</span><span class="p">,</span> <span class="n">secret</span><span class="p">,</span> <span class="n">label</span> <span class="o">+</span> <span class="n">seed</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PRF_SSL"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.PRF_SSL">[docs]</a><span class="k">def</span> <span class="nf">PRF_SSL</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="nb">bytes</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">26</span><span class="p">):</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="o">+</span><span class="n">x</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># &#39;A&#39;, &#39;BB&#39;, &#39;CCC&#39;, etc..</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="n">secret</span> <span class="o">+</span> <span class="n">SHA1</span><span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="n">secret</span> <span class="o">+</span> <span class="n">seed</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">MD5</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">length</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">bytes</span>
+            <span class="nb">bytes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="nb">bytes</span></div>
+
+<div class="viewcode-block" id="calcExtendedMasterSecret"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.calcExtendedMasterSecret">[docs]</a><span class="nd">@deprecated_method</span><span class="p">(</span><span class="s2">&quot;Please use calc_key function instead.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">calcExtendedMasterSecret</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">premasterSecret</span><span class="p">,</span>
+                             <span class="n">handshakeHashes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Derive Extended Master Secret from premaster and handshake msgs&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)):</span>
+        <span class="n">masterSecret</span> <span class="o">=</span> <span class="n">PRF</span><span class="p">(</span><span class="n">premasterSecret</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;extended master secret&quot;</span><span class="p">,</span>
+                           <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;md5&#39;</span><span class="p">)</span> <span class="o">+</span>
+                           <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;sha1&#39;</span><span class="p">),</span>
+                           <span class="mi">48</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">sha384PrfSuites</span><span class="p">:</span>
+            <span class="n">masterSecret</span> <span class="o">=</span> <span class="n">PRF_1_2_SHA384</span><span class="p">(</span><span class="n">premasterSecret</span><span class="p">,</span>
+                                          <span class="sa">b</span><span class="s2">&quot;extended master secret&quot;</span><span class="p">,</span>
+                                          <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;sha384&#39;</span><span class="p">),</span>
+                                          <span class="mi">48</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">masterSecret</span> <span class="o">=</span> <span class="n">PRF_1_2</span><span class="p">(</span><span class="n">premasterSecret</span><span class="p">,</span>
+                                   <span class="sa">b</span><span class="s2">&quot;extended master secret&quot;</span><span class="p">,</span>
+                                   <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">),</span>
+                                   <span class="mi">48</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">masterSecret</span></div>
+
+
+<div class="viewcode-block" id="calcMasterSecret"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.calcMasterSecret">[docs]</a><span class="nd">@deprecated_method</span><span class="p">(</span><span class="s2">&quot;Please use calc_key function instead.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">calcMasterSecret</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">premasterSecret</span><span class="p">,</span> <span class="n">clientRandom</span><span class="p">,</span>
+                     <span class="n">serverRandom</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Derive Master Secret from premaster secret and random values&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">masterSecret</span> <span class="o">=</span> <span class="n">PRF_SSL</span><span class="p">(</span><span class="n">premasterSecret</span><span class="p">,</span>
+                            <span class="n">clientRandom</span> <span class="o">+</span> <span class="n">serverRandom</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)):</span>
+        <span class="n">masterSecret</span> <span class="o">=</span> <span class="n">PRF</span><span class="p">(</span><span class="n">premasterSecret</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;master secret&quot;</span><span class="p">,</span>
+                            <span class="n">clientRandom</span> <span class="o">+</span> <span class="n">serverRandom</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">sha384PrfSuites</span><span class="p">:</span>
+            <span class="n">masterSecret</span> <span class="o">=</span> <span class="n">PRF_1_2_SHA384</span><span class="p">(</span><span class="n">premasterSecret</span><span class="p">,</span>
+                                          <span class="sa">b</span><span class="s2">&quot;master secret&quot;</span><span class="p">,</span>
+                                          <span class="n">clientRandom</span> <span class="o">+</span> <span class="n">serverRandom</span><span class="p">,</span>
+                                          <span class="mi">48</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">masterSecret</span> <span class="o">=</span> <span class="n">PRF_1_2</span><span class="p">(</span><span class="n">premasterSecret</span><span class="p">,</span>
+                                   <span class="sa">b</span><span class="s2">&quot;master secret&quot;</span><span class="p">,</span>
+                                   <span class="n">clientRandom</span> <span class="o">+</span> <span class="n">serverRandom</span><span class="p">,</span>
+                                   <span class="mi">48</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">masterSecret</span></div>
+
+<div class="viewcode-block" id="calcFinished"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.calcFinished">[docs]</a><span class="nd">@deprecated_method</span><span class="p">(</span><span class="s2">&quot;Please use calc_key function instead.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">calcFinished</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">masterSecret</span><span class="p">,</span> <span class="n">cipherSuite</span><span class="p">,</span> <span class="n">handshakeHashes</span><span class="p">,</span>
+                 <span class="n">isClient</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the Handshake protocol Finished value</span>
+
+<span class="sd">    :param version: TLS protocol version tuple</span>
+<span class="sd">    :param masterSecret: negotiated master secret of the connection</span>
+<span class="sd">    :param cipherSuite: negotiated cipher suite of the connection,</span>
+<span class="sd">    :param handshakeHashes: running hash of the handshake messages</span>
+<span class="sd">    :param isClient: whether the calculation should be performed for message</span>
+<span class="sd">        sent by client (True) or by server (False) side of connection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isClient</span><span class="p">:</span>
+            <span class="n">senderStr</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x43\x4C\x4E\x54</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">senderStr</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x53\x52\x56\x52</span><span class="s2">&quot;</span>
+
+        <span class="n">verifyData</span> <span class="o">=</span> <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digestSSL</span><span class="p">(</span><span class="n">masterSecret</span><span class="p">,</span> <span class="n">senderStr</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">isClient</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;client finished&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;server finished&quot;</span>
+
+        <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)):</span>
+            <span class="n">handshakeHash</span> <span class="o">=</span> <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+            <span class="n">verifyData</span> <span class="o">=</span> <span class="n">PRF</span><span class="p">(</span><span class="n">masterSecret</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">handshakeHash</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># version == (3,3):</span>
+            <span class="k">if</span> <span class="n">cipherSuite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">sha384PrfSuites</span><span class="p">:</span>
+                <span class="n">handshakeHash</span> <span class="o">=</span> <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;sha384&#39;</span><span class="p">)</span>
+                <span class="n">verifyData</span> <span class="o">=</span> <span class="n">PRF_1_2_SHA384</span><span class="p">(</span><span class="n">masterSecret</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span>
+                                            <span class="n">handshakeHash</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">handshakeHash</span> <span class="o">=</span> <span class="n">handshakeHashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">)</span>
+                <span class="n">verifyData</span> <span class="o">=</span> <span class="n">PRF_1_2</span><span class="p">(</span><span class="n">masterSecret</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">handshakeHash</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">verifyData</span></div>
+
+<div class="viewcode-block" id="calc_key"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.calc_key">[docs]</a><span class="k">def</span> <span class="nf">calc_key</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">secret</span><span class="p">,</span> <span class="n">cipher_suite</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">handshake_hashes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">client_random</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">server_random</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Method for calculating different keys depending on input.</span>
+<span class="sd">    It can be used to calculate finished value, master secret,</span>
+<span class="sd">    extended master secret or key expansion.</span>
+
+<span class="sd">    :param version: TLS protocol version</span>
+<span class="sd">    :type version: tuple(int, int)</span>
+<span class="sd">    :param bytearray secret: master secret or premasterSecret which will be</span>
+<span class="sd">        used in the PRF.</span>
+<span class="sd">    :param int cipher_suite: Negotiated cipher suite of the connection.</span>
+<span class="sd">    :param bytes label: label for the key you want to calculate</span>
+<span class="sd">        (ex. &#39;master secret&#39;, &#39;extended master secret&#39;, etc).</span>
+<span class="sd">    :param handshake_hashes: running hash of the handshake messages</span>
+<span class="sd">        needed for calculating extended master secret or finished value.</span>
+<span class="sd">    :type handshake_hashes: ~tlslite.handshakehashes.HandshakeHashes</span>
+<span class="sd">    :param bytearray client_random: client random needed for calculating</span>
+<span class="sd">        master secret or key expansion.</span>
+<span class="sd">    :param bytearray server_random: server random needed for calculating</span>
+<span class="sd">        master secret or key expansion.</span>
+<span class="sd">    :param int output_length: Number of bytes to output.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="c1"># SSL3 calculations.</span>
+    <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># Calculating Finished value, either for message sent</span>
+        <span class="c1"># by server or by client</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;client finished&quot;</span><span class="p">:</span>
+            <span class="n">senderStr</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x43\x4C\x4E\x54</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="n">handshake_hashes</span><span class="o">.</span><span class="n">digestSSL</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">senderStr</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">label</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;server finished&quot;</span><span class="p">:</span>
+            <span class="n">senderStr</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x53\x52\x56\x52</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="n">handshake_hashes</span><span class="o">.</span><span class="n">digestSSL</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">senderStr</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;key expansion&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;master secret&quot;</span><span class="p">]</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="n">PRF_SSL</span>
+
+    <span class="c1"># TLS1.0 or TLS1.1 calculations.</span>
+    <span class="k">elif</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)):</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">PRF</span>
+        <span class="c1"># Seed needed for calculating extended master secret</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;extended master secret&quot;</span><span class="p">:</span>
+            <span class="n">seed</span> <span class="o">=</span> <span class="n">handshake_hashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;md5&#39;</span><span class="p">)</span> <span class="o">+</span> \
+                   <span class="n">handshake_hashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;sha1&#39;</span><span class="p">)</span>
+        <span class="c1"># Seed needed for calculating Finished value</span>
+        <span class="k">elif</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;server finished&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;client finished&quot;</span><span class="p">]:</span>
+            <span class="n">seed</span> <span class="o">=</span> <span class="n">handshake_hashes</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;key expansion&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;master secret&quot;</span><span class="p">]</span>
+
+    <span class="c1"># TLS1.2 calculations.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">version</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cipher_suite</span> <span class="ow">in</span> <span class="n">CipherSuite</span><span class="o">.</span><span class="n">sha384PrfSuites</span><span class="p">:</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="n">PRF_1_2_SHA384</span>
+            <span class="c1"># Seed needed for calculating Finished value or extended master</span>
+            <span class="c1"># secret</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;extended master secret&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;server finished&quot;</span><span class="p">,</span>
+                    <span class="sa">b</span><span class="s2">&quot;client finished&quot;</span><span class="p">]:</span>
+                <span class="n">seed</span> <span class="o">=</span> <span class="n">handshake_hashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;sha384&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;key expansion&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;master secret&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Same as above, just using sha256</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="n">PRF_1_2</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;extended master secret&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;server finished&quot;</span><span class="p">,</span>
+                    <span class="sa">b</span><span class="s2">&quot;client finished&quot;</span><span class="p">]:</span>
+                <span class="n">seed</span> <span class="o">=</span> <span class="n">handshake_hashes</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;sha256&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;key expansion&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;master secret&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Seed needed for calculating key expansion or master secret</span>
+    <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;key expansion&quot;</span><span class="p">:</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">server_random</span> <span class="o">+</span> <span class="n">client_random</span>
+    <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;master secret&quot;</span><span class="p">:</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">client_random</span> <span class="o">+</span> <span class="n">server_random</span>
+
+    <span class="k">if</span> <span class="n">func</span> <span class="o">==</span> <span class="n">PRF_SSL</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">output_length</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">output_length</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="makeX"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.makeX">[docs]</a><span class="k">def</span> <span class="nf">makeX</span><span class="p">(</span><span class="n">salt</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">username</span><span class="p">)</span><span class="o">&gt;=</span><span class="mi">256</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;username too long&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">salt</span><span class="p">)</span><span class="o">&gt;=</span><span class="mi">256</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;salt too long&quot;</span><span class="p">)</span>
+    <span class="n">innerHashResult</span> <span class="o">=</span> <span class="n">SHA1</span><span class="p">(</span><span class="n">username</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;:&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">password</span><span class="p">)</span>
+    <span class="n">outerHashResult</span> <span class="o">=</span> <span class="n">SHA1</span><span class="p">(</span><span class="n">salt</span> <span class="o">+</span> <span class="n">innerHashResult</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">outerHashResult</span><span class="p">)</span></div>
+
+<span class="c1">#This function is used by VerifierDB.makeVerifier</span>
+<div class="viewcode-block" id="makeVerifier"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.makeVerifier">[docs]</a><span class="k">def</span> <span class="nf">makeVerifier</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">bits</span><span class="p">):</span>
+    <span class="n">bitsIndex</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1024</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1536</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2048</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3072</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4096</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6144</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8192</span><span class="p">:</span><span class="mi">6</span><span class="p">}[</span><span class="n">bits</span><span class="p">]</span>
+    <span class="n">g</span><span class="p">,</span><span class="n">N</span> <span class="o">=</span> <span class="n">goodGroupParameters</span><span class="p">[</span><span class="n">bitsIndex</span><span class="p">]</span>
+    <span class="n">salt</span> <span class="o">=</span> <span class="n">getRandomBytes</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">makeX</span><span class="p">(</span><span class="n">salt</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="n">verifier</span> <span class="o">=</span> <span class="n">powMod</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">N</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">salt</span><span class="p">,</span> <span class="n">verifier</span></div>
+
+<div class="viewcode-block" id="PAD"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.PAD">[docs]</a><span class="k">def</span> <span class="nf">PAD</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">nLength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">numberToByteArray</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">nLength</span><span class="p">:</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\0</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">nLength</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">b</span></div>
+
+<div class="viewcode-block" id="makeU"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.makeU">[docs]</a><span class="k">def</span> <span class="nf">makeU</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">SHA1</span><span class="p">(</span><span class="n">PAD</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span> <span class="o">+</span> <span class="n">PAD</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">B</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="makeK"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.makeK">[docs]</a><span class="k">def</span> <span class="nf">makeK</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">SHA1</span><span class="p">(</span><span class="n">numberToByteArray</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">+</span> <span class="n">PAD</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">g</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="createHMAC"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.createHMAC">[docs]</a><span class="k">def</span> <span class="nf">createHMAC</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">digestmod</span><span class="o">=</span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">):</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">HMAC</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">digestmod</span><span class="o">=</span><span class="n">digestmod</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s1">&#39;block_size&#39;</span><span class="p">):</span>
+        <span class="n">h</span><span class="o">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="n">digestmod</span><span class="p">()</span><span class="o">.</span><span class="n">block_size</span>
+    <span class="k">assert</span> <span class="n">h</span><span class="o">.</span><span class="n">block_size</span> <span class="o">==</span> <span class="n">digestmod</span><span class="p">()</span><span class="o">.</span><span class="n">block_size</span>
+    <span class="k">return</span> <span class="n">h</span></div>
+
+<div class="viewcode-block" id="createMAC_SSL"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.createMAC_SSL">[docs]</a><span class="k">def</span> <span class="nf">createMAC_SSL</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">digestmod</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">mac</span> <span class="o">=</span> <span class="n">MAC_SSL</span><span class="p">()</span>
+    <span class="n">mac</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">digestmod</span><span class="o">=</span><span class="n">digestmod</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mac</span></div>
+
+
+<div class="viewcode-block" id="MAC_SSL"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.MAC_SSL">[docs]</a><span class="k">class</span> <span class="nc">MAC_SSL</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="MAC_SSL.create"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.MAC_SSL.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">digestmod</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">digestmod</span> <span class="o">=</span> <span class="n">digestmod</span> <span class="ow">or</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">digestmod</span><span class="p">()</span><span class="o">.</span><span class="n">block_size</span>
+        <span class="c1"># Repeat pad bytes 48 times for MD5; 40 times for other hash functions.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">digest_size</span> <span class="o">=</span> <span class="mi">16</span> <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">digestmod</span> <span class="ow">is</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">)</span> <span class="k">else</span> <span class="mi">20</span>
+        <span class="n">repeat</span> <span class="o">=</span> <span class="mi">40</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">digest_size</span> <span class="o">==</span> <span class="mi">20</span> <span class="k">else</span> <span class="mi">48</span>
+        <span class="n">opad</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x5C</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="n">repeat</span>
+        <span class="n">ipad</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x36</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="n">repeat</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ohash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">digestmod</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="n">opad</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ihash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">digestmod</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="n">ipad</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MAC_SSL.update"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.MAC_SSL.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ihash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MAC_SSL.copy"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.MAC_SSL.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">MAC_SSL</span><span class="p">()</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">ihash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ihash</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">ohash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ohash</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">digestmod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">digestmod</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">digest_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">digest_size</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span>
+        <span class="k">return</span> <span class="n">new</span></div>
+
+<div class="viewcode-block" id="MAC_SSL.digest"><a class="viewcode-back" href="../../tlslite.mathtls.html#tlslite.mathtls.MAC_SSL.digest">[docs]</a>    <span class="k">def</span> <span class="nf">digest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ohash2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ohash</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">ohash2</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihash</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">ohash2</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

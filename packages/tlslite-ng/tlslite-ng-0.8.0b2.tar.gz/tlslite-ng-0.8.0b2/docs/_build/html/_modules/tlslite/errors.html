@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.errors &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.errors</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.errors</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Authors: </span>
+<span class="c1">#   Trevor Perrin</span>
+<span class="c1">#   Dave Baggett (Arcode Corporation) - Added TLSUnsupportedError.</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Exception classes.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">AlertDescription</span><span class="p">,</span> <span class="n">AlertLevel</span>
+
+<div class="viewcode-block" id="BaseTLSException"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.BaseTLSException">[docs]</a><span class="k">class</span> <span class="nc">BaseTLSException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Metaclass for TLS Lite exceptions.</span>
+
+<span class="sd">    Look to :py:class:`tlslite.errors.TLSError` for exceptions that should be</span>
+<span class="sd">    caught by tlslite</span>
+<span class="sd">    consumers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="EncryptionError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.EncryptionError">[docs]</a><span class="k">class</span> <span class="nc">EncryptionError</span><span class="p">(</span><span class="n">BaseTLSException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for exceptions thrown while encrypting.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSError">[docs]</a><span class="k">class</span> <span class="nc">TLSError</span><span class="p">(</span><span class="n">BaseTLSException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all TLS Lite exceptions.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TLSError.__str__"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSError.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;At least print out the Exception time for str(...).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TLSClosedConnectionError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSClosedConnectionError">[docs]</a><span class="k">class</span> <span class="nc">TLSClosedConnectionError</span><span class="p">(</span><span class="n">TLSError</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An attempt was made to use the connection after it was closed.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSAbruptCloseError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSAbruptCloseError">[docs]</a><span class="k">class</span> <span class="nc">TLSAbruptCloseError</span><span class="p">(</span><span class="n">TLSError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The socket was closed without a proper TLS shutdown.</span>
+
+<span class="sd">    The TLS specification mandates that an alert of some sort</span>
+<span class="sd">    must be sent before the underlying socket is closed.  If the socket</span>
+<span class="sd">    is closed without this, it could signify that an attacker is trying</span>
+<span class="sd">    to truncate the connection.  It could also signify a misbehaving</span>
+<span class="sd">    TLS implementation, or a random network failure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSAlert"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSAlert">[docs]</a><span class="k">class</span> <span class="nc">TLSAlert</span><span class="p">(</span><span class="n">TLSError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A TLS alert has been signalled.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSLocalAlert"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSLocalAlert">[docs]</a><span class="k">class</span> <span class="nc">TLSLocalAlert</span><span class="p">(</span><span class="n">TLSAlert</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A TLS alert has been signalled by the local implementation.</span>
+
+<span class="sd">    :vartype description: int</span>
+<span class="sd">    :ivar description: Set to one of the constants in</span>
+<span class="sd">        :py:class:`tlslite.constants.AlertDescription`</span>
+
+<span class="sd">    :vartype level: int</span>
+<span class="sd">    :ivar level: Set to one of the constants in</span>
+<span class="sd">        :py:class:`tlslite.constants.AlertLevel`</span>
+
+<span class="sd">    :vartype message: str</span>
+<span class="sd">    :ivar message: Description of what went wrong.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TLSLocalAlert.__init__"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSLocalAlert.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alert</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">alert</span><span class="o">.</span><span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">alert</span><span class="o">.</span><span class="n">level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span></div>
+
+<div class="viewcode-block" id="TLSLocalAlert.__str__"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSLocalAlert.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">alertStr</span> <span class="o">=</span> <span class="n">AlertDescription</span><span class="o">.</span><span class="n">toStr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">alertStr</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">alertStr</span></div></div>
+
+
+<div class="viewcode-block" id="TLSRemoteAlert"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSRemoteAlert">[docs]</a><span class="k">class</span> <span class="nc">TLSRemoteAlert</span><span class="p">(</span><span class="n">TLSAlert</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A TLS alert has been signalled by the remote implementation.</span>
+
+<span class="sd">    :vartype description: int</span>
+<span class="sd">    :ivar description: Set to one of the constants in</span>
+<span class="sd">        :py:class:`tlslite.constants.AlertDescription`</span>
+
+<span class="sd">    :vartype level: int</span>
+<span class="sd">    :ivar level: Set to one of the constants in</span>
+<span class="sd">        :py:class:`tlslite.constants.AlertLevel`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TLSRemoteAlert.__init__"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSRemoteAlert.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alert</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">alert</span><span class="o">.</span><span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">alert</span><span class="o">.</span><span class="n">level</span></div>
+
+<div class="viewcode-block" id="TLSRemoteAlert.__str__"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSRemoteAlert.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">alertStr</span> <span class="o">=</span> <span class="n">AlertDescription</span><span class="o">.</span><span class="n">toStr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">alertStr</span></div></div>
+
+
+<div class="viewcode-block" id="TLSAuthenticationError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSAuthenticationError">[docs]</a><span class="k">class</span> <span class="nc">TLSAuthenticationError</span><span class="p">(</span><span class="n">TLSError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The handshake succeeded, but the other party&#39;s authentication</span>
+<span class="sd">    was inadequate.</span>
+
+<span class="sd">    This exception will only be raised when a</span>
+<span class="sd">    :py:class:`tlslite.Checker.Checker` has been passed to a handshake</span>
+<span class="sd">    function.</span>
+<span class="sd">    The Checker will be invoked once the handshake completes, and if</span>
+<span class="sd">    the Checker objects to how the other party authenticated, a</span>
+<span class="sd">    subclass of this exception will be raised.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSNoAuthenticationError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSNoAuthenticationError">[docs]</a><span class="k">class</span> <span class="nc">TLSNoAuthenticationError</span><span class="p">(</span><span class="n">TLSAuthenticationError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Checker was expecting the other party to authenticate with a</span>
+<span class="sd">    certificate chain, but this did not occur.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSAuthenticationTypeError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSAuthenticationTypeError">[docs]</a><span class="k">class</span> <span class="nc">TLSAuthenticationTypeError</span><span class="p">(</span><span class="n">TLSAuthenticationError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Checker was expecting the other party to authenticate with a</span>
+<span class="sd">    different type of certificate chain.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSFingerprintError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSFingerprintError">[docs]</a><span class="k">class</span> <span class="nc">TLSFingerprintError</span><span class="p">(</span><span class="n">TLSAuthenticationError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Checker was expecting the other party to authenticate with a</span>
+<span class="sd">    certificate chain that matches a different fingerprint.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSAuthorizationError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSAuthorizationError">[docs]</a><span class="k">class</span> <span class="nc">TLSAuthorizationError</span><span class="p">(</span><span class="n">TLSAuthenticationError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Checker was expecting the other party to authenticate with a</span>
+<span class="sd">    certificate chain that has a different authorization.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSValidationError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSValidationError">[docs]</a><span class="k">class</span> <span class="nc">TLSValidationError</span><span class="p">(</span><span class="n">TLSAuthenticationError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Checker has determined that the other party&#39;s certificate</span>
+<span class="sd">    chain is invalid.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TLSValidationError.__init__"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSValidationError.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Include a dict containing info about this validation failure</span>
+        <span class="n">TLSAuthenticationError</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">info</span></div></div>
+
+
+<div class="viewcode-block" id="TLSFaultError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSFaultError">[docs]</a><span class="k">class</span> <span class="nc">TLSFaultError</span><span class="p">(</span><span class="n">TLSError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The other party responded incorrectly to an induced fault.</span>
+
+<span class="sd">    This exception will only occur during fault testing, when a</span>
+<span class="sd">    :py:class:`tlslite.tlsconnection.TLSConnection`&#39;s fault variable is</span>
+<span class="sd">    set to induce some sort of</span>
+<span class="sd">    faulty behavior, and the other party doesn&#39;t respond appropriately.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSUnsupportedError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSUnsupportedError">[docs]</a><span class="k">class</span> <span class="nc">TLSUnsupportedError</span><span class="p">(</span><span class="n">TLSError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The implementation doesn&#39;t support the requested (or required)</span>
+<span class="sd">    capabilities.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSInternalError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSInternalError">[docs]</a><span class="k">class</span> <span class="nc">TLSInternalError</span><span class="p">(</span><span class="n">TLSError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The internal state of object is unexpected or invalid.</span>
+
+<span class="sd">    Caused by incorrect use of API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSProtocolException"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSProtocolException">[docs]</a><span class="k">class</span> <span class="nc">TLSProtocolException</span><span class="p">(</span><span class="n">BaseTLSException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exceptions used internally for handling errors in received messages&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSIllegalParameterException"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSIllegalParameterException">[docs]</a><span class="k">class</span> <span class="nc">TLSIllegalParameterException</span><span class="p">(</span><span class="n">TLSProtocolException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters specified in message were incorrect or invalid&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSDecodeError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSDecodeError">[docs]</a><span class="k">class</span> <span class="nc">TLSDecodeError</span><span class="p">(</span><span class="n">TLSProtocolException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The received message encoding does not match specification.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSUnexpectedMessage"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSUnexpectedMessage">[docs]</a><span class="k">class</span> <span class="nc">TLSUnexpectedMessage</span><span class="p">(</span><span class="n">TLSProtocolException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The received message was unexpected or parsing of Inner Plaintext</span>
+<span class="sd">    failed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSRecordOverflow"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSRecordOverflow">[docs]</a><span class="k">class</span> <span class="nc">TLSRecordOverflow</span><span class="p">(</span><span class="n">TLSProtocolException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The received record size was too big&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSDecryptionFailed"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSDecryptionFailed">[docs]</a><span class="k">class</span> <span class="nc">TLSDecryptionFailed</span><span class="p">(</span><span class="n">TLSProtocolException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decryption of data was unsuccessful&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSBadRecordMAC"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSBadRecordMAC">[docs]</a><span class="k">class</span> <span class="nc">TLSBadRecordMAC</span><span class="p">(</span><span class="n">TLSProtocolException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Bad MAC (or padding in case of mac-then-encrypt)&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSInsufficientSecurity"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSInsufficientSecurity">[docs]</a><span class="k">class</span> <span class="nc">TLSInsufficientSecurity</span><span class="p">(</span><span class="n">TLSProtocolException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters selected by user are too weak&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSUnknownPSKIdentity"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSUnknownPSKIdentity">[docs]</a><span class="k">class</span> <span class="nc">TLSUnknownPSKIdentity</span><span class="p">(</span><span class="n">TLSProtocolException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The PSK or SRP identity is unknown&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="TLSHandshakeFailure"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.TLSHandshakeFailure">[docs]</a><span class="k">class</span> <span class="nc">TLSHandshakeFailure</span><span class="p">(</span><span class="n">TLSProtocolException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Could not find acceptable set of handshake parameters&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="MaskTooLongError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.MaskTooLongError">[docs]</a><span class="k">class</span> <span class="nc">MaskTooLongError</span><span class="p">(</span><span class="n">EncryptionError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The maskLen passed into function is too high&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="MessageTooLongError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.MessageTooLongError">[docs]</a><span class="k">class</span> <span class="nc">MessageTooLongError</span><span class="p">(</span><span class="n">EncryptionError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The message passed into function is too long&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="EncodingError"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.EncodingError">[docs]</a><span class="k">class</span> <span class="nc">EncodingError</span><span class="p">(</span><span class="n">EncryptionError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An error appeared while encoding&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="InvalidSignature"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.InvalidSignature">[docs]</a><span class="k">class</span> <span class="nc">InvalidSignature</span><span class="p">(</span><span class="n">EncryptionError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Verification function found invalid signature&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="UnknownRSAType"><a class="viewcode-back" href="../../tlslite.errors.html#tlslite.errors.UnknownRSAType">[docs]</a><span class="k">class</span> <span class="nc">UnknownRSAType</span><span class="p">(</span><span class="n">EncryptionError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Unknown RSA algorithm type passed&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

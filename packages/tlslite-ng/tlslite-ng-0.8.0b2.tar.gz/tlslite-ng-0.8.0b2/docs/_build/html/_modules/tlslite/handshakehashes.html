@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.handshakehashes &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.handshakehashes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.handshakehashes</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2015, Hubert Kario</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+<span class="sd">&quot;&quot;&quot;Handling cryptographic hashes for handshake protocol&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.utils.compat</span> <span class="kn">import</span> <span class="n">compat26Str</span><span class="p">,</span> <span class="n">compatHMAC</span>
+<span class="kn">from</span> <span class="nn">.utils.cryptomath</span> <span class="kn">import</span> <span class="n">MD5</span><span class="p">,</span> <span class="n">SHA1</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">tlshashlib</span> <span class="k">as</span> <span class="n">hashlib</span>
+
+<div class="viewcode-block" id="HandshakeHashes"><a class="viewcode-back" href="../../tlslite.handshakehashes.html#tlslite.handshakehashes.HandshakeHashes">[docs]</a><span class="k">class</span> <span class="nc">HandshakeHashes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Store and calculate necessary hashes for handshake protocol</span>
+
+<span class="sd">    Calculates message digests of messages exchanged in handshake protocol</span>
+<span class="sd">    of SSLv3 and TLS.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HandshakeHashes.__init__"><a class="viewcode-back" href="../../tlslite.handshakehashes.html#tlslite.handshakehashes.HandshakeHashes.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create instance&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeMD5</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA224</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha224</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA256</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA384</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA512</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha512</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="HandshakeHashes.update"><a class="viewcode-back" href="../../tlslite.handshakehashes.html#tlslite.handshakehashes.HandshakeHashes.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add `data` to hash input.</span>
+
+<span class="sd">        :param bytearray data: serialized TLS handshake message</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">compat26Str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeMD5</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA224</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA256</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA384</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA512</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_buffer</span> <span class="o">+=</span> <span class="n">text</span></div>
+
+<div class="viewcode-block" id="HandshakeHashes.digest"><a class="viewcode-back" href="../../tlslite.handshakehashes.html#tlslite.handshakehashes.HandshakeHashes.digest">[docs]</a>    <span class="k">def</span> <span class="nf">digest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">digest</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate and return digest for the already consumed data.</span>
+
+<span class="sd">        Used for Finished and CertificateVerify messages.</span>
+
+<span class="sd">        :param str digest: name of digest to return</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">digest</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeMD5</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">digest</span> <span class="o">==</span> <span class="s1">&#39;md5&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeMD5</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">digest</span> <span class="o">==</span> <span class="s1">&#39;sha1&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">digest</span> <span class="o">==</span> <span class="s1">&#39;sha224&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA224</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">digest</span> <span class="o">==</span> <span class="s1">&#39;sha256&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA256</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">digest</span> <span class="o">==</span> <span class="s1">&#39;sha384&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA384</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">digest</span> <span class="o">==</span> <span class="s1">&#39;sha512&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA512</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">digest</span> <span class="o">==</span> <span class="s2">&quot;intrinsic&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_buffer</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown digest name&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HandshakeHashes.digestSSL"><a class="viewcode-back" href="../../tlslite.handshakehashes.html#tlslite.handshakehashes.HandshakeHashes.digestSSL">[docs]</a>    <span class="k">def</span> <span class="nf">digestSSL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">masterSecret</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate and return digest for already consumed data (SSLv3 version)</span>
+
+<span class="sd">        Used for Finished and CertificateVerify messages.</span>
+
+<span class="sd">        :param bytearray masterSecret: value of the master secret</span>
+<span class="sd">        :param bytearray label: label to include in the calculation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#pylint: disable=maybe-no-member</span>
+        <span class="n">imacMD5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeMD5</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">imacSHA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1">#pylint: enable=maybe-no-member</span>
+
+        <span class="c1"># the below difference in input for MD5 and SHA-1 is why we can&#39;t reuse</span>
+        <span class="c1"># digest() method</span>
+        <span class="n">imacMD5</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">label</span> <span class="o">+</span> <span class="n">masterSecret</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x36</span><span class="p">]</span><span class="o">*</span><span class="mi">48</span><span class="p">)))</span>
+        <span class="n">imacSHA</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span><span class="n">label</span> <span class="o">+</span> <span class="n">masterSecret</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x36</span><span class="p">]</span><span class="o">*</span><span class="mi">40</span><span class="p">)))</span>
+
+        <span class="n">md5Bytes</span> <span class="o">=</span> <span class="n">MD5</span><span class="p">(</span><span class="n">masterSecret</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x5c</span><span class="p">]</span><span class="o">*</span><span class="mi">48</span><span class="p">)</span> <span class="o">+</span> \
+                         <span class="nb">bytearray</span><span class="p">(</span><span class="n">imacMD5</span><span class="o">.</span><span class="n">digest</span><span class="p">()))</span>
+        <span class="n">shaBytes</span> <span class="o">=</span> <span class="n">SHA1</span><span class="p">(</span><span class="n">masterSecret</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x5c</span><span class="p">]</span><span class="o">*</span><span class="mi">40</span><span class="p">)</span> <span class="o">+</span> \
+                         <span class="nb">bytearray</span><span class="p">(</span><span class="n">imacSHA</span><span class="o">.</span><span class="n">digest</span><span class="p">()))</span>
+
+        <span class="k">return</span> <span class="n">md5Bytes</span> <span class="o">+</span> <span class="n">shaBytes</span></div>
+
+    <span class="c1">#pylint: disable=protected-access, maybe-no-member</span>
+<div class="viewcode-block" id="HandshakeHashes.copy"><a class="viewcode-back" href="../../tlslite.handshakehashes.html#tlslite.handshakehashes.HandshakeHashes.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Copy object</span>
+
+<span class="sd">        Return a copy of the object with all the hashes in the same state</span>
+<span class="sd">        as the source object.</span>
+
+<span class="sd">        :rtype: HandshakeHashes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="n">HandshakeHashes</span><span class="p">()</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">_handshakeMD5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeMD5</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">_handshakeSHA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">_handshakeSHA224</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA224</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">_handshakeSHA256</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA256</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">_handshakeSHA384</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA384</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">_handshakeSHA512</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshakeSHA512</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">other</span><span class="o">.</span><span class="n">_handshake_buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handshake_buffer</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">other</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

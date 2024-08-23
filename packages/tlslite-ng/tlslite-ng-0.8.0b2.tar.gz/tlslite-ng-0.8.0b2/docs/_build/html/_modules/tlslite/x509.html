@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.x509 &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.x509</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.x509</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Authors:</span>
+<span class="c1">#   Trevor Perrin</span>
+<span class="c1">#   Google - parsing subject field</span>
+<span class="c1">#</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;Class representing an X.509 certificate.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">ecdsa.keys</span> <span class="kn">import</span> <span class="n">VerifyingKey</span>
+
+<span class="kn">from</span> <span class="nn">.utils.asn1parser</span> <span class="kn">import</span> <span class="n">ASN1Parser</span>
+<span class="kn">from</span> <span class="nn">.utils.cryptomath</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.utils.keyfactory</span> <span class="kn">import</span> <span class="n">_createPublicRSAKey</span><span class="p">,</span> <span class="n">_create_public_ecdsa_key</span><span class="p">,</span> \
+    <span class="n">_create_public_dsa_key</span><span class="p">,</span> <span class="n">_create_public_eddsa_key</span>
+<span class="kn">from</span> <span class="nn">.utils.pem</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.utils.compat</span> <span class="kn">import</span> <span class="n">compatHMAC</span><span class="p">,</span> <span class="n">b2a_hex</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">AlgorithmOID</span><span class="p">,</span> <span class="n">RSA_PSS_OID</span>
+
+
+<div class="viewcode-block" id="X509"><a class="viewcode-back" href="../../tlslite.x509.html#tlslite.x509.X509">[docs]</a><span class="k">class</span> <span class="nc">X509</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class represents an X.509 certificate.</span>
+
+<span class="sd">    :vartype bytes: bytearray</span>
+<span class="sd">    :ivar bytes: The DER-encoded ASN.1 certificate</span>
+
+<span class="sd">    :vartype publicKey: ~tlslite.utils.rsakey.RSAKey</span>
+<span class="sd">    :ivar publicKey: The subject public key from the certificate.</span>
+
+<span class="sd">    :vartype subject: bytearray</span>
+<span class="sd">    :ivar subject: The DER-encoded ASN.1 subject distinguished name.</span>
+
+<span class="sd">    :vartype certAlg: str</span>
+<span class="sd">    :ivar certAlg: algorithm of the public key, &quot;rsa&quot; for RSASSA-PKCS#1 v1.5,</span>
+<span class="sd">        &quot;rsa-pss&quot; for RSASSA-PSS, &quot;ecdsa&quot; for ECDSA</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="X509.__init__"><a class="viewcode-back" href="../../tlslite.x509.html#tlslite.x509.X509.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create empty certificate object.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serial_number</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_public_key</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publicKey</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigalg</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">issuer</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate hash of object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare other object for equality.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;bytes&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">bytes</span>
+
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare with other object for inequality.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;bytes&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+<div class="viewcode-block" id="X509.parse"><a class="viewcode-back" href="../../tlslite.x509.html#tlslite.x509.X509.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a PEM-encoded X.509 certificate.</span>
+
+<span class="sd">        :type s: str</span>
+<span class="sd">        :param s: A PEM-encoded X.509 certificate (i.e. a base64-encoded</span>
+<span class="sd">            certificate wrapped with &quot;-----BEGIN CERTIFICATE-----&quot; and</span>
+<span class="sd">            &quot;-----END CERTIFICATE-----&quot; tags).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">bytes</span> <span class="o">=</span> <span class="n">dePem</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;CERTIFICATE&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parseBinary</span><span class="p">(</span><span class="nb">bytes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="X509.parseBinary"><a class="viewcode-back" href="../../tlslite.x509.html#tlslite.x509.X509.parseBinary">[docs]</a>    <span class="k">def</span> <span class="nf">parseBinary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cert_bytes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a DER-encoded X.509 certificate.</span>
+
+<span class="sd">        :type bytes: L{str} (in python2) or L{bytearray} of unsigned bytes</span>
+<span class="sd">        :param bytes: A DER-encoded X.509 certificate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">cert_bytes</span><span class="p">)</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">ASN1Parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">)</span>
+
+        <span class="c1"># Get the SignatureAlgorithm</span>
+        <span class="n">signature_algorithm_identifier</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigalg</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">signature_algorithm_identifier</span><span class="o">.</span><span class="n">getChildBytes</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1"># Finally get the (hash, signature) pair coresponding to it</span>
+        <span class="c1"># If it is rsa-pss we need to check the aditional parameters field</span>
+        <span class="c1"># to extract the hash algorithm</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigalg</span> <span class="o">==</span> <span class="n">RSA_PSS_OID</span><span class="p">:</span>
+            <span class="n">sigalg_hash</span> <span class="o">=</span> <span class="n">signature_algorithm_identifier</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">sigalg_hash</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">sigalg_hash</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sigalg</span> <span class="o">=</span> <span class="n">AlgorithmOID</span><span class="o">.</span><span class="n">oid</span><span class="p">[</span><span class="n">sigalg_hash</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sigalg</span> <span class="o">=</span> <span class="n">AlgorithmOID</span><span class="o">.</span><span class="n">oid</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sigalg</span><span class="p">]</span>
+
+        <span class="c1"># Get the tbsCertificate</span>
+        <span class="n">tbs_certificate</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Is the optional version field present?</span>
+        <span class="c1"># This determines which index the key is at.</span>
+        <span class="k">if</span> <span class="n">tbs_certificate</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0xA0</span><span class="p">:</span>
+            <span class="n">serial_number_index</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">subject_public_key_info_index</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">serial_number_index</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">subject_public_key_info_index</span> <span class="o">=</span> <span class="mi">5</span>
+
+        <span class="c1"># Get serial number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serial_number</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">tbs_certificate</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="n">serial_number_index</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># Get the issuer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">issuer</span> <span class="o">=</span> <span class="n">tbs_certificate</span><span class="o">.</span><span class="n">getChildBytes</span><span class="p">(</span>
+            <span class="n">subject_public_key_info_index</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># Get the subject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">tbs_certificate</span><span class="o">.</span><span class="n">getChildBytes</span><span class="p">(</span>
+            <span class="n">subject_public_key_info_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Get the subjectPublicKeyInfo</span>
+        <span class="n">subject_public_key_info</span> <span class="o">=</span> <span class="n">tbs_certificate</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span>
+            <span class="n">subject_public_key_info_index</span><span class="p">)</span>
+
+        <span class="c1"># Get the AlgorithmIdentifier</span>
+        <span class="n">alg_identifier</span> <span class="o">=</span> <span class="n">subject_public_key_info</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">alg_identifier_len</span> <span class="o">=</span> <span class="n">alg_identifier</span><span class="o">.</span><span class="n">getChildCount</span><span class="p">()</span>
+
+        <span class="c1"># first item of AlgorithmIdentifier is the algorithm</span>
+        <span class="n">alg</span> <span class="o">=</span> <span class="n">alg_identifier</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">alg_oid</span> <span class="o">=</span> <span class="n">alg</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">alg_oid</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">247</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">=</span> <span class="s2">&quot;rsa&quot;</span>
+        <span class="k">elif</span> <span class="nb">list</span><span class="p">(</span><span class="n">alg_oid</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">247</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">=</span> <span class="s2">&quot;rsa-pss&quot;</span>
+        <span class="k">elif</span> <span class="nb">list</span><span class="p">(</span><span class="n">alg_oid</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">206</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">=</span> <span class="s2">&quot;dsa&quot;</span>
+        <span class="k">elif</span> <span class="nb">list</span><span class="p">(</span><span class="n">alg_oid</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">206</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">=</span> <span class="s2">&quot;ecdsa&quot;</span>
+        <span class="k">elif</span> <span class="nb">list</span><span class="p">(</span><span class="n">alg_oid</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">43</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">112</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">=</span> <span class="s2">&quot;Ed25519&quot;</span>
+        <span class="k">elif</span> <span class="nb">list</span><span class="p">(</span><span class="n">alg_oid</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">43</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">113</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">=</span> <span class="s2">&quot;Ed448&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s2">&quot;Unrecognized AlgorithmIdentifier&quot;</span><span class="p">)</span>
+
+        <span class="c1"># for RSA the parameters of AlgorithmIdentifier shuld be a NULL</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">==</span> <span class="s2">&quot;rsa&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">alg_identifier_len</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s2">&quot;Missing parameters in AlgorithmIdentifier&quot;</span><span class="p">)</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">alg_identifier</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s2">&quot;Unexpected non-NULL parameters in &quot;</span>
+                                  <span class="s2">&quot;AlgorithmIdentifier&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">==</span> <span class="s2">&quot;ecdsa&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ecdsa_pubkey_parsing</span><span class="p">(</span>
+                <span class="n">tbs_certificate</span><span class="o">.</span><span class="n">getChildBytes</span><span class="p">(</span><span class="n">subject_public_key_info_index</span><span class="p">))</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">==</span> <span class="s2">&quot;dsa&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dsa_pubkey_parsing</span><span class="p">(</span><span class="n">subject_public_key_info</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">==</span> <span class="s2">&quot;Ed25519&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span> <span class="o">==</span> <span class="s2">&quot;Ed448&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_eddsa_pubkey_parsing</span><span class="p">(</span>
+                <span class="n">tbs_certificate</span><span class="o">.</span><span class="n">getChildBytes</span><span class="p">(</span><span class="n">subject_public_key_info_index</span><span class="p">))</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># rsa-pss</span>
+            <span class="k">pass</span>  <span class="c1"># ignore parameters, if any - don&#39;t apply key restrictions</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rsa_pubkey_parsing</span><span class="p">(</span><span class="n">subject_public_key_info</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_eddsa_pubkey_parsing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_public_key_info</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the raw DER encoded EdDSA parameters into public key object.</span>
+
+<span class="sd">        :param subject_public_key_info: bytes like object with the DER encoded</span>
+<span class="sd">            public key in it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># python ecdsa knows how to parse curve OIDs so re-use that</span>
+            <span class="c1"># code</span>
+            <span class="n">public_key</span> <span class="o">=</span> <span class="n">VerifyingKey</span><span class="o">.</span><span class="n">from_der</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span>
+                <span class="n">subject_public_key_info</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s2">&quot;Malformed or unsupported public key in &quot;</span>
+                              <span class="s2">&quot;certificate&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publicKey</span> <span class="o">=</span> <span class="n">_create_public_eddsa_key</span><span class="p">(</span><span class="n">public_key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_rsa_pubkey_parsing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_public_key_info</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse the RSA public key from the certificate.</span>
+
+<span class="sd">        :param subject_public_key_info: ASN1Parser object with subject</span>
+<span class="sd">            public key info of X.509 certificate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Get the subjectPublicKey</span>
+        <span class="n">subject_public_key</span> <span class="o">=</span> <span class="n">subject_public_key_info</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_public_key</span> <span class="o">=</span> <span class="n">subject_public_key_info</span><span class="o">.</span><span class="n">getChildBytes</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_public_key</span> <span class="o">=</span> <span class="n">ASN1Parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subject_public_key</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="c1"># Adjust for BIT STRING encapsulation</span>
+        <span class="k">if</span> <span class="n">subject_public_key</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
+        <span class="n">subject_public_key</span> <span class="o">=</span> <span class="n">ASN1Parser</span><span class="p">(</span><span class="n">subject_public_key</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+        <span class="c1"># Get the modulus and exponent</span>
+        <span class="n">modulus</span> <span class="o">=</span> <span class="n">subject_public_key</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">public_exponent</span> <span class="o">=</span> <span class="n">subject_public_key</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Decode them into numbers</span>
+        <span class="c1"># pylint: disable=invalid-name</span>
+        <span class="c1"># &#39;n&#39; and &#39;e&#39; are the universally used parameters in RSA algorithm</span>
+        <span class="c1"># definition</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">modulus</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">public_exponent</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># Create a public key instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publicKey</span> <span class="o">=</span> <span class="n">_createPublicRSAKey</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">certAlg</span><span class="p">)</span>
+        <span class="c1"># pylint: enable=invalid-name</span>
+
+    <span class="k">def</span> <span class="nf">_ecdsa_pubkey_parsing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_public_key_info</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the raw DER encoded ECDSA parameters into public key object</span>
+
+<span class="sd">        :param subject_public_key_info: bytes like object with DER encoded</span>
+<span class="sd">            public key in it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># python ecdsa knows how to parse curve OIDs so re-use that</span>
+            <span class="c1"># code</span>
+            <span class="n">public_key</span> <span class="o">=</span> <span class="n">VerifyingKey</span><span class="o">.</span><span class="n">from_der</span><span class="p">(</span><span class="n">compatHMAC</span><span class="p">(</span>
+                <span class="n">subject_public_key_info</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s2">&quot;Malformed or unsupported public key in &quot;</span>
+                              <span class="s2">&quot;certificate&quot;</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">public_key</span><span class="o">.</span><span class="n">pubkey</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">public_key</span><span class="o">.</span><span class="n">pubkey</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">()</span>
+        <span class="n">curve_name</span> <span class="o">=</span> <span class="n">public_key</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publicKey</span> <span class="o">=</span> <span class="n">_create_public_ecdsa_key</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">curve_name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_dsa_pubkey_parsing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_public_key_info</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the raw DER encoded DSA parameters into public key object</span>
+
+<span class="sd">        :param subject_public_key_info: bytes like object with DER encoded</span>
+<span class="sd">          global parameters and public key in it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">global_parameters</span> <span class="o">=</span> <span class="p">(</span><span class="n">subject_public_key_info</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Get the subjectPublicKey</span>
+        <span class="n">public_key</span> <span class="o">=</span> <span class="n">subject_public_key_info</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Adjust for BIT STRING encapsulation and get hex value</span>
+        <span class="k">if</span> <span class="n">public_key</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">ASN1Parser</span><span class="p">(</span><span class="n">public_key</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+        <span class="c1"># Get the {A, p, q}</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">global_parameters</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">global_parameters</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">global_parameters</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Decode them into numbers</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># Create a public key instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publicKey</span> <span class="o">=</span> <span class="n">_create_public_dsa_key</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<div class="viewcode-block" id="X509.getFingerprint"><a class="viewcode-back" href="../../tlslite.x509.html#tlslite.x509.X509.getFingerprint">[docs]</a>    <span class="k">def</span> <span class="nf">getFingerprint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the hex-encoded fingerprint of this certificate.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: A hex-encoded fingerprint.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">b2a_hex</span><span class="p">(</span><span class="n">SHA1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bytes</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="X509.writeBytes"><a class="viewcode-back" href="../../tlslite.x509.html#tlslite.x509.X509.writeBytes">[docs]</a>    <span class="k">def</span> <span class="nf">writeBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialise object to a DER encoded string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bytes</span></div></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

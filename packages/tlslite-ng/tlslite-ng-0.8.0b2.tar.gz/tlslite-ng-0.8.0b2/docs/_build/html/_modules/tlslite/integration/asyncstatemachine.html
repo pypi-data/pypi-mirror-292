@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.integration.asyncstatemachine &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.integration.asyncstatemachine</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.integration.asyncstatemachine</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Trevor Perrin</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A state machine for using TLS Lite with asynchronous I/O.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AsyncStateMachine"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine">[docs]</a><span class="k">class</span> <span class="nc">AsyncStateMachine</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is an abstract class that&#39;s used to integrate TLS Lite with</span>
+<span class="sd">    asyncore and Twisted.</span>
+
+<span class="sd">    This class signals wantsReadsEvent() and wantsWriteEvent().  When</span>
+<span class="sd">    the underlying socket has become readable or writeable, the event</span>
+<span class="sd">    should be passed to this class by calling inReadEvent() or</span>
+<span class="sd">    inWriteEvent().  This class will then try to read or write through</span>
+<span class="sd">    the socket, and will update its state appropriately.</span>
+
+<span class="sd">    This class will forward higher-level events to its subclass.  For</span>
+<span class="sd">    example, when a complete TLS record has been received,</span>
+<span class="sd">    outReadEvent() will be called with the decrypted data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AsyncStateMachine.__init__"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handshaker</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#These store the various asynchronous operations (i.e.</span>
+        <span class="c1">#generators).  Only one of them, at most, is ever active at a</span>
+        <span class="c1">#time.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handshaker</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1">#This stores the result from the last call to the</span>
+        <span class="c1">#currently active operation.  If 0 it indicates that the</span>
+        <span class="c1">#operation wants to read, if 1 it indicates that the</span>
+        <span class="c1">#operation wants to write.  If None, there is no active</span>
+        <span class="c1">#operation.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_checkAssert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxActive</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1">#This checks that only one operation, at most, is</span>
+        <span class="c1">#active, and that self.result is set appropriately.</span>
+        <span class="n">activeOps</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handshaker</span><span class="p">:</span>
+            <span class="n">activeOps</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closer</span><span class="p">:</span>
+            <span class="n">activeOps</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
+            <span class="n">activeOps</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">:</span>
+            <span class="n">activeOps</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">activeOps</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">activeOps</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">activeOps</span> <span class="o">&gt;</span> <span class="n">maxActive</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AsyncStateMachine.wantsReadEvent"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.wantsReadEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wantsReadEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If the state machine wants to read.</span>
+
+<span class="sd">        If an operation is active, this returns whether or not the</span>
+<span class="sd">        operation wants to read from the socket.  If an operation is</span>
+<span class="sd">        not active, this returns None.</span>
+
+<span class="sd">        :rtype: bool or None</span>
+<span class="sd">        :returns: If the state machine wants to read.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="AsyncStateMachine.wantsWriteEvent"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.wantsWriteEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wantsWriteEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If the state machine wants to write.</span>
+
+<span class="sd">        If an operation is active, this returns whether or not the</span>
+<span class="sd">        operation wants to write to the socket.  If an operation is</span>
+<span class="sd">        not active, this returns None.</span>
+
+<span class="sd">        :rtype: bool or None</span>
+<span class="sd">        :returns: If the state machine wants to write.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="AsyncStateMachine.outConnectEvent"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.outConnectEvent">[docs]</a>    <span class="k">def</span> <span class="nf">outConnectEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called when a handshake operation completes.</span>
+
+<span class="sd">        May be overridden in subclass.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="AsyncStateMachine.outCloseEvent"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.outCloseEvent">[docs]</a>    <span class="k">def</span> <span class="nf">outCloseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called when a close operation completes.</span>
+
+<span class="sd">        May be overridden in subclass.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="AsyncStateMachine.outReadEvent"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.outReadEvent">[docs]</a>    <span class="k">def</span> <span class="nf">outReadEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readBuffer</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called when a read operation completes.</span>
+
+<span class="sd">        May be overridden in subclass.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="AsyncStateMachine.outWriteEvent"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.outWriteEvent">[docs]</a>    <span class="k">def</span> <span class="nf">outWriteEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called when a write operation completes.</span>
+
+<span class="sd">        May be overridden in subclass.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="AsyncStateMachine.inReadEvent"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.inReadEvent">[docs]</a>    <span class="k">def</span> <span class="nf">inReadEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tell the state machine it can read from the socket.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_checkAssert</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handshaker</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doHandshakeOp</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">closer</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doCloseOp</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doReadOp</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doWriteOp</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tlsConnection</span><span class="o">.</span><span class="n">readAsync</span><span class="p">(</span><span class="mi">16384</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doReadOp</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">()</span>
+            <span class="k">raise</span></div>
+
+<div class="viewcode-block" id="AsyncStateMachine.inWriteEvent"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.inWriteEvent">[docs]</a>    <span class="k">def</span> <span class="nf">inWriteEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tell the state machine it can write to the socket.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_checkAssert</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handshaker</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doHandshakeOp</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">closer</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doCloseOp</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doReadOp</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doWriteOp</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">outWriteEvent</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">()</span>
+            <span class="k">raise</span></div>
+
+    <span class="k">def</span> <span class="nf">_doHandshakeOp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handshaker</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handshaker</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outConnectEvent</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_doCloseOp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">closer</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">closer</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outCloseEvent</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_doReadOp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">readBuffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outReadEvent</span><span class="p">(</span><span class="n">readBuffer</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_doWriteOp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="AsyncStateMachine.setHandshakeOp"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.setHandshakeOp">[docs]</a>    <span class="k">def</span> <span class="nf">setHandshakeOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handshaker</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start a handshake operation.</span>
+
+<span class="sd">        :param generator handshaker: A generator created by using one of the</span>
+<span class="sd">            asynchronous handshake functions (i.e.</span>
+<span class="sd">            :py:meth:`~.TLSConnection.handshakeServerAsync` , or</span>
+<span class="sd">            handshakeClientxxx(..., async_=True).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_checkAssert</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handshaker</span> <span class="o">=</span> <span class="n">handshaker</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_doHandshakeOp</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">()</span>
+            <span class="k">raise</span></div>
+
+<div class="viewcode-block" id="AsyncStateMachine.setServerHandshakeOp"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.setServerHandshakeOp">[docs]</a>    <span class="k">def</span> <span class="nf">setServerHandshakeOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start a handshake operation.</span>
+
+<span class="sd">        The arguments passed to this function will be forwarded to</span>
+<span class="sd">        :py:obj:`~tlslite.tlsconnection.TLSConnection.handshakeServerAsync`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">handshaker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tlsConnection</span><span class="o">.</span><span class="n">handshakeServerAsync</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHandshakeOp</span><span class="p">(</span><span class="n">handshaker</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AsyncStateMachine.setCloseOp"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.setCloseOp">[docs]</a>    <span class="k">def</span> <span class="nf">setCloseOp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start a close operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_checkAssert</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">closer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tlsConnection</span><span class="o">.</span><span class="n">closeAsync</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_doCloseOp</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">()</span>
+            <span class="k">raise</span></div>
+
+<div class="viewcode-block" id="AsyncStateMachine.setWriteOp"><a class="viewcode-back" href="../../../tlslite.integration.asyncstatemachine.html#tlslite.integration.asyncstatemachine.AsyncStateMachine.setWriteOp">[docs]</a>    <span class="k">def</span> <span class="nf">setWriteOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">writeBuffer</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start a write operation.</span>
+
+<span class="sd">        :param str writeBuffer: The string to transmit.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_checkAssert</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tlsConnection</span><span class="o">.</span><span class="n">writeAsync</span><span class="p">(</span><span class="n">writeBuffer</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_doWriteOp</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">()</span>
+            <span class="k">raise</span></div></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

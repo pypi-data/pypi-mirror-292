@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tlslite package" href="tlslite.html" />
+    <link rel="prev" title="Welcome to tlslite-ng’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">tlslite</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tlslite.html">tlslite package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">tlslite</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tlslite">
+<h1>tlslite<a class="headerlink" href="#tlslite" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tlslite.html">tlslite package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tlslite.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.integration.html">tlslite.integration package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.integration.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.utils.html">tlslite.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.utils.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tlslite.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.api.html">tlslite.api module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.basedb.html">tlslite.basedb module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.basedb.html#tlslite.basedb.BaseDB"><code class="docutils literal notranslate"><span class="pre">BaseDB</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.bufferedsocket.html">tlslite.bufferedsocket module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.bufferedsocket.html#tlslite.bufferedsocket.BufferedSocket"><code class="docutils literal notranslate"><span class="pre">BufferedSocket</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.checker.html">tlslite.checker module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.checker.html#tlslite.checker.Checker"><code class="docutils literal notranslate"><span class="pre">Checker</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.constants.html">tlslite.constants module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.AlertDescription"><code class="docutils literal notranslate"><span class="pre">AlertDescription</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.AlertLevel"><code class="docutils literal notranslate"><span class="pre">AlertLevel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.AlgorithmOID"><code class="docutils literal notranslate"><span class="pre">AlgorithmOID</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.CertificateStatusType"><code class="docutils literal notranslate"><span class="pre">CertificateStatusType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.CertificateType"><code class="docutils literal notranslate"><span class="pre">CertificateType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.CipherSuite"><code class="docutils literal notranslate"><span class="pre">CipherSuite</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.ClientCertificateType"><code class="docutils literal notranslate"><span class="pre">ClientCertificateType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.ContentType"><code class="docutils literal notranslate"><span class="pre">ContentType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.ECCurveType"><code class="docutils literal notranslate"><span class="pre">ECCurveType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.ECPointFormat"><code class="docutils literal notranslate"><span class="pre">ECPointFormat</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.ExtensionType"><code class="docutils literal notranslate"><span class="pre">ExtensionType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.Fault"><code class="docutils literal notranslate"><span class="pre">Fault</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.GroupName"><code class="docutils literal notranslate"><span class="pre">GroupName</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.HandshakeType"><code class="docutils literal notranslate"><span class="pre">HandshakeType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.HashAlgorithm"><code class="docutils literal notranslate"><span class="pre">HashAlgorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.HeartbeatMessageType"><code class="docutils literal notranslate"><span class="pre">HeartbeatMessageType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.HeartbeatMode"><code class="docutils literal notranslate"><span class="pre">HeartbeatMode</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.KeyUpdateMessageType"><code class="docutils literal notranslate"><span class="pre">KeyUpdateMessageType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.NameType"><code class="docutils literal notranslate"><span class="pre">NameType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.PskKeyExchangeMode"><code class="docutils literal notranslate"><span class="pre">PskKeyExchangeMode</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.SSL2ErrorDescription"><code class="docutils literal notranslate"><span class="pre">SSL2ErrorDescription</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.SSL2HandshakeType"><code class="docutils literal notranslate"><span class="pre">SSL2HandshakeType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.SignatureAlgorithm"><code class="docutils literal notranslate"><span class="pre">SignatureAlgorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.SignatureScheme"><code class="docutils literal notranslate"><span class="pre">SignatureScheme</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.constants.html#tlslite.constants.TLSEnum"><code class="docutils literal notranslate"><span class="pre">TLSEnum</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.defragmenter.html">tlslite.defragmenter module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.defragmenter.html#tlslite.defragmenter.Defragmenter"><code class="docutils literal notranslate"><span class="pre">Defragmenter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.dh.html">tlslite.dh module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.dh.html#tlslite.dh.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.dh.html#tlslite.dh.parseBinary"><code class="docutils literal notranslate"><span class="pre">parseBinary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.errors.html">tlslite.errors module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.BaseTLSException"><code class="docutils literal notranslate"><span class="pre">BaseTLSException</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.EncodingError"><code class="docutils literal notranslate"><span class="pre">EncodingError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.EncryptionError"><code class="docutils literal notranslate"><span class="pre">EncryptionError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.InvalidSignature"><code class="docutils literal notranslate"><span class="pre">InvalidSignature</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.MaskTooLongError"><code class="docutils literal notranslate"><span class="pre">MaskTooLongError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.MessageTooLongError"><code class="docutils literal notranslate"><span class="pre">MessageTooLongError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSAbruptCloseError"><code class="docutils literal notranslate"><span class="pre">TLSAbruptCloseError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSAlert"><code class="docutils literal notranslate"><span class="pre">TLSAlert</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSAuthenticationError"><code class="docutils literal notranslate"><span class="pre">TLSAuthenticationError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSAuthenticationTypeError"><code class="docutils literal notranslate"><span class="pre">TLSAuthenticationTypeError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSAuthorizationError"><code class="docutils literal notranslate"><span class="pre">TLSAuthorizationError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSBadRecordMAC"><code class="docutils literal notranslate"><span class="pre">TLSBadRecordMAC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSClosedConnectionError"><code class="docutils literal notranslate"><span class="pre">TLSClosedConnectionError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSDecodeError"><code class="docutils literal notranslate"><span class="pre">TLSDecodeError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSDecryptionFailed"><code class="docutils literal notranslate"><span class="pre">TLSDecryptionFailed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSError"><code class="docutils literal notranslate"><span class="pre">TLSError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSFaultError"><code class="docutils literal notranslate"><span class="pre">TLSFaultError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSFingerprintError"><code class="docutils literal notranslate"><span class="pre">TLSFingerprintError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSHandshakeFailure"><code class="docutils literal notranslate"><span class="pre">TLSHandshakeFailure</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSIllegalParameterException"><code class="docutils literal notranslate"><span class="pre">TLSIllegalParameterException</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSInsufficientSecurity"><code class="docutils literal notranslate"><span class="pre">TLSInsufficientSecurity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSInternalError"><code class="docutils literal notranslate"><span class="pre">TLSInternalError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSLocalAlert"><code class="docutils literal notranslate"><span class="pre">TLSLocalAlert</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSNoAuthenticationError"><code class="docutils literal notranslate"><span class="pre">TLSNoAuthenticationError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSProtocolException"><code class="docutils literal notranslate"><span class="pre">TLSProtocolException</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSRecordOverflow"><code class="docutils literal notranslate"><span class="pre">TLSRecordOverflow</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSRemoteAlert"><code class="docutils literal notranslate"><span class="pre">TLSRemoteAlert</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSUnexpectedMessage"><code class="docutils literal notranslate"><span class="pre">TLSUnexpectedMessage</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSUnknownPSKIdentity"><code class="docutils literal notranslate"><span class="pre">TLSUnknownPSKIdentity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSUnsupportedError"><code class="docutils literal notranslate"><span class="pre">TLSUnsupportedError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.TLSValidationError"><code class="docutils literal notranslate"><span class="pre">TLSValidationError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.errors.html#tlslite.errors.UnknownRSAType"><code class="docutils literal notranslate"><span class="pre">UnknownRSAType</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.extensions.html">tlslite.extensions module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.ALPNExtension"><code class="docutils literal notranslate"><span class="pre">ALPNExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.CertificateStatusExtension"><code class="docutils literal notranslate"><span class="pre">CertificateStatusExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.ClientCertTypeExtension"><code class="docutils literal notranslate"><span class="pre">ClientCertTypeExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.ClientKeyShareExtension"><code class="docutils literal notranslate"><span class="pre">ClientKeyShareExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.CookieExtension"><code class="docutils literal notranslate"><span class="pre">CookieExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.CustomNameExtension"><code class="docutils literal notranslate"><span class="pre">CustomNameExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.ECPointFormatsExtension"><code class="docutils literal notranslate"><span class="pre">ECPointFormatsExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.HRRKeyShareExtension"><code class="docutils literal notranslate"><span class="pre">HRRKeyShareExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.HeartbeatExtension"><code class="docutils literal notranslate"><span class="pre">HeartbeatExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.IntExtension"><code class="docutils literal notranslate"><span class="pre">IntExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.KeyShareEntry"><code class="docutils literal notranslate"><span class="pre">KeyShareEntry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.ListExtension"><code class="docutils literal notranslate"><span class="pre">ListExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.NPNExtension"><code class="docutils literal notranslate"><span class="pre">NPNExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.PaddingExtension"><code class="docutils literal notranslate"><span class="pre">PaddingExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.PreSharedKeyExtension"><code class="docutils literal notranslate"><span class="pre">PreSharedKeyExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.PskIdentity"><code class="docutils literal notranslate"><span class="pre">PskIdentity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.PskKeyExchangeModesExtension"><code class="docutils literal notranslate"><span class="pre">PskKeyExchangeModesExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.RecordSizeLimitExtension"><code class="docutils literal notranslate"><span class="pre">RecordSizeLimitExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.RenegotiationInfoExtension"><code class="docutils literal notranslate"><span class="pre">RenegotiationInfoExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.SNIExtension"><code class="docutils literal notranslate"><span class="pre">SNIExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.SRPExtension"><code class="docutils literal notranslate"><span class="pre">SRPExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.ServerCertTypeExtension"><code class="docutils literal notranslate"><span class="pre">ServerCertTypeExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.ServerKeyShareExtension"><code class="docutils literal notranslate"><span class="pre">ServerKeyShareExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.SessionTicketExtension"><code class="docutils literal notranslate"><span class="pre">SessionTicketExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.SignatureAlgorithmsCertExtension"><code class="docutils literal notranslate"><span class="pre">SignatureAlgorithmsCertExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.SignatureAlgorithmsExtension"><code class="docutils literal notranslate"><span class="pre">SignatureAlgorithmsExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.SrvPreSharedKeyExtension"><code class="docutils literal notranslate"><span class="pre">SrvPreSharedKeyExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.SrvSupportedVersionsExtension"><code class="docutils literal notranslate"><span class="pre">SrvSupportedVersionsExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.StatusRequestExtension"><code class="docutils literal notranslate"><span class="pre">StatusRequestExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.SupportedGroupsExtension"><code class="docutils literal notranslate"><span class="pre">SupportedGroupsExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.SupportedVersionsExtension"><code class="docutils literal notranslate"><span class="pre">SupportedVersionsExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.TACKExtension"><code class="docutils literal notranslate"><span class="pre">TACKExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.TLSExtension"><code class="docutils literal notranslate"><span class="pre">TLSExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.VarBytesExtension"><code class="docutils literal notranslate"><span class="pre">VarBytesExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.VarListExtension"><code class="docutils literal notranslate"><span class="pre">VarListExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.extensions.html#tlslite.extensions.VarSeqListExtension"><code class="docutils literal notranslate"><span class="pre">VarSeqListExtension</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.handshakehashes.html">tlslite.handshakehashes module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.handshakehashes.html#tlslite.handshakehashes.HandshakeHashes"><code class="docutils literal notranslate"><span class="pre">HandshakeHashes</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.handshakehelpers.html">tlslite.handshakehelpers module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.handshakehelpers.html#tlslite.handshakehelpers.HandshakeHelpers"><code class="docutils literal notranslate"><span class="pre">HandshakeHelpers</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.handshakesettings.html">tlslite.handshakesettings module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.handshakesettings.html#tlslite.handshakesettings.HandshakeSettings"><code class="docutils literal notranslate"><span class="pre">HandshakeSettings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.handshakesettings.html#tlslite.handshakesettings.Keypair"><code class="docutils literal notranslate"><span class="pre">Keypair</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.handshakesettings.html#tlslite.handshakesettings.VirtualHost"><code class="docutils literal notranslate"><span class="pre">VirtualHost</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.keyexchange.html">tlslite.keyexchange module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.ADHKeyExchange"><code class="docutils literal notranslate"><span class="pre">ADHKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.AECDHKeyExchange"><code class="docutils literal notranslate"><span class="pre">AECDHKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.AuthenticatedKeyExchange"><code class="docutils literal notranslate"><span class="pre">AuthenticatedKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.DHE_RSAKeyExchange"><code class="docutils literal notranslate"><span class="pre">DHE_RSAKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.ECDHE_RSAKeyExchange"><code class="docutils literal notranslate"><span class="pre">ECDHE_RSAKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.ECDHKeyExchange"><code class="docutils literal notranslate"><span class="pre">ECDHKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.FFDHKeyExchange"><code class="docutils literal notranslate"><span class="pre">FFDHKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.KeyExchange"><code class="docutils literal notranslate"><span class="pre">KeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.RSAKeyExchange"><code class="docutils literal notranslate"><span class="pre">RSAKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.RawDHKeyExchange"><code class="docutils literal notranslate"><span class="pre">RawDHKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.keyexchange.html#tlslite.keyexchange.SRPKeyExchange"><code class="docutils literal notranslate"><span class="pre">SRPKeyExchange</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.mathtls.html">tlslite.mathtls module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.FFDHE_PARAMETERS"><code class="docutils literal notranslate"><span class="pre">FFDHE_PARAMETERS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.MAC_SSL"><code class="docutils literal notranslate"><span class="pre">MAC_SSL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.PAD"><code class="docutils literal notranslate"><span class="pre">PAD()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.PRF"><code class="docutils literal notranslate"><span class="pre">PRF()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.PRF_1_2"><code class="docutils literal notranslate"><span class="pre">PRF_1_2()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.PRF_1_2_SHA384"><code class="docutils literal notranslate"><span class="pre">PRF_1_2_SHA384()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.PRF_SSL"><code class="docutils literal notranslate"><span class="pre">PRF_SSL()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.P_hash"><code class="docutils literal notranslate"><span class="pre">P_hash()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.RFC7919_GROUPS"><code class="docutils literal notranslate"><span class="pre">RFC7919_GROUPS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.bytes_to_int"><code class="docutils literal notranslate"><span class="pre">bytes_to_int()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.calcExtendedMasterSecret"><code class="docutils literal notranslate"><span class="pre">calcExtendedMasterSecret()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.calcFinished"><code class="docutils literal notranslate"><span class="pre">calcFinished()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.calcMasterSecret"><code class="docutils literal notranslate"><span class="pre">calcMasterSecret()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.calc_key"><code class="docutils literal notranslate"><span class="pre">calc_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.createHMAC"><code class="docutils literal notranslate"><span class="pre">createHMAC()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.createMAC_SSL"><code class="docutils literal notranslate"><span class="pre">createMAC_SSL()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.makeK"><code class="docutils literal notranslate"><span class="pre">makeK()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.makeU"><code class="docutils literal notranslate"><span class="pre">makeU()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.makeVerifier"><code class="docutils literal notranslate"><span class="pre">makeVerifier()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.makeX"><code class="docutils literal notranslate"><span class="pre">makeX()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.mathtls.html#tlslite.mathtls.paramStrength"><code class="docutils literal notranslate"><span class="pre">paramStrength()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.messages.html">tlslite.messages module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.Alert"><code class="docutils literal notranslate"><span class="pre">Alert</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ApplicationData"><code class="docutils literal notranslate"><span class="pre">ApplicationData</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.Certificate"><code class="docutils literal notranslate"><span class="pre">Certificate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.CertificateEntry"><code class="docutils literal notranslate"><span class="pre">CertificateEntry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.CertificateRequest"><code class="docutils literal notranslate"><span class="pre">CertificateRequest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.CertificateStatus"><code class="docutils literal notranslate"><span class="pre">CertificateStatus</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.CertificateVerify"><code class="docutils literal notranslate"><span class="pre">CertificateVerify</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ChangeCipherSpec"><code class="docutils literal notranslate"><span class="pre">ChangeCipherSpec</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ClientFinished"><code class="docutils literal notranslate"><span class="pre">ClientFinished</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ClientHello"><code class="docutils literal notranslate"><span class="pre">ClientHello</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ClientKeyExchange"><code class="docutils literal notranslate"><span class="pre">ClientKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ClientMasterKey"><code class="docutils literal notranslate"><span class="pre">ClientMasterKey</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.EncryptedExtensions"><code class="docutils literal notranslate"><span class="pre">EncryptedExtensions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.Finished"><code class="docutils literal notranslate"><span class="pre">Finished</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.HandshakeMsg"><code class="docutils literal notranslate"><span class="pre">HandshakeMsg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.Heartbeat"><code class="docutils literal notranslate"><span class="pre">Heartbeat</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.HelloMessage"><code class="docutils literal notranslate"><span class="pre">HelloMessage</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.HelloRequest"><code class="docutils literal notranslate"><span class="pre">HelloRequest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.KeyUpdate"><code class="docutils literal notranslate"><span class="pre">KeyUpdate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.Message"><code class="docutils literal notranslate"><span class="pre">Message</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.NewSessionTicket"><code class="docutils literal notranslate"><span class="pre">NewSessionTicket</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.NewSessionTicket1_0"><code class="docutils literal notranslate"><span class="pre">NewSessionTicket1_0</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.NextProtocol"><code class="docutils literal notranslate"><span class="pre">NextProtocol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.RecordHeader"><code class="docutils literal notranslate"><span class="pre">RecordHeader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.RecordHeader2"><code class="docutils literal notranslate"><span class="pre">RecordHeader2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.RecordHeader3"><code class="docutils literal notranslate"><span class="pre">RecordHeader3</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.SSL2Finished"><code class="docutils literal notranslate"><span class="pre">SSL2Finished</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ServerFinished"><code class="docutils literal notranslate"><span class="pre">ServerFinished</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ServerHello"><code class="docutils literal notranslate"><span class="pre">ServerHello</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ServerHello2"><code class="docutils literal notranslate"><span class="pre">ServerHello2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ServerHelloDone"><code class="docutils literal notranslate"><span class="pre">ServerHelloDone</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.ServerKeyExchange"><code class="docutils literal notranslate"><span class="pre">ServerKeyExchange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.SessionTicketPayload"><code class="docutils literal notranslate"><span class="pre">SessionTicketPayload</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messages.html#tlslite.messages.bytes_to_int"><code class="docutils literal notranslate"><span class="pre">bytes_to_int()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.messagesocket.html">tlslite.messagesocket module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.messagesocket.html#tlslite.messagesocket.MessageSocket"><code class="docutils literal notranslate"><span class="pre">MessageSocket</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.recordlayer.html">tlslite.recordlayer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.recordlayer.html#tlslite.recordlayer.ConnectionState"><code class="docutils literal notranslate"><span class="pre">ConnectionState</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.recordlayer.html#tlslite.recordlayer.RecordLayer"><code class="docutils literal notranslate"><span class="pre">RecordLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.recordlayer.html#tlslite.recordlayer.RecordSocket"><code class="docutils literal notranslate"><span class="pre">RecordSocket</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.session.html">tlslite.session module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.session.html#tlslite.session.Session"><code class="docutils literal notranslate"><span class="pre">Session</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.session.html#tlslite.session.Ticket"><code class="docutils literal notranslate"><span class="pre">Ticket</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.session.html#tlslite.session.bytes_to_int"><code class="docutils literal notranslate"><span class="pre">bytes_to_int()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.sessioncache.html">tlslite.sessioncache module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.sessioncache.html#tlslite.sessioncache.SessionCache"><code class="docutils literal notranslate"><span class="pre">SessionCache</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.tlsconnection.html">tlslite.tlsconnection module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.tlsconnection.html#tlslite.tlsconnection.TLSConnection"><code class="docutils literal notranslate"><span class="pre">TLSConnection</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.tlsconnection.html#tlslite.tlsconnection.bytes_to_int"><code class="docutils literal notranslate"><span class="pre">bytes_to_int()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.tlsrecordlayer.html">tlslite.tlsrecordlayer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.TLSRecordLayer"><code class="docutils literal notranslate"><span class="pre">TLSRecordLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.tlsrecordlayer.html#tlslite.tlsrecordlayer.bytes_to_int"><code class="docutils literal notranslate"><span class="pre">bytes_to_int()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.verifierdb.html">tlslite.verifierdb module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.verifierdb.html#tlslite.verifierdb.VerifierDB"><code class="docutils literal notranslate"><span class="pre">VerifierDB</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.verifierdb.html#tlslite.verifierdb.bytes_to_int"><code class="docutils literal notranslate"><span class="pre">bytes_to_int()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.x509.html">tlslite.x509 module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.x509.html#tlslite.x509.X509"><code class="docutils literal notranslate"><span class="pre">X509</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.x509.html#tlslite.x509.bytes_to_int"><code class="docutils literal notranslate"><span class="pre">bytes_to_int()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tlslite.x509certchain.html">tlslite.x509certchain module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.x509certchain.html#tlslite.x509certchain.X509CertChain"><code class="docutils literal notranslate"><span class="pre">X509CertChain</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tlslite.x509certchain.html#tlslite.x509certchain.bytes_to_int"><code class="docutils literal notranslate"><span class="pre">bytes_to_int()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to tlslite-ng’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tlslite.html" class="btn btn-neutral float-right" title="tlslite package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

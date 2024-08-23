@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tlslite.utils.openssl_rsakey &mdash; tlslite-ng 0.8.0-beta2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tlslite-ng
+          </a>
+              <div class="version">
+                0.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">tlslite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tlslite-ng</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tlslite.utils.openssl_rsakey</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tlslite.utils.openssl_rsakey</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Trevor Perrin</span>
+<span class="c1"># See the LICENSE file for legal information regarding use of this file.</span>
+
+<span class="sd">&quot;&quot;&quot;OpenSSL/M2Crypto RSA implementation.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.cryptomath</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">.rsakey</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.python_rsakey</span> <span class="kn">import</span> <span class="n">Python_RSAKey</span>
+<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">compatAscii2Bytes</span><span class="p">,</span> <span class="n">compat_b2a</span>
+
+<span class="c1">#copied from M2Crypto.util.py, so when we load the local copy of m2</span>
+<span class="c1">#we can still use it</span>
+<div class="viewcode-block" id="password_callback"><a class="viewcode-back" href="../../../tlslite.utils.openssl_rsakey.html#tlslite.utils.openssl_rsakey.password_callback">[docs]</a><span class="k">def</span> <span class="nf">password_callback</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">prompt1</span><span class="o">=</span><span class="s1">&#39;Enter private key passphrase:&#39;</span><span class="p">,</span>
+                           <span class="n">prompt2</span><span class="o">=</span><span class="s1">&#39;Verify passphrase:&#39;</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">p1</span><span class="o">=</span><span class="n">getpass</span><span class="p">(</span><span class="n">prompt1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">p2</span><span class="o">=</span><span class="n">getpass</span><span class="p">(</span><span class="n">prompt2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">p1</span><span class="o">==</span><span class="n">p2</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">p1</span></div>
+
+
+<span class="k">if</span> <span class="n">m2cryptoLoaded</span><span class="p">:</span>
+    <span class="c1"># pylint: disable=import-error</span>
+    <span class="kn">from</span> <span class="nn">M2Crypto.RSA</span> <span class="kn">import</span> <span class="n">RSAError</span>
+
+<div class="viewcode-block" id="OpenSSL_RSAKey"><a class="viewcode-back" href="../../../tlslite.utils.openssl_rsakey.html#tlslite.utils.openssl_rsakey.OpenSSL_RSAKey">[docs]</a>    <span class="k">class</span> <span class="nc">OpenSSL_RSAKey</span><span class="p">(</span><span class="n">RSAKey</span><span class="p">):</span>
+<div class="viewcode-block" id="OpenSSL_RSAKey.__init__"><a class="viewcode-back" href="../../../tlslite.utils.openssl_rsakey.html#tlslite.utils.openssl_rsakey.OpenSSL_RSAKey.__init__">[docs]</a>        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">key_type</span><span class="o">=</span><span class="s2">&quot;rsa&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rsa</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hasPrivateKey</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">e</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">e</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">n</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rsa</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">rsa_new</span><span class="p">()</span>
+                <span class="n">m2</span><span class="o">.</span><span class="n">rsa_set_n</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">,</span> <span class="n">numberToMPI</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+                <span class="n">m2</span><span class="o">.</span><span class="n">rsa_set_e</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">,</span> <span class="n">numberToMPI</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">key_type</span> <span class="o">=</span> <span class="n">key_type</span></div>
+
+<div class="viewcode-block" id="OpenSSL_RSAKey.__del__"><a class="viewcode-back" href="../../../tlslite.utils.openssl_rsakey.html#tlslite.utils.openssl_rsakey.OpenSSL_RSAKey.__del__">[docs]</a>        <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">:</span>
+                <span class="n">m2</span><span class="o">.</span><span class="n">rsa_free</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OpenSSL_RSAKey.__getattr__"><a class="viewcode-back" href="../../../tlslite.utils.openssl_rsakey.html#tlslite.utils.openssl_rsakey.OpenSSL_RSAKey.__getattr__">[docs]</a>        <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="mi">0</span>
+                <span class="k">return</span> <span class="n">mpiToNumber</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">rsa_get_e</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="mi">0</span>
+                <span class="k">return</span> <span class="n">mpiToNumber</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">rsa_get_n</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span></div>
+
+<div class="viewcode-block" id="OpenSSL_RSAKey.hasPrivateKey"><a class="viewcode-back" href="../../../tlslite.utils.openssl_rsakey.html#tlslite.utils.openssl_rsakey.OpenSSL_RSAKey.hasPrivateKey">[docs]</a>        <span class="k">def</span> <span class="nf">hasPrivateKey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hasPrivateKey</span></div>
+
+        <span class="k">def</span> <span class="nf">_rawPrivateKeyOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">numBytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">rsa_private_encrypt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+                                            <span class="n">m2</span><span class="o">.</span><span class="n">no_padding</span><span class="p">)</span>
+            <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">ciphertext</span>
+
+        <span class="k">def</span> <span class="nf">_raw_private_key_op_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_m2crypto</span><span class="p">(</span>
+                <span class="n">m2</span><span class="o">.</span><span class="n">rsa_private_encrypt</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span>
+                <span class="s2">&quot;Bad parameters to private key operation&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_rawPublicKeyOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">numberToByteArray</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">numBytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">rsa_public_decrypt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+                                           <span class="n">m2</span><span class="o">.</span><span class="n">no_padding</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">bytesToNumber</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">message</span>
+
+        <span class="k">def</span> <span class="nf">_call_m2crypto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">err_msg</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">param</span><span class="p">),</span> <span class="n">m2</span><span class="o">.</span><span class="n">no_padding</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">RSAError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_raw_public_key_op_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_m2crypto</span><span class="p">(</span>
+                <span class="n">m2</span><span class="o">.</span><span class="n">rsa_public_decrypt</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">,</span>
+                <span class="s2">&quot;Bad parameters to public key operation&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OpenSSL_RSAKey.acceptsPassword"><a class="viewcode-back" href="../../../tlslite.utils.openssl_rsakey.html#tlslite.utils.openssl_rsakey.OpenSSL_RSAKey.acceptsPassword">[docs]</a>        <span class="k">def</span> <span class="nf">acceptsPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="OpenSSL_RSAKey.write"><a class="viewcode-back" href="../../../tlslite.utils.openssl_rsakey.html#tlslite.utils.openssl_rsakey.OpenSSL_RSAKey.write">[docs]</a>        <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="n">bio</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">bio_new</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">bio_s_mem</span><span class="p">())</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hasPrivateKey</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">password</span><span class="p">:</span>
+                    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">v</span><span class="p">):</span> <span class="k">return</span> <span class="n">password</span>
+                    <span class="n">m2</span><span class="o">.</span><span class="n">rsa_write_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">,</span> <span class="n">bio</span><span class="p">,</span> <span class="n">m2</span><span class="o">.</span><span class="n">des_ede_cbc</span><span class="p">(),</span> <span class="n">f</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">def</span> <span class="nf">f</span><span class="p">():</span> <span class="k">pass</span>
+                    <span class="n">m2</span><span class="o">.</span><span class="n">rsa_write_key_no_cipher</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">,</span> <span class="n">bio</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">password</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+                <span class="n">m2</span><span class="o">.</span><span class="n">rsa_write_pub_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rsa</span><span class="p">,</span> <span class="n">bio</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">bio_read</span><span class="p">(</span><span class="n">bio</span><span class="p">,</span> <span class="n">m2</span><span class="o">.</span><span class="n">bio_ctrl_pending</span><span class="p">(</span><span class="n">bio</span><span class="p">))</span>
+            <span class="n">m2</span><span class="o">.</span><span class="n">bio_free</span><span class="p">(</span><span class="n">bio</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="OpenSSL_RSAKey.generate"><a class="viewcode-back" href="../../../tlslite.utils.openssl_rsakey.html#tlslite.utils.openssl_rsakey.OpenSSL_RSAKey.generate">[docs]</a>        <span class="nd">@staticmethod</span>
+        <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">key_type</span><span class="o">=</span><span class="s2">&quot;rsa&quot;</span><span class="p">):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">OpenSSL_RSAKey</span><span class="p">()</span>
+            <span class="k">def</span> <span class="nf">f</span><span class="p">():</span><span class="k">pass</span>
+            <span class="c1"># pylint: disable=no-member</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">rsa</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">rsa_generate_key</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="mi">65537</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            <span class="c1"># pylint: enable=no-member</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">_hasPrivateKey</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">key_type</span> <span class="o">=</span> <span class="n">key_type</span>
+            <span class="n">b64_key</span> <span class="o">=</span> <span class="n">compat_b2a</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>
+            <span class="n">py_key</span> <span class="o">=</span> <span class="n">Python_RSAKey</span><span class="o">.</span><span class="n">parsePEM</span><span class="p">(</span><span class="n">b64_key</span><span class="p">)</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">py_key</span><span class="o">.</span><span class="n">d</span>
+            <span class="k">return</span> <span class="n">key</span></div>
+
+<div class="viewcode-block" id="OpenSSL_RSAKey.parse"><a class="viewcode-back" href="../../../tlslite.utils.openssl_rsakey.html#tlslite.utils.openssl_rsakey.OpenSSL_RSAKey.parse">[docs]</a>        <span class="nd">@staticmethod</span>
+        <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">passwordCallback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># Skip forward to the first PEM header</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;-----BEGIN &quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">start</span><span class="p">:]</span>            
+            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;-----BEGIN &quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">passwordCallback</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+                    <span class="n">callback</span> <span class="o">=</span> <span class="n">password_callback</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">prompt1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prompt2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">passwordCallback</span><span class="p">()</span>
+                    <span class="n">callback</span> <span class="o">=</span> <span class="n">f</span>
+                <span class="n">bio</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">bio_new</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">bio_s_mem</span><span class="p">())</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">m2</span><span class="o">.</span><span class="n">bio_write</span><span class="p">(</span><span class="n">bio</span><span class="p">,</span> <span class="n">compatAscii2Bytes</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">OpenSSL_RSAKey</span><span class="p">()</span>
+                    <span class="c1"># parse SSLay format PEM file</span>
+                    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;-----BEGIN RSA PRIVATE KEY-----&quot;</span><span class="p">):</span>
+                        <span class="k">def</span> <span class="nf">f</span><span class="p">():</span><span class="k">pass</span>
+                        <span class="n">key</span><span class="o">.</span><span class="n">rsa</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">rsa_read_key</span><span class="p">(</span><span class="n">bio</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">rsa</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
+                        <span class="n">key</span><span class="o">.</span><span class="n">_hasPrivateKey</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="c1"># parse a standard PKCS#8 PEM file</span>
+                    <span class="k">elif</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;-----BEGIN PRIVATE KEY-----&quot;</span><span class="p">):</span>
+                        <span class="k">def</span> <span class="nf">f</span><span class="p">():</span><span class="k">pass</span>
+                        <span class="n">key</span><span class="o">.</span><span class="n">rsa</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">pkey_read_pem</span><span class="p">(</span><span class="n">bio</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+                        <span class="c1"># the below code assumes RSA key while PKCS#8 files</span>
+                        <span class="c1"># (and by extension the EVP_PKEY structure) can be</span>
+                        <span class="c1"># also DSA or EC, thus the double check against None</span>
+                        <span class="c1"># (first if the file was properly loaded and second</span>
+                        <span class="c1"># if the file actually has a RSA key in it)</span>
+                        <span class="c1"># tlslite doesn&#39;t support DSA or EC so it&#39;s useless</span>
+                        <span class="c1"># to handle them in a different way</span>
+                        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">rsa</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
+                        <span class="n">key</span><span class="o">.</span><span class="n">rsa</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">pkey_get1_rsa</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">rsa</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">rsa</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
+                        <span class="n">key</span><span class="o">.</span><span class="n">_hasPrivateKey</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">elif</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;-----BEGIN PUBLIC KEY-----&quot;</span><span class="p">):</span>
+                        <span class="n">key</span><span class="o">.</span><span class="n">rsa</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">rsa_read_pub_key</span><span class="p">(</span><span class="n">bio</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">rsa</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
+                        <span class="n">key</span><span class="o">.</span><span class="n">_hasPrivateKey</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">_hasPrivateKey</span><span class="p">:</span>
+                        <span class="n">b64_key</span> <span class="o">=</span> <span class="n">compat_b2a</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>
+                        <span class="n">py_key</span> <span class="o">=</span> <span class="n">Python_RSAKey</span><span class="o">.</span><span class="n">parsePEM</span><span class="p">(</span><span class="n">b64_key</span><span class="p">)</span>
+                        <span class="n">key</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">py_key</span><span class="o">.</span><span class="n">d</span>
+                    <span class="k">return</span> <span class="n">key</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="n">m2</span><span class="o">.</span><span class="n">bio_free</span><span class="p">(</span><span class="n">bio</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Hubert Kario.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
