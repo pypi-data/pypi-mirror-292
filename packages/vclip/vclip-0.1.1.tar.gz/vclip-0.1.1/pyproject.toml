@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "vclip"
+version = "0.1.1"
+description = "a small tool to compile randomly selected video clips from a folder of videos."
+authors = ["Jonathan Gray <contact@jonathangray.org>"]
+repository = "https://github.com/jwyg/vclip"
+license = "Anti-Capitalist Software License"
+readme = "README.md"
+keywords = ["video"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+moviepy = "^1.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+vclip = 'vclip:main'
