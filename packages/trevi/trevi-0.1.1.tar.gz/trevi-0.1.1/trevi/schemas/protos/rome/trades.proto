@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package rome.trades;
+
+import "google/protobuf/timestamp.proto";
+
+
+enum Status {
+    UNKNOWN = 0;
+    PENDING = 1;
+    APPROVED = 2;
+    REJECTED = 3;
+}
+
+enum TimeInForce {
+    IOC = 0;
+    FOK = 1;
+    GTC = 2;
+}
+
+message EquityMarketBuy {
+    string ticker = 1;
+    double quantity = 2;
+    TimeInForce time_in_force = 3;
+}
+
+message EquityMarketSell {
+    string ticker = 1;
+    double quantity = 2;
+    TimeInForce time_in_force = 3;
+}
+
+message CryptoMarketBuy {
+    string symbol = 1;
+    double quantity = 2;
+    TimeInForce time_in_force = 3;
+}
+
+message CryptoMarketSell {
+    string symbol = 1;
+    double quantity = 2;
+    TimeInForce time_in_force = 3;
+}
+
+message PortfolioDetails {
+    string account_id = 1;
+    string name = 2;
+}
+
+message Trade {
+    google.protobuf.Timestamp timestamp = 1;
+    string strategy = 2;
+    PortfolioDetails portfolio = 3;
+
+    oneof type {
+        EquityMarketBuy equity_market_buy = 10;
+        EquityMarketSell equity_market_sell = 11;
+        CryptoMarketBuy crypto_market_buy = 12;
+        CryptoMarketSell crypto_market_sell = 13;
+    }
+}
+
+
+message FilledItem {
+    string symbol = 1;
+    double quantity = 2;
+    double price = 3;
+    string broker = 10;
+
+    string trade_id = 100;
+}
+
+message Filled {
+    repeated FilledItem items = 1;
+    string trade_id = 100;
+}
+
+message PlacedItem {
+    Trade trade = 1;
+    string trade_id = 100;
+}
+
+message Placed {
+    repeated PlacedItem items = 1;
+    string trade_id = 100;
+}
+
+
+message TradeUpdate {
+    google.protobuf.Timestamp timestamp = 1;
+    oneof type {
+        Placed placed = 10;
+        Filled filled = 11;
+    }
+}

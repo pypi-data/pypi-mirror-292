@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "trevi"
+version = "0.1.1"
+description = ""
+authors = ["Ehud Adler <easports96@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+alpaca-py = "^0.20.3"
+coinbase-advanced-py = "^1.2.2"
+dash = "^2.16.1"
+HeapDict = "^1.0.1"
+kafka-python = "^2.0.2"
+numpy = "^1.24.2"
+pandas = "^2.0.0"
+plotly = "^5.18.0"
+protobuf = "^5.26.1"
+pytz = "^2023.3"
+pyyaml = "^6.0.1"
+Requests = "^2.31.0"
+tqdm = "^4.65.0"
+XlsxWriter = "^3.1.9"
+black = "^24.4.1"
+tox = "^4.14.2"
+pytest = "^8.1.1"
+sqlalchemy = "^2.0.29"
+psycopg2-binary = "^2.9.9"
+redis = "^5.0.4"
+duckdb = "^0.10.3"
+pyarrow = "^16.1.0"
+
+grpcio = "^1.63.0"
+grpcio-tools = "^1.63.0"
+grpcio-reflection = "^1.63.0"
+grpcio-health-checking = "^1.63.0"
+
+flower = "^2.0.1"
+
+mockito = "^1.5.0"
+
+celery = [
+    { version = "^5.4.0" },
+    { version = "^5.4.0", extras = ["redis"] },
+]
+
+pyfolio-reloaded = "^0.9.7"
+ipykernel = "^6.29.5"
+
+[tool.poetry.extras]
+redis = ["celery"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
