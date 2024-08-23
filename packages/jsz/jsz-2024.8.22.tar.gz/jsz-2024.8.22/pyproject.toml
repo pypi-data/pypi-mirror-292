@@ -1,0 +1,57 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "jsz"
+version = "2024.8.22"
+description = "金手指"
+authors = [
+    { name = "jiaosenvip" },
+    { name = "jiaosenvip", email = "jiaosenvip@163.com" },
+]
+dependencies = [
+    "beautifulsoup4",
+    "dateparser; platform_machine != 'aarch64'",
+    "diskcache",
+    "fakeredis",
+    "faker",
+    "html2text",
+    "httpx[http2]",
+    "js2py",
+    "loguru",
+    "lxml",
+    "markdown",
+    "newpool >=0.0.2",
+    "oss2",
+    "parsel",
+    "pandas[excel]",
+    "pymongo",
+    "pypdf",
+    "python-dateutil",
+    "rich",
+    "redis",
+    "winsdk; sys_platform  == 'win32'",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[project.optional-dependencies]
+all = [
+    "curl_cffi",
+    "ddddocr",
+    "duckdb",
+    "ipython",
+    "jsonpath",
+]
+
+[project.urls]
+Homepage = "https://github.com/jiaosenvip/jsz"
+Documentation = "https://github.com/jiaosenvip/jsz/wiki"
+
+[tool]
