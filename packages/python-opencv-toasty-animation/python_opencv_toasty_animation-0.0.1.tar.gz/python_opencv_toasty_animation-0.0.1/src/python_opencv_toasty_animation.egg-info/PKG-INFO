@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: python_opencv_toasty_animation
+Version: 0.0.1
+Summary: Toasty animation to play in top of OpenCV VideoCapture
+Author-email: Yamil Jaskolowski <yamilj@gmail.com>
+Project-URL: Homepage, https://github.com/adremides/python_opencv_toasty_animation
+Project-URL: Issues, https://github.com/pypa/python_opencv_toasty_animation/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# python_opencv_toasty_animation
+
+## Requirements
+
+opencv-contrib-python 4.10.0.82
+playsound 1.3.0
+
+## Usage
+
+Add these lines before the main loop to instantiate animation
+
+    animation = Animation(image_path='toasty.png', sound_path='toasty.mp3')
+
+Then before the `cv2.imshow('Video', frame)` execution add these
+
+    animation.update_animation_state()
+    frame = animation.apply_animation(frame)
+
+The animation now is ready to be played, now you need to choice an event to fire the start.
+Anywhere in the main loop add this line
+
+    animation.start()
+
+Optionally you can pass the `prevent_repetition=True` argument if the animation play too many times in the loop to control the repetition. By default it doesn't play until 300 seconds passed. You can change it passing `repetition_delay=300` in the arguments during the instantiation of the animation.
