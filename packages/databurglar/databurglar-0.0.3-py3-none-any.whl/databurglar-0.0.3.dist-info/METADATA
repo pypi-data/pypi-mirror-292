@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: databurglar
+Version: 0.0.3
+Summary: SQLAlchemy Package for data tracking.
+Home-page: https://github.com/dpasse/databurglar
+Keywords: Data Collection,SqlAlchemy
+Requires-Python: >=3.12.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: SQLAlchemy==2.0.32
+Requires-Dist: pydantic==2.8
+Requires-Dist: psycopg2==2.9.9
+
+# DataBurglar
+
+<p>
+  <b>SOMETHING</b> happened at <b>SOMETIME</b> and we would like to <b>STORE</b> it in <b>Postgres</b>.
+</p>
+
+<hr />
+
+### 1. Install
+
+```
+    pip install databurglar
+```
+
+### 2. Include Tables
+```python
+from databurglar.models import setup_data_collection, setup_surveys
+
+engine: Engine = ...
+
+## setup tables to collect data based on a `UserEvent`
+setup_data_collection(
+    engine,
+    UserEvent
+)
+
+## <optional>: setup tables to build dynamic data collection forms/surveys
+setup_surveys(engine)
+```
+
+### 3. Queries
+
+### 4. Commands
+
+
+
+## Local Project Development
+#### windows
+```
+  python -m venv env
+  .\env\Scripts\activate
+
+  pip install -r requirements.txt
+```
