@@ -1,0 +1,2280 @@
+Metadata-Version: 2.1
+Name: ellipsoid
+Version: 2024.8.22
+Summary: 参考椭球体基础软件包，主要包括：Geometry-几何要素类；Topology-几何要素拓扑类；MapGrid-国际标准比例尺图幅分幅网格类；Projection-几何要素坐标投影变换类；ProjectionHelper-几何要素坐标投影助手类；Astronomy-天文寻星计算类
+Author: GeoWheel Studio
+Author-email: flylyisflying@gmail.com
+License: MIT
+Keywords: geometry,geojson,gml,kml,topology,projection,mapgrid,astronomy
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: pygml
+Requires-Dist: shapely
+Requires-Dist: lxml
+Requires-Dist: gdal
+Requires-Dist: pytz
+
+<table>
+  <tr style="border-style: none;">
+    <td style="border-style: none;">
+      <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="100" height="100" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 2315 2315"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <g id="geowheel">
+  <metadata id="geowheel-Layer"/>
+  <path style="fill:#CB7D31" d="M209.13 1279.25l26.75 -39.64c11.21,-17.81 16.25,-22.97 43.89,-64.99 8.35,-12.7 29.37,-44.06 38.09,-56.82l43.3 -61.51 55.38 -75.6 42.12 -55.05 36.95 -47.15 -492.14 2.55c0,164.31 81.21,309.7 205.66,398.21z"/>
+  <path style="fill:#0078D7" d="M1130.68 1857.49l-30.56 20.45 -43.04 25.92 -40.52 24.37 -54.64 29.74 -51.29 27.87 -43.49 20.07 -39.02 18.95 -34.56 15.61 -39.03 16.73 -31.36 10.03 -32.86 6.97 -29.17 4.86 -30.79 3.24 -38.8 2.92 -34.12 -1.29 -36.47 -5.68 -26.73 -8.1 -21.88 -9.72 -24.31 -13.78 -21.06 -17.82 -14.59 -14.59 -14.58 -21.06 -11.35 -20.26 -11.39 -27.02 -8.62 -31.27 -4.58 -28.69 -1.67 -34.84 0.57 -30.27 1.57 -26.78 3.2 -24.59 3.1 -22.6 6.48 -29.98 8.91 -29.98 18.45 -50.82 12.87 -31.63 12.15 -26.03 11.35 -25.36 10.81 -26.59 18.64 -45.37 18.63 -43.75 19.77 -41.87 20.34 -43.45 27.58 -51.4 32.25 -58.56 40.08 -68.84 33.77 -52.92 40.41 -64.02 34.55 -53.24 29.6 -44.83 36.6 -52.49 34.75 -45.65 31.6 -39.95 29.69 -34.55 33.57 -37.06 38.69 -40.84 33.69 -36.83 34.03 -33.22 32.41 -30.79 31.41 -29.59 39.28 -33.89 32.5 -28.69 35.37 -30.18 34.13 -28.27 38.23 -29.41 34.59 -28.2 47.8 -34.85 47.81 -31.6 39.7 -25.11 32.7 -20.59 33.46 -19.44 34.93 -18.44 35.84 -20.5 36.94 -19.36 38.04 -17.01 36.41 -15.88 32.03 -13.01 41.71 -16.44 36.07 -11.11 35.65 -8.91 38.09 -7.29 38.89 -5.67 36.74 -1.62 33.75 -0.81 30.79 1.62 27.55 4.86 28.6 7.86 24.87 9.96 19.45 10.54 21.07 15.39 17.01 17.83 14.38 22.03 9.93 20.1 7.29 21.07 7.29 29.17 2.43 17.01 0.81 28.36 -0.81 27.55 -1.83 27.08 -5.26 35.9 -7.96 32.81 -8.36 28.31 -10.25 28.84 -10.66 28.82 -9.98 24.4 -9.19 21.46 -9.69 22.79 -6.19 13.76 33.03 -51.89 -14.79 33.74 18.75 -22.68 19.26 -25.32 16.29 -23.12 14.95 -27.73 13.68 -28.48 11.29 -32.83 10.15 -31.17 8.53 -30.28 8.07 -34.33 4.78 -33.47 3.2 -35.89 0.69 -33.51 -2.07 -29.82 -5.67 -31.6 -7.48 -24.03 -10.34 -23.77 -12.97 -22.69 -17.06 -19.53 -21.02 -17.49 -22.69 -15.4 -20.89 -9.92 -26.78 -9.73 -26.4 -6.48 -25.59 -4.18 -30.79 -3.37 -31.89 -2.46 -31.1 -0.81 -30.94 0.53 -34.7 1.58 -28.7 3.15 -26.17 2.72 -29.21 4.11 -33.07 6.38 -29.7 6.89 -32.84 8.02 -29.98 7.66 -27.12 7.82 -34.03 9.72 -28.27 9.73 -27.64 10.53 -30.65 11.87 -29.3 11.63 -32.94 14.01 -31.07 14.35 -30.85 14.78 -25.87 12.76 -29.17 14.59 -29.98 15.39 -31.6 16.21 -28.36 17.01 -30.79 17.02 -28.36 17.01 -32.6 19.12 -27.36 18.16 -34.03 21.87 -38.08 26.74 -30.74 21.88 -26.79 19.44 -28.85 21.44 -29.36 25.56 -25.77 21.83 -19.58 17.19 -22.02 20.13 -25.32 21.79 -20.87 19.53 -29.17 25.93 -31.6 28.36 -29.98 27.54 -30.98 29.28 -26.23 24.81 -32.6 32.11 -30.7 34.25 -24.52 28.18 -27.07 29.5 -28.12 31.73 -26.75 29.76 -24.32 27.21 -30.91 39.45 -27.27 34.27 -25.92 33.75 -27.21 35.99 -25.51 35.35 -22.83 33.62 -23.01 33.89 -24.96 38.57 -20.13 30.42 -28.79 44.3 -25.77 41.59 -26.33 46.95 -26.54 47.38 -26.21 51.39 -22.9 48.39 -19.86 50.29 -19.95 47.71 -17.22 43.81 -17.17 47.76 -10.58 41.23 -9.67 38.98 -9.22 40.46 -6.99 35.71 -6.48 34.03 -4.86 31.6 -4.86 35.65c0,0 -3.24,25.12 -3.24,29.17 0,4.05 -1.62,38.89 -1.62,38.89l0 17.82 1.62 29.98 4.05 34.03 5.62 24.03 9.41 26.94 11.71 26.82 14.58 29.98 15.7 23.13 16.58 19.52 18.48 16.85 22.16 15.85 23.34 12.89 25.28 8.99 26.74 8.1 25.11 6.48 26.74 4.86 31.6 3.24 30.3 1.01 24.9 -0.04 24.48 -2.87 27.8 -3.58 28.96 -5.36 35.94 -6.71 32.88 -8.63 34.3 -10.89 34.45 -12.39 36.32 -13.73 35.6 -14.53 34.89 -14.64 36.61 -15.16 35.56 -18.59 37.06 -21.44 37.56 -22.63 38.71 -25.63 31.54 -21.84 38.71 -27.89 41.61 -29.13 41.43 -27.15 44.94 -30.89 44.27 -34.15 25.6 -23.68 22.45 -23.19 23.91 -29.23 21.78 -30.2 23.91 -36.19 -45.15 32.33 -37.44 25.34z"/>
+  <polygon style="fill:#CB7D31" points="567.35,1345.25 623.59,1345.95 671.15,1344.93 743.21,1344.93 785.56,1344.93 816.5,1345.86 836.7,1347.32 857.99,1350.44 877.25,1356.19 895.97,1363.42 916.24,1373.46 934.9,1385.12 950.49,1395.48 968.4,1408.6 984.11,1422 998.56,1435.52 1009.18,1447.45 1019.97,1460.48 1027.57,1473.89 1034.88,1487.96 1040.38,1500.2 1045.22,1514.04 1048.63,1528.72 1051.5,1543.23 1053.62,1557.77 1054.93,1573.22 1055.69,1591.55 1056.73,1620.55 1056.73,1671.07 1056.73,1765.42 1057.47,1890.24 1055.98,1942.98 1143.65,1941.5 1216.45,1942.98 1285.55,1941.5 1616.15,1942.24 1616.15,1347.16 1974.23,1344.97 1981.63,1344.36 1988.64,1343.55 1997.71,1341.84 2005.58,1339.42 2012.64,1337.26 2027.64,1331.37 2038.92,1325.99 2050.24,1320.28 2063.72,1313.4 2078.44,1305.52 2090.68,1298.11 2105.05,1289.14 2118.03,1278.75 2131.38,1267.39 2144.81,1256.11 2159.1,1241.64 2173.59,1223.72 2187.46,1205.26 2210.4,1171.73 2229.81,1137.65 2246.49,1103.7 2260.95,1068.52 2272.23,1038.36 2281.81,1006.9 2295.93,957.12 2304.84,916.51 2311.53,880.6 1842.74,879.11 1373.21,879.86 857.62,879.86 830.81,916.6 805.89,952.63 782.58,986.39 757.62,1024.3 735.11,1059.6 714.24,1091.17 691.87,1125.56 667.52,1165.4 643.58,1206.42 616.7,1252.68 592.53,1297.76 "/>
+ </g>
+</svg>
+    </td>
+    <td style="border-style: none;color: #47709e; font-weight: bold; font-size: 36px;">
+      geowheel.ellipsoid / Python
+    </td>
+  </tr>
+</table>
+
+***
+
+参考椭球体基础软件包。主要包括：  
+* **Geometry-几何要素类**  
+    支持地学实体几何要素加载、编码、转换、变换与序列化，几何要素主体采用{Python-dict}类型存储并符合{GeoJson-geometry}格式要求。  
+    支持的几何格式如下：    
+    > + **GeoJSON** - A format for encoding a variety of geographic data structures. RFC 7946 was published in August 2016 and is the new standard specification of the GeoJSON format.
+    > + **WKT** - ISO 19162:2015(E) - Well-known Text (WKT) offers a compact machine- and human-readable representation of geometric objects.
+    > + **WKB** - The well-known binary (WKB) representation for OGC geometry provides a portable representation of a geometry value as a contiguous stream of bytes.
+    > + **GML** - ISO 19136:2007 - The Geography Markup Language (GML) is an XML grammar for expressing geographical features.
+    > + **KML** - An XML language focused on geographic visualization, including annotation of maps and images. Geographic visualization includes not only the presentation of graphical data on the globe, but also the control of the user’s navigation in the sense of where to go and where to look.
+    > + **Shapely** - A Python package for set-theoretic analysis and manipulation of planar features using functions from the well known and widely deployed GEOS library.
+    > + **GDAL/OGR** - A vector geospatial geometric data formats based on Geospatial Data Abstraction Library (GDAL/OGR).
+    
+    支持的几何类型如下：  
+    > + **Point** - A geometry type that represents a single coordinate with x,y and possibly z,m values.
+    > + **LineString** - A geometry type composed of one or more line segments.
+    > + **Polygon** - A geometry type representing an area that is enclosed by a linear ring.
+    > + **MultiPoint** - A collection of one or more Points.
+    > + **MultiLineString** - A collection of one or more LineStrings.
+    > + **MultiPolygon** - A collection of one or more Polygons.
+    > + **GeometryCollection** - A collection of one or more geometries that may contain more than one type of geometry.
+* **Topology-几何要素拓扑类**  
+    > 支持拓扑创建、拓扑检查、面积与长度计算和诸多空间运算功能。  
+* **MapGrid-国际标准比例尺图幅分幅网格与编号类**  
+    > + 支持比例尺：1∶1000000、1∶500000、1∶250000、1∶200000（非国际标准）、1∶100000、1∶50000、1∶25000、1∶10000、1∶5000、1∶2000、1∶1000、1∶500。      
+    > + 算法依据《中华人民共和国国家标准 GB/T 13989-2012 国家基本比例尺地形图分幅和编号》（2012-06-29发布 2012-10-01实施）  
+* **Projection-几何要素坐标投影变换类**  
+    > 支持高斯-克吕格、球体墨卡托、阿尔勃斯、兰伯特投影正反算。  
+* **ProjectionHelper-几何要素坐标投影助手类**  
+    > 支持高斯-克吕格、球体墨卡托、阿尔勃斯、兰伯特等投影正反算。  
+    用法示例：  
+  > ```python
+  >   >>> import geowheel.ellipsoid as ellipsoid
+  >   >>> print(
+  >       ellipsoid.ProjectionHelper(
+  >           targetProjection=ellipsoid.ProjectionHelper.definition(projection="GaussKruger", centralMeridian=99)
+  >       ).project(
+  >           {'type': 'Point', 'coordinates': [100, 36]}
+  >       )
+  >   )
+  >   # {'type': 'Point', 'coordinates': [590165.115456953, 3986005.1900442634]}
+  >   >>> print(
+  >       ellipsoid.ProjectionHelper(
+  >           targetProjection=ellipsoid.ProjectionHelper.definition(projection="GaussKruger", centralMeridian=99)
+  >       ).project(
+  >           {"type":"MultiPoint","coordinates":[[98.52, 19.61], [100.22, 20.74], [100.97, 21.46]]}
+  >       )
+  >   )
+  >   # {'type': 'MultiPoint', 'coordinates': [[449646.39107651, 2169263.3152799467], [627069.4918831721, 2294770.010626876], [704217.241296021, 2375292.866543003]]}
+  >   >>> print(
+  >       ellipsoid.ProjectionHelper(
+  >           targetProjection=ellipsoid.ProjectionHelper.definition(projection="GaussKruger", centralMeridian=99)
+  >       ).project(
+  >           {"type":"LineString","coordinates": [[98.919, 44.4074], [98.923, 44.4075]]}
+  >       )
+  >   )
+  >  # {'type': 'LineString', 'coordinates': [[493547.9177849664, 4919094.308987056], [493866.54958314006, 4919105.113591565]]}
+  >   >>> print(
+  >       ellipsoid.ProjectionHelper(
+  >           targetProjection=ellipsoid.ProjectionHelper.definition(projection="GaussKruger", centralMeridian=99)
+  >       ).project(
+  >           {"type": "GeometryCollection","geometries":[{"type": "Point", "coordinates": [98.81, 37.24]},{"type":"LineString","coordinates": [[98.919, 44.4074], [98.923, 44.4075]]},{"type":"Polygon","coordinates":[[[99.38, 57.322], [100.43, 19.15], [100.194, 20.28], [99.38, 57.322]]]}]}
+  >       )
+  >   )
+  >   # {'type': 'GeometryCollection', 'geometries': [{'type': 'Point', 'coordinates': [483141.07726688863, 4123163.065100722]}, {'type': 'LineString', 'coordinates': [[493547.9177849664, 4919094.308987056], [493866.54958314006, 4919105.113591565]]}, {'type': 'Polygon', 'coordinates': [[[522893.54108479613, 6355836.594960719], [650444.4843643629, 2118888.025401517], [624733.1105818641, 2243814.468236219], [522893.54108479613, 6355836.594960719]]]}]}
+  > ```   
+* **Astronomy-天文寻星计算类**  
+    > 支持太阳、月球和静止轨道地球同步卫星基于地球参照系的相位参数计算。  
+
+## Installation  
+> Install geowheel.ellipsoid project with pip
+> 
+> ### Windows
+> ```bash
+>   python -m pip install --upgrade ellipsoid 
+> ```
+> ### Linux
+> ```bash
+>   python3 -m pip install --upgrade ellipsoid
+> ```
+> ### MacOS
+> ```bash
+>   python3 -m pip install --upgrade ellipsoid
+> ```
+
+## Usage/Examples
+
+```python
+>>> import geowheel.ellipsoid as ellipsoid
+>>> print(
+    ellipsoid.Topology.check(
+        [
+            {
+                "type": "Polygon",
+                "coordinates": [[[0, 0], [10, 0], [10, 10], [10, 0], [0, 0]]]
+            }
+        ],
+        0b1111
+    )
+)
+# {'polygon': [{'flag': 'SelfIntersection', 'type': 'Point', 'coordinates': [10.0, 0.0]}]}
+```
+
+## API Reference
+
+### Get help on module geowheel.ellipsoid
+
+```python
+>>> help(ellipsoid)
+```
+
+* ### Class Geometry(builtins.object) 
+
+*****
+
+***Geometry.dumps***
+> ```python
+> @classmethod
+> def dumps(
+>        cls,
+>        geometry: dict | list | str,
+>        format: str = 'json'
+> ) -> str  
+> ```
+> 将【GeoJson-geometry】几何字典对象序列化转储为指定格式的字符串  
+>
+> | Parameter | Type          | Description|
+> |:----------|:--------------|:-----------|
+> | geometry  | dict list str | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组|
+> | format    | str           | 指定的几何格式，支持："json/geojson"（默认）、"wkt/wkb"、"gml"、"kml"|
+> 
+> 返回符合指定格式要求的字符串。失败时抛出异常  
+
+***Geometry.fromGml***
+> ```python
+> @classmethod
+> def fromGml(
+>         cls,
+>         geometry: str | etree._Element
+> ) -> dict
+> ```
+> 将GML-V3.2几何字符串转换为【GeoJson-geometry】几何字典类型 
+>
+> | Parameter | Type               | Description    |
+> |:----------|:-------------------|:---------------|
+> | geometry  | str etree._Element | GML-V3.2几何字符串  |
+> 
+> 返回【GeoJson-geometry】格式的字典类型对象。失败时抛出异常
+
+***Geometry.fromKml***
+> ```python
+> @classmethod
+> def fromKml(
+>         cls,
+>         geometry: str | etree._Element
+> ) -> dict
+> ```
+> 将KML几何元素（支持：Point、LineString、Polygon、MultiGeometry、Track）字符串或者XML几何对象转换为【GeoJson-geometry】格式的字典类型对象
+>
+> | Parameter | Type               | Description    |
+> |:----------|:-------------------|:---------------|
+> | geometry  | str etree._Element | KML几何元素字符串或者XML几何对象  |
+> 
+> 返回【GeoJson-geometry】格式的字典类型对象。失败时抛出异常
+
+***Geometry.fromOgr***
+> ```python
+> @classmethod
+> def fromOgr(
+>         cls,
+>         geometry: ogr.Geometry
+> ) -> dict
+> ```
+> 将【ogr.Geometry】几何对象转换为【GeoJson-geometry】格式的字典类型对象
+>
+> | Parameter | Type          | Description    |
+> |:----------|:--------------|:---------------|
+> | geometry  | ogr.Geometry  | 【ogr.Geometry】几何对象  |
+> 
+> 返回【GeoJson-geometry】格式的字典类型对象。失败时抛出异常
+
+***Geometry.fromShapely***
+> ```python
+> @classmethod
+> def fromShapely(
+>         cls,
+>         geometry: shapely.geometry
+> ) -> dict
+> ```
+> 将shapely几何对象转换为【GeoJson-geometry】格式的字典类型对象
+>
+> | Parameter | Type               | Description              |
+> |:----------|:-------------------|:-------------------------|
+> | geometry  | shapely.geometry   | shapely格式几何（geometry）对象  |
+> 
+> 返回符合【GeoJson-geometry】格式的字典类型对象，字典中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组。失败时抛出异常
+
+***Geometry.getXY***
+> ```python
+> @classmethod
+> def getXY(
+>         cls,
+>         geometry: dict | list | str,
+>         endpoint: bool = True  
+> ) -> list
+> ```
+> 提取指定几何体的顶点（或端点）坐标并返回可哈希的坐标元组列表
+>
+> | Parameter | Type          | Description                                                                                                  |
+> |:----------|:--------------|:-------------------------------------------------------------------------------------------------------------|
+> | geometry  | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | endpoint | bool          | 是否仅提取端点？省略时取默认值：True。注：此选项仅针对线要素和面要素有效 |
+> 
+> 返回坐标元组列表。失败时抛出异常
+
+***Geometry.loads***
+> ```python
+> @classmethod
+> def loads(
+>         cls,
+>         coordinates: str | list | dict,
+>         code: int | None = -1
+> ) -> dict
+> ```
+> 由符合【WKT/WKB、GeoJson、自由/简约文本】格式的几何坐标串或者符合【GeoJson-geometry】格式的列表及字典对象乃至【shapely.geometry】对象反序列化转换为符合【GeoJson-geometry】格式的字典类型对象。  
+> - 注1：针对线和面要素，将自动剔除相邻重复点，面要素的线环将自动封闭。  
+> - 注2：针对顶点坐标，要求至少是二维，且前两个维度应为浮点数值，为提升普适度，不对浮点型[x y]的定义域进行约束。  
+> - 注3：针对WKB十六进制文本类型与GeometryCollection集合要素格式，将按实际内容解码，无需指定[code]参数。  
+> - 注4：如果GeoJson以文本方式输入，其中的对象名必须采用双引号封闭。  
+>
+> | Parameter   | Type          | Description                                                                                                                     |
+> |:------------|:--------------|:--------------------------------------------------------------------------------------------------------------------------------|
+> | coordinates | str list dict | 几何坐标参数（不多于4维[x y z m]且要求前2维[x y]为浮点型）。其中，GeoJson格式需具有[方括号]标识，WKT格式需具有(圆括号)标识，自由格式仅识别【单点/单线/单面】几何类型                              |
+> | code        | int None      | 几何类型代码：-1=自识别（默认值）、0=单点/多点、1=单线/多线、2=单面或母子面/多面。注：此参数通常仅当输入的坐标为简约格式且期望格式为[多点/多线]时需指定为[0/1]，或者当输入的坐标为自由格式时也应指定为[0/1/2]，以便消除二义性问题  |
+> 
+> 返回符合【GeoJson-geometry】格式的字典类型对象，字典中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的浮点型几何坐标数组。失败时抛出异常
+> 
+> - coordinates 参数格式说明  
+>  - 自由文本格式（仅支持2维）  
+>     - Point：code参数可为[0]或者[-1]  
+>              'x y'  
+>              'x,y'  
+>     - LineString：code参数可为[1]或者[-1]，若code指定为0，便视为多点[MultiPoint]  
+>              'x y,x y,...'  
+>              'x,y x,y ...'  
+>     - Polygon：code参数必须指定为[2]方可视为单面[Polygon]，若code指定为0，便视为多点[MultiPoint]，若code指定为1，便视为单线[LineString]  
+>              'x y,x y,x y,x y,...'  
+>              'x,y x,y x,y x,y ...'  
+>  - GeoJson  
+>    - Point：  
+>         [x,y,z,m]  # 简约格式  
+>         {"type":"Point","coordinates":[x,y,z,m]}  
+>    - MultiPoint：  
+>         [[x,y,z,m],[x,y,z,m],...]  # 简约格式  
+>         {"type":"MultiPoint","coordinates":[[x,y,z,m],[x,y,z,m],...]}  
+>    - LineString：  
+>         [[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],...]  # 简约格式  
+>         {"type":"LineString","coordinates":[[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],...]}  
+>    - MultiLineString：  
+>         [[[x,y,z,m],[x,y,z,m],[x,y,z,m]],[[x,y,z,m],[x,y,z,m],[x,y,z,m],...],...]  # 简约格式  
+>         {"type":"MultiLineString","coordinates":[[[x,y,z,m],[x,y,z,m],[x,y,z,m]],[[x,y,z,m],[x,y,z,m],[x,y,z,m],...],...]}  
+>    - Polygon（单面或母子面）：    
+>         [[[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],...],...]  # 简约格式  
+>         {"type":"Polygon","coordinates":[[[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],...],...]}  
+>    - MultiPolygon：  
+>         [[[[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],...],...],...]  # 简约格式  
+>         {"type":"MultiPolygon","coordinates":[[[[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],...],...],...]}  
+>    - GeometryCollection：  
+>         {'type': 'GeometryCollection', 'geometries': [{"type":"Point","coordinates":[x,y,z,m]}, {"type":"LineString","coordinates":[[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],...]}, {"type":"Polygon","coordinates":[[[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],[x,y,z,m],...],...]}]}  
+>   - WKT（Well-Known Text 采用文本字符串存储）    
+>     - Point：  
+>         (x y z m)  # 简约格式  
+>         POINT(x y z m)  
+>     - MultiPoint：  
+>         (x y z m,x y z m,...)  # 简约格式  
+>         MULTIPOINT(x y z m,x y z m,...)  
+>     - LineString：  
+>         (x y z m,x y z m,...)  # 简约格式  
+>         LINESTRING(x y z m,x y z m,...)  
+>     - MultiLineString：  
+>         ((x y z m,x y z m,...),...)  # 简约格式  
+>         MULTILINESTRING((x y z m,x y z m,...),...)  
+>     - Polygon（单面或母子面）：  
+>         ((x y z m,x y z m,...),...)  # 简约格式  
+>         POLYGON((x y z m,x y z m,...),...)  
+>     - MultiPolygon：  
+>         (((x y z m,x y z m,...),...),...)  
+>         MULTIPOLYGON(((x y z m,x y z m,...),...),...)  
+>     - GEOMETRYCOLLECTION（不支持简约格式）：  
+>         GEOMETRYCOLLECTION(POINT(x y z m), LINESTRING(x y z m,x y z m,...), POLYGON((x y z m,x y z m,...),...))  
+>   - WKB（Well-known Binary 采用十六进制字节串存储）  
+>     b"??..."  # 由诸多[00～FF]构成的字节串   
+>   
+> 
+> - 自由文本格式示例
+> ```python
+> # Point
+> >>> ellipsoid.Geometry.loads('120,38', -1 or 0)   
+> >>> ellipsoid.Geometry.loads('120 38', -1 or 0)   
+> # {'type': 'Point', 'coordinates': [120, 38]}
+> ``` 
+> ```python
+> # MultiPoint
+> >>> ellipsoid.Geometry.loads('120 38,122 39,99 28,120 38', 0)   
+> >>> ellipsoid.Geometry.loads('120,38 122,39 99,28 120,38', 0)  
+> # {'type': 'MultiPoint', 'coordinates': [[120, 38], [122, 39], [99, 28], [120, 38]]}  
+> ``` 
+> ```python
+> # LineString
+> >>> ellipsoid.Geometry.loads('120 38,122 39,99 28,120 38', -1 or 1)   
+> >>> ellipsoid.Geometry.loads('120,38 122,39 99,28 120,38', -1 or 1)  
+> # {'type': 'LineString', 'coordinates': [[120, 38], [122, 39], [99, 28], [120, 38]]}  
+> ```  
+> ```python
+> # Polygon
+> >>> ellipsoid.Geometry.loads('120 38,122 39,99 28,120 38', 2)    
+> >>> ellipsoid.Geometry.loads('120,38 122,39 99,28 120,38', 2)   
+> # {'type': 'Polygon', 'coordinates': [[[120, 38], [122, 39], [99, 28], [120, 38]]]}    
+> ```     
+>   
+> - GeoJSON 格式示例  
+> ```python
+> # Point
+> >>> ellipsoid.Geometry.loads([-115.81, 37.24],-1 or 0)     
+> >>> ellipsoid.Geometry.loads('[-115.81, 37.24]',-1 or 0)    
+> >>> ellipsoid.Geometry.loads('{"type": "Point", "coordinates": [-115.81, 37.24]}', -1 or 0)  
+> >>> ellipsoid.Geometry.loads({"type": "Point", "coordinates": [-115.81, 37.24]},-1 or 0)  
+> # {'type': 'Point', 'coordinates': [-115.81, 37.24]}   
+> ```
+> ```python
+> # MultiPoint / LineString  
+> >>> ellipsoid.Geometry.loads([[-155.52, 19.61], [-156.22, 20.74], [-157.97, 21.46]], 0)     
+> >>> ellipsoid.Geometry.loads('[[-155.52, 19.61], [-156.22, 20.74], [-157.97, 21.46]]', 0)   
+> >>> ellipsoid.Geometry.loads('{"type":"MultiPoint","coordinates":[[-155.52, 19.61], [-156.22, 20.74], [-157.97, 21.46]]}',-1 or 0)  
+> >>> ellipsoid.Geometry.loads({"type":"MultiPoint","coordinates":[[-155.52, 19.61], [-156.22, 20.74], [-157.97, 21.46]]},-1 or 0)  
+> # {'coordinates': [[-155.52, 19.61], [-156.22, 20.74], [-157.97, 21.46]], 'type': 'MultiPoint'}    
+> >>> ellipsoid.Geometry.loads([[-155.52, 19.61], [-156.22, 20.74], [-157.97, 21.46]], -1 or 1)    
+> >>> ellipsoid.Geometry.loads('[[-155.52, 19.61], [-156.22, 20.74], [-157.97, 21.46]]', -1 or 1)  
+> # {'coordinates': [[-155.52, 19.61], [-156.22, 20.74], [-157.97, 21.46]], 'type': 'LineString'}  
+> ```
+> ```python
+> # LineString   
+> >>> ellipsoid.Geometry.loads([[8.919, 44.4074], [8.923, 44.4075]], -1 or 1)  
+> >>> ellipsoid.Geometry.loads('[[8.919, 44.4074], [8.923, 44.4075]]', -1 or 1)  
+> >>> ellipsoid.Geometry.loads('{"type":"LineString","coordinates": [[8.919, 44.4074], [8.923, 44.4075]]}', -1 or 1)  
+> >>> ellipsoid.Geometry.loads({"type":"LineString","coordinates": [[8.919, 44.4074], [8.923, 44.4075]]}, -1 or 1)  
+> # {'coordinates': [[8.919, 44.4074], [8.923, 44.4075]], 'type': 'LineString'}    
+> ```     
+> ```python
+> # MultiLineString / Polygon    
+> >>> ellipsoid.Geometry.loads([[[3.75, 9.25], [-130.95, 1.52]], [[23.15, -34.25], [-1.35, -4.65], [3.45, 77.95]]], 1)   
+> >>> ellipsoid.Geometry.loads('[[[3.75, 9.25], [-130.95, 1.52]], [[23.15, -34.25], [-1.35, -4.65], [3.45, 77.95]]]', 1)   
+> >>> ellipsoid.Geometry.loads('{"type":"MultiLineString","coordinates":[[[3.75, 9.25], [-130.95, 1.52]], [[23.15, -34.25], [-1.35, -4.65], [3.45, 77.95]]]}', -1 or 1)  
+> >>> ellipsoid.Geometry.loads({"type":"MultiLineString","coordinates":[[[3.75, 9.25], [-130.95, 1.52]], [[23.15, -34.25], [-1.35, -4.65], [3.45, 77.95]]]}, -1 or 1)  
+> # {'type': 'MultiLineString', 'coordinates': [[[3.75, 9.25], [-130.95, 1.52]], [[23.15, -34.25], [-1.35, -4.65], [3.45, 77.95]]]}   
+> ```         
+> ```python
+> # no hole within polygon  
+> >>> ellipsoid.Geometry.loads([[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]]], -1 or 2)  
+> >>> ellipsoid.Geometry.loads('[[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]]]', -1 or 2)  
+> >>> ellipsoid.Geometry.loads('{"type":"Polygon","coordinates":[[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]]]}', -1 or 2)  
+> >>> ellipsoid.Geometry.loads({"type":"Polygon","coordinates":[[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]]]}, -1 or 2)  
+> # {'type': 'Polygon', 'coordinates': [[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]]]}  
+> ```          
+> ```python
+> # hole within polygon   
+> >>> ellipsoid.Geometry.loads('{"type":"Polygon","coordinates":[[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]], [[-5.21, 23.51], [15.21, -10.81], [-20.51, 1.51], [-5.21, 23.51]]]}', -1 or 2)  
+> >>> ellipsoid.Geometry.loads({"type":"Polygon","coordinates":[[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]], [[-5.21, 23.51], [15.21, -10.81], [-20.51, 1.51], [-5.21, 23.51]]]}, -1 or 2)  
+> >>> ellipsoid.Geometry.loads('[[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]], [[-5.21, 23.51], [15.21, -10.81], [-20.51, 1.51], [-5.21, 23.51]]]', -1 or 2)  
+> >>> ellipsoid.Geometry.loads([[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]], [[-5.21, 23.51], [15.21, -10.81], [-20.51, 1.51], [-5.21, 23.51]]], -1 or 2)          
+> # {'type': 'Polygon', 'coordinates': [[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]], [[-5.21, 23.51], [15.21, -10.81], [-20.51, 1.51], [-5.21, 23.51]]]}  
+> ```        
+> ```python
+> # MultiPolygon   
+> >>> ellipsoid.Geometry.loads('{"type":"MultiPolygon","coordinates":[[[[3.78, 9.28], [-130.91, 1.52], [35.12, 72.234], [3.78, 9.28]]], [[[23.18, -34.29], [-1.31, -4.61], [3.41, 77.91], [23.18, -34.29]]]]}', -1 or 2)  
+> >>> ellipsoid.Geometry.loads({"type":"MultiPolygon","coordinates":[[[[3.78, 9.28], [-130.91, 1.52], [35.12, 72.234], [3.78, 9.28]]], [[[23.18, -34.29], [-1.31, -4.61], [3.41, 77.91], [23.18, -34.29]]]]}, -1 or 2)  
+> >>> ellipsoid.Geometry.loads('[[[[3.78, 9.28], [-130.91, 1.52], [35.12, 72.234], [3.78, 9.28]]], [[[23.18, -34.29], [-1.31, -4.61], [3.41, 77.91], [23.18, -34.29]]]]', -1 or 2)  
+> >>> ellipsoid.Geometry.loads([[[[3.78, 9.28], [-130.91, 1.52], [35.12, 72.234], [3.78, 9.28]]], [[[23.18, -34.29], [-1.31, -4.61], [3.41, 77.91], [23.18, -34.29]]]], -1 or 2)           
+> # {'type': 'MultiPolygon', 'coordinates': [[[[3.78, 9.28], [-130.91, 1.52], [35.12, 72.234], [3.78, 9.28]]], [[[23.18, -34.29], [-1.31, -4.61], [3.41, 77.91], [23.18, -34.29]]]]}  
+> ```        
+> ```python
+> # GeometryCollection（不支持简约格式且可忽略识别码）    
+> >>> ellipsoid.Geometry.loads({"type": "GeometryCollection","geometries":[{"type": "Point", "coordinates": [-115.81, 37.24]},{"type":"LineString","coordinates": [[8.919, 44.4074], [8.923, 44.4075]]},{"type":"Polygon","coordinates":[[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]]]}]})  
+> >>> ellipsoid.Geometry.loads('{"type": "GeometryCollection","geometries":[{"type": "Point", "coordinates": [-115.81, 37.24]},{"type":"LineString","coordinates": [[8.919, 44.4074], [8.923, 44.4075]]},{"type":"Polygon","coordinates":[[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]]]}]}')      
+> # {'type': 'GeometryCollection', 'geometries': [{'type': 'Point', 'coordinates': [-115.81, 37.24]}, {'type': 'LineString', 'coordinates': [[8.919, 44.4074], [8.923, 44.4075]]}, {'type': 'Polygon', 'coordinates': [[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]]]}]}   
+> ```           
+>      
+> - WKT 格式示例  
+> ```python
+> # Point  
+> >>> ellipsoid.Geometry.loads('POINT(-115.81 37.24)', -1 or 0)   
+> >>> ellipsoid.Geometry.loads('(-115.81 37.24)', -1 or 0)   
+> # {'type': 'Point', 'coordinates': [-115.81, 37.24]}   
+> ``` 
+> ```python
+> # MultiPoint / LineString     
+> >>> ellipsoid.Geometry.loads('MULTIPOINT(-155.52 19.61,-156.22  20.74,-157.97  21.46)', -1 or 0)  
+> >>> ellipsoid.Geometry.loads('(-155.52 19.61,-156.22  20.74,-157.97  21.46)', 0)  
+> # {'type': 'MultiPoint', 'coordinates': [[-155.52, 19.61], [-156.22, 20.74], [-157.97, 21.46]]}   
+> >>> ellipsoid.Geometry.loads('(-155.52 19.61,-156.22  20.74,-157.97  21.46)', -1)   
+> # {'type': 'LineString', 'coordinates': [[-155.52, 19.61], [-156.22, 20.74], [-157.97, 21.46]]}  
+> ``` 
+> ```python
+> # LineString   
+> >>> ellipsoid.Geometry.loads('LINESTRING(8.919 44.4074,8.923 44.4075)', -1 or 1)    
+> >>> ellipsoid.Geometry.loads('(8.919 44.4074,8.923 44.4075)', -1 or 1)   
+> # {'type': 'LineString', 'coordinates': [[8.919, 44.4074], [8.923, 44.4075]]}   
+> ```  
+> ```python
+> # MultiLineString / Polygon  
+> >>> ellipsoid.Geometry.loads('MULTILINESTRING((3.75 9.25,-130.95 1.52),(23.15 -34.25,-1.35 -4.65,3.45 77.95))', -1 or 1)  
+> >>> ellipsoid.Geometry.loads('((3.75 9.25,-130.95 1.52),(23.15 -34.25,-1.35 -4.65,3.45 77.95))', 1)  
+> # {'type': 'MultiLineString', 'coordinates': [[[3.75, 9.25], [-130.95, 1.52]], [[23.15, -34.25], [-1.35, -4.65], [3.45, 77.95]]]}  
+> >>> ellipsoid.Geometry.loads('((3.75 9.25,-130.95 1.52),(23.15 -34.25,-1.35 -4.65,3.45 77.95))', -1)  
+> # {'type': 'Polygon', 'coordinates': [[[3.75, 9.25], [-130.95, 1.52]], [[23.15, -34.25], [-1.35, -4.65], [3.45, 77.95]]]}  
+> ```
+> ```python
+> # no hole within polygon  
+> >>> ellipsoid.Geometry.loads('POLYGON((2.38 57.322,-120.43 19.15,23.194 -20.28,2.38 57.322))', -1 or 2)  
+> >>> ellipsoid.Geometry.loads('((2.38 57.322,-120.43 19.15,23.194 -20.28,2.38 57.322))', -1 or 2)  
+> # {'type': 'Polygon', 'coordinates': [[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]]]}  
+> ```      
+> ```python
+> # hole within polygon   
+> >>> ellipsoid.Geometry.loads('POLYGON((2.38 57.322,-120.43 19.15,23.194 -20.28,2.38 57.322),(-5.21 23.51,15.21 -10.81,-20.51 1.51,-5.21 23.51))', -1 or 2)  
+> >>> ellipsoid.Geometry.loads('((2.38 57.322,-120.43 19.15,23.194 -20.28,2.38 57.322),(-5.21 23.51,15.21 -10.81,-20.51 1.51,-5.21 23.51))', -1 or 2)  
+> # {'type': 'Polygon', 'coordinates': [[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38], [57.322]], [[-5.21, 23.51], [15.21, -10.81], [-20.51, 1.51], [-5.21, 23.51]]]}  
+> ```       
+> ```python
+> # MultiPolygon  
+> >>> ellipsoid.Geometry.loads('MULTIPOLYGON(((3.78 9.28,-130.91 1.52,35.12 72.234,3.78 9.28)),((23.18 -34.29,-1.31 -4.61,3.41 77.91,23.18 -34.29)))', -1 or 2)  
+> >>> ellipsoid.Geometry.loads('(((3.78 9.28,-130.91 1.52,35.12 72.234,3.78 9.28)),((23.18 -34.29,-1.31 -4.61,3.41 77.91,23.18 -34.29)))', -1 or 2)  
+> # {'type': 'MultiPolygon', 'coordinates': [[[[3.78, 9.28], [-130.91, 1.52], [35.12, 72.234], [3.78, 9.28]]], [[[23.18, -34.29], [-1.31, -4.61], [3.41, 77.91], [23.18, -34.29]]]]}  
+> ```  
+> ```python
+> # GeometryCollection（不支持简约格式且应将识别码取默认值[-1]）    
+> >>> ellipsoid.Geometry.loads('GEOMETRYCOLLECTION (POINT (-115.81 37.24),LINESTRING (8.919 44.4074,8.923 44.4075),POLYGON ((2.38 57.322,-120.43 19.15,23.194 -20.28,2.38 57.322)))',-1)  
+> # {'type': 'GeometryCollection', 'geometries': [{'type': 'Point', 'coordinates': [-115.81, 37.24]}, {'type': 'LineString', 'coordinates': [[8.919, 44.4074], [8.923, 44.4075]]}]} 
+> ```
+>       
+> - WKB 格式示例  
+> ```python
+> # Point   
+> >>> ellipsoid.Geometry.toWkb({"type": "Point", "coordinates": [-115.81, 37.24]})  
+> # 0101000020E6100000A4703D0AD7F35CC01F85EB51B89E4240   
+> SQL> SELECT ST_AsGeoJSON(ST_GeomFromEWKB(E'\\x0101000020E6100000A4703D0AD7F35CC01F85EB51B89E4240'))   
+> >>> ellipsoid.Geometry.loads('0101000020E6100000A4703D0AD7F35CC01F85EB51B89E4240')
+> # {"type":"Point","coordinates":[-115.81,37.24]}  
+> ``` 
+> 
+
+***Geometry.rotate***
+> ```python
+> @classmethod
+> def rotate(
+>        cls,
+>        geometry: dict | list | str,
+>        angle: float,
+>        origin: str | tuple = (0, 0, 0)
+> ) -> shapely.geometry
+> ```
+> 旋转几何对象  
+>
+> | Parameter | Type                   | Description                                                                  |
+> |:----------|:-----------------------|:-----------------------------------------------------------------------------|
+> | geometry  | dict list str          | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组                   |
+> | angle     | float                  | 旋转角（十进制度格式 - 正值为逆时针旋转，负值为顺时针旋转）                                              |
+> | origin    | str tuple = (0, 0, 0)  | 参考原点（旋转中心），可为不超过3维的元组类型点状坐标、几何边框中心'center'、几何质心'centroid'，省略时取默认值：(0, 0, 0)  |
+> 
+> 返回shapely格式几何（geometry）对象。失败时抛出异常
+
+***Geometry.scale***
+> ```python
+> @classmethod
+> def scale(
+>         cls,
+>         geometry: dict | list | str,
+>         xfact: float = 1.0,
+>         yfact: float = 1.0,
+>         zfact: float = 1.0,
+>         origin: str | tuple = (0, 0, 0)
+> ) -> shapely.geometry
+> ```
+> 缩放几何对象  
+>
+> | Parameter | Type                   | Description                                                                 |
+> |:----------|:-----------------------|:----------------------------------------------------------------------------|
+> | geometry  | dict list str          | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组                  |
+> | xfact     | float                  | 横向缩放因子（比例），省略时取默认值：1.0                                                      |
+> | yfact     | float                  | 纵向缩放因子（比例），省略时取默认值：1.0                                                      |
+> | zfact     | float                  | 竖向缩放因子（比例），省略时取默认值：1.0                                                      |
+> | origin    | str tuple = (0, 0, 0)  | 参考原点，可为不超过3维的元组类型点状坐标、几何边框中心'center'、几何质心'centroid'，省略时取默认值：(0, 0, 0) |
+> 
+> 返回shapely格式几何（geometry）对象。失败时抛出异常
+
+***Geometry.skew***
+> ```python
+> @classmethod
+> def skew(
+>         cls,
+>         geometry: dict | list | str,
+>         xs: float = 0.0,
+>         ys: float = 0.0,
+>         origin: str | tuple = (0, 0, 0)
+> ) -> shapely.geometry
+> ```
+> 扭斜几何对象    
+>
+> | Parameter | Type                   | Description                                                                 |
+> |:----------|:-----------------------|:----------------------------------------------------------------------------|
+> | geometry  | dict list str          | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组                  |
+> | xs        | float                  | 沿横向坐标轴的倾斜角（十进制度格式 - 正值为逆时针旋转，负值为顺时针旋转），省略时取默认值：0.0 |
+> | ys        | float                  | 沿纵向坐标轴的倾斜角（十进制度格式 - 正值为逆时针旋转，负值为顺时针旋转），省略时取默认值：0.0 |
+> | origin    | str tuple = (0, 0, 0)  | 参考原点，可为不超过3维的元组类型点状坐标、几何边框中心'center'、几何质心'centroid'，省略时取默认值：(0, 0, 0) |
+> 
+> 返回shapely格式几何（geometry）对象。失败时抛出异常
+
+***Geometry.swapXY***
+> ```python
+> @classmethod
+> def swapXY(
+>         cls,
+>         geometry: dict | list | str
+> ) -> dict  
+> ```
+> 交换指定几何体的顶点坐标[x,y,z,m]中的[x,y]顺序（[x,y,z,m] to [y,x,z,m]）   
+>  
+> | Parameter | Type                   | Description                                                 |
+> |:----------|:-----------------------|:------------------------------------------------------------|
+> | geometry  | dict list str          | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回【GeoJson-geometry】格式的字典类型对象。失败时抛出异常
+
+***Geometry.toGml***
+> ```python
+> @classmethod
+> def toGml(
+>         cls,
+>         geometry: dict | list | str
+> ) -> etree._Element  
+> ```
+> 将【GeoJson-geometry】何字符串或字典对象以及列表对象转换为GML-V3.2格式几何对象  
+>  
+> | Parameter | Type                   | Description                                                 |
+> |:----------|:-----------------------|:------------------------------------------------------------|
+> | geometry  | dict list str          | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回GML-V3.2格式几何对象（解码为字符串：lxml.etree.tostring(resultGml, pretty_print=True).decode()）。失败时抛出异常
+
+***Geometry.toKml***
+> ```python
+> @classmethod
+> def toKml(
+>         cls,
+>         geometry: dict | list | str
+> ) -> etree._Element  
+> ```
+> 将【GeoJson-geometry】几何字典对象转换为KML格式几何元素对象  
+>  
+> | Parameter | Type                   | Description                                                 |
+> |:----------|:-----------------------|:------------------------------------------------------------|
+> | geometry  | dict list str          | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回KML格式几何元素对象（解码为字符串：lxml.etree.tostring(resultKml, pretty_print=True).decode()）。失败时抛出异常
+
+***Geometry.toOgr***
+> ```python
+> @classmethod
+> def toOgr(
+>         cls,
+>         geometry: dict | list | str
+> ) -> ogr.Geometry
+> ```
+> 将【GeoJson-geometry】几何字符串或字典对象以及列表对象转换为[OSGEO - GDAL - Geometry]格式几何对象  
+>  
+> | Parameter | Type                   | Description                                                 |
+> |:----------|:-----------------------|:------------------------------------------------------------|
+> | geometry  | dict list str          | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回[OSGEO - GDAL - Geometry]格式几何对象。失败时抛出异常
+
+***Geometry.toShapely***
+> ```python
+> @classmethod
+> def toShapely(
+>         cls,
+>         geometry: dict | list | str,
+>         srid: int | None = 4326
+> ) -> shapely.geometry
+> ```
+> 将【GeoJson-geometry】几何字符串或字典对象以及列表对象转换为shapely格式几何对象。注：几何坐标最多支持3维  
+>  
+> | Parameter | Type          | Description                                                       |
+> |:----------|:--------------|:------------------------------------------------------------------|
+> | geometry  | dict list str | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组        |
+> | srid      | int None      | 几何投影参照系OGC类型代码，默认值：4326=十进制经纬度格式；设定为0时意指未定义参照系;如果设为None，将不设置投影参量  |
+> 
+> 返回shapely格式几何（geometry）对象。失败时抛出异常
+
+***Geometry.toSvg***
+> ```python
+> @classmethod
+> def toSvg(
+>         cls,
+>         geometry: dict | list | str,
+>         scale_factor: float = 1.0,
+>         color: str = None,
+>         opacity: float = None
+> ) -> str
+> ```
+> 将【GeoJson-geometry】几何字符串或字典对象以及列表对象或者【shapely】格式对象转换为SVG格式   
+>  
+> | Parameter    | Type          | Description                                                |
+> |:-------------|:--------------|:-----------------------------------------------------------|
+> | geometry     | dict list str | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | scale_factor | float         | 画笔宽度的缩放因子，默认值：1.0                                          |
+> | color        | str           | 画笔颜色或者填充颜色（十六进制字符串），有效几何的默认色：“#66cc99”，无效几何的默认色：“#ff3333”  |
+> | opacity      | float         | 色彩透明度（介于[0,1]之间），默认值：0.6（点）、0.8（线面）                        |
+> 
+> 返回XML格式SVG几何字符串. 失败时抛出异常  
+
+***Geometry.toWkb***
+> ```python
+> @classmethod
+> def toWkb(
+>         cls,
+>         geometry: dict | list | str,
+>         srid: int | None = 4326
+> ) -> str
+> ```
+> 将【GeoJson-geometry】几何字典对象转换为OGC-WKB十六进制几何文本  
+>  
+> | Parameter | Type          | Description                                                       |
+> |:----------|:--------------|:------------------------------------------------------------------|
+> | geometry  | dict list str | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组        |
+> | srid      | int None      | 几何投影参照系OGC类型代码，默认值：4326=十进制经纬度格式；设定为0时意指未定义参照系;如果设为None，将不设置投影参量  |
+> 
+> 返回OGC-WKB（可包含srid）十六进制几何文本。失败时抛出异常  
+>  
+> EPSG:4326坐标系下的WKB编码样例：   
+>> 单点  
+>> ellipsoid.Geometry.toWkb({"type": "Point", "coordinates": [1, 2]})  
+>> 0101000020E6100000000000000000F03F0000000000000040  
+>  
+>> 多点  
+>> ellipsoid.Geometry.toWkb({"type": "MultiPoint", "coordinates": [[1, 2], [3, 4]]})  
+>> 0104000020E6100000020000000101000000000000000000F03F0000000000000040010100000000000000000008400000000000001040  
+>  
+>> 单线  
+>> ellipsoid.Geometry.toWkb({"type": "LineString", "coordinates": [[1, 2], [3, 4]]})  
+>> 0102000020E610000002000000000000000000F03F000000000000004000000000000008400000000000001040  
+>  
+>> 多线  
+>> ellipsoid.Geometry.toWkb({"type": "MultiLineString", "coordinates": [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]})  
+>> 0105000020e610000002000000010200000002000000000000000000f03f000000000000004000000000000008400000000000001040010200000002000000000000000000144000000000000018400000000000001c400000000000002040  
+>   
+>> 单面  
+>> ellipsoid.Geometry.toWkb({"type": "Polygon", "coordinates": [[[1, 2], [3, 4]], [[5, 6], [7, 8],[1, 2]]]})  
+>> 0103000020E61000000200000002000000000000000000F03F00000000000000400000000000000840000000000000104003000000000000000000144000000000000018400000000000001C400000000000002040000000000000F03F0000000000000040  
+>  
+>> 母子面  
+>> ellipsoid.Geometry.toWkb({"type": "Polygon", "coordinates": [[[2.38, 57.322], [-120.43, 19.15], [23.194, -20.28], [2.38, 57.322]], [[-5.21, 23.51], [15.21, -10.81], [-20.51, 1.51], [-5.21, 23.51]]]})  
+>> 0103000020E610000002000000040000000AD7A3703D0A0340F0A7C64B37A94C40EC51B81E851B5EC066666666662633408B6CE7FBA931374048E17A14AE4734C00AD7A3703D0A0340F0A7C64B37A94C4004000000D7A3703D0AD714C0C3F5285C8F823740EC51B81E856B2E401F85EB51B89E25C0C3F5285C8F8234C0295C8FC2F528F83FD7A3703D0AD714C0C3F5285C8F823740  
+>  
+>> 多面  
+>> ellipsoid.Geometry.toWkb({"type": "MultiPolygon", "coordinates": [[[[3.78, 9.28], [-130.91, 1.52], [35.12, 72.234], [3.78, 9.28]]], [[[23.18, -34.29], [-1.31, -4.61], [3.41, 77.91], [23.18, -34.29]]]]})  
+>> 0106000020E610000002000000010300000001000000040000003D0AD7A3703D0E408FC2F5285C8F224085EB51B81E5D60C052B81E85EB51F83F8FC2F5285C8F4140E5D022DBF90E52403D0AD7A3703D0E408FC2F5285C8F224001030000000100000004000000AE47E17A142E374085EB51B81E2541C0F6285C8FC2F5F4BF713D0AD7A37012C048E17A14AE470B400AD7A3703D7A5340AE47E17A142E374085EB51B81E2541C0  
+
+***Geometry.toWkt***
+> ```python
+> @classmethod
+> def toWkt(
+>         cls,
+>         geometry: dict | list | str
+> ) -> str 
+> ```
+> 将【GeoJson-geometry】几何字典对象转换为OGC-WKT(Well-known Text）格式字符串  
+>  
+> | Parameter | Type                   | Description                                                 |
+> |:----------|:-----------------------|:------------------------------------------------------------|
+> | geometry  | dict list str          | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回WKT格式字符串。失败时抛出异常  
+
+***Geometry.translate***
+> ```python
+> @classmethod
+> def translate(
+>         cls,
+>         geometry: dict | list | str,
+>         xoff: float = 0.0,
+>         yoff: float = 0.0,
+>         zoff: float = 0.0
+> ) -> shapely.geometry
+> ```
+> 平移几何对象   
+>  
+> | Parameter | Type          | Description                                                |
+> |:----------|:--------------|:-----------------------------------------------------------|
+> | geometry  | dict list str | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | xoff      | float         | 沿横向坐标轴的平移量，省略时取默认值：0.0                                     |
+> | yoff      | float         | 沿纵向坐标轴的平移量，省略时取默认值：0.0                                     | 
+> | zoff      | float         | 沿纵向坐标轴的平移量，省略时取默认值：0.0                                     |
+> 
+> 返回shapely格式几何（geometry）对象。失败时抛出异常    
+
+*****
+* ### Class MapGrid(builtins.object)
+
+*****
+
+***MapGrid.map***
+> ```python
+> @classmethod
+> def map(
+>        cls,
+>        longitude: float,
+>        latitude: float,
+>        scale: int = 1000000
+> ) -> dict
+> ```
+> 由十进制经纬度位置和比例尺分母计算所在比例尺的图幅新旧编号（南半球冠以S前缀，北半球省略N前缀）与边框范围。注：如果指定位置恰好位于图幅边缘，将返回右上角图幅结果信息  
+>
+> | Parameter | Type  | Description                     |
+> |:----------|:------|:--------------------------------|
+> | longitude | float | 十进制经度，定义域为：[-180 ～ +180]        |
+> | latitude  | float | 十进制纬度，定义域为：[-90 ～ +90]          | 
+> | scale     | int   | 比例尺分母，定义域为：[1000000（默认） ～ 500]  |
+> 
+> 返回所在比例尺的图幅新旧编号与边框范围构成的字典对象，运行失败时抛出异常  
+>   
+> 示例（位置：114°33′45″,39°22′30″）：
+>> ```python
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=1000000)  
+>> # {'new': 'J50', 'old': 'J-50', 'boundary': {'north': 40, 'south': 36, 'west': 114, 'east': 120}}  
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=500000)  
+>> # {'new': 'J50B001001', 'old': 'J-50-A', 'boundary': {'north': 40.0, 'south': 38.0, 'west': 114.0, 'east': 117.0}}  
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=250000)  
+>> # {'new': 'J50C001001', 'old': 'J-50-[1]', 'boundary': {'north': 40.0, 'south': 39.0, 'west': 114.0, 'east': 115.5}}  
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=200000)   
+>> # {'new': 'J-50-(01)', 'old': 'J-50-(01)', 'boundary': {'north': 40.0, 'south': 39.333333333333336, 'west': 114.0, 'east': 115.0}}   
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=100000)  
+>> # {'new': 'J50D002002', 'old': 'J-50-14', 'boundary': {'north': 39.66666666666667, 'south': 39.333333333333336, 'west': 114.5, 'east': 115.0}}  
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=50000)  
+>> # {'new': 'J50E004003', 'old': 'J-50-14-C', 'boundary': {'north': 39.5, 'south': 39.333333333333336, 'west': 114.5, 'east': 114.75}}  
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=25000)  
+>> # {'new': 'J50F008005', 'old': 'J-50-14-C-3', 'boundary': {'north': 39.41666666666667, 'south': 39.333333333333336, 'west': 114.5, 'east': 114.625}}  
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=10000)
+>> # {'new': 'J50G015010', 'old': 'J-50-14-(50)', 'boundary': {'north': 39.416666666666664, 'south': 39.375, 'west': 114.5625, 'east': 114.625}}  
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=5000)
+>> # {'new': 'J50H030019', 'old': 'J-50-14-(50)-c', 'boundary': {'north': 39.395833333333336, 'south': 39.375, 'west': 114.5625, 'east': 114.59375}}  
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=2000)  
+>> # {'new': 'J50I090055', 'old': 'J-50-14-(50)-c-7', 'boundary': {'north': 39.38194444444444, 'south': 39.375, 'west': 114.5625, 'east': 114.57291666666667}}  
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=1000)
+>> # {'new': 'J50J01800109', 'old': 'J-50-14-(50)-c-7-3', 'boundary': {'north': 39.37847222222222, 'south': 39.375, 'west': 114.5625, 'east': 114.56770833333333}}   
+>> ellipsoid.MapGrid.map(longitude=114.5625, latitude=39.375, scale=500)
+>> # {'new': 'J50K03600217', 'old': 'J-50-14-(50)-c-7-3-3', 'boundary': {'north': 39.376736111111114, 'south': 39.375, 'west': 114.5625, 'east': 114.56510416666667}}
+>> ```
+
+***MapGrid.parse***
+> ```python
+> @classmethod
+> def parse(
+>        cls,
+>        code: str
+> ) -> dict
+> ```
+> 由国家基本比例尺地形图分幅（新旧）编号解析图幅边界范围和比例尺信息  
+>
+> | Parameter | Type  | Description            |
+> |:----------|:------|:-----------------------|
+> | code      | str   | 国家基本比例尺地形图分幅编号（忽略大小写）  |
+> 
+> 返回图幅边界范围、比例尺构成的字典对象，运行失败时抛出异常  
+> 
+> 示例：
+>> ```python
+>> ellipsoid.MapGrid.parse('J50' 或者 'J-50')    
+>> # {'scale': 1000000, 'boundary': {'north': 40, 'south': 36, 'west': 114, 'east': 120}}  
+>> ellipsoid.MapGrid.parse('J50B001001' 或者 'J-50-A')  
+>> # {'scale': 500000, 'boundary': {'north': 40.0, 'south': 38.0, 'west': 114.0, 'east': 117.0}}  
+>> ellipsoid.MapGrid.parse('J50C001001' 或者 'J-50-[1]')  
+>> # {'scale': 250000, 'boundary': {'north': 40.0, 'south': 39.0, 'west': 114.0, 'east': 115.5}}  
+>> ellipsoid.MapGrid.parse('J-50-(01)')   
+>> # {'scale': 200000, 'boundary': {'north': 40.0, 'south': 39.333333333333336, 'west': 114.0, 'east': 115.0}}    
+>> ellipsoid.MapGrid.parse('J50D002002' 或者 'J-50-14')   
+>> # {'scale': 100000, 'boundary': {'north': 39.66666666666667, 'south': 39.333333333333336, 'west': 114.5, 'east': 115.0}}  
+>> ellipsoid.MapGrid.parse('J50E004003' 或者 'J-50-14-C')
+>> # {'scale': 50000, 'boundary': {'north': 39.5, 'south': 39.333333333333336, 'west': 114.5, 'east': 114.75}}  
+>> ellipsoid.MapGrid.parse('J50F008005' 或者 'J-50-14-C-3')
+>> # {'scale': 25000, 'boundary': {'north': 39.41666666666667, 'south': 39.333333333333336, 'west': 114.5, 'east': 114.625}}   
+>> ellipsoid.MapGrid.parse('J50G015010' 或者 'J-50-14-(50)')
+>> # {'scale': 10000, 'boundary': {'north': 39.416666666666664, 'south': 39.375, 'west': 114.5625, 'east': 114.625}}  
+>> ellipsoid.MapGrid.parse('J50H030019' 或者 'J-50-14-(50)-c')
+>> # {'scale': 5000, 'boundary': {'north': 39.395833333333336, 'south': 39.375, 'west': 114.5625, 'east': 114.59375}}  
+>> ellipsoid.MapGrid.parse('J50I090055' 或者 'J-50-14-(50)-c-7')
+>> # {'scale': 2000, 'boundary': {'north': 39.38194444444444, 'south': 39.375, 'west': 114.5625, 'east': 114.57291666666667}}  
+>> ellipsoid.MapGrid.parse('J50J01800109' 或者 'J-50-14-(50)-c-7-3')
+>> # {'scale': 1000, 'boundary': {'north': 39.37847222222222, 'south': 39.375, 'west': 114.5625, 'east': 114.56770833333333}}  
+>> ellipsoid.MapGrid.parse('J50K03600217' 或者 'J-50-14-(50)-c-7-3-3')
+>> # {'scale': 500, 'boundary': {'north': 39.376736111111114, 'south': 39.375, 'west': 114.5625, 'east': 114.56510416666667}}
+>> ```
+
+***MapGrid.grid***
+> ```python
+> @staticmethod
+> def grid(
+>        north: float,
+>        south: float,
+>        west: float,
+>        east: float,
+>        zoom: int = 0,
+>        summary: bool = False
+> ) -> Iterator
+> ```
+> 依据视图窗口边框范围和缩放级获取国家基本比例尺地形图分幅经纬网格线（适宜于GIS图形视窗呈现），视窗边界参数将充当经纬网线段的裁剪框  
+>
+> | Parameter | Type  | Description                                                                                                                                                               |
+> |:----------|:------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+> | north     | float | 视窗北边界坐标（十进制纬度），定义域为：[-90 ～ +90]                                                                                                                                           |
+> | south     | float | 视窗南边界坐标（十进制纬度），定义域为：[-90 ～ +90]                                                                                                                                           |
+> | west      | float | 视窗西边界坐标（十进制经度），定义域为：[-180 ～ +180]                                                                                                                                         |
+> | east      | float | 视窗东边界坐标（十进制经度），定义域为：[-180 ～ +180]                                                                                                                                         |
+> | zoom      | int   | 缩放级，默认：0。注：缩放级对应的比例尺为：小于等于5级=1∶1000000；6级=1∶500000；7级=1∶250000；8级=1∶200000；9级=1∶100000；10级=1∶50000；11级=1∶25000；12级=1∶10000；13级=1∶5000；14级=1∶2000；15级=1∶1000；大于等于16级=1∶500 |
+> | summary   | bool  | 是否仅返回概要信息，默认：False                                                                                                                                                        |
+> 
+> 如果summary取默认值False，将返回线段类型标识与经纬网和比例尺分母联合构成的枚举型字典迭代器（Iterator）；如果summary设为True，将返回经纬线个数与经纬线步长和比例尺分母联合构成的枚举型字典迭代器（Iterator）。失败时抛出异常  
+>  
+> 获取经纬网信息示例：
+>> ```python
+>> [print(line) for line in ellipsoid.MapGrid.grid(40, 20, 80, 100, 0)]  
+>> # 运行结果：
+>> # {'remarks': 'longitude', 'type': 'LineString', 'coordinates': [[84.0, 20.0], [84.0, 40.0]], 'scale': 1000000}
+>> # ......
+>> # {'remarks': 'latitude', 'type': 'LineString', 'coordinates': [[80, 20.0], [100, 20.0]], 'scale': 1000000}
+>> # ......
+>> ```
+
+*****
+* ### Class Projection(builtins.object)
+
+*****
+
+***Projection.albers***
+> ```python
+> @classmethod
+> def albers(
+>        cls,
+>        longitude: float = None,
+>        latitude: float = None,
+>        centralMeridian: float = 0,
+>        originLatitude: float = 0,
+>        parallel1: float = 20,
+>        parallel2: float = 50,
+>        x: float = None,
+>        y: float = None,
+>        crs: int = 2000
+> ) -> tuple
+> ```
+> 阿尔伯斯球体双标准纬线等积割圆锥投影（Albers Equal Area Projection）正反算函数，优先识别地理经纬度坐标（longitude、latitude）执行正算，其次识别直角坐标（x、y）并执行反算  
+>
+> | Parameter       | Type  | Description                                                                |
+> |:----------------|:------|:---------------------------------------------------------------------------|
+> | longitude       | float | 十进制经度，定义域为：[-180 ～ +180]                                                   |
+> | latitude        | float | 十进制纬度，定义域为：[-90 ～ +90]                                                     |
+> | centralMeridian | float | 中央子午线经度（十进制度格式，默认值：0），定义域为：[-180 ～ +180]                                   |
+> | originLatitude  | float | 底点纬度（十进制度）；默认值：0，定义域为：[-90 ～ +90]                                          |
+> | parallel1       | float | 第一标准纬线（十进制度）；默认值：20，定义域为：[-90 ～ +90]                                       |
+> | parallel2       | float | 第二标准纬线（十进制度）；默认值：50，定义域为：[-90 ～ +90]                                       |
+> | x               | float | 米制横坐标                                                                      |
+> | y               | float | 米制纵坐标                                                                      |
+> | crs             | int   | 坐标参照系年代（1954=北京坐标系；1980=西安坐标系；1984=WGS84坐标系；2000=CGCS2000坐标系，省略取默认值：2000）  |
+> 
+> 返回正反算结果元组（横坐标，纵坐标），失败时抛出异常
+
+***Projection.centralMeridian***
+> ```python
+> @classmethod
+> def centralMeridian(
+>        cls,
+>        longitude: float = None,
+>        zone: int = None,
+>        zoneCode: int = 6
+> ) -> float
+> ```
+> 由指定的经度或者投影带带号计算所处6度或3度投影带中央子午线（经度）。如果同时指定了[longitude]和[zone]参数，将优先依据[longitude]参数计算中央子午线；如果两参数均未指定，便返回None  
+>
+> | Parameter      | Type  | Description                 |
+> |:---------------|:------|:----------------------------|
+> | longitude      | float | 经度(十进制度)，定义域为：[-180 ～ +180] |
+> | zone           | int   | 三度带带号（1～120）或者六度带带号（1～60）   |
+> | zoneCode       | int   | 6或3，省略或无效时取默认值：6            |
+> 
+> 返回中央子午线（十进制度，值域为：[-180 ～ +180]）。失败时抛出异常
+
+***Projection.gaussKruger***
+> ```python
+> @classmethod
+> def gaussKruger(
+>        cls,
+>        centralMeridian: float = None,
+>        x: float = None,
+>        y: float = None,
+>        longitude: float = None,
+>        latitude: float = None,
+>        crs: int = 2000
+> ) -> tuple
+> ```
+> 高斯克吕格投影正反算函数，优先识别直角坐标（x、y）执行反算，其次识别地理经纬度坐标（longitude、latitude）并执行正算  
+>
+> | Parameter       | Type  | Description                                                                |
+> |:----------------|:------|:---------------------------------------------------------------------------|
+> | centralMeridian | float | 中央子午线经度（十进制度格式，省略或空白取默认值：按六度分带自动识别）。注意：比例尺小于1万时通常采用六度分带，大于等于1万时采用三度分带      |
+> | x               | float | 纵坐标（米制）指向坐标北，与真北方向相差子午收敛角                                                  |
+> | y               | float | 横坐标（米制，可含带号）通用值或自然值                                                        |
+> | longitude       | float | 经度（十进制度格式），定义域为：[-180 ～ +180]                                              |
+> | latitude        | float | 纬度（十进制度格式），定义域为：[-90 ～ +90]                                                |
+> | crs             | int   | 坐标参照系年代（1954=北京坐标系；1980=西安坐标系；1984=WGS84坐标系；2000=CGCS2000坐标系，省略取默认值：2000）  |
+> 
+> 返回正反算结果元组（横坐标，纵坐标）。正算时返回米制纵坐标和横坐标的（含带号）通用值；反算时返回十进制经纬度。失败时抛出异常
+
+***Projection.lambert***
+> ```python
+> @classmethod
+> def lambert(
+>        cls,
+>        longitude: float = None,
+>        latitude: float = None,
+>        centralMeridian: float = 0,
+>        originLatitude: float = 0,
+>        parallel1: float = 20,
+>        parallel2: float = 50,
+>        x: float = None,
+>        y: float = None,
+>        crs: int = 2000
+> ) -> tuple
+> ```
+> 兰伯特双标准纬线等角割圆锥投影（Lambert Conformal Projection）正反算函数，优先识别地理经纬度坐标（longitude、latitude）执行正算，其次识别直角坐标（x、y）并执行反算  
+>
+> | Parameter       | Type  | Description                                                               |
+> |:----------------|:------|:--------------------------------------------------------------------------|
+> | longitude       | float | 十进制经度，定义域为：[-180 ～ +180]                                                  |
+> | latitude        | float | 十进制纬度，定义域为：[-90 ～ +90]                                                    |
+> | centralMeridian | float | 中央子午线经度（十进制度格式，默认值：0），定义域为：[-180 ～ +180]                                  |
+> | originLatitude  | float | 底点纬度（十进制度）；默认值：0，定义域为：[-90 ～ +90]                                         |
+> | parallel1       | float | 第一标准纬线（十进制度）；默认值：20，定义域为：[-90 ～ +90]                                      |
+> | parallel2       | float | 第二标准纬线（十进制度）；默认值：50，定义域为：[-90 ～ +90]                                      |
+> | x               | float | 米制横坐标                                                                     |
+> | y               | float | 米制纵坐标                                                                     |
+> | crs             | int   | 坐标参照系年代（1954=北京坐标系；1980=西安坐标系；1984=WGS84坐标系；2000=CGCS2000坐标系，省略取默认值：2000） |
+> 
+> 返回正反算结果元组（横坐标，纵坐标）。失败时抛出异常
+
+***Projection.webMercator***
+> ```python
+> @classmethod
+> def webMercator(
+>        cls,
+>        longitude: float = None,
+>        latitude: float = None,
+>        x: float = None,
+>        y: float = None
+> ) -> tuple
+> ```
+> 球体墨卡托投影（WGS84坐标系）正反算函数，优先识别地理经纬度坐标（longitude、latitude）执行正算，其次识别直角坐标（x、y）并执行反算    
+>
+> | Parameter       | Type  | Description              |
+> |:----------------|:------|:-------------------------|
+> | longitude       | float | 十进制经度，定义域为：[-180 ～ +180] |
+> | latitude        | float | 十进制纬度，定义域为：[-90 ～ +90]   |
+> | x               | float | 米制横坐标                    |
+> | y               | float | 米制纵坐标                    |
+> 
+> 返回正反算结果元组（横坐标，纵坐标）。失败时抛出异常
+
+***Projection.zone***
+> ```python
+> @classmethod
+> def zone(
+>        cls,
+>        longitude: float,
+>        zoneCode: int = 6
+> ) -> int
+> ```
+> 由指定经度计算六度带或者三度带带号（如果指定的经度恰好位于两个投影带的中间，便取右侧带号）  
+>
+> | Parameter      | Type  | Description                 |
+> |:---------------|:------|:----------------------------|
+> | longitude      | float | 经度(十进制度)，定义域为：[-180 ～ +180] |
+> | zoneCode       | int   | 6或3，省略或无效时取默认值：6            |
+> 
+> 返回六度或三度带带号。失败时抛出异常
+
+***Projection.angle***
+> ```python
+> @staticmethod
+> def angle(
+>        deg: float | str = None,
+>        dms: float | str = None,
+>        digit: int | str = None
+> ) -> float | str
+> ```
+> 十进制角度与六十进制度分秒转换函数，优先识别十进制角度（deg），其次识别六十进制度分秒（dms）  
+>
+> | Parameter | Type       | Description                                                          |
+> |:----------|:-----------|:---------------------------------------------------------------------|
+> | deg       | float str  | 十进制角度，定义域为：[-360 ～ +360]。如果同时指定了[deg]和[dms]参数，[deg]参数将优先识别并忽略[dms]参数 |
+> | dms       | float str  | 六十进制度分秒，度的定义域为：[-360 ～ +360]，格式为：十进制度、度分分秒秒、x度xx分xx秒、x°x′x.x″        |
+> | digit     | float str  | 秒值的小数位（0：按四舍五入取整；大于0：按四舍五入取指定位数；忽略时取默认值：双精度最长有效位）                    |
+> 
+> 返回转换结果（deg -> dms 返回字符串； dms -> deg 返回浮点数值）。失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Projection.angle(deg=123.456789) 
+>> # 123°27′24.440400000002″
+>> ellipsoid.Projection.angle(dms='123°27′24.4404″')
+>> # 123.456789
+>> ellipsoid.Projection.angle(dms='123度27分24.4404秒')
+>> # 123.456789
+>> ellipsoid.Projection.angle(dms='27分24.4404秒')
+>> # 0.456789
+>> ellipsoid.Projection.angle(dms='1232724.4404')
+>> # 123.456789
+>> ```
+
+*****
+* ### Class ProjectionHelper(Projection)
+
+*****
+
+***ProjectionHelper()***
+> ```python
+> def __init__(
+>        self,
+>        sourceProjection: str | int = None,
+>        targetProjection: str | int = None,
+>        sourceScale: int = 1,
+>        targetScale: int = 1
+> )  
+> ```
+> 实例初始化函数。如果原始与目标投影一致时变换器将设置为：None 
+>
+> | Parameter        | Type    | Description                                                                                   |
+> |:-----------------|:--------|:----------------------------------------------------------------------------------------------|
+> | sourceProjection | str int | 原始投影（支持：wkt/proj4/epsg），默认采用经纬度无投影（EPSG:4326）格式。注：此参数内容通常可采用【definition】类函数获取，如果参数不符合规定，便抛出异常 |
+> | targetProjection | str int | 目标投影（支持：wkt/proj4/epsg），默认采用经纬度无投影（EPSG:4326）格式。注：此参数内容通常可采用【definition】类函数获取，如果参数不符合规定，便抛出异常 |
+> | sourceScale      | int     | 原始比例尺分母（不针对地理坐标系和球体墨卡托），默认：1                                                                  |
+> | targetScale      | int     | 目标比例尺分母（不针对地理坐标系和球体墨卡托），默认：1                                                                  |
+> 
+> 示例：
+>> ```python
+>> toGaussKruger = ellipsoid.ProjectionHelper(
+>>         sourceProjection=4326,
+>>         targetProjection=ellipsoid.ProjectionHelper.definition(projection="GaussKruger", centralMeridian=99)
+>>     )  
+>>   
+>> fromGaussKruger = ellipsoid.ProjectionHelper(
+>>         sourceProjection=ellipsoid.ProjectionHelper.definition(projection="GaussKruger", centralMeridian=99),
+>>         targetProjection=4326
+>>     )
+>> ```
+
+***ProjectionHelper.definition***
+> ```python
+> @classmethod
+> def definition(
+>        cls,
+>        projection: str = 'GaussKruger',
+>        crs: int = 2000,
+>        centralMeridian: float | None = None,
+>        originLatitude: float = 0.0,
+>        falseEasting: float | None = None,
+>        falseNorthing: float = 0.0,
+>        standard_parallel_1: float = 25.0,
+>        standard_parallel_2: float = 47.0
+> ) -> str
+> ```
+> 定义投影参数。针对中国陆域采用的高斯克吕格（通用横轴墨卡托）投影、双标准纬线阿尔博斯等积或兰伯特等角割圆锥投影以及球体墨卡托投影，可依据指定的参考椭球坐标系代号、中央子午线等参数创建投影变换器所需的投影参数  
+>
+> | Parameter            | Type       | Description                                                                     |
+> |:---------------------|:-----------|:--------------------------------------------------------------------------------|
+> | projection           | str        | 投影名称；支持：'GaussKruger'（默认）、'Lambert'、'Albers'、'WebMercator'                      |
+> | crs                  | int        | 坐标参照系年代（1954=北京坐标系；1980=西安坐标系；1984=WGS84坐标系；2000=CGCS2000坐标系，省略或无效时取强取默认值：2000） |
+> | centralMeridian      | float None | 中央子午线经度（十进制度）；针对高斯投影和墨卡托投影，默认：0；其他投影默认：105，定义域为：[-180 ～ +180]                   |
+> | originLatitude       | float      | 原点纬度（十进制度）；默认值：0，定义域为：[-90 ～ +90]                                               |
+> | falseEasting         | float None | 横轴平移量，通常是米制自然值前缀就，针对高斯投影而言，默认：500000，通用值前面不可携带投影带号；其他投影默认：0                     |
+> | falseNorthing        | float      | 纵轴平移量，米制，默认：0                                                                   |
+> | standard_parallel_1  | float      | 下面第一标准纬线（如：25），定义域为：[-90 ～ +90]                                                 |
+> | standard_parallel_2  | float      | 上面第二标准纬线（如：47），定义域为：[-90 ～ +90]                                                 |
+> 
+> 返回投影变换器所需的投影字符串（wkt格式）。失败时抛出异常  
+> 
+> 示例：
+>> ```python
+>> ellipsoid.ProjectionHelper.definition(projection="GaussKruger", centralMeridian=99)  
+>> # PROJCS["GRS 1980 / Gauss-Kruger",GEOGCS["GRS 1980",DATUM["GRS_1980",SPHEROID["GRS 1980",6378137.0,298.257222101,AUTHORITY["EPSG","1024"]],AUTHORITY["EPSG","1043"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4490"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0.0],PARAMETER["central_meridian",99],PARAMETER["false_easting",500000.0],PARAMETER["false_northing",0.0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Northing",NORTH],AXIS["Easting",EAST]]  
+>> ```
+
+***ProjectionHelper实例.project***
+> ```python
+> def project(
+>        self,
+>        geometry: dict
+> ) -> dict
+> ```
+> 坐标几何投影变换  
+>
+> | Parameter           | Type       | Description                                                                                                                                      |
+> |:--------------------|:-----------|:-------------------------------------------------------------------------------------------------------------------------------------------------|
+> | geometry            | dict       | 几何字典参数中的【type】成员为几何类型名称（Point、MultiPoint、LineString、MultiLineString、Polygon、MultiPolygon、GeometryCollection），【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回符合【GeoJson-geometry】格式的字典类型对象，字典中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组，失败时抛出异常 
+> 
+> 示例：
+>> ```python
+>> toGaussKruger.project({'type': 'Point', 'coordinates': [100, 36]})
+>> # {'type': 'Point', 'coordinates': [590165.115456953, 3986005.1900442634]}   
+>> fromGaussKruger.project({'type': 'Point', 'coordinates': [590165.115456953, 3986005.1900442634]})  
+>> # {'type': 'Point', 'coordinates': [100.0, 36.0]}
+>> ```
+
+*****
+* ### Class Topology(Geometry)
+
+*****
+
+***Topology.area***
+> ```python
+> @classmethod
+> def area(
+>        cls,
+>        coordinates: str | list | dict,
+>        crs: int = 2000
+> ) -> dict
+> ```
+> 由符合【WKT/WKB、GeoJson、自由/简约文本】格式的多边形坐标串或者符合GeoJson格式的几何字典或坐标列表计算其面积、周长与边界。若整个范围位于同一个六度投影带且指定的坐标系代号属于北京或西安或国家坐标系便按高斯-克吕格投影进行计算，否则尽可能按WGS84下的球体墨卡托投影计算
+>
+> | Parameter   | Type          | Description                                                                                                                                                                         |
+> |:------------|:--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+> | coordinates | dict list str | 符合【WKT/WKB、GeoJson、自由/简约文本】格式的多边形坐标串或者符合GeoJson格式的几何字典或坐标列表，支持单面、母子面和多面类型。如果是列表或者字典类型，执行完成后可回馈经自动将线环封闭并剔除相邻的重复顶点后的实参结果，也强制将最大面积的环线调整到第一个索引位（充当母区），同时依据右手定则（母区为逆时针，子区为顺时针）调整多边形的旋转方向 |
+> | crs         | int           | 坐标参照系年代（1954=北京坐标系；1980=西安坐标系；1984=WGS84坐标系；2000=CGCS2000坐标系，省略取默认值：2000。其他值（比如：0）将不进行投影变换并返回笛卡尔坐标系多边形面积）                                                                           |
+> 
+> 返回由多边形类型（Polygon/MultiPolygon）、面积（母区扣除所属子区之后的剩余面积，其量纲取决于指定的crs参数值）、周长（母区线环长度，其量纲取决于指定的crs参数值）与边界构成的字典。失败时抛出异常  
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.area({"type":"Polygon","coordinates":[[[0, 0], [10, 0], [10, 10], [0, 10],[0, 0]]]}, crs=0)  # 普通坐标系，多边形正常封闭
+>> # {'area': 100.0, 'perimeter': 40.0, 'boundary': {'west': 0.0, 'south': 0.0, 'east': 10.0, 'north': 10.0}}  
+>> 
+>> polygon = {"type":"Polygon","coordinates":[[[0, 0], [10, 0], [10, 10], [10, 10], [0, 10]]]}  # 多边形存在重合点且未封闭
+>> ellipsoid.Topology.area(polygon, crs=0)
+>> # {'area': 100.0, 'perimeter': 40.0, 'boundary': {'west': 0.0, 'south': 0.0, 'east': 10.0, 'north': 10.0}}
+>> # polygon 形参变量已自动更改为：{'type': 'Polygon', 'coordinates': [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]]}  # 多边形重合点已剔除且首尾点封闭
+>> 
+>> ellipsoid.Topology.area({"type":"Polygon","coordinates":[[[0, 0], [10, 0], [10, 10], [0, 10],[0, 0]]]}, crs=2000) # CGCS2000坐标系
+>> # {'area': 1232873617757.2869, 'perimeter': 4441466.499008763, 'boundary': {'west': 0.0, 'south': 0.0, 'east': 10.0, 'north': 10.0}}
+>> ```
+
+***Topology.buffer***
+> ```python
+> @classmethod
+> def buffer(
+>        cls,
+>        geometry: dict | list | str,
+>        distance: float,
+>        quad_segs: int = 8,
+>        cap_style: shapely.BufferCapStyle = 'round',
+>        join_style: shapely.BufferJoinStyle = 'round',
+>        mitre_limit: float = 5.0,
+>        single_sided: bool = False
+> ) -> shapely.geometry
+> ```
+> 利用正负缓冲距离计算指定几何体的缓冲区  
+>
+> | Parameter     | Type                    | Description                                                                                                 |
+> |:--------------|:------------------------|:------------------------------------------------------------------------------------------------------------|
+> | geometry      | dict list str           | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | distance      | float                   | 缓冲半径是采用闵可夫斯基[和或差]用于计算两个凸包的[并或差]集                                                                            |
+> | quad_segs     | int                     | 指定等分圆的弧长对应的线段数，默认值：8                                                                                        |
+> | cap_style     | shapely.BufferCapStyle  | 缓冲线端点形状，支持：‘round’（默认）、‘square’、‘flat’                                                                      |
+> | join_style    | shapely.BufferJoinStyle | 缓冲线中点的形状，支持：‘round’（默认）、‘square’、‘flat’                                                                     |
+> | mitre_limit   | float                   | 点与缓冲顶点的位移限制，超过时将修剪“斜切”连接样式，默认值：5.0                                                                          |
+> | single_sided  | bool                    | 是否仅在几何体的某一侧生成缓冲区？默认值：False                                                                                  |
+> 
+> 返回按指定的缓冲半径进行扩展或收缩后的几何部件，失败时抛出异常 
+
+***Topology.build***
+> ```python
+> @classmethod
+> def build(
+>        cls,
+>        coordinates: str | list | dict
+> ) -> dict
+> ```
+> 建立拓扑关系，返回结果主要包括通常用于标注几何体的拓扑内点、最大边框范围以及面积和长度与几何类型信息。其中，获取的拓扑内点位置具有几何构图合理性：多点以距离中心位置最近为准，多线以最长线段为准，多面以最大面积的多边形为准且有效回避“湖中岛” 
+>
+> | Parameter    | Type                    | Description                                                                                                                                       |
+> |:-------------|:------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------|
+> | coordinates  | dict list str           | 符合【WKT/WKB、GeoJson、自由/简约文本】格式的多边形坐标串或者符合GeoJson格式的几何字典或坐标列表。注1：列表类型不识别【MultiPoint】和【MultiLineString】类型；注2：针对【GeometryCollection】类型的返回值是总边框和总中心位置 |
+> 
+> 返回由拓扑内点、拓扑边框、拓扑周长、拓扑面积、拓扑长度与几何类型等构成的字典对象。失败时抛出异常  
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.build({"type":"Polygon","coordinates":[[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]]})
+>> # {'centroid': {'x': 5.0, 'y': 5.0}, 'perimeter': 40.0, 'area': 100.0, 'boundary': {'west': 0.0, 'south': 0.0, 'east': 10.0, 'north': 10.0}, 'type': 'Polygon'}
+>> ``` 
+
+***Topology.check***
+> ```python
+> @classmethod
+> def check(
+>        cls,
+>        geometries: list,
+>        mask: int = 31
+> ) -> dict | None
+> ```
+> 执行拓扑检查并返回检查结果。
+>
+> | Parameter  | Type | Description                                                                                                                                                                                  |
+> |:-----------|:-----|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+> | geometries | list | GeoJSON几何字符串或字典对象以及列表对象的列表                                                                                                                                                                   |
+> | mask       | int  | 拓扑运算掩膜，暂支持的拓扑选项包括：1=00000001=Overlap-重合节点、2=00000010=DangleNode-悬挂节点、4=00000100=PseudoNode-伪节点、8=00001000=SelfIntersection-自相交节点、16=00010000=Intersection-互相交节点。省略时取默认值：31=检查所有项目;0=不检查任何项目 |
+> 
+> 返回拓扑检查结果字典对象，不执行拓扑检查或者未发现拓扑问题时返回None，失败时抛出异常  
+> 结果模板如下：
+>> ```python
+>> # 点要素类返回的检查结果（重合点问题）模板  
+>>   {
+>>        'point': [
+>>            {'flag': 'Overlap', 'type': 'Point', 'coordinates': [x, y]} 或者 {'flag': 'Overlap', 'type': 'MultiPoint', 'coordinates': [[x, y],...]}
+>>        ]
+>>   }
+>> 
+>> # 线要素类返回的检查结果（相邻重合点、自相交、互相交、悬挂节点和伪节点问题）模板  
+>>   {
+>>        'line': [
+>>            {'flag': 'Overlap', 'type': 'Point', 'coordinates': [x, y]} 或者 {'flag': 'Overlap', 'type': 'MultiPoint', 'coordinates': [[x, y],...]}
+>>            {'flag': 'SelfIntersection', 'type': 'Point', 'coordinates': [x, y]} 或者 {'flag': 'SelfIntersection', 'type': 'MultiPoint', 'coordinates': [[x, y],...]}
+>>            {'flag': 'Intersection', 'type': 'Point', 'coordinates': [x, y]} 或者 {'flag': 'Intersection', 'type': 'MultiPoint', 'coordinates': [[x, y],...]}
+>>            {'flag': 'DangleNode', 'type': 'Point', 'coordinates': [x, y]} 或者 {'flag': 'DangleNode', 'type': 'MultiPoint', 'coordinates': [[x, y],...]}
+>>            {'flag': 'PseudoNode', 'type': 'Point', 'coordinates': [x, y]} 或者 {'flag': 'PseudoNode', 'type': 'MultiPoint', 'coordinates': [[x, y],...]}
+>>        ]
+>>   }
+>> # 注：封闭的线要素首尾点将视为伪节点，不按自相交问题对待
+>> 
+>> # 面要素类返回的检查结果（相邻重合点、自相交、互相交、未封闭的悬挂节点问题）模板
+>>   {
+>>        'polygon': [
+>>            {'flag': 'Overlap', 'type': 'Point', 'coordinates': [x, y]} 或者 {'flag': 'Overlap', 'type': 'MultiPoint', 'coordinates': [[x, y],...]}
+>>            {'flag': 'SelfIntersection', 'type': 'Point', 'coordinates': [x, y]} 或者 {'flag': 'SelfIntersection', 'type': 'MultiPoint', 'coordinates': [[x, y],...]}
+>>            {'flag': 'Intersection', 'type': 'Point', 'coordinates': [x, y]} 或者 {'flag': 'Intersection', 'type': 'MultiPoint', 'coordinates': [[x, y],...]}
+>>            {'flag': 'DangleNode', 'type': 'Point', 'coordinates': [x, y]} 或者 {'flag': 'DangleNode', 'type': 'MultiPoint', 'coordinates': [[x, y],...]}
+>>        ]
+>>   }
+>> ``` 
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.check(
+>>         [
+>>              {"type":"MultiPoint","coordinates":[[0, 0], [1, 1], [1, 1]]},
+>>              {"type":"Polygon","coordinates":[[[0, 0], [10, 0], [10, 10], [10, 10], [0, 10]]]}
+>>         ]
+>>    )
+>> #  {
+>> #       'point': 
+>> #            [
+>> #                {'flag': 'Overlap', 'type': 'Point', 'coordinates': [1.0, 1.0]}
+>> #            ], 
+>> #       'polygon': 
+>> #            [
+>> #                {'flag': 'Overlap', 'type': 'Point', 'coordinates': [10, 10]}, 
+>> #                {'flag': 'DangleNode', 'type': 'MultiPoint', 'coordinates': [[0.0, 0.0], [0.0, 10.0]]}
+>> #            ]
+>> #  }
+>> ``` 
+
+***Topology.clearance***
+> ```python
+> @classmethod
+> def clearance(
+>         cls,
+>         geometry: dict | list | str
+> ) -> float
+> ```
+> 依据指定几何中的顶点密度计算最小容差距离，此距离是指如果移动顶点便会造成几何失真   
+>  
+> | Parameter | Type                   | Description                                                 |
+> |:----------|:-----------------------|:------------------------------------------------------------|
+> | geometry  | dict list str          | 几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回最小容差距离，失败时抛出异常（包括无穷大、无穷小和非数值）
+
+***Topology.clip***
+> ```python
+> @classmethod
+> def clip(
+>         cls,
+>         geometry: dict | list | str,
+>         west: float,
+>         south: float,
+>         east: float,
+>         north: float
+> ) -> shapely.geometry
+> ```
+> 利用指定的矩形边界对指定的几何进行裁剪。裁剪后的几何可能不严格符合拓扑要求
+>  
+> | Parameter | Type          | Description                                                                                                 |
+> |:----------|:--------------|:------------------------------------------------------------------------------------------------------------|
+> | geometry  | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | west      | float         | 西边界                                                                                                         |
+> | south     | float         | 南边界                                                                                                         |
+> | east      | float         | 东边界                                                                                                         |
+> | north     | float         | 北边界                                                                                                         |
+> 
+> 返回裁剪后的几何部件，失败时抛出异常
+
+***Topology.contains***
+> ```python
+> @classmethod
+> def contains(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> bool
+> ```
+> 判断[a]几何是否将[b]几何完全包含。注：contains(a, b) == within(b, a)
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回是否包含的逻辑值，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.contains(
+>>     a={"type": "LineString", "coordinates": [[0, 0], [1, 1]]},
+>>     b={'type': 'Point', 'coordinates': [0.5, 0.5]}
+>> )
+>> # True
+>> ``` 
+
+***Topology.containsPoint***
+> ```python
+> @classmethod
+> def containsPoint(
+>         cls,
+>         geometry: dict | list | str,
+>         longitude: float,
+>         latitude: float
+> ) -> bool
+> ```
+> 判断[geometry]几何是否包含点[longitude,latitude]几何
+>  
+> | Parameter | Type          | Description                                                                                                 |
+> |:----------|:--------------|:------------------------------------------------------------------------------------------------------------|
+> | geometry  | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | longitude | float         | 十进制经度，定义域为：[-180 ～ +180]                                                                                    |
+> | latitude  | float         | 十进制纬度，定义域为：[-90 ～ +90]                                                                                      |
+> 
+> 返回是否包含的逻辑值，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.containsPoint(
+>>     geometry={"type": "LineString", "coordinates": [[0, 0], [1, 1]]},
+>>     0.5, 0.5
+>> )
+>> # True
+>> ``` 
+
+***Topology.convexHull***
+> ```python
+> @classmethod
+> def convexHull(
+>         cls,
+>         geometry: dict | list | str
+> ) -> shapely.geometry
+> ```
+> 产生指定几何体的凸包几何对象
+>  
+> | Parameter | Type          | Description                                                                                                 |
+> |:----------|:--------------|:------------------------------------------------------------------------------------------------------------|
+> | geometry  | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> 
+> 返回凸包几何对象，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.convexHull(
+>>     {"type":"MultiPoint","coordinates":[[0, 0], [10, 0], [20, 10]]}
+>> )
+>> # POLYGON ((0 0, 20 10, 10 0, 0 0))
+>> ``` 
+
+***Topology.covers***
+> ```python
+> @classmethod
+> def covers(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> bool
+> ```
+> 判断[a]几何是否将[b]几何完全覆盖
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回是否覆盖的逻辑值，失败时抛出异常
+
+***Topology.crosses***
+> ```python
+> @classmethod
+> def crosses(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> bool
+> ```
+> 判断[a]几何与[b]几何在空间上是否交叉横跨
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回是否交叉横跨的逻辑值，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.crosses(
+>>     {"type": "LineString", "coordinates": [[0, 0], [1, 1]]},
+>>     {"type": "LineString", "coordinates": [[0, 1], [1, 0]]}
+>> )
+>> # True
+>> ``` 
+
+***Topology.difference***
+> ```python
+> @classmethod
+> def difference(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> shapely.geometry
+> ```
+> 获取[a]几何中与[b]几何不同的几何部件
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回差异化几何部件，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.difference(
+>>     {"type": "LineString", "coordinates": [[0, 0], [1, 1]]},
+>>     {"type": "LineString", "coordinates": [[0, 1], [1, 0]]}
+>> )
+>> # MULTILINESTRING ((0 0, 0.5 0.5), (0.5 0.5, 1 1))
+>> ``` 
+
+***Topology.distanceOnLine***
+> ```python
+> @classmethod
+> def distanceOnLine(
+>         cls,
+>         line: dict | list | str,
+>         point: dict | list | str
+> ) -> float
+> ```
+> 返回从线起点出发沿线要素至指定点的距离，如果点不在线上，将返回无效数值
+>  
+> | Parameter | Type           | Description                                                                                                     |
+> |:----------|:---------------|:----------------------------------------------------------------------------------------------------------------|
+> | line      | dict list str  | 线要素，GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | point     | dict list str  | 点要素，GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> 
+> 返回线上点距起点的距离，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.distanceOnLine(
+>>     {"type": "LineString", "coordinates": [[0, 0], [1, 1]]},
+>>     {"type": "Point", "coordinates": [0.5, 0.5]}
+>> )
+>> # 0.7071067811865476
+>> ``` 
+
+***Topology.equals***
+> ```python
+> @classmethod
+> def equals(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> bool
+> ```
+> 判断[a]几何是否与[b]几何视觉效果一致
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回视觉效果是否一致的逻辑值，失败时抛出异常
+
+***Topology.equal***
+> ```python
+> @classmethod
+> def equal(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> bool
+> ```
+> 判断[a]几何是否与[b]几何严格一致
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回是否一致的逻辑值，失败时抛出异常
+
+***Topology.intersection***
+> ```python
+> @classmethod
+> def intersection(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> shapely.geometry
+> ```
+> 获取[a]几何与[b]几何的交点几何
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回返回交点几何，如果不相交返回None。失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.intersection(
+>>     '0 0,10 0,10 10,0 10,0 0',  # 线要素自由格式
+>>     '5 5,15 5,15 15,5 15,5 5'   # 线要素自由格式
+>> )
+>> # MULTIPOINT (5 10, 10 5)
+>> ``` 
+
+***Topology.intersections***
+> ```python
+> @classmethod
+> def intersections(
+>        cls,
+>        geometries: list
+> ) -> shapely.geometry
+> ```
+> 获取[geometries]几何列表中的所有几何部件的交点
+>
+> | Parameter  | Type | Description                 |
+> |:-----------|:-----|:----------------------------|
+> | geometries | list | GeoJSON几何字符串或字典对象以及列表对象的列表  |
+> 
+> 返回交点几何，失败时抛出异常
+
+***Topology.intersects***
+> ```python
+> @classmethod
+> def intersects(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> bool
+> ```
+> 判断[a]几何与[b]几何在空间上是否相交（包括：叠加、接壤、包含）。注：disjoint(A, B) == ~intersects(A, B)
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回是否相交的逻辑值，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.intersects(
+>>     {"type": "LineString", "coordinates": [[0, 0], [1, 1]]},
+>>     {"type": "LineString", "coordinates": [[0, 1], [1, 0]]}
+>> )
+>> # True
+>> ``` 
+
+***Topology.intersectsPoint***
+> ```python
+> @classmethod
+> def intersectsPoint(
+>         cls,
+>         geometry: dict | list | str,
+>         longitude: float,
+>         latitude: float
+> ) -> bool
+> ```
+> 判断[geometry]几何是否与点[longitude,latitude]几何相交
+>  
+> | Parameter | Type          | Description                                                                                                 |
+> |:----------|:--------------|:------------------------------------------------------------------------------------------------------------|
+> | geometry  | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | longitude | float         | 十进制经度，定义域为：[-180 ～ +180]                                                                                    |
+> | latitude  | float         | 十进制纬度，定义域为：[-90 ～ +90]                                                                                      |
+> 
+> 返回是否相交的逻辑值，失败时抛出异常
+
+***Topology.length***
+> ```python
+> @classmethod
+> def length(
+>        cls,
+>        coordinates: str | list | dict,
+>        crs: int = 2000
+> ) -> dict
+> ```
+> 由符合【WKT/WKB、GeoJson、自由/简约文本】格式的折线坐标串或者符合GeoJson格式的几何字典或坐标列表计算其长度（或周长）及边界。若连续的两个顶点位于同一个投影带且指定的坐标系代号属于北京或西安或国家坐标系便按高斯-克吕格投影进行计算，不在同一个投影带按椭球计算曲线长度
+>
+> | Parameter   | Type          | Description                                                                                                    |
+> |:------------|:--------------|:---------------------------------------------------------------------------------------------------------------|
+> | coordinates | dict list str | 符合【WKT/WKB、GeoJson、自由/简约文本】格式的折线坐标串或者符合GeoJson格式的几何字典或坐标列表，支持单线、多线或者单面类型。如果是列表或者字典类型，执行完成后可回馈经剔除相邻的重复顶点后的实参结果  |
+> | crs         | int           | 坐标参照系年代（1954=北京坐标系；1980=西安坐标系；1984=WGS84坐标系；2000=CGCS2000坐标系，省略取默认值：2000。其他值（比如：0）将不进行投影变换并返回笛卡尔坐标系多边形面积）      |
+> 
+> 返回长度与边界构成的字典，长度量纲取决于指定的crs参数值，多线类型返回所有折线的累计长度，若计算周长应确保折线为封闭线环。失败时抛出异常 
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.length(coordinates={"type": "LineString", "coordinates": [[0, 0], [10, 0], [10, 10]]}, crs=0)
+>> # {'length': 20.0, 'boundary': {'west': 0.0, 'south': 0.0, 'east': 10.0, 'north': 10.0}}
+>> 
+>> ellipsoid.Topology.length(coordinates={"type": "LineString", "coordinates": [[0, 0], [10, 0], [10, 10]]}, crs=2000)
+>> # {'length': 2219217.1822485896, 'boundary': {'west': 0.0, 'south': 0.0, 'east': 10.0, 'north': 10.0}}
+>> ```
+
+***Topology.overlaps***
+> ```python
+> @classmethod
+> def overlaps(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> bool
+> ```
+> 判断[a]几何与[b]几何在空间上是否重叠（重叠是指部分重合，如果完全重合就称为相等）
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回是否重叠的逻辑值，失败时抛出异常
+
+***Topology.pointOnLine***
+> ```python
+> @classmethod
+> def pointOnLine(
+>         cls,
+>         line: dict | list | str,
+>         distance: float
+> ) -> shapely.geometry.point
+> ```
+> 返回从线起点出发沿线要素至指定点的距离，如果点不在线上，将返回无效数值
+>  
+> | Parameter | Type          | Description                                                                                                     |
+> |:----------|:--------------|:----------------------------------------------------------------------------------------------------------------|
+> | line      | dict list str | 线要素，GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | distance  | float         | 距起点或末点的距离，正值从起点开始，负值从末点开始，超出范围将取边界值                                                                             |
+> 
+> 返回插值点，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.pointOnLine(
+>>     {"type": "LineString", "coordinates": [[0, 0], [10, 0], [10, 10]]},
+>>     12
+>> )
+>> # POINT (10 2)
+>> ``` 
+
+***Topology.rectangle***
+> ```python
+> @classmethod
+> def rectangle(
+>         cls,
+>         geometry: dict | list | str
+> ) -> shapely.geometry
+> ```
+> 生成包含指定几何体的最小倾斜矩形几何部件
+>  
+> | Parameter | Type          | Description                                                                                                 |
+> |:----------|:--------------|:------------------------------------------------------------------------------------------------------------|
+> | geometry  | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> 
+> 返回最小倾斜矩形几何部件，失败时抛出异常
+
+***Topology.relate***
+> ```python
+> @classmethod
+> def relate(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> str
+> ```
+> 生成两几何体的“内部，边界，外部”三者构成的空间关系模型（Dimensionally Extended 9-Intersection Model - DE9IM) 的（3×3）矩阵表示形式。  
+> 采用维度表示相交（重合）部分的数值（0=点；1=线；2=面；-1=无）并形成3×3矩阵：  
+>   ①②③  
+>   ④⑤⑥  
+>   ⑦⑧⑨  
+> 返回的字符串是空间关系谓词矩阵中①~⑨的值（T=True、F=False），占位符说明如下：  
+>   T = 相交部分维度为 0、1、2  
+>   F = 相交部分维度 < 0  
+>   \* = 相交部分维度为任意值  
+>   0 = 相交部分维度为 0  
+>   1 = 相交部分维度为 1  
+>   2 = 相交部分维度为 2  
+> 例如：  
+>   Equals    -> T\*F\*\*FFF*  
+>   Disjoint  -> FF\*FF****  
+>   Contains  -> T*****FF*  
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回两几何体的“内部，边界，外部”三者构成的空间关系模型（3×3）矩阵字符串，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.relate(
+>>     {"type": "LineString", "coordinates": [[0, 0], [10, 10]]},
+>>     {"type": "LineString", "coordinates": [[10, 0], [0, 10]]}
+>> )
+>> # 0F1FF0102
+>> ``` 
+
+***Topology.repair***
+> ```python
+> @classmethod
+> def repair(
+>         cls,
+>         geometry: dict | list | str
+> ) -> shapely.geometry
+> ```
+> 修复几何要素
+>  
+> | Parameter | Type          | Description                                                                                                 |
+> |:----------|:--------------|:------------------------------------------------------------------------------------------------------------|
+> | geometry  | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> 
+> 返回修复后的几何部件，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.repair(
+>>     '0 0,10 0,10 0,10 10,0 0'  # 自由格式的线要素，存在重叠点问题
+>> )
+>> # LINESTRING (0 0, 10 0, 10 10, 0 0)
+>> ```
+
+***Topology.shortest***
+> ```python
+> @classmethod
+> def shortest(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> shapely.geometry
+> ```
+> 生成两个几何要素之间的最短线段，此线段从a至b由两个端点构成
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回的最短几何部件（LineString类型）是由两个端点构成的线段，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.shortest(
+>>     {'type': 'Point', 'coordinates': [0, 0]},
+>>     {'coordinates': [[10, 0], [0, 10]], 'type': 'LineString'}
+>> )
+>> # LINESTRING (0 0, 5 5)
+>> ``` 
+
+***Topology.similarity***
+> ```python
+> @classmethod
+> def similarity(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str,
+>         densify: float = None
+> ) -> float
+> ```
+> 计算两个几何要素之间的相似度，此值为a中的任意点与b中的最近点之间距离的最大值
+>  
+> | Parameter | Type          | Description                                                                                                 |
+> |:----------|:--------------|:------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | b         | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | densify   | float         | 采样密度值，介于[0 1]之间，省略时取默认值：None                                                                                |
+> 
+> 返回相似度，失败时抛出异常
+
+***Topology.simplify***
+> ```python
+> @classmethod
+> def simplify(
+>         cls,
+>         geometry: dict | list | str,
+>         tolerance: float,
+>         preserveTopology: bool = True
+> ) -> shapely.geometry
+> ```
+> 几何抽稀（采用 Douglas-Peucker 算法）
+>  
+> | Parameter           | Type          | Description                                                                                                     |
+> |:--------------------|:--------------|:----------------------------------------------------------------------------------------------------------------|
+> | geometry            | dict list str | 线要素，GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | tolerance           | float         | 允许的最大几何体移位容差（该值越大顶点数就越少）                                                                                        |
+> | preserveTopology    | bool          | 是否避免创建无效的几何图形（耗时检查折叠、线环相交等），默认值：True                                                                            |
+> 
+> 返回按指定的容差抽稀后的几何部件，失败时抛出异常
+
+***Topology.snap***
+> ```python
+> @classmethod
+> def snap(
+>         cls,
+>         geometry: dict | list | str,
+>         reference: dict | list | str,
+>         tolerance: float
+> ) -> shapely.geometry
+> ```
+> 将指定的几何体捕捉到参考几何体的顶点。第一个几何体的顶点将捕捉到第二个几何体顶点并返回新的几何体。如果未发生捕捉，则返回的输入几何图形将保持不变。容差用于控制捕捉的吸附位置，调用方应负责检查和处理因捕捉过多可能会导致创建无效的几何图形
+>  
+> | Parameter  | Type          | Description                                                                                                 |
+> |:-----------|:--------------|:------------------------------------------------------------------------------------------------------------|
+> | geometry   | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | reference  | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | tolerance  | float         | 允许的最大几何体移位容差（该值越大顶点数就越少）                                                                                    |
+> 
+> 返回按指定的容差向参考几何靠近后的几何部件，失败时抛出异常
+
+***Topology.touches***
+> ```python
+> @classmethod
+> def touches(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> bool
+> ```
+> 判断[a]几何与[b]几何在空间上是否接触（两几何的边界存在部分重叠现象，亦即存在公共点或者公共边）
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回是否接触的逻辑值，失败时抛出异常
+
+***Topology.triangulate***
+> ```python
+> @classmethod
+> def triangulate(
+>         cls,
+>         geometry: dict | list | str,
+>         tolerance: float = 0.0,
+>         edges: bool = False
+> ) -> list
+> ```
+> 依据指定几何体的所有顶点生成德勒内三角几何（Delaunay triangulation）多边形部件
+>  
+> | Parameter | Type          | Description                                                                                                 |
+> |:----------|:--------------|:------------------------------------------------------------------------------------------------------------|
+> | geometry  | dict list str | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | tolerance | float         | 捕捉容差用于提高三角剖分计算的稳健性，如果不进行捕捉可取默认值：0.0                                                                         |
+> | edges     | bool          | 如果设为默认值：False，将返回多边形三角形列表，否则返回边界线列表                                                                         |
+> 
+> 返回德勒内三角几何多边形部件列表，失败时抛出异常
+
+***Topology.unions***
+> ```python
+> @classmethod
+> def unions(
+>         cls,
+>         geometries: list,
+>         gridSize: float = None,
+>         axis: int = None
+> ) -> shapely.geometry
+> ```
+> 获取[geometries]几何列表中的所有几何归并后的几何部件（可充当自动剪断线、多边形拆分等功能）
+>  
+> | Parameter  | Type  | Description                            |
+> |:-----------|:------|:---------------------------------------|
+> | geometries | list  | GeoJSON几何字符串或字典对象以及列表对象类型列表            |
+> | gridSize   | float | 网格化融合精度（默认取最高精度），省略时取默认值：None          |
+> | axis       | int   | 执行操作的轴，默认在所有轴上执行操作并返回标量值，省略时取默认值：None  |
+> 
+> 返回归并后的几何部件，无结果时返回None，失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Topology.unions(
+>>     ['0 0,10 0,0 10,10 10,0 0']  # 自由格式线要素数组
+>> )
+>> # MULTILINESTRING ((0 0, 10 0, 5 5), (5 5, 0 10, 10 10, 5 5), (5 5, 0 0))
+>> ``` 
+
+***Topology.union***
+> ```python
+> @classmethod
+> def union(
+>         cls,
+>         a: dict | list | str,
+>         b: dict | list | str
+> ) -> shapely.geometry
+> ```
+> 获取[a]几何与[b]几何合并后的几何部件
+>  
+> | Parameter | Type           | Description                                                                                                  |
+> |:----------|:---------------|:-------------------------------------------------------------------------------------------------------------|
+> | a         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> | b         | dict list str  | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组  |
+> 
+> 返回合并后的几何部件，失败时抛出异常
+
+***Topology.voronoiDiagram***
+> ```python
+> @classmethod
+> def voronoiDiagram(
+>         cls,
+>         geometry: dict | list | str,
+>         envelope: shapely.geometry = None,
+>         tolerance: float = 0.0,
+>         edges: bool = False
+> ) -> list
+> ```
+> 利用指定几何体的顶点构造沃罗诺伊图（泰森多边形部件）
+>  
+> | Parameter | Type             | Description                                                                                                 |
+> |:----------|:-----------------|:------------------------------------------------------------------------------------------------------------|
+> | geometry  | dict list str    | GeoJSON几何字符串或字典对象以及列表对象，还可支持[shapely.geometry]格式，几何字典参数中的【type】成员为几何类型名称，【coordinates】成员为符合GeoJson格式的几何坐标数组 |
+> | envelope  | shapely.geometry | 用于将结果进行裁剪的几何封套，默认值：None                                                                                     |
+> | tolerance | float            | 设置用于提高计算稳健性的捕捉容差值，默认值：0.0=不进行捕捉                                                                             |
+> | edges     | bool             | 如果设为默认值：False，将返回多边形三角形列表，否则返回边界线列表                                                                         |
+> 
+> 返回沃罗诺伊图（泰森多边形部件列表），失败时抛出异常
+
+*****
+* ### Class Astronomy(builtins.object)  
+
+*****
+
+***Astronomy.UTCtoJulian***  
+> ```python  
+> @staticmethod  
+> def UTCtoJulian(  
+>     year: int | str | tuple | datetime = 1970,  
+>     month: int = 1,  
+>     day: int = 1,  
+>     hour: int = 0,  
+>     minute: int = 0,  
+>     second: float = 0.0  
+> ) -> float
+> ```
+> 天文纪年（UTC公历-年月日时分秒）转儒略日。  
+> 注1：UTC是协调世界时（Coordinated Universal Time）的缩写，以前也被称为格林威治标准时间（GMT）  
+> 注2：UTC公历1970年1月1日00时00分00秒，相当于北京时间1970年1月1日08时00分00秒，其儒略日数为2440587.5  
+>
+> | Parameter           | Type                   | Description                                                                     |
+> |:--------------------|:-----------------------|:--------------------------------------------------------------------------------|
+> | year                | int str tuple datetime | 年，省略时取默认值：1970。注：此参数可为(年,月,日,时,分,秒)构成的元组或为UTC公历datetime类型对象，若符合要求便忽略后续参数，否则抛出异常 |
+> | month               | int                    | 月，省略时取默认值：1                                                                     |
+> | day                 | int                    | 日，省略时取默认值：1                                                                     |
+> | hour                | int                    | 时，省略时取默认值：0                                                                     |
+> | minute              | int                    | 分，省略时取默认值：0                                                                     |
+> | second              | float                  | 秒，省略时取默认值：0.0                                                                   |
+> 
+> 返回儒略日（从公元前4713年1月1日正午12点起算的累积天数），失败时抛出异常
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Astronomy.UTCtoJulian(
+>>     1970, 1, 1, 0, 0, 0
+>> )
+>> ellipsoid.Astronomy.UTCtoJulian(
+>>     (1970, 1, 1, 0, 0, 0)
+>> )
+>> ellipsoid.Astronomy.UTCtoJulian(  
+>>     '1970-1-1T0:00:00+00:00'  
+>> )   
+>> ellipsoid.Astronomy.UTCtoJulian(  
+>>     datetime(1970, 1, 1, 0, 0, 0, tzinfo=pytz.timezone('UTC'))
+>> )
+>> # 2440587.5  
+>> ```
+
+*****
+
+***Astronomy.JulianToUTC***  
+> ```python  
+> @staticmethod  
+> def JulianToUTC(  
+>     julian: float = 2440587.5
+> ) -> datetime
+> ```
+> 儒略日转天文纪年（UTC公历）
+>
+> | Parameter | Type   | Description                                         |
+> |:----------|:-------|:----------------------------------------------------|
+> | julian    | float  | 儒略日，省略时取默认值：2440587.5（UTC公历1970年1月1日00时00分00秒的儒略日）  |
+> 
+> 返回天文纪年（UTC公历）
+> 
+> 示例：
+>> ```python
+>> ellipsoid.Astronomy.JulianToUTC(
+>>     2440587.5
+>> )
+>> # 1970-01-01 00:00:00+00:00  
+>> ```
+
+*****
+
+***Astronomy.sun***  
+> ```python  
+> @classmethod   
+> def sun(  
+>     cls,  
+>     longitude: float,  
+>     latitude: float,  
+>     elevation: float = 0.0,  
+>     year: int | None = 1970,  
+>     month: int | None = 1,  
+>     day: int | None = 1,  
+>     hour: int | None = 0,  
+>     minute: int | None = 0,  
+>     second: float | None = 0.0  
+> ) -> dict  
+> ```
+> 依据地理位置和UTC公历（协调世界时）计算太阳相位（真北方位角、水平面仰俯角、日出日落时间戳等）
+>
+> | Parameter | Type       | Description                                                              |
+> |:----------|:-----------|:-------------------------------------------------------------------------|
+> | longitude | float      | 十进制经度，定义域为：[-180 ～ +180]                                                 |
+> | latitude  | float      | 十进制纬度，定义域为：[-90 ～ +90]                                                   |
+> | elevation | float      | 海拔高度（米制），定义域为：[-10000 ～ +10000]，省略时取默认值：0.0                              |
+> | year      | int None   | 年（1 ～ 9999），省略时取默认值：1970；若设为None，便取当前年份（UTC公历）                           |
+> | month     | int None   | 月（1 ～ 12），省略时取默认值：1；若设为None，便取当前月份（UTC公历）                                |
+> | day       | int None   | 日（1 ～ 31），省略时取默认值：1；；若设为None，便取当前时间（UTC公历）                               |
+> | hour      | int None   | 时（0 ～ 23），省略时取默认值：0；若设为None，便取当前时间（UTC公历）                                |
+> | minute    | int None   | 分（0 ～ 59），省略时取默认值：0；若设为None，便取当前时间（UTC公历）                                |
+> | second    | float None | 秒（浮点型：0 ～ 59 / 60 / 61）(其中，60或61表示闰秒)，省略时取默认值：0.0；若设为None，便取当前时间（UTC公历）  |
+> 
+> 返回太阳相位字典对象。失败时抛出异常
+>  
+> 示例： 
+>> ```python  
+>> ellipsoid.Astronomy.sun(  
+>>     101.75232400194169, 36.61087110483754, 2222,  
+>>     2024, 7, 22, 4, 0, 0  # 相当于北京时间：2024年7月22日12时0分0秒  
+>> )  
+>> # {  
+>> #     'Body': 'Sun',  
+>> #     'TimeStamp': {  
+>> #         'UTC': '2024-07-22 04:00:00.000000+00:00',  
+>> #         'ServerDateTime': '2024-07-22 12:00:00.000000+08:00',  
+>> #         'ServerTimeZone': '中国标准时间'  
+>> #     },  
+>> #     'Location': {
+>> #         'Longitude': 101.75232400194169,
+>> #         'Latitude': 36.61087110483754,
+>> #         'Elevation': 2222
+>> #     },
+>> #     'Azimuth': 127.74113964795328,  # 方位角（十进制度），自真北方向顺时针旋转
+>> #     'Altitude': 66.12070428489565,  # 仰俯角（十进制度），自水平面之上为正仰角，反之为负俯角
+>> #     'Distance': 149598000,  # 视距（KM）
+>> #     'Phase': {
+>> #         'midnight': '2024-07-21 17:20:33.406157+00:00',  # 午夜
+>> #         'nightEnd': '2024-07-21 20:16:13.217144+00:00',  # 拂晓
+>> #         'nauticalDawn': '2024-07-21 20:56:43.765055+00:00',  # 黎明开始
+>> #         'dawn': '2024-07-21 21:33:26.242346+00:00',  # 黎明结束
+>> #         'sunrise': '2024-07-21 22:03:09.763230+00:00',  # 日出开始
+>> #         'sunriseEnd': '2024-07-21 22:06:09.262196+00:00',  # 日出结束
+>> #         'morning': '2024-07-21 22:40:41.599416+00:00',  # 上午
+>> #         'noon': '2024-07-22 05:20:33.406157+00:00',  # 中午
+>> #         'evening': '2024-07-22 12:00:25.212898+00:00',  # 下午
+>> #         'sunsetStart': '2024-07-22 12:34:57.550119+00:00',  # 日落开始
+>> #         'sunset': '2024-07-22 12:37:57.049085+00:00',  # 日落结束
+>> #         'dusk': '2024-07-22 13:07:40.569968+00:00',  # 黄昏开始
+>> #         'nauticalDusk': '2024-07-22 13:44:23.047260+00:00',  # 黄昏结束
+>> #         'night': '2024-07-22 14:24:53.595170+00:00'  # 夜晚
+>> #     }
+>> # }
+>> ```
+
+*****
+
+***Astronomy.moon***  
+> ```python  
+> @classmethod   
+> def moon(  
+>     cls,  
+>     longitude: float,  
+>     latitude: float,  
+>     elevation: float = 0.0,  
+>     year: int | None = 1970,  
+>     month: int | None = 1,  
+>     day: int | None = 1,  
+>     hour: int | None = 0,  
+>     minute: int | None = 0,  
+>     second: float | None = 0.0  
+> ) -> dict  
+> ```
+> 依据地理位置和UTC公历（协调世界时）计算月亮相位
+>
+> | Parameter | Type       | Description                                                              |
+> |:----------|:-----------|:-------------------------------------------------------------------------|
+> | longitude | float      | 十进制经度，定义域为：[-180 ～ +180]                                                 |
+> | latitude  | float      | 十进制纬度，定义域为：[-90 ～ +90]                                                   |
+> | elevation | float      | 海拔高度（米制），定义域为：[-10000 ～ +10000]，省略时取默认值：0.0                              |
+> | year      | int None   | 年（1 ～ 9999），省略时取默认值：1970；若设为None，便取当前年份（UTC公历）                           |
+> | month     | int None   | 月（1 ～ 12），省略时取默认值：1；若设为None，便取当前月份（UTC公历）                                |
+> | day       | int None   | 日（1 ～ 31），省略时取默认值：1；；若设为None，便取当前时间（UTC公历）                               |
+> | hour      | int None   | 时（0 ～ 23），省略时取默认值：0；若设为None，便取当前时间（UTC公历）                                |
+> | minute    | int None   | 分（0 ～ 59），省略时取默认值：0；若设为None，便取当前时间（UTC公历）                                |
+> | second    | float None | 秒（浮点型：0 ～ 59 / 60 / 61）(其中，60或61表示闰秒)，省略时取默认值：0.0；若设为None，便取当前时间（UTC公历）  |
+> 
+> 返回月亮相位字典对象。失败时抛出异常
+>  
+> 示例： 
+>> ```python  
+>> ellipsoid.Astronomy.moon(  
+>>     101.75232400194169, 36.61087110483754, 2222,
+>>     2024, 7, 22, 14, 0, 0  # 相当于北京时间：2024年7月22日22时0分0秒
+>> )  
+>> # {
+>> #     'Body': 'Moon',
+>> #     'TimeStamp': {
+>> #         'UTC': '2024-07-22 14:00:00+00:00',
+>> #         'ServerDateTime': '2024-07-22 22:00:00+08:00',
+>> #         'ServerTimeZone': '中国标准时间'
+>> #     },
+>> #     'Location': {
+>> #         'Longitude': 101.75232400194169,
+>> #         'Latitude': 36.61087110483754,
+>> #         'Elevation': 2222
+>> #     },
+>> #     'Azimuth': 120.79256273582314,  # 方位角（十进制度），自真北方向顺时针旋转
+>> #     'Altitude': 5.8997720191911736,  # 仰俯角（十进制度），自水平面之上为正仰角，反之为负俯角
+>> #     'Distance': 369969.80133619666,  # 视距（KM）
+>> #     'Phase': {
+>> #         'parallacticAngle': -47.37708070122644,  # 视差角
+>> #         'fraction': 0.9833872391333955,  # 充盈度：0.0=新月 1.0=满月
+>> #         'phaseName': '残月',  # 朔日 上峨嵋月 上弦月 凸月 满月 残月 下弦月 下峨嵋月 晦日
+>> #         'angle': 88.17110226541216,  # 北偏角
+>> #         'Rise': '2024-07-23 13:58:53.804315+00:00',  # 月升
+>> #         'Set': '2024-07-22 23:49:05.982344+00:00',  # 月落
+>> #         'AlwaysUp': False,  # 月显
+>> #         'AlwaysDown': False  # 月隐
+>> #     }
+>> # }
+>> ```
+
+*****
+
+***Astronomy.geostationarySatellite***  
+> ```python  
+> @classmethod   
+> def geostationarySatellite(  
+>     cls,  
+>     longitude: float,  
+>     latitude: float,  
+>     elevation: float = 0.0,  
+>     satelliteLongitude: float = 140.0
+> ) -> dict  
+> ```
+> 依据地面点位置（经度、纬度和海拔高度)以及地球同步卫星经度，计算卫星的真北方位角、仰角和视距
+>
+> | Parameter           | Type     | Description                                 |
+> |:--------------------|:---------|:--------------------------------------------|
+> | longitude           | float    | 十进制经度，定义域为：[-180 ～ +180]                    |
+> | latitude            | float    | 十进制纬度，定义域为：[-90 ～ +90]                      |
+> | elevation           | float    | 海拔高度（米制），定义域为：[-10000 ～ +10000]，省略时取默认值：0.0 |
+> | satelliteLongitude  | float    | 卫星经度，定义域为：[-180 ～ +180]，省略时取默认值：140.0       |
+> 
+> 返回由卫星的真北方位角、仰角和视距构成的字典对象。失败时抛出异常
+>  
+> 示例： 
+>> ```python  
+>> ellipsoid.Astronomy.geostationarySatellite(  
+>>     101.75232400194169, 36.61087110483754, 2222,
+>>     140.0
+>> )  
+>> # {
+>> #     'Body': 'Geostationary Satellite',
+>> #     'Location': {
+>> #         'Longitude': 101.75232400194169,
+>> #         'Latitude': 36.61087110483754,
+>> #         'Elevation': 2222
+>> #     },
+>> #     'Satellite Longitude': 140.0,
+>> #     'Azimuth': 127.2003766284867,  # 方位角（十进制度），自真北方向顺时针旋转
+>> #     'Altitude': 31.575385865111475,  # 仰俯角（十进制度），自水平面之上为正仰角，之下为负俯角
+>> #     'Distance': 38447.30012331335  # 视距（KM）
+>> # }
+>> ```
+
+*****
+## License  
+[MIT](https://choosealicense.com/licenses/mit/)  
+
+## Contributing  
+Contributions are always welcome!  
+
+## Authors  
+© GeoWheel Studio 2024 @ Xiong'an China 
+
+## Support  
+For support, email flylyisflying@gmail.com or join our Community Discussion Channel.  
