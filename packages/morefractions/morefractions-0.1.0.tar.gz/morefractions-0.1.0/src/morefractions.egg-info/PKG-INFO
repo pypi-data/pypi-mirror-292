@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: morefractions
+Version: 0.1.0
+Summary: A package with classes and functions for manipulating fractions
+Author-email: Te Du <tdu0915@gmail.com>
+Maintainer-email: Te Du <tdu0915@gmail.com>
+License: Te's License
+Project-URL: Homepage, https://github.com/meowdog011011/morefractions-py
+Project-URL: Repository, https://github.com/meowdog011011/morefractions-py.git
+Project-URL: Issues, https://github.com/meowdog011011/morefractions-py/issues
+Project-URL: Changelog, https://github.com/meowdog011011/morefractions-py/CHANGELOG.md
+Keywords: fraction,fractions
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# morefractions
+morefractions is a package with classes and functions for manipulating fractions.
+
+## Installation
+run the command `pip install -U morefractions`
+
+## Docs
+
+### Class `Fraction`
+`class Fraction(numerator: int | float, denominator: int | float = 1)`
+
+Returns a new Fraction with numerator `numerator` and denominator `denominator`.
+
+#### Methods
+morefractions.Fraction implements most methods found in section 3.3.8 of [this page](https://docs.python.org/3/reference/datamodel.html#emulating-numeric-types), except for binary operations, such as `<<` or `~`.
+
+Other methods include:
+
+`Fraction.reciprocal() -> Fraction`
+
+Returns the inverse of this Fraction (aka. 1 ÷ Fraction).
+
+`Fraction.get_type() -> ("proper" | "improper" | "unit")`
+
+Returns a string indicating whether this Fraction is a proper fraction, an improper fraction or a unit fraction.
+
+### Functions
+`is_like(x: Fraction, y: Fraction) -> bool`
+
+Returns a boolean indicating whether x and y are like fractions.
