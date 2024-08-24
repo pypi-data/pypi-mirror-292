@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: mqboost
+Version: 0.2.2
+Summary: Monotonic composite quantile gradient boost regressor
+Home-page: https://github.com/RektPunk/MQBoost
+Author: RektPunk
+Author-email: rektpunk@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: lightgbm (>=4.3.0,<5.0.0)
+Requires-Dist: numpy (>=2.0.0,<3.0.0)
+Requires-Dist: optuna (>=3.6.1,<4.0.0)
+Requires-Dist: pandas (>=2.2.2,<3.0.0)
+Requires-Dist: scikit-learn (>=1.5.1,<2.0.0)
+Requires-Dist: xgboost (>=2.1.0,<3.0.0)
+Project-URL: Repository, https://github.com/RektPunk/MQBoost
+Description-Content-Type: text/markdown
+
+<div style="text-align: center;">
+  <img src="https://capsule-render.vercel.app/api?type=transparent&fontColor=0047AB&text=MQBoost&height=120&fontSize=90">
+</div>
+<p align="center">
+  <a href="https://github.com/RektPunk/MQBoost/releases/latest">
+    <img alt="release" src="https://img.shields.io/github/v/release/RektPunk/mqboost.svg">
+  </a>
+<!--   <a href="LICENSE">
+    <img alt="license" src="https://img.shields.io/badge/license-MIT-indigo.sv">
+  </a> -->
+</p>
+
+**MQBoost** introduces an advanced model for estimating multiple quantiles while ensuring the non-crossing condition (monotone quantile condition). This model harnesses the capabilities of both [LightGBM](https://github.com/microsoft/LightGBM) and [XGBoost](https://github.com/dmlc/xgboost), two leading gradient boosting frameworks.
+
+By implementing the hyperparameter optimization prowess of [Optuna](https://github.com/optuna/optuna), the model achieves great performance. Optuna's optimization algorithms fine-tune the hyperparameters, ensuring the model operates efficiently.
+
+# Installation
+Install using pip:
+```bash
+pip install mqboost
+```
+
+# Usage
+## Features
+- **MQDataset**: Encapsulates the dataset used for MQRegressor and MQOptimizer.
+- **MQRegressor**: Custom multiple quantile estimator with preserving monotonicity among quantiles.
+- **MQOptimizer**: Optimize hyperparameters for MQRegressor with Optuna.
+
+
+## Example
+Please refer to the [**Examples**](https://github.com/RektPunk/MQBoost/tree/main/examples) provided for further clarification.
+
