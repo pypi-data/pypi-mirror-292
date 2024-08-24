@@ -1,0 +1,1 @@
+from embedding.oai import OpenAIEmbedClient
