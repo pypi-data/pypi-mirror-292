@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "fhirsnake"
+version = "1.0.2"
+description = "A minimalistic FHIR server for resources as files"
+authors = ["Ilya Beda <ilya@beda.software>", "Aleksandr Pavlushkin <aleksandr.p@beda.software>"]
+readme = "README.md"
+homepage = "https://github.com/beda-software/fhirsnake/"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.112.1"
+uvicorn = "^0.30.6"
+pyyaml = "^6.0.2"
+
+[tool.poetry.dev-dependencies]
+ruff = "^0.6.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.semantic_release]
+version_source = "tag"
+version_variable = "pyproject.toml:version"
+upload_to_pypi = false
+upload_to_release = true
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "UP", "I"]
