@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "gene-rule-parser"
+version = "0.1.0"
+description = "Basic language to parse genetic rules to a structure"
+authors = ["pineiden <dpineda@uchile.cl>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+polars = "^1.2.1"
+pydantic = "^2.8.2"
+cobra = "^0.29.0"
+ply = "^3.11"
+ujson = "^5.10.0"
+rich = "^13.7.1"
+ipython = "^8.26.0"
+typer = "^0.12.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+rule_parser = "gene_rule_parser.main:app"
