@@ -1,0 +1,134 @@
+Metadata-Version: 2.1
+Name: fw-gear-cow-says
+Version: 2.3.4
+Summary: A gear that makes animal speak
+Home-page: https://gitlab.com/flywheel-io/flywheel-apps/templates/poetry-cow-says
+License: MIT
+Keywords: Flywheel,Gears,Example
+Author: Flywheel
+Author-email: support@flywheel.io
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Requires-Dist: cowsay (>=3.0,<4.0)
+Requires-Dist: flywheel-gear-toolkit (>=0.6,<0.7)
+Requires-Dist: flywheel-sdk (>=18,<19)
+Project-URL: Repository, https://gitlab.com/flywheel-io/flywheel-apps/templates/poetry-cow-says
+Description-Content-Type: text/markdown
+
+# Cow-says Gear (cow-says)  
+
+## Overview
+
+### Summary 
+
+The CowSays gear is an demo utility gear that makes animals speak. It uses as an example to illustrate how our skeleton
+gear template (available at https://gitlab.com/flywheel-io/scientific-solutions/gears/templates/skeleton) can be used.
+
+### Cite 
+
+*License:* MIT
+
+### Classification
+
+*Category:* converter
+
+*Gear Level:*
+
+- [ ] Project
+- [ ] Subject
+- [ ] Session
+- [X] Acquisition
+- [ ] Analysis
+
+----
+
+[[_TOC_]]
+
+----
+### Inputs
+
+- *text-input*
+  - __Name__: text-file
+  - __Type__: file
+  - __Optional__: False
+  - __Description__: Text file for the animal.
+
+### Config
+
+- *debug*
+  - __Name__: debug
+  - __Type__: boolean
+  - __Description__: Log debug messages
+  - __Default__: False
+
+- *animal*
+  - __Name__: animal
+  - __Type__: string
+  - __Description__: Type of animal
+  - __Default__: cow
+
+### Outputs
+
+This gear will generate an image of the selected
+animal along with the message from the input text file.
+
+<!-- markdownlint-disable-file MD040 -->
+```
+  ______________
+< Flywheel rocks >
+  ==============
+            \
+             \
+               ^__^                             
+               (oo)\_______                   
+               (__)\       )\/\             
+                   ||----w |           
+                   ||     ||  
+```
+
+## Usage
+
+### Description
+
+This gear takes an input text file and
+print out the message in the text file along
+with selected animal type in the gear log.
+
+#### File Specifications
+
+##### text-file
+
+A text file that contains message that user wish to be printed on the gear log
+
+### Workflow
+
+A picture and description of the workflow
+
+```mermaid
+graph LR;
+    A[Input-File]:::input --> C;
+    C[Upload] --> D[Acquisition container];
+    D:::container --> E((Gear));
+    E:::gear --> F[Gear Log]:::container;
+    
+    classDef container fill:#57d,color:#fff
+    classDef input fill:#7a9,color:#fff
+    classDef gear fill:#659,color:#fff
+
+```
+
+Description of workflow
+
+1. Upload file to an Acquisition container
+1. Select file as input to cow-says gear
+1. View the outputs of the gear in Gear Log
+
+## Contributing
+
+[For more information about how to get started contributing to that gear,
+checkout [CONTRIBUTING.md](CONTRIBUTING.md).]
+<!-- markdownlint-disable-file -->
