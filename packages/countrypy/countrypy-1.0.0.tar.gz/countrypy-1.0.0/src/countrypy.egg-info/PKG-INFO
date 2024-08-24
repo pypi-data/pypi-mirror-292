@@ -1,0 +1,83 @@
+Metadata-Version: 2.1
+Name: countrypy
+Version: 1.0.0
+Summary: A Python package for detailed information on countries
+Author-email: Arjun Sharda <sharda.aj17@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 Arjun Sharda
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/ArjunSharda/countrypy
+Project-URL: Bug Tracker, https://github.com/ArjunSharda/countrypy/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+CountryPy
+=========
+
+# Description
+
+CountryPy is a lightweight & efficient modern country data library, used for fetching information about a variety of countries with support for command-line interface (CLI).
+
+Installation
+------------
+**[Python 3.6+](https://www.python.org/downloads/) is required**
+```bash
+# MacOS / Linux (via Terminal)
+python3 -m pip install -U countrypy
+
+# Windows (via CMD Prompt)
+py -3 -m pip install -U countrypy
+```
+
+Quick Start
+-----------
+```python
+>>> from countrypy import Country
+>>> country = Country("United States of America")
+>>> print(f"Capital: {country.capital}")
+'Washington, D.C'
+```
+
+CLI Quick Start
+---------------
+```bash
+$ countrypy quickinfo US
+```
+Take a look at more examples in the [examples](https://github.com/ArjunSharda/CountryPy/tree/main/examples) folder!
+
+v1.0 Changes
+--------------
+v1.0
+- **[START]** Start of the CountryPy library
+
+
+## Want to contribute?
+Take a look at the [contributing guidelines](CONTRIBUTING.md)!
+
+<hr>
+<h6 align="center">© Arjun Sharda 2024-present
+<br>
+All Rights Reserved</h6>
