@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: nusuGraph
+Version: 3.1
+Summary: An asynchronous and simplified Telegraph API Wrapper in Python
+Home-page: https://github.com/Nusab19/nusuGraph
+Download-URL: https://github.com/Nusab19/nusuGraph/archive/v3.1.zip
+Author: Nusab Taha
+Author-email: nusabtaha33@gmail.com
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: httpx>=0.26.0
+Requires-Dist: aiofiles>=23.2.1
+
+# nusuGraph
+
+An asynchronous and simplified wrapper for the Telegraph API.
+
+## Installation
+
+```bash
+pip install -U nusugraph
+```
+
+## Usage
+
+```python
+import asyncio
+from nusugraph import Telegraph
+
+
+async def main():
+    graph = Telegraph(
+        token=None,  # if no token was passed, then an anonymous account will be created
+        tokenList=None,  # list of tokens to be used in a cycle
+        timeout=10,  # timeout for httpx.AsyncClient
+    )
+
+    # Create a Page
+    text = "Hello, world!"
+
+    # Account will be created if no token was passed
+    response = await graph.createPage(
+        author="Nusab Taha", htmlContent="<b>Hello</b>", title="Just Saying Hello"
+    )
+    url = response["url"]
+    print(url)  # https://telegra.ph/Just-Saying-Hello-12-28-4
+
+    # Upload Media from local file
+    imagePath = "assets/sample.jpg"
+    url = await graph.uploadMediaFromFile(imagePath)
+    print(url)  # https://telegra.ph/file/daf9c776a1c25264321cd.jpg
+
+    # Upload Media from it's bytes content
+    with open(imagePath, "rb") as file:
+        imageBytes = file.read()
+
+    url = await graph.uploadMediaFromBytes(content=imageBytes, fileType="image/jpeg")
+    print(url)  # https://telegra.ph/file/3406d7261c8c62869ab91.jpg
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## WHY?
+
+I needed a simple and asynchronous wrapper for the Telegraph API, with the ability to use multiple tokens in a cycle. That's the reason.
