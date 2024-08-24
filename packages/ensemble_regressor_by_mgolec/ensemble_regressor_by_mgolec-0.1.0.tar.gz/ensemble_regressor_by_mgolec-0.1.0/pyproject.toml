@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ensemble_regressor_by_mgolec"
+version = "0.1.0"
+description = "A Python package for an ensemble regressor combining multiple regression models."
+authors = ["mgolec"]
+packages = [
+    { include = "ensemble_regressor_by_mgolec", from = "src" }
+]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.21" 
+scikit-learn = "^1.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
