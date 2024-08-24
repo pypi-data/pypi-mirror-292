@@ -1,0 +1,38 @@
+
+[all]
+attrs>=16.1.0
+zipfile2>=0.0.12
+jsonschema>=2.5.1
+
+[all:sys_platform == "linux"]
+distro
+
+[all:sys_platform == "linux2"]
+distro
+
+[formats]
+zipfile2>=0.0.12
+jsonschema>=2.5.1
+attrs>=16.1.0
+
+[formats:sys_platform == "linux"]
+distro
+
+[formats:sys_platform == "linux2"]
+distro
+
+[platforms]
+attrs>=16.1.0
+
+[platforms:sys_platform == "linux"]
+distro
+
+[platforms:sys_platform == "linux2"]
+distro
+
+[test]
+haas
+distro
+parameterized
+testfixtures
+packaging>=20.0
