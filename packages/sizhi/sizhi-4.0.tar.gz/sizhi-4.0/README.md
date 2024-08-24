@@ -1,0 +1,60 @@
+sizhi模块by:pianshilengyubing
+
+项目描述：
+1.作用：
+此模块用来获取地图省市县乡镇四级行政区划的四至点位，默认左上右下，经度在前，纬度在后，请按该顺序编写代码。
+利用该模块，可以省去爬虫等工作时需要手动获取四至点位并转换坐标系的过程，便于节省代码，批量使用，还可使得代码更为可控。
+有获取行政区划的四至点位（包含全部区划的最小矩形即包络矩形）与自行输入俩种方式。
+1.6版本返回为字典
+2.0删除了api请求，全部更改为本地数据，并增加了乡镇级的四至获取。
+3.0增加了api可以下载行政区划shp和geojson文件，并且提供url以方便使用gdal的api对数据进行流式裁剪。由于用的自己服务器,如果后续占用资源过多,可能会随时删除
+2.使用：
+获取四至点位：
+有获取行政区划的四至点位与自行输入俩种方式。
+请求方式：box=sizhi.box()
+①按行政区划输入：
+	需要下载的行政区划中文，请务必加上市、区、县、乡、镇、街道后缀。可输入省市县，以及乡镇街道。eg:北京市、东城区、石门街镇、北王力乡、荷花街道。
+	通过区划获取，只对中国城市有效。如果区划有变动，需要手动更新dic。
+②自行输入：
+	自行在百度坐标拾取系统（http://api.map.baidu.com/lbsapi/getpoint/index.html）上拾取点位，左上右下，按提示输入。
+
+无论通过哪种方式输入均会提示选择后续代码的坐标系，坐标基于百度地图请输入1，高德腾讯地图请输入2，无偏移地图请输入3。其中1输出坐标系为bd09，2输出坐标系为gcj02，3输出坐标系为wgs84.
+获取shp、geojson和url：
+请求方式：bound=sizhi.bound()
+①获取shp、geojson：
+	需要下载的行政区划中文，请务必加上市、区、县、乡、镇、街道后缀。可输入省市县，以及乡镇街道。eg:北京市、东城区、石门街镇、北王力乡、荷花街道。
+②获取url：
+	返回url,用于流式裁剪，可以裁剪栅格数据等。
+	clip_command = [
+    'gdalwarp',
+    '-cutline', '/vsimem/temp_boundary.geojson',  # 使用 gdalwarp 的内存文件系统
+    '-crop_to_cutline',
+    '-co', 'COMPRESS=LZW',
+    '-dstnodata', '0',
+    intermediate_tif,
+    output_tiff_path
+	]
+	
+	# 首先将 GeoJSON 写入 /vsimem/temp_boundary.geojson
+	gdal.FileFromMemBuffer('/vsimem/temp_boundary.geojson', requests.get('http://api.ykghs.top/get_boundary/东城区').text)
+	subprocess.run(clip_command, check=True)
+
+3.示例：
+import sizhi
+box=sizhi.box()
+........
+........
+返回值：['北京市', [[115.42984813547287, 41.06702959551089], [117.5210935092895, 39.448668299439845]]]
+左上右下，俩个点位的经纬度列表。
+
+bound=sizhi.bound()
+........
+........
+返回值：0  POLYGON ((117.38335 40.22647, 117.38557 40.224...  ...   1.734812
+gdf的geometry表,可直接用于裁剪 gdf_clipped = gdf_shapefile.clip(bound.geometry.unary_union)
+
+
+4.适用：
+基于python3，可直接使用
+Python2也可以使用，但要注意的是通过Pip安装可能会报一些缺少模块的错误，建议直接复制sizhi.py到代码所在的文件夹进行调用。注意在python2环境中需要设置好编码，并在回复数字指令时，需要加引号，而回复区划名称是无需加引号。
+
