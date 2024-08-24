@@ -1,0 +1,27 @@
+[project]
+name = "data_generation_tool"
+version = "1.0.0"
+authors = [
+    { name="FRIARE", email="ird@friare.org" },
+]
+description = "A library that provides data generation functionality for AI and data science projects"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["AI", "data-generation", "fairness"]
+license = {text = "BSD-3-Clause"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages]
+find = {}
+
+[project.urls]
+Homepage = "https://github.com/friare/data_generation_tool"
+Issues = "https://github.com/friare/data_generation_tool/issues"
