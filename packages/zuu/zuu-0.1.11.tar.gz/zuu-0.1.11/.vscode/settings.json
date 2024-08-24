@@ -1,0 +1,14 @@
+{
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestArgs": [
+        "-v",        // Verbose output
+        "-s",        // Don't capture standard output and error
+        "tests",     // Specify the tests directory as the root for discovery
+        "-p",        // Pattern to match test files
+        "test*.py"   // Pattern for test file names
+    ],
+    "python.testing.pytestArgs": [
+        "tests"
+    ]
+}
