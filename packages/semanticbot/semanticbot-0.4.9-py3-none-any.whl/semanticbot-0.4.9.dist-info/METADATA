@@ -1,0 +1,104 @@
+Metadata-Version: 2.1
+Name: semanticbot
+Version: 0.4.9
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: beautifulsoup4
+Requires-Dist: pandas
+Requires-Dist: docx2txt
+Requires-Dist: langchain
+Requires-Dist: langchain-community
+Requires-Dist: langchain-text-splitters
+Requires-Dist: faiss-cpu
+Requires-Dist: numpy
+Requires-Dist: Pillow
+Requires-Dist: pytesseract
+Requires-Dist: PyPDF2
+
+
+# PDF and Web Content Query Package
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+This package provides functionality to process PDF files and web pages,
+allowing users to query their content using natural language processing
+techniques.
+
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Processing a PDF](#processing-a-pdf)
+  - [Crawling and Querying a Web Page](#crawling-and-querying-a-web-page)
+- [How It Works](#how-it-works)
+- [Dependencies](#dependencies)
+- [License](#license)
+- [Contributing](#contributing)
+- [Support](#support)
+
+## Features
+- Process PDF files and answer queries about their content
+- Crawl web pages and answer queries about their content
+- Utilizes advanced embedding techniques for accurate content matching
+
+## Installation
+
+To install this package, run:
+```bash
+pip install semanticbot
+```
+Replace `semanticbot` with the actual name of your package.
+
+## Usage
+
+### Processing a PDF
+
+To process a PDF file and query its content:
+
+```python
+from your_package_name import process_pdf
+
+pdf_path = "path/to/your/file.pdf"
+query = "What is the main topic of this document?"
+
+results = process_pdf(pdf_path, query)
+
+for chunk, similarity in results:
+    print(f"Similarity: {similarity}")
+    print(f"Text chunk: {chunk}
+")
+```
+
+### Crawling and Querying a Web Page
+
+To crawl a web page and query its content:
+
+```python
+from your_package_name import crawl_and_query
+
+url = "https://example.com"
+query = "What are the key features of the product?"
+
+results = crawl_and_query(url, query)
+
+for chunk, similarity in results:
+    print(f"Similarity: {similarity}")
+    print(f"Text chunk: {chunk}
+")
+```
+
+## How It Works
+
+- **For PDFs**: The package extracts text content from the file.
+- **For Web Pages**: It crawls the specified URL and extracts the text content.
+- The extracted text is split into manageable chunks.
+- The package uses HuggingFace's BGE embeddings to convert text chunks and the query into vector representations.
+- Cosine similarity is used to find the most relevant text chunks for the given query.
+- The top 5 most relevant chunks are returned along with their similarity scores.
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
