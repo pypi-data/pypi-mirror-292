@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: dotapi
+Version: 1.0.0
+Summary: The official Python library for the dotapi API
+Home-page: https://github.com/dotagent/dotapi
+License: Apache-2.0
+Author: DotAgent
+Author-email: contact@dotagent.ai
+Requires-Python: >=3.7.1,<4.0.0
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Provides-Extra: datalib
+Requires-Dist: anyio (>=3.5.0,<4.0.0)
+Requires-Dist: cached-property ; python_version < "3.8"
+Requires-Dist: distro (>=1.7.0,<2.0.0)
+Requires-Dist: httpx (>=0.23.0,<0.24.0)
+Requires-Dist: pydantic (>=1.9.0,<2.0.0)
+Requires-Dist: sniffio
+Requires-Dist: tqdm (>=4,<5)
+Requires-Dist: typing-extensions (>=4.7,<5.0)
+Project-URL: Repository, https://github.com/dotagent/dotapi
+Description-Content-Type: text/markdown
+
+# DotAPI Python API library
+
+The DotAPI Python library provides convenient access to the DotAPI REST API from any Python 3.7+
+application.
+
+## Installation
+
+```sh
+pip install dotapi
+```
+
+## Usage
+
+```python
+from dotapi import OpenAI
+
+client = OpenAI(
+    api_key="My DotAPI Key",  # defaults to os.environ.get("DOTROUTER_API_KEY")
+)
+
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": "Say this is a test",
+        }
+    ]
+    # No need to pass model, dotapi will decide the best model for your query!
+)
+```
