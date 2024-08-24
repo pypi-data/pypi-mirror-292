@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ayetms_cli_sau"
+version = "0.1.2"
+authors = [
+  { name="Saurabh Satapathy", email="saurabhsatapathy0@gmail.com" },
+]
+description = "A CLI app for AYETMS"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/saurabh190802/ayetms_cli"
+"Bug Tracker" = "https://github.com/saurabh190802/ayetms_cli/issues"
+
+[project.scripts]
+ayetms = "ayetms_cli:main"
