@@ -1,0 +1,25 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qbusmqttapi"
+version = "0.1.9"
+description = "MQTT API for Qbus Home Automation"
+readme = "README.md"
+authors = [{ name = "Koen Schockaert", email = "iot@qbus.be" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["qbus", "mqtt", "api"]
+dependencies = [
+]
+requires-python = ">=3.11"
+
+[project.urls]
+Homepage = "https://github.com/Qbus-iot/qbusmqttapi"
