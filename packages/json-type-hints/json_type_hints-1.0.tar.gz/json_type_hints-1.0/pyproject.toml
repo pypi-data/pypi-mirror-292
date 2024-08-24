@@ -1,0 +1,34 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "json-type-hints"
+version = "1.0"
+authors = [
+  { name="Darius Sirvidas", email="darius.sirvidas@cujo.com" },
+]
+description = "An extension of the standard json library"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/cujoai/json-type-hints"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/json_hints"]
+
+[tool.ruff]
+lint.select = ["ARG", "E", "F", "I", "PL", "RUF", "SIM", "UP"]
+lint.ignore = ["PLR0913"] # too many function args
+target-version = "py310"
+line-length = 100

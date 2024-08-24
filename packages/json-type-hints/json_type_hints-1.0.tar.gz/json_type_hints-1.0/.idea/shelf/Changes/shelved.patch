@@ -1,0 +1,40 @@
+Index: pyproject.toml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\n\n[project]\nname = \"json-type-hints\"\nversion = \"1.0\"\nauthors = [\n  { name=\"Darius Sirvidas\", email=\"darius.sirvidas@cujo.com\" },\n]\ndescription = \"An extension of the standard json library\"\nreadme = \"README.md\"\nrequires-python = \">=3.10\"\nclassifiers = [\n    \"License :: OSI Approved :: MIT License\",\n    \"Operating System :: OS Independent\",\n    \"Programming Language :: Python\",\n    \"Programming Language :: Python :: 3\",\n    \"Programming Language :: Python :: 3.10\",\n    \"Programming Language :: Python :: 3.11\",\n    \"Programming Language :: Python :: 3.12\",\n]\n\n[project.urls]\nHomepage = \"https://github.com/cujoai/json-type-hints\"\n\n[tool.hatch.build.targets.wheel]\npackages = [\"src/json_hints\"]\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pyproject.toml b/pyproject.toml
+--- a/pyproject.toml	(revision 074f80b7e83168deb0b6319ff8ca3ea53b38243f)
++++ b/pyproject.toml	(date 1724342075877)
+@@ -26,3 +26,29 @@
+ 
+ [tool.hatch.build.targets.wheel]
+ packages = ["src/json_hints"]
++
++[tool.ruff]
++#lint.ignore = [
++#    "E731",
++#    "E741",
++#    "PLR0911", # too many return statements
++#    "PLR0912", # too many branches
++#    "PLR0913", # too many function args
++#    "PLR0915", # too many statements
++#    "PLR2004", # magic values used in comparison
++#    "PLR5501", # use `elif` instead of `else` then `if`, to reduce indentation FIXME
++#    "PLW2901", # loop variable modified whilst looping FIXME
++#    "RUF012", # FIXME see `ruff rule RUF012`
++#]
++lint.select = [
++    "ARG",
++    "E",
++    "F",
++    "I",
++    "PL",
++    "RUF",
++    "SIM",
++    "UP",
++]
++target-version = "py310"
++line-length = 100
