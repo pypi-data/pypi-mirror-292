@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=72", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pplox"
+requires-python = ">=3.12"
+dynamic = ["version"]
+readme = "README.md"
+description = "Interpreter for the Lox programming language"
+authors = [
+    {name = "Karl Cagalawan", email = "karl.cagalawan@gmail.com"},
+]
+
+[project.scripts]
+pplox = "pplox.cli:main"
+
+[project.urls]
+Repository = "https://www.github.com/karlcaga/pplox"
+Issues = "https://github.com/karlcaga/pplox/issues"
+Documentation = "https://pplox.readthedocs.io/en/latest/"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pplox"]
+namespaces = false
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
+
+# Disabling reportShadowedImports because we have a parser class that shadows the stdlib parser module which we don't use
+[tool.pyright]
+reportShadowedImports = false
