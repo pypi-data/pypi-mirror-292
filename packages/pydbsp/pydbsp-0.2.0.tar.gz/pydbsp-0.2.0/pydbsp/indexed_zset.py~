@@ -1,0 +1,31 @@
+   class ZSet(Generic[T]):
+    inner: Dict[T, int]
+
+    def __init__(self, values: Dict[T, int]) -> None:
+        self.inner = values
+
+    def items(self) -> Iterable[Tuple[T, int]]:
+        return self.inner.items()
+
+    def __repr__(self) -> str:
+        return self.inner.__repr__()
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, ZSet):
+            return False
+
+        return self.inner == other.inner  # type: ignore
+
+    def __contains__(self, item: T) -> bool:
+        return self.inner.__contains__(item)
+
+    def __getitem__(self, item: T) -> int:
+        if item not in self:
+            return 0
+
+        return self.inner[item]
+
+    def __setitem__(self, key: T, value: int) -> None:
+        self.inner[key] = value
+
+ 
