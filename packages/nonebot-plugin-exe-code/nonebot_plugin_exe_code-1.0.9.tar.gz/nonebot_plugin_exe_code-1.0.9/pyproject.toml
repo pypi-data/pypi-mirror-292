@@ -1,0 +1,149 @@
+[project]
+name = "nonebot-plugin-exe-code"
+version = "1.0.9"
+description = "在聊天中执行带有上下文的 Python 代码"
+authors = [
+    { name = "wyf7685", email = "wyf7685@163.com" },
+]
+dependencies = [
+    "nonebot2>=2.3.3",
+    "nonebot-plugin-alconna>=0.51.2",
+    "nonebot-plugin-localstore>=0.6.0",
+    "nonebot-plugin-session>=0.3.1",
+    "nonebot-plugin-userinfo>=0.2.4",
+    "nonebot-plugin-waiter>=0.7.1",
+    "Pillow>=10.4.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+homepage = "https://github.com/wyf7685/nonebot-plugin-exe-code"
+repository = "https://github.com/wyf7685/nonebot-plugin-exe-code"
+documentation = "https://github.com/wyf7685/nonebot-plugin-exe-code"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "nonebot-adapter-console>=0.6.0",
+    "nonebot-adapter-onebot>=2.4.4",
+    "nonebot-adapter-qq>=1.4.4",
+    "nonebot-adapter-telegram>=0.1.0b17",
+    "fastapi>=0.112.0",
+    "httpx>=0.27.0",
+    "websockets>=12.0",
+    "uvicorn[standard]>=0.30.5",
+    "pytest>=8.3.2",
+    "pytest-asyncio>=0.23.8",
+    "pytest-mock>=3.14.0",
+    "nonebug>=0.3.7",
+    "coverage>=7.6.1",
+]
+
+[tool.pdm.scripts]
+test = "coverage run --source nonebot_plugin_exe_code -m pytest tests"
+
+[tool.pdm.scripts.lint]
+composite = [
+    "isort .",
+    "black .",
+    "pyright .",
+    "ruff check .",
+]
+
+[tool.pdm.scripts.report]
+composite = [
+    "coverage xml",
+    "coverage html",
+]
+
+[tool.black]
+line-length = 88
+target-version = [
+    "py310",
+]
+include = "\\.pyi?$"
+extend-exclude = ""
+
+[tool.isort]
+profile = "black"
+line_length = 88
+skip_gitignore = true
+src_paths = [
+    "nonebot_plugin_exe_code",
+    "tests",
+]
+extra_standard_library = [
+    "typing_extensions",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "F",
+    "W",
+    "E",
+    "UP",
+    "ASYNC",
+    "C4",
+    "T10",
+    "T20",
+    "PYI",
+    "PT",
+    "Q",
+    "RUF",
+]
+ignore = [
+    "C408",
+    "E402",
+    "RUF001",
+    "RUF002",
+    "RUF003",
+]
+
+[tool.pyright]
+pythonVersion = "3.10"
+pythonPlatform = "All"
+typeCheckingMode = "standard"
+reportShadowedImports = false
+disableBytesTypePromotions = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::RuntimeWarning",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@overload",
+    "except ImportError:",
+]
+omit = [
+    "*/compat.py",
+    "*/migrations/*",
+]
