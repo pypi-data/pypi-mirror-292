@@ -1,0 +1,17 @@
+[console_scripts]
+goose = goose.cli.main:cli
+
+[goose.cli]
+goose = goose.cli.main:goose_cli
+
+[goose.command]
+file = goose.command.file:FileCommand
+
+[goose.profile]
+default = goose.profile:default_profile
+
+[goose.toolkit]
+developer = goose.toolkit.developer:Developer
+github = goose.toolkit.github:Github
+repo_context = goose.toolkit.repo_context.repo_context:RepoContext
+screen = goose.toolkit.screen:Screen
