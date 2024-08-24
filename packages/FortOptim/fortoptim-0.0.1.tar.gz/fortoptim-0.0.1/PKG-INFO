@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: FortOptim
+Version: 0.0.1
+Summary: My custom optimization package
+Author: Maxime LE
+License: GPLv3+
+Keywords: optimization,f2py,fortran,python
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Fortran
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Intended Audience :: Science/Research
+Requires-Python: >=3.12
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: numba
+Requires-Dist: meson
+Requires-Dist: ninja
+Requires-Dist: pytest
+Provides-Extra: dev
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: pylint; extra == "dev"
+Requires-Dist: snakeviz; extra == "dev"
+Requires-Dist: fprettify; extra == "dev"
+Requires-Dist: build; extra == "dev"
