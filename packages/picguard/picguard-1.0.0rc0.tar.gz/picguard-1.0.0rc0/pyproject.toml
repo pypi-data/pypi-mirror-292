@@ -1,0 +1,22 @@
+[project]
+name = "picguard"
+version = "1.0.0.rc0"
+description = "Your pictures, your signature."
+authors = [
+    { name = "kjxbyz", email = "kjxbyz888@outlook.com" },
+]
+dependencies = []
+requires-python = ">=3.9"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
