@@ -1,0 +1,189 @@
+import argparse
+import asyncio
+import json
+import logging
+import sys
+from pathlib import Path
+
+from dotenv import load_dotenv
+from fastapi import FastAPI, Request
+from fastapi.concurrency import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi.routing import APIRoute
+from starlette.templating import Jinja2Templates
+
+sys.path.insert(
+    0, str(Path(f"{Path(__file__).resolve().parent}/../../mtmtrain").resolve())
+)
+sys.path.insert(
+    0, str(Path(f"{Path(__file__).resolve().parent}/../../mtmlib").resolve())
+)
+sys.path.insert(
+    0, str(Path(f"{Path(__file__).resolve().parent}/../../mtmdb").resolve())
+)
+
+
+from mtmai.api.main import api_router
+from mtmai.api.routes import home
+from mtmai.core.__version__ import version
+from mtmai.core.config import settings
+from mtmai.core.coreutils import is_in_gitpod, is_in_testing, is_in_vercel
+from mtmai.core.logging import setup_logging
+from mtmai.core.seed import init_database
+
+setup_logging()
+load_dotenv()
+logger = logging.getLogger(__name__)
+
+# print("python path ", sys.path)
+
+
+logger.info(f"[mtmai]({settings.VERSION}) app starting...")  # noqa: G004
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if not is_in_vercel():
+        init_database()
+    if is_in_gitpod() and not is_in_testing():
+        openapi = app.openapi()
+        with Path.open("mtmai/mtmai/openapi.json", "w") as f:
+            logger.info(
+                "导出本地openapi.json 文档, %s",
+                openapi.get("openapi", "unknown version"),
+            )
+            json.dump(openapi, f, indent=2)
+    yield
+
+
+def custom_generate_unique_id(route: APIRoute) -> str:
+    if len(route.tags) > 0:
+        return f"{route.tags[0]}-{route.name}"
+    return f"{route.name}"
+
+
+openapi_tags = [
+    {
+        "name": "admin",
+        "description": "这部分API与管理员操作相关, 包括用户管理和权限控制等功能. ",
+    },
+]
+
+app = FastAPI(
+    # docs_url=None,
+    # redoc_url=None,
+    title=settings.PROJECT_NAME,
+    description="mtmai description(group)",
+    version=version,
+    lifespan=lifespan,
+    generate_unique_id_function=custom_generate_unique_id,
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    swagger_ui_parameters={
+        "syntaxHighlight": True,
+        "syntaxHighlight.theme": "obsidian",
+    },
+    openapi_tags=openapi_tags,
+)
+templates = Jinja2Templates(directory="templates")
+
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(request: Request, exc: Exception):  # noqa: ARG001
+    return JSONResponse(status_code=500, content={"detail": str(exc)})
+
+
+logger.info("setup routes")
+app.include_router(home.router)
+app.include_router(api_router, prefix=settings.API_V1_STR)
+
+
+if settings.OTEL_ENABLED:
+    from mtmai.mtlibs import otel
+
+    otel.setup_otel(app)
+
+if settings.BACKEND_CORS_ORIGINS:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[
+            str(origin).strip("/") for origin in settings.BACKEND_CORS_ORIGINS
+        ],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+if not is_in_vercel():
+    from mtmai.api.serve import rproxy
+
+    app.include_router(
+        rproxy.router,
+    )
+
+
+async def serve():
+    import uvicorn
+
+    config = uvicorn.Config(app, host="0.0.0.0", port=8000)  # noqa: S104
+    server = uvicorn.Server(config)
+    await server.serve()
+
+
+def main():
+    parser = argparse.ArgumentParser(description="mtmai tool")
+    parser.add_argument(
+        "command",
+        help="Specify the command to run, e.g., 'init' to run initialization.",
+        nargs="?",
+        default="serve",
+    )
+
+    args = parser.parse_args()
+    if args.command == "init":
+        from mtmai.mtlibs import dev_helper
+
+        dev_helper.init_project()
+
+    elif args.command == "clean":
+        from mtmai.mtlibs import dev_helper
+
+        dev_helper.run_clean()
+
+    elif args.command == "release":
+        from mtmai.mtlibs import dev_helper
+
+        dev_helper.release_py()
+    elif args.command == "dp":
+        from mtmai.mtlibs import dev_helper
+
+        dev_helper.run_deploy()
+    elif args.command == "docker_build_base":
+        from mtmai.mtlibs import dev_helper
+
+        dev_helper.docker_build_base()
+
+    elif args.command == "release_npm":
+        from mtmai.mtlibs import dev_helper
+
+        dev_helper.release_npm()
+    elif args.command == "dp_cfpage":
+        from mtmai.mtlibs import dev_helper
+
+        dev_helper.dp_cfpage()
+    elif args.command == "gen":
+        from mtmai.mtlibs import dev_helper
+
+        dev_helper.gen()
+
+    elif args.command == "test2":
+        from mtmlib import github
+
+        github.read_git_content_example()
+
+    else:
+        asyncio.run(serve())
+
+
+if __name__ == "__main__":
+    main()
