@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: pplox
+Version: 0.0.3
+Summary: Interpreter for the Lox programming language
+Author-email: Karl Cagalawan <karl.cagalawan@gmail.com>
+Project-URL: Repository, https://www.github.com/karlcaga/pplox
+Project-URL: Issues, https://github.com/karlcaga/pplox/issues
+Project-URL: Documentation, https://pplox.readthedocs.io/en/latest/
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+
+Interpreter for the Lox programming language
+
+# Getting Started
+
+`pip install pplox`
+
+Create your lox file. For example, `parentheses.lox` 
+
+```
+(()
+```
+
+Tokenize the file with `pplox --tokenize parentheses.lox`.
+See the [documentation](https://pplox.readthedocs.io/en/latest/) for more details.
