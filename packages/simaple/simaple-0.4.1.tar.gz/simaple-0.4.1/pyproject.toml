@@ -1,0 +1,115 @@
+[tool.poe.tasks]
+_black-check = "black --check simaple tests"
+_isort-check = "isort --check-only simaple tests"
+formatting-check = ["_black-check", "_isort-check"]
+
+_black = "black simaple tests scripts"
+_isort = "isort simaple tests scripts"
+format = ["_black", "_isort"]
+
+_ruff = "ruff simaple tests scripts"
+lint = ["_ruff"]
+
+coverage = "pytest --cov=simaple"
+coverage-report = "pytest --cov=simaple --cov-report=xml"
+
+unittest = "pytest -vv -x tests/"
+test_app = "pytest -vv -x test_app/"
+test_data = "pytest -vv -x test_data/"
+rsctest = "pytest -vv -x test_resource/"
+typetest = "mypy simaple tests"
+simulatetest = "pytest -vv -x tests/simulate"
+clean = "rm -rf **/__pycache__ .coverage .mypy_cache .pytest_cache"
+web = "python launcher.py web"
+test = ["coverage", "typetest", "lint", "formatting-check"]
+
+[tool.black]
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+skip = "third_party"
+
+[tool.pytest.ini_options]
+addopts = "-vv -x"
+testpaths = ["tests", "test_app", "test_data"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+[tool.coverage.xml]
+output = "coverage-reports/coverage.xml"
+
+[tool.mypy]
+warn_return_any = true
+warn_unused_configs = true
+incremental = false
+disable_error_code = "misc"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+    "sklearn.linear_model",
+    "sklearn.pipeline",
+    "sklearn.preprocessing",
+    "sqlalchemy",
+    "sqlalchemy.orm",
+    "functional",
+]
+
+[tool.poetry]
+name = "simaple"
+version = "0.4.1"
+description = "Maplestory calculation / Simulation library"
+authors = ["meson324 <meson324@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/simaple-team/simaple"
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.13"
+pydantic = "^2.4.2"
+loguru = "^0.5.3"
+PyYAML = "^6.0"
+numpy = "^1.22.3"
+scikit-learn = "^1.0.2"
+aiohttp = "^3.10.1"
+requests = "^2.26.0"
+fastapi = "^0.110.1"
+fire = "^0.4.0"
+uvicorn = "^0.20.0"
+dependency-injector = "^4.40.0"
+SQLAlchemy = "^1.4.45"
+scipy = "^1.11.2"
+pydantic-settings = "^2.0.3"
+lark = "^1.1.7"
+pyfunctional = "^1.5.0"
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.10.0"
+jupyter = "^1.0.0"
+pycln = "^2.1.2"
+yappi = "^1.4.0"
+snakeviz = "^2.1.1"
+types-requests = "^2.31.0.1"
+mypy = "1.8.0"
+ruff = "^0.1.9"
+Sphinx = "^5.1.1"
+sphinx-rtd-theme = "^1.0.0"
+readthedocs-sphinx-ext = "^2.2.0"
+isort = "^5.9.3"
+coverage = "^6.0.2"
+black = "^24.4"
+pytest-cov = "^3.0.0"
+build = "^0.8.0"
+twine = "^5.0.1"
+pytest = "7.4.2"
+pytest-asyncio = "^0.23.2"
+types-PyYAML = "^6.0.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
