@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "felesviz"
+version = "0.2.3"
+description = "Acciones para facilitar la vida de un científico de datos"
+readme = "README.md"
+authors = [{ name = "Miguel Feles"}]
+license = { file = "LICENSE" }
+ 
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["Annotation", 
+      "Automated Annotation", 
+      "OpenCV Annotate",
+      "Image Annotation Tool",]
+ 
+dependencies = [ "opencv-python", "natsort", ]
+ 
+requires-python = ">=3.5"
