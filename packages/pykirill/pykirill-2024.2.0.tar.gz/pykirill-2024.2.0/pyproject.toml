@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pykirill"
+description = "🐗 A portable collection of functions for scientific exploration"
+version = "2024.2.0"
+requires-python = ">= 3.10"
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "seaborn",
+    "pandas",
+    "scikit-learn",
+]
+authors = [{ name = "Kirill Denisov", email = "kirill.denisov@gero.ai" }]
+maintainers = [{ name = "Kirill Denisov", email = "kirill.denisov@gero.ai" }]
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "LICENSE", content-type = "text/plain" }
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.optional-dependencies]
+development = ["pytest", "ruff", "mypy", "ipython", "build"]
+documentation = ["mkdocs-material", "mkdocstrings[python]", "mkdocs-jupyter"]
+pca = ["scikit-learn"]
+
+[project.urls]
+Homepage = "https://kirilledition.github.io/pykirill/"
+Documentation = "https://kirilledition.github.io/pykirill/"
+Repository = "https://github.com/kirilledition/pykirill"
+
+[project.scripts]
+pykirill = "pykirill:cli.main"
+
+[tool.setuptools]
+package-dir = { "" = "source" }
+packages = { find = { where = ["source"] } }
+include-package-data = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "pykirill"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["source/pykirill", "tests"]
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py312"

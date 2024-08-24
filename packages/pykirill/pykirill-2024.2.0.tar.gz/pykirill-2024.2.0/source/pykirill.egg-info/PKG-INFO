@@ -1,0 +1,113 @@
+Metadata-Version: 2.1
+Name: pykirill
+Version: 2024.2.0
+Summary: 🐗 A portable collection of functions for scientific exploration
+Author-email: Kirill Denisov <kirill.denisov@gero.ai>
+Maintainer-email: Kirill Denisov <kirill.denisov@gero.ai>
+License: MIT License
+        
+        Copyright (c) 2024 Kirill Denisov
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://kirilledition.github.io/pykirill/
+Project-URL: Documentation, https://kirilledition.github.io/pykirill/
+Project-URL: Repository, https://github.com/kirilledition/pykirill
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Provides-Extra: development
+Requires-Dist: pytest; extra == "development"
+Requires-Dist: ruff; extra == "development"
+Requires-Dist: mypy; extra == "development"
+Requires-Dist: ipython; extra == "development"
+Requires-Dist: build; extra == "development"
+Provides-Extra: documentation
+Requires-Dist: mkdocs-material; extra == "documentation"
+Requires-Dist: mkdocstrings[python]; extra == "documentation"
+Requires-Dist: mkdocs-jupyter; extra == "documentation"
+Provides-Extra: pca
+Requires-Dist: scikit-learn; extra == "pca"
+
+# 🐗 pykirill
+
+[Documentation](https://kirilledition.github.io/pykirill/)
+
+This is my personal Python package, `pykirill`, which includes a collection of utilities and functions that I frequently use during scientific exploration. This package is especially designed to be portable, making it suitable for environments like Google Colab where setup needs to be minimal.
+
+## Installation
+
+To install `pykirill`, you can use pip directly from GitHub. This method ensures you always get the latest version. Here are the steps to follow:
+
+```bash
+pip install pykirill
+pip install git+https://github.com/kirilledition/pykirill.git
+```
+
+## Usage
+
+Here are quick examples of how to use `pykirill`:
+
+### Plotting
+```python
+from pykirill import plotting
+
+plotting.setup()
+
+axm = plotting.SubplotsManager(4)
+
+for trajectory_fragment in range(4):
+  frame_values = ...
+
+  ax = axm.nextax()
+  ax.hist(frame_values)
+  ax.set_title(f"Histogram of intensity values of {trajectory_fragment}")
+  ax.set_xlabel("Intensity")
+  ax.set_ylabel("Frequency")
+
+axm.show()
+```
+
+### Transforms
+```python
+from pykirill import transforms
+
+# For NumPy arrays
+x = np.array([1, 2, 3, 4], dtype=np.float32)
+log_scaled_x = transforms.log_scale(x)
+
+# For Pandas DataFrames
+log_scaled_df = df.apply(transforms.log_scale)
+```
+
+## License
+
+`pykirill` is open-sourced under the MIT license. The details can be found in the [LICENSE](https://github.com/kirilledition/pykirill/blob/main/LICENSE) file.
