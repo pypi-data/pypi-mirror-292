@@ -1,0 +1,81 @@
+Metadata-Version: 2.1
+Name: certbot-dns-simply
+Version: 0.1.2
+Summary: Simply.com DNS Authenticator plugin for Certbot
+Author-email: Johan Nenzén <johan.nanzen@gmail.com>
+License: Apache-2.0
+Project-URL: Homepage, https://github.com/JohNan/certbot-dns-simply
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Security
+Classifier: Topic :: System :: Installation/Setup
+Classifier: Topic :: System :: Networking
+Classifier: Topic :: System :: Systems Administration
+Classifier: Topic :: Utilities
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: certbot
+Requires-Dist: requests
+Requires-Dist: requests-mock
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: tox; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+
+# certbot-dns-simply
+
+Simply.com DNS Authenticator plugin for Certbot.
+
+## Installation
+
+```sh
+pip install certbot-dns-simply
+```
+
+## Usage
+
+To start using DNS authentication for the Simply.com DNS API, pass the following arguments on certbot's command line:
+
+| Option                       | Description                                         |
+|------------------------------|-----------------------------------------------------|
+| `--authenticator dns-simply` | select the authenticator plugin (Required)          |
+| `--dns-simply-credentials`   | Simply.com DNS API credentials INI file. (Required) |
+
+## Credentials
+
+Username is the Simply.com account-number (Sxxxxxx) and the password is the API-KEY for the specific account.
+The API-Key assigned to your Simply.com account can be found in your Simply.com Controlpanel.
+Please make sure to use the absolute path - some users experienced problems with relative paths.
+
+An example `credentials.ini` file:
+
+```ini
+dns_simply_account_name = Sxxxxxx
+dns_simply_api_key = DSHJdsjh2812872sahj
+```
+
+## Examples
+To acquire a certificate for `example.com`
+
+```bash
+certbot certonly \
+ --authenticator dns-simply \
+ --dns-simply-credentials /path/to/my/credentials.ini \
+ -d example.com
+```
+
+To acquire a certificate for ``*.example.com``
+```bash
+   certbot certonly \
+     --authenticator dns-simply \
+     --dns-simply-credentials /path/to/my/credentials.ini \
+     -d '*.example.com'
+```
