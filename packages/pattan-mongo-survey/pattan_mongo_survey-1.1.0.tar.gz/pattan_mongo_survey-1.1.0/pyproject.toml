@@ -1,0 +1,31 @@
+[project]
+name = "pattan-mongo-survey"
+version = "1.1.0"
+authors = [
+  { name="Markus Weltin", email="mweltin@pattan.net" },
+]
+maintainers = [
+  { name="Markus Weltin", email="mweltin@pattan.net" },
+]
+description = "Support a surveyJS frontend with a mongodb backend"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pymongo>=4.8.0",
+]
+
+keywords = ["mongo", "surveyJS", ]
+[project.urls]
+Homepage = "https://github.com/pattan-net/pattan-mongo-survey"
+Important = "https://www.youtube.com/watch?v=xvFZjo5PgG0"
+Documentatin = "https://github.com/pattan-net/pattan-mongo-survey/tree/s1300/docs"
+
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
