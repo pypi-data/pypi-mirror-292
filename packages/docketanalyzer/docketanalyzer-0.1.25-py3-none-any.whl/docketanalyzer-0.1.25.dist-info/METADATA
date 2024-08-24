@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: docketanalyzer
+Version: 0.1.25
+Home-page: https://github.com/docketanalyzer/docketanalyzer
+Author: Nathan Dahlberg
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: pandas
+Requires-Dist: pathlib
+Requires-Dist: python-dotenv
+Requires-Dist: regex
+Requires-Dist: requests
+Requires-Dist: simplejson
+Requires-Dist: toolz
+Requires-Dist: tqdm
+Provides-Extra: all
+Requires-Dist: docketanalyzer-chat >=0.0.1 ; extra == 'all'
+Requires-Dist: docketanalyzer-core >=0.0.8 ; extra == 'all'
+Requires-Dist: docketanalyzer-ocr >=0.0.1 ; extra == 'all'
+Requires-Dist: docketanalyzer-pipelines >=0.0.8 ; extra == 'all'
+Provides-Extra: chat
+Requires-Dist: docketanalyzer-chat >=0.0.1 ; extra == 'chat'
+Provides-Extra: core
+Requires-Dist: docketanalyzer-core >=0.0.8 ; extra == 'core'
+Provides-Extra: ocr
+Requires-Dist: docketanalyzer-ocr >=0.0.1 ; extra == 'ocr'
+Provides-Extra: pipelines
+Requires-Dist: docketanalyzer-pipelines >=0.0.8 ; extra == 'pipelines'
+
