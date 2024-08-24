@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: eddy-footprint
+Version: 0.2.3
+Summary: Footprint flux models for the interpretation of flux tower measurements
+Author-email: Eddy-footprint developers <ludda.ludwig@columbia.edu>
+License: MIT
+Project-URL: documentation, https://eddy-footprint.readthedocs.io/en/latest/
+Project-URL: repository, https://github.com/arctic-carbon/eddy-footprint
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: xarray
+Requires-Dist: scipy
+Provides-Extra: dev
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+
+# eddy-footprint: Eddy covariance footprint modeling
+
+A Python library for creating eddy covariance flux footprints using multiple analytical models.
+
+## Installation
+
+eddy-footprint can be installed from PyPI as:
+
+    python -m pip install eddy_footprint
+
+Or from source as:
+
+    python -m pip install git+https://github.com/arctic-carbon/eddy-footprint.git
+
+Note:
+The required dependencies installed with eddy-footprint are [Xarray](https://xarray.dev/),
+[SciPy](https://www.scipy.org/), and [NumPy](https://numpy.org/).
+
+## Documentation
+
+Documentation is hosted on ReadTheDocs: https://eddy-footprint.readthedocs.io/en/latest
+
+## license
+
+All the code in this repository is [MIT](https://choosealicense.com/licenses/mit/) licensed.
