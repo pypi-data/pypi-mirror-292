@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: simpler-core
+Version: 0.2.0
+Summary: Core library functions for adding new simpler conversion modules
+Author-email: Philipp Schmurr <philipp.schmurr@kit.edu>
+Maintainer-email: Philipp Schmurr <philipp.schmurr@kit.edu>
+Project-URL: Homepage, https://github.com/Cpprentice/FAIRlead-model-extraction
+Project-URL: Bug Reports, https://github.com/Cpprentice/FAIRlead-model-extraction/issues
+Project-URL: Source, https://github.com/Cpprentice/FAIRlead-model-extraction
+Keywords: entity-relationship-model,ER,extraction,model,simpler
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: pydot ~=2.0.0
+Requires-Dist: simpler-model ==0.2.2
+Requires-Dist: PyYAML ~=6.0.1
+Requires-Dist: networkx ~=3.3
+Requires-Dist: owlready2 ~=0.46
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-mock ; extra == 'test'
+Requires-Dist: coverage ; extra == 'test'
+
+# Simpler Core
+This package contains some core functionalities used within the simple ER schema extraction [project](https://github.com/Cpprentice/FAIRlead-model-extraction).
+
+## Plugin system
+
+To handle different types of data sources - there is a plugin system that allows to simply add new python modules with a given name pattern of `simpler_plugin_*` that will automatically be imported and made available in the API or CLI.
+The base classes for each plugin are included in this package.
+
+
+## ER model schema loading and merging
+
+An ER model needs to be loadable from YAML and also user customizations need to be loadable from partial files to form the ER model that is used for any following extraction process.
+
+## Graphviz diagram creation
+
+This package includes the basic functionality to create dot files or svg files if graphviz can be found in the path.
+
+## Owlready2 utils
+
+Some utilities to extract ER concepts from OWL data.
+
+## Storage system
+
+To run the API it is important to provide some means of data storage. Both a base class and multiple implementations
+for storage systems exist.
+
+## Cardinality utils
+
+Some utility functions that can be reused by plugins to handle cardinalities properly.
+
