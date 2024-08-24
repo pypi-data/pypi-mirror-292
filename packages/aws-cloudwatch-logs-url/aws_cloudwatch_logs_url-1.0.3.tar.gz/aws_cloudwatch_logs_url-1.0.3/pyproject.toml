@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "aws-cloudwatch-logs-url"
+version = "1.0.3"
+description = "generate AWS CloudWatch Logs URL"
+authors = ["sinofseven <em.s.00001@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/sinofseven/aws-cloudwatch-logs-url-python"
+license = "MIT"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities"
+]
+
+[tool.poetry.dependencies]
+python = ">= 3.8.12"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+isort = "^5.13.2"
+pytest = "^8.3.1"
+flake8 = "^7.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
