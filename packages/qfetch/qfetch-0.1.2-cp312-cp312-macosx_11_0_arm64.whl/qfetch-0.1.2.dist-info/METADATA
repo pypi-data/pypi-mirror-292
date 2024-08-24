@@ -1,0 +1,47 @@
+Metadata-Version: 2.3
+Name: qfetch
+Version: 0.1.2
+Classifier: Programming Language :: Rust
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Summary: 股票个人量化交易数据获取模块
+Keywords: quantitative trading,stock,rust,automatic trading
+Author-email: buf1024 <buf1024@gmail.com>
+Maintainer-email: buf1024 <buf1024@gmail.com>
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+
+# 数据获取
+
+直接通过pip安装即可:
+
+```shell
+pip install -U qfetch
+```
+
+数据获取模块[qfetch](https://pypi.org/project/qfetch/)是相对独立的模块，主要功能是从公开的数据源获取数据。[qfetch](https://pypi.org/project/qfetch/)提供两种api，一种是异步版本，以`fetch_`开头，另外一种是阻塞版本，以`block_fetch_` 开头。
+
+Rust编写的模块和函数是通过`qfetch.qfetch`导出，该模块原样导出Rust 封装的函数(.pyi\\ 文件)。一般情况下，是不需要使用该包下面的函数，在`qfetch.fetch`下面有此包的包装函数，包装函数除了可返回原始的Rust输出外，也提供可选装换为pd.Dataframe格式的参数。如：
+
+```shell
+
+In [1]: import qfetch as fetch
+
+In [2]: await fetch.fetch_trade_date()
+Out[2]: 
+      trade_date
+0       20120104
+1       20120105
+2       20120106
+3       20120109
+4       20120110
+...          ...
+8306    20021225
+8307    20021226
+8308    20021227
+8309    20021230
+8310    20021231
+
+[8311 rows x 1 columns]
+```
+
