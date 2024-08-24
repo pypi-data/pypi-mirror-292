@@ -1,0 +1,12 @@
+[dependencies]
+bincode = {workspace = true}
+pyo3 = {workspace = true, optional = true}
+serde = {workspace = true}
+
+[features]
+python = ["dep:pyo3"]
+
+[package]
+edition = {workspace = true}
+name = "common-py-serde"
+version = {workspace = true}
