@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: lchat
+Version: 0.1.4
+Summary: Hugging Face inference chat CLI client.
+Home-page: https://github.com/abdrysdale/lchat
+License: GPL-3.0-or-later
+Author: Alex Drysdale
+Author-email: alexander.drysdale@wales.nhs.uk
+Requires-Python: >=3.12,<4.0
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: huggingface-hub (>=0.24.5,<0.25.0)
+Project-URL: Repository, https://github.com/abdrysdale/lchat
+Description-Content-Type: text/markdown
+
+# LChat
+
+Large Language Model (LLM) chat command line inteferace based using [HuggingFace](https://huggingface.co/).
+
+
+## Installation
+
+```
+pip install lchat
+```
+
+## Usage
+
+You will likely need to login via [huggingface_hub](https://huggingface.co/docs/huggingface_hub/quick-start#authentication).
+
+The usage is very simple, to enter the chat prompt run:
+
+```
+python -m lchat
+```
+
+The arguments that can be passed to lchat are as follows:
+
+```
+usage: lchat [-h] [-p PROMPT] [-m MODEL] [-l]
+
+Sends an input to a HuggingFace LLM.
+
+options:
+  -h, --help            show this help message and exit
+  -p PROMPT, --prompt PROMPT
+                        Type of prompt to use. '' for none, 'email' for email.
+  -m MODEL, --model MODEL
+                        Hugging Face model to use.
+  -l, --list            List default prompts.
+```
+
+- To quit from the chat prompt, type `q` or `quit`.
+- To erase all message history type `c` or `clear`.
+- To show the help menu, type `h` or `help`.
+
+Chats are not saved between sessions.
+
+The `>>>` prompt is the prompt that awaits your input.
+The `['.'] ... ` prompt is the LLM response.
+
+## License
+
+This project is licensed under the GNU GPL v3 license which can be found [here](LICENSE).
+
+## Contributing
+
+Issues and pull requests welcome!
+
