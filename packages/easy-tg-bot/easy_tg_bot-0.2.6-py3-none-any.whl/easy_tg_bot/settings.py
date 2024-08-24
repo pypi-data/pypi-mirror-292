@@ -1,0 +1,47 @@
+import os
+from dotenv import load_dotenv
+
+from .utils.init_templates import initialize_file_from_draft
+
+
+# Get sectret
+def get_secret_by_name(name: str, default=None):
+    result = os.getenv(name)
+    if not result and default is None: 
+        if not os.path.exists(os.path.join(os.getcwd(), ".env")):
+            initialize_file_from_draft(".env", os.getcwd())
+            raise Exception("No .env file found in the current working directory. Please fill .env file.")
+        env_result = load_dotenv(dotenv_path=os.path.join(os.getcwd(), ".env"), override=True, verbose=True)
+        if not env_result:
+            raise ValueError("Error initializing .env")
+        result = os.getenv(name)
+        if not result:
+            raise ValueError(f"Error initializing env variable: {name}")
+    return result or default
+
+# TG creds
+TG_BOT_NAME = get_secret_by_name("TG_BOT_NAME")
+TG_BOT_TOKEN = get_secret_by_name("TG_BOT_TOKEN")
+
+# Optional
+TG_TIME_ZONE = get_secret_by_name("TG_TIME_ZONE", "")
+
+# File storage/mount
+TG_FILE_FOLDER_PATH = get_secret_by_name("TG_FILE_FOLDER_PATH", "")
+
+# Webhook
+TG_WEBHOOK_URL = get_secret_by_name(
+    "TG_WEBHOOK_URL", ""
+)
+TG_WEBHOOK_HOST = get_secret_by_name("TG_WEBHOOK_HOST", "0.0.0.0")
+TG_WEBHOOK_PORT = int(get_secret_by_name("TG_WEBHOOK_PORT", "80"))
+
+# Roles
+DEFAULT_ROLES_DICT = {}
+
+# Possible values: superadmin, admin, user, banned
+def default_roles(roles):
+    DEFAULT_ROLES_DICT.update({str(get_secret_by_name(k)): v for k, v in roles.items()})
+
+def get_default_role(user_id):
+    return DEFAULT_ROLES_DICT.get(str(user_id), "user")
