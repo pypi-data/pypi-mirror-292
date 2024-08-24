@@ -1,0 +1,82 @@
+Metadata-Version: 2.1
+Name: s2v-client
+Author: Reeeliance IM GmbH
+Description-Content-Type: text/markdown
+Summary: Stream2Vault Client
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Requires-Dist: click~=8.1.7
+Requires-Dist: google-auth~=2.34.0
+Requires-Dist: httpx~=0.27.0
+Version: 0.2.1
+
+# Stream2Vault Client
+
+The Stream2Vault generator client.
+
+## Installation
+
+Install the client using `pip`: 
+
+```shell
+pip install s2v-client
+```
+
+## Usage
+
+Make sure to have your credentials pointed at by the environment variable `GOOGLE_APPLICATION_CREDENTIALS`.
+
+Prepare your vault model in a directory structure like this:
+
+```
+MY_VAULT
+├── configuration
+│   ├── data_vault_settings.yaml
+│   ├── source_system_settings.yaml
+│   └── tags
+│       └── pii.yaml
+├── dv_model
+│   ├── HUBS
+│   │   ├── HUB_BILLING.yaml
+│   │   ├── HUB_COMPANY_CODE.yaml
+│   │   ├── HUB_COMPANY.yaml
+│   │   └── HUB_CUSTOMER.yaml
+│   ├── LINKS
+│   │   └── LND_L_BILLING_HEADER.yaml
+│   ├── REFERENCES
+│   │   └── REF_DUMMY.yaml
+│   └── SATELLITES
+│   │   └── LDS_example.yaml
+└── sources
+    └── information_schema.csv
+```
+
+### Command Line
+
+Using the CLI, you can have the S2V generator create the vault for you:
+
+```shell
+export S2V_GENERATE_URL=https://the-s2v-server
+s2v generate -i MY_VAULT/ -o output/
+```
+
+The results have been written to the `output/` directory.
+
+Run `s2v generate --help` to learn more about possible options.
+
+### Library
+
+The S2V client can also be embedded in your Python application:
+
+```python
+import pathlib
+from s2v.client import S2VClient
+
+s2v_client = S2VClient.create("https://the-s2v-server")
+input_dir = pathlib.PurePath("MY_VAULT")
+output_dir = pathlib.PurePath("output")
+s2v_client.generate(input_dir, output_dir)
+```
+
