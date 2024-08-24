@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-bedrock-titan-image"
+version = "1.0.0"
+description = "An LLM plugin for supporting Amazon Titan image generators on Amazon Bedrock."
+readme = "README.md"
+authors = [{name = "Constantin Gonzalez"}]
+license = {text = "Apache-2.0"}
+classifiers = [
+    "License :: OSI Approved :: Apache Software License"
+]
+dependencies = [
+    "llm >= 0.15",
+    "pydantic >= 2.8.0",
+    "boto3 >=1.35.0",
+    "webcolors >= 24.8.0",
+    "Pillow >= 10.4.0",
+]
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/zalez/llm-bedrock-titan-image"
+Changelog = "https://github.com/zalez/llm-bedrock-titan-image/releases"
+Issues = "https://github.com/zalez/llm-bedrock-titan-image/issues"
+
+[project.entry-points.llm]
+bedrock_image_titan = "llm_bedrock_titan_image"
