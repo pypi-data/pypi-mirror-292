@@ -1,0 +1,44 @@
+## marketplace_handler
+
+Package to interact with marketplaces.
+
+## Installation
+
+### pip
+```bash
+pip install attributes_serializer
+```
+
+### poetry
+```bash
+poetry add attributes_serializer
+```
+
+## Usage
+### Serialize `sale_prices` for collector entity
+```python
+from attributes_serializer import SalePrices
+
+sale_prices = SalePrices(colletor_product['sale_prices'])
+
+# get all attributes' names as list of strings
+print(sale_prices.attributes)
+
+entry = sale_prices.manualMinPriceOzon
+print(entry.name)
+print(entry.value)
+print(entry.id)
+
+for attribute in sale_prices.attributes:
+    print(getattr(sale_prices, attribute))
+
+    
+entry = sale_prices.get("manualMinPriceOzon")
+print(entry.name)
+print(entry.value)
+print(entry.id)
+
+for attribute in sale_prices.attributes:
+    print(sale_prices.get(attribute))
+
+```
