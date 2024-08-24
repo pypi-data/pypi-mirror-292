@@ -1,0 +1,92 @@
+Metadata-Version: 2.1
+Name: jami-commander
+Version: 0.3.0
+Summary: A simple command-line Jami (jami.net) client
+Home-page: https://github.com/8go/jami-commander
+Author: 8go
+Project-URL: Bug Tracker, https://github.com/8go/jami-commander/issues
+Project-URL: repository, https://github.com/8go/jami-commander
+Keywords: Jami,chat,messaging,CLI
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Topic :: Communications :: Chat
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: argparse
+Requires-Dist: asyncio
+Requires-Dist: async-timeout
+Requires-Dist: dbus-python
+Requires-Dist: emoji
+Requires-Dist: errno
+Requires-Dist: functools
+Requires-Dist: hashlib
+Requires-Dist: json
+Requires-Dist: logging
+Requires-Dist: markdown
+Requires-Dist: os
+Requires-Dist: pkg-resources
+Requires-Dist: PyGObject
+Requires-Dist: random
+Requires-Dist: re
+Requires-Dist: select
+Requires-Dist: setuptools
+Requires-Dist: signal
+Requires-Dist: subprocess
+Requires-Dist: sys
+Requires-Dist: tempfile
+Requires-Dist: textwrap
+Requires-Dist: threading
+Requires-Dist: time
+Requires-Dist: traceback
+Requires-Dist: typing
+Requires-Dist: urllib
+Requires-Dist: uuid
+
+# PRE-INSTALLATION
+
+Before you install `jami-commander` with `pip install jami-commander`
+you *must* have followed these prerequisites steps!
+
+- You must have Python 3.12+ installed. 3.11 might work.
+- Run `python -V` to get your Python version number.
+- Read the README.md file to see how to install and run Jami daemon `jamid`. 
+
+# jami-commander
+
+Jami (https://jami.net) is a privacy-preserving peer-to-peer communication application available on many platforms. `Jami` is in concept similar to `Keet` (https://keet.io), both are peer-to-peer and use servers as little as possible. As a chat app it is similar to `Matrix` (https://http://matrix.org) as both can be self-hosted.
+
+`jami-commander` (`jc` for short) is a simple but convenient CLI-based Jami client app for setting up accounts and swarms as well as sending.
+
+`jami-commander` helps to set up a Jami account, configure the account and send messages and files to Jami peers. It provides the minimal set of commands to use `Jami` from the CLI.
+
+The objective of `jami-commander` is to:
+
++ be able to use `Jami` from the terminal, the CLI, via SSH, and on head-less servers without monitor.
++ to use minimal resources. No Jami front-end (GUI) needs to be installed.
++ to be able to run it e.g. on a headless Raspberry Pi
++ to be able to perform minimal operations to run a bot, e.g. to publish daily weather information
++ be simple. It is written in Python.
+
+Functionality is minimal. You are invited to help to improve `jami-commander`. Pull requests are welcome.
+
+# Installation and Prerequisites
+
++ `jami-commander` is only a client. It requires the Jami `jamid` daemon to run to performs the work.
++ install `jami-commander`
+  + `pip jami-commander`
+  + see also https://pypi.org/pypi/jami-commander
++ install Jami daemon `jamid` as follows:
+  + e.g. on Fedora 40, similar on Ubuntu 24.04, etc.
+  + `sudo dnf-3 config-manager --add-repo https://dl.jami.net/stable/fedora_40/jami-stable.repo # add the Jami repo`
+  + `sudo dnf install jami-daemon # install only the jamid daemon`
++ run the `jamid` daemon:
+  + e.g. on Fedora 40, similar on Ubuntu 24.04, etc.
+  + `/usr/libexec/jamid -p & # start the jamid daemon`
++ now you can start and run the `jami-commander`
+  + try `jami-commander -h` first to see what is available
