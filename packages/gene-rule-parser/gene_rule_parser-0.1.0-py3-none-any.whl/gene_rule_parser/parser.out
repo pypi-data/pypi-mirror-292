@@ -1,0 +1,167 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> expression
+Rule 1     expression -> expression OR expression
+Rule 2     expression -> expression AND expression
+Rule 3     expression -> LPAREN expression RPAREN
+Rule 4     expression -> GENE
+Rule 5     expression -> UNKNOWN
+
+Terminals, with rules where they appear
+
+AND                  : 2
+GENE                 : 4
+LPAREN               : 3
+OR                   : 1
+RPAREN               : 3
+UNKNOWN              : 5
+error                : 
+
+Nonterminals, with rules where they appear
+
+expression           : 1 1 2 2 3 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . expression
+    (1) expression -> . expression OR expression
+    (2) expression -> . expression AND expression
+    (3) expression -> . LPAREN expression RPAREN
+    (4) expression -> . GENE
+    (5) expression -> . UNKNOWN
+
+    LPAREN          shift and go to state 2
+    GENE            shift and go to state 3
+    UNKNOWN         shift and go to state 4
+
+    expression                     shift and go to state 1
+
+state 1
+
+    (0) S' -> expression .
+    (1) expression -> expression . OR expression
+    (2) expression -> expression . AND expression
+
+    OR              shift and go to state 5
+    AND             shift and go to state 6
+
+
+state 2
+
+    (3) expression -> LPAREN . expression RPAREN
+    (1) expression -> . expression OR expression
+    (2) expression -> . expression AND expression
+    (3) expression -> . LPAREN expression RPAREN
+    (4) expression -> . GENE
+    (5) expression -> . UNKNOWN
+
+    LPAREN          shift and go to state 2
+    GENE            shift and go to state 3
+    UNKNOWN         shift and go to state 4
+
+    expression                     shift and go to state 7
+
+state 3
+
+    (4) expression -> GENE .
+
+    OR              reduce using rule 4 (expression -> GENE .)
+    AND             reduce using rule 4 (expression -> GENE .)
+    $end            reduce using rule 4 (expression -> GENE .)
+    RPAREN          reduce using rule 4 (expression -> GENE .)
+
+
+state 4
+
+    (5) expression -> UNKNOWN .
+
+    OR              reduce using rule 5 (expression -> UNKNOWN .)
+    AND             reduce using rule 5 (expression -> UNKNOWN .)
+    $end            reduce using rule 5 (expression -> UNKNOWN .)
+    RPAREN          reduce using rule 5 (expression -> UNKNOWN .)
+
+
+state 5
+
+    (1) expression -> expression OR . expression
+    (1) expression -> . expression OR expression
+    (2) expression -> . expression AND expression
+    (3) expression -> . LPAREN expression RPAREN
+    (4) expression -> . GENE
+    (5) expression -> . UNKNOWN
+
+    LPAREN          shift and go to state 2
+    GENE            shift and go to state 3
+    UNKNOWN         shift and go to state 4
+
+    expression                     shift and go to state 8
+
+state 6
+
+    (2) expression -> expression AND . expression
+    (1) expression -> . expression OR expression
+    (2) expression -> . expression AND expression
+    (3) expression -> . LPAREN expression RPAREN
+    (4) expression -> . GENE
+    (5) expression -> . UNKNOWN
+
+    LPAREN          shift and go to state 2
+    GENE            shift and go to state 3
+    UNKNOWN         shift and go to state 4
+
+    expression                     shift and go to state 9
+
+state 7
+
+    (3) expression -> LPAREN expression . RPAREN
+    (1) expression -> expression . OR expression
+    (2) expression -> expression . AND expression
+
+    RPAREN          shift and go to state 10
+    OR              shift and go to state 5
+    AND             shift and go to state 6
+
+
+state 8
+
+    (1) expression -> expression OR expression .
+    (1) expression -> expression . OR expression
+    (2) expression -> expression . AND expression
+
+    OR              reduce using rule 1 (expression -> expression OR expression .)
+    $end            reduce using rule 1 (expression -> expression OR expression .)
+    RPAREN          reduce using rule 1 (expression -> expression OR expression .)
+    AND             shift and go to state 6
+
+  ! AND             [ reduce using rule 1 (expression -> expression OR expression .) ]
+  ! OR              [ shift and go to state 5 ]
+
+
+state 9
+
+    (2) expression -> expression AND expression .
+    (1) expression -> expression . OR expression
+    (2) expression -> expression . AND expression
+
+    OR              reduce using rule 2 (expression -> expression AND expression .)
+    AND             reduce using rule 2 (expression -> expression AND expression .)
+    $end            reduce using rule 2 (expression -> expression AND expression .)
+    RPAREN          reduce using rule 2 (expression -> expression AND expression .)
+
+  ! OR              [ shift and go to state 5 ]
+  ! AND             [ shift and go to state 6 ]
+
+
+state 10
+
+    (3) expression -> LPAREN expression RPAREN .
+
+    OR              reduce using rule 3 (expression -> LPAREN expression RPAREN .)
+    AND             reduce using rule 3 (expression -> LPAREN expression RPAREN .)
+    $end            reduce using rule 3 (expression -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 3 (expression -> LPAREN expression RPAREN .)
+
