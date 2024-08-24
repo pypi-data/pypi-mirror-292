@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "colorpick"
+version = "2.4.3"
+description = "Create curses-based interactive selection list in the terminal. Now with color!"
+authors = ["wong2 <wonderfuly@gmail.com>", "AN Long <aisk1988@gmail.com>", "DJ Stomp <stompzone@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/DJStompZone/colorpick"
+homepage = "https://github.com/DJStompZone/colorpick"
+keywords = ["terminal", "gui", "curses", "colorama"]
+
+[tool.poetry.dependencies]
+python = ">=3.7"
+colorama = ">=0.4.6"
+windows-curses = {version = "^2.2.0", platform = "win32"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2.0"
+mypy = "^1.4"
+pre-commit = "^2.20.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
