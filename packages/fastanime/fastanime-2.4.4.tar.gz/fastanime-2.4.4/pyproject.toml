@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "fastanime"
+version = "2.4.4"
+description = "A browser anime site experience from the terminal"
+authors = ["Benextempest <benextempest@gmail.com>"]
+license = "UNLICENSE"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+yt-dlp = "^2024.5.27"
+rich = "^13.7.1"
+click = "^8.1.7"
+inquirerpy = "^0.3.4"
+thefuzz = "^0.22.1"
+requests = "^2.32.3"
+plyer = "^2.1.0"
+
+mpv = "^1.0.7"
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+isort = "^5.13.2"
+pytest = "^8.2.2"
+ruff = "^0.4.10"
+pre-commit = "^3.7.1"
+autoflake = "^2.3.1"
+tox = "^4.16.0"
+
+pyright = "^1.1.374"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+fastanime = 'fastanime:FastAnime'
