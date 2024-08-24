@@ -1,0 +1,34 @@
+#========================================================================================================================================
+# CyborgAI CC BY-NC-ND 4.0 Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 Internation    https://github.com/cyborg-ai-git | 
+#========================================================================================================================================
+
+# VALID TYPE FOR INPUT/OUTPUT:
+#   EOBJECT EOBJECT_CLASS
+#   EAPIADMIN
+#   EAPIFILE [file, image, audio, video, pdf]
+#   EAPITEXT
+#   EAPIQUERY
+
+package: evo_package_root
+
+control:
+  CRootApi:
+    _DOC_: "CRootApi _DOC_"
+    
+    root-set:
+      description: "root-set_eapiconfig _DESCRIPTION_"
+      callback: onSet
+      input: EOBJECT evo_framework.core.evo_core_api.entity.EApiConfig
+      output: EAPITEXT
+
+    root-get:
+      description: "root-set_eapiconfig _DESCRIPTION_"
+      callback: onGet
+      input: EAPIQUERY
+      output: EOBJECT evo_framework.core.evo_core_api.entity.EApiConfig
+
+    root-get-package:
+      description: "root-set_eapiconfig _DESCRIPTION_"
+      callback: onGetPackage
+      input: EAPIQUERY
+      output: EOBJECT EEApiPackage

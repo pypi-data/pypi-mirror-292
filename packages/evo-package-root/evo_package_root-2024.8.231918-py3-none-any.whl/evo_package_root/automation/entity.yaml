@@ -1,0 +1,28 @@
+#========================================================================================================================================
+# CyborgAI CC BY-NC-ND 4.0 Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International  https://github.com/cyborg-ai-git | 
+#========================================================================================================================================
+
+# TYPE:
+#   STRING ["DEFAULT_VALUE"]
+#   INT [DEFAULT_VALUE]
+#   LONG [DEFAULT_VALUE]
+#   FLOAT [DEFAULT_VALUE]
+#   DOUBLE [DEFAULT_VALUE]
+#   BYTE
+#   BYTES
+#   BOOL [DEFAULT_VALUE]
+#   EOBJECT EOBJECT_CLASS
+#   MAP EOBJECT_CLASS
+#   ENUM ENUM_CLASS .ENUM_DEFAULT
+#   EAPIADMIN
+#   EAPIFILE [file, image, video, audio, pdf]
+#   EAPITEXT
+#   EAPIQUERY
+package: evo_package_root
+
+entity:
+  EEApiPackage:
+     _DOC_: "EEApiPackage _DOC_"
+     name: STRING
+     language: STRING
+     mapEApi: MAP evo_framework.core.evo_core_api.entity.EApi
