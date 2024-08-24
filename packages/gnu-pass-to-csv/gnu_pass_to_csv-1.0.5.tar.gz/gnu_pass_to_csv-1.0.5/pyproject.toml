@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "gnu-pass-to-csv"
+version = "1.0.5"
+authors = ["Francois Bossiere <francois.bossiere@protonmail.com>"]
+description = "Convert GNU pass password store to CSV"
+readme = "README.md"
+repository = "https://gitlab.com/fbossiere/gnu-pass-to-csv.git"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Utilities"
+]
+
+
+[tool.poetry.scripts]
+gnu-pass-to-csv = "gnu_pass_to_csv.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.2"
+python-dotenv = "^1.0.1"
+loguru = "^0.7.2"
+typer = "^0.12.4"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.11.1"
+ruff = "^0.6.2"
+ipykernel = "^6.29.5"
+pre-commit = "^3.8.0"
+pandas-stubs = "^2.2.2.240807"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
