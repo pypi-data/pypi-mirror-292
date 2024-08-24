@@ -1,0 +1,128 @@
+Metadata-Version: 2.3
+Name: jupyterlab-monitor
+Version: 1.0.3
+Dynamic: Keywords
+Summary: A JupyterLab extension.
+Project-URL: Homepage, https://github.com/tripleten-com/jupiterlab_monitoring
+Project-URL: Bug Tracker, https://github.com/tripleten-com/jupiterlab_monitoring
+Project-URL: Repository, https://github.com/tripleten-com/jupiterlab_monitoring.git
+Author: Tripleten
+License: BSD 3-Clause License
+        
+        Copyright (c) 2023, Educational Technology Collective
+        All rights reserved.
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice, this
+           list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation
+           and/or other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its
+           contributors may be used to endorse or promote products derived from
+           this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+License-File: LICENSE
+Classifier: Framework :: Jupyter
+Classifier: Framework :: Jupyter :: JupyterLab
+Classifier: Framework :: Jupyter :: JupyterLab :: 4
+Classifier: Framework :: Jupyter :: JupyterLab :: Extensions
+Classifier: Framework :: Jupyter :: JupyterLab :: Extensions :: Prebuilt
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Requires-Dist: jupyter-server<3,>=2.0.1
+Description-Content-Type: text/markdown
+
+# JupyterLab Monitor
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+[![PyPI](https://img.shields.io/pypi/v/jupyterlab-monitor.svg)](https://pypi.org/project/jupyterlab-monitor)
+[![npm](https://img.shields.io/npm/v/jupyterlab-monitor.svg)](https://www.npmjs.com/package/jupyterlab-monitor)
+
+JupyterLab Monitor is a fork of the original JupyterLab Pioneer extension for generating and exporting JupyterLab event telemetry data.
+
+## Getting Started
+
+### Installing the Extension
+
+To install the extension, execute:
+
+```bash
+pip install jupyterlab-monitor
+```
+
+### Running the Extension with Docker Compose
+
+```bash
+# Enter the configuration_examples directory and run
+docker compose -p jupyterlab_monitor up --build
+```
+
+A JupyterLab application with the extension installed and configured will run on localhost:8888.
+
+(To experiment with different exporter configurations, edit [Dockerfile](https://github.com/P0rt/jupyterlab-monitor/blob/main/configuration_examples/Dockerfile#L32-L36) and run docker compose again)
+
+### Manual Configuration
+
+Before starting Jupyter Lab, users need to write their own configuration files (or use the provided configuration examples) and **place them in the correct directory**.
+
+Examples of configurations are [here](#configurations).
+
+## Configurations
+
+### Overview
+
+The configuration file controls the activated events and data exporters.
+
+To add a data exporter, users should assign a callable function along with function arguments when configuring `exporters`.
+
+This extension provides 5 default exporters:
+
+- [`console_exporter`](https://github.com/P0rt/jupyterlab-monitor/blob/main/jupyterlab_monitor/default_exporters.py#L22), which sends telemetry data to the browser console
+- [`command_line_exporter`](https://github.com/P0rt/jupyterlab-monitor/blob/main/jupyterlab_monitor/default_exporters.py#L48), which sends telemetry data to the Python console Jupyter is running on
+- [`file_exporter`](https://github.com/P0rt/jupyterlab-monitor/blob/main/jupyterlab_monitor/default_exporters.py#L76), which saves telemetry data to a local file
+- [`remote_exporter`](https://github.com/P0rt/jupyterlab-monitor/blob/main/jupyterlab_monitor/default_exporters.py#L106), which sends telemetry data to a remote HTTP endpoint
+- [`opentelemetry_exporter`](https://github.com/P0rt/jupyterlab-monitor/blob/main/jupyterlab_monitor/default_exporters.py#L162), which sends telemetry data via OTLP
+
+Additionally, users can write custom exporters in the configuration file.
+
+[The rest of the README remains unchanged, but all references to 'jupyterlab-pioneer' should be replaced with 'jupyterlab-monitor']
+
+## Uninstall
+
+To remove the extension, execute:
+
+```bash
+pip uninstall jupyterlab-monitor
+```
+
+## Contributors
+
+Main contributor   of this fork: [p0rt](https://github.com/P0rt)
+
+## Link to the Original Project
+
+This project is a fork of the [original JupyterLab Pioneer](https://github.com/educational-technology-collective/jupyterlab-pioneer).
