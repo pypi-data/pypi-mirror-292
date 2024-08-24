@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: siemensfile
+Version: 0.1.12
+Summary: Paquete para leer archivos .dat de Siemens y realizar reconstrucciones de imágenes.
+Home-page: https://github.com/cenarius1985/SIEMENSFile
+Author: Fernando Jose Ramirez
+Author-email: tu_email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12.4
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: pandas
+Requires-Dist: mri-nufft
+Requires-Dist: scipy
+Requires-Dist: tqdm
+Requires-Dist: tables
+
+## Uso
+
+Aquí un ejemplo básico de cómo usar SIEMENSFile:
+
+```python
+from siemensfile import process_siemens_file
+
+# Procesar un archivo con reconstrucción Cartesiana
+metadata, rawdata = process_siemens_file('ruta/a/tu/archivo.dat', reconstruction="Cartesiana")
+
+# Procesar un archivo sin reconstrucción
+metadata, rawdata = process_siemens_file('ruta/a/tu/archivo.dat')
+
+# Trabajar con los resultados
+print(metadata)
+print(rawdata.shape)
