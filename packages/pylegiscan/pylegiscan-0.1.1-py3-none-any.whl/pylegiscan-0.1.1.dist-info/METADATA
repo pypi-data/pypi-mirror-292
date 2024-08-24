@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: pylegiscan
+Version: 0.1.1
+Summary: 
+Author: Your Name
+Author-email: you@example.com
+Requires-Python: >=3.11,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: pandas (>=2.2.2,<3.0.0)
+Requires-Dist: pyarrow (>=17.0.0,<18.0.0)
+Requires-Dist: pytest (>=8.3.2,<9.0.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Description-Content-Type: text/markdown
+
+# Pylegiscan
+### This project gives a number of helper functions
+- get_legiscan_json(legiscan_key, access_key, out_dir): uses the legiscan api to get the bulk data
+- get_people(people_dir): parses the people data
+- get_bills(bill_dir): parses the bill data
+- get_votes(vote_dir): parses the vote data
+- convert_pylegiscan_json(people_dir, bill_dir, vote_dir, out_dir): combines all the parsing and outputs them into parquet files
