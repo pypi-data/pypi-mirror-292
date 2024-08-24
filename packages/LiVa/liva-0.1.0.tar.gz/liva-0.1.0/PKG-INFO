@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: LiVa
+Version: 0.1.0
+Summary: Search for URL in files, validate them and list all status-codes and statistics.
+Author: protogia
+Author-email: goldengrizz01@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: argcomplete (>=3.2.3,<4.0.0)
+Requires-Dist: colorama (>=0.4.6,<0.5.0)
+Requires-Dist: pandas (>=2.2.2,<3.0.0)
+Requires-Dist: pretty-errors (>=1.2.25,<2.0.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Requires-Dist: rich-argparse (>=1.4.0,<2.0.0)
+Requires-Dist: tabulate (>=0.9.0,<0.10.0)
+Description-Content-Type: text/markdown
+
+# linkvalidator: URL-Check-Utility
+
+A python based utility to search, validate, calculate stats and export URLs. 
+
+## Info
+
+You can use this package with github-actions to check if links on your hosted website or docs are outdated.
+
+## Install
+
+```bash
+git clone https://github.com/protogia/linkvalidator.git
+cd linkvalidator
+poetry install
+```
+
+## Run
+
+To parse all files in given directory recursively for URLs and print results:
+
+```bash
+poetry run linkvalidator -d <path> 
+```
+
+If you want to show only failures:
+
+```bash
+poetry run linkvalidator -d <path> --only-failures
+```
+
+
+

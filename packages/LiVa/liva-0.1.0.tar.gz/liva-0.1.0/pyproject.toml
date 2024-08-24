@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "LiVa"
+version = "0.1.0"
+description = "Search for URL in files, validate them and list all status-codes and statistics."
+authors = ["protogia <goldengrizz01@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+rich-argparse = "^1.4.0"
+argcomplete = "^3.2.3"
+requests = "^2.32.3"
+colorama = "^0.4.6"
+tabulate = "^0.9.0"
+pandas = "^2.2.2"
+pretty-errors = "^1.2.25"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+liva = "liva.__main__:main"
