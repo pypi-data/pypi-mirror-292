@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "usepolvo"
+version = "0.1.28"
+description = "A comprehensive integration package supporting various services."
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "aiohttp==3.10.1",
+    "asyncio==3.4.3",
+    "cachetools==5.4.0",
+    "fastapi==0.111.1",
+    "loguru==0.7.2",
+    "pydantic-settings==2.3.4",
+    "pydantic==2.8.2",
+    "pyngrok==7.2.0",
+    "python-dotenv==1.0.1",
+    "ratelimit==2.2.1",
+    "requests==2.32.3",
+    "tenacity==9.0.0",
+    "uvicorn==0.30.3",
+]
+[[project.authors]]
+name = "Caio Pizzol"
+email = "caio@usepolvo.com"
+
+[project.optional-dependencies]
+stripe = ["stripe==10.5.0"]
+openai = ["openai==1.42.0"]
+claude = ["anthropic==0.34.1"]
+gemini = ["google-generativeai==0.7.2"]
+hubspot = ["hubspot-api-client==9.0.0"]
+all = [
+    "stripe==10.5.0",
+    "openai==1.42.0",
+    "anthropic==0.34.1",
+    "google-generativeai==0.7.2",
+    "hubspot-api-client==9.0.0",
+]
+
+[project.license]
+text = "MIT"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--maxfail=2 -ra"
+testpaths = ["tests"]
