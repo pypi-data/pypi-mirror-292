@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: WebinarRu
+Version: 0.1.3
+Summary: Python client for webinar.ru (mts-link.ru) platform
+Home-page: https://github.com/gulyaeve/WebinarRu
+License: MIT
+Keywords: webinar,mts-link,WebinarRu
+Author: gulyaeve
+Author-email: gulyaev.e@icloud.com
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: aiohttp (>=3.9.3,<4.0.0)
+Requires-Dist: pydantic (>=2.5.3,<3.0.0)
+Project-URL: Repository, https://github.com/gulyaeve/WebinarRu
+Description-Content-Type: text/markdown
+
+# Python-клиент для платформы webinar.ru (mts-link.ru)
+
+## Клиент находится в разработке!
+
+### Особенности
+
+Клиент полностью асинхронный с поддержкой валидации Pydantic. Требуется Python 3.11 или выше. Основан на `aiohttp` и `pydantic`.
+
+> Сделан на основе документации: https://help.webinar.ru/ru/articles/3180654-api-список-методов-вебинары
+
+### Установка
+
+```console
+$ pip install webinarru
+```
+
+### Простое использоание
+
+Создайте файл `main.py`:
+
+```Python hl_lines="9  14"
+import asyncio
+from pprint import pprint
+from WebinarRu import WebinarAPI
+
+webinar = WebinarAPI("YOUR_API_TOKEN")
+
+
+async def main():
+    # Получение списка часовых поясов
+    timezones = await webinar.get_timezones()
+    pprint(timezones)
+
+    # Выгрузка мероприятий
+    events = await webinar.get_events(date_from=datetime.datetime(2024, 8, 10), status=["STOP", "ACTIVE"])
+    pprint(events)
+    
+    # Участники вебинаров
+    for event in events:
+        for eventsession in event.eventSessions:
+            participations = await webinar.get_event_session_participations(eventsession.id)
+            pprint(participations)
+
+if __name__ == '__main__':
+    asyncio.run(main())
+```
+
