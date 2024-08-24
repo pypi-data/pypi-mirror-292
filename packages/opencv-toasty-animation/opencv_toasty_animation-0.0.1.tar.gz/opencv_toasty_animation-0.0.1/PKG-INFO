@@ -1,0 +1,125 @@
+Metadata-Version: 2.1
+Name: opencv-toasty-animation
+Version: 0.0.1
+Summary: Toasty animation to play in top of OpenCV VideoCapture
+Home-page: https://github.com/adremides/python_opencv_toasty_animation
+Author: Yamil Jaskolowski
+Author-email: yamilj@gmail.com
+License: GPLv3
+Project-URL: Issue Tracker, https://github.com/adremides/python_opencv_toasty_animation/issues
+Keywords: opencv,animation,VideoCapture,toasty
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: setuptools
+Requires-Dist: importlib_resources
+Requires-Dist: opencv-contrib-python
+Requires-Dist: playsound
+
+# python_opencv_toasty_animation
+
+## Requirements
+
+opencv-contrib-python 4.10.0.82
+playsound 1.3.0
+
+## Installation
+
+Install with pip
+
+    pip install opencv-toasty-animation
+
+## Usage
+
+Add these lines before the main loop to instantiate animation
+
+    animation = Animation()
+
+Then before the `cv2.imshow('Video', frame)` execution add these
+
+    animation.update_animation_state()
+    frame = animation.apply_animation(frame)
+
+The animation now is ready to be played, now you need to choice an event to fire the start.
+Anywhere in the main loop add this line
+
+    animation.start()
+
+Optionally you can pass the `prevent_repetition=True` argument if the animation play too many times in the loop to control the repetition. By default it doesn't play until 300 seconds passed. You can change it passing `repetition_delay=300` in the arguments during the instantiation of the animation.
+
+## How to try it
+
+Create a python file and copy this code, then run it and hit "start" button
+
+    import cv2
+
+    from opencv_toasty_animation.animation import Animation
+
+
+    # Función para manejar los eventos del mouse
+    def mouse_callback(event, x, y, flags, param):
+        global mouseX, mouseY, start_animation, animation_phase
+
+        if event == cv2.EVENT_LBUTTONDOWN:
+            mouseX, mouseY = x, y
+            # Coordenadas del botón
+            button_rect = param
+            # Verificar si el clic ocurrió dentro del botón
+            if button_rect[0] <= mouseX <= button_rect[2] and button_rect[1] <= mouseY <= button_rect[3]:
+                animation.start()
+
+
+    # Captura de video desde la webcam
+    cap = cv2.VideoCapture(0)
+
+    # Verificar si la cámara se abrió correctamente
+    if not cap.isOpened():
+        print("No se puede abrir la cámara")
+        exit()
+
+    # Variables para almacenar la posición del clic
+    mouseX, mouseY = 0, 0
+
+    # Coordenadas del botón (rectángulo)
+    button_rect = (50, 50, 150, 100)  # (x1, y1, x2, y2)
+
+    # Configurar la ventana de OpenCV para capturar eventos del mouse
+    cv2.namedWindow('Webcam')
+    cv2.setMouseCallback('Webcam', mouse_callback, button_rect)
+
+    animation = Animation()
+
+    try:
+        while True:
+            ret, frame = cap.read()
+
+            if not ret:
+                print("No se puede recibir frames. Terminando...")
+                break
+
+            # Dibujar el botón (rectángulo) en el frame
+            cv2.rectangle(frame, (button_rect[0], button_rect[1]),
+                        (button_rect[2], button_rect[3]), (0, 0, 255), cv2.FILLED)
+            cv2.putText(frame, "Start", (button_rect[0] + 10, button_rect[1] + 30),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+
+            # Actualizar el estado de la animación y aplicar la animación al frame
+            animation.update_animation_state()
+            frame = animation.apply_animation(frame)
+
+            # Mostrar el frame con la animación
+            cv2.imshow('Webcam', frame)
+
+            # Finalizar la animación y esperar a que se presione 'q' para salir
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+    finally:
+        cap.release()
+        cv2.destroyAllWindows()
