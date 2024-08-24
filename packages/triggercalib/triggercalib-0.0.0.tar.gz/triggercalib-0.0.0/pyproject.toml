@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=42", "setuptools_scm[toml]>=3.4"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "triggercalib"
+description = "Tooling for LHCb trigger efficiencies"
+authors = [{name = "Jamie Gooding"}, { email = "Jamie.Gooding@cern.ch" }]
+dynamic = ["version"]
+requires-python = ">=3.8"
+readme = "README.md"
+license = { file = "COPYING" }
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = [
+    "-ra",
+    "-q",
+    "--cov=src/hlteff"
+]
+testpaths = [
+    "src/hlteff/tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
