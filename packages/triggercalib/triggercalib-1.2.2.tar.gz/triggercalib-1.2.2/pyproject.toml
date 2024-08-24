@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=42", "setuptools_scm[toml]>=3.4"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "src/triggercalib/version.py"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = [
+    "-ra",
+    "-q",
+    "--cov=src/triggercalib/"
+]
+testpaths = [
+    "src/triggercalib/*/tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
