@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: bombav3
+Version: 1.0.0
+Summary: Custom DDoS Tools Maded By IRELGTPS 
+Home-page: https://github.com/IREL1337/BOMBAV3
+Author: IREL GTPS
+Author-email: tnajooo5@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: psutil
+
+# BOMBAV3
+PIP INSTALL BOMBAV3 (DDOS TOOLS)
+
+BOMBAB3 IS CUSTOM MODULE FOR SENDING ICMP TCP AND UDP PACKET TO TARGET
+
+## USSAGE 
+from bombav3 import start_icmp_attack
+
+# USING ONLY IP ( DEFAULT PACKET_SIZE)
+start_icmp_attack("192.168.1.1")
+
+# CUSTOMING PACKET SIZE ( DEPENDS ON YOU )
+start_icmp_attack("192.168.1.1", PACKET_SIZE=65000)
+
+
+## Installation
+
+You can install this package via pip:
+
+```bash
+pip install bombav3
