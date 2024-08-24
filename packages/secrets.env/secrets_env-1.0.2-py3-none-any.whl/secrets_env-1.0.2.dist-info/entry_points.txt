@@ -1,0 +1,6 @@
+[console_scripts]
+secrets.env=secrets_env.console:entrypoint
+
+[poetry.application.plugin]
+poetry-secrets-env-plugin=secrets_env.realms.poetry:SecretsEnvPlugin
+
