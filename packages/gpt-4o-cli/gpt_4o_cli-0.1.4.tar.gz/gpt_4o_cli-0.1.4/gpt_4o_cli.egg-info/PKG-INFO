@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: gpt-4o-cli
+Version: 0.1.4
+Summary: A CLI application to interact with OpenAI's GPT models
+Home-page: https://github.com/invinciblerd/gpt_cli
+Author: Dipendra Kumar Shah
+Author-email: dipendrashah0789878@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: openai
+Requires-Dist: httpx
+
+# GPT CLI
+
+A CLI application to interact with OpenAI GPT models.
+
+## Installation
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/invincibleRD/gpt_cli.git
+    cd gpt_cli
+    ```
+
+2. Install the package:
+    ```sh
+    pip install .
+    ```
+
+3. Set the `OPENAI_API_KEY` environment variable:
+    ```sh
+    export OPENAI_API_KEY='your-api-key-here'
+    ```
+
+## Usage
+
+Ask a question to the GPT model:
+```sh
+gpt 
