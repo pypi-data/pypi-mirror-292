@@ -1,0 +1,99 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "robot-console-improved"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "(c) Copyright Qteal 2023 - Proprietary software, all rights reserved." }
+keywords = []
+authors = [
+    { name = "Inte Vleminckx", email = "inte.vleminckx@qteal.com" },
+]
+
+dependencies = [
+    "robotframework"
+]
+
+[project.optional-dependencies]
+robot-debug = [
+    "robotframework-debuglibrary"
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/rci/_version.py"
+
+[tool.hatch.build]
+packages = ["src/rci"]
+
+[project.scripts]
+rci = "rci.__main__:main"
+
+[tool.hatch.envs.default]
+features = [
+    "robot-debug"
+]
+
+# dependencies for tests
+[tool.hatch.envs.tests]
+dependencies = [
+    "pytest",
+    "pytest-cov",
+    "pytest-custom-exit-code",
+    "coverage[toml]>=6.5",
+]
+features = [
+    "robot-debug"
+]
+
+# scripts for tests
+[tool.hatch.envs.tests.scripts]
+cov = "pytest --showlocals --suppress-tests-failed-exit-code --cov=rci --junit-xml=Output/results.xml --cov-report=html:Output/Coverage --cov-report=xml:Output/coverage.xml --cov-report=term {args:tests}"
+
+[tool.black]
+target-version = ["py310"]
+line-length = 140
+skip-string-normalization = true
+
+ignore = [
+    # Allow non-abstract empty methods in abstract base classes
+    "B027",
+    # Allow boolean positional values in function calls, like `dict.get(... True)`
+    "FBT003",
+    # Ignore checks for possible passwords
+    "S105", "S106", "S107",
+    # Ignore complexity
+    "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0915",
+]
+unfixable = [
+    # Don't touch unused imports
+    "F401",
+]
+
+[tool.coverage.run]
+source_pkgs = ["rci"]
+branch = true
+parallel = true
+omit = [
+    "src/rci/__about__.py",
+]
+
+[tool.coverage.paths]
+robot_console_improved = ["src/rci"]
+tests = ["tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+exclude_also = [
+    "@abstractmethod", # Abstract methods are not covered
+]
