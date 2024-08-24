@@ -1,0 +1,21 @@
+[project]
+name = "giftwrapy"
+version = "0.3.0"
+description = "A tool to convert a project/folder/repo into one long markdown file for use with AI assistants"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+authors = [{ name = "Jackson Walker", email = "jacksonrgwalker@gmail.com" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+urls = { "Homepage" = "https://github.com/jacksonrgwalker/giftwrapy" }
+
+[project.scripts]
+giftwrapy = "giftwrapy.giftwrapy:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
