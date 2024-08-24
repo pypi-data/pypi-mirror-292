@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "SeraphClicker"
+version = "1.0.1"
+authors = [
+  { name="Hyaku" },
+]
+description = "Just an autoclicker"
+readme = "README.md"
+requires-python = ">=3.10"  # Changed to 3.10 which includes tkinter by default
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "pyautogui",
+  "pynput",
+  "ttkthemes",
+]
+
+[project.scripts]
+seraphclicker = "SeraphClicker.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["SeraphClicker*"]
+
+[tool.setuptools.package-data]
+"SeraphClicker" = ["resources/*.png"]
