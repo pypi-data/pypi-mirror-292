@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: python-logging-tools
+Version: 0.0.10
+Summary: logging package
+Home-page: https://www.youtube.com/channel/UCWNjclaL2HQ5gDVayqhNEfw
+Author: Daniil10295
+Author-email: chernyak.daniil.2010@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: logging
+Requires-Dist: colorama
+
+![PyPI - Version](https://img.shields.io/pypi/v/python-logging-tools)
+![GitHub Workflow Status](https://github.com/MGS-Daniil/python-logging-tools/actions/workflows/python-app.yml/badge.svg)
+![GitHub Repo stars](https://img.shields.io/github/stars/MGS-Daniil/python-logging-tools)
+# python logging tools
+python package for logging
+
+# installation
+```commandline
+pip install python-logging-tools
+```
+
+## usage:
+```python
+import python_logging_tools
+
+log = python_logging_tools.LoggingTools("Name", logging.INFO)
+log.debug("message")
+```
+output:
+[INFO]> [Name] - message```
+
+## package:
+- [x] this package simplifies logging in python
+logging tools package
+- [x] logging levels are supported
+- [ ] colors are supported
