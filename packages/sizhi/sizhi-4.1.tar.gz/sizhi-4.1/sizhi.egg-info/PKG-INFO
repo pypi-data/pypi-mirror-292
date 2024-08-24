@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: sizhi
+Version: 4.1
+Summary: 中国行政区划四至点位获取、区划shp、geojson下载及流式裁剪链接
+Home-page: https://space.bilibili.com/31106656
+Author: pianshilengyubing
+Author-email: 1010221702@qq.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+此模块用来获取地图省市县乡镇四级行政区划的四至点位，默认左上右下，经度在前，纬度在后，请按该顺序编写代码。
+利用该模块，可以省去爬虫等工作时需要手动获取四至点位并转换坐标系的过程，便于节省代码，批量使用，还可使得代码更为可控。有获取行政区划的四至点位（包含全部区划的最小矩形即包络矩形）与自行输入俩种方式。3.0版本新增了下载行政区划shp、geojson文件，并可以返回url以方便利用gdal进行流式裁剪。
