@@ -1,0 +1,175 @@
+[project]
+name = "bx_py_utils"
+dynamic = ["version"]
+description = "Various Python utility functions"
+authors = [
+    {name = 'Jens Diemer', email = 'jens.diemer@boxine.de'},
+    {name = 'Philipp Hagemeister', email = 'phihag@phihag.de'},
+    {name = 'Florian Braun', email = 'mail@chiron-online.de'},
+    {name = 'Christian Schneider', email = 'christian@cnschn.com'},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+    "Intended Audience :: Developers",
+]
+license = {text = "MIT"}
+keywords=["utilities"]
+readme="README.md"
+requires-python = ">=3.10,<4"
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    'boto3',  # needed for e.g.: bx_py_utils/aws/ stuff!
+    'requests-mock',
+    'beautifulsoup4',
+    'lxml',
+    'pdoc',  # https://pdoc.dev/
+
+    'manageprojects',  # https://github.com/jedie/manageprojects
+    'tox>=4.4.4',  # https://github.com/tox-dev/tox
+    'coverage',  # https://github.com/nedbat/coveragepy
+    'flake8',  # https://github.com/pycqa/flake8
+    'flake8-bugbear',  # https://github.com/PyCQA/flake8-bugbear
+    'twine',  # https://github.com/pypa/twine/
+    'tblib',  # https://github.com/ionelmc/python-tblib
+    'packaging',  # https://pypi.org/project/packaging/
+    'build',  # https://github.com/pypa/build
+    'EditorConfig',  # https://pypi.org/project/EditorConfig/
+    'safety',  # https://github.com/pyupio/safety
+
+    # https://github.com/akaihola/darker
+    # https://github.com/ikamensh/flynt
+    # https://github.com/pycqa/isort
+    # https://github.com/pygments/pygments
+    'darker[flynt, isort, color]',
+
+    'typeguard',  # https://github.com/agronholm/typeguard/
+]
+
+
+[project.urls]
+Documentation = "https://github.com/boxine/bx_py_utils/"
+Source = "https://github.com/boxine/bx_py_utils/"
+
+[project.scripts]
+bx_py_utils = "bx_py_utils.__main__:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm>=7.1"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bx_py_utils*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "bx_py_utils.__version__"}
+
+
+[tool.darker]
+src = ["."]
+revision = "origin/master..."
+line_length = 119
+color = true
+skip_string_normalization = true
+diff = false
+check = false
+stdout = false
+isort = true
+lint = [
+    "flake8",
+]
+log_level = "INFO"
+
+
+[tool.isort]
+# https://pycqa.github.io/isort/docs/configuration/config_files/#pyprojecttoml-preferred-format
+atomic=true
+profile="black"
+line_length=120
+known_first_party=["bx_py_utils", "bx_py_utils_tests"]
+skip_glob=['.*', '*/htmlcov/*']
+lines_after_imports=2
+
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source = ['.']
+concurrency = ["multiprocessing"]
+command_line = "-m unittest --locals --verbose"
+
+[tool.coverage.report]
+omit = ['.*', '*/tests/*']
+skip_empty = true
+fail_under = 30
+show_missing = true
+exclude_lines = [
+    'if self.debug:',
+    'pragma: no cover',
+    'raise NotImplementedError',
+    'if __name__ == .__main__.:',
+]
+
+
+[tool.tox]  # https://tox.wiki/en/latest/config.html#pyproject-toml
+legacy_tox_ini = """
+[tox]
+isolated_build = True
+envlist = py{312,311,310}
+skip_missing_interpreters = True
+
+[testenv]
+passenv = *
+deps =
+    .[dev]
+allowlist_externals = make
+commands_pre =
+    make install
+commands =
+    make test
+"""
+
+
+[tool.mypy]
+warn_unused_configs = true
+ignore_missing_imports = true
+allow_redefinition = true  # https://github.com/python/mypy/issues/7165
+show_error_codes = true
+plugins = []
+exclude = [".venv", "tests"]
+
+
+[tool.bx_py_utils.doc_write]
+search_paths = ['./bx_py_utils/', './bx_py_utils_tests/']
+output_base_path = '.' # Current work dir -> project root
+docstring_prefix = 'DocWrite:'
+
+
+[manageprojects] # https://github.com/jedie/manageprojects
+initial_revision = "1f3a70e"
+initial_date = 2024-05-21T21:22:39+02:00
+cookiecutter_template = "https://github.com/jedie/cookiecutter_templates/"
+cookiecutter_directory = "pipenv-python"
+applied_migrations = [
+    "dee29ef", # 2024-07-09T16:06:43+02:00
+]
+
+[manageprojects.cookiecutter_context.cookiecutter]
+full_name = "Jens Diemer"
+github_username = "jedie"
+author_email = "jens.diemer@boxine.de"
+package_name = "bx_py_utils"
+package_version = "71"
+package_description = "Various Python utility functions"
+package_url = "https://github.com/boxine/bx_py_utils"
+issues_url = "https://github.com/boxine/bx_py_utils/issues"
+license = "MIT"
+_template = "https://github.com/jedie/cookiecutter_templates/"
