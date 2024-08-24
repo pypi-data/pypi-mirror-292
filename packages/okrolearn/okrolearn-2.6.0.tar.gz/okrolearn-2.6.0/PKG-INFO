@@ -1,0 +1,60 @@
+Metadata-Version: 2.3
+Name: okrolearn
+Version: 2.6.0
+Summary: A machine learning library created by Okerew, which is supposed to be a raw implementation of combining pytorch with scikit-learn
+Project-URL: Documentation, https://github.com/Okerew/okrolearn#readme
+Project-URL: Issues, https://github.com/Okerew/okrolearn/issues
+Project-URL: Source, https://github.com/Okerew/okrolearn
+Author-email: Okerew <93822247+Okerew@users.noreply.github.com>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: cupy
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Requires-Dist: pandas
+Requires-Dist: pillow
+Requires-Dist: psutil
+Requires-Dist: scipy
+Requires-Dist: statsmodels
+Description-Content-Type: text/markdown
+
+# Okrolearn
+
+![Okrolearn Logo](https://github.com/Okerew/okrolearn/assets/93822247/2c3e95ea-394d-4e29-8b97-13281ee695b7)
+
+Okrolearn is a machine learning library created by Okerew.
+
+## Installation
+
+To install Okrolearn for cpu, use:
+`pip install okrolearn==0.2.2`
+<br>
+To install for gpu do
+`pip install okrolearn`
+<br>
+#Note venv is recommended
+
+## Usage
+
+To use Okrolearn in your code, import the main module:
+```python
+from okrolearn import okrolearn
+okrolearn.Tensor() # Example usage
+```
+To integrate Okrolearn into your project directory, install the requirements and import it:
+`from okrolearn.src.okrolearn import *`
+You can also download the okrolearn.py file and import it:
+`from okrolearn import *`
+## Notes
+The gpu version will not work as good as cpu version for small data 
