@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: ensemblelearning_steffenhahn
+Version: 0.0.1
+Summary: A package for EnsembleLearning for Software Entwicklung Course 2
+Home-page: https://gitlab.web.fh-kufstein.ac.at/hahnsteffen/oftwareentwicklung2_steffenhahn
+Author: Steffen Hahn
+Author-email: 2310837609@stud.fh-kufstein.ac.at
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: flask==3.0.2
+Requires-Dist: pandas==2.2.1
+Requires-Dist: scikit-learn==1.0.2
+Requires-Dist: xgboost==1.5.1
+Requires-Dist: joblib==1.1.0
+Requires-Dist: pytest==6.2.5
+Requires-Dist: numpy==1.26.4
+Requires-Dist: waitress==3.0.0
+
+# Projekt Softwareentwicklung
+
+## Setzt die Vorgaben in Python um und verpackt euren Code in einem Python-Package - Dokumentation ist optional (30%)
+
+### Klasse umsetzen, mit deren Hilfe ein Multi-Model-Model Ensemble Regressor (Aggregiert die SchÃ¤tzung von mehreren, unterschiedlichen Regressionsmodellen, z.B. Decision Tree und Lineare Regression) trainiert werden kann.
+
+Ich habe eine Klasse entwickelt "EnsembleLearning", dass die Daten des Titanic Datensatzes von Kaggle verarbeitet. Diese werden zunÃ¤chst pre-processed und dann dann an die Klasse Ã¼bergeben. Ãœber einen User-Input, kann das Ensemble Learning initiiert werden. Zur VerfÃ¼gung stehende Regressors:
+- least_squares 
+- nearest_neighbor 
+- xgboost
+- sgd (stochastic gradient descent)
+
+Die Klasse fitted und predicted anschlieÃŸend die Zielvariablen und zurÃ¼ckgegeben wird die Accuracy fÃ¼r den Datensatz Titanic
+
+Das Package habe ich unter ensemblelearning-steffenhahn verÃ¶ffentlich auf PyPi
+
+
+### Schreibt Unit-Tests (5 StÃ¼ck reichen) um die FunktionalitÃ¤t der Regressor-Klasse zu testen (20%)
+
+Die Unit Test sind im test_model file zu finden
+
+### Entwickelt einen REST-Webservice der das von euch erstellte Paket nutzt und die passenden Endpoints anbietet (20%)
+
+Ich habe ein Flask-App erstellt, welche den Titanic Datensatz lÃ¤dt, und der User kann die Regressoren auswÃ¤hlen
+
+<div align="center">
+    <img src="/screenshots/screen1.png" width="400px"</img> 
+</div>
+
+Das trainierte Model wird abgespeichert (trained_model.joblib), und anschlieÃŸend wird die Accuracy zurÃ¼ckgegeben:
+
+<div align="center">
+    <img src="/screenshots/screen2.png" width="400px" </img> 
+</div>
+
+Wird nur ein Regressor ausgewÃ¤hlt, wird eine Fehlermeldung zurÃ¼ckgegeben:
+
+<div align="center">
+    <img src="/screenshots/screen3.png" width="400px" </img> 
+</div>
+
+
+### Erstellt ein Docker-Image fÃ¼r den oben genannten Web-Service (10%)
+
+Ist erstellt unter "Dockerfile" und sollte auch funktionieren, wenngleich das Image mit >2GB vÃ¶llig Ã¼berdimensioniert ist. Aber habe meine fehlendes Know-How mit Masse kompensiert, und es lÃ¤uft zumindest;)
+
+### Entwickelt eine GitLab-Pipeline um eure Tests und alle anderen automatisierbaren Schritte auszufÃ¼hren (20%)
+
+Ist ebenfalls unter .gitlab-ci.yml erstellt und getestet:
+
+<div align="center">
+    <img src="/screenshots/screen4.png" width="400px" </img> 
+</div>
+
