@@ -1,0 +1,68 @@
+Metadata-Version: 2.3
+Name: ibis-bench
+Version: 0.2.0
+Summary: benchmarking with Ibis
+Project-URL: Homepage, https://github.com/lostmygithubaccount/ibis-bench
+Project-URL: Bug Tracker, https://github.com/lostmygithubaccount/ibis-bench/issues
+Author-email: Cody <cody@dkdc.dev>
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Requires-Dist: datafusion==40.1.0
+Requires-Dist: duckdb==1.0.0
+Requires-Dist: gcsfs
+Requires-Dist: great-tables
+Requires-Dist: ibis-framework
+Requires-Dist: kaleido
+Requires-Dist: plotly
+Requires-Dist: polars==1.5.0
+Requires-Dist: psutil
+Requires-Dist: python-dotenv
+Requires-Dist: streamlit
+Requires-Dist: typer
+Description-Content-Type: text/markdown
+
+# ibis-bench
+
+***Benchmarking with Ibis.***
+
+## Overview
+
+Ibis is an ***interface***, not an ***engine***. There's no such thing as a zero-cost abstraction with no overhead, but Ibis is designed to add as little as possible to your workloads. This repository is used to:
+
+- benchmark various engines via the same interface
+- roughly assess the overhead of using Ibis (by comparing with native queries)
+
+with a focus on the former and, currently, single-node OLAP engines.
+
+## Getting started
+
+Install the package and CLI.
+
+### Developer setup
+
+Install [`gh`](https://github.com/cli/cli) and [`just`](https://github.com/casey/just), then:
+
+```
+gh repo clone lostmygithubaccount/ibis-bench
+cd ibis-bench
+just setup
+. .venv/bin/activate
+```
+
+### Pip install
+
+Run:
+
+```bash
+pip install --upgrade ibis-bench
+```
+
+## Usage
+
+Use the CLI to run benchmarks.
+
+```bash
+bench
+```
