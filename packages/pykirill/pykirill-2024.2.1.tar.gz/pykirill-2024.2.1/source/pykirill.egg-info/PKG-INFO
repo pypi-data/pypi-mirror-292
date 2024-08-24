@@ -1,0 +1,125 @@
+Metadata-Version: 2.1
+Name: pykirill
+Version: 2024.2.1
+Summary: 🐗 A portable collection of functions for scientific exploration
+Author-email: Kirill Denisov <kirill.denisov@gero.ai>
+Maintainer-email: Kirill Denisov <kirill.denisov@gero.ai>
+License: MIT License
+        =====================
+        
+        Copyright © `2024` `Kirill Denisov`
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Project-URL: Homepage, https://kirilledition.github.io/pykirill/
+Project-URL: Documentation, https://kirilledition.github.io/pykirill/
+Project-URL: Repository, https://github.com/kirilledition/pykirill
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Provides-Extra: development
+Requires-Dist: pytest; extra == "development"
+Requires-Dist: ruff; extra == "development"
+Requires-Dist: mypy; extra == "development"
+Requires-Dist: ipython; extra == "development"
+Requires-Dist: build; extra == "development"
+Provides-Extra: documentation
+Requires-Dist: mkdocs-material; extra == "documentation"
+Requires-Dist: mkdocstrings[python]; extra == "documentation"
+Requires-Dist: mkdocs-jupyter; extra == "documentation"
+Provides-Extra: pca
+Requires-Dist: scikit-learn; extra == "pca"
+
+# 🐗 pykirill
+
+[Documentation](https://kirilledition.github.io/pykirill/)
+
+This is my personal Python package, `pykirill`, which includes a collection of utilities and functions that I frequently use during scientific exploration. This package is especially designed to be portable, making it suitable for environments like Google Colab where setup needs to be minimal.
+
+## Installation
+
+There are several ways to install `pykirill`
+
+### PyPI
+
+You can use regualar `pip install` from PyPI
+
+```bash
+pip install pykirill
+```
+
+### GitHub source
+
+You can use pip to install directly from GitHub. This method ensures you always get the latest version. Also gives access to experimental features in development
+
+```bash
+pip install git+https://github.com/kirilledition/pykirill.git@main
+```
+
+### GitHub release
+
+You also can use link to wheel from github releases
+
+```bash
+pip install https://github.com/kirilledition/pykirill/releases/download/2024.2.1/pykirill-2024.2.1-py3-none-any.whl
+```
+
+### GitHub Container Registry
+
+And finally package is also runnable as docker container from GitHub Container Registry
+
+```bash
+docker run --rm -it ghcr.io/kirilledition/pykirill:2024.2.1
+```
+
+## Usage
+
+You can have a look at showcase jupyter notebooks, that shows primitive examples of how to use `pykirill`: [showcase.ipynb](https://kirilledition.github.io/pykirill/showcase/)
+
+### Transforms
+```python
+from pykirill import transforms
+
+scaled_data = data.apply(transforms.log_scale)
+pca = transforms.principal_component_analysis(
+  scaled_data, n_components=3
+)
+```
+
+### Plotting
+```python
+from pykirill import plotting
+plotting.setup()
+
+axm = plotting.SubplotsManager(pca.n_components)
+
+for pc, score in pca.scores.items():
+    ax = axm.nextax()
+
+    ax.set_title(pc)
+    ax.set_ylabel("PC score")
+    ax.set_xlabel("species")
+
+    sns.boxplot(x=target, y=score, ax=ax)
+
+axm.show()
+```
+
+## License
+
+`pykirill` is open-sourced under the MIT license. The details can be found in the [LICENSE.md](https://github.com/kirilledition/pykirill/blob/main/LICENSE.md) file.
