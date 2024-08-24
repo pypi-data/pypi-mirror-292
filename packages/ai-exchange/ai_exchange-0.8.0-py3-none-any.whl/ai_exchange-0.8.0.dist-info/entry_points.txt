@@ -1,0 +1,10 @@
+[exchange.moderator]
+passive = exchange.moderators.passive:PassiveModerator
+summarize = exchange.moderators.summarizer:ContextSummarizer
+truncate = exchange.moderators.truncate:ContextTruncate
+
+[exchange.provider]
+anthropic = exchange.providers.anthropic:AnthropicProvider
+bedrock = exchange.providers.bedrock:BedrockProvider
+databricks = exchange.providers.databricks:DatabricksProvider
+openai = exchange.providers.openai:OpenAiProvider
