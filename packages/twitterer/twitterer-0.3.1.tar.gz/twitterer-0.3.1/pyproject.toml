@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "twitterer"
+version = "0.3.1"
+dependencies = [
+    "bs4",
+    "fake-useragent",
+    "jsonpickle",
+    "lxml",
+    "python-dotenv",
+    "selenium>=4.6",
+    "types-beautifulsoup4",
+    "rich",
+]
+description = "Python's package to scrape Twitter with selenium."
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = [
+    "twitter",
+    "selenium",
+    "scrape",
+    "scraping",
+    "scraper",
+    "twitterer",
+    "bot",
+]
+
+[project.urls]
+Homepage = "https://github.com/CatBraaain/twitterer"
