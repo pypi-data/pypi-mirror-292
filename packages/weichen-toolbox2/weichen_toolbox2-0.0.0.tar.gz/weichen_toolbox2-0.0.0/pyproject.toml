@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "weichen-toolbox2"
+version = "0.0.0"
+description = "advanced python caching"
+authors = ["weichen74 <weichen74@sina.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+charset-normalizer = "^3.3.2"
+requests = "^2.32.3"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
