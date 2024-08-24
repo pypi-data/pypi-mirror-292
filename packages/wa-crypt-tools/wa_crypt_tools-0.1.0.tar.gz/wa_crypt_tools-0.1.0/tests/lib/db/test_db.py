@@ -1,0 +1,3 @@
+
+class TestDatabase():
+    pass
