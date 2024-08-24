@@ -1,0 +1,54 @@
+import os
+from abcli.env import load_env, load_config
+
+load_env(__name__)
+load_config(__name__)
+
+
+BLUE_GEO_UKRAINE_TIMEMAP_QGIS_TEMPLATE = os.getenv(
+    "BLUE_GEO_UKRAINE_TIMEMAP_QGIS_TEMPLATE", ""
+)
+
+BLUE_GEO_FIRMS_AREA_QGIS_TEMPLATE = os.getenv(
+    "BLUE_GEO_FIRMS_AREA_QGIS_TEMPLATE",
+    "",
+)
+
+FIRMS_MAP_KEY = os.getenv(
+    "FIRMS_MAP_KEY",
+    "",
+)
+
+COPERNICUS_AWS_ACCESS_KEY_ID = os.getenv(
+    "COPERNICUS_AWS_ACCESS_KEY_ID",
+    "",
+)
+
+COPERNICUS_AWS_SECRET_ACCESS_KEY = os.getenv(
+    "COPERNICUS_AWS_SECRET_ACCESS_KEY",
+    "",
+)
+
+QGIS_TEMPLATES = {
+    "firms_area": BLUE_GEO_FIRMS_AREA_QGIS_TEMPLATE,
+}
+
+BLUE_GEO_TEST_DATACUBE_COPERNICUS_SENTINEL_2 = os.getenv(
+    "BLUE_GEO_TEST_DATACUBE_COPERNICUS_SENTINEL_2",
+    "",
+)
+
+BLUE_GEO_TEST_DATACUBE_FIRMS_AREA = os.getenv(
+    "BLUE_GEO_TEST_DATACUBE_FIRMS_AREA",
+    "",
+)
+
+BLUE_GEO_TEST_DATACUBE_GENERIC_GENERIC = os.getenv(
+    "BLUE_GEO_TEST_DATACUBE_GENERIC_GENERIC",
+    "",
+)
+
+BLUE_GEO_TEST_DATACUBE_UKRAINE_TIMEMAP = os.getenv(
+    "BLUE_GEO_TEST_DATACUBE_UKRAINE_TIMEMAP",
+    "",
+)
