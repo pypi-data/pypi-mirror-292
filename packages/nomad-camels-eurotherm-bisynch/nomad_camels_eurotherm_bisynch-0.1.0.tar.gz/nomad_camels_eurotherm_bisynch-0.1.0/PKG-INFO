@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: nomad_camels_eurotherm_bisynch
+Version: 0.1.0
+Summary: Device driver for the Agilent 34401A digital multimeter.
+Author-email: FAIRmat - HU Berlin <nomad-camels@fau.de>
+Project-URL: GitHub Page, https://github.com/FAU-LAP/NOMAD-CAMELS
+Project-URL: Documentation, https://fau-lap.github.io/NOMAD-CAMELS/doc/instruments/instruments.html
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)
+Requires-Python: >=3.9.6
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: pyvisa
+Requires-Dist: pyvisa-py
+
+# NOMAD-CAMELS Driver for Eurotherm controllers
+
+Driver of Eurotherm controllers using the Eurotherm Bisynch commands, written for the measurement software [NOMAD-CAMELS](https://fau-lap.github.io/NOMAD-CAMELS/).
+
+## Features
+The driver allows setting the temperature, PID values and maximum output as well as reading temperature and actual output.
+Tested for Eurotherm 902 controller, but should also work for similar ones.
+
+
+## Documentation
+
+For more information and documentation visit the NOMAD-CAMELS [documentation](https://fau-lap.github.io/NOMAD-CAMELS/doc/instruments/instruments.html).
