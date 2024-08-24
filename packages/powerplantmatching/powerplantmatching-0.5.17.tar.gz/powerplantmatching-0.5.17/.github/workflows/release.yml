@@ -1,0 +1,81 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  build:
+    # Build the Python SDist and wheel, performs metadata and readme linting
+    name: Build and verify package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hynek/build-and-inspect-python-package@v2
+
+  release:
+    # Publish a GitHub release from the given git tag
+    name: Create GitHub Release
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: softprops/action-gh-release@v2
+        with:
+          body: |
+            Revised release notes are available in the [documentation](https://powerplantmatching.readthedocs.io/en/latest/release-notes.html).
+          append_body: true
+          generate_release_notes: true
+
+  publish:
+    # Publish the built SDist and wheel from "dist" job to PyPI
+    name: Publish to PyPI
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/powerplantmatching/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: Packages
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  update-dataset:
+    name: Update powerplants.csv in repository
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Needed for setuptools_scm
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+    
+    - name: Install package
+      run: |
+        python -m pip install uv
+        uv pip install --system "$(ls dist/*.whl)[dev]"
+        
+    - name: Create dataset
+      run: |
+        import powerplantmatching as pm
+        df = pm.powerplants(update=True)
+        df.to_csv("powerplants.csv", index_label="id")
+      shell: python
+    
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v6
+      with:
+        commit-message: '[github-actions.ci] auto update `powerplants.csv`'
+        title: 'Update `powerplants.csv`'
+        body: 'This PR updates the `powerplants.csv` dataset after a new release.'
+        branch: 'auto-update-powerplants-csv'
+        base: 'master'
