@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bits"
+version = "0.2.1"
+authors = [{name = "Jason Traub", email = "jtraub91@gmail.com"}]
+description = "bits is a cli tool and pure Python library for Bitcoin"
+readme="README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "build",
+    "ipdb",
+    "pip-chill",
+    "pre-commit",
+    "pylint",
+    "pytest-cov",
+    "reorder-python-imports",
+    "twine"
+]
+
+[project.urls]
+"Source" = "https://github.com/jtraub91/bits"
+
+[project.scripts]
+bits = "bits.__main__:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src"
+]
+addopts = [
+    "--cov=bits",
+    "--doctest-modules",
+    "-p no:logging"
+]
