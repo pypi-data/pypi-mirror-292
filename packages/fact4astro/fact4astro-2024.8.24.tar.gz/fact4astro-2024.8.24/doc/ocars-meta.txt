@@ -1,0 +1,58 @@
+#
+# File format
+# ~~~~~~~~~~~
+#
+# Columns    Content
+#
+#   1 -   8  OCARS (B1950) name; '#' in column 1 marks a comment line
+#  10 -  19  J2000 name
+#  21 -  37  right ascension, h, m, s
+#  39 -  55  declination, d, m, s
+#  57 -  66  error in right ascension, sec, not multiplied by cos(Dec)
+#  68 -  76  error in declination, arcsec
+#  78 -  84  RA/Dec correlation
+#  86 -  93  semi-major axis of the error ellipse or 999.9999 if the actual value is >= 1", mas
+#  95 -  96  catalog code (position reference), see ocars_p.txt for the explanation
+#  98 - 104  epoch of the source coordinates, year
+# 106 - 112  Galactic longitude, deg
+# 114 - 120  Galactic latitude, deg
+# 122        asterisk in this column shows that the following redshift is not from NED (see Notes field for detail)
+# 123 - 128  redshift from NED (fiducial) or from the literature
+# 129        redshift origin/quality flag:
+#              s - spectroscopic
+#              p - photometric
+#              u - unreliable (doubtful, imaging, estimated, tentative, modeled, ...)
+#              c - lower limit
+#              d - upper limit
+#              z - zero redshift assigned in OCARS for Galactic objects
+# 131 - 136  redshift from SIMBAD
+# 137        SIMBAD redshift origin/quality flag, the same meaning as above
+# 139 - 144  redshift from SDSS
+# 146 - 149  optical or NIR magnitude; primarily taken from the ocars_m.txt in
+#              the following order of preference: VRGrgBiIzuUJHK; magnitude info
+#              absent in ocars_m.txt is taken from NED quick-look data
+# 150        band for which magnitude was measured;
+#              magnitude without band index is an indicative NED value usually related to V or B band
+# 152 - 153  object primary type:
+#              A  - AGN, including unspecified QSO in NED
+#              AB - blazar (replaced by other AGN class when known)
+#              AL - BL Lac type
+#              AQ - quasar
+#              AR - LINER-type AGN
+#              AS - Seyfert galaxy
+#              A1 - Seyfert 1 galaxy
+#              A2 - Seyfert 2 galaxy
+#              G  - radio galaxy
+#              G2 - double or multiple galaxy
+#              I  - IR source
+#              R  - radio source
+#              S  - star or stellar object
+#              SN - supernova (remnant)
+#              U  - UV source
+#              V  - visual source
+#              X  - X-ray source
+#              GR - gamma-ray source
+# 155 - (1024 max)   object names and notes;
+#              question mark in column 156 means that no counterpart was found neither in NED nor in SIMBAD;
+#              name started with column 156 means questionable identification, as well as question mark after name;
+#              double semicolon, when present, ends the list of source IDs when followed by other notes

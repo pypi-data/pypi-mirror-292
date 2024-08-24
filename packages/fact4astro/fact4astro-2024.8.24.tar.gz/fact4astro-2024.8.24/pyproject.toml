@@ -1,0 +1,47 @@
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fact4astro"
+authors = [
+    {name = "Niu Liu", email = "niu.liu@nju.edu.cn"},
+]
+maintainers = [
+  {name = "Niu Liu", email = "niu.liu@nju.edu.cn"}
+]
+description = "A python package for astrometric catalog analyses"
+readme = "README.md"
+requires-python = ">=3.0"
+keywords = ["astrometry", "catalog", "vlbi", "gaia"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+#    "requests",
+   "astropy",
+#    "numpy",
+#    "scipy",
+#    "pyyaml>=5.4",
+]
+dynamic = ["version"]
+
+# [project.urls]
+# Homepage = "https://pypi.org/project/fact4astro/"
+# # Documentation = "https://readthedocs.org"
+# Repository = "https://git.nju.edu.cn/neo/fact.git"
+# Changelog = "https://git.nju.edu.cn/neo/fact/-/blob/main/CHANGELOG"
+
+[tool.setuptools.packages.find]
+where = ["src"]  # ["."] by default
+exclude = ["tests", "backup", "data", "doc", "obsolete", "build_code.sh", "TODO.md", ".gitignore"] 
+
+[tool.setuptools.dynamic]
+version = {attr = "fact.__version__"}
