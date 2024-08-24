@@ -1,0 +1,124 @@
+[tool.poetry]
+name = "dotapi"
+version = "1.0.0"
+description = "The official Python library for the dotapi API"
+authors = [
+    "DotAgent <contact@dotagent.ai>",
+]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://github.com/dotagent/dotapi"
+repository = "https://github.com/dotagent/dotapi"
+classifiers = [
+    "Typing :: Typed",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: Apache Software License"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7.1"
+httpx = "^0.23.0, <1"
+pydantic = "^1.9.0, <3"
+typing-extensions = "^4.7, <5"
+anyio = "^3.5.0, <5"
+distro = "^1.7.0, <2"
+sniffio = "*"
+tqdm = "^4"
+cached-property = {version = "*", python = "<3.8"}
+
+[tool.poetry.group.dev.dependencies]
+pyright = "^1.1.359"
+mypy = "*"
+respx = "*"
+pytest = "*"
+pytest-asyncio = "*"
+ruff = "*"
+time-machine = "*"
+nox = "*"
+dirty-equals = "^0.6.0"
+importlib-metadata = "^6.7.0"
+rich = "^13.7.1"
+inline-snapshot = "^0.7.0"
+azure-identity = "^1.14.1"
+types-tqdm = "^4"
+types-pyaudio = "^0"
+trio = "^0.22.2"
+
+[tool.poetry.extras]
+datalib = ["numpy ^1", "pandas ^1.2.3", "pandas-stubs ^1.1.0.11"]
+
+[tool.poetry.scripts]
+dotapi = "dotapi.cli:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+target-version = ["py37"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--tb=short"
+xfail_strict = true
+asyncio_mode = "auto"
+filterwarnings = ["error"]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+pythonVersion = "3.7"
+exclude = ["_dev", ".venv", ".nox"]
+reportImplicitOverride = true
+reportImportCycles = false
+reportPrivateUsage = false
+
+[tool.ruff]
+line-length = 120
+output-format = "grouped"
+target-version = "py37"
+select = [
+    "I",
+    "B",
+    "F401",
+    "E722",
+    "ARG",
+    "T201",
+    "T203",
+    "TCH004",
+    "TID251",
+]
+ignore = ["B006"]
+unfixable = ["T201", "T203"]
+ignore-init-module-imports = true
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"functools.lru_cache".msg = "This function does not retain type information for the wrapped function's arguments; The `lru_cache` function from `_utils` should be used instead"
+
+[tool.ruff.lint.isort]
+length-sort = true
+length-sort-straight = true
+combine-as-imports = true
+extra-standard-library = ["typing_extensions"]
+known-first-party = ["openai", "tests"]
+
+[tool.ruff.per-file-ignores]
+"bin/**.py" = ["T201", "T203"]
+"scripts/**.py" = ["T201", "T203"]
+"tests/**.py" = ["T201", "T203"]
+"examples/**.py" = ["T201", "T203"]
