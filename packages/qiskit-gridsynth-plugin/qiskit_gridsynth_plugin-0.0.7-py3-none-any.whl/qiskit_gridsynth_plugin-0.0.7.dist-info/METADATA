@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: qiskit_gridsynth_plugin
+Version: 0.0.7
+Summary: A small package for integrating gridsynth angle decomposition into qiskit.
+Author-email: Abtin Molavi <amolavi@wisc.edu>
+Keywords: qiskit,quantum circuit,quantum computing,quantum,fault tolerant quantum computing
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: qiskit >=1.0
+
+# Qiskit GridSynth plugin
+
+This package integrates angle decomposition with ``gridsynth`` [1] into the ``qiskit`` [2]
+software stack, facilitating efficient transpilation to the Clifford+T gate set.
+
+## Installation 
+Install via pip:
+```
+pip install qiskit-gridsynth-plugin
+```
+
+## Example Usage
+Read a circuit from a qasm file `circ.qasm`, transpile to Clifford+T, and write the result to ``out.qasm``
+```
+from qiskit import qasm2, QuantumCircuit
+from qiskit_gridsynth_plugin.decompose import clifford_t_transpile
+circ = QuantumCircuit.from_qasm_file('circ.qasm')
+decomposed = clifford_t_transpile(circ, epsilon=1e-4)
+qiskit.qasm2.dump(decomposed, "out.qasm")
+```
+Include ``gridsynth`` angle decomposition as part of a qiskit compilation pipeline that also cancels out back-to-back CNOT gates
+
+```
+from qiskit.circuit.library.standard_gates import CXGate
+from qiskit.transpiler import PassManager
+from qiskit.transpiler.passes import InverseCancellation
+from qiskit_gridsynth_plugin.decompose import GridSynth
+circ = QuantumCircuit.from_qasm_file('circ.qasm')
+pm = PassManager(InverseCancellation([CXGate()]), GridSynth(1e-4))
+decomposed = pm.run(circ)
+```
+
+
+## References
+[1] N. J. Ross and P. Selinger, "Optimal ancilla-free Clifford+T approximation of z-rotations", arXiv:1403.2975 \
+[2] https://www.ibm.com/quantum/qiskit
