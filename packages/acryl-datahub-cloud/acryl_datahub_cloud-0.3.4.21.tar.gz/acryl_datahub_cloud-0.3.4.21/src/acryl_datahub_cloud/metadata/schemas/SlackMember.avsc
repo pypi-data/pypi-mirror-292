@@ -1,0 +1,30 @@
+{
+  "type": "record",
+  "Aspect": {
+    "name": "slackMember"
+  },
+  "name": "SlackMember",
+  "namespace": "com.linkedin.pegasus2avro.generic.slack",
+  "fields": [
+    {
+      "type": "string",
+      "name": "id",
+      "doc": "The unique ID of the Slack entity. I.e., memberID, or channelID."
+    },
+    {
+      "type": "string",
+      "name": "displayName",
+      "doc": "The display name of the Slack entity. I.e., if this is a member, it would be the member's name."
+    },
+    {
+      "type": [
+        "null",
+        "string"
+      ],
+      "name": "email",
+      "default": null,
+      "doc": "The email associated with the Slack member."
+    }
+  ],
+  "doc": "Information about a Slack member.\nNamespace for the urn of this entity should be 'slack-member'. See GenericEntityKey.pdl for details."
+}
