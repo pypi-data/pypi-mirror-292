@@ -1,0 +1,93 @@
+Metadata-Version: 2.1
+Name: enviparse
+Version: 2.0.1
+Summary: enviparse help you manage your application properties using environment variabl
+Author-email: Illuin technology <contact@illuin.tech>
+Maintainer-email: Illuin Technology <contact@illuin.tech>
+Project-URL: Homepage, https://github.com/illuin-tech/enviparse
+Project-URL: Bug Reports, https://github.com/illuin-tech/enviparse/issues
+Project-URL: Source, https://github.com/illuin-tech/enviparse/
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Provides-Extra: attr
+Requires-Dist: attrs <24.0.0,>=19.2.0 ; extra == 'attr'
+Provides-Extra: dev
+Requires-Dist: black ==24.8.0 ; extra == 'dev'
+Requires-Dist: build ==1.2.1 ; extra == 'dev'
+Requires-Dist: pytest ==8.3.2 ; extra == 'dev'
+Requires-Dist: pytest-cov ==5.0.0 ; extra == 'dev'
+Requires-Dist: pylint ==3.2.6 ; extra == 'dev'
+Requires-Dist: setuptools ==73.0.1 ; extra == 'dev'
+Requires-Dist: twine ==5.1.1 ; extra == 'dev'
+Requires-Dist: wheel ==0.44.0 ; extra == 'dev'
+Provides-Extra: opyoid
+Requires-Dist: opyoid <2.1.0,>=1.0.0 ; extra == 'opyoid'
+
+# Enviparse
+
+![CI](https://github.com/illuin-tech/enviparse/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/illuin-tech/enviparse/branch/main/graph/badge.svg)](https://codecov.io/gh/illuin-tech/enviparse)
+
+
+## Description
+
+Enviparse let you simply create dataclasses from environment variable.
+
+Supported types are : 
+* int
+* float
+* str
+* bool
+* optional
+* list
+* enum (with int or string values only)
+* `@attr` annotated class
+* `@dataclasses.dataclass` annotated class
+
+# Example
+
+With following environment variables :
+```bash
+DATABASE_CONFIG_USERNAME=postgres
+DATABASE_CONFIG_PASSWORD=password
+DATABASE_CONFIG_HOST=127.0.0.1
+DATABASE_CONFIG_PORT=5432
+DATABASE_CONFIG_DATABASE_NAME=appdb
+```
+
+You can parse environment variable with :
+
+```python
+import dataclasses
+from enviparse import Enviparse
+
+
+@dataclasses.dataclass
+class DatabaseConfig:
+    username: str
+    password: str
+    host: str
+    port: int
+    database_name: str
+
+
+db_config = Enviparse().parse("DATABASE_CONFIG", DatabaseConfig)
+print(db_config)
+```
+
+You should get the following result :
+```
+DatabaseConfig(username='postgres', password='password', host='127.0.0.1', port=5432, database_name='appdb')
+```
+
+For more example see the [test folder](./tests).
