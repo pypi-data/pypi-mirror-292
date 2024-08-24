@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: inkawuvp-vertigo-camera
+Version: 0.0.1a2
+Summary: A small example package
+Author-email: Alexandre Tuleu <alexandre.tuleu.2005@polytechnique.org>
+License: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi[standard]
+Requires-Dist: pygobject
+Provides-Extra: dev
+Requires-Dist: black >=22.10 ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: PyGObject-stubs ; extra == 'dev'
+
+# iNkawu-vertigo-camera
+
+This package holds utilities to manipulate the camera on VerTIGo. It provides:
+
+* a package to record live stream of camera via a simple webapi. It is based on
+  a modified libcamera gstreamer plugin that allows to record a UNIX timestamp
+  for each frame.
+* Utilities to access each frame according to its timestamp (i.e. for matching
+  with a psychopy session).
