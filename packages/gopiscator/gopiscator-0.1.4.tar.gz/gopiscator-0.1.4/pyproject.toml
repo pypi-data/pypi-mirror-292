@@ -1,0 +1,78 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61"]
+
+[project]
+name = "gopiscator"
+dynamic = ["version"]
+description = "CLI tool for performing gene set enrichment analysis using the GO database."
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [
+{ name = "Dmitry Bespiatykh", email = "d.bespiatykh@gmail.com" },
+]
+keywords = [
+    "go",
+    "enrichment",
+    "gene",
+    "ontology",
+    "fisher",
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "click",
+    "pandas",
+    "numpy",
+    "statsmodels",
+    "goatools",
+    "tabulate",
+    "tqdm"
+]
+
+[project.urls]
+Homepage = "https://github.com/dbespiatykh/gopiscator"
+Documentation = "https://github.com/dbespiatykh/gopiscator"
+Issues = "https://github.com/dbespiatykh/gopiscator/issues"
+Repository = "https://github.com/dbespiatykh/gopiscator"
+
+[project.scripts]
+gopiscator = "gopiscator.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "gopiscator.__version__" }
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+indent-width = 4
+exclude = [
+    ".git",
+    ".git-rewrite",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".pyenv",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "build",
+    "dist",
+    "site-packages",
+    "venv",
+]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+known-first-party = ["gopiscator"]
