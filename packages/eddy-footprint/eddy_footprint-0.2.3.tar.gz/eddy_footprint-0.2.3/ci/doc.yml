@@ -1,0 +1,28 @@
+name: eddy-footprint-docs
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.10
+  - ipykernel
+  - ipython
+  - matplotlib
+  - nbsphinx
+  - numpy
+  - numpydoc
+  - pre-commit
+  - pytest
+  - pytest-cov
+  - scipy
+  - sphinx>=4.2.0
+  - sphinx-copybutton
+  - sphinx-design
+  - sphinx-panels
+  - sphinx-autosummary-accessors
+  - sphinx-book-theme >= 0.0.38
+  - sphinxcontrib-srclinks
+  - xarray
+  - pip
+  - pip:
+      # relative to this file. Needs to be editable to be accepted.
+      - -e ..
