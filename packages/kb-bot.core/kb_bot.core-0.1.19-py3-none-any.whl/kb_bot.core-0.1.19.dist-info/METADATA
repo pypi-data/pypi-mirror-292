@@ -1,0 +1,92 @@
+Metadata-Version: 2.1
+Name: kb-bot.core
+Version: 0.1.19
+Summary: Library to build a bot from Knowledge Base
+Author-email: Arjun G <arjun@arjun-g.com>
+Project-URL: Homepage, https://github.com/arjun-g/kb-bot.core
+Project-URL: Issues, https://github.com/arjun-g/kb-bot.core/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: beautifulsoup4 ==4.12.3
+Requires-Dist: crochet ==2.1.1
+Requires-Dist: llama-index ==0.10.68
+Requires-Dist: numpy ==1.26.4
+Requires-Dist: openai ==1.42.0
+Requires-Dist: peewee ==3.16.3
+Requires-Dist: pillow ==10.4.0
+Requires-Dist: pydantic ==2.8.2
+Requires-Dist: PyMySQL ==1.1.0
+Requires-Dist: pypdf ==4.3.1
+Requires-Dist: python-dotenv ==1.0.0
+Requires-Dist: tidb-vector ==0.0.11
+Requires-Dist: Scrapy ==2.11.2
+
+# kb-bot.core
+
+The core library of kb-bot. This handles indexing of content, and chatting with the bot.
+
+## Getting Started
+
+```bash
+pip install kb-bot.core
+```
+
+## Preparing the KB
+
+```python
+import os
+from kb_bot import KBBot
+from kb_bot.scraper import WebScraper
+from kb_bot.db import TiDBProvider
+from kb_bot.chunkers import SemanticChunker
+from kb_bot.embedding import OpenAIEmbedClient
+from kb_bot.llm import OpenAI
+
+# Configure env variables TIDB_DATABASE, TIDB_USERNAME, TIDB_PASSWORD, TIDB_HOST, TIDB_PORT
+tidb = TiDBProvider()
+tidb.connect()
+
+embed_client = OpenAIEmbedClient(
+    api_key=os.environ.get('OPENAI_API_KEY')
+)
+
+scraper = WebScraper(
+    urls=["https://www.pingcap.com/blog/"],
+    follow_links=True,
+    restrict_navigation_css=".tmpl-archive.tmpl-archive-blog",
+    restrict_css=".tmpl-single-post__content",
+    ignore_css=".tmpl-archive-sidebar",
+    chunker=SemanticChunker(
+        embedding_client=embed_client
+    ),
+    db_provider=tidb,
+    group="<user user id or project id according to your need>",
+    embedding_client=embed_client
+)
+
+scraper.crawl()
+```
+
+## Chat with the bot
+
+```python
+bot = KBBot(
+    db_provider=tidb,
+    embedding_client=embed_client,
+    group="new-user-id",
+    llm_client=OpenAI(
+        api_key=os.environ.get('OPENAI_API_KEY')
+    )
+)
+
+print(bot.chat(message="what are the benefits of vector search ?"))
+```
+
+## TODO
+- Add support for multiple llm(s)
+- Implement Agentic Chunker
+- Add test cases
