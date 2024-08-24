@@ -1,0 +1,19 @@
+from setuptools import setup, find_packages
+
+with open("README.md", "r") as f:
+    description = f.read()
+
+setup(
+    name='python-gsmmodem_weabox',
+    version='1.0.3',
+    author='PT Thanh',
+    packages=find_packages(),
+    classifiers=[
+        'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+    ],
+    python_requires='>=3.3',
+    long_description=description,
+    long_description_content_type="text/markdown",
+)
