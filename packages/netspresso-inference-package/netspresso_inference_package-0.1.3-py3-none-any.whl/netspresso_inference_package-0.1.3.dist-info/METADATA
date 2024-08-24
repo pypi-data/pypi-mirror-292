@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: netspresso-inference-package
+Version: 0.1.3
+Summary: Inference module.
+Home-page: https://github.com/nota-github/netspresso_inference_package
+Author: NetsPresso
+Author-email: netspresso@nota.ai
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: tensorflow ==2.13.0
+Requires-Dist: onnx
+Requires-Dist: onnxruntime
+Requires-Dist: py7zr
+Requires-Dist: rarfile
+Requires-Dist: loguru
+
+# How to use
+
+## Use directly
+* model_file_path: Model file path(ONNX, TFLite)
+* dataset_file_path: The path to the compressed file or the individual npy files where the delimiter of the input layer is used as the file name.
+
+```bash
+python3 inference.py --model_file_path tests/your_model_file.tflite --dataset_file_path tests/your_dataset_file.npy 
+```
+
+## Import and use
+
+```python
+from netspresso_inference_package.inference.inference_service import InferenceService
+inf_service = InferenceService(
+        model_file_path="/app/tests/people_detection.onnx",
+        dataset_file_path="/app/tests/dataset_for_onnx.npy"
+        )
+inf_service.run()
+print(inf_service.result_file_path)
+```
