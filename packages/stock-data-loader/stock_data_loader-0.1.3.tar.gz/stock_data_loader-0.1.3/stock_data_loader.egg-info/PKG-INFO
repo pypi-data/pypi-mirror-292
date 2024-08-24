@@ -1,0 +1,143 @@
+Metadata-Version: 2.1
+Name: stock-data-loader
+Version: 0.1.3
+Summary: A Python library for loading stock data from the Seeking Alpha API
+Home-page: https://github.com/patzen123/stock-data-loader
+Author: Patrick Ashrafi
+Author-email: pa@ai-holding.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: requests
+
+# Stock Data Loader
+
+A Python library for loading stock data from the Seeking Alpha API.
+
+## Installation
+
+You can install the Stock Data Loader using pip:
+
+```
+pip install stock-data-loader
+```
+
+## How to Use StockDataLoader
+
+
+The `StockDataLoader` class provides an easy way to fetch and process stock data from the Seeking Alpha API. Here's a quick guide on how to use it:
+
+1. Import the class:
+   ```python
+   from stock_data_loader import StockDataLoader
+   ```
+
+2. Create an instance of the loader:
+   ```python
+   loader = StockDataLoader()
+   ```
+
+3. Prepare a list of stock symbols you want to fetch data for:
+   ```python
+   symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN']
+   ```
+
+4. Use the `load_symbol_data` method to fetch and process the data:
+   ```python
+   result_df = loader.load_symbol_data(symbols)
+   ```
+
+5. The result is a pandas DataFrame. You can now work with this data:
+   ```python
+   print(result_df)
+   ```
+
+Example:
+```python
+from stock_data_loader import StockDataLoader
+
+loader = StockDataLoader()
+symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN']
+result_df = loader.load_symbol_data(symbols)
+
+# Print the first few rows of the result
+print(result_df.head())
+
+# Save the result to a CSV file
+result_df.to_csv('stock_data.csv', index=False)
+```
+
+This will fetch data for the specified symbols, process it, and return a DataFrame with various attributes like symbol, name, follower count, exchange, and content counters for analysis, news, transcripts, etc.
+
+## Output Columns
+
+The `load_symbol_data` method returns a pandas DataFrame with the following columns:
+
+- `id`: Unique identifier for the stock
+- `type`: Type of the data (usually "ticker")
+- `symbol`: Stock symbol
+- `name`: Full name of the company
+- `followersCount`: Number of followers on Seeking Alpha
+- `exchange`: Stock exchange where the stock is listed
+- `analysis`: Number of analysis articles
+- `related_analysis`: Number of related analysis articles
+- `transcripts`: Number of earnings call transcripts
+- `earning_slides`: Number of earning slides available
+- `news`: Number of news articles
+- `partnerNews`: Number of partner news articles
+- `pressReleases`: Number of press releases
+- `bulls_say`: Number of bullish opinions
+- `bears_say`: Number of bearish opinions
+- `investing_groups`: Number of investing groups discussing the stock
+- `annual_dividends`: Number of annual dividend reports
+- `annual_earnings_estimates`: Number of annual earnings estimates
+- `dividend_news`: Number of dividend-related news items
+- `sec_filings`: Number of SEC filings
+- `sec_filings_fin_and_news`: Number of financial and news-related SEC filings
+- `sec_filings_tenders`: Number of tender offer SEC filings
+- `sec_filings_other`: Number of other SEC filings
+- `sec_filings_ownership`: Number of ownership-related SEC filings
+- `sector_rating_change_notices`: Number of sector rating change notices
+- `sector_quant_warnings`: Number of quantitative warnings for the sector
+- `sector_dividend_safety_warnings`: Number of dividend safety warnings for the sector
+- `quarterly_revenue`: Number of quarterly revenue reports
+- `annual_revenue`: Number of annual revenue reports
+- `market_open`: Market open status
+- `market_open_time`: Market open time
+- `analysis_count`: Another count of analysis articles (may differ from `analysis`)
+- `news_count`: Another count of news articles (may differ from `news`)
+- `transcripts_count`: Another count of transcripts (may differ from `transcripts`)
+
+Note: Some columns may be empty or have different values than expected due to variations in the API response.
+
+## Example Output
+
+Here's a sample of what the output might look like:
+
+```python
+print(result_df[['symbol', 'followersCount', 'analysis', 'news', 'sec_filings', 'annual_dividends']].head())
+```
+
+```
+  symbol  followersCount  analysis  news  sec_filings  annual_dividends
+0   AAPL        2713202    10037  10753          121                 0
+1   TSLA        1151910     5929   5737          121                 0
+2  GOOGL         459787     1974   4592           97                 0
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
