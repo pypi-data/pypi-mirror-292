@@ -1,0 +1,38 @@
+# Compiled python modules.
+*.pyc
+
+# Setuptools distribution folder.
+/dist/
+build
+venv
+
+# Ignore private test data
+g2p/tests/private
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+
+.DS_Store
+.vscode
+.python-version
+
+*.log
+log.txt
+
+.coverage
+htmlcov
+
+flask_session
+
+# Sphinx documentation
+docs/_build/
+
+# coverage annotation output
+*,cover
+
+# vim temp files
+*~
+
+# mkdocs build
+site
+g2p/_version.py
