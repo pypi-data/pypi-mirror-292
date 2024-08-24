@@ -1,0 +1,55 @@
+docs_dir: docs
+markdown_extensions: ['admonition',
+                                    'codehilite',
+                                    'extra',
+                                    'pymdownx.details',
+                                    'pymdownx.highlight']
+repo_name: 'headfake'
+repo_url: 'https://github.com/rcfgroup/headfake'
+theme:
+    name: 'readthedocs'
+    features:
+      - navigation.instant
+      - navigation.sections
+    #icon:
+      #logo: "/assets/headfake-logo.png"
+
+
+site_name: Headfake
+site_description: Health data faker - for all your fake data needs
+
+plugins:
+  - mkapi:
+        src_dirs: ['../headfake']
+
+nav:
+  - Home: "index.md"
+  - Usage: "usage.md"
+  - Tutorials:
+        "1. Generating fake data files": "tutorials/tutorial1.md"
+        "2. Changing Headfake template files": "tutorials/tutorial2.md"
+        "3. Adding conditional fields": "tutorials/tutorial3.md"
+
+  - Discussion:
+      "Initialising Headfake": "discussion/initialising-headfake.md"
+  - 'How to..':
+      "Create custom fields": "how-to/create-custom-fields.md"
+      "Create custom transformers": "how-to/create-custom-transformers.md"
+      "Add a lookup field": "how-to/add-a-lookup-field.md"
+      "Generate identical datasets": "how-to/generate-identical-datasets.md"
+      "Exclude fields from the output": "how-to/exclude-fields-from-the-output.md"
+      "Combine field values": "how-to/combine-field-values.md"
+
+  - API:
+    - headfake: api/headfake.md
+    - field:
+        core: api/field/core.md
+        id: api/field/id.md
+        faker: api/field/faker.md
+        derived: api/field/derived.md
+    - cli: api/cli.md
+    - fieldset: api/fieldset.md
+    - transformer: api/transformer.md
+    - output: api/output.md
+    - error: api/error.md
+    - util: api/util.md
