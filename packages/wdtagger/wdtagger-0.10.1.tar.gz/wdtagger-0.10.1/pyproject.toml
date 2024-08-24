@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "wdtagger"
+version = "0.10.1"
+description = ""
+authors = ["Jianqi Pan <jannchie@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pillow = "^10.3.0"
+pandas = "^2.2.2"
+huggingface-hub = "^0.23.3"
+rich = "^13.7.1"
+onnxruntime-gpu = "^1.18.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+pytest-benchmark = "^4.0.0"
+ruff = "^0.5.5"
+isort = "^5.13.2"
+black = "^24.4.2"
+mypy = "^1.11.0"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 120
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
