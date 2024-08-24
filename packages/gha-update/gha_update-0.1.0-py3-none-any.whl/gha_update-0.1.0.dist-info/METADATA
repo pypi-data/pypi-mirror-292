@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: gha-update
+Version: 0.1.0
+Summary: Update GitHub Actions version pins in GitHub workflow files.
+Author: David Lord
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: click
+Requires-Dist: httpx
+
+# GitHub Actions Updater
+
+Update GitHub Actions version pins in GitHub workflow files. Even with grouped,
+monthly updates, Dependabot PRs can still be noisy, especially for smaller or
+stable projects. This tool allows updating pins locally, when the maintainer
+wants to.
+
