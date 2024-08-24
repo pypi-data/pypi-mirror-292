@@ -1,0 +1,77 @@
+Metadata-Version: 2.1
+Name: hg_oap
+Version: 0.1.4
+Summary: A library to faciliate building order and pricing strategies
+License: MIT
+Keywords: reactive,graph,fpg,forward propogating graph,time series,functional reactive programming,order,pricing,oms
+Author: Howard Henson
+Author-email: howard@henson.me.uk
+Requires-Python: >=3.11
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Dist: hgraph (>=0.3.4)
+Requires-Dist: holidays (>=0.46)
+Project-URL: Changelog, https://github.com/hhenson/hg_oap/blob/main/CHANGELOG.md
+Project-URL: Documentation, https://github.com/hhenson/hg_oap/blob/main/docs/index.md
+Project-URL: Homepage, https://github.com/hhenson/hg_oap
+Project-URL: Issues, https://github.com/hhenson/hg_oap/blob/main/ISSUES.md
+Project-URL: Repository, https://github.com/hhenson/hg_oap.git
+Description-Content-Type: text/markdown
+
+# HGraph Orders and Pricing Library
+
+Provides a library, based on the hgraph functional reactive framework to
+support creating order and pricing logic.
+
+The core components of the library include:
+
+* instruments
+* positions
+* portfolios
+* orders
+* pricing
+
+This library is currently very green and is expected to have significant changes.
+
+
+## Development
+
+The project is currently configured to make use of [Hatchling](https://hatch.pypa.io/latest/) for dependency management. 
+Take a look at the website to see how best to install the tool.
+Once you have checked out the project, you can install the project for development using the following command:
+
+```bash
+hatch env create all.py3.11
+```
+
+Then you can find the location of the installation using:
+
+```bash
+hatch env find all.py3.11
+```
+
+For users of CLion / PyCharm, you can then add the environment by selecting an existing virtual environment using
+the location above.
+
+### Run MyPy Type Checking
+
+```bash
+hatch run types:check
+```
+
+### Run Tests
+
+```bash
+# No Coverage
+hatch run test
+```
+
+```bash
+# Generate Coverage Report
+hatch run cov
+```
