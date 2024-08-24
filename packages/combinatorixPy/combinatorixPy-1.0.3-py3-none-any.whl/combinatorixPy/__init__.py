@@ -1,0 +1,1 @@
+from .combinatorixPy  import get_result
