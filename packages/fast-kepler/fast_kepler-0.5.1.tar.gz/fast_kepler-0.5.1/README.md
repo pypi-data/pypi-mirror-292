@@ -1,0 +1,74 @@
+# fast_kepler
+
+A c implementation for solving kepler's equation in c. Made for astroemperor, put in a different library for public use.
+
+## Dependencies
+
+This code makes use of:
+  - numpy
+  - cython
+
+## Installation
+
+In the console type in your work folder
+```sh
+pip install fast_kepler
+```
+
+## Usage
+
+Solution to Kepler's equation. Given mean anomaly, M, and eccentricity, e,
+solve for E, the eccentric anomaly, which must satisfy:
+
+$$E - e sin(E) - M = 0$$
+
+For a given eccentricity, and an M array, we use:
+
+```python
+import fast_kepler
+M = np.sort(np.random.uniform(0, 100, size=100))
+ecc = 0.11
+E = fast_kepler.kepler_array(M, ecc)
+```
+
+
+## More on usage
+We can calculate RVs:
+
+```python
+# time array of our observations
+x = np.sort(np.random.uniform(0, 100, size=100))
+# keplerian parameters
+period = 4.1  # in days
+semi_amplitude = 55  # in m/s
+M0 = np.pi/3  # in rad
+ecc = 0.23  # from 0 to 1
+om = 3*np.pi/5  # in rad
+
+theta = [period, semi_amplitude, M0, ecc, om]
+
+def calc_RV(theta):
+  per, K, M0, ecc, om = theta
+
+  freq = 2. * np.pi / per
+  M = freq * x + M0
+  E = fast_kepler.kepler_array(M, ecc)
+
+  f = np.arctan(((1. + ecc)/(1. - ecc)) ** 0.5 * np.tan(E / 2.)) * 2.
+  
+  return K * (np.cos(f + om) + ecc * np.cos(om))
+
+# or simply:
+
+def get_RV(theta):
+  per, K, M0, ecc, om = theta
+  return fast_kepler.calc_rv0(x, per, K, M0, ecc, om)
+```
+
+## Additional Options
+
+You can also use a different parameterization to retrieve RVs, with time of periastron passage $T_p$ instead of the mean anomaly $M_0$:
+
+```python
+fast_kepler.calc_rv1(x, per, A, tp, ecc, w)
+```
