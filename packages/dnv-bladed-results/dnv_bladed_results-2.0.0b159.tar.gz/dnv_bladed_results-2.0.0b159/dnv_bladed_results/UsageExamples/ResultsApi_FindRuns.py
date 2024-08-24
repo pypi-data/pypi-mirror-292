@@ -1,0 +1,82 @@
+from dnv_bladed_results import *
+from dnv_bladed_results import UsageExamples
+import os
+
+############   Bladed Results API: Find runs   ############
+
+# Finds runs starting in a root folder using various search criteria:
+# - runs filtered on completion state and calculation type
+# - runs matching name
+# - runs matching name regex
+
+def display_runs(description, runs: np.ndarray[Run]):
+    print("\nShowing " + description + " (" + str(runs.size) + " found):")
+    run: Run
+    for run in runs:
+        print(run.get_directory() + run.get_name())
+
+def find_runs_with_filter_criteria(root_folder):
+
+    ################################
+    #  Find all unsuccessful runs  #
+    ################################
+
+    ResultsApi_SearchSettings.set_completion_state_filter(COMPLETION_STATE_UNSUCCESSFUL_RUNS_ONLY)
+    unsuccessful_runs = ResultsApi.get_runs(root_folder)
+    display_runs("runs that did not succeed", unsuccessful_runs)
+    ResultsApi_SearchSettings.set_completion_state_filter(COMPLETION_STATE_ALL_COMPLETION_STATES)
+
+    ######################################
+    #  Find all turbine simulation runs  #
+    ######################################
+
+    ResultsApi_SearchSettings.set_calculation_type_filter(CALCULATION_TYPE_ALL_TURBINE_SIMULATIONS)
+    turbine_simulation_runs = ResultsApi.get_runs(root_folder)
+    display_runs("turbine simulation runs", turbine_simulation_runs)
+    ResultsApi_SearchSettings.set_calculation_type_filter(CALCULATION_TYPE_ALL_CALCULATION_TYPES)
+
+    ###################################
+    #  Find all post-processing runs  #
+    ###################################
+
+    ResultsApi_SearchSettings.set_calculation_type_filter(CALCULATION_TYPE_ALL_POST_PROCESSING_CALCULATIONS)
+    post_processing_runs = ResultsApi.get_runs(root_folder)
+    display_runs("post-processing runs", post_processing_runs)
+    ResultsApi_SearchSettings.set_calculation_type_filter(CALCULATION_TYPE_ALL_CALCULATION_TYPES)
+
+    #############################################################
+    #  Find runs matching a name - case insensitive by default  #
+    #############################################################
+
+    runs_named_powprod = ResultsApi.get_runs_matching_name(root_folder, "powprod")
+    display_runs("runs named 'powprod'", runs_named_powprod)
+    
+    #####################################################
+    #  Find runs with name matching regular expression  #
+    #####################################################
+
+    runs_with_number_in_name = ResultsApi.get_runs_matching_name_regex(root_folder, r".*\d+.*")
+    display_runs("runs with name containing a number", runs_with_number_in_name)
+
+    runs_with_name_starting_with_p = ResultsApi.get_runs_matching_name_regex(root_folder, "p.*")
+    display_runs("runs with name beginning wih letter 'p'", runs_with_name_starting_with_p)
+
+def find_runs_stress_test(root_folder):
+
+    #################################
+    #  Find runs and display count  #
+    #################################
+
+    ResultsApi_CacheSettings.set_run_caching_enabled(False)  
+    all_runs = ResultsApi.get_runs(root_folder, SEARCH_SCOPE_RECURSIVE_SEARCH)    
+    print("\nFound " + str(all_runs.size) + " runs staring in root folder")
+
+
+runs_root_folder = os.path.join(UsageExamples.__path__[0], "Runs")
+from datetime import datetime
+start_time = datetime.now()
+find_runs_with_filter_criteria(runs_root_folder)
+end_time = datetime.now()
+total_time = end_time - start_time
+print("\nTime taken (s) =", total_time.total_seconds(),"\n")
+
