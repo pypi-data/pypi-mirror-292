@@ -1,0 +1,69 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "testreqstatus"
+dynamic = ["version"]
+description = 'parse test results to inform requirements'
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE.txt"}
+keywords = []
+authors = [
+  { name = "zacharyburnett", email = "zburnett@stsci.edu" },
+]
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = [
+  "junitparser",
+  "typer",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+]
+
+[project.scripts]
+requirements_status_from_test_results = "testreqstatus.parse:main"
+extract_requirements_from_tests = "testreqstatus.extract:main"
+
+[project.urls]
+Documentation = "https://github.com/zacharyburnett/testreqstatus#readme"
+Issues = "https://github.com/zacharyburnett/testreqstatus/issues"
+Source = "https://github.com/zacharyburnett/testreqstatus"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/testreqstatus tests}"
+
+[tool.coverage.run]
+source_pkgs = ["testreqstatus", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/testreqstatus/__about__.py",
+]
+
+[tool.coverage.paths]
+testreqstatus = ["src/testreqstatus", "*/testreqstatus/src/testreqstatus"]
+tests = ["tests", "*/testreqstatus/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
