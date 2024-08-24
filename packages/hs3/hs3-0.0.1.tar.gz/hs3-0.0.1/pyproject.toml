@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hs3"
+dynamic = ["version"]
+description = 'to be filled in'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Giordon Stark", email = "kratsg@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/Giordon Stark/hs3#readme"
+Issues = "https://github.com/Giordon Stark/hs3/issues"
+Source = "https://github.com/Giordon Stark/hs3"
+
+[tool.hatch.version]
+path = "hs3/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:hs3 tests}"
+
+[tool.coverage.run]
+source_pkgs = ["hs3", "tests"]
+branch = true
+parallel = true
+omit = [
+  "hs3/__about__.py",
+]
+
+[tool.coverage.paths]
+hs3 = ["hs3", "*/hs3/hs3"]
+tests = ["tests", "*/hs3/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
