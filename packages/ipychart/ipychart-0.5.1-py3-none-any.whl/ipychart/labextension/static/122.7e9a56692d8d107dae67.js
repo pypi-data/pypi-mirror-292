@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkipychart=self.webpackChunkipychart||[]).push([[122],{4122:(e,t,r)=>{r.r(t),r.d(t,{default:()=>p});var i=r(3983),a=r(2787),s=r(1797);const p={id:"ipychart:plugin",requires:[i.IJupyterWidgetRegistry],activate:function(e,t){t.registerWidget({name:s.p,version:s.e,exports:a})},autoStart:!0}}}]);

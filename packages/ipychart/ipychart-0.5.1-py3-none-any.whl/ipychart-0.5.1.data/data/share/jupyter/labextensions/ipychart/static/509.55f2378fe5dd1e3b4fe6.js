@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkipychart=self.webpackChunkipychart||[]).push([[509],{8509:(e,a,h)=>{h.r(a),h.d(a,{ChartModel:()=>t.ChartModel,ChartView:()=>t.ChartView,MODULE_NAME:()=>r.p,MODULE_VERSION:()=>r.e});var r=h(1797),t=h(2787)}}]);
