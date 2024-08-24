@@ -1,0 +1,21 @@
+Metadata-Version: 2.3
+Name: json-type-hints
+Version: 1.0
+Summary: An extension of the standard json library
+Project-URL: Homepage, https://github.com/cujoai/json-type-hints
+Author-email: Darius Sirvidas <darius.sirvidas@cujo.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# json-type-hints
+**json-type-hints** is a simple extension of the standard json library intended to help facilitate transferring python objects as json encoded strings. Data types that don't have corresponding json types are preserved by encoding them as dictionaries with `__type__` and `__data__` fields. It encodes and decodes `bytes` and `tuple` by default (replacing the default json library encoding of `tuple` as `list`) and allows adding additional types.
+
+provides `dumps` and `loads` methods
