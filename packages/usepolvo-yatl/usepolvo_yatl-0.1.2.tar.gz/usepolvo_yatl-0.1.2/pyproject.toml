@@ -1,0 +1,28 @@
+[build-system]
+requires = [ "setuptools>=42", "wheel",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "usepolvo-yatl"
+version = "0.1.2"
+description = "A Python implementation of YATL (Yet Another Tentacle Language)"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [ "PyYAML==6.0.2",]
+[[project.authors]]
+name = "Caio Pizzol"
+email = "caio@usepolvo.com"
+
+[project.license]
+text = "MIT"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--maxfail=2 -ra"
+testpaths = [ "tests",]
