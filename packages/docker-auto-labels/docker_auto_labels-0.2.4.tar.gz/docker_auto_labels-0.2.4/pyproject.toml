@@ -1,0 +1,47 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "docker-auto-labels"
+dynamic = []
+description = "Automatically generate Docker Swarm mode node labels for each constraint label in each service in a Docker Compose / Docker Stack file."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "Sebastián Ramírez", email = "tiangolo@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "click>=6.0",
+    "docker",
+    "pyyaml",
+]
+version = "0.2.4"
+
+[project.urls]
+Homepage = "https://github.com/tiangolo/docker-auto-labels"
+
+[project.scripts]
+docker-auto-labels = "docker_auto_labels.cli:main"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.version]
+source = "file"
+path = "src/docker_auto_labels/__init__.py"
+
+[tool.pdm.build]
+source-includes = [
+    "tests/",
+    "requirements*.txt",
+    "scripts/",
+]
