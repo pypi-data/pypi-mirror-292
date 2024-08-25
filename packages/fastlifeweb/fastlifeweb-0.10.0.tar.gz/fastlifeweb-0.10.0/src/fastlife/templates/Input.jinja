@@ -1,0 +1,12 @@
+{# def
+name,
+value="",
+type="text",
+id="",
+aria_label="",
+placeholder="",
+#}
+
+<input name="{{name}}" value="{{value}}" type="{{type}}" {% if id %}id="{{id}}" {% endif %}{% if aria_label
+  %}aria-label="{{aria_label}}" {% endif %} {% if placeholder %}placeholder="{{placeholder}}" {% endif %}
+  class="{{attrs.class or INPUT_CLASS}}" />

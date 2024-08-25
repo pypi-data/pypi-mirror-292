@@ -1,0 +1,4 @@
+{# def id=None, open=True #}
+<details{% if id%} id="{{id}}"{% endif%} class="{{attrs.class or DETAILS_CLASS}}" {% if open %}open{% endif %}>
+  {{content}}
+</details>

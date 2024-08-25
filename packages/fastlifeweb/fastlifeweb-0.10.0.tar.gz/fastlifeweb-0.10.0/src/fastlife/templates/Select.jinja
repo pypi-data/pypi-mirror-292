@@ -1,0 +1,9 @@
+{# def
+name,
+id,
+multiple=False,
+#}
+
+<select name="{{name}}" id="{{id}}" class="{{attrs.class or SELECT_CLASS}}" {% if multiple %}multiple{% endif %}>
+  {{- content -}}
+</select>
