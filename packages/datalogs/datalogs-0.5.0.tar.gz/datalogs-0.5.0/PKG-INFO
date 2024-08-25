@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: datalogs
+Version: 0.5.0
+Summary: Python package for logging data from scientific experiments.
+Home-page: https://github.com/PainterQubits/datalogs
+License: BSD-3-Clause
+Author: Alex Hadley
+Author-email: contact@alexhadley.net
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Provides-Extra: paramdb
+Requires-Dist: netcdf4 (>=1.7.1.post2,<2.0.0)
+Requires-Dist: numpy (>=1.26.4,<2.0.0)
+Requires-Dist: paramdb (>=0.15.2,<0.16.0) ; extra == "paramdb"
+Requires-Dist: typing-extensions (>=4.12.2,<5.0.0)
+Requires-Dist: xarray (>=2024.7.0,<2025.0.0)
+Project-URL: Repository, https://github.com/PainterQubits/datalogs
+Description-Content-Type: text/markdown
+
+# DataLogs
+
+<!-- start introduction -->
+
+[![PyPI Latest Release](https://img.shields.io/pypi/v/datalogs)](https://pypi.org/project/datalogs/)
+[![PyPI Python Versions](https://img.shields.io/pypi/pyversions/datalogs)](https://pypi.org/project/datalogs/)
+[![License](https://img.shields.io/pypi/l/paramdb)](https://github.com/PainterQubits/datalogs/blob/main/LICENSE)
+[![CI](https://github.com/PainterQubits/datalogs/actions/workflows/ci.yml/badge.svg)](https://github.com/PainterQubits/datalogs/actions/workflows/ci.yml)
+[![Documentation Status](https://readthedocs.org/projects/datalogs/badge/?version=stable)](https://datalogs.readthedocs.io/en/stable/)
+
+Python package for logging data from scientific experiments.
+
+<!-- end introduction -->
+
+## Installation
+
+<!-- start installation -->
+
+Install the latest version of DataLogs using pip:
+
+```
+pip install -U datalogs
+```
+
+To install along with [ParamDB] for support for tagging logs with the latest commit ID,
+DataLogs can be installed with the `paramdb` extra:
+
+```
+pip install -U "datalogs[paramdb]"
+```
+
+[ParamDB]: https://paramdb.readthedocs.io/en/stable/
+
+<!-- end installation -->
+
