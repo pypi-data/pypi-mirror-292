@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: dynaspark
+Version: 1.1.1
+Summary: A client for interacting with the DynaSpark API
+Home-page: https://github.com/Th3-AI/DynaSpark
+Author: Th3-C0der
+Author-email: dvp.ai.ml@gmail.com
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: requests >=2.30.0
+
+# DynaSpark API
+
+Currently only Python package is available.
+
+A Python client for interacting with the DynaSpark API.
+
+## Installation
+
+You can install the package via pip:
+
+```bash
+pip install dynaspark
+```
+
+## Usage
+
+```python
+#Example Code
+from dynaspark import DynaSpark
+
+# Initialize the DynaSpark API client
+client = DynaSpark(api_key="your_api_key_here")
+
+# Generate a response
+response = client.generate_response(user_input="Hello!")
+print(response)
+
+# Generate an image
+image_url = client.generate_image(prompt="A majestic lion with a flowing mane, standing on a rocky cliff overlooking a sunset.")
+print(image_url)
+```
+
+## Free API KEY
+
+```
+TH3_API_KEY
+```
