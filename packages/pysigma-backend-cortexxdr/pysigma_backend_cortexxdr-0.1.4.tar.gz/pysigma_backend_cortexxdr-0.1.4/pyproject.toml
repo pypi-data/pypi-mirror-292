@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "pySigma-backend-cortexxdr"
+version = "0.1.4"
+description = "pySigma CortexXDR backend"
+authors = ["Cori Smith <cs2718281@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/7RedViolin/pySigma-backend-cortexxdr"
+packages = [
+    { include = "sigma" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pysigma = ">=0.11.3"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-cov = "^4.1.0"
+coverage = "^7.4.1"
+defusedxml = "^0.7"
+
+[build-system]
+requires = ["poetry-core>=1.8.1"]
+build-backend = "poetry.core.masonry.api"
