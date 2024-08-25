@@ -1,0 +1,224 @@
+Metadata-Version: 2.1
+Name: zf-pd
+Version: 0.2.12
+Summary: pd supercharges your development workflows
+Author: Zeff Muks
+Author-email: zeffmuks@gmail.com
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: annotated-types ==0.6.0
+Requires-Dist: anyio ==3.7.1
+Requires-Dist: beautifulsoup4 ==4.12.3
+Requires-Dist: boto3 ==1.29.7
+Requires-Dist: botocore ==1.32.7
+Requires-Dist: bs4 ==0.0.2
+Requires-Dist: certifi ==2023.11.17
+Requires-Dist: chardet ==5.2.0
+Requires-Dist: charset-normalizer ==3.3.2
+Requires-Dist: click ==8.1.7
+Requires-Dist: decorator ==4.4.2
+Requires-Dist: Deprecated ==1.2.14
+Requires-Dist: distro ==1.9.0
+Requires-Dist: docutils ==0.20.1
+Requires-Dist: epub2pdf ==0.1.0
+Requires-Dist: fastapi ==0.104.1
+Requires-Dist: greenlet ==3.0.3
+Requires-Dist: h11 ==0.14.0
+Requires-Dist: httpcore ==1.0.2
+Requires-Dist: httpx ==0.26.0
+Requires-Dist: idna ==3.6
+Requires-Dist: imageio ==2.33.1
+Requires-Dist: imageio-ffmpeg ==0.4.9
+Requires-Dist: img2pdf ==0.5.1
+Requires-Dist: importlib-metadata ==7.0.1
+Requires-Dist: jaraco.classes ==3.3.0
+Requires-Dist: Jinja2 ==3.1.2
+Requires-Dist: jmespath ==1.0.1
+Requires-Dist: keyring ==24.3.0
+Requires-Dist: libgen-api ==1.0.1
+Requires-Dist: loguru ==0.6.0
+Requires-Dist: lxml ==5.1.0
+Requires-Dist: markdown-it-py ==3.0.0
+Requires-Dist: MarkupSafe ==2.1.3
+Requires-Dist: mdurl ==0.1.2
+Requires-Dist: mobi ==0.3.3
+Requires-Dist: more-itertools ==10.1.0
+Requires-Dist: moviepy ==1.0.3
+Requires-Dist: nh3 ==0.2.15
+Requires-Dist: numpy ==1.26.2
+Requires-Dist: openai ==1.6.1
+Requires-Dist: packaging ==24.0
+Requires-Dist: pikepdf ==8.13.0
+Requires-Dist: Pillow ==10.1.0
+Requires-Dist: pkginfo ==1.9.6
+Requires-Dist: playwright ==1.45.1
+Requires-Dist: proglog ==0.1.10
+Requires-Dist: prompt-toolkit ==3.0.47
+Requires-Dist: pydantic ==2.5.3
+Requires-Dist: pydantic-core ==2.14.6
+Requires-Dist: pydub ==0.25.1
+Requires-Dist: pyee ==11.1.0
+Requires-Dist: Pygments ==2.17.2
+Requires-Dist: PyPDF2 ==3.0.1
+Requires-Dist: python-dateutil ==2.8.2
+Requires-Dist: pytube ==15.0.0
+Requires-Dist: pytubefix ==6.8.1
+Requires-Dist: readme-renderer ==42.0
+Requires-Dist: reportlab ==4.1.0
+Requires-Dist: requests ==2.31.0
+Requires-Dist: requests-toolbelt ==1.0.0
+Requires-Dist: rfc3986 ==2.0.0
+Requires-Dist: rich ==13.7.0
+Requires-Dist: s3transfer ==0.8.0
+Requires-Dist: six ==1.16.0
+Requires-Dist: sniffio ==1.3.0
+Requires-Dist: soupsieve ==2.5
+Requires-Dist: starlette ==0.27.0
+Requires-Dist: tqdm ==4.66.1
+Requires-Dist: twine ==4.0.2
+Requires-Dist: typing-extensions ==4.9.0
+Requires-Dist: urllib3 ==2.0.7
+Requires-Dist: wcwidth ==0.2.13
+Requires-Dist: wrapt ==1.16.0
+Requires-Dist: youtube-transcript-api ==0.6.2
+Requires-Dist: zipp ==3.17.0
+
+# pd (Product Development and Deployment)
+
+[![PyPI version](https://badge.fury.io/py/zf-pd.svg)](https://badge.fury.io/py/zf-pd)
+
+![PD](https://zf-static.s3.us-west-1.amazonaws.com/pd-logo128.png)</p>
+
+
+`pd` is a command-line tool that helps you with various development and deployment tasks.
+
+|     | Feature                         | Description                                                              |
+| --- | ------------------------------- | ------------------------------------------------------------------------ |
+| 1   | Project initialization (`init`) | Quickly initialize new development projects (e.g. FastAPI, Electron etc) |
+| 2   | Content downloading (`down`)    | Download content from the internet (YouTube, Libgen).                    |
+| 3   | File conversion (`conv`)        | Convert files into other formats (Image, Audio, Video).                  |
+| 4   | EC2 instance management (`ec2`) | Manage EC2 instances (launch, terminate).                                |
+| 5   | Image editing (`edit`)          | Edit images (scale, round, favicon, logo variants etc).                  |
+| 6   | Web utilities (`web`)           | Inspect or view web pages in the terminal.                               |
+| 7   | Environment management (`env`)  | Setup and configure development environment (zsh, vim, git, etc).        |
+| 8   | Nginx management (`nginx`)      | Manage Nginx configuration files (proxy, static resources).              |
+
+See [COMMANDS](./COMMANDS.md) for more details.
+
+# Installation
+
+```bash
+pip install zf-pd
+```
+
+This installs a `pd` command in your system (even though the package name is `zf-pd`).
+
+Like other shell tools, pd stores its config in `~/.pdconfig.json`.
+
+See [CONFIG](./CONFIG.md) for more details.
+
+# Usage
+
+## Initializing a new Project
+
+```bash
+$ pd init fastapi --name /path/to/fastapi-test
+```
+
+This will create a new FastAPI project called `fastapi-test` inside `/path/to` directory.
+
+## Downloading a YouTube video
+
+```bash
+pd down youtube -l https://www.youtube.com/watch?v=... -f mp4 # or mp3, text etc
+```
+
+This will output a file called `{TITLE}.txt` at the current directory.
+
+## Downloading a Book
+
+```bash
+pd down libgen -n "Sun Tzu" -t "The Art of War"
+```
+
+This will output a file called `The Art of War.pdf` at the current directory.
+
+## Generating logo varations
+
+```bash
+$ pd edit logos -p /path/to/logo.png -t iOS - "20%"
+
+# Outputs
+# /path/to/logo40.png
+# /path/to/logo60.png
+# ...
+```
+
+This will generate all required iOS logos with `20%` border radius at `/path/to` directory.
+
+## Resizing multiple images
+
+You can use the `resize` command to resize multiple images at once. You specify the dimensions using `-d "512x512"` and
+`-n` specifies no suffix.
+
+```bash
+$ pd edit resize -p path/to/folder/*.png -d "512x512" -n
+
+# Outputs
+# Resized image saved as path/to/folder/0.png
+# Resized image saved as path/to/folder/1.png
+```
+
+## Converting MP4 to MP3
+
+```bash
+$ pd conv video -p /path/to/file.mp4 -f mp3
+```
+
+This will output a file called `file.mp3` at `/path/to` directory.
+
+## Processing a modern webpage
+
+```bash
+$ pd web view -l https://zeffmuks.com
+```
+
+This will display the renderred HTML source of the web page in the terminal.
+
+You can query the rendered HTML using `htmlq`.
+
+```bash
+$ pd web view -l https://zeffmuks.com | htmlq ".css-17vaxo2"
+
+<p class="chakra-text css-17vaxo2">Fast JSON5 Python Library</p>
+...
+<p class="chakra-text css-17vaxo2">Next Generation Content Platform</p>
+```
+
+## Launching an EC2 instance
+
+You can launch an EC2 instance using a launch template as below:
+
+```bash
+$ pd ec2 launch -n ec2-test -c 1
+````
+
+This will launch 1 EC2 instance called `ec2-test` using the launch template specified in `~/.
+pdconfig.json`.
+
+Check out the [CONFIG.md](./CONFIG.MD) for more details.
+
+## Generating an Nginx Config
+
+You can generate a Nginx configuration file using the `generate` command.
+
+```bash
+$ pd nginx generate -h localhost -p 80 -d example.com -s /path/to/static
+```
+
+This will generate Nginx configuration for the given host, port, domain, and static file path.
+
+## License
+
+MIT License
+

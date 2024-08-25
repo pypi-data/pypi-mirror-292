@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#000000"/>
+  <meta http-equiv="content-language" content="en-US">
+
+  <title>{{ seo.title }}</title>
+  <meta name="description" content="{{ seo.description }}">
+  <meta name="keywords" content="{{ seo.keywords }}">
+  <meta name="author" content="{{ seo.author | default('Lytesnap LLC') }}">
+  <meta name="robots" content="{{ seo.robots | default('index, follow') }}">
+
+  <link rel="canonical" href="{{ seo.canonical | default(request.url) }}">
+
+  <link rel="icon" sizes="16x16" href="{{ url_for('public', path='favicon.ico') }}">
+  <link rel="icon" sizes="32x32" href="{{ url_for('public', path='favicon.ico') }}">
+  <link rel="icon" sizes="48x48" href="{{ url_for('public', path='favicon.ico') }}">
+
+  <link rel="manifest" href="{{ url_for('public', path='manifest.json') }}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="{{ seo.og_type | default('website') }}"/>
+  <meta property="og:url" content="{{ request.url }}"/>
+  <meta property="og:title" content="{{ seo.title }}"/>
+  <meta property="og:description" content="{{ seo.description }}"/>
+  <meta property="og:site_name" content="LyteSnap: User-Side Content Moderation"/>
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="{{ seo.twitter_card | default('summary_large_image') }}">
+  <meta name="twitter:url" content="{{ request.url }}">
+  <meta name="twitter:title" content="{{ seo.title }}">
+  <meta name="twitter:description" content="{{ seo.description }}">
+
+  <!-- JSON-LD for structured data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Pegasus: Next Generation Web Framework",
+      "url": "{{ request.url.scheme }}://{{ request.url.netloc }}",
+      "description": "{{ seo.description }}"
+    }
+  </script>
+</head>
+
+<body>
+<div id="react-root">
+  <!-- React will render here -->
+</div>
+
+<script>
+    // Directly set window.DATA to the JSON-stringified data
+    window.DATA = {{ data | tojson | safe }}
+</script>
+
+<!-- Webpack our TSX code into the bundled JS that's included below -->
+<script src="{{ url_for('public', path='js/bundle.js') }}"></script>
+</body>
+
+</html>
