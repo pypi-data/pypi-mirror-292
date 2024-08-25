@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: jdif
+Version: 2.0.3
+Summary: To find json differences
+Author: shivani
+License: MIT
+Project-URL: Source, https://github.com/Shivani-20/json-diff-cli
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: File Formats :: JSON
+Classifier: Topic :: File Formats :: JSON :: JSON Schema
+Classifier: Topic :: Software Development :: Debuggers
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: termcolor>=2.4.0
+Requires-Dist: deepdiff>=7.0.1
+Requires-Dist: charade>=1.0.3
+Requires-Dist: pyparsing>=3.1.2
+
+## Motivation
+
+To find difference between two long json files on the cli itself, instead of downloading files and copy pasting on some website to find the difference. Helpful when comparing production env data with the admin dashboard data during the debugging process.
+
+## Usage
+
+<video width="320" height="240" controls>
+    <source src="usage_videos/jdif_cli.mp4" type="video/mp4">
+</video>
