@@ -1,0 +1,106 @@
+VROR
+
+VROR is a Python package designed to solve various optimization problems. It includes implementations for Critical Path Method (CPM), graphical methods for linear programming, simplex method, transportation problems, and assignment problems.
+Installation
+
+You can install VROR from PyPI using pip:
+
+```bash
+
+pip install vror
+```
+Usage
+
+Graphical Method
+
+Solve linear programming problems using graphical methods.
+
+```python
+
+from vrorRCC.graphical_method import *
+
+constraints_min = np.array([[2, 1, 10], [1, 3, 18], [3, 1, 15]])
+objective_function_min = [5, 4, 0] 
+graphical_method(constraints_min, objective_function_min, 'min')
+```
+Simplex Method
+
+Solve linear programming problems using the simplex algorithm.
+
+```python
+from vrorRCC.simplex_method import *
+
+Objective_Function = np.array([-3, -2, 0])  
+constraints = np.array([[2, 1, 0], [-4, 5, 0], [-1, -2, 0]]) 
+RHS = np.array([20, -10, 5])  
+simplex(Objective_Function, constraints, RHS, maximize=True, plot_3d = False)
+```
+Transportation Problems
+
+Solve transportation problems using optimization techniques.
+
+```python
+from vrorRCC.transportation_problem import *
+
+cost_matrix = [
+    [2, 2, 2, 1, 4],
+    [10, 8, 5, 4, 6],
+    [7, 6, 6, 8, 6]
+]
+supply = [30, 70, 50]
+demand = [40, 30, 40, 20, 20]
+transportation(supply, demand, cost_matrix)
+```
+Assignment Problems
+
+Solve assignment problems, typically using the Hungarian algorithm.
+
+```python
+
+from vrorRCC.assignment_problem import *
+
+cost_matrix = np.array([
+    [8, 6, 7, 3, 4, 5],
+    [4, 8, 5, 7, 3, 7],
+    [2, 5, 1, 6, 8, 9],
+    [1, 6, 7, 8, 4, 9],
+    [3, 8, 5, 7, 5, 1],
+    [6, 5, 1, 5, 6, 4],  
+])
+assignment(cost_matrix)
+```
+
+Critical Path Method (CPM)
+
+Find the critical path in a project network.
+
+```python
+
+from vrorRCC.cpm import *
+
+graph = create_graph()
+add_event(graph, 'A', {})
+add_event(graph, 'B', {'A': 3})
+add_event(graph, 'C', {'A': 2})
+add_event(graph, 'D', {'B': 1, 'C': 5})
+add_event(graph, 'E', {'D': 3})
+add_event(graph, 'F', {'E': 4})
+
+
+visualize_graph(graph)
+critical_path, length = find_critical_path(graph)
+print(f"Critical Path: {critical_path} with duration {length}")
+```
+
+Contributing
+
+If you'd like to contribute to VROR, please fork the repository and submit a pull request. For more details, refer to the contributing guidelines.
+License
+
+VROR is licensed under the MIT License. See the LICENSE file for more details.
+Contact
+
+For any questions or issues, please contact:
+
+    Author: Ragu and Team
+    Email: https.ragu@gmail.com
