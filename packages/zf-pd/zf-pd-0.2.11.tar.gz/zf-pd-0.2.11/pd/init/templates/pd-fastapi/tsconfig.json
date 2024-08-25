@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "outDir": "public/js",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@public/*": [
+        "public/*"
+      ]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./ui"
+    ]
+  },
+  "include": [
+    "./**/*"
+  ]
+}
