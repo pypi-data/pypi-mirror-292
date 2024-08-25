@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: jdif
+Version: 3.0.0
+Summary: To find json differences on CLI
+Author: shivani
+License: MIT
+Project-URL: Source, https://github.com/Shivani-20/json-diff-cli
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: File Formats :: JSON
+Classifier: Topic :: File Formats :: JSON :: JSON Schema
+Classifier: Topic :: Software Development :: Debuggers
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: termcolor>=2.4.0
+Requires-Dist: deepdiff>=7.0.1
+Requires-Dist: charade>=1.0.3
+Requires-Dist: pyparsing>=3.1.2
+
+## Motivation
+
+To find difference between two long json files on the cli itself, instead of downloading files and copy pasting on some website to find the difference. Helpful when comparing production env data with the admin dashboard data during the debugging process.
+
+![https://github.com/Shivani-20/json-diff-cli/blob/main/readme.md](visuals/jdif_cli.png)
+
+## Installation
+
+``pip install jdif``
+
+## Quickstart
+
+```python
+
+>>> jdif
+usage: jdif [-h] jsonFilePath1 jsonFilePath2
+jdif: error: the following arguments are required: jsonFilePath1, jsonFilePath2
+Arguments absent: please specify file paths as shown in the example below:
+jdif example_1.json example_2.json
+
+>>> jdif /../ /.../
+Unable to read file in '\..', please verify the path and filename alongwith the extension
+
+>>> jdif a1.json b1.json 
+Invalid json in 'b1.json'
+
+>>> jdif a1.json b1.json
+Empty json in 'b1.json'
+
+>>> jdif a1.json b1.json
+JSON is same in both the files
+
