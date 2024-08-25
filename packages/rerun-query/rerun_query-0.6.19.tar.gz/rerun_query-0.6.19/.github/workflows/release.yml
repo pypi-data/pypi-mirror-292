@@ -1,0 +1,85 @@
+name: Semantic Release
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency: release
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN }}
+          persist-credentials: false
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Install Dependencies
+        run: |
+          pip install maturin
+          pip install python-semantic-release toml
+
+      - name: Python Semantic Release
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+        id: release
+        uses: python-semantic-release/python-semantic-release@v9.8.7
+        with:
+          github_token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Update Versions
+        if: steps.release.outputs.released == 'true'
+        run: |
+          NEW_VERSION="${{ steps.release.outputs.version }}"
+          sed -i "s/^version = .*/version = \"$NEW_VERSION\"/" pyproject.toml
+          sed -i "s/^version = .*/version = \"$NEW_VERSION\"/" Cargo.toml
+
+      - name: Ensure Permissions
+        if: steps.release.outputs.released == 'true'
+        run: |
+          sudo chown -R $USER:$USER .
+
+      - name: Commit Changes
+        if: steps.release.outputs.released == 'true'
+        env:
+          PAT: ${{ secrets.PAT_TOKEN }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add pyproject.toml Cargo.toml
+          git commit -m "chore: update version to ${{ steps.release.outputs.version }} [skip ci]" || echo "No changes to commit"
+
+      - name: Push changes
+        if: steps.release.outputs.released == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT_TOKEN }}
+          branch: main
+
+      - name: Build and Publish with Maturin
+        if: steps.release.outputs.released == 'true'
+        env:
+          MATURIN_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          maturin build --release
+          maturin publish --username __token__ --password $MATURIN_PASSWORD
