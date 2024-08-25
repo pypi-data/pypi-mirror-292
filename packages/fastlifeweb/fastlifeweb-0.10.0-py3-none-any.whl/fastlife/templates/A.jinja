@@ -1,0 +1,14 @@
+{# def
+href,
+disable_htmx=false,
+hx_target="#maincontent",
+hx_select=None,
+hx_swap="innerHTML show:body:top",
+hx_push_url=true
+#}
+
+<a href="{{href}}" {% if not disable_htmx %} hx-get="{{href}}" hx-target="{{hx_target}}" hx-swap="{{hx_swap}}" {% if
+  hx_push_url %} hx-push-url="true" {%- endif %}{% if hx_select %} hx-select="{{hx_select}}" {%- endif %}{%- endif
+  %}class="{{attrs.class or A_CLASS}}">
+  {{- content -}}
+</a>
