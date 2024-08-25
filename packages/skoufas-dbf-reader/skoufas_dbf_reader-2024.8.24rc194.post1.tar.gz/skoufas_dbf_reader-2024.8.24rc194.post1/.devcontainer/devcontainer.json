@@ -1,0 +1,67 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+	"name": "skoufas-dbf-library",
+	"build": {
+		"context": "..",
+		"dockerfile": "Dockerfile",
+		"args": {
+			"XDG_RUNTIME_DIR": "${localEnv:XDG_RUNTIME_DIR}"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"editor.trimAutoWhitespace": true,
+				"editor.formatOnSave": true,
+				"editor.formatOnPaste": true,
+				"files.trimTrailingWhitespace": true,
+				"files.autoSave": "onFocusChange",
+				"python.analysis.typeCheckingMode": "strict",
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
+				"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+				"python.formatting.blackArgs": [
+					"--config",
+					"pyproject.toml"
+				],
+				"python.formatting.provider": "black",
+				"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
+				"flake8.args": [
+					"--config",
+					".flake8"
+				],
+				"flake8.path": [
+					"/usr/local/py-utils/bin/flake8"
+				],
+				"mypy-type-checker.args": [
+					"--config-file",
+					".pyproject.toml"
+				],
+				"mypy-type-checker.path": [
+					"/usr/local/py-utils/bin/mypy"
+				],
+				"pylint.path": [
+					"/usr/local/py-utils/bin/pylint"
+				]
+			},
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.pylint",
+				"ms-python.flake8",
+				"ms-python.mypy-type-checker",
+				"ms-python.black-formatter",
+				"ms-vsliveshare.vsliveshare",
+				"charliermarsh.ruff",
+				"ryanluker.vscode-coverage-gutters",
+				"tamasfe.even-better-toml",
+				"redhat.vscode-yaml"
+			]
+		}
+	},
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "python --version",
+	"remoteUser": "vscode",
+	"features": {}
+}
