@@ -1,0 +1,41 @@
+[project]
+name = "neat-llm"
+version = "0.0.1"
+description = "A simpler llm abstraction."
+dependencies = [
+    "pydantic>=2.8.2",
+    "pydantic-settings>=2.3.4",
+    "loguru>=0.7.2",
+    "litellm>=1.44.5",
+    "ipykernel>=6.29.5",
+    "instructor>=1.3.7",
+]
+requires-python = ">= 3.8"
+readme = "README.md"
+# license = { file = "LICENSE" }
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    # "/src/neat/*.json",
+]
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pytest>=8.3.2",
+    "ruff>=0.5.5",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/neat"]
