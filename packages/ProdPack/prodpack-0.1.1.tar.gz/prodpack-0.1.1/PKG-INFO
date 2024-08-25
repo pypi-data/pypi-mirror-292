@@ -1,0 +1,98 @@
+Metadata-Version: 2.3
+Name: ProdPack
+Version: 0.1.1
+Summary: An Efficiency and Productivity Analysis Package
+Project-URL: Homepage, https://github.com/daopingw/ProdPack
+Project-URL: Bug Tracker, https://github.com/daopingw/ProdPack/issues
+Author-email: Dr Daoping Wang <daopingwang@outlook.com>
+License: MIT License
+        
+        Copyright (c) 2024 Dr Daoping Wang (daopingwang@outlook.com)
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Requires-Dist: deapack>=0.1.3
+Requires-Dist: numpy>=1.26.0
+Requires-Dist: pandas>=1.3.5
+Requires-Dist: pulp>=2.6.0
+Description-Content-Type: text/markdown
+
+# ProdPack: An Efficiency and Productivity Analysis Package
+
+ProdPack is a Python package designed for Efficiency and Productivity Analysis. Its comprehensive toolset allows for efficient handling of various productivity index estimates, including those that account for undesirable outputs (e.g., total factor productivity, TFP).
+
+## Installation
+
+Install the package by `pip`,
+
+```sh
+pip install ProdPack
+```
+Or install the package by `conda`,
+```sh
+conda install ProdPack
+```
+
+## Usage
+
+A brief example is provided below. For more information, please refer to the [documentation]() and [example notebooks]().
+
+```python
+# import the module
+import pandas as pd
+from ProdPack.model import ProdNP
+from DEAPack.utilities import load_example_data
+
+# load the example dataset
+data = load_example_data()
+
+# initilise a nonparametric model
+model = ProdNP()
+
+# specify the model
+model.DMUs = data['region']
+model.x_vars = data[['K', 'L']]
+model.y_vars = data[['Y']]
+model.b_vars = data[['CO2']]
+model.time = data['year']
+model.g_x = model.x_vars*0
+model.ref_type = 'Sequential'
+
+# solve the model
+model.solve()
+
+# check the results
+data['prod_ch'] = model.prod_ch
+data['eff_ch'] = model.eff_ch
+data['te_ch'] = model.te_ch
+print(data)
+# the results are combind into the data set
+```
+
+## Communication
+
+You're very welcome to contribute to this package. We appreciate any efforts to improve this package. You can help by adding new features, reporting bugs, or extending the documentation and usage examples. Please contact us if you have any ideas.
+
+- [Pull requests](https://github.com/daopingw/ProdPack/pulls) for pull requests.
+- [Issues](https://github.com/daopingw/ProdPack/issues) for bug reports.
