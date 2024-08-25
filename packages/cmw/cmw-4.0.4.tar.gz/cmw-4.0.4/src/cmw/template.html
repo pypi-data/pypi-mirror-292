@@ -1,0 +1,37 @@
+<!doctype html>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="TITLE">
+<style>
+    * { box-sizing: border-box; }
+    body { font-family: serif; line-height: 150%; }
+    p, h1, ul, ol { margin: 0.5em 0; }
+    a, a:visited { color: rgb(145, 56, 83); }
+    input, button, textarea { display: block; padding: 1em; margin: 1em 0; }
+    input, textarea { width: 100%; }
+    h1, h1 + p { text-align: center; }
+    h1 { color: rgb(150, 47, 84); }
+    table { border-collapse: collapse; width: 100%; }
+    td, th { padding: 0.5em; border: 1px solid #ccc; }
+    pre, code { background-color: #eee; }
+    pre { line-height: 100%; padding: 1em; }
+    #content { max-width: 42em; margin: 0 auto; }
+</style>
+<script src="/js/ResponseModal.js"></script>
+<script>
+    function cmw_onload(f) {
+        const prev_onload = window.onload;
+        window.onload = () => {
+            if (prev_onload) {
+                prev_onload();
+            }
+            f();
+        };
+    }
+</script>
+<title>TITLE</title>
+<div id="content">
+    HEADER
+    CONTENT
+    FOOTER
+</div>
