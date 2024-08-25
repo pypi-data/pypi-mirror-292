@@ -1,0 +1,63 @@
+CARD_NAME = "ANRIC Controller"
+VERSION = "1.0.1"
+
+SLAVE_OWN_ADDRESS_BASE = 0x06
+STACK_LEVEL_MAX = 7
+
+CALIBRATION_KEY = 0xaa
+RESET_CALIBRATION_KEY  = 0x55
+
+
+VOLT_TO_MILIVOLT = 1000
+MILIAMPER_TO_MICROAMPER = 1000
+
+# i2c memory addresses
+class I2C_MEM:
+    RELAYS = 0
+    RELAY_SET = 1
+    RELAY_CLR = 2
+    MOS_DIG_REG1 = 3
+    MOS_DIG_REG2 = 4
+    MOS_DIG_READ_REG1 = 5
+    MOS_DIG_READ_REG2 = 6
+
+
+    U_IN = 7
+    U_OUT = 9
+
+    DIAG_TEMPERATURE_ADD = 11
+    DIAG_3V3_MV_ADD = 12
+    DIAG_3V3_MV_ADD1 = 13
+    CALIB_VALUE = 14
+    CALIB_CHANNEL = 18
+    CALIB_KEY = 19
+    CALIB_STATUS = 20
+
+    MOS_PWM1 = 21
+    MOS_PWM_END = 41
+    MOS_FREQUENCY = 42
+
+    REVISION_HW_MAJOR_ADD = 0x78
+    REVISION_HW_MINOR_ADD = 0x79
+    REVISION_MAJOR_ADD = 0x7a
+    REVISION_MINOR_ADD = 0x7b
+
+    SLAVE_BUFF_SIZE = 255
+
+class CALIB:
+    IN_PROGRESS = 0
+    DONE = 1
+    ERROR = 2
+    RTD_CH1 = 1
+    U_IN_CH1 = 3
+    I_IN_CH1 = 5
+    U_OUT_CH1 = 7
+    I_OUT_CH1 = 9
+    LAST_CH = 10
+
+CHANNEL_NO = {
+    "analog": 1,
+    "mos": 10,
+    "relay": 2,
+}
+
