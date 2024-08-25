@@ -1,0 +1,21 @@
+<!-- Deprecated: This corolla is deprecated and will be removed in the future. -->
+<corolla name="gpt">
+    <import path="_text.rml" element="chat"/>
+    <import path="_gpt.rml" element="image"/>
+    <import path="_gpt.rml" element="audio"/>
+</corolla>
+
+
+<corolla name="text">
+    <import path="_text.rml" element="chat, embedding"/>
+</corolla>
+
+
+<corolla name="image">
+    <import path="_sd.rml" element="sd-v1, sd-v2"/>
+    <import path="_gpt.rml" element="image.generate" as="dall-e"/>
+</corolla>
+
+<corolla name="http">
+    <import path="_http.rml" element="request"/>
+</corolla>
