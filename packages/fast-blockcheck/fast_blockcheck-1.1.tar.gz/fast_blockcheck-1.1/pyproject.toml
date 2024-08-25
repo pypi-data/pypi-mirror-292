@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+fbc = 'fbc.main:main'
+
+[project]
+name = "fast-blockcheck"
+version = "1.1"
+authors = [
+    { name = "usiqwerty" },
+]
+description = "Track internet blocking over time"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "requests"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Operating System :: OS Independent",
+    "Natural Language :: English",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Science/Research",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/usiqwerty/fast-blockcheck"
+Issues = "https://github.com/usiqwerty/fast-blockcheck/issues"
