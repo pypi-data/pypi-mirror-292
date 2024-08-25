@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rosemary_ai"
+version = "0.0.18"
+authors = [{name="Samjna", mailto="snw201510@gmail.com"}]
+description = "A Template Engine For LLMs and Generative AIs"
+readme = "README_PYPI.md"
+requires-python = ">=3.10"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "openai",
+    "lark",
+    "anthropic",
+    "cohere"
+]
+
+[project.urls]
+Repository = "https://github.com/snw2015/Rosemary-AI"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    ".lark",
+    "rml_common/",
+    "src/"
+]
+exclude = [
+    "tests",
+    "test/"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rosemary_ai"]
+include = [
+    ".lark",
+    "rml_common/",
+    "src/"
+]
+exclude = [
+    "tests",
+    "test/"
+]
