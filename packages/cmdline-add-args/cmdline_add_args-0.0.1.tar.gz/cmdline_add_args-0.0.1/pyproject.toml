@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cmdline_add_args"
+version = "0.0.1"
+description = "Pytest plugin for custom argument handling and Allure reporting"
+authors = [{ name = "Your Name", email = "your.email@example.com" }]
+license = { text = "MIT" }
+
+#[tool.setuptools]
+#packages = ["cmdline_add_args"]  # Укажите имя пакета, который содержит ваш плагин
+[tool.setuptools]
+packages = ["cmdline_add_args"]
+
+
+#[tool.setuptools.packages.find]
+#where = ["src"]  # Если ваш код находится в поддиректории src, укажите это здесь
+
+# Публикация
+#python -m build
+#twine upload dist/*
