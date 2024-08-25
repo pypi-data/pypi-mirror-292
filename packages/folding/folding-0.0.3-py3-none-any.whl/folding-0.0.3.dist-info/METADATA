@@ -1,0 +1,108 @@
+Metadata-Version: 2.1
+Name: folding
+Version: 0.0.3
+Summary: ColabFold modified for AlphaFold2 and local installation
+Home-page: https://github.com/truemagic-coder/cyberchipped-fold
+License: MIT, but separate licenses for the trained weights
+Author: Bevan Hunt
+Requires-Python: >=3.9,<3.12
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Provides-Extra: alphafold
+Provides-Extra: alphafold-minus-jax
+Requires-Dist: absl-py (>=1.0.0,<2.0.0)
+Requires-Dist: alphafold-colabfold (==v2.3.6) ; extra == "alphafold" or extra == "alphafold-minus-jax"
+Requires-Dist: appdirs (>=1.4.4,<2.0.0)
+Requires-Dist: biopython (<1.83)
+Requires-Dist: dm-haiku (>=0.0.12,<0.0.13)
+Requires-Dist: importlib-metadata (>=4.8.2,<5.0.0)
+Requires-Dist: jax (>=0.4.20,<0.5.0) ; extra == "alphafold"
+Requires-Dist: matplotlib (>=3.2.2,<4.0.0)
+Requires-Dist: numpy (>=1.22.0,<2.0.0)
+Requires-Dist: pandas (>=1.3.4,<2.0.0)
+Requires-Dist: py3Dmol (>=2.0.1,<3.0.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Requires-Dist: tensorflow-cpu (>=2.12.1,<3.0.0) ; sys_platform != "darwin"
+Requires-Dist: tensorflow-macos (<2.14.0) ; sys_platform == "darwin"
+Requires-Dist: torch
+Requires-Dist: tqdm (>=4.62.2,<5.0.0)
+Project-URL: Repository, https://github.com/truemagic-coder/cyberchipped-fold
+Description-Content-Type: text/markdown
+
+# Folding
+
+[![PyPI - Version](https://img.shields.io/pypi/v/folding)](https://pypi.org/project/folding/)
+
+Folding is a streamlined version of ColabFold that focuses on running AlphaFold2 locally on Linux systems. It combines the power of ColabFold and LocalColabFold to provide an easy-to-use tool for protein structure prediction.
+
+## Features
+
+- Supports AlphaFold2 for protein structure prediction
+- Includes `folding-search` and `folding-batch` functionalities
+
+## Requirements
+* Linux
+* RTX 4070 or greater
+
+## Installation
+
+1. Clone this repository or download it to your local machine.
+2. Navigate to the folding directory:
+   ```
+   cd /path/to/folding
+   ```
+3. Run the installation script:
+   ```
+   bash install.sh
+   ```
+4. After installation, add the folding conda environment to your PATH:
+   ```
+   export PATH="/path/to/folding/folding-conda/bin:$PATH"
+   ```
+
+## Usage
+
+### folding-search
+
+To use `folding-search`:
+
+```
+folding-search [OPTIONS] QUERY_FILE RESULTS_DIR
+```
+
+For more details on available options, run:
+
+```
+folding-search --help
+```
+
+### folding-batch
+
+To use `folding-batch`:
+
+```
+folding-batch [OPTIONS] INPUT_DIR OUTPUT_DIR
+```
+
+For more details on available options, run:
+
+```
+folding-batch --help
+```
+
+## Support
+
+For issues and feature requests, please open an issue on the GitHub repository.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Acknowledgements
+
+folding is based on the work of ColabFold and LocalColabFold. We thank the original authors and contributors of these projects for their valuable work in the field of protein structure prediction.
