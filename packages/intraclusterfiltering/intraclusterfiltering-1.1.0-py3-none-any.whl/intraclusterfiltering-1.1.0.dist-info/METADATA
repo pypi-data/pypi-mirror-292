@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: intraclusterfiltering
+Version: 1.1.0
+Summary: Intra clustering outliers detector
+Home-page: https://github.com/juanzamorai/intracluster-filtering
+Author: Sebastian Jara, Juan Zamora, Pascal
+Author-email: 
+License: MIT
+Description-Content-Type: text/markdown
+Requires-Dist: numpy ==1.25.2
+Requires-Dist: scikit-learn
+Requires-Dist: tensorflow ==2.10.0
+Requires-Dist: keras ==2.10.0
+Requires-Dist: protobuf <3.20,>=3.9.2
+Requires-Dist: gast
+Requires-Dist: astunparse
+Requires-Dist: flatbuffers >=23.5.26
+Requires-Dist: google-pasta >=0.1.1
+Requires-Dist: libclang >=13.0.0
+Requires-Dist: opt-einsum >=2.3.2
+Requires-Dist: plotly
+Requires-Dist: ml-dtypes ==0.3.1
+Requires-Dist: seaborn
+
+# Intra Cluster Filtering
+
+## Installation Instructions
+
+It is necessary to use Python **Versión 3.10.14** for the installation and proper functioning of the library.
+
+### Step 1: Create a New Environment
+
+First, create a new environment with Python version 3.10.14.
+
+### Step 2: Install Git
+
+It is necessary to have Git installed for this installation. If you don't have Git installed, you can download it from [here](https://git-scm.com/downloads).
+
+### Step 3: Install the Package
+
+In your console (e.g., Anaconda Prompt), execute the following commands:
+```sh
+# Activate your environment
+conda activate YourRepository
+
+# Install the package from GitHub
+pip install git+https://github.com/juanzamorai/intracluster-filtering.git
+```
+
+Once the installation is complete, you can start using the library. We recommend checking out the examples in the [`examples`](https://github.com/juanzamorai/intracluster-filtering/tree/main/examples) folder.
+
+
