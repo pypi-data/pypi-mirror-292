@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "cassandra-dev-sync"
+version = "0.1.0"
+description = ""
+authors = ["o0f01dt <omri.fima@walmart.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+tqdm = "^4.66.5"
+cassandra-driver = "^3.29.1"
+click = "^8.1.7"
+setuptools = "^72.2.0"
+
+[tool.poetry.scripts]
+cassandra-dev-sync = "cassandra_dev_sync.__init__:main"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
