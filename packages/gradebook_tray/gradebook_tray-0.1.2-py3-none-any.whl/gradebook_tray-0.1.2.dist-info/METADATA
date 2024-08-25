@@ -1,0 +1,74 @@
+Metadata-Version: 2.1
+Name: gradebook_tray
+Version: 0.1.2
+Summary: A tray to track your StudentVUE grade
+License: MIT
+Author: Yubo Cao
+Author-email: cao2006721@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: pillow (>=10.4.0,<11.0.0)
+Requires-Dist: psgtray (>=5.0.0,<6.0.0)
+Requires-Dist: pysimplegui (>=5.0.6,<6.0.0)
+Requires-Dist: pyyaml (>=6.0.2,<7.0.0)
+Requires-Dist: rich (>=13.7.1,<14.0.0)
+Requires-Dist: zeep (>=4.2.1,<5.0.0)
+Description-Content-Type: text/markdown
+
+This package provide an easy interface to track StudentVUE grade, a fully-typed interface, a differential database that
+wouldn't continuously take up the space, and a POC application made with PySimpleGUI that can be used to track the grade
+easily.
+
+## Installation
+
+```bash
+pip install gradebook_tray
+```
+
+## Usage
+
+The package provide a fully-typed interface to interact with the StudentVUE grade book. The following code snippet shows
+how to use the package to get the grade book, marks, assignments, and grade calculations.
+
+```python
+from gradebook_tray import StudentVue, Course, Mark, Assignment, AssignmentGradeCalc
+
+client = StudentVue("username", "password", "endpoint")
+grade_book: list[Course] = client.get_grade_book()
+marks: list[Mark] = grade_book[0].marks
+assignments: list[Assignment] = grade_book[0].marks[0].assignments
+grade_calc: list[AssignmentGradeCalc] = grade_book[0].marks[0].grade_calculations
+```
+
+Furthermore, the package also provide a database implementation to track the grade easily (and, to a certain extent,
+capable of a general timeseries database).
+
+```python
+from gradebook_tray import DifferenceStorage, Assignment, Mark
+
+# Create a table assignment & assignment_history in the database
+assignment_db = DifferenceStorage(
+    named_tuple=Assignment,
+    db_path="data.db",  # the location of the database
+    primary_key="id",  # a primary key is required, as of 0.1.0
+    not_null_cols=["id", "measure"],  # these columns are required to be not null
+    unique_cols=["id"],  # these columns are required to be unique
+)
+
+# Create a table mark & mark_history in the database, automatically handle one-to-many relationship between assignment and mark by altering the assignment table. However, this feature require assignment database to be declared first and the foreign object must be a named tuple.
+mark_db = DifferenceStorage(
+    named_tuple=Mark,
+    db_path="data.db",
+    primary_key="id",
+)
+```
+
+Lastly, the package also provide a POC application made with PySimpleGUI that can be used to track the grade easily.
+This application have only been tested on Windows, but it should work on other platforms as well.
+
+```bash
+python -m gradebook_tray
+```
