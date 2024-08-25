@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: fs_nsfw_checker
+Version: 0.1.0
+Summary: A package to check NSFW content using FitSnap API
+Home-page: https://github.com/yourusername/fs-nsfw-checker
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: Pillow
+Requires-Dist: requests
+
+A Python package to check NSFW content using the FitSnap API.
+
+## Installation
+
+```
+pip install fs-nsfw-checker
+```
+
+## Usage
+
+```python
+from PIL import Image
+from fs_nsfw_checker import checkNSFW
+
+garment = Image.open('path_to_garment.png')
+model = Image.open('path_to_model.png')
+result = Image.open('path_to_result.png')
+
+checkNSFW(garment, model, result, "Description of the image", "Image category")
+```
+
+Note: The `checkNSFW` function returns immediately after initiating the check and does not wait for the result.
+
+## License
+
+This project is licensed under the MIT License.
