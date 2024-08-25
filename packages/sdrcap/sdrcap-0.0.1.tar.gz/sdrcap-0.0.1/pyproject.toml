@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "sdrcap"
+version = "0.0.1"
+description = "A software defined radio capture library in python"
+license = "GPLV3"
+authors = ["chris <kosik.chris.j@gmail.com>"]
+readme = "README.md"
+keywords = ["sdr", "recording"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pyrtlsdr = {extras = ["lib"], version = "^0.3.0"}
+setuptools = "^73.0.1"
+numpy = "^2.1.0"
+datetime = "^5.5"
+black = "^24.8.0"
+pandas = "^2.2.2"
+matplotlib = "^3.9.2"
+pdoc = "^14.6.0"
+wheel = "^0.44.0"
+twine = "^5.1.1"
+h5py = "^3.11.0"
+pylint = "^3.2.6"
+toml = "^0.10.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
