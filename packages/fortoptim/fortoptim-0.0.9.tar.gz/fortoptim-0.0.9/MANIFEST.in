@@ -1,0 +1,11 @@
+include fortoptim/src/fortran/*f90
+include fortoptim/Makefile
+
+exclude PKG-INFO
+
+global-exclude *.egg-info*
+prune dist
+prune env
+prune test
+prune example
+
