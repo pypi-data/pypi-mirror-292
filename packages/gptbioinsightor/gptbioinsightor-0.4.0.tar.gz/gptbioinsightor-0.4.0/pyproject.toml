@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "gptbioinsightor"
+version = "0.4.0"
+description = "GPTBioInsightor utilizes the powerful capabilities of large language models to help people quickly gain knowledge and insight, enhancing their work efficiency."
+authors = ["Shenghui Huang <hsh-me@outlook.com>"]
+license = "BSD 3-Clause"
+readme = "README.md"
+homepage = "https://github.com/huang-sh/GPTBioInsightor"
+repository = "https://github.com/huang-sh/GPTBioInsightor"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openai = "^1.31.0"
+scanpy = ">=1.9.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
