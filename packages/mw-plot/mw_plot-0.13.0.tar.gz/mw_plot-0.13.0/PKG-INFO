@@ -1,0 +1,112 @@
+Metadata-Version: 2.1
+Name: mw_plot
+Version: 0.13.0
+Summary: A handy python package to do plotting on a face-on/edge-on/allsky map milkyway with matplotlib and bokeh
+Author-email: Henry Leung <henryskyleung@gmail.com>
+Maintainer-email: Henry Leung <henryskyleung@gmail.com>
+License: Copyright 2018-2024 Henry Leung
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+        documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+        rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+        persons to whom the Software is furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+        the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+        WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+        COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+        ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Project-URL: Homepage, https://github.com/henrysky/milkyway_plot
+Project-URL: Documentation, https://milkyway-plot.readthedocs.io/
+Project-URL: Repository, https://github.com/henrysky/milkyway_plot/
+Project-URL: Bug Tracker, https://github.com/henrysky/milkyway_plot/issues
+Project-URL: Changelog, https://milkyway-plot.readthedocs.io/en/latest/changelog.html
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Astronomy
+Requires-Python: >=3.9
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: astropy
+Requires-Dist: astroquery
+Requires-Dist: matplotlib>3.7.0
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: requests
+
+.. image:: https://raw.githubusercontent.com/henrysky/milkyway_plot/master/mw-plot-logo-b.png
+   :height: 132 px
+   :width: 500 px
+
+|
+
+|pypi| |docs| |license| |ci| |coverage|
+
+Getting Started
+=================
+
+``mw-plot`` is a handy Python package for plotting face-on and all-sky maps of the Milky Way using ``matplotlib`` (https://matplotlib.org/) for 
+static plots and ``bokeh`` (https://bokeh.org/) for interactive plots.
+
+You can set the center and radius of the plot anywhere on a milkyway galaxy image with galactic or galactocentric coordinates.
+
+Detailed documentation is available at https://milkyway-plot.readthedocs.io/
+
+No acknowledgement to ``mw_plot`` is required if you generate plots for your non-commerical publication, but you **must acknowledgement the origin of
+the background images**. The relevant reference text can by obtained by the property ``citation`` of a ``mw_plot`` class instance.
+
+For example, to get the citation text for the background image of a face-on Milky Way plot:
+
+.. code-block:: python
+
+    from mw_plot import MWFaceOn
+    mw = MWFaceOn()
+    print(mw.citation)
+
+or for the background infrared image of an all-sky Milky Way plot:
+
+.. code-block:: python
+
+    from mw_plot import MWSkyMap
+    mw = MWSkyMap(background="infrared")
+    print(mw.citation)
+
+.. |docs| image:: https://readthedocs.org/projects/milkyway-plot/badge/?version=latest
+   :alt: Documentation Status
+   :target: https://milkyway-plot.readthedocs.io/en/latest/
+
+.. |license| image:: https://img.shields.io/github/license/henrysky/milkyway_plot
+   :alt: GitHub License
+   :target: https://github.com/henrysky/milkyway_plot/blob/master/LICENSE
+
+.. |ci| image:: https://img.shields.io/github/actions/workflow/status/henrysky/milkyway_plot/ci_tests.yml
+   :alt: GitHub Actions Workflow Status
+   :target: https://github.com/henrysky/astroNN/actions
+
+.. |coverage| image:: https://codecov.io/gh/henrysky/milkyway_plot/graph/badge.svg?token=NqMxk1j3PQ
+   :alt: Codecov 
+   :target: https://codecov.io/gh/henrysky/milkyway_plot
+
+.. |pypi| image:: https://img.shields.io/pypi/v/mw_plot
+   :alt: PyPI - Version
+   :target: https://pypi.org/project/mw-plot/
+
+Author
+---------------
+
+-  | **Henry Leung** - henrysky_
+   | Department of Astronomy & Astrophysics, University of Toronto
+   | Contact Henry: henrysky.leung [at] utoronto.ca
+
+.. _henrysky: https://github.com/henrysky
+
+License
+---------------------------------------------------------
+
+This project is licensed under the MIT License - see the `LICENSE`_ file for details
+
+.. _LICENSE: LICENSE

@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-data]
+mw_plot = ["*.png", "*.jpg"]
+
+[project]
+name = "mw_plot"
+version = "0.13.0"
+dynamic = ["dependencies"]
+requires-python = ">=3.9"
+authors = [
+  {name = "Henry Leung", email = "henryskyleung@gmail.com"},
+]
+maintainers = [
+  {name = "Henry Leung", email = "henryskyleung@gmail.com"},
+]
+description = "A handy python package to do plotting on a face-on/edge-on/allsky map milkyway with matplotlib and bokeh"
+readme = "README.rst"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+Homepage = "https://github.com/henrysky/milkyway_plot"
+Documentation = "https://milkyway-plot.readthedocs.io/"
+Repository = "https://github.com/henrysky/milkyway_plot/"
+"Bug Tracker" = "https://github.com/henrysky/milkyway_plot/issues"
+Changelog = "https://milkyway-plot.readthedocs.io/en/latest/changelog.html"
