@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ragmatic"
+version = "0.2.0b0"
+description = "A package for creating retrieval-augmented generation apps"
+authors = [{name = "John Raines", email = "johndanielraiens@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openai>=1.37.1",
+    "tenacity>=9.0.0",
+    "networkx>=3.3",
+    "pydantic>=2.8.2",
+    "joblib>=1.4.2",
+    "click>=8.1.7",
+    "pyyaml>=6.0.1",
+    "numpy>=2.0.1",
+    "deepmerge>=1.1.1"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/jdraines/ragmatic"
+Repository = "https://github.com/jdraines/ragmatic"
+"Bug Tracker" = "https://github.com/jdraines/ragmatic/issues"
+
+[project.license]
+file = "LICENSE"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    # "pytest-asyncio",
+]
+transformers = [
+    "transformers>=4.44",
+    "torch>=2.4.0",
+    "scikit-learn>=1.5.1"
+]
+sentence-transformers = [
+    "sentence-transformers>=3.0.1"
+]
+openai = [
+    "openai>=1.37.1"
+]
+anthropic = [
+    "anthropic>=0.34.1"
+]
+
+[project.scripts]
+ragmatic = "ragmatic.cli:cli"
