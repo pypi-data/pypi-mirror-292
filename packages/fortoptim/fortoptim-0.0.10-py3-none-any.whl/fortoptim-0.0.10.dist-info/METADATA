@@ -1,0 +1,88 @@
+Metadata-Version: 2.1
+Name: fortoptim
+Version: 0.0.10
+Summary: Another optimization package
+Home-page: https://gitlab.com/lee-maximee/FortOptim
+Author: Maxime LE
+License: GPLv3+
+Keywords: optimization,f2py,fortran,python
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Fortran
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Intended Audience :: Science/Research
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: numba
+Requires-Dist: meson
+Requires-Dist: ninja
+Requires-Dist: pytest
+Requires-Dist: setuptools
+Provides-Extra: dev
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: pylint ; extra == 'dev'
+Requires-Dist: snakeviz ; extra == 'dev'
+Requires-Dist: fprettify ; extra == 'dev'
+Requires-Dist: build ; extra == 'dev'
+
+# fortoptim
+
+Fortoptim is an optimization library based on python and fortran routines.
+
+# Installation
+Prerequisite:
+- python 3.12
+- gfortran
+
+## from the gitlab repository
+After cloning the repository, run in the project folder:
+```{shell}
+python -m pip install -e .
+```
+
+and compile the fortran source files with:
+```{shell}
+fortoptim-compile
+```
+
+## pip 
+```{shell}
+python -m pip install fortoptim
+fortoptim-compile
+```
+
+# Demonstration with MultiSwarmCooperativePSO on Ackley problem
+```{python}
+import numpy as np
+
+from fortoptim.optimizers.pso import MultiSwarmCooperativePSO
+from fortoptim.problems import Ackley
+
+dim = 2
+lower = -32
+upper = 32
+constraints = [np.array([lower, upper])] * dim
+problem = Ackley(dim=dim, constraints=constraints)
+
+# initial population and velocity
+n = 6
+sub_swarm = [np.random.uniform(size=(n, dim), low=lower, high=upper) for i in range(4)]
+# sub_swarm_velocity = [np.random.uniform(size=(n, dim), high=0.8) for i in range(4)]
+sub_swarm_velocity = [np.zeros(shape=(n, dim)) for i in range(4)]
+
+# initialize optimizer with default parameters
+opti = MultiSwarmCooperativePSO(eps=0.0)
+
+history = opti.minimize(problem, sub_swarm, sub_swarm_velocity, max_iter=10000)
+
+x_plot = np.random.uniform(size=(200000, dim), low=lower, high=upper)
+
+x_best, f_best = history.get_best_solution()
+print(f"The best solution is {x_best} obtained at {f_best}.")
+
+history.plot_loss_history(log=True, show=True)
+```
