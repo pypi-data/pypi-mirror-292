@@ -1,0 +1,31 @@
+[build-system]
+requires = ["flit_core >=3.2"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "UOFast"
+authors = [{name = "RokiPark (c) Kurt Konchadi 2023", email = "tech@rokipark.ai"}]
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "gsocketpool",
+    "gevent",
+    "greenlet",
+    "pydantic",
+    "requests",
+    "uopy",
+    "langchain",
+    "langchain_community"
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version", "description"]
+
+[project.urls]
+Home = "https://github.com/RoKiPaRk/UOFast"
+Web = "http://rokipark.ai"
+
+[tool.setuptools.package-data]
+'UOFast' = ["*.cfg"]
