@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block main %}
+  <div class="container mx-auto">
+    <div class="prose">
+      {% filter markdown %}
+        {%- include  report ~ ".md" %}
+      {% endfilter %}
+    </div>
+  </div>
+{% endblock main %}
