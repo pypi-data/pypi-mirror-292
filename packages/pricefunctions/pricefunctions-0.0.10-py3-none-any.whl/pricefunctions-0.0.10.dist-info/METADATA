@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: pricefunctions
+Version: 0.0.10
+Summary: tool that converts OHLC price tables to candles
+Author: RichCoastTrading
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: pandas >=2.2.2
+
+Package that stores and converts historical price data to candles. 
+
+Candle classes are used to store candle OHLC data and run quick tests .
+
+Use the to_candle_array method to generate a candle array
+
+Candle Arrays are a data type storing a list of candles.
+
+
+Dataload tools help to pull historical data. 
+
+Load 15M loads all 15m data and so on, just need to pass a ticker symbol. ES is 'ES'
