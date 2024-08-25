@@ -1,0 +1,31 @@
+
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bliqtools"
+version = "1.1.7"
+description = "A simple module for testing used at Bliq Photonics"
+readme = "README.md"
+license = {file = "LICENSE"}
+
+dependencies = ["psutil","numpy","pyometiff","matplotlib","tifffile","Pillow"]
+
+authors = [
+  {name = "Daniel Côté", email = "daniel@bliqphotonics.com"}
+]
+maintainers = [
+  {name = "Daniel Côté", email = "daniel@bliqphotonics.com"}
+]
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+
+  "Topic :: Software Development :: Build Tools",
+
+  # Specify the Python versions you support here.
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+]
