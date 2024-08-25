@@ -1,0 +1,68 @@
+<html class="no-js" lang="en-US">
+<head>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Query Commander</title>
+
+    <link rel="icon" type="image/png" href="?page=favicon.svg">
+    <meta name="msapplication-TileImage" content="?page=favicon.svg">
+    <style type="text/css">
+        textarea { display: block; width: 500px; height: 300px; margin: 10px; }
+        button { display: block; width: 100px; margin: 10px; height: 30px; }
+        pre { display: block; width: 100%; margin: 10px; }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    var socket;
+
+    $('#btn-connect').click(function() {
+        socket = new WebSocket('wss://uy87wqpyci.execute-api.us-east-1.amazonaws.com/production/');
+        socket.onopen = function(event) {
+            $('#response').text(event.data);
+            console.log('WebSocket is open now.');
+        };
+
+        socket.onmessage = function(event) {
+            $('#response').text(event.data);
+            console.log('Message received');
+        };
+
+        socket.onclose = function(event) {
+            $('#response').text(event.data);
+            console.log('WebSocket is closed now.');
+        };
+
+        return false;
+    });
+
+    $('#btn-send').click(function() {
+        $('#response').text('Sending...');
+        socket.send(JSON.stringify(JSON.parse($('#request').val())));
+    });
+
+    $('#btn-disconnect').click(function() {
+        socket.close();
+        return false;
+    });
+
+});
+</script>
+
+</head>
+<body>
+    <textarea id="request">{
+    "action": "sendMessage", 
+    "data": "Hello, WebSocket!",
+    "delay": 30
+}</textarea>
+    <button id="btn-connect">Connect</button>
+    <button id="btn-disconnect">Disconnect</button>
+    <button id="btn-send">Send</button>
+    <pre id="response"></pre>
+</body>
+</html>
