@@ -1,0 +1,427 @@
+Metadata-Version: 2.3
+Name: grumps
+Version: 0.9.9.9
+Summary: Genomic distance based Rapid Uncovering of Microbial Population Structures
+Project-URL: Homepage, https://github.com/kalebabram/grumps
+Project-URL: News, https://github.com/kalebabram/grumps/blob/master/CHANGELOG.md
+Project-URL: Readme, https://github.com/kalebabram/grumps/blob/master/README.md
+Author-email: Kaleb Abram <abram.kaleb@gmail.com>
+Maintainer-email: Kaleb Abram <abram.kaleb@gmail.com>
+License:                                  Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright 2022 Kaleb Abram
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+License-File: LICENSE
+Keywords: ANI,assembly,clustering,data cleaning,genome,machine learning,mash,population structure
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: >=3.7
+Requires-Dist: networkx
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+Requires-Dist: seaborn
+Description-Content-Type: text/markdown
+
+# GRUMPS
+***G***enomic distance based ***R***apid ***U***ncovering of ***M***icrobial ***P***opulation ***S***tructures.
+
+**GRUMPS** is designed to assist and speed up the construction of species level population structures using Mash distances as an input. ANI values can be used as well if the ANI values are converted to a decimal difference value {i.e. (100 - ANIvalue) /100}. Additional helper scripts are provided if you do not have a correctly formatted distance matrix to input.
+
+**GRUMPS** reads a normalized distance matrix and returns a filtered result. It can be run in 'summary', 'regular', 'strict', 'sigma', 'target',
+'clique', and 'small' modes. For more information about these modes please see the white paper:
+https://doi.org/10.1101/2022.12.19.521123
+
+
+
+## Installation
+
+**GRUMPS** is installable from pip, conda or from this repository. Note the pip version does not have the R dependecies needed for **r_grumps**. The best installation option for **GRUMPS** is conda. 
+
+The easiest way to install **GRUMPS** is using conda to create an environment. Using [mamba](https://mamba.readthedocs.io/en/latest/) as a replacement for conda can spead up the environment creation process.
+
+1. **Clone this repo and change directories to the local clone**
+2. **Create a conda environment using environment.yml:** `conda env create -f ./environment.yml`
+
+The following commands would install all dependencies in an existing enivronment: 
+  ```sh
+  conda install -c conda-forge python pandas networkx seaborn scipy 
+  conda install -c r r-essentials r-sparcl r-optparse
+  ```
+3. **Modify the permissions of the contents of ./scripts to allow execution: `chmod +x ./scripts/*`
+4. **Move the contents of ./scripts to the bin folder of the newly created environment:** `mv ./scripts/* ~/.conda/envs/grumps/bin` 
+**Note:** if your conda environments are stored in a different place than `~/.conda/envs`, then you will need to modify the mv command above to match where conda envs are located.
+5. **Test your install by activating the newly created environment and calling `grumps`, `r_grumps`, and `distmat_converter` in help mode:** 
+  ```sh
+  conda activate grumps ; grumps -h ; r_grumps -h ; distmat_converter -h
+  ```
+6. Optional: remove the repository clone directory 
+
+
+
+### Dependencies
+**GRUMPS** utilizes the following python libraries:
+* python 3.7.1< 
+* pandas 1.2.4<
+* networkx 2.3<
+* seaborn 0.11.1<
+* scipy 1.6.2<
+
+The optional Rscript `r_grumps` utilizes the following R libraries and versions:
+* r-essentials 3.6.0
+* r-sparcl 1.0.4
+* r-optparse 1.6.2
+
+**GRUMPS** was developed using the following versions:
+* python 3.7.1
+* pandas 1.2.4
+* networkx 2.3
+* seaborn 0.11.1
+* scipy 1.6.2
+* r-essentials 3.6.0
+* r-sparcl 1.0.4
+* r-optparse 1.6.2
+
+**GRUMPS** has been tested up to the following versions:
+* python 3.11.0
+* pandas 1.5.2
+* networkx 2.8.8
+* seaborn 0.12.1
+* scipy 1.9.3
+* r-essentials 3.6
+* r-sparcl 1.0.4
+* r-optparse 1.6.6
+
+Note: Some of these packages are not using the latest available version. As a part of creating the conda package for **GRUMPS**, we are working on updating the dependency versions to ensure **GRUMPS** retains all of its current features. 
+
+## Usage Summary
+
+The following section provides a set of minimal command line commands to use **GRUMPS**. Please use the help page, `grumps -h`, to see all command line options and what modes these options can be used with.  
+
+* **Produce help page.** Quickly check the software usage and available command line options.
+```sh
+$ grumps -h
+```
+
+* **Produce summary of input dataset.** Quickly obtain multiple statistical summaries as well as a histogram for the input dataset
+```sh
+$ grumps -m summary [filepath_to_dataset]
+```
+
+* **Clean input dataset using 'regular' cleaning mode.** Clean the input dataset using K-means clustering. 
+```sh
+$ grumps -m regular [filepath_to_dataset] 
+```
+
+* **Clean input dataset using 'strict' cleaning mode.** Clean the input dataset using K-means clustering followed by a three-sigma rule based cleaning step using the means of each genome.
+```sh
+$ grumps -m strict [filepath_to_dataset]
+```
+
+* **Clean input dataset using 'clique' cleaning mode.** Clean the input dataset with a graph-based clustering approach. Useful for dividing datasets containing multiple species into a collection of uncleaned species level datasets.
+```sh
+$ grumps -m clique [filepath_to_dataset]
+```
+
+* **Clean input dataset using 'sigma' cleaning mode.** Clean the input dataset using a three-sigma rule based cleaning step applied to the extreme left and right tails of value distribution for each genome. Note: this step is automatically performed in 'regular' and 'strict' cleaning modes if `-s no` not specified.
+```sh
+$ grumps -m sigma [filepath_to_dataset]
+```
+
+* **Clean input dataset using 'target' cleaning mode.** Clean the input dataset using a set of target genomes. Any genome that has a value greater than the cutoff (default 0.05) to any of the provided target genomes are removed.
+```sh
+$ grumps -m target -t [filepath_to_file_with_target_ids] [filepath_to_dataset]
+```
+
+* **Clean input dataset using 'remover' cleaning mode.** Remove a set of genomes from the input dataset by ID. 
+```sh
+$ grumps -m remover -r [filepath_to_file_with_ids_to_remove] [filepath_to_dataset]
+```
+
+## Helper Script
+`distmat_converter` reads a regularly delimited file and returns a .csv distance matrix result. By default, the output of `mash dist` can be used by `distmat_converter` to obtain a Mash distance matrix for **GRUMPS**
+```sh
+$ distmat_converter [filepath_to_mash_output.tab]
+```
+If an ANI delimited file is input, please specify how `distmat_converter` should handle the ANI values with the options `-c yes` or `-i yes`. Note: `-c` or `-i` are conflicting options with `-c` having a higher priority. `-c yes` converts the ANI values to Mash values via (100-ANI)/1. `-i yes` simply inverts ANI values via 100-ANI. 
+```sh
+$ distmat_converter -c yes [filepath_to_fastANI_output.tab]
+```
+
+`medoid_identifier` processes the output of `r_grumps` to rapidly identify the medoids of a given dataset.
+```sh
+$ medoid_identifier [filepath_to_r_grumps_medoid_centers.csv]
+```
+
+## Example 
+In the data folder of this repository is a Mash distance matrix containing 776 ***Staphylococcus epidermidis*** genomes which will be used in the following example **GRUMPS** analysis. 
+
+### Step 1: Run GRUMPS in 'summary' mode to obtain an overview of the dataset
+```sh
+$ grumps -m summary ./data/Staphylococcus_epidermidis.tab_distmat.csv
+```
+
+In addition to a set of three files summarizing the distribution of values for each genome, the overall dataset, and the means of the dataset, a histogram of all the values in the dataset is also produced by this mode. 
+![histogram](data/Staphylococcus_epidermidis.tab_distmat_summary_histogram.png)
+Looking at the above histogram, there is a noticeable set of comparisons present above 0.2 (which is well above the Mash distance species boundary of 0.05) and is a clear indicator that this uncleaned dataset contains several outlier genomes. 
+
+To address this issue, we will run **GRUMPS** in 'regular' mode with a cutoff of 0.05, the optional 'sigma' filtering step applied, and we will allow **GRUMPS** to create a clustered heatmap to visualize our cleaned dataset. 
+
+### Step 2: Run GRUMPS in 'regular' mode using a cutoff of 0.05 with the optional 'sigma' filtering step and output the clustered heatmap as a png
+```sh
+grumps -m regular -c 0.05 -s yes -p yes -f png -o ward ./data/Staphylococcus_epidermidis.tab_distmat.csv
+```
+**Note:** The above step is the equivalent of running `grumps -m regular ./data/Staphylococcus_epidermidis.tab_distmat.csv` as the command line options used in **Step 2** are the same as the default values for these options. 
+
+The population structure of ***Staphylococcus epidermidis*** can then be observed in the clustered heatmap output by the command in **Step 2**.
+![clustered_heatmap](data/Staphylococcus_epidermidis.tab_distmat_cleaned_regular_sigma_0.05_ward_heatmap.png)
+As the maximum value contained in the clustered heatmap is below 0.05 and the population structure is clearly visible in the clustered heatmap, we can consider this dataset cleaned. We will now run **GRUMPS** in 'summary' mode again to obtain an updated summary of the now cleaned ***Staphylococcus epidermidis*** dataset. 
+
+### Step 3: Run GRUMPS in 'summary' mode to obtain an overview of the cleaned dataset
+```sh
+grumps -m summary ./data/Staphylococcus_epidermidis.tab_distmat_cleaned_regular_sigma_0.05_ward_distmat.csv
+```
+In addition to a set of three files summarizing the distribution of values for each genome, the overall dataset, and the means of the dataset, a histogram of all the values in the dataset is also produced by this mode. 
+![histogram_clean](data/Staphylococcus_epidermidis.tab_distmat_cleaned_regular_sigma_0.05_ward_distmat_summary_histogram.png)
+Viewing the histogram for the cleaned dataset, we can see that there are no more comparisons above the species boundary of 0.05 as well as a similar topology to the histogram produced in **Step 1**.
+
+Now that we have our final cleaned dataset and the summary statistics, we can use the Rscript `r_grumps` to produce the final heatmap for publication.
+
+### Step 4: Run r_grumps to obtain the final clustered heatmap and grouping information
+```sh
+r_grumps -f ./data/Staphylococcus_epidermidis.tab_distmat_cleaned_regular_sigma_0.05_ward_distmat.csv -m heatmap -c 0.0125 -g ward.D2 
+```
+**Note:** The above step is the equivalent of running `r_grumps -f ./data/Staphylococcus_epidermidis.tab_distmat_cleaned_regular_sigma_0.05_ward_distmat.csv` as the command line options used in **Step 4** are the same as the default values for these options.
+
+![r_clustered_heatmap](data/Staphylococcus_epidermidis.tab_distmat_cleaned_regular_sigma_0.05_ward_r_ward.D2_heatmap.png)
+We can now take the clustered heatmap from **Step 2** and **Step 4** and open them with GIMP to create the final figure.
+
+### Step 5: Post-processing using GIMP
+To assist users in quickly creating publication ready figures from the output of **GRUMPS**, we recommend the following steps to create the final images which can be used either as a standalone figure or as panels within a figure.
+* Open GIMP
+* Open the Create a New Image dialogue box (File > New)
+* Set width and height to 36 cm
+* Click Advanced Options
+* Set X and Y resolution to 600 pixels/in
+* Change Fill with: to White and click OK
+* Open the R heatmap as a new layer (File > Open as Layers)
+* Crop this layer to content (Layer > Crop to Content)
+* Move the R heatmap layer so that the bottom right corner is in the bottom right corner with no visible white pixels
+* Open the Python heatmap as a new layer (File > Open as Layers)
+* Use the Rectangle Selection Tool (default shortcut key: R) to draw a rectangular selection around the color scale of the Python heatmap
+* Crop the Python heatmap layer to the selection (Layer > Crop to Selection)
+* Crop the Python heatmap layer to content (Layer > Crop to Content)
+* Scale the Python heatmap layer to either 756 pixels wide or 1564 pixels high without Interpolation (Layer > Scale Layer > Interpolation: None)
+* If using the image as a panel, create a textbox (default shortcut key: T) containing the panel letter with bold Sans-Serif font size 300 and move the textbox so the upper left corner of the textbox is in the upper left corner of the image
+* Move the color scale bar found in the Python heatmap layer to the upper left corner of the image (positioning is personal preference. If you are making a multi-panel figure, we recommend moving the color scale layer so the upper right hand corner of the color scale is touching the bottom left corner of the textbox)
+* Save the xcf file before further modification so you have the original multilayer unscaled file if you need to make additional modifications without having to recreate the file
+
+The resultant 36cm by 36cm 600 pixels/in figure can then be scaled to the appropriate size depending on the use.
+* If the figure is standalone, scale the image to 18cm by 18cm without interpolation (Image > Scale Image > Interpolation: None)
+* If the figure is going to be a quarter panel, scale the image to 9cm by 9cm without interpolation (Image > Scale Image > Interpolation: None) 
+* If the figure is going to be a quarter panel with other **GRUMPS** generated heatmaps (as done in the **GRUMPS** whitepaper), we recommend scaling the image to 8.75cm by 8.75cm to ensure panels don't look cramped
