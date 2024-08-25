@@ -1,0 +1,86 @@
+# BET PS3838
+
+## Introduction
+
+**BET PS3838** This project aims to bet automatically on different odds available on PS3838. It is part of a bigger secret project, but can be used by anyone who wants to place some bets, or retrieve some football odds (indeed, only football for the moment).
+
+
+## Package functionalities
+
+There is one class in the package called "PS3838AutomaticBet", and two methods "retrieving" and "betting" :
+
+- **Class initialization** :
+    This class is used to retrieve the odds for a list of matches or to place bets on the PS3838 API. It also uses a CustomLogger to log the information.
+    
+        Parameters:
+            - credentials (Dict[str, str]): The credentials to connect to the PS3838 API. 
+                Example: {"username": "my_username", "password": "my_password"}
+            - list_matches (List[Dict[str, Any]]): A list of matches to retrieve the odds for or to place the bets for.
+                Example: [{"league" : 2036, "team1" : "Montpellier", "team2" : "Paris Saint-Germain", "date" : datetime(2024, 8, 17, 17, 0, 0), "result" : 2, "amount" : 5, "odd_min" : 1.05}, ...]. Note that the parameters "result", "amount" and "odd_min" are optional and only used when placing bets.
+            - logger_active (bool): A boolean to activate the logger. Default is True.
+            - to_bet (bool): A boolean to know if we want to retrieve the odds or place the bets. Default is False.
+
+- **retrieving** :
+    This function retrieves the odds on PS3838 for a given list of matches. The retrieving function is useful when we don't want to bet but simply retrieve the odds in order to test a model for example.
+            
+        Returns:
+            - List[List[Dict[str, Any]]]: A list of matches with their corresponding odds.
+                Example: [({'id': 1595460299, 'starts': '2024-08-23T18:45:00Z', 'home': 'Paris Saint-Germain', 'away': 'Montpellier HSC', 'rotNum': '3121', 'liveStatus': 2, 'status': 'O', 'parlayRestriction': 2, 'altTeaser': False, 'resultingUnit': 'Regular', 'betAcceptanceType': 0, 'version': 545200449, 'league': 2036, 'result': None, 'amount': None, 'odd_min': None, 'line_id': 2650184231}, {'team1_odds': 1.309, 'draw_odds': 6.14, 'team2_odds': 8.47}), ...]
+    
+
+- **betting** : 
+    This function places bets on PS3838 for a given list of matches. It first retrieves the odds for each match and then places the bets under some conditions (bet not already placed, odds above a certain threshold, etc.).
+    
+        Returns:
+            - List[List[Dict[str, Any]]] | None: A list of matches with their corresponding odds if the bets were placed, None otherwise.
+                Example: [({'id': 1595460299, 'starts': '2024-08-23T18:45:00Z', 'home': 'Paris Saint-Germain', 'away': 'Montpellier HSC', 'rotNum': '3121', 'liveStatus': 2, 'status': 'O', 'parlayRestriction': 2, 'altTeaser': False, 'resultingUnit': 'Regular', 'betAcceptanceType': 0, 'version': 545200449, 'league': 2036, 'result': 1, 'amount': 5, 'odd_min': 1.05, 'line_id': 2650184231}, {'team1_odds': 1.309, 'draw_odds': 6.14, 'team2_odds': 8.47}), ...]
+
+
+## How to use the package
+
+Here is an example of code to use the package
+
+```python
+import PS3838
+
+# CREDENTIALS PART
+credentials = {
+    "username" : 'your_username',
+    "password" : 'your_password', 
+    "telegram_token" : 'telegram_token',
+    "telegram_chat_id" : 'telegram_chat_id',
+}
+
+# MATCHES PART
+league = 61 # the id of sport api! 
+name_team1 = 'montpellier'
+name_team2 = 'paris st germain'
+result = 2
+amount = 5
+odd_min = 1.05
+
+# example_matches_retrieving =  [{"league" : league, "team1" : name_team1, "team2" : name_team2}]
+example_matches_betting = [{"league" : league, "team1" : name_team1, "team2" : name_team2, "result" : result, "amount" : amount, "odd_min" : odd_min}]
+
+if __name__ == "__main__":
+    # automatic_bet_retrieving = PS3838.PS3838AutomaticBet(credentials, example_matches_retrieving, logger_active=False, to_bet=False)
+    automatic_bet = PS3838.PS3838AutomaticBet(credentials, example_matches_retrieving, logger_active=False, to_bet=True)
+    match_odds = automatic_bet()
+```
+
+
+## Logger
+
+You can activate or desactivate the logger with the parameter "logger_active" for both retrieving and betting functions. 
+- If the logger is active and a telegram token and chat id are provided, then you will receive the logs on your telegram chatbot and on a PS3838.log file. (On telegram there are only the logs up to "INFO", not "DEBUG".)
+- If the logger is active and the telegram parameters are missing, then you will receive the logs only on a PS3838.log file.
+- If the logger is not active then you will not receive anything.
+
+Here is an example of what the logger can display on Telegram : 
+
+![Example of telegram logs](PS3838/_images/image_telegram.png)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
