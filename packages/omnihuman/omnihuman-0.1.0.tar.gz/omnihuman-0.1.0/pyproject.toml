@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "omnihuman"
+version = "0.1.0"
+description = "AI model that understands text and humanoids."
+authors = ["Mudassar Iqbal <mdsriqb@gmail.com>"]
+license = "Apache 2.0"
+readme = "README.md"
+documentation = "https://omnihuman.readthedocs.io/"
+repository = "https://github.com/mdsrqbl/omnihuman.git"
+homepage = "https://github.com/mdsrqbl/omnihuman.git"
+keywords = ["ai", "nlp", "text", "humanoids", "pose", "computer-vision"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.13"
+torch = "^2.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 120
