@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+:root {
+  --color-dark: #344A5F;
+  --color-light: #F0F1F2;
+  --color-primary: #2A94D6;
+  --color-info: #4EB1CB;
+  --color-danger: #CF5C60;
+  --color-purple: #717ECD;
+  --color-success: #4AB471;
+  --color-alert: #F3AE4E;
+  --color-pink: #D96383;
+  --color-white: #FFFFFF;
+}
+
+body {
+  background-color: var(--color-light);
+  font-family: 'Nunito', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-section {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  margin: 10px;
+  border-radius: 20px;
+  max-height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--color-dark) transparent; /* Firefox */
+}
+
+.left-section:hover {scrollbar-color: var(--color-dark) rgba(0, 0, 0, 0.1);}
+.left-section::-webkit-scrollbar {width: 8px;}
+.left-section::-webkit-scrollbar-thumb {background: var(--color-dark); border-radius: 4px;}
+.left-section::-webkit-scrollbar-thumb:hover {background: var(--color-dark);}
+.left-section::-webkit-scrollbar-track {background: transparent;}
+
+.left-section .mantine-Button-root {
+  flex-shrink: 0;
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+.right-section {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  padding: 10px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.table-title {
+  font-size: 32px;
+  font-weight: bold;
+}
