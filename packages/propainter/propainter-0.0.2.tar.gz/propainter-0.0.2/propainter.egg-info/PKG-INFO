@@ -1,0 +1,74 @@
+Metadata-Version: 2.1
+Name: propainter
+Version: 0.0.2
+Summary: Streaming ProPainter
+Home-page: https://github.com/osmr/propainter
+Author: Oleg Sémery
+Author-email: osemery@gmail.com
+License: MIT
+Keywords: video-inpaining propainter pytorch
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pytorchcv
+Requires-Dist: opencv-python
+Requires-Dist: pillow
+Requires-Dist: scipy
+
+# Streaming Video Inpainting via ProPainter
+
+A package for using ProPainter in streaming mode (e.g. for a very long video).
+
+### Prerequisites
+python >= 3.10
+
+### Deployment 
+```
+pip install propainter
+```
+
+### Deployment for testing from repo
+1. Install prerequisites:
+```
+sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove
+```
+2. Install virtualenv (actual [instructions](https://virtualenv.pypa.io/en/latest/installation.html)):
+```
+sudo -H pip install --upgrade pip setuptools wheel
+sudo -H pip install virtualenv
+```
+3. Clone repo, create and activate environment:
+```
+git clone --recurse-submodules git@github.com:osmr/propainter.git
+cd propainter
+virtualenv venv
+source venv/bin/activate
+```
+4. Update preinstalled packages:
+```
+pip install --upgrade pip setuptools wheel
+```
+5. Install package:
+```
+pip install -e .
+```
+6. Optionally install pytest:
+```
+pip install pytest
+```
+
+### Usage
+
+1. Investigate the `example.py` script.
+2. Investigate pytest scripts in `tests` directory.
+
+### Using the `example.py` script for your data: 
+```
+python exapmple.py --frames=<frame_dir> --masks=<mask_dir> --output=<output_dir> --resize_ratio=1.0 --save
+```
