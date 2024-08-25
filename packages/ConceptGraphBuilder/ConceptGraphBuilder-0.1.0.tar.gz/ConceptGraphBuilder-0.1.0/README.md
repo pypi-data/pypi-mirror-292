@@ -1,0 +1,121 @@
+
+---
+# **ConceptGraphBuilder**
+
+**ConceptGraphBuilder** is a Python library designed for extracting concepts from unstructured text using Large Language Models (LLMs) and constructing knowledge graphs that visualize the relationships between these concepts. This library provides an intuitive interface for processing text data, extracting meaningful concepts, building graphs, detecting communities, and visualizing the results in an interactive format.
+
+## **Features**
+
+- **Document Loading and Processing:** Seamlessly load documents from directories and split them into manageable chunks.
+- **Concept Extraction:** Leverage the power of LLMs to extract key concepts and relationships directly from the text.
+- **Knowledge Graph Construction:** Automatically build knowledge graphs that represent the extracted concepts and their relationships.
+- **Community Detection:** Identify and visualize communities within the graph using advanced network analysis algorithms.
+- **Interactive Visualization:** Visualize the graph in an interactive HTML format, making it easy to explore complex relationships.
+
+## **Installation**
+
+You can install the ConceptGraphBuilder library via pip:
+
+```bash
+pip install ConceptGraphBuilder
+```
+
+## **Quick Start Guide**
+
+### **1. Load and Process Documents**
+
+First, load your documents and split them into manageable chunks:
+
+```python
+from concept_graph_builder import DataLoader
+
+# Initialize the DataLoader with the directory containing your documents
+loader = DataLoader("path/to/data")
+
+# Load documents from the directory
+documents = loader.load_documents()
+
+# Split documents into smaller chunks
+pages = loader.split_documents(documents)
+
+# Convert the document chunks into a Pandas DataFrame
+df = loader.documents_to_dataframe(pages)
+```
+
+### **2. Extract Concepts and Relationships Using LLM**
+
+Next, extract the key concepts and relationships from the text using an LLM:
+
+```python
+from concept_graph_builder import LLMExtractor
+
+# Initialize the LLMExtractor
+extractor = LLMExtractor()
+
+# Extract concepts and relationships from the first document chunk
+concepts = extractor.graph_prompt(df["text"].iloc[0])
+
+# Optionally, you can extract general concepts from the text
+general_concepts = extractor.extract_concepts(df["text"].iloc[0])
+```
+
+### **3. Build and Analyze the Knowledge Graph**
+
+Now, use the extracted concepts to build a knowledge graph and analyze it:
+
+```python
+from concept_graph_builder import GraphBuilder
+
+# Initialize the GraphBuilder
+builder = GraphBuilder()
+
+# Build the graph from the DataFrame
+graph = builder.build_graph(df)
+
+# Detect communities within the graph
+communities = builder.detect_communities()
+```
+
+### **4. Visualize the Knowledge Graph**
+
+Finally, visualize the graph and explore the relationships interactively:
+
+```python
+from concept_graph_builder import GraphVisualizer
+
+# Initialize the GraphVisualizer
+visualizer = GraphVisualizer(graph)
+
+# Assign colors to the nodes based on their community
+colors_df = visualizer.assign_colors(communities)
+
+# Add node attributes like color and size
+visualizer.add_node_attributes(colors_df)
+
+# Visualize the graph and save it as an HTML file
+visualizer.visualize_graph("output.html")
+```
+
+## **Usage Scenarios**
+
+- **Text Analysis and NLP:** Use ConceptGraphBuilder to analyze large text datasets, extract meaningful relationships, and visualize them as knowledge graphs.
+- **Research and Academia:** Useful for researchers and academics working on text mining, data visualization, and knowledge management.
+- **Business Intelligence:** Companies can leverage this tool to analyze customer feedback, support tickets, or any unstructured text data to uncover hidden insights.
+
+## **Documentation**
+
+For more detailed documentation, including API references and advanced usage examples, please visit our [documentation page](#). (Replace `#` with the actual link to your documentation)
+
+## **Contributing**
+
+We welcome contributions to ConceptGraphBuilder! If you would like to contribute, please fork the repository, make your changes, and submit a pull request. Be sure to review our [contribution guidelines](#) before you start. (Replace `#` with the actual link to your contribution guidelines)
+
+## **License**
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## **Contact**
+
+If you have any questions, issues, or suggestions, feel free to open an issue on GitHub or contact us directly at [kshitijkutumbe@gmail.com](mailto:kshitijkutumbe@gmail.com).
+
+---
