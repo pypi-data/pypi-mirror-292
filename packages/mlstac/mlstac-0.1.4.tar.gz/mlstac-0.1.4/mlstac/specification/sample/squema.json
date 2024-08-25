@@ -1,0 +1,99 @@
+{
+  "properties": {
+    "tensor": {
+      "title": "Tensor"
+    },
+    "geotransform": {
+      "maxItems": 6,
+      "minItems": 6,
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "title": "Geotransform",
+      "type": "array"
+    },
+    "start_datetime": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "type": "array"
+        }
+      ],
+      "title": "Start Datetime"
+    },
+    "crs": {
+      "title": "Crs",
+      "type": "string"
+    },
+    "end_datetime": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "End Datetime"
+    }
+  },
+  "required": [
+    "tensor",
+    "geotransform",
+    "start_datetime",
+    "crs"
+  ],
+  "title": "Sample",
+  "type": "object"
+}
