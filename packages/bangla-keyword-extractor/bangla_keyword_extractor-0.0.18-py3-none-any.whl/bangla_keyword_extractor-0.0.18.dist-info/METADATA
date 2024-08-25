@@ -1,0 +1,32 @@
+Metadata-Version: 2.3
+Name: bangla_keyword_extractor
+Version: 0.0.18
+Summary: Bangla keyword extraction library which extracts keywords from text or list of texts
+Project-URL: Homepage, https://github.com/PolygonTechnology-xyz/bangla-keyword-extractor
+Project-URL: Issues, https://github.com/PolygonTechnology-xyz/bangla-keyword-extractor/issues
+Author-email: Kabin Hasan <kanchon@polygontech.xyz>
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Requires-Dist: rake-nltk==1.0.6
+Requires-Dist: tqdm==4.66.4
+Description-Content-Type: text/markdown
+
+# Bangla keyword extractor
+This is keyword extractor that support both Bangla and English languages. For the keyword extraction from rake, we used **Rake** algorithm and for keyword extraction from pagerank, we used this [research paper](https://www.researchgate.net/publication/335819660_Keyword_Extraction_from_Bengali_News).
+
+For using this `bangla-keyword-extractor` library, you need to,
+Install using pip
+```commandline
+pip install bangla-keyword-extractor
+```
+For extracting keywords
+```commandline
+from bangla_keyword_extractor.keyword_extractor import KeywordExtractor
+
+text = "এটি একটি নমুনা বাক্য।"
+extractor = KeywordExtractor(text, max_keywords = 5)
+print(extractor.get_keywords_using_rake())
+print(extractor.get_keywords_using_pagerank())
+```
