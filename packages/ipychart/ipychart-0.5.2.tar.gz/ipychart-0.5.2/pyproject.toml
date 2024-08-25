@@ -1,0 +1,94 @@
+[build-system]
+requires = [
+    "hatchling>=1.21.1",
+    "jupyterlab>=4.0.0,<5",
+    "hatch-nodejs-version>=0.3.2",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "ipychart"
+description = "A Jupyter - Chart.js bridge enabling interactive data visualization with Python."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Nicolas Houlier", email = "nicolas.houlier@gmail.com" },
+]
+keywords = [
+    "IPython",
+    "Jupyter",
+    "Widgets",
+]
+classifiers = [
+    "Framework :: Jupyter",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "ipywidgets>=8.0.0",
+    "numpy>=1.18.0",
+    "pandas>=1.0.3",
+    "pydash>=4.8.0",
+    "scikit-learn>=0.23.2",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+examples = []
+test = [
+    "nbval",
+    "pytest-cov",
+    "pytest>=6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/nicohlr/ipychart"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build]
+artifacts = [
+    "ipychart/nbextension/index.*",
+    "ipychart/labextension/*.tgz",
+    "ipychart/labextension",
+]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"ipychart/nbextension" = "share/jupyter/nbextensions/ipychart"
+"ipychart/labextension" = "share/jupyter/labextensions/ipychart"
+"./install.json" = "share/jupyter/labextensions/ipychart/install.json"
+"./ipychart.json" = "etc/jupyter/nbconfig/notebook.d/ipychart.json"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    ".github",
+]
+
+[tool.hatch.build.hooks.jupyter-builder]
+build-function = "hatch_jupyter_builder.npm_builder"
+ensured-targets = [
+    "ipychart/nbextension/index.js",
+    "ipychart/labextension/package.json",
+]
+dependencies = [
+    "hatch-jupyter-builder>=0.8.3",
+]
+
+[tool.hatch.build.hooks.jupyter-builder.build-kwargs]
+path = "."
+build_cmd = "build:prod"
+npm = ["jlpm"]
+
+[tool.hatch.version]
+path = "ipychart/_version.py"
