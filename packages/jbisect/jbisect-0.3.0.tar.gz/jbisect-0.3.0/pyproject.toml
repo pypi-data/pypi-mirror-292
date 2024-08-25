@@ -1,0 +1,126 @@
+[tool.poetry]
+name = "jbisect"
+version = "0.3.0"
+description = "A python package for binary search"
+authors = ["Jesper Nielsen <jespernielsen1982+jbisect@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+homepage = "https://github.com/jesnie/jbisect"
+repository = "https://github.com/jesnie/jbisect"
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Typing :: Typed",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+]
+
+[tool.poetry.dependencies]
+numpy = {version = "<3,>=1.25", optional = true}
+python = "<4,>=3.12"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "<25,>=24.8"
+compreq = "<0.4,>=0.3.1"
+isort = "<6,>=5.13"
+mypy = "<2,>=1.11"
+numpy = "<3,>=1.25"
+pylint = "<4,>=3.2"
+pytest = "<9,>=8.3"
+taskipy = "<2,>=1.13"
+tomlkit = "<0.14,>=0.13.0"
+
+[tool.poetry.extras]
+numpy = ["numpy"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.isort]
+py_version = 312
+profile = "black"
+
+[tool.black]
+target-version = ["py312"]
+line-length = 100
+
+[tool.mypy]
+python_version = "3.12"
+show_error_codes = true
+strict = true
+
+[[tool.mypy.overrides]]
+module = [
+]
+ignore_missing_imports = true
+
+[tool.pylint.messages_control]
+max-line-length = 100
+disable = [
+  "duplicate-code",
+  "fixme",
+  "global-statement",
+  "inconsistent-return-statements",
+  "invalid-name",
+  "invalid-str-returned",
+  "missing-class-docstring",
+  "missing-function-docstring",
+  "missing-module-docstring",
+  "no-else-return",
+  "no-member",
+  "too-few-public-methods",
+  "too-many-arguments",
+  "too-many-boolean-expressions",
+  "too-many-branches",
+  "too-many-lines",
+  "too-many-locals",
+  "too-many-statements",
+  "unhashable-member",
+  "unsubscriptable-object",
+  "unsupported-membership-test",
+  "unused-argument",
+  "use-implicit-booleaness-not-comparison",
+]
+
+
+[tool.taskipy.tasks]
+isort = """
+    echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX isort XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    isort jbisect examples tests set_version.py requirements.py
+"""
+isort_check = """
+    echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX isort XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    isort --check-only jbisect examples tests set_version.py requirements.py
+"""
+black = """
+    echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX black XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    black jbisect examples tests set_version.py requirements.py
+"""
+black_check = """
+    echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX black XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    black --check jbisect examples tests set_version.py requirements.py
+"""
+mypy = """
+    echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX mypy XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    mypy jbisect examples tests set_version.py requirements.py
+"""
+pylint = """
+    echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX pylint XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    pylint jbisect examples tests set_version.py requirements.py
+"""
+pytest = """
+    echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX pytest XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    pytest tests
+"""
+
+format = "task isort && task black"
+format_check = "task isort_check && task black_check"
+lint = "task format_check && task mypy && task pylint"
+test = "task lint && task pytest"
+format_and_lint = "task format && task lint"
+format_and_test = "task format && task test"
