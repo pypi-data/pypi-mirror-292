@@ -1,0 +1,103 @@
+Metadata-Version: 2.1
+Name: concoction
+Version: 0.1.3
+Summary: Library to inject configurations
+Home-page: https://github.com/soapun/concoction
+License: MIT
+Keywords: python,config,configuration,settings,injection,injector,configuration-management
+Author: soapun
+Requires-Python: >=3.8,<4
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: pydantic (>2)
+Requires-Dist: python-benedict (>=0.33.2,<0.34.0)
+Project-URL: Repository, https://github.com/soapun/concoction
+Description-Content-Type: text/markdown
+
+# Concoction
+
+Concoction is a simple configuration injection library that allows you to easily inject configuration values into your
+Python applications. It supports both `pydantic` and `dataclasses` for defining configuration models. Unlike traditional
+configuration management tools, Concoction does not parse or layer configurations; it only works with a dictionary
+object as an input.
+
+## Inspiration
+
+Concoction is inspired by the `@ConfigurationProperties` and `@Value` annotations from Spring Boot. These annotations
+allow for easy injection of configuration properties into Java applications, and Concoction aims to provide a similar
+experience for Python developers.
+
+## Key Features
+
+- **Flexibility with Plain Dictionaries**: Simple and flexible configuration management using plain dictionaries.
+- **Injecting Whole Configuration Blocks**: Inject entire configuration blocks for modular and decoupled settings.
+- **Injecting Individual Fields**: Granular control with the ability to inject specific configuration fields.
+
+## Installation
+
+To install Concoction, run the following command:
+
+```bash
+pip install concoction
+```
+
+## Usage
+
+Here is an example of `config.yaml` file:
+
+```yaml
+app:
+  service:
+    host: 0.0.0.0
+    port: 8000
+```
+
+and injecting `service` section into our config
+
+```python
+import yaml  # pip install pyyaml
+from pydantic import BaseModel
+from concoction import Configuration, set_global_config
+
+
+# define config with injection
+
+@Configuration("app.service")
+class ServiceConfig(BaseModel):
+    host: str
+    port: int
+
+
+# Load configuration from a YAML file
+with open("config.yaml") as f:
+    config = yaml.safe_load(f)
+
+set_global_config(config)
+
+# Create an instance of the configuration model
+app_config = ServiceConfig()
+```
+
+or field-wise
+
+```python
+from concoction.values.pydantic import Value
+
+
+class ServiceConfig(BaseModel):
+    host: str = Value("app.service.host")
+    port: int = Value("app.service.port")
+```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request on GitHub.
