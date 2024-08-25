@@ -1,0 +1,1 @@
+function f({rows:s,place:o,direction:u}){return s.sort(function(t,n){t=t[o],n=n[o];function r(e){return typeof e=="string"?e:e.props.name}return t=r(t).toLowerCase(),n=r(n).toLowerCase(),u==="backward"?t>n?1:-1:t>n?-1:1})}export{f as s};

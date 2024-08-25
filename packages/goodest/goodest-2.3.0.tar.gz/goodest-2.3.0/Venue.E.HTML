@@ -1,0 +1,232 @@
+
+
+
+<pre>
+	
+	<nav>
+		<header>goodest</header>
+		
+		<header>subdomains</header>
+			.boats
+			.casa
+			.click
+			.beauty
+			.hair
+			.homes
+			.promo
+			.quest
+			.tel
+			
+			.移动
+			
+	</nav>
+
+	<main>
+		<header>on</header>
+			<header>1st session</header>
+				
+				#
+				#	1. (optional) remove every docker container if there's a conflict
+				#	2. open the docker container
+				#	3. build (need to wait for this to finish before build_2.sh)
+				#	4. (optional) HAProxy certs
+				#	5. [tmux 1] start the ventures
+				#
+				docker rm $(docker ps -a -q)
+				docker compose up -d; docker exec -it goodest.1 bash
+				. /habitat/_controls/build_1.sh	
+				goodest_1 adventures demux_hap build_unverified_certificates
+				goodest_1 ventures on
+				
+				
+				#
+				#	[tmux 2] start the frontend dev beacon
+				#
+				#
+				(cd /habitat/venues/frontend/vv_turbo/ && bun run dev) 
+					#
+					#	might need to allow browser storage,
+					#	also need to open https://192.168.0.100 in another tab and allow.
+					#
+					localStorage.setItem ("node address", "https://192.168.0.100/")
+
+				
+				#
+				#	optional: if need import the data
+				#		Location is in "essence"
+				#		Probably is: 
+				#			ls /habitat/venues/stages/goodest/[saves]/monetary_saves/exports/goodest_inventory/food
+				#			
+				#
+				goodest_1 adventures monetary saves-G2 import --version 15 --drop
+				
+			
+			<header>2nd+ session</header>
+				# docker exec -it goodest.1 bash -c ". /habitat/_controls/build_2.sh && bash"
+				docker exec -it goodest.1 bash
+				
+				# . /habitat/_controls/build_2.sh
+				
+				#
+				#
+				#	build the front
+				#
+				(cd /habitat/venues/frontend/vv_turbo/apps/web && the_version=1.8.0 bun run build --sourcemap inline)
+			
+		<h2>off</h2>
+			docker container stop goodest.1; docker container rm goodest.1; 	
+			
+		<header>saving</header>
+			<header>before publish</header>
+				goodest_1 adventures monetary saves-G2 save --databases '[ "goodest_inventory", "goodest_tract" ]' --version 2.3.0-01
+				goodest_1 adventures monetary saves-G2 extract --version 2.3.0-01
+			
+			<header>for publish</header>
+				goodest_1 adventures monetary saves-G2 save --databases '[ "goodest_inventory", "goodest_tract" ]' --version 2.3.0
+				
+		<header>actions</header>
+			
+		
+			If the structure changes, need to update to the latest structure:
+				@ enhance, refresh, update
+				
+				enhance foods:
+				
+				
+				enhance supps:
+				
+				
+		
+		<h2>garages (harbors)</h2>
+			<h3>sanic</h3>
+				http://192.168.0.100/docs/swagger#/
+				
+			<h3>sanic inspector</h3>
+				http://192.168.0.100:7457
+
+
+		<h2>publishing</h2>
+			<h3>linting</h3>
+				(cd /goodest/venues/stages/goodest && pycycle --here) 
+		
+			<h3>status</h3>
+				. /habitat/_controls/build_1.sh	
+				
+				#
+				#
+				#	Frontend Build: With or Without Sourcemaps
+				#
+				#
+				(cd /habitat/venues/frontend/vv_turbo/apps/web && the_version=2.3.0 bun run build --sourcemap inline)
+				(cd /habitat/venues/frontend/vv_turbo/apps/web && the_version=2.3.0 bun run build)
+				du -h --max-depth=1 /habitat/venues/stages/goodest/frontend
+				
+				goodest_1 ventures off
+				
+				#
+				#	Change the version in:
+				# 		venues/stages/goodest/adventures/vv_turbo/venture_build.py
+				#
+				goodest_1 ventures on
+			
+				#
+				#	Business Mode:
+				#
+				#		change the "essence" "mode" to "business"
+				#			/habitat/venues/goodest_essence.py
+				#
+				
+				#
+				#	increment the version number:
+				#		pyproject.toml
+				#
+				
+				#
+				#
+				#	Mongo Save
+				#		where: version == the pyproject version
+				#
+				goodest_1 adventures monetary saves-G2 save --databases '[ "goodest_inventory", "goodest_tract" ]' --version 2.3.0
+				
+				#	
+				#	Backend Vows:
+				#
+				#		There might be issues with some of these and the multiple "goodest_essence.py"
+				#		Maybe need to be in "/habitat/_estate_1"
+				#
+				#		1. internal status
+				#		2. external API checks (NIH and USDA)
+				#		3a. mongo status
+				#		3b. restore data
+				#
+				python3 /habitat/venues/stages/goodest/__status/main/status.proc.py
+				python3 /habitat/venues/stages/goodest/__status/API/status.proc.py
+				python3 /habitat/venues/stages/goodest/__status/monetary_export_3/status.proc.py
+				goodest_1 adventures monetary saves-G2 extract --version 2.3.0
+				
+				#
+				#	Frontend Vows:
+				#
+				# 		vite status
+				#			These aren't 100% perfect: 
+				#				Tests  7 failed | 24 passed (31)
+				#
+				(cd /habitat/venues/frontend/vv_turbo/apps/web && bun run status)
+			
+				#
+				#	Frontend E2E Vows:
+				#
+				#		selenium status (this is probably broken)
+				#			For now, these need to be run outside of a docker container.
+				#
+				python3 /habitat/venues/stages/goodest/__status/browser/status.proc.py
+			
+			<h3>publish</h3>
+				#
+				#	[ ] poetry auth
+				#
+				#	# For building sdist and maybe wheel
+				#		poetry build --verbos
+				#
+				(pip install poetry && cd /habitat && rm -rf dist && poetry build --format sdist --verbose && chmod -R 777 /habitat)
+				
+				du -h --max-depth=1 /habitat/dist
+				du -h --max-depth=1 /habitat/dist/goodest-2.1.0/venues/stages/goodest
+				
+				poetry publish --verbose;
+				
+				git tag 2.3.0
+				
+				#
+				#	statistics
+				#
+				find . -type d -exec du -sh {} \;
+				du -h --max-depth=1 .
+
+		
+			<h3>notes</h3>
+				[tool.poetry.source]
+				include = [
+					"venues/stages/goodest/adventures/vv_turbo/apps/web/the_build/*"
+				]
+
+		<h2>important</h2>
+			poetry show --tree
+
+
+		<h2>docker</h2>
+			docker compose up -d
+			docker exec -it goodest bash
+			docker exec -it goodest bash -c "source /goodest/moves/source_2.sh && bash"
+
+		<h2>hatch</h2>
+			#
+			#	https://github.com/pypa/pipx
+			#
+			#
+			apt install pipx -y
+			pipx ensurepath
+			pipx install hatch
+		
+	</main>
+</pre>
