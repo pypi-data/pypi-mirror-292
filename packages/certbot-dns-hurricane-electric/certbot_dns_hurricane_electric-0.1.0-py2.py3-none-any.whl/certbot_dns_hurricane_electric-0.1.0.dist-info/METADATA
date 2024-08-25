@@ -1,0 +1,101 @@
+Metadata-Version: 2.1
+Name: certbot-dns-hurricane-electric
+Version: 0.1.0
+Summary: Hurricane Electric DNS Authenticator plugin for Certbot
+Home-page: https://github.com/studioeng/certbot-dns-hurricane-electric
+Author: Studioeng
+Author-email: byattsystems@gmail.com
+License: MIT
+Keywords: certbot dns hurricane electric dns-01 authenticator api
+Classifier: Environment :: Plugins
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Security
+Classifier: Topic :: System :: Installation/Setup
+Classifier: Topic :: System :: Networking
+Classifier: Topic :: System :: Systems Administration
+Classifier: Topic :: Utilities
+Requires-Python: >=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: setuptools
+Requires-Dist: certbot >=0.21.1
+Requires-Dist: zope.interface
+Requires-Dist: requests
+Requires-Dist: lxml
+Requires-Dist: six
+Requires-Dist: bs4
+
+certbot-dns-hurricane-electric
+======================================
+
+`Hurricane Electric DNS <https://dns.he.net>`_ Authenticator plugin for `Certbot <https://certbot.eff.org>`_
+
+----
+
+Installation
+------------
+
+Install `certbot-dns-hurricane-electric <https://pypi.org/project/certbot-dns-hurricane-electric/>`_ to your Certbot's environment with pip. For example, the line below works for me after running ``certbot-auto``.
+
+.. code-block:: bash
+
+  $ sudo /opt/eff.org/certbot/venv/bin/pip install cerbot-dns-hurricane-electric
+
+You can also use ``git+https://github.com/studioeng/certbot-dns-hurricane-electric.git`` or clone the repository and install from the directory, but pip is recommended.
+
+Example usage
+-------------
+
+Create a configuration file with your username and password:
+
+.. code-block:: ini
+
+  dns_hurricane_electric_user = Your HE username
+  dns_hurricane_electric_pass = Your HE password
+
+and chmod it to ``600``:
+
+.. code-block:: bash
+
+  $ chmod 600 dns_he.ini
+
+Then request a certificate with something like:
+
+.. code-block:: bash
+
+  domain="mail.example.com"
+  email="email@example.com"
+
+  $ certbot-auto certonly \
+    --server https://acme-v02.api.letsencrypt.org/directory \
+    --rsa-key-size 2048 \
+    --preferred-challenges dns \
+    --authenticator dns-hurricane_electric \
+    --dns-hurricane_electric-credentials /data/dns_he.ini \
+    --dns-hurricane_electric-propagation-seconds 30 \
+    --domain "${domain}" \
+    --email "${email}" \
+    --agree-tos
+
+You're done!
+
+| ``--dns-hurricane_electric-credentials`` specifies the configuration file path.
+| ``--dns-hurricane_electric-propagation-seconds`` controls the duration waited for the DNS record(s) to propagate.
+
+These are stored in cerbot's renewal configuration, so they'll work on your automatic renewals.
+
+Credits
+-------
+
+The original plugin by @tsaarist has been unchanged for a number of years.
