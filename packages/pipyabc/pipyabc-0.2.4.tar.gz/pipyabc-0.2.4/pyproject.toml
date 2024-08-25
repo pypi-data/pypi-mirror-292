@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pipyabc"
+version = "0.2.4"  # Replace this with the dynamic extraction of the version if needed
+description = "Hermes - A python package towards an ultimate high-performance algorithm for cosmic statistics of large data sets"
+readme = "README.md"
+readme-content-type = "text/markdown"
+license = { text = "MIT" }
+authors = [
+    {name = "PyHermes Team", email = "15997232823@163.com"},
+]
+maintainers = [
+    {name = "Tristan", email = "15997232823@163.com"},
+    {name = "Ding ding", email = "dingdluan@gmail.com" },
+    {name = "feng", email = "hhh@163.com"}
+]
+homepage = "https://github.com/PyHermes/PyHermes"
+requires-python = ">=3.6"
+keywords = ["cosmology", "nbody", "large-structure", "statistics", "correlation-function"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "rich",
+    "numba",
+    "numpy",
+    "scipy",
+    "json5",
+    "mpi4py",
+    "requests",
+    "PyWavelets",
+    "termcolor==1.1.0"
+]
+
+[tool.hatch.publish]
+[tool.hatch.publish.testpypi]
+repository = "https://test.pypi.org/legacy/"
+username = "__token__"
+auth = "pypi-AgENdGVzdC5weXBpLm9yZwIkMWFlNTgwOWEtMGIyZi00ZjFkLWE1N2MtNmM0YzBlNWI4NzU2AAIqWzMsIjk5NTU0M2QwLWNlMjMtNDRlMy1hNTI2LTlhZTYzMzNjZWMwMyJdAAAGILNH8Hg52DpHtYuZUWD2zA-AWkYXmbPpl2uuAxkfLjSW"
+
+[tool.hatch.build.targets.sdist]
+include = ["pipyabc/**"]
+
+[tool.hatch.build.targets.wheel]
+include = ["pipyabc/**"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.version]
+path = "pipyabc/__init__.py"
+
