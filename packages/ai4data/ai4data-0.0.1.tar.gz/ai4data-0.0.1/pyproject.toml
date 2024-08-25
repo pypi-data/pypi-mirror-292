@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "ai4data"
+version = "0.0.1"
+description = ""
+authors = ["Aivin V. Solatorio <avsolatorio@gmail.com>"]
+readme = "README.md"
+packages = [{include = "ai4data"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+prefect = "^2.19.3"
+tqdm = "^4.66.4"
+fire = "^0.6.0"
+langchain-community = "^0.2.1"
+jq = "^1.7.0"
+qdrant-client = "^1.9.1"
+sentence-transformers = "^3.0.0"
+langchain-huggingface = "^0.0.1"
+pymupdf = "^1.24.5"
+langchain-qdrant = "^0.1.3"
+backoff = "^2.2.1"
+tika = "^2.6.0"
+bs4 = "^0.0.2"
+
+
+[tool.poetry.group.dev.dependencies]
+streamlit = "^1.35.0"
+pytest = "^8.3.2"
+ruff = "^0.6.2"
+pre-commit = "^3.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+fix = true
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+# Skip `E731` (do not assign a lambda expression, use a def)
+ignore = [
+    # LineTooLong
+    "E501",
+    # DoNotAssignLambda
+    "E731"
+]
