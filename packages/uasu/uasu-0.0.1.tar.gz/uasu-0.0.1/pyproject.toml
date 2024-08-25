@@ -1,0 +1,13 @@
+[project]
+name = "uasu"
+version = "0.0.1"
+requires-python = ">= 3.10.2"
+dependencies = [
+    "google-cloud-storage"
+]
+
+[build-system]
+requires = ["setuptools"]
+
+[project.scripts]
+uasu = "uasu.cli:run"
