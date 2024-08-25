@@ -1,0 +1,1 @@
+from .rika_ntrip_client import RIKANTRIPClient
