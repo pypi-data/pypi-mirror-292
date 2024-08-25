@@ -1,0 +1,39 @@
+{
+    "databases": [
+        {
+            "name": "goodest_inventory",
+            "collections": [
+                {
+                    "name": "supp",
+                    "dump_path": "supp.collection.dump.gzip",
+                    "export_path": "supp.collection.export"
+                },
+                {
+                    "name": "food",
+                    "dump_path": "food.collection.dump.gzip",
+                    "export_path": "food.collection.export"
+                }
+            ]
+        },
+        {
+            "name": "goodest_tract",
+            "collections": [
+                {
+                    "name": "cautionary_ingredients",
+                    "dump_path": "cautionary_ingredients.collection.dump.gzip",
+                    "export_path": "cautionary_ingredients.collection.export"
+                },
+                {
+                    "name": "goals",
+                    "dump_path": "goals.collection.dump.gzip",
+                    "export_path": "goals.collection.export"
+                },
+                {
+                    "name": "essential_nutrients",
+                    "dump_path": "essential_nutrients.collection.dump.gzip",
+                    "export_path": "essential_nutrients.collection.export"
+                }
+            ]
+        }
+    ]
+}
