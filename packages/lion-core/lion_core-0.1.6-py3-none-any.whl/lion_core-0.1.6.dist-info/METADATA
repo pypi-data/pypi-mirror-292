@@ -1,0 +1,480 @@
+Metadata-Version: 2.1
+Name: lion-core
+Version: 0.1.6
+Summary: A core library for the Lion framework
+Home-page: https://github.com/lion-agi/lion-core
+Author: HaiyangLi
+Author-email: Haiyang Li <quantocean.li@gmail.com>
+License: Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright 2024 HaiyangLi
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+        
+Project-URL: Homepage, https://github.com/lion-agi/lion-core
+Project-URL: Bug Tracker, https://github.com/lion-agi/lion-core/issues
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: typing-extensions>=4.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: mypy>=0.910; extra == "dev"
+Requires-Dist: flake8>=4.0; extra == "dev"
+Requires-Dist: black==24.3.0; extra == "dev"
+Requires-Dist: isort>=5.0; extra == "dev"
+
+# 🦁 Lion-Core: Unleash the Power of AI Development
+
+[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/lion-core?color=blue)
+[![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
+![Discord](https://img.shields.io/discord/1167495547670777866?color=7289da&label=discord&logo=discord)
+
+> Lion-Core is a lightweight yet powerful Python library designed to serve as a foundational framework for machine learning, artificial intelligence, workflow automation, scientific computing, and advanced data management.
+
+---
+
+## 🌟 Highlights
+
+| Feature | Description |
+|---------|-------------|
+| 🧘‍♂️ **Minimal Dependencies** | Built with only `Pydantic`, ensuring a lightweight and maintainable codebase |
+| 🧩 **Extensible Architecture** | Modular design adaptable to a wide range of computational needs |
+| ⚡ **Performance-Focused** | Optimized data structures and algorithms for efficient large-scale data processing |
+| 🛡️ **Type-Safe** | Leveraging Pydantic for robust type checking and data validation |
+
+---
+
+## 🚀 Features
+
+### 📊 Advanced Data Structures
+- **Pile**: A flexible container combining the best of lists and dictionaries, offering efficient access and powerful querying capabilities.
+- **Progression**: An ordered sequence container designed for high-performance operations on large datasets.
+- **Flow**: A versatile structure for managing complex workflows and data pipelines.
+
+### 🧱 Core Components
+- **Element**: A foundational class serving as the building block for creating modular and composable components.
+- **Node**: An extension of Element, designed for creating interconnected components in a graph-like structure.
+- **Exchange**: A system for managing asynchronous communication between components.
+
+### 🛠️ Utility Systems
+- **Converter System**: A flexible framework for seamless data conversion between various formats.
+- **Form and Validator System**: Dynamic tools for creating and validating complex data structures and workflows.
+- **Rule System**: A powerful mechanism for defining and enforcing business logic and data constraints.
+
+### 💬 Communication Framework
+- **Message System**: A robust inter-component messaging system, facilitating the development of distributed and microservices-based applications.
+- **Mail Manager**: An advanced system for managing asynchronous communication across different components and processes.
+
+### 🧠 AI and Machine Learning Tools
+- **Action System**: A framework for defining and executing AI actions and function calls.
+- **Session Management**: Tools for managing conversational contexts and multi-turn interactions in AI systems.
+
+---
+
+## 🏗️ Architecture
+
+Lion-Core's architecture is designed to be both powerful and flexible, allowing developers to build complex AI and machine learning applications with ease. The following diagram illustrates the high-level architecture and key components of the library:
+
+```mermaid
+flowchart TB
+    subgraph Lion-Core
+        direction TB
+        Core[Core Components]
+        Data[Data Structures]
+        Comm[Communication]
+        Util[Utility Systems]
+        AI[AI and ML Tools]
+    end
+
+    subgraph CoreComponents
+        direction LR
+        Core --> Element
+        Core --> Node
+        Element --> |extends| Node
+    end
+
+    subgraph DataStructures
+        direction LR
+        Data --> Pile
+        Data --> Progression
+        Data --> Flow
+    end
+
+    subgraph Communication
+        direction LR
+        Comm --> MessageSystem
+        Comm --> MailManager
+        Comm --> Exchange
+    end
+
+    subgraph UtilitySystems
+        direction LR
+        Util --> ConverterSystem
+        Util --> FormValidator[Form & Validator]
+        Util --> RuleSystem
+    end
+
+    subgraph AIMLTools
+        direction LR
+        AI --> ActionSystem
+        AI --> SessionManagement
+    end
+
+    %% Relationships
+    Node -.-> Pile
+    Node -.-> Progression
+    Node -.-> Flow
+    MessageSystem --> MailManager
+    MailManager --> Exchange
+    FormValidator --> RuleSystem
+    ActionSystem --> SessionManagement
+
+    %% Styling
+    classDef coreColor fill:#f9d,stroke:#333,stroke-width:2px;
+    classDef dataColor fill:#afd,stroke:#333,stroke-width:2px;
+    classDef commColor fill:#ddf,stroke:#333,stroke-width:2px;
+    classDef utilColor fill:#fda,stroke:#333,stroke-width:2px;
+    classDef aiColor fill:#dff,stroke:#333,stroke-width:2px;
+    classDef mainColor fill:#f5f5f5,stroke:#333,stroke-width:4px;
+
+    class Core,Element,Node coreColor;
+    class Data,Pile,Progression,Flow dataColor;
+    class Comm,MessageSystem,MailManager,Exchange commColor;
+    class Util,ConverterSystem,FormValidator,RuleSystem utilColor;
+    class AI,ActionSystem,SessionManagement aiColor;
+    class Lion-Core mainColor;
+```
+
+Each component can be used independently or in combination with others, enabling modular and scalable application development.
+
+---
+
+## 📦 Installation
+
+To install the latest stable version from PyPI:
+
+```bash
+pip install lion-core
+```
+
+For the latest development version:
+
+```bash
+pip install git+https://github.com/lion-agi/lion-core.git
+```
+
+---
+
+## 🛠️ Development Setup
+
+<details>
+<summary>Click to expand</summary>
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/lion-agi/lion-core.git
+    cd lion-core
+    ```
+
+2. Set up a virtual environment:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
+
+3. Install dependencies:
+    ```bash
+    pip install -e .[dev]
+    ```
+
+4. Set up pre-commit hooks:
+    ```bash
+    pre-commit install
+    ```
+
+5. Run tests:
+    ```bash
+    pytest --asyncio-mode=auto --maxfail=1 --disable-warnings tests/
+    ```
+
+6. Check code style:
+    ```bash
+    black --check .
+    isort --check-only .
+    ```
+
+7. (Optional) Run pre-commit hooks manually:
+    ```bash
+    pre-commit run --all-files
+    ```
+
+Note: Pre-commit hooks will run automatically on `git commit`. If any checks fail, the commit will be aborted. Fix the issues and try committing again.
+
+</details>
+
+---
+
+## 📚 Documentation
+
+We are continuously improving our documentation to help you get the most out of Lion-Core. Here's what's available:
+
+| Type | Description | Location |
+|------|-------------|----------|
+| 📘 Reference Docs | API references and core concepts | [API References](https://github.com/lion-agi/lion-core/blob/main/resources/references/ref_component.ipynb) |
+| 💻 Inline Docs | Detailed docstrings for all components | Within source code |
+| 📓 Examples & Tutorials | (Coming Soon) Jupyter notebooks | `examples/` directory |
+| 🌐 Online Docs | (Planned) Comprehensive searchable documentation | TBA |
+
+Our reference documentation includes:
+- Comprehensive API documentation for all modules
+- In-depth explanations of key concepts and data structures
+- Usage guidelines and best practices
+
+Stay tuned for updates as we continue to expand our documentation!
+
+---
+
+## 🛣️ Roadmap
+
+As we work towards stable releases, our focus includes:
+
+- Enhancing core abstractions and data structures
+- Expanding the converter system for broader compatibility
+- Refining workflow automation processes
+- Developing additional scientific computing utilities
+- Improving documentation and adding comprehensive examples
+
+We're committed to evolving Lion-Core to meet the needs of our community. Your feedback and contributions are crucial in shaping the future of this library.
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Whether it's bug fixes, feature additions, or documentation improvements, your input is valuable. Please check our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
+
+If you're planning to work on a significant change, please open an issue first to discuss your ideas. This helps ensure your time is well spent and that the changes align with the project's direction.
+
+---
+
+## 📄 License
+
+Lion-Core is released under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## 📬 Contact & Community
+
+- 🐛 **Issues & Feature Requests**: [GitHub Issues](https://github.com/lion-agi/lion-core/issues)
+- 💬 **Discussions & Support**: Join our [Discord Server](https://discord.gg/JDj9ENhUE8)
+
+We're building a community of developers, researchers, and AI enthusiasts. Join us in shaping the future of AI development!
+
+---
+
+> **Note**: Lion-Core is an extraction and refinement of core components from the larger lionagi project. After reaching version 0.1.0, development will continue on Lion-Core while also informing a rewrite of the lionagi library.
+
+Thank you for your interest in Lion-Core. Together, let's unleash the power of AI development! 🦁✨
