@@ -1,0 +1,22 @@
+[build-system]
+requires = ["jupyterlab", "openai", "numpy", "pandas", "matplotlib", "openpyxl"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ql_kernel"
+version = "0.0.2"
+description = "A kernel for jupyter to analysis data with AI support"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "zhi4", email = "weatheringhzl@sina.com" }
+]
+maintainers = [
+    { name = "zhi4", email = "weatheringhzl@sina.com" }
+]
+keywords = ["ai", "jupyter", "data", "analysis"]
+classifiers = [
+]
+dependencies = [
+]
+requires-python = ">=3.10"
