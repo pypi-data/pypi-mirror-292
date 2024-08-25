@@ -1,0 +1,61 @@
+#!/bin/env python
+
+from argparse import ArgumentParser
+import sys
+
+from hs3.graphml import build_elements, write_graphml, build_graph_model
+
+def main(args):
+    """
+    The main entry point of the program.
+
+    Args:
+        args (argparse.Namespace): Command-line arguments.
+    """
+    try:
+
+        with open(args.infile, 'r') as f:
+            import json
+            data = json.load(f)
+        
+        if "likelihoods" not in data:
+            raise RuntimeError("no likelihoods available")
+
+        likelihood = None
+        if args.likelihood:
+            for lh in data["likelihoods"]:
+                if lh["name"] == args.likelihood:
+                    likelihood = lh
+        else:
+            available_likelihoods = [lh["name"] for lh in data["likelihoods"]]
+            s = "Please select a likelihood with the -l/--likelihood option. Available options:\n"
+            for lh in available_likelihoods:
+                s += f"  {lh}\n"
+            raise RuntimeError(s)
+        if not likelihood:
+            raise ValueError(f"Likelihood '{args.likelihood}' not found.")
+
+        
+        # Build the elements dictionary from the loaded data
+        elements = build_elements(data)
+
+        # Build the graph model based on the selected likelihood or the entire data
+        model = build_graph_model(data, likelihood, elements)
+
+        # Write the graph model to the GraphML output file
+        write_graphml(model, args.outfile, likelihood)
+
+        print(f"GraphML file has been successfully generated at {args.outfile}")
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    parser = ArgumentParser(description="Convert an HS3 JSON file to GraphML")
+    parser.add_argument("-i", "--input", metavar="model.json", help="Input JSON file", dest="infile", required=True)
+    parser.add_argument("-o", "--output", metavar="model.gml", help="GraphML output file", dest="outfile", required=True)
+    parser.add_argument("--likelihood", "-l", metavar="mylikelihood", help="Name of the likelihood to use", dest="likelihood", default=None)
+    
+    args = parser.parse_args()
+    main(args)
