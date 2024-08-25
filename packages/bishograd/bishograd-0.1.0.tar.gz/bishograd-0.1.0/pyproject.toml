@@ -1,0 +1,30 @@
+[project]
+name = "bishograd"
+version = "0.1.0"
+description = "Tiny & Light weight Machine Learning Library"
+authors = [
+    { name = "AK3847", email = "abdulkadir87633@gmail.com" }
+]
+dependencies = []
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pre-commit==2.9.2",
+    "ipykernel>=6.29.5",
+    "graphviz>=0.20.3",
+    "pytest>=8.3.2",
+    "pip>=24.2",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bishograd"]
