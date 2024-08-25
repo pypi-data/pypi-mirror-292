@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyawait"
+version = "0.1.6"
+authors = [
+    {name = "Andrii Kuzmin", email = "jack.cvr@gmail.com"},
+]
+description = "Wait until TCP endpoints are open"
+keywords = ["wait-for-it", "waitforit", "await", "tcp", "docker"]
+readme = "README.md"
+requires-python = ">=3"
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+
+[project.scripts]
+await = "pyawait.__main__:main"
+
+[project.urls]
+Documentation = "https://github.com/jackcvr/await#readme"
+Issues = "https://github.com/jackcvr/await/issues"
+Source = "https://github.com/jackcvr/await"
+
+[tool.setuptools]
+packages = ["pyawait"]
+
+[tool.setuptools.package-data]
+pyawait = ["*"]
