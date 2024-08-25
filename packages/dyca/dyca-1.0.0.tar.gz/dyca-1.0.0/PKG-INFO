@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: dyca
+Version: 1.0.0
+Summary: Dynamical Component Analysis - A method to decompose multivariate signals
+Home-page: https://github.com/HS-Ansbach-CCS/dyca
+Author: Annika Stiehl
+Author-email: annika.stiehl@hs-ansbach.de
+License: GPL-3.0
+Platform: UNKNOWN
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+License-File: LICENSE
+
+# Dynamical Component Analysis (DyCA)
+Dynamical Component Analysis (DyCA) is a dimension reduction method for multivariate time series data. 
+
+## Installing information
+``` $ pip install -r requirements.txt ```
+
+## There are different ways to use the DyCA algorithm:
+1. You know the number of linear and nonlinear components --> fine, you can use dyca(signal, time, m, n)
+2. You know only the number of linear components, but not the dimension n of the underlying deterministic system:
+    - with dyca(signal, time, m) you get the generalized eigenvalues and the singular values of the projection matrix and you can decide how many nonlinear components you want to use
+    - run a second time dyca(signal, time, m, n) with the number of linear and nonlinear components (m: linear components, n: dimension of the system) you want to use
+3. You don't know the number of linear and nonlinear components:
+    - with dyca(signal, time) you get the generalized eigenvalues and you can decide how many linear components you want to use (Now you are in scenario 2.)
+    - run a second time dyca(signal, time, m) with the number of linear components you want to use --> you get the singular values of the projection matrix and you can decide how many nonlinear components you want to use
+    - run a third time dyca(signal, time, m, n) with the number of linear and nonlinear components (n = linear + nonlinear components) you want to use
+
+## Example Usage
+
+The roessler case is in detail explained in ```./roessler70_example.ipynb```
+
+
+Different **Data source** examples are shown in (where componentnoise and additivenoise specify the SNR in dB)
+
+``` ./example_data/{attractorname}_{componentnoise}_{additivenoise}.csv```
+
+
+and implemented in 
+
+```./example_code/{attractorname}_{additivenoise}_example.py```
+
+## Citing information
+```bibtex
+@Article{Uhl2020,
+  author={Uhl, Christian and Kern, Moritz and Warmuth, Monika and Seifert, Bastian},
+  journal={IEEE Open Journal of Signal Processing}, 
+  title={Subspace Detection and Blind Source Separation of Multivariate Signals by Dynamical Component Analysis (DyCA)}, 
+  year={2020},
+  volume={1},
+  number={},
+  pages={230-241},
+  keywords={Heuristic algorithms;Signal processing algorithms;Tools;Brain modeling;Mathematical model;Noise measurement;
+  Principal component analysis;Biomedical data;blind source separation;differential equations;dimensionality reduction;
+  dynamical component analysis;independent component analysis;low dimensional dynamics;motion detection;principal component analysis},
+  doi={10.1109/OJSP.2020.3038369}
+  }
+```
+DOI: [10.1109/OJSP.2020.3038369](https://doi.org/10.1109/OJSP.2020.3038369)
+
+## Acknowledgement
+This work was supported by the German Federal Ministry of Education and Research (BMBF, Funding number: 05M20WBA).
+
