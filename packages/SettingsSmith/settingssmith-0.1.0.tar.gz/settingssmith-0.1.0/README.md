@@ -1,0 +1,2 @@
+# SettingsSmith
+Python settings manager

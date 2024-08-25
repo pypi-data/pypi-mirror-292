@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "SettingsSmith"
+version = "0.1.0"
+description = ""
+authors = ["Noah Gula <noahrgula@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+packages = [
+    { include = "SettingsSmith", from = "." }
+]
+
+[tool.poetry.dependencies]
+python = "<3.12,>=3.9"
+PySide6 = "^6.7.2"
+appdirs = "^1.4.4"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
