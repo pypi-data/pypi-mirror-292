@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "lsl-gateway-lib"
+version = "24.8.0"
+description = "Gateway from Python to LSL in Second Life - library"
+authors = ["erfea <erfea.tux@gmail.com>"]
+license = "LGPL-3.0-or-later"
+readme = "README.md"
+packages = [
+	{include = "lslgwlib"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.8.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+mypy = "^1.11.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
