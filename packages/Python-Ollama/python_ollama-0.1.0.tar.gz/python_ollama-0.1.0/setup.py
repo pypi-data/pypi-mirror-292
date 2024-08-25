@@ -1,0 +1,19 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="Python-Ollama",
+    version="0.1.0",
+    description="Python client for the Ollama API",
+    author="Kaede Dev Kento Hinode",
+    author_email="cleaverdeath@gmail.com",
+    url="https://github.com/DarsheeeGamer/Ollama-python",
+    packages=find_packages(),
+    install_requires=[
+        "requests",
+    ],
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+)
