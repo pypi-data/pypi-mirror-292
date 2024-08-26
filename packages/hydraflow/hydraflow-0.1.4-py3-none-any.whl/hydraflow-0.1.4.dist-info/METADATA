@@ -1,0 +1,45 @@
+Metadata-Version: 2.3
+Name: hydraflow
+Version: 0.1.4
+Summary: Hydra with MLflow
+Project-URL: Documentation, https://github.com/daizutabi/hydraflow
+Project-URL: Source, https://github.com/daizutabi/hydraflow
+Project-URL: Issues, https://github.com/daizutabi/hydraflow/issues
+Author-email: daizutabi <daizutabi@gmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Documentation
+Classifier: Topic :: Software Development :: Documentation
+Requires-Python: >=3.10
+Requires-Dist: hydra-core>1.3
+Requires-Dist: mlflow>2.15
+Requires-Dist: setuptools
+Requires-Dist: watchdog
+Provides-Extra: dev
+Requires-Dist: pytest-clarity; extra == 'dev'
+Requires-Dist: pytest-cov; extra == 'dev'
+Requires-Dist: pytest-randomly; extra == 'dev'
+Requires-Dist: pytest-xdist; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# hydraflow
+
+[![PyPI Version][pypi-v-image]][pypi-v-link]
+[![Python Version][python-v-image]][python-v-link]
+[![Build Status][GHAction-image]][GHAction-link]
+[![Coverage Status][codecov-image]][codecov-link]
+
+<!-- Badges -->
+[pypi-v-image]: https://img.shields.io/pypi/v/hydraflow.svg
+[pypi-v-link]: https://pypi.org/project/hydraflow/
+[python-v-image]: https://img.shields.io/pypi/pyversions/hydraflow.svg
+[python-v-link]: https://pypi.org/project/hydraflow
+[GHAction-image]: https://github.com/daizutabi/hydraflow/actions/workflows/ci.yml/badge.svg?branch=main&event=push
+[GHAction-link]: https://github.com/daizutabi/hydraflow/actions?query=event%3Apush+branch%3Amain
+[codecov-image]: https://codecov.io/github/daizutabi/hydraflow/coverage.svg?branch=main
+[codecov-link]: https://codecov.io/github/daizutabi/hydraflow?branch=main
