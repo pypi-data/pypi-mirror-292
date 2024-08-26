@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools", "cython>=3.0.10", "numpy>=1.26.0", "build>=1.2.1"]
+build-backend = "setuptools.build_meta"
+
+# NOTE: at present May 2024 pyproject.toml does not support building extensions (Cython pyx files)
+# A description of this problem can found at 
+# https://stackoverflow.com/questions/73800736/pyproject-toml-and-cython-extension-module
+# Right now, the only good reason for using the pyproject.toml is the fact the Numpy and Cython will be installed in advance
+
+
+# [project]
+# name = "sonicparanoid"
+# authors = [
+#     {name = "Josiah Carberry", email = "josiah_carberry@brown.edu"},
+# ]
+# description = "My package description"
+# version = "2.0.6a7"
+# dependencies=["biopython>=1.82",
+# "cython>=3.0.0",
+# "filetype>=1.2.0",
+# "gensim>=4.3.0",
+# "mypy>=1.8.0",
+# "numpy>=1.25.0",
+# "pandas>=2.1.0",
+# "pip>=23.1",
+# "psutil>=5.9.5",
+# "scikit-learn<=1.2.2",
+# "scipy<=1.12.0",
+# "smart-open>=7.0.1",
+# "setuptools>=69.0.0",
+# "tqdm>=4.65.0",
+# "wheel>=0.41.1"]
+
