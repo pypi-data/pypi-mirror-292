@@ -1,0 +1,23 @@
+[project]
+version = "0.0.0a1"
+name = "kiutra_pypi_test"
+# dynamic = ["version"]
+requires-python = ">= 3.7"
+description = "A python package to check how pypi packages work."
+dependencies = [
+]
+readme = "README.md"
+maintainers = [
+  {name = "Rafael Hefele", email = "rafael.hefele@kiutra.com"}
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+packages = ["kiutra_pypi_test"]
+
+[tool.setuptools.package-data]
+"kiutra_pypi_test" = ["*"]
