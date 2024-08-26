@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pmkoalas"
+version = "0.3.0"
+authors = [
+  { name="Adam Banham", email="adam_banham@hotmail.com" },
+  { name="Adam Burke" },
+]
+description = "A process mining library that focuses on providing pythonic interactions with event logs and languages."
+readme = "readme.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [ 
+  "tqdm",
+  "joblib>=1.4.2",
+  "pyparsing",
+]
+
+[project.optional-dependencies]
+dev = [ 
+  'xmlschema'
+]
+
+[tool.setuptools]
+packages = [
+"pmkoalas",
+"pmkoalas.discovery",
+"pmkoalas.models",
+"pmkoalas.conformance",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/AdamBanham/koalas"
+"Bug Tracker" = "https://github.com/AdamBanham/koalas/issues"
