@@ -1,0 +1,26 @@
+[project]
+name = "ytl-model"
+version = "1.5.0"
+description = "Just some models and enums"
+authors = [
+    { name = "alexdelorenzo", email = "3579286+alexdelorenzo@users.noreply.github.com" }
+]
+dependencies = [
+    "pydantic>=2.8.2",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ytl_model"]
