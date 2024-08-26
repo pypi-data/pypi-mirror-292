@@ -1,0 +1,26 @@
+[project]
+name = "sophisthse"
+version = "0.1.1"
+description = "SophistHSE package provides methods to access timeseries data from sophist.hse.ru using Python."
+readme = "README.md"
+authors = [{ name = "Aleksei Prishchepo", email = "sophisthse@outlook.com" }]
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = ["beautifulsoup4", "html5lib", "lxml", "pandas", "Requests"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 2 - Pre-Alpha",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Intended Audience :: Science/Research",
+]
+[build-system]
+requires = ["flit_core<4", "wheel"]
+build-backend = "flit_core.buildapi"
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "requests_mock", "flake8", "black"]
+[project.urls]
+Homepage = "https://github.com/AlekseiPrishchepo/pysophisthse"
+Source = "https://github.com/AlekseiPrishchepo/pysophisthse"
