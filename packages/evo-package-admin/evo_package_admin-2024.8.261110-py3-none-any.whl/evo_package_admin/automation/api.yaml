@@ -1,0 +1,31 @@
+#========================================================================================================================================
+# CyborgAI CC BY-NC-ND 4.0 Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 Internation    https://github.com/cyborg-ai-git | 
+#========================================================================================================================================
+
+# VALID TYPE FOR INPUT/OUTPUT:
+#   EOBJECT EOBJECT_CLASS
+
+package: evo_package_admin
+
+control:
+  CAdminApi:
+    _DOC_: "CAdminApi _DOC_"
+
+    admin-set_eapiconfig:
+      description: "admin-api0 _DESCRIPTION_"
+      required: "EApiQuery.eApiAdmin"
+      callback: onSetEApiConfig
+      input: EOBJECT evo_framework.core.evo_core_api.entity.EApiQuery
+      output: EOBJECT evo_framework.core.evo_core_api.entity.EApiConfig
+    
+    admin-get_eapiconfig:
+      description: "admin-get_eapiconfig _DESCRIPTION_"
+      callback: onGetEApiConfig
+      input: EOBJECT evo_framework.core.evo_core_api.entity.EApiQuery
+      output: EOBJECT evo_framework.core.evo_core_api.entity.EApiConfig
+
+    admin-query_automation:
+      description: "admin-query_automation _DESCRIPTION_"
+      callback: onQueryAutomation
+      input: EOBJECT evo_framework.core.evo_core_api.entity.EApiQuery
+      output: EOBJECT evo_framework.core.evo_core_api.entity.EApiFile
