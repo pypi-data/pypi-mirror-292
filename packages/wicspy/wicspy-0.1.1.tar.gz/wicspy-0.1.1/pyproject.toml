@@ -1,0 +1,30 @@
+[project]
+name = "wicspy"
+version = "0.1.1"
+description = "A Python package for wicsp."
+authors = [
+    { name = "wicsp", email = "wicspa@gmail.com" }
+]
+dependencies = [
+    "loguru>=0.7.2",
+    "requests>=2.32.3",
+    "tqdm>=4.66.5",
+]
+readme = "README.md"
+requires-python = ">= 3.10"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "mypy>=1.11.2",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wicspy"]
