@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "magoptlib"
+version = "0.1.0"
+description = "Global spherical harmonic analysis for optimal magnet positioning."
+authors = ["Palma Inczeffy"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+numpy = ">=1.26.0, <2.0.0"
+scipy = ">=1.13.0"
+matplotlib =">=3.7"
+scikit-learn = "^1.5.1"
+
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+pytest-cov = "^5.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
