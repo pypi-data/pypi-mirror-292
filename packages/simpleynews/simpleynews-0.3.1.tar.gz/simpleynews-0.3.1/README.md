@@ -1,0 +1,117 @@
+# SimpleYNews
+
+SimpleYNews is a Python package that offers a simple way to scrape financial news from Yahoo! Finance for given stock tickers. It aims to provide functionality similar to the `news` property of yfinance's Ticker objects.
+
+<table border=1 cellpadding=10><tr><td>
+
+#### *** IMPORTANT LEGAL DISCLAIMER ***
+
+---
+
+**Yahoo!, Y!Finance, and Yahoo! finance are registered trademarks of
+Yahoo, Inc.**
+
+SimpleYNews is **not** affiliated, endorsed, or vetted by Yahoo, Inc. It's
+an open-source tool that uses Yahoo's publicly available APIs, and is
+intended for research and educational purposes only.
+
+**You should refer to Yahoo!'s terms of use**
+([here](https://policies.yahoo.com/us/en/yahoo/terms/product-atos/apiforydn/index.htm),
+[here](https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html), and
+[here](https://policies.yahoo.com/us/en/yahoo/terms/index.htm)) **for
+details on your rights to use the actual data downloaded. Remember - the
+Yahoo! finance API is intended for personal use only.**
+
+The developers of SimpleYNews are not responsible for the accuracy, completeness, or timeliness of the data provided. Users of this package are solely responsible for verifying any information before relying on it.
+
+The method of data retrieval used by SimpleYNews may not be in compliance with Yahoo's terms of service. Users are advised to review these terms and use this package at their own risk.
+
+By using SimpleYNews, you agree that the developers shall not be held liable for any direct, indirect, incidental, special, consequential or exemplary damages resulting from the use of this package or the data it retrieves.
+
+</td></tr></table>
+
+## Installation
+
+Install SimpleYNews using pip:
+
+```bash
+pip install simpleynews
+```
+
+## Quick Start
+
+```python
+from simpleynews import SimpleYNews
+
+# Get news for a single ticker
+aapl = SimpleYNews.Ticker("AAPL")
+apple_news = aapl.news
+
+# Print the results
+print("News for AAPL:")
+for item in apple_news:
+    print(f"Title: {item['title']}")
+    print(f"Link: {item['link']}")
+    print(f"Publisher: {item['publisher']}")
+    print(f"Publish Time: {item['providerPublishTime']}")
+    print(f"Type: {item['type']}")
+    print(f"Related Tickers: {item['relatedTickers']}")
+    print("---")
+
+# Get news for multiple tickers
+tickers = ["GOOGL", "MSFT"]
+for ticker in tickers:
+    news = SimpleYNews.Ticker(ticker).news
+    print(f"\nNews for {ticker}:")
+    for item in news:
+        print(f"Title: {item['title']}")
+        print(f"Link: {item['link']}")
+        print(f"Publisher: {item['publisher']}")
+        print(f"Publish Time: {item['providerPublishTime']}")
+        print("---")
+```
+
+## Features
+
+- Scrape latest news for given stock tickers from Yahoo! Finance
+- Simple and intuitive API similar to yfinance
+- Caching of news data to reduce repeated requests
+- Logging for better debugging and monitoring
+
+## Data Structure
+
+Each news item is a dictionary with the following keys:
+
+- `uuid`: Unique identifier for the news item
+- `title`: Title of the news article
+- `link`: URL to the full article
+- `publisher`: Name of the news publisher
+- `providerPublishTime`: Timestamp of when the article was published
+- `type`: Type of the news item (usually 'STORY')
+- `relatedTickers`: List of stock tickers related to the news item
+- `thumbnail`: Dictionary containing thumbnail information (if available)
+- `summary`: Brief summary of the article (if available)
+
+## Limitations
+
+- SimpleYNews scrapes data from Yahoo! Finance's website, which may change without notice. This could break the functionality of the package.
+- The package does not provide real-time data. There may be delays in when news is published and when it becomes available through this package.
+- Due to the nature of web scraping, this package may be slower than official APIs.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+SimpleYNews is distributed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+SimpleYNews is not affiliated, endorsed, or vetted by Yahoo, Inc. It's an open-source tool that uses Yahoo's publicly available APIs, and is intended for research and educational purposes only. You should refer to Yahoo!'s terms of use for details on your rights to use the actual data downloaded.
+
+The developers of SimpleYNews make no warranties about the completeness, reliability, and accuracy of this information. Any action you take upon the information you find on this package is strictly at your own risk. The developers will not be liable for any losses and/or damages in connection with the use of SimpleYNews.
+
+## Acknowledgments
+
+This project is inspired by the yfinance package and aims to provide similar functionality for news retrieval. We are grateful to the developers of yfinance for their work in making financial data more accessible to the Python community.
