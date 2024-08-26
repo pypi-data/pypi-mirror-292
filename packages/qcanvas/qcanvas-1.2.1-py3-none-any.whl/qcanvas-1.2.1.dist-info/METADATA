@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: qcanvas
+Version: 1.2.1
+Summary: QCanvas is a desktop client for Canvas LMS.
+Author: QCanvas
+Author-email: QCanvas@noreply.codeberg.org
+Requires-Python: >3.11.0,<3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: aiosqlite (>=0.20.0,<0.21.0)
+Requires-Dist: asynctaskpool (>=0.2.1,<0.3.0)
+Requires-Dist: lightdb (>=2.0,<3.0)
+Requires-Dist: platformdirs (>=4.2.2,<5.0.0)
+Requires-Dist: pyqtdarktheme-fork (>=2.3.2,<3.0.0)
+Requires-Dist: qasync (>=0.27.1,<0.28.0)
+Requires-Dist: qcanvas-api-clients (>=0.3.0,<0.4.0)
+Requires-Dist: qcanvas-backend (>=0.2.7,<0.3.0)
+Requires-Dist: qtpy (>=2.4.1,<3.0.0)
+Requires-Dist: sqlalchemy (>=2.0.31,<3.0.0)
+Requires-Dist: validators (>=0.33.0,<0.34.0)
+Description-Content-Type: text/markdown
+
+# QCanvas
+
+QCanvas is an **unofficial** desktop client for Canvas LMS.
+
+https://codeberg.org/QCanvas/QCanvas
+
+https://github.com/QCanvas/QCanvasApp
+
+# Downloads
+
+<a href='https://flathub.org/apps/io.github.qcanvas.QCanvasApp'>
+    <img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?svg&locale=en'/>
+</a>
+
+You can download a **windows** version from [releases](https://github.com/QCanvas/QCanvasApp/releases)
+
+The appimage version is *not recommended* as it is not a proper portable appimage. It will only work on debian/ubuntu
+based distros.
+
+# Development/Run from source
+
+## Prerequisites
+
+- Python 3.12+ (use [pyenv](https://github.com/pyenv/pyenv) if your distro does not have that version)
+- [Pipx](https://pipx.pypa.io/stable/) (optional)
+- Poetry (recommended to install using `pipx install poetry`)
+- [Appimagetool](https://github.com/AppImage/appimagetool) (Only for building the appimage)
+
+## Get started
+
+```bash
+git clone https://github.com/QCanvas/QCanvasApp.git
+cd QCanvasApp
+
+# Enter shell and run it
+poetry shell
+poetry install
+python qcanvas/run.py
+
+# Alternatively you can run it like this:
+poetry install
+poetry run python qcanvas/run.py
+```
+
+## Build custom AppImage
+
+```bash
+bash build_appimage.sh
+```
