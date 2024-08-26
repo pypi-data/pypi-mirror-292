@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: falcon-sync
+Version: 0.0.1
+Summary: .
+Author-email: Vytautas Liuolia <vytautas.liuolia@gmail.com>
+License: Apache 2.0
+Project-URL: Homepage, https://github.com/falconry/falcon-sync
+Project-URL: Funding, https://opencollective.com/falcon
+Project-URL: Chat, https://gitter.im/falconry/user
+Project-URL: Source, https://github.com/falconry/falcon-sync
+Keywords: asgi,wsgi
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Web Environment
+Classifier: Natural Language :: English
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Topic :: Internet :: WWW/HTTP :: WSGI
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.8
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: falcon >=3.1.0
+
+falcon-sync
+===========
+
+``falcon-sync`` is a utility library for bridging sync (WSGI) and async (ASGI)
+Falcon components.
+
+This library is provided primarily for compatibility purposes, where parts of
+an application have not been migrated to, e.g., ``async`` yet; also in the
+cases where a specific paradigm is enforced by a third party library (e.g., the
+dependency in question only supports ``async``, or conversely, does not support
+it at all).
+
+.. warning::
+    This project is in the early stages of development.
+
+    There is not *that* much to see here (yet).
