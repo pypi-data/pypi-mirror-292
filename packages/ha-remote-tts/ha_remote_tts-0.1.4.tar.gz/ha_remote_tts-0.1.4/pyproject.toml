@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "ha-remote-tts"
+version = "0.1.4"
+description = "API wrapper for the Remote TTS integration of Home Assistant"
+authors = ["NicolasNewman <nanewman01@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "ha_remote_tts" }]
+license = "MIT"
+repository = "https://github.com/NicolasNewman/ha-remote-tts"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiohttp = "^3.10.3"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
