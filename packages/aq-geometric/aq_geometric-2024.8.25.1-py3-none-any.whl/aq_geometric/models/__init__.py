@@ -1,0 +1,6 @@
+from aq_geometric.models.base_model import BaseModel
+from aq_geometric.models.statistical_baselines.persistance.persistance import AqGeometricPersistanceModel
+from aq_geometric.models.statistical_baselines.climatology.climatology import AqGeometricClimatologyModel
+from aq_geometric.models.statistical_baselines.temporal.temporal import AqGeometricTemporalModel
+from aq_geometric.models.statistical_baselines.linear.linear import AqGeometricLinearModel
+from aq_geometric.models.statistical_baselines.history.history import AqGeometricHistoryModel
