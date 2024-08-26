@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "wu_toolkit"
+version = "1.4.0"  # 请根据实际情况填写版本号
+description = "个人用的命令包"
+authors = ["wuyaos <wufeifeng_hust@163.com>"]
+license = "GPLv3"
+readme = "README.md"
+keywords = ["python", "toolkit", "modeling"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Operating System :: OS Independent"
+]
+
+[tool.poetry.dependencies]
+python = ">=3.7"
+ase = ">=3.21.0"
+typer = ">=0.12.1"
+platformdirs = ">=4.0.0"
+
+
+[tool.poetry.scripts]
+wtk = "wu_toolkit.command:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
