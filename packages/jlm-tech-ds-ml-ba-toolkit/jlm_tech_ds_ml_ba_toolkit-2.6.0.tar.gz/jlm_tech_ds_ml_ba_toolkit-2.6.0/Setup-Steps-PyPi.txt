@@ -1,0 +1,47 @@
+
+# steps for new pypi project
+1. create acc here https://pypi.org
+2. create token to push new pip changes
+2.1 Create a .pypirc file in your home directory to store your API tokens for authentication when uploading, with the following content:
+    examples:
+    [pypi]
+    username = __token__
+    password = pypi-AgEIcH...
+
+3. enabled 2mfa
+4. save recovery codes.
+5. install these libs, try any one of these
+    pip install pyscaffold
+    pipx install pyscaffold
+    pip install pyscaffold[all] => RECOMMENDED
+    pip install twine
+6. install tox
+    sudo apt install pipx => RECOMMENDED
+    pipx install tox => RECOMMENDED
+7. putup "your proj name"
+    example "putup MY_PROJ" => this will create a folder ready for pip uploads.
+8. cd into new folder
+9. pip install -e . => this will install the new folder to be imported locally in pip for u to use in ur code.
+
+10. to publish using the repo from pypi
+
+    inside setup.py => update this [version='1.0.0'], to the next version or delete that one from the pypi acc.
+    cd MY_PROJ
+    rm -rf dist/
+    python3 setup.py sdist
+    twine upload dist/*
+
+11. example of how to call the code to import
+    "from MY_PROJ.skeleton import fib"
+   
+    "pip uninstall MY_PROJ" => to unistall this toolkit
+    "pip install MY_PROJ" => to install the latest version - RECOMMENDED
+    "pip install MY_PROJ==2.0.0" => to install a specific version
+   
+10. using tox
+    tox -e build  # to build your package distribution
+    tox -e publish  # to test your project uploads correctly in test.pypi.org
+    tox -e publish -- --repository pypi  # to release your package to PyPI => RECOMMENDED
+    tox -av  # to list all the tasks available
+
+    
