@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: mimizuku
+Version: 0.2.18
+Summary: A package for anomaly detection using Isolation Forest for Wazuh Alerts
+Home-page: https://github.com/pyama86/mimizuku
+Author: pyama86
+Author-email: www.kazu.com@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Requires-Dist: joblib
+Requires-Dist: orjson
+
+# Mimizuku
+
+Mimizuku is a Python package for anomaly detection using Isolation Forest. It is designed to process log files and detect anomalies based on a variety of features.
+
+## Installation
+
+```bash
+pip install .
+```
+
+## Usage
+
+```python
+
+from mimizuku import Mimizuku
+
+# Initialize the model
+model = Mimizuku(n_estimators=500)
+
+# Train the model with a log file or DataFrame
+model.fit("./training.json")
+
+# Save the trained model
+model.save_model("./model.pkl")
+
+# Load the model and use it for prediction
+loaded_model = Mimizuku.load_model("./model.pkl")
+anomalies_df = loaded_model.predict("./test.json")
+
+# Display detected anomalies
+print(anomalies_df)
+```
