@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "mc-base"
+version = "0.1.1a1"
+description = ""
+authors = ["Mind Children"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+typer = "^0.12.5"
+python-on-whales = "^0.72.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+pre-commit = "^3.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+mc = "mc_base.cli.cli:app"
