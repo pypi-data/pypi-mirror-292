@@ -1,0 +1,133 @@
+html {
+  /*****************************************************************************
+  * Overall Layout Variables
+  */
+
+  // Header height will impact the top offset for many sections
+  // Article header is 66% of Header
+  --pst-header-height: 4rem;
+  --pst-header-article-height: calc(var(--pst-header-height) * 2 / 3);
+  --pst-sidebar-secondary: 17rem;
+}
+
+/*******************************************************************************
+* Breakpoints that trigger UI changes
+*
+* Note that media-breakpoint-down begins at the next highest level!
+* So we should choose a media-breakpoint-down one *lower* than when we want to start
+* example: media-breakpoint-up(md) and media-breakpoint-down(sm) trigger at the same time
+* ref: https://github.com/twbs/bootstrap/issues/31214
+*/
+$breakpoint-sidebar-primary: lg; // When we collapse the primary sidebar
+$breakpoint-sidebar-secondary: xl; // When we collapse the secondary sidebar
+$breakpoint-page-width: 88rem; // taken from sphinx-basic-ng, which we are ultimately going to inherit
+
+$breakpoint-md: 768px;
+
+/*******************************************************************************
+* Define the animation behaviour
+*/
+$animation-time: 200ms;
+
+// $animation-time: 0.25s;
+
+/*******************************************************************************
+* UI shaping and padding
+*/
+$admonition-border-radius: 0.25rem;
+
+// In this theme, some focus rings have rounded corners while others do not.
+// This variable sets the border radius for the rounded focus rings.
+$focus-ring-radius: 0.125rem; // 2px at 100% zoom and 16px base font.
+
+$navbar-link-padding-y: 0.25rem;
+$sidebar-primary-width-widescreen: 20%;
+
+/*********************************************
+* Variables *
+*********************************************/
+// Breakpoints from Bootstrap: https://getbootstrap.com/docs/5.0/layout/breakpoints/
+$breakpoint-xxl: 1200px;
+$breakpoint-xl: 1200px;
+$breakpoint-lg: 992px;
+$breakpoint-md: 768px;
+$breakpoint-sm: 576px;
+
+// A few semantic z-indices
+$zindex-bottom: 1;
+$zindex-middle: 2;
+$zindex-top: 3;
+
+// Semantic Z-index from bootstrap. Copied here so we can re-use if needed.
+// ref: https://getbootstrap.com/docs/5.0/layout/z-index/
+$zindex-dropdown: 1000;
+$zindex-sticky: 1020;
+$zindex-fixed: 1030;
+$zindex-modal-backdrop: 1040;
+$zindex-offcanvas: 1050;
+$zindex-modal: 1060;
+$zindex-popover: 1070;
+$zindex-tooltip: 1080;
+
+// Spacing
+$header-article-height: 3rem;
+$sidebar-primary-width-widescreen: 20%;
+$toc-width-mobile: 75%;
+
+// Consistent styling for page elements
+$box-border-radius: 0.4em;
+$animation-time: 0.25s;
+
+// Font sizes
+$sbt-font-size-small-1: 87.5%;
+
+/**
+ * Variables that aren't impacted by light/dark
+ */
+html[data-theme="light"],
+html[data-theme="dark"] {
+  // Over-ride the Syft theme so that readers can use their system base
+  --pst-font-size-base: none;
+
+  // Default secondary color (has enough contrast on both light/dark so
+  // no need to special case.
+  --pst-color-secondary: #e89217;
+  --sst-color-background-text-link: #20afdf;
+}
+
+// Overrides for Syft sphinx theme.
+// See https://github.com/callezenwaka/sphinx-syft-theme/blob/master/sphinx_syft_theme/static/css/theme.css
+html[data-theme="light"] {
+  // Announcement
+  --sbt-color-announcement: rgb(97 97 97);
+
+  // Default primary color (need to adjust on dark theme due to bad contrast)
+  --pst-color-primary: #176de8;
+
+  // This is a temporary fix
+  --pst-color-background: #fcfcfd !important;
+  --pst-color-on-background: #f4f3f6 !important;
+  --pst-color-text-base: #17161d !important;
+  --pst-color-text-muted: #736c93 !important;
+
+  // --pst-heading-color: #17161D!important;
+}
+
+html[data-theme="dark"] {
+  // Slightly lighten these colors to make them stand out more on dark
+  --pst-color-primary: #528fe4;
+
+  // Over-ride the purple announcement color
+  --sbt-color-announcement: rgb(97 97 97);
+
+  // Desaturate the background
+  // --pst-color-background: #121212;
+
+  // This is a temporary fix
+  --pst-color-background: #17161d !important;
+  --pst-color-on-background: #2e2b3b !important;
+  --pst-color-text-base: #f1f0f4 !important;
+  --pst-color-text-muted: #c7c4d4 !important;
+
+  // --pst-heading-color: ;
+}

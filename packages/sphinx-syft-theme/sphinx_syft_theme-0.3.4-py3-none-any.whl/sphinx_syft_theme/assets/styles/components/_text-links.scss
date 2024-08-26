@@ -1,0 +1,86 @@
+/**
+ * Text links in the navbar
+ */
+
+.pst-navbar-text {
+  // Extra specificity needed for overrides
+  html & {
+    @include min-hit-area;
+    @include link-style-block;
+
+    // Bootstrap overrides
+    border: none;
+    font-size: 1rem;
+    line-height: $line-height-body; // Override Boostrap, which defines a separate line-height for buttons // Horizontal white space in nav bar between items is controlled via column gap rule on the container.
+
+    // Make the navbar text links have the same size as the navbar text links
+    height: calc(2 * $navbar-link-padding-y + $line-height-body * 1rem);
+    display: flex;
+    padding: 8px 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 2px;
+    background: var(--theme-primary-500, #20afdf); // @deprecate
+    background-color: var(--sst-color-background-text-link);
+  }
+
+  span {
+    color: var(--theme-gray-900, #17161d); // @deprecate
+    text-align: center;
+
+    /* Style/Button Text */
+    font-family: Roboto, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%; /* 24px */
+  }
+}
+
+ul.navbar-text-links {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 1rem;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+
+  // Texts styling
+  i {
+    &.fa-brands,
+    &.fa-regular,
+    &.fa-solid {
+      vertical-align: middle;
+      font-style: normal;
+      font-size: var(--pst-font-size-icon);
+    }
+
+    /* Social media buttons hard-code the brand color */
+    &.fa-square-twitter::before {
+      color: #55acee;
+    }
+
+    &.fa-square-gitlab::before {
+      color: #548;
+    }
+
+    &.fa-bitbucket::before {
+      color: #0052cc;
+    }
+  }
+
+  // Force images to be text-sized
+  img.text-link-image {
+    height: 1.5em;
+    border-radius: 0.2rem;
+  }
+
+  .fa-pydata {
+    stroke: var(--pst-color-background);
+    stroke-linejoin: round;
+    stroke-width: 0.35;
+  }
+}

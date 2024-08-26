@@ -1,0 +1,41 @@
+<div id="feedback--container" class="feedback--container">
+	<div id="feedback--title" class="feedback--title">
+		<div>
+			<span id="feedback--text" class="feedback--text">Feedback Form</span>
+		</div>
+		<div class="feedback--svg">
+			<svg version="1.1" id="form--svgcheck" class="form--svgcheck" xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 98.5 98.5"
+				enable-background="new 0 0 98.5 98.5" xml:space="preserve">
+				<path class="form--checkmark" fill="none" stroke-width="8" stroke-miterlimit="10" d="M81.7,17.8C73.5,9.3,62,4,49.2,4C24.3,4,4,24.3,4,49.2s20.3,45.2,45.2,45.2s45.2-20.3,45.2-45.2c0-8.6-2.4-16.6-6.5-23.4l0,0L45.6,68.2L24.7,47.3" />
+				<title>Feedback sent!</title>
+			</svg>
+		</div>
+		<div>
+			<svg viewBox="0 0 24 24" aria-hidden="true" id="feedback--arrow" class="feedback--arrow">
+				<g>
+					<path
+						d="M12 2.59l9.46 9.45-1.42 1.42L12 5.41l-8.04 8.05-1.42-1.42L12 2.59zm0 7l9.46 9.45-1.42 1.42L12 12.41l-8.04 8.05-1.42-1.42L12 9.59z">
+					</path>
+				</g>
+			</svg>
+		</div>
+	</div>
+	<form id="feedback--form" class="feedback--form">
+		<div class="form--item">
+			<label class="form--label" for="description"
+				data-tooltip="If applies, please describe the issue in more detail">Description &#9432;: </label>
+			<textarea rows="2" class="form--input form--textarea" name="description" id="description"></textarea>
+		</div>
+		<div class="form--item">
+			<label class="form--label" for="email"
+				data-tooltip="If you would like to be contacted with updates on the issue raised, please enter your email">Email
+				(optional)
+				&#9432;: </label>
+			<input type="text" class="form--input" name="email" id="email">
+		</div>
+		<div class="form--item">
+			<button type="submit" class="form--button">Submit</button>
+		</div>
+	</form>
+</div>
