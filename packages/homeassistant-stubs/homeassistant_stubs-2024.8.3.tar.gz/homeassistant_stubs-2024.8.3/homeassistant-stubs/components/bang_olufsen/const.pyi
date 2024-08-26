@@ -1,0 +1,65 @@
+from enum import StrEnum
+from homeassistant.components.media_player import MediaPlayerState as MediaPlayerState, MediaType as MediaType
+from mozart_api.models import Source, SourceArray
+from typing import Final
+
+class BangOlufsenSource:
+    URI_STREAMER: Final[Source]
+    BLUETOOTH: Final[Source]
+    CHROMECAST: Final[Source]
+    LINE_IN: Final[Source]
+    SPDIF: Final[Source]
+    NET_RADIO: Final[Source]
+    DEEZER: Final[Source]
+    TIDAL: Final[Source]
+
+BANG_OLUFSEN_STATES: dict[str, MediaPlayerState]
+
+class BangOlufsenMediaType(StrEnum):
+    FAVOURITE = 'favourite'
+    DEEZER = 'deezer'
+    RADIO = 'radio'
+    TIDAL = 'tidal'
+    TTS = 'provider'
+    OVERLAY_TTS = 'overlay_tts'
+
+class BangOlufsenModel(StrEnum):
+    BEOCONNECT_CORE = 'Beoconnect Core'
+    BEOLAB_8 = 'BeoLab 8'
+    BEOLAB_28 = 'BeoLab 28'
+    BEOSOUND_2 = 'Beosound 2 3rd Gen'
+    BEOSOUND_A5 = 'Beosound A5'
+    BEOSOUND_A9 = 'Beosound A9 5th Gen'
+    BEOSOUND_BALANCE = 'Beosound Balance'
+    BEOSOUND_EMERGE = 'Beosound Emerge'
+    BEOSOUND_LEVEL = 'Beosound Level'
+    BEOSOUND_THEATRE = 'Beosound Theatre'
+
+class WebsocketNotification(StrEnum):
+    PLAYBACK_ERROR: Final[str]
+    PLAYBACK_METADATA: Final[str]
+    PLAYBACK_PROGRESS: Final[str]
+    PLAYBACK_SOURCE: Final[str]
+    PLAYBACK_STATE: Final[str]
+    SOFTWARE_UPDATE_STATE: Final[str]
+    SOURCE_CHANGE: Final[str]
+    VOLUME: Final[str]
+    NOTIFICATION: Final[str]
+    REMOTE_MENU_CHANGED: Final[str]
+    ALL: Final[str]
+
+DOMAIN: Final[str]
+DEFAULT_MODEL: Final[str]
+CONF_SERIAL_NUMBER: Final[str]
+CONF_BEOLINK_JID: Final[str]
+COMPATIBLE_MODELS: list[str]
+ATTR_TYPE_NUMBER: Final[str]
+ATTR_SERIAL_NUMBER: Final[str]
+ATTR_ITEM_NUMBER: Final[str]
+ATTR_FRIENDLY_NAME: Final[str]
+BANG_OLUFSEN_ON: Final[str]
+VALID_MEDIA_TYPES: Final[tuple]
+HIDDEN_SOURCE_IDS: Final[tuple]
+FALLBACK_SOURCES: Final[SourceArray]
+BANG_OLUFSEN_WEBSOCKET_EVENT: Final[str]
+CONNECTION_STATUS: Final[str]
