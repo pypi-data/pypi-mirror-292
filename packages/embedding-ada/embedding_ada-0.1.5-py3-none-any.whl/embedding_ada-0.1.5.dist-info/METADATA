@@ -1,0 +1,252 @@
+Metadata-Version: 2.1
+Name: embedding-ada
+Version: 0.1.5
+Summary: Python Package to Train Embedding adapter on top of any Embedding models from Hugging face and OpenAI
+Author: Pavan Kumar Medarametla
+Author-email: pavankumarchowdary35@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohappyeyeballs==2.4.0
+Requires-Dist: aiohttp==3.10.5
+Requires-Dist: aiosignal==1.3.1
+Requires-Dist: annotated-types==0.7.0
+Requires-Dist: anyio==4.4.0
+Requires-Dist: asttokens==2.4.1
+Requires-Dist: attrs==24.2.0
+Requires-Dist: azure-core==1.30.2
+Requires-Dist: azure-identity==1.17.1
+Requires-Dist: beautifulsoup4==4.12.3
+Requires-Dist: boto3==1.35.5
+Requires-Dist: botocore==1.35.5
+Requires-Dist: certifi==2024.7.4
+Requires-Dist: cffi==1.17.0
+Requires-Dist: charset-normalizer==3.3.2
+Requires-Dist: click==8.1.7
+Requires-Dist: cohere==5.8.1
+Requires-Dist: colorama==0.4.6
+Requires-Dist: comm==0.2.2
+Requires-Dist: cryptography==43.0.0
+Requires-Dist: dataclasses-json==0.6.7
+Requires-Dist: debugpy==1.8.5
+Requires-Dist: decorator==5.1.1
+Requires-Dist: Deprecated==1.2.14
+Requires-Dist: dirtyjson==1.0.8
+Requires-Dist: distro==1.9.0
+Requires-Dist: executing==2.0.1
+Requires-Dist: fastavro==1.9.5
+Requires-Dist: filelock==3.15.4
+Requires-Dist: frozenlist==1.4.1
+Requires-Dist: fsspec==2024.6.1
+Requires-Dist: greenlet==3.0.3
+Requires-Dist: h11==0.14.0
+Requires-Dist: httpcore==1.0.5
+Requires-Dist: httpx==0.27.0
+Requires-Dist: httpx-sse==0.4.0
+Requires-Dist: huggingface-hub==0.24.6
+Requires-Dist: idna==3.8
+Requires-Dist: ipykernel==6.29.5
+Requires-Dist: ipython==8.26.0
+Requires-Dist: jedi==0.19.1
+Requires-Dist: Jinja2==3.1.4
+Requires-Dist: jiter==0.5.0
+Requires-Dist: jmespath==1.0.1
+Requires-Dist: joblib==1.4.2
+Requires-Dist: jsonpatch==1.33
+Requires-Dist: jsonpath-python==1.0.6
+Requires-Dist: jsonpointer==3.0.0
+Requires-Dist: jupyter-client==8.6.2
+Requires-Dist: jupyter-core==5.7.2
+Requires-Dist: langchain==0.2.14
+Requires-Dist: langchain-community==0.2.12
+Requires-Dist: langchain-core==0.2.34
+Requires-Dist: langchain-text-splitters==0.2.2
+Requires-Dist: langsmith==0.1.104
+Requires-Dist: llama-cloud==0.0.15
+Requires-Dist: llama-index==0.11.0
+Requires-Dist: llama-index-agent-openai==0.3.0
+Requires-Dist: llama-index-cli==0.3.0
+Requires-Dist: llama-index-core==0.11.0.post1
+Requires-Dist: llama-index-embeddings-adapter==0.2.1
+Requires-Dist: llama-index-embeddings-huggingface==0.3.0
+Requires-Dist: llama-index-embeddings-langchain==0.2.1
+Requires-Dist: llama-index-embeddings-openai==0.2.3
+Requires-Dist: llama-index-finetuning==0.2.0
+Requires-Dist: llama-index-indices-managed-llama-cloud==0.3.0
+Requires-Dist: llama-index-legacy==0.9.48.post3
+Requires-Dist: llama-index-llms-azure-openai==0.2.0
+Requires-Dist: llama-index-llms-mistralai==0.2.1
+Requires-Dist: llama-index-llms-openai==0.2.0
+Requires-Dist: llama-index-multi-modal-llms-openai==0.2.0
+Requires-Dist: llama-index-postprocessor-cohere-rerank==0.2.0
+Requires-Dist: llama-index-program-openai==0.2.0
+Requires-Dist: llama-index-question-gen-openai==0.2.0
+Requires-Dist: llama-index-readers-file==0.2.0
+Requires-Dist: llama-index-readers-llama-parse==0.2.0
+Requires-Dist: llama-parse==0.5.0
+Requires-Dist: MarkupSafe==2.1.5
+Requires-Dist: marshmallow==3.22.0
+Requires-Dist: matplotlib-inline==0.1.7
+Requires-Dist: minijinja==2.0.1
+Requires-Dist: mistralai==1.0.2
+Requires-Dist: mpmath==1.3.0
+Requires-Dist: msal==1.30.0
+Requires-Dist: msal-extensions==1.2.0
+Requires-Dist: multidict==6.0.5
+Requires-Dist: mypy-extensions==1.0.0
+Requires-Dist: nest-asyncio==1.6.0
+Requires-Dist: networkx==3.3
+Requires-Dist: nltk==3.9.1
+Requires-Dist: numpy==1.26.4
+Requires-Dist: openai==1.42.0
+Requires-Dist: orjson==3.10.7
+Requires-Dist: packaging==24.1
+Requires-Dist: pandas==2.2.2
+Requires-Dist: parameterized==0.9.0
+Requires-Dist: parso==0.8.4
+Requires-Dist: pillow==10.4.0
+Requires-Dist: platformdirs==4.2.2
+Requires-Dist: portalocker==2.10.1
+Requires-Dist: prompt-toolkit==3.0.47
+Requires-Dist: psutil==6.0.0
+Requires-Dist: pure-eval==0.2.3
+Requires-Dist: pycparser==2.22
+Requires-Dist: pydantic==2.8.2
+Requires-Dist: pydantic-core==2.20.1
+Requires-Dist: Pygments==2.18.0
+Requires-Dist: PyJWT==2.9.0
+Requires-Dist: pypdf==4.3.1
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: pytz==2024.1
+Requires-Dist: pywin32<400,>=306
+Requires-Dist: PyYAML==6.0.2
+Requires-Dist: pyzmq==26.2.0
+Requires-Dist: regex==2024.7.24
+Requires-Dist: requests==2.32.3
+Requires-Dist: s3transfer==0.10.2
+Requires-Dist: safetensors==0.4.4
+Requires-Dist: scikit-learn==1.5.1
+Requires-Dist: scipy==1.14.1
+Requires-Dist: sentence-transformers==2.7.0
+Requires-Dist: six==1.16.0
+Requires-Dist: sniffio==1.3.1
+Requires-Dist: soupsieve==2.6
+Requires-Dist: SQLAlchemy==2.0.32
+Requires-Dist: stack-data==0.6.3
+Requires-Dist: striprtf==0.0.26
+Requires-Dist: sympy==1.13.2
+Requires-Dist: tenacity==8.3.0
+Requires-Dist: threadpoolctl==3.5.0
+Requires-Dist: tiktoken==0.7.0
+Requires-Dist: tokenizers==0.19.1
+Requires-Dist: torch==2.4.0
+Requires-Dist: tornado==6.4.1
+Requires-Dist: tqdm==4.66.5
+Requires-Dist: traitlets==5.14.3
+Requires-Dist: transformers==4.44.2
+Requires-Dist: types-requests==2.32.0.20240712
+Requires-Dist: typing-inspect==0.9.0
+Requires-Dist: typing-extensions==4.12.2
+Requires-Dist: tzdata==2024.1
+Requires-Dist: urllib3==2.2.2
+Requires-Dist: wcwidth==0.2.13
+Requires-Dist: wrapt==1.16.0
+Requires-Dist: yarl==1.9.4
+
+# 🎉 embedding-ada
+
+## 📜 Description
+
+embedding-ada is a Python package used to fine-tune embedding adapter on top of embedding models from Hugging Face and OpenAI. This package is build using Llama-Index.
+
+## Why Use embedding-ada?
+Improved Retrieval Performance: By fine-tuning adapters, this package helps you bring relevant documents closer to the query embeddings, improving the results of approximate nearest neighbor searches.
+
+## 🚀 Installation
+You can install **embedding-ada** directly from PyPI using pip:
+
+```bash
+pip install embedding-ada
+```
+## 💻 Usage
+```python
+from embedding-ada.adapter import EmbeddingModelTrainer
+# Define your training files
+train_files = ["path/to/your/example.pdf"]
+
+# Initialize the trainer
+trainer = EmbeddingModelTrainer(
+    embedding_model_name='BAAI/bge-small-en',
+    train_files=train_files,
+    model_output_path="model_output_test",
+    epochs=10,
+    llm_type="openai"  # or "azure" if using Azure OpenAI
+)
+# Load train files and generate dataset out of it.
+trainer.load_and_generate_dataset(verbose=True)
+
+#Fine-tune the model using the dataset
+trainer.fine_tune_model()
+
+#Finally, transform a query using the fine-tuned model
+query_embedding = trainer.transform(query)
+
+```
+## Overview
+
+The user has to provide text on which he want to trian the adapter model. The text can be in either .pdf or .txt files. This text is parsed into nodes, with each node representing a "chunk" of a source document. Using a language model (LLM), we generate a question from each node. This process forms query-context pairs, which are then used to train a neural network model. The default model is a simple two-layer neural network with ReLU activation and a residual layer at the end. Users also have the option to define a custom neural network as the adapter model and train it with the formulated query-context pairs.
+
+## Training Process
+
+The training process uses the MultipleNegativesRankingLoss function, similar to the one used in training sentence_transformers. This loss function is particularly effective for training embeddings in retrieval setups where you have positive pairs (e.g., query and relevant document). During training, for each batch, the function randomly samples n-1 negative documents, making it robust for retrieval tasks.
+
+## Embedding Adapters
+
+The core concept behind embedding adapters is as follows: Given a set of query embeddings, and corresponding sets of relevant and irrelevant document embeddings for each query, the adapter model learns a transformation that adjusts the vector space. This transformation "squeezes" and "rotates" the space, mapping it to a new space where relevant documents are closer to the query. We refer to this transformation as an 'adapter,' as it is applied after the output of the embedding model.
+
+## RAG Use Case
+
+Consider a scenario where you have a large corpus of text, and you want to build a Q&A system on that corpus. The initial step involves splitting the text corpus into chunks, converting these chunks into embeddings, and storing them in a vector database.
+
+When a user makes a query, the goal is to retrieve text chunks from the vector database that are relevant to the query. Vector databases utilize Approximate Nearest Neighbors (ANN) algorithms, such as HNSW, to fetch approximate nearest neighbors to the query embedding.
+
+Instead of performing an ANN search with the original query, you perform the search with the transformed query (transformed using the trained adapter model). The results are significantly better because the transformed query embeddings are intended to be closer to the relevant text chunks.
+
+
+# 📄License
+This project is licensed under the MIT License.
+
+# 🛠️ Contributions
+Contributions are welcome! Feel free to open an issue or submit a pull request.
+
+# 📬 Contact
+If you have any questions, feel free to reach out:
+Email: pavankumarchowdary35@gmail.com
+GitHub: pavankumarchowdary35
+
+**🔔 Note:**
+
+To generate a synthetic dataset from the user-provided training files, you need to configure an LLM instance.
+
+### 🌐 Using OpenAI
+
+If you want to use the OpenAI instance, please set your OpenAI API key:
+
+```python
+import os
+os.environ["OPENAI_API_KEY"] = "your-openai-api-key"
+```
+
+If you want to use Azure OpenAI, set the following variables
+```python
+import os
+os.environ["LLM_TYPE"] = "azure"
+os.environ["AZURE_OPENAI_ENGINE"] = "gpt4"
+os.environ["AZURE_OPENAI_ENDPOINT"] = "https://your-azure-endpoint.com"
+os.environ["AZURE_OPENAI_API_KEY"] = "your-azure-api-key"
+os.environ["AZURE_OPENAI_API_VERSION"] = "Version"
+```
