@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: ion-client
+Version: 1.0.0
+Summary: Aruba Instant On client
+License: MIT
+Author: Maxime Mouchet
+Author-email: max@maxmouchet.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: httpx (>=0.27.0,<0.28.0)
+Description-Content-Type: text/markdown
+
+# ion-client
+[![Tests](https://img.shields.io/github/actions/workflow/status/maxmouchet/ion-client/tests.yml?logo=github)](https://github.com/maxmouchet/ion-client/actions/workflows/tests.yml)
+[![PyPI](https://img.shields.io/pypi/v/ion-client?logo=pypi&logoColor=white)](https://pypi.org/project/ion-client/)
+
+Simple Aruba Instant On client. Handles re-authentication and 2FA with one-time passwords.
+
+## Installation
+
+```bash
+pip install ion-client
+```
+
+## Usage
+
+```python
+from ion_client import Client
+
+# Omit `otp` to login without 2FA
+client = Client("user@example.org", "password", "otp")
+
+sites = client.json("/sites")
+# {"elements": [{'kind': 'site', 'id': '...', 'name': '...', ...}]}
+
+client.json(f"/sites/{sites[0]['id']}/clientSummary")
+# {"elements": [{'kind': 'wirelessClientSummary', 'id': '...', 'name': '...', ...}]}
+```
+
