@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: GitlabBot
+Version: 0.1.0
+Summary: 
+Author: Alexsaphir
+Author-email: git@alexsaphir.com
+Requires-Python: >=3.10
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: flux-local (>=5.5.1,<6.0.0)
+Requires-Dist: loguru (>=0.7.2,<0.8.0)
+Requires-Dist: pydantic (>=2.8.2,<3.0.0)
+Requires-Dist: pydantic-settings (>=2.4.0,<3.0.0)
+Requires-Dist: python-gitlab (>=4.9.0,<5.0.0)
+Description-Content-Type: text/markdown
+
+# GitlabBot
+
+## Flux-local
+
+```shell
+DIFF="dyff between --omit-header --ignore-order-changes -o gitlab" \
+        flux-local diff hr -A \
+            --path cluster \
+            --branch-orig main \
+            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart" \
+            --output-file hr.diff
+```
+
+```shell
+DIFF="dyff between --omit-header --ignore-order-changes -o gitlab" \
+        flux-local diff ks -A \
+            --path cluster \
+            --branch-orig main \
+            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart" \
+            --output-file ks.diff
+```
