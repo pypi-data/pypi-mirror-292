@@ -1,0 +1,1 @@
+from .ezusergen import generate
