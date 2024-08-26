@@ -1,0 +1,28 @@
+<div class="form-group">
+    <div class="col-sm-4"><label>{{field.label}}</label></div>
+    <div class="col-sm-8">
+        {% if date_picker %}
+        <div class='input-group date wide'>
+            <input name="{{field.full_name}}" type='text' class="form-control" value="{{field.value_as_str}}"/>
+            <span class="input-group-addon clickable">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+        <script>
+            $('#{{field.full_name}}').datetimepicker({
+                locale: '{{date_picker_locale}}',
+                format: '{{date_picker_format}}'
+            });
+        </script>
+        {% else %}
+        <input name="{{field.full_name}}"
+               class="form-control"
+               type="text"
+               value="{{field.value_as_str}}"
+               {% if field.disabled %}disabled{% endif %}/>
+        {% endif %}
+        {% for error in field.errors %}
+        <div class="red">{{ error }}</div>
+        {% endfor %}
+    </div>
+</div>
