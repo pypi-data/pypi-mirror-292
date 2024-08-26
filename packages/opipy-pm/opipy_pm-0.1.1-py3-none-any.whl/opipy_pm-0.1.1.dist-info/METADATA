@@ -1,0 +1,85 @@
+Metadata-Version: 2.1
+Name: opipy_pm
+Version: 0.1.1
+Summary: OPI Solutions Python package for Predictive Maintenance
+Author-email: "Daniel E. Diaz Almeida" <daniel.diazalmeida@opi-solutions.com>
+License: MIT License
+        
+        Copyright (c) 2024 OPI Solutions
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/OPISolutions/opipy_pm
+Project-URL: Issues, https://github.com/OPISolutions/opipy_pm/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.26.4
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: matplotlib>=3.9.1
+Requires-Dist: seaborn>=0.13.2
+Requires-Dist: shap>=0.46.0
+Requires-Dist: scikit-learn>=1.5.1
+Requires-Dist: tensorflow>=2.16.1
+Requires-Dist: altair>=5.4.0
+Requires-Dist: torch>=2.3.1
+Requires-Dist: xgboost>=2.1.0
+
+![ICON_OPI_LOGO_BLANCO_Horizontal.png](ICON_OPI_LOGO_BLANCO_Horizontal.png)
+
+# OPI Solutions: Predictive Maintenance 
+
+## About
+
+### How to install
+
+pip install --upgrade pip
+
+pip install opipy-pm==0.1.0
+
+## Examples
+
+### Binary Classifier Training
+
+```{python}
+# Import classifier from Models package
+from opipy_pm.Models.nn.Torch.Classifier import BinaryClassifier
+from opipy_pm.Models.nn.Torch.Classifier import training_loop, data_loader
+from opipy_pm.Models.nn.Torch.Classifier import pos_class_weight, data_splitter
+
+pos_weight = pos_class_weight(df=df, target="machine_failure")
+pred_cols: list[str] = ["torque", "tool_wear"]
+Xtrain, Ytrain, Xval, Yval = data_splitter(df=df,
+                                           pred_cols=pred_cols,
+                                           test_size=0.2,
+                                           holdout=True
+                                           )
+
+# instantiate the binary classification class
+dim: int = len(pred_cols)
+model_clf = BinaryClassifier(in_dim=dim)
+model_clf._init_weights_()
+
+train_loader, val_loader = data_loader(Xtrain, Ytrain, Xval, Yval)
+epochs: int = 100
+training_loop(model_clf, train_loader, val_loader, pos_weight, epochs)
+```
