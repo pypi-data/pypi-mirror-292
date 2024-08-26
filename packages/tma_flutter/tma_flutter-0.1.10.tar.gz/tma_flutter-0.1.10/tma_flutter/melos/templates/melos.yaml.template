@@ -1,0 +1,24 @@
+name: {{project_snake}}
+
+packages:
+  - presentation/**
+  - domain/**
+  - core/**
+  - shared/**
+
+command:
+  bootstrap:
+    environment:
+      sdk: ^3.5.0
+      flutter: ">=1.17.0"
+
+scripts:
+  test_all:
+    # Only run the test command when the package has a test directory
+    run: flutter test
+    exec:
+      concurrency: 1
+    packageFilters:
+      flutter: true
+      dirExists: test
+    description: Run `flutter test` in all targets

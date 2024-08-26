@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "tma_flutter"
+version = "0.1.10"
+description = ""
+authors = ["chminii <chminipark@gmail.com>"]
+readme = "README.md"
+
+
+[tool.poetry.scripts]
+tma_flutter = "tma_flutter.main:app"
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+typer = {extras = ["all"], version = "^0.12.4"}
+jinja2 = "^3.1.4"
+pyyaml = "^6.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
