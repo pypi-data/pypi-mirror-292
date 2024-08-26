@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title|default("bored charts") }}</title>
+    <script
+      src="{{ url_for("static", path="plotlyjs.min.js") }}"
+      charset="utf-8"
+    ></script>
+    <script src="{{ url_for("static", path="tailwind.min.js") }}"></script>
+    <script src="{{ url_for("static", path="htmx-2.0.1.min.js") }}"></script>
+    <script src="{{ url_for("static", path="htmx-response-targets-2.0.1.min.js") }}"></script>
+    {# TODO: don't use CDN #}
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    {# end TODO #}
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {},
+            fontFamily: {},
+            spacing: {
+              // continues from tailwindcss defaults
+              112: "28rem", // 448px
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer utilities {
+        @media print {
+          .prose h2,
+          .prose h3,
+          .prose h4 {
+            page-break-after: avoid;
+          }
+
+          .prose > * {
+            page-break-inside: avoid;
+          }
+        }
+        /* plotly responsive adjustments */
+        figure.plotly-container > div {
+          @apply h-full w-full;
+        }
+        /* end plotly responsive adjustments */
+      }
+    </style>
+  </head>
+  <body hx-boost="true" class="flex min-h-screen flex-col">
+    <header class="container flex-none self-center">
+      <h1 class="pb-6 pt-2 text-4xl font-bold">
+        <a href="{{ url_for("index") }}">{{ title }}</a>
+      </h1>
+    </header>
+    <main class="grow">{% block main %}{% endblock %}</main>
+    <footer class="container flex-none self-center py-4">
+      <a
+        href="https://www.github.com/oliverlambson/bored-charts"
+        target="_blank"
+        class="group flex"
+      >
+        <img
+          src="{{ url_for("static", path="github-mark.min.svg") }}"
+          alt="GitHub"
+          class="h-6"
+        />
+        <span
+          class="pl-2 underline underline-offset-2 group-hover:underline-offset-4"
+          >view it on GitHub</span
+        >
+      </a>
+    </footer>
+  </body>
+</html>
