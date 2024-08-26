@@ -1,0 +1,131 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "greenland-base"
+dynamic = ["version"]
+description = 'Basic types and algorithms for greenland'
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "GPL-3.0-or-later"}
+keywords = []
+author  = {text = "M E Leypold"}
+authors = [
+   { name = "M E Leypold" },
+   { name = "M E Leypold", email = "pythonista-4sda212@m-e-leypold.de"}
+]
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+# Note: Cannot support 3.8, currently, because functools.totalordring
+# does not work on metaclasses. See comment in
+# src/greenland/base/enums.py.
+
+dependencies = ['docopt-ng', 'packaging']
+
+[project.urls]
+Homepage = "https://codeberg.org/m-e-leypold/greenland-base"
+Documentation = "https://codeberg.org/m-e-leypold/greenland-base#readme"
+Issues = "https://codeberg.org/m-e-leypold/greenland-base/issues"
+Source = "https://codeberg.org/m-e-leypold/greenland-base"
+
+[project.scripts]
+# greenland-base = "greenland.base.bin.greenland_base:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/greenland"]
+
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+  "/docs",
+  "*~",
+  "__pycache__",
+  "/.coverage",
+  "/.gitignore"
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/greenland/base/__version__.py"
+template = """
+version = {version!r}
+version_tuple = {version_tuple!r}
+"""
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.12", "3.11", "3.10", "3.9", "pypy3.10", "pypy3.9"]
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0"
+]
+
+[tool.hatch.envs.types.scripts]
+check = "MYPYPATH=src mypy --namespace-packages --explicit-package-bases --install-types --non-interactive {args:src/greenland/base tests}"
+
+[tool.hatch.envs.style]
+extra-dependencies = [
+  "flake8"
+]
+
+[tool.hatch.envs.style.scripts]
+check = "flake8 {env:FLAKE8_ARGS:} {args:src/greenland/base tests}"
+
+[tool.hatch.envs.hatch-test.scripts]
+run = "pytest{env:HATCH_TEST_ARGS:} --json-report --json-report-file='.build/tests/{env:HATCH_ENV_ACTIVE:default}.results.json' {args}"
+run-cov = "coverage run -m pytest{env:HATCH_TEST_ARGS:} {args}"
+cov-combine = "coverage combine"
+cov-report = "coverage report"
+
+# TODO: Also squirrel away the coverage files + combine them
+
+[tool.hatch.envs.hatch-test]
+# default-args = ["tests"]
+# extra-args   = ["--json-report", "--json-report-file={env:HATCH_ENV_ACTIVE:default}.json"]
+extra-dependencies = [
+  "pytest-json-report",
+  # "pyfakefs",
+  # "pytest-asyncio",
+  # "pytest-benchmark",
+  # "pytest-memray",
+  # "pytest-playwright",
+  # "pytest-print",
+]
+
+
+[tool.coverage.run]
+source_pkgs = ["greenland.base", "tests"]
+branch = true
+parallel = true
+
+[tool.coverage.paths]
+greenland_base = ["src/greenland/base", "*/greenland-base/src/greenland/base"]
+tests = ["tests", "*/greenland-base/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+
+[tool.pytest.ini_options]
+markers = [
+    "slow:  marks tests as slow (deselect with '-m \"not slow\"')",
+    "smoke: marks tests as fast smoke tests (select with '-m \"smoke\"')",
+]
