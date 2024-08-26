@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "pheflux"
+version = "0.1.7"
+description = "Pheflux computational implementation"
+authors = ["Marcelo Rivas Astroza"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytest = "^8.2.2"
+ujson = "^5.10.0"
+polars = "1.2.1"
+cobra = "^0.29.0"
+casadi = "^3.6.5"
+numpy = "^2.0.0"
+pyyaml = "^6.0.1"
+typer = "^0.12.3"
+pydantic = "^2.8.2"
+pandas = "^2.2.2"
+ply = "^3.11"
+ipython = "^8.26.0"
+jupyterlab = "^4.2.4"
+gene-rule-parser = "0.1.1"
+
+[tool.poetry.dev-dependencies]
+gene-rule-parser = {path = "../gene_rule_parser", develop=true}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
