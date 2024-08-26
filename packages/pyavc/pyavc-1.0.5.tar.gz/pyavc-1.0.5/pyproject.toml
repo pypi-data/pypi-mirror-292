@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyavc"
+version = "1.0.5"
+description = "A command line utility and library for converting DOCX and TXT files to Avid Script Files (.avc)"
+authors = [
+    { name="Lawson Tanner", email="pyavc@lawsonia.cc" }
+]
+readme = "README.md"
+requires-python = ">=3.6"
+license = { text = "MIT License" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "python-docx>=0.8.10"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/lawson-tanner/pyavc"
+
+[project.scripts]
+pyavc = "src.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+include-package-data = true
