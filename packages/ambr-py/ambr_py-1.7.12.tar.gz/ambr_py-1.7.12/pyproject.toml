@@ -1,0 +1,93 @@
+[project]
+name = "ambr-py"
+requires-python = ">=3.11"
+
+[tool.poetry]
+authors = ["seriaati <seria.ati@gmail.com>"]
+description = "API wrapper for ambr.top written in Python"
+documentation = "https://github.com/seriaati/ambr/wiki"
+license = "GPL-3.0"
+name = "ambr-py"
+packages = [{include = "ambr"}]
+readme = "README.md"
+repository = "https://github.com/seriaati/ambr"
+version = "1.7.12"
+
+[tool.poetry.dependencies]
+aiohttp = "^3.8.6"
+aiohttp-client-cache = {extras = ["sqlite"], version = "^0.11.0"}
+pydantic = "^2.4.2"
+python = "^3.11"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.6.2"
+pytest = "^8.0.0"
+pytest-asyncio = "^0.24.0"
+ruff = "^0.6.0"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+ignore = [
+  "E501",
+  "ANN401",
+  "ANN101",
+  "ANN102",
+  "ANN003",
+  "PLR0913",
+  "PLR2004",
+  "PLR0917",
+  "PLR6301",
+  "ANN002",
+]
+preview = true
+select = [
+  "E",
+  "W",
+  "C90",
+  "F",
+  "UP",
+  "B",
+  "SIM",
+  "I",
+  "N",
+  "TCH",
+  "ANN",
+  "ASYNC",
+  "A",
+  "C4",
+  "EM",
+  "FA",
+  "ICN",
+  "G",
+  "PIE",
+  "T20",
+  "ARG",
+  "ERA",
+  "LOG",
+  "PL",
+  "TRY",
+  "RUF",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["F403", "F401"]
+"**/client.py" = ["PLR0904", "A002"]
+"**/models/*.py" = ["N805"]
+"**/tests/*.py" = ["ANN001"]
+"playground.*.py" = ["ALL"]
+
+[tool.ruff.lint.flake8-type-checking]
+quote-annotations = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
