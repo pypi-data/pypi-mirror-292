@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: aigs
+Version: 0.0.1
+Summary: 
+Author: Noah Syrkis
+Author-email: noah@syrkis.com
+Requires-Python: >=3.11,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: chex (>=0.1.86,<0.2.0)
+Requires-Dist: equinox (>=0.11.5,<0.12.0)
+Requires-Dist: evojax (>=0.2.17,<0.3.0)
+Requires-Dist: evosax (>=0.1.6,<0.2.0)
+Requires-Dist: gymnax (>=0.0.8,<0.0.9)
+Requires-Dist: jax (>=0.4.31,<0.5.0)
+Requires-Dist: jaxtyping (>=0.2.33,<0.3.0)
+Requires-Dist: jupyterlab (>=4.2.4,<5.0.0)
+Requires-Dist: numpy (<2.0.0)
+Requires-Dist: optax (>=0.2.3,<0.3.0)
+Requires-Dist: scikit-learn (>=1.5.1,<2.0.0)
+Requires-Dist: tensorflow (>=2.17.0,<3.0.0)
+Requires-Dist: tensorflow-datasets (>=4.9.6,<5.0.0)
+Description-Content-Type: text/markdown
+
+# Artificial Intelligence for Games and Simulations
+
+In this course we use Python 3.11. Running `pip install aigs`
+in a clean Python 3.11 virtual environment should install all dependencies.
+We are assuming that you have a basic understanding of Python and programming.
+
+`labs/` contains exercises for the course, which you should do.
+Being able to do the contents of `labs/` is a prerequisite
+for being able making a successful final project.
+
+I recommend cloning this repository, and making a folder `my/`
+where you can put your own code (I will be updating this repository).
+
+## Labs
+
+1. [Math](labs/math.md)
+2. Neural Networks ...
+3. ...
+
+### Core concept scripts
+
+- `la.py` contains code for linear algebra exercises.
+- `o.py` contains code for optimization exercises.
+- `nn.py` contains code for neural network exercises.
+- `rl.py` contains code for reinforcement learning exercises.
+- `mcts.py` contains code for Monte Carlo Tree Search exercises.
+
+### Advanced concept scripts
+
+- `ne.py` contains code for natural evolution exercises.
+- `ea.py` contains code for evolutionary algorithms exercises.
+- `ma.py` contains code for multi-agent exercises.
+- `vae.py` contains code for variational autoencoder exercises.
+- `pcg.py` contains code for procedural content generation exercises.
+
