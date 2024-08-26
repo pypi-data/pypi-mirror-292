@@ -1,0 +1,92 @@
+Metadata-Version: 2.1
+Name: pypassbolt-api
+Version: 0.0.4
+Summary: Python library for Passbolt, an open-source manager for teams
+Home-page: https://github.com/mjavint/pypassbolt_api
+Author: Manuel Vinent Guilarte
+Author-email: mjavint@gmail.com
+License: MIT
+Project-URL: Documentation, https://github.com/mjavint/pypassbolt_api/blob/main/README.md
+Project-URL: Source, https://github.com/mjavint/pypassbolt_api
+Project-URL: Tracker, https://github.com/mjavint/pypassbolt_api/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown; charset=UTF-8
+Requires-Dist: httpx==0.26.0
+Requires-Dist: PGPy==0.6.0
+Requires-Dist: python-gnupg==0.5.2
+Provides-Extra: test
+Requires-Dist: pytest>=6.2.2; extra == "test"
+Requires-Dist: pycodestyle; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Provides-Extra: all
+Requires-Dist: pytest>=6.2.2; extra == "all"
+Requires-Dist: pycodestyle; extra == "all"
+Requires-Dist: pytest-cov; extra == "all"
+
+# pypassbolt-api
+
+## About
+
+Python library for Passbolt API based on [httpx](https://www.python-httpx.org/) and [PGPy](https://pgpy.readthedocs.io/en/latest/).
+
+You can also use [python-gnupg](https://docs.red-dove.com/python-gnupg/) if needed but it is not the default.
+
+## How to install
+
+```sh
+python -m pip install pypassbolt-api
+```
+
+## How to use
+
+### config.json configuration file
+
+Basically, create a `config.json` file containing needed configuration. You will find samples:
+
+* For PGPy (default): [config.json.PGPy.sample](https://gitlab.com/AnatomicJC/py-passbolt/-/blob/main/config.json.PGPy.sample)
+* For python-gnupg: [config.json.gnupg.sample](https://gitlab.com/AnatomicJC/py-passbolt/-/blob/main/config.json.gnupg.sample)
+
+Then have a look at [https://gitlab.com/AnatomicJC/py-passbolt/-/blob/main/example.py](example.py) python script.
+
+### Environment variables
+
+Mandatory:
+
+* PASSBOLT_BASE_URL: Your passbolt URL
+
+For PGPy:
+
+* PASSBOLT_PRIVATE_KEY: Your passbolt private key in one-line format (See below about how to format)
+* PASSBOLT_PASSPHRASE: Your passbolt passphrase
+
+For python-gnupg:
+
+* PASSBOLT_GPG_BINARY (Optional): path to your gpg binary, default to "gpg"
+* PASSBOLT_GPG_LIBRARY: Set this to gnupg, otherwise it will be the default "PGPy"
+* PASSBOLT_FINGERPRINT: The OpenPGP key fingerprint to use
+
+## How to set OpenPGP key in config.json or environment variables
+
+### Linux:
+
+```sh
+sed -z 's/\n/\\n/g' passbolt_private.txt
+```
+
+### MacOS
+
+Install `gnu-sed` with brew:
+
+```sh
+brew install gnu-sed
+```
+
+Use gsed instead of sed:
+
+```sh
+gsed -z 's/\n/\\n/g' passbolt_private.txt
+```
+
+>Note: Almost all the source code has been obtained from the existing py-passbolt library, with some extra functions. [py-passbolt](https://github.com/passbolt/lab-passbolt-py.git)
