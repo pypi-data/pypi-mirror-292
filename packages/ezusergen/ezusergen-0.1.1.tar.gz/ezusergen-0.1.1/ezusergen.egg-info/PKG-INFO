@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: ezusergen
+Version: 0.1.1
+Summary: A simple username generator that combines random words with numbers
+Home-page: https://github.com/Ondry4K/ezusergen
+Author: Ondry
+Author-email: ondrygfx@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+
+# Usergen
+
+`ezusergen` is a simple Python package that generates usernames by combining random words and a random number.
+
+## Installation
+
+```bash
+pip install ezusergen
+```
+
+```python
+#Usage
+import ezusergen as gen
+
+username = gen.generate(7) # 7 = word length, default (if left blank) = 7
+print(username)  # Example: SeedmanWelding532
+```
