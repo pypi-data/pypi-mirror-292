@@ -1,0 +1,82 @@
+Metadata-Version: 2.1
+Name: transforms84
+Version: 0.1.1
+Summary: Simple coordinate transformations with helper functions
+Author-email: Daniel Stoops <google@gmail.com>
+Project-URL: Homepage, https://github.com/Stoops-ML/transforms84
+Project-URL: Repository, https://github.com/Stoops-ML/transforms84
+Project-URL: Issues, https://github.com/Stoops-ML/transforms84/issues
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Provides-Extra: tests
+Requires-Dist: ruff>=0.5.7; extra == "tests"
+Requires-Dist: pytest>=8.3.2; extra == "tests"
+Requires-Dist: pytest-cov>=5.0.0; extra == "tests"
+Requires-Dist: mypy>=1.11.1; extra == "tests"
+Requires-Dist: tox>=4.17.1; extra == "tests"
+Requires-Dist: wheel>=0.44.0; extra == "tests"
+Requires-Dist: setuptools>=72.2.0; extra == "tests"
+Provides-Extra: dev
+Requires-Dist: ruff>=0.5.7; extra == "dev"
+Requires-Dist: pytest>=8.3.2; extra == "dev"
+Requires-Dist: pytest-cov>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=1.11.1; extra == "dev"
+Requires-Dist: tox>=4.17.1; extra == "dev"
+Requires-Dist: wheel>=0.44.0; extra == "dev"
+Requires-Dist: setuptools>=72.2.0; extra == "dev"
+Requires-Dist: pre-commit>=3.8.0; extra == "dev"
+Requires-Dist: build>=1.2.1; extra == "dev"
+Provides-Extra: examples
+Requires-Dist: jupyterlab>=4.2.4; extra == "examples"
+Requires-Dist: shapely>=2.0.5; extra == "examples"
+Requires-Dist: czml3>=1.0.2; extra == "examples"
+
+# transforms84
+![PyPI - Version](https://img.shields.io/pypi/v/transforms84)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/transforms84)
+![Codecov](https://img.shields.io/codecov/c/gh/Stoops-ML/transforms84)
+![PyPI - License](https://img.shields.io/pypi/l/transforms84)
+
+Small geographic coordinate systems Python library with a few additional helper functions.
+
+## Installation
+`pip install transforms84`
+
+## Examples
+See the Jupyter notebooks in [examples](examples) to see how to use the transform84. Run `pip install transforms84[examples]` to run the examples locally.
+
+## Operations
+### Transformations
+The following transformations have been implemented:
+- geodetic &rarr; ECEF
+- ECEF &rarr; geodetic
+- ECEF &rarr; ENU
+- ENU &rarr; ECEF
+- ENU &rarr; AER
+- AER &rarr; ENU
+
+### Distances
+The following distance formulae have been implemented:
+- Haversine
+
+### Helpers
+The following functions have been implemented:
+- Angular difference (smallest and largest)
+- [rad, rad, X] &rarr; [deg, deg, X]
+- [deg, deg, X] &rarr; [rad, rad, X]
+
+## Contributing
+PRs are always welcome and appreciated!
