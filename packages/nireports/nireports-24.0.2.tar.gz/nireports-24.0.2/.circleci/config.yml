@@ -1,0 +1,90 @@
+version: 2.1
+orbs:
+  docker: circleci/docker@2.4.0
+  codecov: codecov/codecov@3.3.0
+
+jobs:
+  test_pytest:
+    docker:
+      - image: cimg/python:3.12
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PAT
+
+    environment:
+      - TEST_DIR: /tmp/tests
+      - TEMPLATEFLOW_HOME: /tmp/templateflow
+    steps:
+      - checkout
+      - run:
+          name: Install package
+          command: pip install .[test]
+
+      - restore_cache:
+          keys:
+            - apt-v0
+          paths:
+            - /var/lib/apt
+
+      - run:
+          name: Install texlive
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends dvipng texlive texlive-latex-extra cm-super
+
+      - save_cache:
+         key: apt-v0
+         paths:
+            - /var/lib/apt
+
+      - restore_cache:
+          keys:
+            - tf-v0
+          paths:
+            - /tmp/templateflow
+
+      - run:
+          name: Get some templates
+          command: |
+            python -c "from templateflow.api import get; get('Fischer344', desc=None, suffix='T2w')"
+            python -c "from templateflow.api import get; get('MNI152NLin6Asym', resolution=2, desc='LR', suffix='T1w')"
+
+      - save_cache:
+         key: tf-v0
+         paths:
+            - /tmp/templateflow
+
+      - run:
+          name: Run unit tests
+          no_output_timeout: 2h
+          command: |
+            export TEST_OUTPUT_DIR=${TEST_DIR}/output
+            mkdir -p ${TEST_OUTPUT_DIR} ${TEST_DIR}/summary ${TEST_DIR}/coverage
+            python -m pytest -n 6 --junit-xml=${TEST_DIR}/summary/pytest.xml \
+                   --cov nireports --cov-report xml:${TEST_DIR}/coverage/unittests.xml \
+                   nireports/
+
+      - store_artifacts:
+          path: /tmp/tests/output
+
+      - store_test_results:
+          path: /tmp/tests/summary/
+
+      - codecov/upload:
+          file: /tmp/tests/coverage/unittests.xml
+          flags: unittests
+
+
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - test_pytest:
+          context:
+            - nipreps-common
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore:
+                - /docs?\/.*/
