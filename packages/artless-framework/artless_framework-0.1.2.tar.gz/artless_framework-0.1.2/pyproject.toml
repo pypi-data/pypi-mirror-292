@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools==73.0.1"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["artless"]
+
+[tool.setuptools.dynamic]
+version = {attr = "artless.__version__"}
+
+[tool.setuptools.package-data]
+artless_template = ["py.typed"]
+
+[project]
+name = "artless-framework"
+dynamic = ["version"]
+authors = [
+  {name = "Peter Bro", email = "p3t3rbr0@gmail.com"},
+]
+description = "Artless and minimalistic web framework without dependencies, working over WSGI."
+keywords = ["artless", "minimalistic", "web", "framework"]
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Typing :: Typed"
+]
+
+[project.urls]
+Homepage = "https://github.com/p3t3rbr0/py3-artless-framework"
+Documentation = "https://github.com/p3t3rbr0/py3-artless-framework/blob/master/README.md"
+Repository = "https://github.com/p3t3rbr0/py3-artless-framework.git"
+Issues = "https://github.com/p3t3rbr0/py3-artless-framework/issues"
+Changelog = "https://github.com/p3t3rbr0/py3-artless-framework/blob/master/CHANGELOG.md"
+
+[project.optional-dependencies]
+build = ["build==1.2.1", "twine==5.1.1"]
+dev = [
+    "coverage==7.6.1",
+    "mypy==1.11.1",
+    "isort==5.13.2",
+    "flake8==7.1.1",
+    "black==24.8.0",
+    "pydocstyle==6.3.0",
+]
+
+[tool.mypy]
+exclude = ["tests"]
+ignore_missing_imports = true
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+
+[tool.pydocstyle]
+inherit = false
+convention = "google"
+match-dir = "^(?!tests).+$"
+add-ignore = "D105"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pass",
+    "\\.\\.\\.",
+    "def __getattr__",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["artless"]
+
+[tool.coverage.html]
+directory = "coverage_report"
