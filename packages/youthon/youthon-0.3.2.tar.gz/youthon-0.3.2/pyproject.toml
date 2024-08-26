@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "youthon"
+version = "0.3.2"
+description = "A lightweight YouTube data scraper."
+authors = ["anekobtw"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/anekobtw/youthon"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+beautifulsoup4 = "4.12.3"
+
+[tool.poetry.group.dev.dependencies]
+beautifulsoup4 = "4.12.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
