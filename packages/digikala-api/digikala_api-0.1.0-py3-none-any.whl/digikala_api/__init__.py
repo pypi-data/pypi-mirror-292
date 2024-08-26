@@ -1,0 +1,1 @@
+from digikala_api.request import product_detail
