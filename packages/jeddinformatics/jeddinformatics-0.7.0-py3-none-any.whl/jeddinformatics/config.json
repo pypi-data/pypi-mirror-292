@@ -1,0 +1,27 @@
+{
+    "$schema": "./schema.json",
+    "mappings": {
+        "normal": "NC",
+        "Normal": "NC",
+        "OV": "OV",
+        "UCEC": "UCEC",
+        "Ovarian Cancer": "OV",
+        "Uterine Cancer": "UCEC",
+        "Some title": "Translated title",
+        "log2(TPM)": "log<sub>2</sub>(TPM)"
+    },
+    "colors": {
+        "NC": "blue",
+        "OV": "green",
+        "UCEC": "red",
+        "box": "black",
+        "plot_background_color": "white",
+        "paper_background_color": "white"
+    },
+    "precedence": ["NC", "normal", "Normal"],
+    "jitter": 0.5,
+    "line_width": 1.5,
+    "point_size": 6,
+    "plot_height": 540,
+    "plot_width": 960
+}

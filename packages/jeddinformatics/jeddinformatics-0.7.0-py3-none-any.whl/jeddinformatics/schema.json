@@ -1,0 +1,54 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "$schema": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "mappings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "colors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "precedence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "jitter":{
+          "type": "number"
+        },
+        "point_size":{
+          "type": "number"
+        },
+        "line_width":{
+          "type": "number"
+        },
+        "plot_width":{
+          "type": "number"
+        },
+        "plot_height":{
+          "type": "number"
+        }
+      },
+      "required": ["$schema", 
+        "mappings", 
+        "colors", 
+        "precedence", 
+        "jitter", 
+        "point_size", 
+        "line_width",
+        "plot_height",
+        "plot_width"
+      ],
+      "additionalProperties": false
+}
