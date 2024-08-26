@@ -1,0 +1,66 @@
+# ignore `.env` files. We maintain `.env.example` files that must contain the required keys that are filled with specific values
+*.env
+*service_account.json
+
+# keep the datasets directory but ignore any downloaded data
+data/*
+!data/datasets
+data/datasets/*
+
+# ignore notebooks
+*.ipynb
+
+# ignore terraform artifacts
+*.tfstate
+*.tfstate.backup
+*.tfplan
+.terraform
+.terraform.lock.hcl
+
+# ignore python artifacts
+*.pyc
+*.pyo
+*.venv
+*.egg-info
+**/build/*
+dist/
+*.whl
+*.egg
+__pycache__/
+
+# ignore pytorch artifacts
+*.pth
+*.pth.tar
+*.pt
+
+# ignore data files
+*.csv
+*.json
+*.pkl
+*.old
+
+# keep the env files for docker compose
+!server/.env
+!services/.env
+!.env
+aq-dev/**/.env
+aq-dev/src/go_scratch/
+!aq-dev/notebooks/*
+
+# also ensure we keep the test data and test models for now
+!aq-dev/test_data/**
+!aq-dev/test_models/**
+!aq-dev/notebooks/statistical_baselines/*
+!aq-dev/notebooks/continual_learning/*
+!aq-dev/notebooks/inference/*
+!aq-dev/notebooks/torch/*
+!aq-dev/notebooks/lightgbm/*
+aq-dev/data/**
+aq-dev/data/*
+aq-dev/models/**
+aq-dev/models/*
+!aq-dev/src/aq-frontend/*
+aq-dev/src/aq-frontend/node_modules
+aq-dev/src/aq-frontend/.svelte-kit/**
+aq-dev/src/aq-frontend/.svelte-kit/*
+*.env
