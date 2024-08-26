@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: django-model-viewer
+Version: 1.0.1
+Summary: Will be usefull
+Home-page: UNKNOWN
+Author: Mikołaj Łysakowski
+Author-email: mikolaj.lysakowski01@gmail.com
+License: MIT License
+Description: 
+        # django-model-viewer
+        
+        An application that facilitates identification and operation on models. 
+        
+        It searches for all available models in the project and allows you to select and view details about them by holding the mouse on the parameter of interest. 
+        
+        After selecting the path between models through relations, after clicking CREATE we will get a path that allows you to get to the last model. 
+        
+        It is also possible to select a model and click on its name and it will take you to Visual Studio Code to the file and line of the given model.
+        
+        
+        To run:
+        
+        Installed apps: "django_model_viewer",
+        
+        Middleware: "django_model_viewer.middleware.AppendApplication"
+        
+        Urls: "path(`models-view/`, include(`django_model_viewer.urls`))"',
+        
+        Get into /models-view and use!
+            
+Platform: UNKNOWN
+Classifier: Framework :: Django
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
