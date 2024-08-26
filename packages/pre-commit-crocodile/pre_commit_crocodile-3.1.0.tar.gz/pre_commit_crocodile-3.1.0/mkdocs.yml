@@ -1,0 +1,120 @@
+# Build configurations
+strict: true
+
+# Build folders
+docs_dir: docs/.cache
+site_dir: public
+
+# Project information
+site_author: Adrian DC
+site_description: Git hooks intended for developers using pre-commit
+
+# Project repository
+repo_name: RadianDevCore/tools
+repo_url: https://gitlab.com/RadianDevCore/tools/pre-commit-crocodile
+edit_uri: edit/main/docs/
+
+# Pages information
+site_name: pre-commit-crocodile
+site_url: https://radiandevcore.gitlab.io/tools/pre-commit-crocodile
+
+# Project copyright
+copyright: Copyright &copy; 2024 - <a href="https://gitlab.com/AdrianDC">Adrian DC</a>
+
+# Additional configuration
+extra:
+  status:
+    new: Recently added
+    deprecated: Deprecated
+  social:
+    - icon: fontawesome/brands/gitlab
+      link: https://gitlab.com/AdrianDC/
+    - icon: fontawesome/brands/github
+      link: https://github.com/AdrianDC
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/user/adriandc/
+
+# Pages extensions
+markdown_extensions:
+  - md_in_html
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - toc:
+      toc_depth: 2
+
+# Pages navigation
+nav:
+  - Usage:
+      - ‣ pre-commit-crocodile: index.md
+  - Specifications:
+      - ‣ Commits: commits.md
+      - ‣ Hooks: hooks.md
+  - Configurations:
+      - ‣ commitizen: commitizen.md
+      - ‣ pre-commit: pre-commit.md
+  - CI/CD:
+      - ‣ Components: components.md
+  - Tools:
+      - ‣ Settings: settings.md
+  - About:
+      - ‣ Changelog: about/changelog.md
+      - ‣ License: about/license.md
+
+# Pages theme
+theme:
+  name: material
+  features:
+    # - content.action.edit
+    # - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.tooltips
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.instant.preview
+    # - navigation.path
+    # - navigation.prune
+    - navigation.sections
+    # - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    # - toc.integrate
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/link
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: blue grey
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: blue grey
+      toggle:
+        icon: material/toggle-switch-off
+        name: Switch to system preference
+  font:
+    text: Roboto
+    code: Roboto Mono
+  icon:
+    repo: fontawesome/brands/gitlab
