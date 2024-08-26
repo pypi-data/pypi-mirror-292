@@ -1,0 +1,22 @@
+---
+
+version: 2
+
+formats: all
+
+build:
+  os: "ubuntu-22.04"
+  tools:
+    python: "3.7"
+
+python:
+  install:
+  # - requirements: .docs-requirements.txt
+  # - method: pip
+  #   path: pip >= 19.0.3
+  - method: pip
+    path: .
+    extra_requirements:
+    - docs
+
+...
