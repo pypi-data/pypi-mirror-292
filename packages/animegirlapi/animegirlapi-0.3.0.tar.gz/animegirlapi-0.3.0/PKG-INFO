@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: animegirlapi
+Version: 0.3.0
+Summary: An API that can output anime girls, and is 100% manually verified
+Author: Alleexx
+Author-email: Alleexx129@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.25.1
+
+# Random Image Fetcher
+
+This Python module provides a function to fetch random images from an API based on specified tags and ratings. It supports filtering images by tags and ratings and allows for customization of the number of images requested.
+
+## Function: `get_random_image`
+
+### Description
+Fetches a random image from the API that matches the specified tag(s) and/or rating(s).
+
+### Parameters
+- `number` (int): The number of images to request. Default is `1`. Must be 100 or fewer.
+- `tag` (Union[str, tuple, list], optional): A tag or a list of tags to filter images. If `None`, no tag filtering is applied.
+- `rating` (Union[str, tuple, list], optional): A rating or a list of ratings to filter images. If `None`, no rating filtering is applied.
+- `ignore` (bool, optional): If `False` and not enough images are found, a warning is printed. If `True`, no warning is printed. Default is `False`.
+
+### Returns
+- A list of URLs for the requested number of images. Returns an empty list if no images are found.
+
+### Example Usage
+```python
+from your_module import get_random_image
+```
+
+# Fetch 5 random images with tag "yuri" and rating "safe"
+print(get_random_image(number=5, tag="yuri", rating="safe"))
+
+# Fetch 10 random images with tag "cute" without checking for rating
+print(get_random_image(number=10, tag="cute"))
+
+# Fetch 3 random images with rating "explicit" and ignore the warning if not enough images are found
+print(get_random_image(number=3, rating="explicit", ignore=True))
+
+# Error Handling
+Raises a ValueError if number exceeds 100.
+Prints a warning message if the number of images requested cannot be fulfilled and ignore is False.
+
+# Dependencies
+requests library: For making HTTP requests to the API.
+
+# Contact
+For additional support or to request more images with specific tags, you may contact _.lex0 on Discord.
+
+# License
+This project is licensed under the MIT License. See the terms of service & privacy policy located in the home page
+
+Feel free to modify the content based on your specific project needs or preferences.
