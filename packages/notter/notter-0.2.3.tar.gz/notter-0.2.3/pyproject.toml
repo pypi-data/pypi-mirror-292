@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools", "setuptools_scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "notter"
+version = "0.2.3"
+description = "A simple note taking tool for software projects."
+authors = [
+    {name = "Taylan Dogan", email = "taylandogan.nl@gmail.com"},
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["notes", "todos", "tracking", "index"]
+
+# Requirements
+dependencies = ["click", "pygments", "aiofiles"]
+
+[project.optional-dependencies]
+# TODO: Add minimum versions next to dev/test dependencies
+dev  = ["black", "flake8", "isort", "mypy", "coverage", "pytest", "pyinstaller", "types-aiofiles"]
+test = [ "coverage", "pytest"]
+
+[scripts]
+notter = "notter.cli:cli"
+
+[tool.black]
+line-length = 120
+target_version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+
+[tool.isort]
+combine_as_imports = true
+default_section = "THIRDPARTY"
+from_first = false
+include_trailing_comma = true
+length_sort = false
+multi_line_output = 3
+order_by_type = true
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+use_parentheses = true
+line_length = 120
+force_grid_wrap = 0
+
+[tool.coverage.paths]
+source = ["src"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+relative_files = true
+omit = [
+  "reports/*",
+	"*/tests/*",
+  "src/notter/constants.py",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''
