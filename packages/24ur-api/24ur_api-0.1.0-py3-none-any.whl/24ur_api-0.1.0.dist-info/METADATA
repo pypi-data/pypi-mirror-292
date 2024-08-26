@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: 24ur-api
+Version: 0.1.0
+Summary: Unofficial 24ur API
+Author-email: Amadej Kastelic <amadejkastelic7@gmail.com>
+Keywords: 24ur,api,scraper
+Requires-Python: ~=3.8
+License-File: LICENSE
+Requires-Dist: aiohttp <4
+Requires-Dist: beautifulsoup4 <5
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: flake ; extra == 'dev'
+Requires-Dist: packaging ; extra == 'dev'
+Provides-Extra: download
+Requires-Dist: m3u8downloader ==0.10.1 ; extra == 'download'
+Provides-Extra: lint
+Requires-Dist: flake8 >=7.1.1 ; extra == 'lint'
+Requires-Dist: black >=24.1.0 ; extra == 'lint'
+
