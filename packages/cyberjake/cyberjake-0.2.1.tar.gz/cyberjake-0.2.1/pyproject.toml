@@ -1,0 +1,64 @@
+[project]
+name = "cyberjake"
+dynamic = ["version"]
+authors = [
+    {name = "Cyb3r-Jak3", email = "git@cyberjake.xyz"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+description = "Common Python utilities for Cyb3r-Jak3 projects"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: Implementation :: CPython"
+]
+
+[project.urls]
+"changelog" = "https://github.com/Cyb3r-Jak3/common-python/blob/main/CHANGELOG.md"
+"issues" = "https://github.com/Cyb3r-Jak3/common-python/issues"
+repository = "https://github.com/Cyb3r-Jak3/common-python"
+
+
+[tool.poetry]
+name = "cyberjake"
+version = "0.2.1"
+description = "Common Python utilities for Cyb3r-Jak3 projects"
+authors = ["Cyb3r-Jak3"]
+packages = [
+    { include = "cyberjake" }
+]
+keywords= ["common", "cyb3rjak3"]
+readme = "README.md"
+license = "MPL-2.0"
+[tool.poetry.dependencies]
+python = ">=3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+bandit = "^1.7.9"
+coverage = "^7.5.4"
+flake8 = "^7.1.1"
+pylint = "^3.2.5"
+pytest = "^8.2.2"
+pytest-cov = "^5.0.0"
+discord-py = "^2.4.0"
+requests = "^2.32.3"
+packaging = "^24.1"
+ruff = "^0.6.2"
+
+
+[tool.poetry.group.docs.dependencies]
+sphinx-rtd-theme = "^2.0.0"
+sphinx = "7"
+
+[build-system]
+requires = ["poetry-core", "setuptools>=61.0"]
+build-backend = "poetry.core.masonry.api"
