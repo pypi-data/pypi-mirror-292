@@ -1,0 +1,39 @@
+Metadata-Version: 2.3
+Name: aq-geometric
+Version: 2024.8.25.2
+Summary: Geometric deep learning on air quality data.
+Project-URL: homepage, https://github.com/cdjellen/aq
+Project-URL: documentation, https://github.com/cdjellen/aq
+Author-email: Chris Jellen <cdjellen@gmail.com>
+License-File: LICENSE.md
+Keywords: deep-learning,earth-systems,geometric-deep-learning,onnx,pytorch
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.9
+Requires-Dist: aq-utilities
+Requires-Dist: h3
+Requires-Dist: h5py
+Requires-Dist: numpy==1.26.4
+Requires-Dist: pandas==1.5.3
+Requires-Dist: psycopg2-binary==2.9.9
+Requires-Dist: scipy
+Requires-Dist: sqlalchemy==2.0.23
+Requires-Dist: tqdm
+Provides-Extra: dev
+Requires-Dist: lightgbm; extra == 'dev'
+Requires-Dist: pyg-lib==0.3.1; extra == 'dev'
+Requires-Dist: torch-geometric==2.3.1; extra == 'dev'
+Requires-Dist: torch-scatter==2.1.2; extra == 'dev'
+Requires-Dist: torch-sparse==0.6.18; extra == 'dev'
+Requires-Dist: torch==2.0.1; extra == 'dev'
+Description-Content-Type: text/markdown
+
+## Overview
+
+This repository contains the code used for geometric deep learning on air-quality data. The code is based on the [PyTorch Geometric](https://pytorch-geometric.readthedocs.io/en/latest/) library.
+
+Generate build artifacts via ```python3 pip wheel --no-cache-dir --extra-index-url=https://download.pytorch.org/whl/cpu aq-geometric/ -w kubeflow/artifacts/wheels/aq-geometric/```
