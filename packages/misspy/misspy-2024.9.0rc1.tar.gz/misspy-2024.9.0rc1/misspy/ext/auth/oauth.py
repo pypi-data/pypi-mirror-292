@@ -1,0 +1,1 @@
+# とりあえず未実装。OAuthは:kitsune_dakara_wakannyai2:

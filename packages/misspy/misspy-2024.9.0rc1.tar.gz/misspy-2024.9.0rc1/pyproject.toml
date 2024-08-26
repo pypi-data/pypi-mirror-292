@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "misspy"
+version = "0.0.0"
+description = "Fast, asynchronous Misskey API framework"
+authors = ["sonyakun <owner@sonyakun.com>"]
+readme = "README.md"
+license = "MIT"
+
+homepage = "https://rewrite.misspy.xyz/"
+repository = "https://go.misspy.xyz/rewrite"
+documentation = "https://rewrite.misspy.xyz/docs/"
+
+keywords = ["misskey", "misskey-api", "misskey-bot", "misspy"]
+
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+packages = [
+    { include = "misspy" }
+]
+
+[tool.poetry-version-plugin]
+source = "git-tag"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+aiohttp = "^3.9.1"
+requests = "^2.31.0"
+websockets = "^12.0"
+tenacity = "^8.2.3"
+pydantic = "^2.6.3"
+mitypes = "^0.1.0"
+aiodns = { version="^3.1.1", optional = true }
+brotlicffi = { version="^1.1.0.0", optional = true }
+brotli = { version="^1.1.0", optional = true }
+charset-normalizer = { version="^3.3.2", optional = true }
+orjson = { version = "^3.9.15"}
+python-dateutil = "^2.9.0.post0"
+
+[tool.poetry.extras]
+speed = ["brotlicffi", "Brotli", "charset-normalizer", "aiodns"]
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+ruff = "*"
+mypy = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

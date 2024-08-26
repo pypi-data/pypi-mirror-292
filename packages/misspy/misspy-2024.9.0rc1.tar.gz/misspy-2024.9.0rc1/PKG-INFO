@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: misspy
+Version: 2024.9.0rc1
+Summary: Fast, asynchronous Misskey API framework
+Home-page: https://rewrite.misspy.xyz/
+License: MIT
+Keywords: misskey,misskey-api,misskey-bot,misspy
+Author: sonyakun
+Author-email: owner@sonyakun.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Provides-Extra: speed
+Requires-Dist: aiodns (>=3.1.1,<4.0.0) ; extra == "speed"
+Requires-Dist: aiohttp (>=3.9.1,<4.0.0)
+Requires-Dist: brotli (>=1.1.0,<2.0.0) ; extra == "speed"
+Requires-Dist: brotlicffi (>=1.1.0.0,<2.0.0.0) ; extra == "speed"
+Requires-Dist: charset-normalizer (>=3.3.2,<4.0.0) ; extra == "speed"
+Requires-Dist: mitypes (>=0.1.0,<0.2.0)
+Requires-Dist: orjson (>=3.9.15,<4.0.0)
+Requires-Dist: pydantic (>=2.6.3,<3.0.0)
+Requires-Dist: python-dateutil (>=2.9.0.post0,<3.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: tenacity (>=8.2.3,<9.0.0)
+Requires-Dist: websockets (>=12.0,<13.0)
+Project-URL: Documentation, https://rewrite.misspy.xyz/docs/
+Project-URL: Repository, https://go.misspy.xyz/rewrite
+Description-Content-Type: text/markdown
+
+# misspy
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+> [!WARNING]
+> It is in the development phase and very many features are missing. Do not use in a production environment.
+<!--Streaming is not available because misspy-rewrite has a bug related to [#xxx](https://github.com/misskey-dev/misskey/issues/xxx). issuesは準備中-->
+
+Fast, asynchronous misskey API framework.
+
+misspy (rewrite) is a framework for writing Misskey bots with Discord.py-like syntax.
+### Features✨
+- asynchronous
+- Fast
+- Automatic detection of Misskey version (can also be set manually)
+- Discord.py-like syntax
+
+### Install
+#### Latest Develop Release
+```
+$ pip install git+https://github.com/misspy-dev/misspy-rewrite.git
+```
+#### Latest Alpha Release
+```
+$ pip install misspy==2.0a4
+```
+#### Difference between Alpha release and Develop release
+Develop releases are always installed from the latest source code, whereas Alpha releases are taken from the latest PyPI release.
+
+### Tested Software
+- Misskey v13 onward (Unavailable endpoints are designed to send an error, so they are available in v10 or later Misskey versions and forks.)
+
+### example
+An example can be found in [example directory](/example).
+
+## Other
+
+### Supported Version
+misspy currently supports all versions of Python 3.8 and later.
+
+### Docs
+Documentation can be found at: [https://misspy.github.io/docs](#) (Currently under preparation.)
+
