@@ -1,0 +1,74 @@
+site_name: QIRT Documentation
+
+theme:
+  name: "material"
+  features:
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    # - toc.integrate
+    - navigation.prune
+    - navigation.indexes
+    - navigation.top
+  icon:
+    repo: fontawesome/brands/github
+
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [.]
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+  - attr_list
+  - md_in_html
+  - toc:
+      toc_depth: 3
+
+extra_javascript:
+  - javascripts/katex.js
+  - https://unpkg.com/katex@0/dist/katex.min.js
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+
+extra_css:
+  - https://unpkg.com/katex@0/dist/katex.min.css
+
+nav:
+  - Welcome to QIRT: index.md
+  - Tutorials:
+    - tutorials/index.md
+    - Setup: tutorials/setup.md
+    - Create a Basic Quantum State: tutorials/basic_create_state.md
+    - Create a Basic Quantum Circuit: tutorials/basic_create_circuit.md
+    - Applye the Quantum Circuit to the Quantum State: tutorials/apply_circuit.md
+    - Measure the Quantum State: tutorials/basic_measurement.md
+  - How-To Guides:
+    - how_to_guides/index.md
+    - Create Quantum States: how_to_guides/create_states.md
+    - Visualize Quantum States: how_to_guides/visualize_states.md
+    - Create Quantum Circuits: how_to_guides/create_circuits.md
+    - Visualize Quantum Measurements: how_to_guides/visualize_measurements.md
+    - Obtain Post-Measurement States: how_to_guides/post_measurement_states.md
+    - Customize Ket Notation: how_to_guides/customize_ket_notation.md
+  - Reference:
+    - reference/index.md
+    - QuantumState: reference/quantum_state.md
+    - QuantumCircuit: reference/quantum_circuit.md
+
+repo_url: https://github.com/Slope86/QIRT
+
+repo_name: Slope86/QIRT
+
+site_url: https://slope86.github.io/QIRT/
