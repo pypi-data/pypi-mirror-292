@@ -1,0 +1,22 @@
+trunk_cli_version: 1.22.3
+title: Check [[on-demand] [taplo:format:pyproject.toml:HEAD]]
+report:
+  - linter:
+      command: |
+        /home/andrei/.cache/trunk/tools/taplo/0.9.3-da898743a656b4d77ef39a424700305c/taplo format pyproject.toml
+      stdin_path: (none)
+      run_from: /tmp/trunk-1001/nFDQDS
+      timeout: 10m
+      rerun: (cd /tmp/trunk-1001/nFDQDS; env -i PATH=/home/andrei/.cache/trunk/tools/taplo/0.9.3-da898743a656b4d77ef39a424700305c:/home/andrei/.cache/trunk/tools/taplo/0.9.3-da898743a656b4d77ef39a424700305c HOME=/home/andrei /home/andrei/.cache/trunk/tools/taplo/0.9.3-da898743a656b4d77ef39a424700305c/taplo format pyproject.toml)
+      affects_cache:
+        []
+      direct_configs:
+        []
+      exit_status: exited
+      exit_code: 0
+      stdout: (none)
+      stderr: |
+         INFO taplo:format_files:collect_files: found files total=1 excluded=0 cwd="/tmp/trunk-1001/nFDQDS"
+
+    parser: |
+      (none)

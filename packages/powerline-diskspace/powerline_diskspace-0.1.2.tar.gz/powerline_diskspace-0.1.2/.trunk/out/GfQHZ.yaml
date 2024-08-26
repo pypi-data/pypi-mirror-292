@@ -1,0 +1,86 @@
+trunk_cli_version: 1.22.3
+title: "Error while executing: powerline_diskspace/diskspace_test.py"
+report:
+  - "[json.exception.type_error.302] type must be string, but is null"
+  - linter:
+      command: |
+        /home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41/bin/ruff check --cache-dir /home/andrei/.cache/trunk/repos/4ab35e95134c82143ffa91e40040cd33/results/ruff-current --output-format json powerline_diskspace/diskspace_test.py
+      stdin_path: (none)
+      run_from: /tmp/trunk-1001/igde5Q
+      timeout: 10m
+      rerun: (cd /tmp/trunk-1001/igde5Q; env -i PATH=/home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41/bin:/home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41/Scripts:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e/bin:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e VIRTUAL_ENV=/home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41 HOME=/home/andrei PYTHONUTF8=1 /home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41/bin/ruff check --cache-dir /home/andrei/.cache/trunk/repos/4ab35e95134c82143ffa91e40040cd33/results/ruff-current --output-format json powerline_diskspace/diskspace_test.py)
+      affects_cache:
+        - pyproject.toml
+      direct_configs:
+        - ruff.toml
+      exit_status: exited
+      exit_code: 1
+      stdout: |
+        [
+          {
+            "cell": null,
+            "code": null,
+            "end_location": {
+              "column": 14,
+              "row": 50
+            },
+            "filename": "/tmp/trunk-1001/igde5Q/powerline_diskspace/diskspace_test.py",
+            "fix": null,
+            "location": {
+              "column": 13,
+              "row": 50
+            },
+            "message": "SyntaxError: Expected ',', found name",
+            "noqa_row": null,
+            "url": null
+          }
+        ]
+      stderr: |
+        warning: The top-level linter settings are deprecated in favour of their counterparts in the `lint` section. Please update the following options in `ruff.toml`:
+          - 'ignore' -> 'lint.ignore'
+          - 'select' -> 'lint.select'
+
+    parser:
+      command: |
+        /home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41/bin/python3 /home/andrei/.cache/trunk/plugins/https---github-com-trunk-io-plugins/v1.6.2-4ebadccd80b22638/linters/ruff/ruff_to_sarif.py 0
+      stdin_path: (none)
+      run_from: /tmp/trunk-1001/igde5Q
+      timeout: 10m
+      rerun: (cd /tmp/trunk-1001/igde5Q; env -i PATH=/home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41/bin:/home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41/Scripts:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e/bin:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e:/home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41/bin:/home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41/Scripts:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e/bin:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e:/home/andrei/.vscode-server/cli/servers/Stable-fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/server/bin/remote-cli:/home/andrei/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin VIRTUAL_ENV=/home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41 HOME=/home/andrei PYTHONUTF8=1 SSH_AUTH_SOCK=/run/user/1001/vscode-ssh-auth-sock-962080652 'SSH_CLIENT=100.67.204.69 56887 22' 'SSH_CONNECTION=100.67.204.69 56887 100.111.119.84 22' /home/andrei/.cache/trunk/tools/ruff/0.6.2-c1d603a55cab82f261fd886df897cd41/bin/python3 /home/andrei/.cache/trunk/plugins/https---github-com-trunk-io-plugins/v1.6.2-4ebadccd80b22638/linters/ruff/ruff_to_sarif.py 0)
+      exit_status: exited
+      exit_code: 0
+      stdout: |
+        {
+          "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+          "version": "2.1.0",
+          "runs": [
+            {
+              "results": [
+                {
+                  "level": "error",
+                  "locations": [
+                    {
+                      "physicalLocation": {
+                        "artifactLocation": {
+                          "uri": "/tmp/trunk-1001/igde5Q/powerline_diskspace/diskspace_test.py"
+                        },
+                        "region": {
+                          "startColumn": 13,
+                          "startLine": 50,
+                          "endColumn": 14,
+                          "endLine": 50
+                        }
+                      }
+                    }
+                  ],
+                  "message": {
+                    "text": "SyntaxError: Expected ',', found name"
+                  },
+                  "ruleId": null
+                }
+              ]
+            }
+          ]
+        }
+
+      stderr: (none)

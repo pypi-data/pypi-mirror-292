@@ -1,0 +1,41 @@
+trunk_cli_version: 1.22.3
+title: Check [[on-demand] [prettier:format:README.md:HEAD]]
+report:
+  - linter:
+      command: |
+        /home/andrei/.cache/trunk/tools/prettier/3.3.3-0c2a57dbd56fc6a77121cccffb307283/node_modules/.bin/prettier -w README.md
+      stdin_path: (none)
+      run_from: /tmp/trunk-1001/vRZvjT/pMHU0R
+      timeout: 10m
+      rerun: (cd /tmp/trunk-1001/vRZvjT/pMHU0R; env -i PATH=/home/andrei/.cache/trunk/tools/prettier/3.3.3-0c2a57dbd56fc6a77121cccffb307283/node_modules/.bin:/home/andrei/.cache/trunk/tools/node/18.12.1-00ae74f39ac4de3ff3c7e3686016ebf3/bin:/home/andrei/.cache/trunk/tools/node/18.12.1-00ae74f39ac4de3ff3c7e3686016ebf3:/home/andrei/.vscode-server/cli/servers/Stable-fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/server/bin/remote-cli:/home/andrei/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/andrei/.cache/trunk/launcher HOME=/home/andrei NODE_PATH=/home/andrei/.cache/trunk/tools/prettier/3.3.3-0c2a57dbd56fc6a77121cccffb307283/node_modules /home/andrei/.cache/trunk/tools/prettier/3.3.3-0c2a57dbd56fc6a77121cccffb307283/node_modules/.bin/prettier -w README.md)
+      affects_cache:
+        []
+      direct_configs:
+        []
+      exit_status: exited
+      exit_code: 0
+      stdout: |
+        README.md 76ms
+
+      stderr: (none)
+    parser:
+      command: |
+        /home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e/bin/python3 /home/andrei/.cache/trunk/plugins/https---github-com-trunk-io-plugins/v1.6.2-4ebadccd80b22638/linters/prettier/prettier_to_sarif.py 0
+      stdin_path: (none)
+      run_from: /tmp/trunk-1001/vRZvjT/pMHU0R
+      timeout: 10m
+      rerun: (cd /tmp/trunk-1001/vRZvjT/pMHU0R; env -i PATH=/home/andrei/.cache/trunk/tools/prettier/3.3.3-0c2a57dbd56fc6a77121cccffb307283/bin:/home/andrei/.cache/trunk/tools/prettier/3.3.3-0c2a57dbd56fc6a77121cccffb307283/Scripts:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e/bin:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e:/home/andrei/.cache/trunk/tools/prettier/3.3.3-0c2a57dbd56fc6a77121cccffb307283/node_modules/.bin:/home/andrei/.cache/trunk/tools/node/18.12.1-00ae74f39ac4de3ff3c7e3686016ebf3/bin:/home/andrei/.cache/trunk/tools/node/18.12.1-00ae74f39ac4de3ff3c7e3686016ebf3:/home/andrei/.vscode-server/cli/servers/Stable-fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/server/bin/remote-cli:/home/andrei/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/andrei/.cache/trunk/launcher:/home/andrei/.vscode-server/cli/servers/Stable-fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/server/bin/remote-cli:/home/andrei/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/andrei/.cache/trunk/launcher HOME=/home/andrei NODE_PATH=/home/andrei/.cache/trunk/tools/prettier/3.3.3-0c2a57dbd56fc6a77121cccffb307283/node_modules PYTHONUTF8=1 VIRTUAL_ENV=/home/andrei/.cache/trunk/tools/prettier/3.3.3-0c2a57dbd56fc6a77121cccffb307283 SSH_AUTH_SOCK=/run/user/1001/vscode-ssh-auth-sock-962080652 'SSH_CLIENT=100.67.204.69 56887 22' 'SSH_CONNECTION=100.67.204.69 56887 100.111.119.84 22' /home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e/bin/python3 /home/andrei/.cache/trunk/plugins/https---github-com-trunk-io-plugins/v1.6.2-4ebadccd80b22638/linters/prettier/prettier_to_sarif.py 0)
+      exit_status: exited
+      exit_code: 0
+      stdout: |
+        {
+          "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+          "version": "2.1.0",
+          "runs": [
+            {
+              "results": []
+            }
+          ]
+        }
+
+      stderr: (none)

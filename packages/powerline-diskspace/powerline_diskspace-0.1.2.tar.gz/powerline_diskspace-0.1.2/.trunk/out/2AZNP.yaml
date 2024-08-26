@@ -1,0 +1,20 @@
+trunk_cli_version: 1.22.3
+title: Check [[on-demand] [isort:format:powerline_diskspace/diskspace.py:HEAD]]
+report:
+  - linter:
+      command: |
+        /home/andrei/.cache/trunk/tools/isort/5.13.2-14508868d3eed44badde4c89ff949093/bin/isort -q --overwrite-in-place powerline_diskspace/diskspace.py
+      stdin_path: (none)
+      run_from: /tmp/trunk-1001/gQCqNO
+      timeout: 10m
+      rerun: (cd /tmp/trunk-1001/gQCqNO; env -i PATH=/home/andrei/.cache/trunk/tools/isort/5.13.2-14508868d3eed44badde4c89ff949093/bin:/home/andrei/.cache/trunk/tools/isort/5.13.2-14508868d3eed44badde4c89ff949093/Scripts:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e/bin:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e VIRTUAL_ENV=/home/andrei/.cache/trunk/tools/isort/5.13.2-14508868d3eed44badde4c89ff949093 HOME=/home/andrei PYTHONUTF8=1 /home/andrei/.cache/trunk/tools/isort/5.13.2-14508868d3eed44badde4c89ff949093/bin/isort -q --overwrite-in-place powerline_diskspace/diskspace.py)
+      affects_cache:
+        - pyproject.toml
+      direct_configs:
+        - .isort.cfg
+      exit_status: exited
+      exit_code: 0
+      stdout: (none)
+      stderr: (none)
+    parser: |
+      (none)

@@ -1,0 +1,23 @@
+trunk_cli_version: 1.22.3
+title: black exited with exit_code=123
+report:
+  - black exited with exit_code=123
+  - linter:
+      command: |
+        /home/andrei/.cache/trunk/tools/black/24.8.0-2fd8629f2f8f4479b194b6b0318f2282/bin/black -q powerline_diskspace/diskspace_test.py
+      stdin_path: (none)
+      run_from: /tmp/trunk-1001/m5XljP
+      timeout: 10m
+      rerun: (cd /tmp/trunk-1001/m5XljP; env -i PATH=/home/andrei/.cache/trunk/tools/black/24.8.0-2fd8629f2f8f4479b194b6b0318f2282/bin:/home/andrei/.cache/trunk/tools/black/24.8.0-2fd8629f2f8f4479b194b6b0318f2282/Scripts:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e/bin:/home/andrei/.cache/trunk/tools/python/3.10.8-b6e96641f2c120698c300f1bdd98bc0e VIRTUAL_ENV=/home/andrei/.cache/trunk/tools/black/24.8.0-2fd8629f2f8f4479b194b6b0318f2282 HOME=/home/andrei PYTHONUTF8=1 /home/andrei/.cache/trunk/tools/black/24.8.0-2fd8629f2f8f4479b194b6b0318f2282/bin/black -q powerline_diskspace/diskspace_test.py)
+      affects_cache:
+        - pyproject.toml
+      direct_configs:
+        []
+      exit_status: exited
+      exit_code: 123
+      stdout: (none)
+      stderr: |
+        error: cannot format powerline_diskspace/diskspace_test.py: Cannot parse: 50:12:             update_rate_s=0.0,
+
+    parser: |
+      (none)
