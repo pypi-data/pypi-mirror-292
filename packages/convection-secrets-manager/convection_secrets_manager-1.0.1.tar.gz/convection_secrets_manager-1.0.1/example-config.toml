@@ -1,0 +1,32 @@
+pid_dir = "/data/tmp/run/convection-secrets"
+
+[service]
+log_file = "/var/log/convection-secrets.server.log"
+socket_owner = "convection"
+socket_group = "convection"
+socket_path = "/var/run/convection.secrets.sock"
+use_network = true
+use_websocket = true
+tls_cert = "/etc/convection-secrets/certs/cert.pem"
+tls_key = "/etc/convection-secrets/certs/key.pem"
+tls_ca = "/etc/convection-secrets/certs/ca.pem"
+
+[service.network]
+acl = [
+  { "type" = "allow", "ip_address" = ["10.0.0.0/8"], "commands" = ["*"] }
+]
+listen_ip = "0.0.0.0"
+listen_port = 9670
+
+[service.websocket]
+listen_ip = "0.0.0.0"
+listen_port = 9671
+
+[config]
+path = "/data"
+
+[config.manager]
+keydb_key_count = 10
+
+[config.manager.authentication]
+token_max_expire = "10m"
