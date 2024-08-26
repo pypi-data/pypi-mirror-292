@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling", "hatch-requirements-txt"]
+build-backend = "hatchling.build"
+
+[project]
+name = "simple_account_manager"
+version = "0.0.6"
+authors = [
+  { name = "Yun Huang", email = "huangyunict@gmail.com" },
+]
+maintainers = [
+  { name = "Yun Huang", email = "huangyunict@gmail.com" },
+]
+description = "A simple Python account manager library"
+readme = "README.md"
+requires-python = ">=3.8"
+dynamic = ["dependencies"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+homepage = "https://github.com/huangyunict/simple_account_manager"
+issues = "https://github.com/huangyunict/simple_account_manager/issues"
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements.txt"]
