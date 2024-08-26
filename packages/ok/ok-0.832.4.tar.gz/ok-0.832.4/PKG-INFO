@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: ok
+Version: 0.832.4
+Summary: ok: an ok fork of pytest
+Author: Brian Okken, pytest contributors (See AUTHORS)
+License: MIT
+Keywords: test
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Utilities
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: colorama; sys_platform == "win32"
+Requires-Dist: exceptiongroup>=1.0.0rc8; python_version < "3.11"
+Requires-Dist: iniconfig
+Requires-Dist: packaging
+Requires-Dist: pluggy<2,>=1.5
+Requires-Dist: tomli>=1; python_version < "3.11"
+Provides-Extra: dev
+Requires-Dist: argcomplete; extra == "dev"
+Requires-Dist: attrs>=19.2; extra == "dev"
+Requires-Dist: hypothesis>=3.56; extra == "dev"
+Requires-Dist: mock; extra == "dev"
+Requires-Dist: pygments>=2.7.2; extra == "dev"
+Requires-Dist: requests; extra == "dev"
+Requires-Dist: setuptools; extra == "dev"
+Requires-Dist: xmlschema; extra == "dev"
+
+# ok
+
+This is `ok`. Or at least, it will be.   
+`ok`, right now, is a fork of `pytest`. 
+
+It might grow, or shrink, to be something else.
+
+## This is an "alpha" project, at best.
+
+- Use at your own risk.
+- Features are being removed, so no gaurantees.
+- You should probably use `pytest`, until the dust settles.
+
+## Installation
+
+You probably don't want to install `ok`. 
+You probably want to install `pytest`.
+
+But, if you insist, you can.
+
+```
+$ pip install ok
+```
+
+Or, more likely
+
+```
+$ uv pip install ok
+```
+
+
+## Removed so far
+
+- unittest support (with version 0.832.2)
+- doctest support (with version 0.832.3)
+- pastebin support (with version 0.832.3)
+- pdb support (with version 0.832.4)
