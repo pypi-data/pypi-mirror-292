@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: ditrans2cldf
+Version: 1.0
+Home-page: 
+Author: Johannes Englisch
+Author-email: johannes_englisch@eva.mpg.de
+Keywords: data linguistics
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+License-File: LICENSE
+Requires-Dist: cldfbench[glottolog]
+Requires-Dist: openpyxl
+Requires-Dist: pybtex
+Requires-Dist: unidecode
+Provides-Extra: dev
+Requires-Dist: flake8; extra == "dev"
+Provides-Extra: test
+Requires-Dist: tox; extra == "test"
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: coverage; extra == "test"
