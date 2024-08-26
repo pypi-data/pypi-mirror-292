@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: gemini_toolbox
+Version: 1.1.0
+Summary: Toolbox For Using Gemini Agents SDK
+Author: Viacheslav Kovalevskyi
+Author-email: viacheslav@kovalevskyi.com
+License: MIT
+Description-Content-Type: text/markdown
+Requires-Dist: APScheduler==3.10.4
+Requires-Dist: google-cloud-storage==2.18.2
+Requires-Dist: google-generativeai==0.7.2
+Requires-Dist: python-dotenv==1.0.1
+
+SDK For Simplified usage of Gemini Agents. Give Gemini Ability to use your custom functions in seveal code lines:
+
+```python
+import google.generativeai as genai
+from gemini_toolbox import client
+from dotenv import load_dotenv
+
+import os
+
+def get_current_time():
+    """returns current time"""
+    return "6pm PST"
+
+
+def say_to_duck(say: str):
+    """say something to a duck"""
+    return f"duck answer is: duck duck {say} duck duck duck"
+
+load_dotenv()
+genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+
+all_functions = [get_current_time, say_to_duck]
+clt = client.generate_chat_client_from_functions_list(all_functions)
+
+print(clt.send_message("say to the duck message: I am hungry"))
+```
