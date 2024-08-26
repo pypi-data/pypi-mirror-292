@@ -1,0 +1,15 @@
+---
+provider: anthropic
+model: claude-3-5-sonnet-20240620
+prompt_version: 1.0
+input: input/podcast_description.txt
+output: title-claude.txt
+test_path: examples/tests/podcast_titels
+tests:
+    test_01: >
+        Check that the titles in the list are written in "normal casing". This means that only the first word of the title and any proper names or acronyms are capitalized. Words after a colon do not have to be capitalized, unless they are proper names or acronyms. Answer YES/NO whether all titles are written correctly according to this principle. If NO, explain why not.
+    test_02: COUNT(LINES) == 5
+---
+# Instructies
+
+Generate 5 titles for a podcast about the following:
