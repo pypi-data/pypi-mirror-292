@@ -1,0 +1,48 @@
+[project]
+name = "solsystem"
+version = "1.0.3"
+description = "Type-safe Solana RPC http/websocket API with a focus on Helius and built on Pydantic models."
+authors = [
+    {name = "Aleksandr Grin", email = "bytebrushsoftware@gmail.com"},
+]
+keywords = ["solana", "blockchain", "web3"]
+classifiers = [
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Information Technology',
+    'Intended Audience :: System Administrators',
+    'License :: OSI Approved :: MIT License',
+    'Framework :: Pydantic',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: Internet',
+]
+dependencies = [
+    "httpx>=0.27.0, <0.30.0",
+    "pydantic>=2.7.1, <3.0.0",
+    "pydantic-settings>=2.2.1, <3.0.0",
+    "termcolor>=2.4.0, <3.0.0",
+    "base58>=2.1.1, <3.0.0",
+    "websockets>=12.0, <13.0",
+]
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "MIT"}
+
+[project.urls]
+Source = 'https://github.com/agrin96/solsystem'
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=8.3.1,<9.0.0",
+]
