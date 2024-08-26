@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: unreasonable-llama
+Version: 0.2.6
+Summary: HTTP API bindings for llama.cpp built-in server
+Home-page: https://github.com/SteelPh0enix/unreasonable-llama/
+License: MIT
+Keywords: llama.cpp,llama,llm,api,bindings
+Author: SteelPh0enix
+Author-email: wojciech_olech@hotmail.com
+Requires-Python: >=3.12,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: httpx (>=0.27.0,<0.28.0)
+Project-URL: Repository, https://github.com/SteelPh0enix/unreasonable-llama/
+Description-Content-Type: text/markdown
+
+# unreasonable-llama
+
+[![Check code formatting and validity](https://github.com/SteelPh0enix/unreasonable-llama/actions/workflows/check-code.yml/badge.svg?branch=master)](https://github.com/SteelPh0enix/unreasonable-llama/actions/workflows/check-code.yml)
+
+(Yet another) Python API for [llama.cpp server](https://github.com/ggerganov/llama.cpp/tree/master/examples/server)
+
+For now, i'm targeting minimal support necessary for `/completion` and `/health` endpoint.
+Maybe i'll extend this lib in the future.
+
+## Requirements
+
+`unreasonable-llama` has a single requirement - `httpx` library, see `pyproject.toml` for details.
+
+Requirements for `llama.cpp` scripts can be found in `requirements/` directory of theirs repository.
+
+## Usage
+
+See [test file](./tests/__main__.py) for example usage.
+
