@@ -1,0 +1,25 @@
+[build-system]
+requires      = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "simpler_timer"
+version = "0.0.2"
+dependencies = []
+readme = "README.md"
+description = "⏱️ A simple interactive-first timer for all your Python timekeeping needs"
+authors = [{ name = "Prince Ravi Leow", email = "princeravileow@outlook.com" }]
+license = {file = "LICENSE"}
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+requires-python = ">=3.10"
+
+[project.urls]
+Homepage = "https://github.com/prince-ravi-leow/simpler_timer"
+
+[project.scripts]
+SimplerTimer = "simpler_timer:SimplerTimer"
+simplerer_timer = "simpler_timer:simplerer_timer"
