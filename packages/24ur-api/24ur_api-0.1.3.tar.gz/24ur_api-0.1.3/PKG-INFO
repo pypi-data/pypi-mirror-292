@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: 24ur-api
+Version: 0.1.3
+Summary: Unofficial 24ur API
+Author-email: Amadej Kastelic <amadejkastelic7@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/amadejkastelic/24ur-api
+Project-URL: Source, https://github.com/amadejkastelic/24ur-api
+Project-URL: Tracker, https://github.com/amadejkastelic/24ur-api/issues
+Keywords: 24ur,api,scraper
+Requires-Python: ~=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp<4
+Requires-Dist: beautifulsoup4<5
+Provides-Extra: download
+Requires-Dist: m3u8downloader==0.10.1; extra == "download"
+Provides-Extra: dev
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake; extra == "dev"
+Requires-Dist: packaging; extra == "dev"
+Provides-Extra: lint
+Requires-Dist: flake8>=7.1.1; extra == "lint"
+Requires-Dist: black>=24.1.0; extra == "lint"
+
+# Unofficial 24ur API Client
+
+## Installation
+
+```bash
+pip install 24ur-api
+```
+- With video download support
+```bash
+pip install 24ur-api[download]
+```
+
+## Usage
+
+```python
+from api_24ur import client
+
+cl = client.Client()
+
+# Get article by URL with 10 comments
+article = await cl.get_article_by_url(url='<article_url>', num_comments=10)
+
+# Download the first video of article with bitrate lower than 2000000b to current dir
+await cl.download_video(stream_url=article.videos[0].url, download_path='.', max_bitrate=2000000)
+# Or get bytes
+await cl.download_video_bytes(stream_url=article.videos[0].url, max_bitrate=2000000)
+```
