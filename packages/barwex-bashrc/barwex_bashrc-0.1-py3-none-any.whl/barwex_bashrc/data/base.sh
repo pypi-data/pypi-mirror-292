@@ -1,0 +1,12 @@
+alias ll='ls -lhFG --color=auto --time-style="long-iso"'
+alias l='ll'
+alias la='ll -a'
+alias lg='ll -a | grep'
+alias hg='history | grep'
+alias rmf='rm -rf'
+alias cpr='cp -r'
+alias topme='top -u `whoami`'
+alias vb='nano $HOME/.bashrc'
+alias sb='source $HOME/.bashrc'
+alias ss2='ss -tnlp | grep'
+cdd() { cd "$1" && ll; }
