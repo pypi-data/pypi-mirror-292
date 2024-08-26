@@ -1,0 +1,69 @@
+_F='default'
+_E='BACKEND'
+_D='localhost'
+_C=True
+_B=False
+_A='NAME'
+from pathlib import Path
+import os,socket
+from itertools import product
+from spartaqube_app.secrets import sparta_a86bb123f6
+secrets_dict=sparta_a86bb123f6()
+BASE_DIR=Path(__file__).resolve().parent.parent
+LOGIN_URL='/login'
+SECRET_KEY=secrets_dict['DJANGO_SECRET_KEY']
+IS_DEV=_B
+DEBUG=_B
+DEFAULT_TIMEOUT=60
+PROJECT_NAME='SpartaQube'
+IS_GUEST_CODE_REQUIRED=_B
+WEBSOCKET_PREFIX='ws'
+HOST_WS_PREFIX=WEBSOCKET_PREFIX+'://'
+CAPTCHA_SITEKEY=secrets_dict['CAPTCHA_SITEKEY']
+CAPTCHA_SECRET=secrets_dict['CAPTCHA_SECRET_KEY']
+SPARTAQUBE_WEBSITE='https://www.spartaqube.com'
+FORBIDDEN_EMAIL='forbidden@spartaqube.com'
+CONTACT_US_EMAIL=secrets_dict['CONTACT_US_EMAIL']
+ADMIN_EMAIL_TICKET='contact@mysite.com'
+ADMIN_DEFAULT_USER='admin'
+ADMIN_DEFAULT_EMAIL='admin@spartaqube.com'
+ADMIN_DEFAULT_PWD='admin'
+URL_TERMS='www.spartaqube.com/terms'
+URL_WEBSITE='www.spartaqube.com'
+COMPANY_NAME='Spartacus Lab'
+COMPANY_SLOGAN='A plug and play solution to visualize your data and build web components'
+MAX_TICKETS=5
+B_TOOLBAR=_B
+DAPHNE_PREFIX=''
+DATA_UPLOAD_MAX_MEMORY_SIZE=524288000
+def sparta_3b5d186a89():A=socket.gethostname();B=socket.gethostbyname(A);return B
+allowed_domains=['https://*.127.0.0.1','http://*.127.0.0.1','http://localhost','http://*','https://*','*']
+ALLOWED_HOSTS=['django',_D,'localhost:*','localhost:81','*']+allowed_domains
+CSRF_TRUSTED_ORIGINS=['http://localhost:*','http://localhost:81/*']+allowed_domains
+ports=range(1,65536)
+protocols=['http','https']
+hostnames=[_D,sparta_3b5d186a89()]
+CSRF_TRUSTED_ORIGINS=[f"{A}://{B}"for A in protocols for B in hostnames]
+CSRF_TRUSTED_ORIGINS+=[f"{A}://{B}:*"for A in protocols for B in hostnames]
+CSRF_COOKIE_NAME='csrftoken'
+CORS_ALLOW_CREDENTIALS=_C
+INSTALLED_APPS=['django.contrib.admin','django.contrib.auth','django.contrib.contenttypes','django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles','corsheaders','channels','project']
+MIDDLEWARE=['django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware','django.middleware.common.CommonMiddleware','django.contrib.auth.middleware.AuthenticationMiddleware','django.contrib.messages.middleware.MessageMiddleware','django.middleware.clickjacking.XFrameOptionsMiddleware','whitenoise.middleware.WhiteNoiseMiddleware']
+ROOT_URLCONF='spartaqube_app.urls'
+TEMPLATES=[{_E:'django.template.backends.django.DjangoTemplates','DIRS':[os.path.join(BASE_DIR,'templates'),os.path.join(BASE_DIR,'project/templates')],'APP_DIRS':_C,'OPTIONS':{'context_processors':['django.template.context_processors.debug','django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages']}}]
+WSGI_APPLICATION='spartaqube_app.wsgi.application'
+ASGI_APPLICATION='spartaqube_app.routing.application'
+X_FRAME_OPTIONS='ALLOWALL'
+from spartaqube_app.db_path import sparta_8a3d0b8be6
+LOCAL_DB_PATH=sparta_8a3d0b8be6()
+DATABASES={_F:{'ENGINE':'django.db.backends.sqlite3',_A:LOCAL_DB_PATH}}
+CACHES={_F:{_E:'django.core.cache.backends.locmem.LocMemCache','LOCATION':'spartaqube-cache'}}
+AUTH_PASSWORD_VALIDATORS=[{_A:'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},{_A:'django.contrib.auth.password_validation.MinimumLengthValidator'},{_A:'django.contrib.auth.password_validation.CommonPasswordValidator'},{_A:'django.contrib.auth.password_validation.NumericPasswordValidator'}]
+LANGUAGE_CODE='en-us'
+TIME_ZONE='UTC'
+USE_I18N=_C
+USE_TZ=_C
+STATIC_URL='/static/'
+STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
+STATICFILES_DIRS=os.path.join(BASE_DIR,'static'),os.path.join(BASE_DIR,'static/dist/')
+DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
