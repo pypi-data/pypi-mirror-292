@@ -1,0 +1,114 @@
+[tool.poetry]
+name = "enum-properties"
+version = "1.8.0"
+description = "Add properties and method specializations to Python enumeration values with a simple declarative syntax."
+authors = ["Brian Kohan <bckohan@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/bckohan/enum-properties"
+homepage = "https://enum-properties.readthedocs.io"
+readme = "README.md"
+keywords = ["enum",  "properties", "defines", "field", "dataclass", "dataclasses"]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+packages = [
+    { include = "enum_properties" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=7.0"
+Sphinx = ">=7.0.0"
+mypy = ">=1.8"
+doc8 = ">=1.1.0"
+pytest-cov = ">=4.1.0"
+sphinx-argparse = ">=0.4.0"
+readme-renderer = {version = ">=42", extras = ["md"]}
+pygount = ">=1.6"
+coverage = ">=7.3.0"
+importlib-metadata = ">=7.0.0"
+ipdb = ">=0.13.13"
+aiohttp = ">=3.9.1"
+ruff = ">=0.5.7"
+pyright = ">=1.1.375"
+furo = "^2024.8.6"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.mypy]
+# The mypy configurations: http://bit.ly/2zEl9WI
+allow_redefinition = false
+check_untyped_defs = true
+disallow_untyped_decorators = false
+disallow_any_explicit = false
+disallow_any_generics = false
+disallow_untyped_calls = true
+ignore_errors = false
+ignore_missing_imports = true
+implicit_reexport = false
+strict_optional = true
+strict_equality = true
+local_partial_types = true
+no_implicit_optional = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unreachable = true
+warn_no_return = true
+exclude = "tests"
+
+
+[tool.doc8]
+ignore-path = "doc/_build"
+max-line-length = 100
+sphinx = true
+
+
+[tool.pytest.ini_options]
+python_files = "tests.py"
+norecursedirs = "*.egg .eggs dist build docs .tox .git __pycache__"
+
+addopts = [
+  "--strict-markers",
+  "--cov=enum_properties",
+  "--cov-branch"
+]
+[tool.ruff]
+line-length = 88
+exclude = [
+    "doc",
+    "dist",
+    "examples",
+    "tests/resources/bad_code.py"
+]
+
+[tool.ruff.lint]
+exclude = [
+    "tests/**/*",
+]
+
+[tool.pyright]
+exclude = ["tests/**/*"]
+include = [
+    "enum_properties"
+]
