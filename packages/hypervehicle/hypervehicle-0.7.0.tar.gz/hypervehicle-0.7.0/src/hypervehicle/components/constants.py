@@ -1,0 +1,7 @@
+FIN_COMPONENT = "fin"
+WING_COMPONENT = "wing"
+COMPOSITE_COMPONENT = "composite"
+SWEPT_COMPONENT = "swept"
+REVOLVED_COMPONENT = "revolved"
+CUBE = "cube"
+SPHERE = "sphere"
