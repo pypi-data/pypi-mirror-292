@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: eschergraph
+Version: 0.1.0
+Summary: The library that uses AI agents to enable building and searching in generalized knowledge graphs.
+License: MIT
+Author: PinkDot AI
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: attrs (>=23.2.0,<24.0.0)
+Requires-Dist: chromadb (>=0.5.5,<0.6.0)
+Requires-Dist: igraph (>=0.11.6,<0.12.0)
+Requires-Dist: jinja2 (>=3.1.4,<4.0.0)
+Requires-Dist: langchain-text-splitters (>=0.2.2,<0.3.0)
+Requires-Dist: leidenalg (>=0.10.2,<0.11.0)
+Requires-Dist: lightgbm (>=4.5.0,<5.0.0)
+Requires-Dist: lxml (>=5.3.0,<6.0.0)
+Requires-Dist: openai (>=1.35.7,<2.0.0)
+Requires-Dist: pypdf (>=4.3.1,<5.0.0)
+Requires-Dist: pyvis (>=0.3.2,<0.4.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Requires-Dist: seaborn (>=0.13.2,<0.14.0)
+Requires-Dist: sentence-transformers (>=3.0.1,<4.0.0)
+Requires-Dist: tenacity (>=8.4.2,<9.0.0)
+Requires-Dist: tiktoken (>=0.7.0,<0.8.0)
+Requires-Dist: types-requests (>=2.32.0.20240712,<3.0.0.0)
+Description-Content-Type: text/markdown
+
+# EscherGraph
+The repo for the open-source graph builder with AI agents. It even includes state-of-the-art benchmarking capabilities.
+
+## Code coverage
+Run the following command to generate a code coverage report. The branch flag is best to add for more inside in the coverage.
+```bash
+coverage run --branch -m pytest
+```
+
+The following commands can be used to gain insight in the generated test coverage report.
+
+In the command line.
+```bash
+coverage report
+```
+
+As HTML.
+```bash
+coverage html
+```
+
