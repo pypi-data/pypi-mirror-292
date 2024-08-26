@@ -1,0 +1,83 @@
+# SimpleYNews
+
+SimpleYNews is a Python package that offers a simple way to scrape financial news from Yahoo! Finance for given stock tickers.
+
+<table border=1 cellpadding=10><tr><td>
+
+#### *** IMPORTANT LEGAL DISCLAIMER ***
+
+---
+
+**Yahoo!, Y!Finance, and Yahoo! finance are registered trademarks of
+Yahoo, Inc.**
+
+SimpleYNews is **not** affiliated, endorsed, or vetted by Yahoo, Inc. It's
+an open-source tool that uses Yahoo's publicly available APIs, and is
+intended for research and educational purposes.
+
+**You should refer to Yahoo!'s terms of use**
+([here](https://policies.yahoo.com/us/en/yahoo/terms/product-atos/apiforydn/index.htm),
+[here](https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html), and
+[here](https://policies.yahoo.com/us/en/yahoo/terms/index.htm)) **for
+details on your rights to use the actual data downloaded. Remember - the
+Yahoo! finance API is intended for personal use only.**
+
+</td></tr></table>
+
+## Installation
+
+Install SimpleYNews using pip:
+
+```bash
+pip install simpleynews
+```
+
+## Quick Start
+
+```python
+from simpleynews import SimpleYNews
+
+# Get news for a single ticker
+aapl = SimpleYNews.Ticker("AAPL")
+apple_news = aapl.news
+
+# Print the results
+print("News for AAPL:")
+for item in apple_news:
+    print(f"Title: {item['title']}")
+    print(f"Link: {item['link']}")
+    print(f"Publisher: {item['publisher']}")
+    print(f"Publish Time: {item['providerPublishTime']}")
+    print("---")
+
+# Get news for multiple tickers
+tickers = ["GOOGL", "MSFT"]
+for ticker in tickers:
+    news = SimpleYNews.Ticker(ticker).news
+    print(f"\nNews for {ticker}:")
+    for item in news:
+        print(f"Title: {item['title']}")
+        print(f"Link: {item['link']}")
+        print(f"Publisher: {item['publisher']}")
+        print(f"Publish Time: {item['providerPublishTime']}")
+        print("---")
+```
+
+## Features
+
+- Scrape latest news for given stock tickers from Yahoo! Finance
+- Simple and intuitive API similar to yfinance
+- Caching of news data to reduce repeated requests
+- Logging for better debugging and monitoring
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+SimpleYNews is distributed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+SimpleYNews is not affiliated, endorsed, or vetted by Yahoo, Inc. It's an open-source tool that uses Yahoo's publicly available APIs, and is intended for research and educational purposes only. You should refer to Yahoo!'s terms of use for details on your rights to use the actual data downloaded.
