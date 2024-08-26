@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: agentpod
+Version: 0.1.6
+Summary: A simple framework for agentic systems
+Home-page: https://agentpod.ai
+License: MIT
+Author: Boat Builder
+Author-email: hello@boatbuilder.dev
+Requires-Python: >=3.11,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries
+Requires-Dist: azure-cognitiveservices-search-websearch (>=2.0.1,<3.0.0)
+Requires-Dist: bs4 (>=0.0.2,<0.0.3)
+Requires-Dist: docstring-parser (>=0.16,<0.17)
+Requires-Dist: loguru (>=0.7.2,<0.8.0)
+Requires-Dist: numpy (<2.0.0)
+Requires-Dist: openai (>=1.32.0,<2.0.0)
+Requires-Dist: pydantic (>=2.7.3,<3.0.0)
+Requires-Dist: python-dateutil (>=2.9.0.post0,<3.0.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Requires-Dist: tenacity (>=8.3.0,<9.0.0)
+Project-URL: Documentation, https://github.com/boat-builder/agentpod
+Project-URL: Repository, https://github.com/boat-builder/agentpod
+Description-Content-Type: text/markdown
+
+# Agentpod
+
+AgentPod is a simple framework to build agents on top of LLMs. It currently supports OpenAI and will support Ollama at somepoint in the near future. We do not plan to extend support beyond these at this point. Since it is just a wrapper over a bunch of http calls, we built it on top of asyncio. And, at this point, we do not plan to create a sync client.
+
+Agentpod supports both structured & unstructured output (even with Vision API). It provides a reliable way to calculate the cost of API calls, with an easy-to-use API to get this cost at a detailed level. You can also access the raw responses from the LLM.
+
+We currently does internet search with Bing. We did originally support brave search but we evolved to understand brave search is not good enough to give best search result and Google search over API sucks. We also provide simple utilities to read the textual content of the webpages for LLMs to process. We'll be supporting code interpreter so without using OpenAI assistant api, you can still use LLM to generate code and execute it.
+
+Our goal is to create a reliable, lightweight, and minimalistic framework to interact with LLMs. We are not focusing on building any integrations that isn't used at production by our users. There are many similar client packages available, but Agentpod was created from our frustration with existing frameworks, which are often non-flexible, do too much behind the scenes, change APIs often, and have complex codebases. We are an AI agency, and we use Agentpod in production for all our agents.
+
+## Installation
+
+```
+pip install agentpod
+```
+
+## Examples
+
+Examples can be found at our tests directory [tests/](tests/).
+
+## Acknowledgements
+
+This project includes code from [Instructor](https://github.com/jxnl/instructor), which is licensed under the MIT License.
+
