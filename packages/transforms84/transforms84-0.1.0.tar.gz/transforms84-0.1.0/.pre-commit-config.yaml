@@ -1,0 +1,61 @@
+# install: pre-commit install --hook-type pre-commit --hook-type pre-push
+default_language_version:
+  python: python3.11
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+    -   id: debug-statements
+        language_version: python3
+
+# - repo: https://github.com/cpp-linter/cpp-linter-hooks
+#     rev: v0.5.1
+#     hooks:
+#       - id: clang-format
+#         args: [--style=Google] # Other coding style: LLVM, GNU, Chromium, Microsoft, Mozilla, WebKit.
+#       - id: clang-tidy
+#         args: [--checks='boost-*,bugprone-*,performance-*,readability-*,portability-*,modernize-*,clang-analyzer-*,cppcoreguidelines-*']
+
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v3.4.0
+    hooks:
+    -   id: pyupgrade
+        args: [--py36-plus]
+
+- repo: local
+  hooks:
+      - id: pytest-check
+        name: pytest
+        entry: pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: mypy-check
+        name: mypy
+        entry: mypy
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: ruff-check
+        name: ruff
+        entry: ruff check --fix
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: ruff-format
+        name: ruff
+        entry: ruff format
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: tox-check
+        name: tox
+        entry: tox
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [push]
