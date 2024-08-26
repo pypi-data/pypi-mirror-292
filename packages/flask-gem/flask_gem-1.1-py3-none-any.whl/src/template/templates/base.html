@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+		<!-- Font Awesome -->
+		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+		<!-- Google Fonts -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css" rel="stylesheet"/>
+		<!-- MDB -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"  rel="stylesheet"/>
+		<link href="static/css/style.css" rel="stylesheet"/>
+		<style>
+			/* TEMPLATE STYLES */
+			main {
+			padding-top: 4rem;
+			padding-bottom: 3rem;
+			}
+			.card{
+			margin: 1%;
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<header>
+				<!-- Navbar -->
+				<nav class="navbar navbar-expand-lg bg-body fixed-top">
+				   <div class="container-fluid">
+					  <button
+						 data-mdb-collapse-init
+						 class="navbar-toggler"
+						 type="button"
+						 data-mdb-target="#navbarExample01"
+						 aria-controls="navbarExample01"
+						 aria-expanded="false"
+						 aria-label="Toggle navigation"
+						 >
+					  <i class="fas fa-bars"></i>
+					  </button>
+					  <div class="collapse navbar-collapse" id="navbarExample01">
+						 <ul id="header" class="navbar-nav me-auto mb-2 mb-lg-0 ">
+							<li class="nav-item active">
+							   <a class="nav-link" aria-current="page" href="/">Home</a>
+							</li>
+						 </ul>
+					  </div>
+				   </div>
+				</nav>
+				<!-- Navbar -->
+			 </header>
+			<!--Main layout-->
+			<div class="container">
+				<table id="example" class="table table-striped table-hover" cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th colspan="2"></th>
+							{% block header %} {% endblock %}
+						</tr>
+					<thead>
+					<tbody class="list">
+						<tr id = "inputs">
+							<td colspan="2"><i id="add-btn" class="fa fa-plus" aria-hidden="true"></i>
+								<i id="edit-btn" class="fa fa-pencil" aria-hidden="true"></i>
+								<input type="hidden" id="id" />
+							</td>
+							{% block inputs %} {% endblock %}
+						</tr>
+						{% block data %} {% endblock %}
+					</tbody>
+				</table>
+			</div>
+		</main>
+		<footer class="bg-body-tertiary text-center text-lg-start fixed-bottom">
+			<!-- Copyright -->
+			<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+				© 2020 Copyright:
+				<a class="text-body" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+			</div>
+			<!-- Copyright -->
+		</footer>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.umd.min.js"></script><!-- MDB -->
+		<script>
+			// Activate an inline edit on click of a table cell
+			// table.on('click', 'tbody td.row-edit', function (e) {
+			//     editor.inline(table.cells(this.parentNode, '*').nodes(), {
+			//         onBlur: 'submit'
+			//     });
+			// });
+			 
+			// // Delete row
+			// table.on('click', 'tbody td.row-remove', function (e) {
+			//     editor.remove(this.parentNode, {
+			//         title: 'Delete record',
+			//         message: 'Are you sure you wish to delete this record?',
+			//         buttons: 'Delete'
+			//     });
+			// });
+		</script>
+		<script>
+			$(document).ready(function () {
+			$("#edit-btn").hide();
+			callbacks();
+			
+			$('#add-btn').click(function() {
+			var html = '';
+			var data = {}
+			$("#inputs :input").each(function(){
+			   data[this.id] = $(this).val();
+			});
+			
+			$.ajax({
+			url: $(location).attr('href') + "/",
+			data: data,
+			type: 'POST',
+			success: function(response){
+				html = html + '<tr id = "'+ response['id']+'"><td colspan="1"><i class="edit fa fa-pencil" aria-hidden="true"></i></td>' + 
+					'\n<td colspan="1"><i class="remove fa fa-trash" aria-hidden="true"></i></td>'
+			   $("#inputs :input").each(function(){
+				if (this.id != 'id'){
+					html= html + '<td colspan="1" class="'+ this.id +'">' + $(this).val() + '</td>';
+				}
+			});
+			html = html + '</tr>'
+			$('#example tr:last').after(html);
+			    $('#inputs').find('input').val('');
+			 callbacks();
+			},
+			error: function(error){
+			   console.log(error);
+			}
+			});
+			
+			
+			  });
+			
+			$("#edit-btn").click(function() {
+			// console.log($(this).id)
+			var data = {};
+			$("#inputs :input").each(function(){
+			   data[this.id] = $(this).val();
+			});
+			
+			$.ajax({
+			url: $(location).attr('href') +"/" + $('#id').val(),
+			data: data,
+			type: 'PUT',
+			success: function(response){
+			   $(document.getElementById($('#id').val())).find('td').each(function(){
+			      if ($(this).attr('class')!== undefined){
+			         $(this).html($('#'+$(this).attr('class')).val());
+			   }});
+			    $('#edit-btn').hide();
+			    $('#add-btn').show();
+			 $('#inputs').find('input').val('');
+			},
+			error: function(error){
+			   console.log(error);
+			}
+			});
+			});
+			
+			function callbacks(){
+			$(".remove").click(function() {
+				id = $(this).closest('tr').attr('id')
+			   $.ajax({
+			url: $(location).attr('href') + "/" + $(this).closest('tr').attr('id'),
+			type: 'DELETE',
+			success: function(response){
+				$('#' + id).remove()
+			    $('#edit-btn').hide();
+			    $('#add-btn').show();
+			 $('#inputs').find('input').val('');
+			},
+			error: function(error){
+			   console.log(error);
+			}
+			});
+			
+			
+			  });
+			
+			$(".edit").click(function() {
+			$('#edit-btn').show();
+			    	$('#add-btn').hide();
+			$('#id').val($(this).closest('tr').attr('id'));
+			$(this).closest('tr').find('td').each(function(){
+				if ($(this).attr('class') != undefined){
+					var ele= document.getElementById($(this).attr('class'));
+					$(ele).val($(this).html());
+					// console.log($(ele).val())
+					};
+				});
+			  	});
+			};
+			});
+			
+		</script>
+	</body>
+</html>
