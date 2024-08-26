@@ -1,0 +1,22 @@
+[build-system]
+requires = [
+  "hatchling",
+]
+build-backend = "hatchling.build"
+[project]
+name = "backup_tracker_micro"
+version = "0.1.7"
+authors = [
+  { name = "Samuel Shiels" },
+]
+description = "A rest client to transmit backup events"
+readme = "README.md"
+requires-python = ">=3.11.5"
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+]
+dependencies = [
+  "rest_client_micro>=0.3.18"
+]
