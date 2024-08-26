@@ -1,0 +1,67 @@
+[build-system]
+requires = [
+    "setuptools>=61.0",
+    "setuptools_scm[toml]>=6.2",
+    "wheel",
+    "qiskit[visualization] == 1.1.0",
+    "IPython",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "QIRT"
+dynamic = ["version"]
+authors = [{ name = "HSIEH, LI-YU", email = "lyhsieh.lou@gmail.com" }]
+description = "A quantum information research toolkit"
+readme = "README.md"
+license = { file = "LICENSE.md" }
+classifiers = [
+    "Environment :: Web Environment",
+    "Environment :: Other Environment",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: Jupyter",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+]
+requires-python = ">=3.10"
+dependencies = ["qiskit[visualization] >= 1.1.0", "IPython >= 8.24.0"]
+
+[project.urls]
+Documentation = "https://slope86.github.io/QIRT"
+"API Reference" = "https://slope86.github.io/QIRT/reference/"
+Repository = "https://github.com/Slope86/QIRT"
+Issues = "https://github.com/Slope86/QIRT/issues"
+
+[project.optional-dependencies]
+dev = ["pytest", "mkdocs", "mkdocstrings[python]", "mkdocs-material"]
+
+[tool.setuptools]
+packages = ["QIRT"]
+
+[tool.setuptools.package-data]
+"QIRT.config" = ["default_config.ini"]
+
+[tool.setuptools_scm]
+version_scheme = "no-guess-dev"
+local_scheme = "no-local-version"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+pydocstyle.convention = "google"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "N", "D"]
+ignore = ["N999"]
+
+[tool.ruff.format]
+quote-style = "double"
