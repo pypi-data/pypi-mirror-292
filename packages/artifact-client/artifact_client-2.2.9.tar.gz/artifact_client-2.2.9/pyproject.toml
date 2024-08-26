@@ -1,0 +1,286 @@
+[project]
+name = "artifact-client"
+version = "2.2.9"
+description = "Python client for the Artifact API"
+license = "Apache-2.0"
+authors = [
+    { name = "Ozone Dev", email = "ozone@ozone.tech" },
+]
+readme = "README.md"
+keywords = ["Ozone", "Artifact", "Artifact Client API", "GraphRAG"]
+#recursive_include = ["src/*", "docs/*"]
+
+requires-python = ">=3.8"
+dependencies = [
+    "urllib3==2.2.2",
+    "pydantic>=2",
+    "certifi==2024.7.4",
+    "six==1.16.0",
+    "URI>=2.0.1",
+    "boto3>=1.35.0",
+    "python-dateutil>=2.9.0",
+    "requests>=2.32.3",
+]
+
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: Apache Software License"
+]
+
+[project.urls]
+Homepage = "https://github.com/Ozone-App/artifact-python-client"
+Repository = "https://github.com/Ozone-App/artifact-python-client"
+
+#[tool.poetry.dev-dependencies]
+#pytest = ">=7.2.1"
+#tox = ">=3.9.0"
+#flake8 = ">=4.0.0"
+#types-python-dateutil = ">=2.8.19.14"
+#mypy = "1.4.1"
+
+[tool.rye]
+managed = true
+# version pins are in requirements-dev.lock
+dev-dependencies = [
+    "ruff",
+    "pyright==1.1.338",
+    # text formatting
+    "rich>=13.7.1",
+    # mock httpx lib
+    "respx",
+    # mock datetime
+    "time-machine",
+    "pytest",
+    "pytest-asyncio",
+    "pytest-factoryboy",
+    "pytest-mock",
+    "pytest-xdist",
+    # useful assertions
+    "dirty-equals>=0.6.0",
+    # for pycharm
+    "setuptools",
+    #    "swagger-codegen"
+    # used by sync-versions
+    "toml>=0.10.2",
+    "PyYAML",
+    "nox>=2024.4.15",
+    "black>=24.8.0",
+    "isort>=5.13.2",
+]
+
+[tool.rye.scripts]
+format = { chain = [
+    "format:ruff",
+    "format:isort",
+    "format:docs",
+    "format:black",
+    "ruff:fix",
+]}
+"format:black" = "black ."
+"format:docs" = "python scripts/utils/ruffen-docs.py README.md docs"
+"format:ruff" = "ruff format"
+"format:isort" = "isort ."
+
+"lint" = { chain = [
+  "ruff:fix",
+  "typecheck",
+]}
+"ruff:check" = "ruff check ."
+"ruff:fix" = "ruff check . --fix"
+
+"typecheck" = "pyright"
+"typecheck:verify-types" = "pyright --verifytypes artifact --ignoreexternal"
+
+version = { cmd = ["python", "scripts/utils/update_version.py"] }
+"version:sync" = "python scripts/utils/sync_version.py"
+
+codegen = { chain = [
+    "version:sync",
+    "codegen:script",
+    "format"
+]}
+"codegen:script" = { cmd = ["zsh", "scripts/codegen"]}
+
+build = { chain = [
+    "pre-build",
+    "build:clean"
+]}
+"pre-build" = { chain = ["format", "lint"] }
+"build:clean" = "rye build -c -v"
+"build:all" = { chain = [
+    "pre"
+]}
+
+# specify directory in addition to marker to control which conftest gets loaded
+test = "rye run pytest -s -m 'integration or not integration'"
+"test:unit" = "rye run pytest -s -m 'not integration' tests/unit"
+"test:integration" = "rye run pytest -s -m integration tests/int"
+"test:package" = { cmd = ["sh", "tests/int/test_package.sh"] }
+"test:package:prod" = { cmd = ["sh", "tests/int/test_package.sh", "https://pypi.org/simple/"] }
+
+publish = "rye run publish:prod"
+"_publish_test" = "rye publish --repository testpypi --repository-url https://test.pypi.org/legacy/"
+"publish:test" = { chain = ["pre-build", "_publish_test"] }
+"_publish_prod" = "rye publish --repository pypi --repository-url https://upload.pypi.org/legacy/"
+"publish:prod" = { chain = ["pre-build", "_publish_prod"] }
+
+"l" = "echo \"\nYou've joined the revolution. Next steps will be sent shortly. Tell no one.\n\""
+
+[build-system]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = [
+    "src/*"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/artifact", "src/artifact_client"]
+
+#[tool.hatch.build.targets.sdist]
+# Basically everything except hidden files/directories (such as .github, .devcontainers, .python-version, etc)
+include = [
+    "/*.toml",
+    "/*.json",
+    "/*.lock",
+    "/*.md",
+#    "/mypy.ini",
+    "/noxfile.py"   ,
+    "bin/*",
+    "examples/*",
+    "src/*",
+    "tests/*",
+]
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
+# replace relative links with absolute links
+pattern = '\[(.+?)\]\(((?!https?://)\S+?)\)'
+replacement = '[\1](https://github.com/Ozone-App/artifact-python-client/tree/main/\g<2>)'
+
+#[tool.isort]
+#profile = "black"
+#src_paths = ["../common", "."]
+
+[tool.black]
+line-length = 120
+target-version = ["py37"]
+#force-exclude = ["**/"]
+
+#[tool.pylint.'MESSAGES CONTROL']
+#extension-pkg-whitelist = "pydantic"
+#max-line-length = "120"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["integration: Tests marked as integration are run manually"]
+pythonpath = ["src"]
+addopts = "--tb=short -m 'not integration'"
+xfail_strict = true
+#asyncio_mode = "auto"
+filterwarnings = [
+    "error"
+]
+minversion="6.0"
+log_level="DEBUG"
+
+[tool.pyright]
+exclude = [
+    "**/artifact_graph.py",
+    "**/artifact/models",
+    "**/artifact/api",
+    "**/artifact/client",
+    "**/tests/",
+    "_dev",
+    ".venv",
+    ".nox",
+]
+#reportOptionalMemberAccess=false
+reportUnusedVariable="error"
+reportUnusedClass="error"
+reportFunctionMemberAccess="error"
+reportPropertyTypeMismatch="error"
+
+[tool.ruff]
+line-length = 120
+output-format = "grouped"
+target-version = "py37"
+
+[tool.ruff.format]
+docstring-code-format = true
+exclude = [
+    "**/openapi.yaml",
+    "**/src/artifact/models/*",
+    "**/src/artifact/api/*",
+    "**/src/artifact/client/*",
+]
+
+[tool.ruff.lint]
+select = [
+    # isort
+    "I",
+    # bugbear rules
+    "B",
+    # remove unused imports
+    "F401",
+    # bare except statements
+    "E722",
+    # print statements
+    "T201",
+    "T203",
+    # misuse of typing.TYPE_CHECKING
+    "TCH004",
+    # import rules
+    "TID251",
+]
+ignore = [
+    # unused arguments
+    "ARG",
+    # mutable defaults
+    "B006",
+    "B904"
+]
+unfixable = [
+    # disable auto fix for print statements
+    "T201",
+    "T203",
+]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"functools.lru_cache".msg = "This function does not retain type information for the wrapped function's arguments; The `lru_cache` function from `_utils` should be used instead"
+
+[tool.ruff.lint.isort]
+length-sort = true
+length-sort-straight = true
+combine-as-imports = true
+extra-standard-library = ["typing_extensions"]
+known-first-party = ["artifact_client-", "tests"]
+
+[tool.ruff.lint.per-file-ignores]
+"bin/**.py" = ["T201", "T203"]
+"scripts/**.py" = ["T201", "T203"]
+"tests/**.py" = ["T201", "T203", "B017"]
+"examples/**.py" = ["T201", "T203"]
+"src/artifact/**/__init__.py" = ["F401"]
+# don't lint autogen'd files
+"**/artifact/models/**/*.py" = ["ARG002"]
+"**/artifact/api/**/*.py" = ["ARG002"]
+"**/artifact/client/**/*.py" = ["ARG002"]
