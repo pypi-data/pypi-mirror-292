@@ -1,0 +1,56 @@
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" ns="http://www.w3.org/2000/svg"
+	datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+	<start>
+		<ref name="svgContent" />
+	</start>
+	<define name="svgContent">
+		<element name="svg">
+			<ref name="gContent" />
+			<ref name="defsContent" />
+			<attribute name="width">
+				<data type="integer" />
+			</attribute>
+			<attribute name="height">
+				<data type="integer" />
+			</attribute>
+			<attribute name="viewBox" />
+			<attribute name="fill" />
+		</element>
+	</define>
+	<define name="gContent">
+		<element name="g">
+			<ref name="pathContent" />
+			<attribute name="clip-path" />
+		</element>
+	</define>
+	<define name="pathContent">
+		<element name="path">
+			<attribute name="fill-rule" />
+			<attribute name="clip-rule" />
+			<attribute name="d" />
+			<attribute name="fill" />
+		</element>
+	</define>
+	<define name="defsContent">
+		<element name="defs">
+			<ref name="clipPathContent" />
+		</element>
+	</define>
+	<define name="clipPathContent">
+		<element name="clipPath">
+			<ref name="rectContent" />
+			<attribute name="id" />
+		</element>
+	</define>
+	<define name="rectContent">
+		<element name="rect">
+			<attribute name="width">
+				<data type="integer" />
+			</attribute>
+			<attribute name="height">
+				<data type="integer" />
+			</attribute>
+			<attribute name="fill" />
+		</element>
+	</define>
+</grammar>
