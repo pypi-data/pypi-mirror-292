@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: lupin_conan_report
+Version: 0.1.0.dev1
+Summary: Tool used to generate a report about they SOUPS.
+Author-email: LupinDental <contact@lupindental.com>
+Maintainer-email: LupinDental <contact@lupindental.com>
+Project-URL: Repository, https://gitlab.com/lupindental/arsene/devops/lupin_conan_report
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Development Status :: 3 - Alpha
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENCE
+Requires-Dist: jinja2==3.1.4
+Requires-Dist: typer==0.12.3
+Provides-Extra: dev
+Requires-Dist: coverage; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+
+# lupin_conan_report
+
+Tool used to generate a report about the conan dependencies of a project.
+
+## Generate Conan Report
+
+Execute command `conan-report --json-path="path/to/json_file.json"`
