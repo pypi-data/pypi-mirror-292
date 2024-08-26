@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "backend-dev-utils"
+version = "0.0.1"
+description = "Utility functions for python backend developers."
+authors = ["melikbugra"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+pytest = "^8.3.2"
+assertpy = "^1.1"
+coverage = "^7.6.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
