@@ -1,0 +1,945 @@
+elasticsearch:
+  additional_search: true
+  host: es.pic.es
+  mock_run: false
+  passwd: null
+  port: 9200
+  query_search: SELECT name FROM element where status = '{status}' and ( name like '%.root' or  name like '%.raw.gz' );
+  query_insert: "INSERT INTO status_history(element_id, timestamp, status) VALUES ('{}','{}','{}');"
+  query_update: "update element set status = '{}' where id = '{}';"
+  additional_query: "select id from element where name = '{0}' ;"
+  schema: http
+  user: null
+  status_changes: {
+          1: {'pql_id': '20_to_transfer', 'es_id':  'transfer-submitted', 'next_status': '25_transferring'},
+          2: {'pql_id': '25_transferring', 'es_id':  'transfer-done', 'next_status': '40_registered'}
+      }
+      
+psql:
+  db: multivac
+  host: ''
+  passwd: ''
+  port: '5432'
+  user: ''
+
+Data Sections:
+  Calibrated:
+    extra_metadata: &id001
+      query_1: select name from element where id = (select parent_id from element
+        where name = '%s');
+      query_2: select value from tag_element where element_id = (select id from element
+        where name = '%s') and name = 'extra_metadata';
+    metadata:
+      datatype: Calibrated
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+    options:
+      basedir: null
+      datatype: RAW
+      destdir: pic.es/data/magic/Data/Calibrated/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${telnum}_${runsubrun}_${typechar}_${projectext}
+      priority: 3
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: &id002
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: RAW_M1
+      dataset_1: ${run}
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: RAW_M1
+      dataset_1: ${run}
+    reblocks: &id003
+      obsdate: (?P<obsdate>((${year}[_-]?${month}[_-]?${day})(_${tapevolume})?))
+      project: (?P<project>${sourcename}${wobble}?$)
+      projectext: (?P<projectext>${sourcename}${wobble}?\.${extension}$)
+      runsubrun: (?P<runsubrun>${run}\.${subrun})
+      sequence: (?P<sequence>${run}(\.${subrun})?)
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[Y])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Calibrated AuxData:
+    extra_metadata: *id001
+    metadata:
+      datatype: Calibrated
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+    options:
+      basedir: null
+      datatype: CalibratedAux
+      destdir: pic.es/data/magic/Data/Calibrated/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}_${month}_${day}/${fileprefix}${sequence}_${telnum}${projectext}
+      priority: 4
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Calibrated_ST
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Calibrated_ST
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      fileprefix: (?P<fileprefix>scalib|ssignal)
+      month: (?P<month>\d{2})
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[Y])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Calibrated AuxData M1:
+    extra_metadata: *id001
+    metadata:
+      datatype: CalibratedAux
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M1
+    options:
+      basedir: /data/M1/OSA/Calibrated
+      datatype: CalibratedAux
+      destdir: pic.es/data/magic/Data/Calibrated/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: true
+      filename: ${year}_${month}_${day}/${fileprefix}${sequence}_${telnum}${projectext}
+      priority: 4
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Calibrated_M1
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Calibrated_M1
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      fileprefix: (?P<fileprefix>scalib|ssignal)
+      month: (?P<month>\d{2})
+      project_id: 20
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[Y])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Calibrated AuxData M2:
+    extra_metadata: *id001
+    metadata:
+      datatype: CalibratedAux
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M2
+    options:
+      basedir: /data/M2/OSA/Calibrated
+      datatype: CalibratedAux
+      destdir: pic.es/data/magic/Data/Calibrated/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: true
+      filename: ${year}_${month}_${day}/${fileprefix}${sequence}_${telnum}${projectext}
+      priority: 4
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Calibrated_M2
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Calibrated_M2
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      fileprefix: (?P<fileprefix>scalib|ssignal)
+      month: (?P<month>\d{2})
+      project_id: 21
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[Y])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Calibrated Data M1:
+    extra_metadata: *id001
+    metadata:
+      datatype: Calibrated
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M1
+    options:
+      basedir: /data/M1/OSA/Calibrated
+      datatype: RAW
+      destdir: pic.es/data/magic/Data/Calibrated/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${telnum}_${runsubrun}_${typechar}_${projectext}
+      priority: 3
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Calibrated_M1
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Calibrated_M1
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 3
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLNIYSQJ])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Calibrated Data M2:
+    extra_metadata: *id001
+    metadata:
+      datatype: Calibrated
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M2
+    options:
+      basedir: /data/M2/OSA/Calibrated
+      datatype: RAW
+      destdir: pic.es/data/magic/Data/Calibrated/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${telnum}_${runsubrun}_${typechar}_${projectext}
+      priority: 3
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Calibrated_M2
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Calibrated_M2
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 5
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLNIYSQJ])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Melibea:
+    extra_metadata: *id001
+    metadata: &id004
+      datatype: Melibea
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+    options:
+      basedir: null
+      datatype: Melibea
+      destdir: pic.es/data/magic/Data/Melibea/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${run}_${typechar}_${projectext}
+      priority: 3
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: RAW_M1
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 14
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[Q])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Melibea AuxData:
+    extra_metadata: *id001
+    metadata:
+      datatype: MelibeaAux
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: ST
+    options:
+      basedir: /data/ST/OSA/Melibea
+      datatype: MelibeaAux
+      destdir: pic.es/data/magic/Data/Melibea/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: true
+      filename: ${year}_${month}_${day}/melibea${run}.${extension}
+      priority: 4
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Melibea_ST
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Melibea_ST
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 29984
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLNIYSQJ])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Melibea Data:
+    extra_metadata: *id001
+    metadata: *id004
+    options:
+      basedir: /data/ST/OSA/Melibea
+      datatype: Melibea
+      destdir: pic.es/data/magic/Data/Melibea/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${run}_${typechar}_${projectext}
+      priority: 3
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Melibea_ST
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Melibea_ST
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 16
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLNIYSQJ])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  RAW:
+    extra_metadata: *id001
+    metadata:
+      datatype: ${sourcename}
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M1
+    options:
+      basedir: null
+      datatype: RAW
+      destdir: pic.es/data/magic/Data/${datatype}/M1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${telnum}_${runsubrun}_${typechar}_${projectext}
+      priority: 2
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      sourcedir: ${year}_${month}_${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: RAW_M1
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLJNI])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  RAW M1:
+    extra_metadata: *id001
+    metadata:
+      datatype: RAW
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M1
+    options:
+      basedir: /data/M1/DAQ/RAW
+      datatype: RAW
+      destdir: pic.es/data/magic/Data/RAW/M1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${telnum}_${runsubrun}_${typechar}_${projectext}
+      priority: 2
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: RAW_M1
+      sourcedir: ${year}_${month}_${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: RAW_M1
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 4
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLNIYSQJ])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  RAW M2:
+    extra_metadata: *id001
+    metadata:
+      datatype: RAW
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M2
+    options:
+      basedir: /data/M2/DAQ/RAW
+      datatype: RAW
+      destdir: pic.es/data/magic/Data/RAW/M2/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${telnum}_${runsubrun}_${typechar}_${projectext}
+      priority: 2
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: RAW_M2
+      sourcedir: ${year}_${month}_${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: RAW_M2
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 10
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLNIYSQJ])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Star:
+    extra_metadata: *id001
+    metadata:
+      datatype: Star
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+    options:
+      basedir: null
+      datatype: Star
+      destdir: pic.es/data/magic/Data/Star/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${telnum}_${runsubrun}_${typechar}_${projectext}
+      priority: 4
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: RAW_M1
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[I])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Star AuxData:
+    extra_metadata: *id001
+    metadata:
+      datatype: Star
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+    options:
+      basedir: null
+      datatype: StarAux
+      destdir: pic.es/data/magic/Data/Star/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}_${month}_${day}/star${sequence}_${telnum}
+      priority: 4
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: RAW_M1
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[I])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Star AuxData M1:
+    extra_metadata: *id001
+    metadata:
+      datatype: StarAux
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M1
+    options:
+      basedir: /data/M1/OSA/Star
+      datatype: StarAux
+      destdir: pic.es/data/magic/Data/Star/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: true
+      filename: ${year}_${month}_${day}/star${sequence}_${telnum}.${extension}
+      priority: 4
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Star_M1
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Star_M1
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 17
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[I])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Star AuxData M2:
+    extra_metadata: *id001
+    metadata:
+      datatype: StarAux
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M2
+    options:
+      basedir: /data/M2/OSA/Star
+      datatype: StarAux
+      destdir: pic.es/data/magic/Data/Star/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: true
+      filename: ${year}_${month}_${day}/star${sequence}_${telnum}.${extension}
+      priority: 4
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Star_M2
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Star_M2
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 18
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[I])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Star Data M1:
+    extra_metadata: *id001
+    metadata:
+      datatype: Star
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M1
+    options:
+      basedir: /data/M1/OSA/Star
+      datatype: Star
+      destdir: pic.es/data/magic/Data/Star/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${telnum}_${runsubrun}_${typechar}_${projectext}
+      priority: 4
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Star_M1
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Star_M1
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 12
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLNIYSQJ])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  Star Data M2:
+    extra_metadata: *id001
+    metadata:
+      datatype: Calibrated
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: M2
+    options:
+      basedir: /data/M2/OSA/Star
+      datatype: Star
+      destdir: pic.es/data/magic/Data/Star/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${telnum}_${runsubrun}_${typechar}_${projectext}
+      priority: 4
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: Star_M2
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: Star_M2
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 6
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLNIYSQJ])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  SuperStar:
+    extra_metadata: *id001
+    metadata:
+      datatype: SuperStar
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+    options:
+      basedir: null
+      datatype: RAW
+      destdir: pic.es/data/magic/Data/SuperStar/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${run}_${typechar}_${projectext}
+      priority: 5
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: RAW_M1
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 13
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[S])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  SuperStar AuxData:
+    extra_metadata: *id001
+    metadata:
+      datatype: SuperStarAux
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: ST
+    options:
+      basedir: /data/ST/OSA/SuperStar
+      datatype: SuperStarAux
+      destdir: pic.es/data/magic/Data/SuperStar/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: true
+      filename: ${year}_${month}_${day}/superstar${run}.${extension}
+      priority: 5
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: SuperStar_ST
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: SuperStar_ST
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 29978
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLNIYSQJ])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+  SuperStar Data:
+    extra_metadata: *id001
+    metadata:
+      datatype: SuperStar
+      night: ${year}_${month}_${day}
+      run_number: ${run}
+      telescope: M1
+      telnum: ST
+    options:
+      basedir: /data/ST/OSA/SuperStar
+      datatype: RAW
+      destdir: pic.es/data/magic/Data/SuperStar/v1/${sourcename}/${year}_${month}_${day}
+      extra_metadata: false
+      filename: ${year}${month}${day}_${run}_${typechar}_${projectext}
+      priority: 5
+      query: SELECT name FROM element where status='20_to_transfer' and ( name like
+        '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+      rule_name: SuperStar_ST
+      sourcedir: ${year}/${month}/${day}
+      transfer: true
+    organitzation: *id002
+    organization:
+      container_1: ${year}_${month}_${day}
+      container_2: ${sourcename}
+      container_3: SuperStar_ST
+      dataset_1: ${run}
+    reblocks: *id003
+    regex:
+      day: (?P<day>\d{2})
+      extension: (?P<extension>raw\.gz|root)
+      month: (?P<month>\d{2})
+      project_id: 15
+      run: (?P<run>\d{8})
+      sourcename: (?P<sourcename>.*?)
+      subrun: (?P<subrun>\d{3})
+      tapevolume: (?P<tapevolume>\d)
+      telnum: (?P<telnum>M[1-2])
+      typechar: (?P<typechar>[BDPCLNIYSQJ])
+      wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+      year: (?P<year>\d{4})
+Template:
+  extra_metadata: *id001
+  metadata:
+    datatype: ${sourcename}
+    night: ${year}_${month}_${day}
+    run_number: ${run}
+    telescope: M1
+  options:
+    basedir: null
+    datatype: RAW
+    destdir: pic.es/data/magic/Data/${datatype}/M1/${sourcename}/${year}_${month}_${day}
+    extra_metadata: false
+    filename: ${year}${month}${day}_${telnum}_${runsubrun}_${typechar}_${projectext}
+    query: SELECT name FROM element where status='20_to_transfer' and ( name like
+      '%.root' or  name like '%.raw.gz' ) and project_id = ${project_id};
+    sourcedir: ${year}_${month}_${day}
+    transfer: false
+  organitzation: *id002
+  reblocks: *id003
+  regex:
+    day: (?P<day>\d{2})
+    extension: (?P<extension>raw\.gz|root)
+    month: (?P<month>\d{2})
+    run: (?P<run>\d{8})
+    sourcename: (?P<sourcename>.*?)
+    subrun: (?P<subrun>\d{3})
+    tapevolume: (?P<tapevolume>\d)
+    telnum: (?P<telnum>M[1-2])
+    typechar: (?P<typechar>[BDPCLNIYSQJ])
+    wobble: (?P<wobble>(-W\d\.\d{2}[+-]\d{3})|(-O[+-]\d\.\d[+-]W\d\.\d{2}))
+    year: (?P<year>\d{4})
+
+Rucio:
+  options:
+    account: root
+    destrse: MAGIC-PRD
+    realistic_path: true
+    scope: pnfs
+    sourcerse: ORM-NON-DET
+    working_folder: null
+    
+logging:
+  version: 1
+  disable_existing_loggers: false
+  formatters:
+    default:
+      datefmt: '%Y-%m-%d %H:%M:%S'
+      format: '%(asctime)s - %(levelname)s - %(message)s'
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: default
+      level: DEBUG
+      stream: ext://sys.stdout
+    file:
+      class: logging.handlers.RotatingFileHandler
+      filename: './transfer.log'
+      level: DEBUG
+      maxBytes: 10000000
+      backupCount: 5
+  loggers:
+    rucio_functions:
+      handlers:
+      - console
+      - file
+      level: DEBUG
+    metadata:
+      handlers:
+      - console
+      - file
+      level: DEBUG
+    list_file:
+      handlers:
+      - console
+      - file
+      level: DEBUG
+    es_query:
+      handlers:
+      - console
+      - file
+      level: DEBUG
+    gfal2:
+      handlers:
+      - console
+      - file
+      level: DEBUG

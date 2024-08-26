@@ -1,0 +1,98 @@
+#!python
+from __future__ import annotations
+
+import argparse
+import os
+
+import pkg_resources
+
+from transfer_agents import jsonconfig
+from transfer_agents import transferfile
+from transfer_agents import yamlconfig
+from transfer_agents.db_functions import dbData
+from transfer_agents.metadata import MetaData
+from transfer_agents.rucio_functions import RucioData
+from transfer_agents.transfer_file import TransferFile
+
+if __name__ == "__main__":
+    """
+    Realiza la replicación de archivos utilizando Rucio y procesa los archivos replicados en ElasticSearch.
+
+    :raises: Exception en caso de errores en la configuración de Rucio o en la replicación de archivos.
+    """
+
+    # Instantiate the parser
+    parser = argparse.ArgumentParser(description="Argument app description")
+    # Required positional argument
+    parser.add_argument(
+        "-c",
+        "--config",
+        help="A required string with yaml configuration file path argument",
+        required=False,
+        default=yamlconfig,
+    )
+    parser.add_argument(
+        "-e",
+        "--elastic",
+        help="A required string with json template file path argument",
+        required=False,
+        default=jsonconfig,
+    )
+    parser.add_argument(
+        "-f",
+        "--file",
+        help="A required string with file template file path argument",
+        required=False,
+        default=None,
+    )
+    args = parser.parse_args()
+
+    # Check if paths exist
+    if not os.path.exists(args.config):
+        print(
+            f"Configuration file '{args.config}' does not exist. Using default config file '{yamlconfig}' \n",
+        )
+
+    if not os.path.exists(args.elastic):
+        print(
+            f"Elasticsearch template file '{args.elastic}' does not exist. Using default elasticsearch file '{jsonconfig}' \n",
+        )
+
+    if not (args.file and os.path.exists(args.file)):
+        print(
+            f"Transfer file does not exist ('{args.file}'), invaled or not provided. Look for '{transferfile}' as an example",
+        )
+
+    """
+    transfer_file = TransferFile(default_config=args.config, csv_file=args.file)  # Create an insta$
+    csv_structure = transfer_file.validate_csv()  # Validate the structure of the CSV file
+    if csv_structure:
+        print("CSV file structure validated successfully:")
+        print(csv_structure)
+
+    if csv_structure:
+        print("CSV file structure validated successfully:")
+        print(csv_structure)
+    """
+
+    # Configurar y obtener parámetros de replicación de Rucio
+    config = RucioData(
+        default_path=args.config,
+        es_body=args.elastic,
+        csv_file=args.file,
+    )
+
+    config.rucio_replication_parameters()
+
+    # Procesar los archivos replicados en ElasticSearch
+    try:
+        # pass
+        config.es.process_files(config.rucio_scope)
+    except Exception as e:
+        raise Exception(f"Error al procesar archivos en ElasticSearch: {str(e)}")
+
+    # Realizar la replicación de archivos utilizando Rucio
+    try:
+        config.replication_files_rucio()
+    except Exception as e:
+        raise Exception(f"Error en la replicación de archivos: {str(e)}")
