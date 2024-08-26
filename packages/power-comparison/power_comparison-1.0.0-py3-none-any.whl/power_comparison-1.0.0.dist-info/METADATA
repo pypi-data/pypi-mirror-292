@@ -1,0 +1,27 @@
+Metadata-Version: 2.3
+Name: power-comparison
+Version: 1.0.0
+Summary: Application to compare power plan prices.
+Project-URL: Repository, https://github.com/hdert/Power-Comparison.git
+Project-URL: Issues, https://github.com/hdert/Power-Comparison/issues
+Author: Justin Muirhead
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Natural Language :: English
+Requires-Python: >=3.9
+Requires-Dist: aiohttp>=3
+Requires-Dist: async-timeout>=4
+Requires-Dist: contact-energy-nz>=0.1.10357010196
+Requires-Dist: ctkmessagebox>=2
+Requires-Dist: customtkinter>=5
+Requires-Dist: matplotlib>=3
+Requires-Dist: numpy>=2
+Requires-Dist: platformdirs>=4
+Description-Content-Type: text/markdown
+
+To use Power Comparsion:
+
+1. Run `python -m pip install hatch`
+2. Run `hatch run power-comparison`
