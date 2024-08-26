@@ -1,0 +1,35 @@
+[project]
+name = "detectorclient"
+version = "0.0.1"
+description = "Simulator API for communicating with the Fraud Simulator Server"
+readme = "README.md"
+authors = [
+    {name = "Sam Redmond", email = "redmonsam@myvuw.ac.nz"},
+]
+classifiers = [
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = "~=3.11"
+dependencies = [
+    "python-socketio",
+    "websocket-client",
+    "sqlalchemy",
+    "requests",
+    "mysql-connector-python",
+    "psutil"
+]
+
+[project.optional-dependencies]
+dev = [
+]
+
+[tool.setuptools.packages.find]
+include = ["detectorclient*"]
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
