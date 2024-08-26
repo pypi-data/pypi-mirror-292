@@ -1,0 +1,10 @@
+"""Block Byte allocation for serialization and deserialization"""
+BLOCK_PREFIX_LENGTH_BYTES = 2
+MAXIMUM_BLOCK_SIZE = 65536  # Bytes
+INDEX_SIZE = 8
+VERSION_SIZE = 1
+NONCE_SIZE = 16
+TIMESTAMP_SIZE = 8
+
+MERGED_DIFFICULTY_BYTE_LEN = 26
+HASH_LEN = 32
