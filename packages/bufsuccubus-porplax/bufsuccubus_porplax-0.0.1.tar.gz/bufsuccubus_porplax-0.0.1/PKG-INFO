@@ -1,0 +1,103 @@
+Metadata-Version: 2.1
+Name: bufsuccubus_porplax
+Version: 0.0.1
+Summary: AI-Powered AMD Undervolting Program
+Author-email: porplax <saynemarsh9@gmail.com>
+Project-URL: Homepage, https://github.com/porplax/bufsuccubus
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: GPU
+Classifier: Environment :: Win32 (MS Windows)
+Classifier: Intended Audience :: End Users/Desktop
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+<h1 align="center">
+bufsuccubus.
+</h1>
+<p align="center">(undervolting has never been sexier)</p>
+
+----
+
+![fannu undervolting my GPU](https://u.cubeupload.com/ihavecandy/Animation.gif)
+
+bufsuccubus simpilfes undervolting by having a _digital succubus_ do it for you. usually, you have to manually undervolt and benchmark your GPU which can be **VERY** time-consuming, or use AMD's bulit-in automatic undervolting which works well but i wanted to create one for myself. 
+bufsuccubus is a tool that automatically benchmarks and undervolts for you. bufsuccusbus is capable of testing the limits of your card and adjusting to its capabilities.
+
+```commandline
+pip install bufsuccubus
+```
+**only works on AMD Post-Navi cards at the moment.**
+
+----
+
+## command-line usage
+
+### *Windows*
+```commandline
+py -m bufsuccubus --help
+```
+for bufsuccubus to work, the argument `MODEL_PATH` must be a **GGUF** file. adjust `--gpu-layers`, and `--context-size` if you're running into problems with RAM/VRAM usage.
+### *Using on other platforms*
+unfortunately bufsuccubus *cannot* run on Linux, or macOS at this time. sorry!
+
+----
+
+## features 
+
+
+- simple and safe to use, will **NOT** crash or reboot your system
+- instability automatically stops the program from continuing
+- adjust number of cycles and duration of each cycle to achieve max performance
+- if desired, you can role-play with Fannu or skip directly to undervolting
+
+----
+
+## using a LLM
+
+``` 
+### Instruction: 
+{instruction}
+
+### Input:
+{input}
+
+### Response:
+{response}
+```
+bufsuccubus uses the alpaca template for prompting. 
+in my experience, I've found that [Undi's MXLewd-L2-20B](https://huggingface.co/TheBloke/MXLewd-L2-20B-GGUF) works the best for Fannu's character.
+
+i recommend using quant method **Q5_K_S** if you're going with this model **if your machine can handle it.** look for TheBloke's explanation of quantisation methods to see which one can run on your machine.
+
+you can use other models as long as it is a GGUF model. it is highly recommended to use one that is for role-playing and is trained on the alpaca template.
+
+### *Settings used*
+- Top K=60
+- Min P=0.25
+- Temperature=0.86
+
+----
+
+## development
+```commandline
+git clone https://github.com/porplax/bufsuccubus
+cd bufsuccubus
+pip3 install .
+```
+contributing would mean a lot !!!
+
+----
+
+## notes / issues / explanation
+
+**THIS PROJECT IS A JOKE !!! DON'T EXPECT CONSISENT UPDATES 😭**
+
+bufsuccubus makes use of the ADLX library provided by AMD.
+however the library has crashed bufsuccubus multiple times and this is due to a DLL file. **this is out of my control!**
+if it crashes, simply reset GPU settings to default using MSI afterburner, or similar.
+
+i am still new to prompting. so fannu's character card is janky atm and sometimes the LLM might think that it needs to get your GPU model, and such (_it really doesn't_). typing `CONTINUE` will force it to continue.
+

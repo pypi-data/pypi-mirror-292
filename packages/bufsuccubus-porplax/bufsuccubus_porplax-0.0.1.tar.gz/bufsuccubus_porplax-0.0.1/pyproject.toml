@@ -1,0 +1,30 @@
+[project]
+name = "bufsuccubus_porplax"
+version = "0.0.1"
+authors = [
+    {name="porplax", email="saynemarsh9@gmail.com"}
+]
+description = "AI-Powered AMD Undervolting Program"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: GPU",
+    "Environment :: Win32 (MS Windows)",
+    "Intended Audience :: End Users/Desktop"
+]
+
+[project.scripts]
+bufsuccubus = "bufsuccubus:cli"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = []
+
+[project.urls]
+Homepage = "https://github.com/porplax/bufsuccubus"
