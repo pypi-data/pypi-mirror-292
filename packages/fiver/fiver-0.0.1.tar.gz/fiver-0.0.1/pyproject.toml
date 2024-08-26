@@ -1,0 +1,35 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fiver"
+version = "0.0.1"
+authors = [
+  { name="Min", email="minha05112003a@gmail.com" },
+]
+description = "A simple monitor linux"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "questionary == 2.0.1",
+    "python-daemon == 3.0.1",
+    "pickleDB == 0.9.2",
+    "textual == 0.76.0",
+    "psutil == 6.0.0",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+fiver = "fiver:cli_entry_point"
+
+[project.urls]
+Homepage = "https://github.com/min-awm/fiver"
+Issues = "https://github.com/min-awm/fiver/issues"
