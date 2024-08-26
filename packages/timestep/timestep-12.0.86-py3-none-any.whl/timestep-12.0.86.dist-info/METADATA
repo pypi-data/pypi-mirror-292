@@ -1,0 +1,103 @@
+Metadata-Version: 2.1
+Name: timestep
+Version: 12.0.86
+Summary: Timestep AI CLI - free, local-first, open-source AI
+License: MIT
+Author: Michael James Schock
+Author-email: m@mjschock.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: apache-libcloud (>=3.8.0,<4.0.0)
+Requires-Dist: connexion[swagger-ui,uvicorn] (>=3.1.0,<4.0.0)
+Requires-Dist: controlflow (>=0.8.2,<0.9.0)
+Requires-Dist: diffusers (>=0.29.2,<0.30.0)
+Requires-Dist: einops (>=0.8.0,<0.9.0)
+Requires-Dist: fastapi (>=0.111.1,<0.112.0)
+Requires-Dist: fasteners (>=0.19,<0.20)
+Requires-Dist: filelock (>=3.15.4,<4.0.0)
+Requires-Dist: gorilla-cli (>=0.0.10,<0.0.11)
+Requires-Dist: huggingface-hub (>=0.23.5,<0.24.0)
+Requires-Dist: instructor (>=1.3.7,<2.0.0)
+Requires-Dist: kedro (>=0.19.7,<0.20.0)
+Requires-Dist: langchain-community (>=0.2.12,<0.3.0)
+Requires-Dist: langchain-core (>=0.2.33,<0.3.0)
+Requires-Dist: marvin (>=2.3.6,<3.0.0)
+Requires-Dist: mlflow-skinny (>=2.15.1,<3.0.0)
+Requires-Dist: numpy (>=1.26.4,<2.0.0)
+Requires-Dist: prefect-dask (>=0.3.0rc2,<0.4.0)
+Requires-Dist: prefect-shell (>=0.3.0rc1,<0.4.0)
+Requires-Dist: pypdf (>=4.3.1,<5.0.0)
+Requires-Dist: pyspark (>=3.5.1,<4.0.0)
+Requires-Dist: respx (>=0.21.1,<0.22.0)
+Requires-Dist: sqlmodel (>=0.0.21,<0.0.22)
+Requires-Dist: sse-starlette (>=2.1.2,<3.0.0)
+Requires-Dist: starlette-context (>=0.3.6,<0.4.0)
+Requires-Dist: tinygrad (>=0.9.1,<0.10.0)
+Requires-Dist: transformers (>=4.42.4,<5.0.0)
+Requires-Dist: typer[all] (>=0.12.3,<0.13.0)
+Description-Content-Type: text/markdown
+
+# Timestep AI
+
+Timestep AI CLI - free, local-first, open-source AI
+
+**Development Setup**:
+
+```console
+$ python3 -m pip install --upgrade pip
+$ python3 -m pip install --user pipx
+$ python3 -m pipx ensurepath
+$ pipx install poetry==1.8.3
+$ cp .env.example .env
+$ direnv allow # See https://direnv.net/#getting-started
+$ make
+$ timestep up --dev
+```
+
+**Library Setup**:
+
+```console
+$ python3 -m pip install --upgrade pip
+$ python3 -m pip install --user pipx
+$ python3 -m pipx ensurepath
+$ pipx install timestep
+$ timestep up
+```
+
+**Usage**:
+
+```console
+$ timestep [OPTIONS] COMMAND [ARGS]...
+```
+
+**Options**:
+
+* `--install-completion`: Install completion for the current shell.
+* `--show-completion`: Show completion for the current shell, to copy it or customize the installation.
+* `--help`: Show this message and exit.
+
+**Commands**:
+
+* `up`: Start up the Timestep AI platform.
+
+## `timestep up`
+
+Start up the Timestep AI platform.
+
+**Usage**:
+
+```console
+$ timestep up [OPTIONS]
+```
+
+**Options**:
+
+* `--dev / --no-dev`: [default: no-dev]
+* `--host TEXT`: [default: 0.0.0.0]
+* `--port INTEGER`: [default: 8000]
+* `--help`: Show this message and exit.
+
