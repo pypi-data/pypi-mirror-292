@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opipy_pm"
+version = "0.1.1"
+authors = [
+  { name="Daniel E. Diaz Almeida", email="daniel.diazalmeida@opi-solutions.com" },
+]
+license = {file = "LICENSE"}
+description = "OPI Solutions Python package for Predictive Maintenance"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy>=1.26.4",
+    "pandas>=2.0.0",
+    "matplotlib>=3.9.1",
+    "seaborn>=0.13.2",
+    "shap>=0.46.0",
+    "scikit-learn>=1.5.1",
+    "tensorflow>=2.16.1",
+    "altair>=5.4.0",
+    "torch>=2.3.1",
+    "xgboost>=2.1.0"
+]
+
+
+[project.urls]
+Homepage = "https://github.com/OPISolutions/opipy_pm"
+Issues = "https://github.com/OPISolutions/opipy_pm/issues"
