@@ -1,0 +1,37 @@
+import uuid
+
+from ..database import db
+from ..models.name import name as model 
+
+def get_all():
+    items = model.query.all()
+    response = []
+    for item in items: 
+        response.append(item.toDict())
+    return response
+
+def create(request):
+    request['id'] = str(uuid.uuid4())
+    item = model()
+    item.__dict__.update(request)
+    db.session.add(item)
+    db.session.commit()
+    return item.toDict()
+
+def retrieve(id):
+    response = model.query.get(id).toDict()
+    return response
+
+def update(id,request):
+    model.query.filter_by(id=id).update(request)
+
+    db.session.commit()
+
+    response = model.query.get(id).toDict()
+    return response
+
+def delete(id):
+    model.query.filter_by(id=id).delete()
+    db.session.commit()
+
+    return ('Entity with Id "{}" deleted successfully!').format(id)
