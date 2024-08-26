@@ -1,0 +1,199 @@
+Metadata-Version: 2.1
+Name: haven-conf
+Version: 0.0.5
+Summary: Simple and flexible dataclass configuration system
+Author-email: Jon Morton <jon@jamorton.com>
+Requires-Python: >=3.10.1
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: flit >=3.2.0,<4.0.0 ; extra == "dev"
+Requires-Dist: ruff ; extra == "dev"
+Requires-Dist: sphinx >=5.1.1,<8.0.0 ; extra == "doc"
+Requires-Dist: sphinx-rtd-theme ; extra == "doc"
+Requires-Dist: bandit[toml] ; extra == "test"
+Requires-Dist: check-manifest ; extra == "test"
+Requires-Dist: pre-commit ; extra == "test"
+Requires-Dist: pytest-cov ; extra == "test"
+Requires-Dist: pytest-mock ; extra == "test"
+Requires-Dist: pytest-runner ; extra == "test"
+Requires-Dist: pytest ; extra == "test"
+Requires-Dist: pytest-github-actions-annotate-failures ; extra == "test"
+Requires-Dist: shellcheck-py ; extra == "test"
+Project-URL: Documentation, https://github.com/jonmorton/haven/tree/main#readme
+Project-URL: Issues, https://github.com/jonmorton/haven/issues
+Project-URL: Source, https://github.com/jonmorton/haven
+Provides-Extra: dev
+Provides-Extra: doc
+Provides-Extra: test
+
+<h1 align="center">haven</p>
+
+<p align="center">
+    <a href="https://badge.fury.io/py/haven-conf"><img src="https://badge.fury.io/py/haven-conf.svg" alt="PyPI version" height="18"></a>
+    <a href="https://github.com/jonmorton/haven/actions/workflows/pytest.yml"><img src="https://github.com/jonmorton/haven/actions/workflows/pytest.yml/badge.svg" alt="PyTest" height="18"></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" height="18"></a>
+</p>
+
+## A modular dataclass configuration system
+
+`Haven` is system for configuring applications using dataclasses and YAML. It provides full type safety while being modular enough to scale to large projects.
+
+## Key Features
+
+ * Builds plain dataclasses, so you can use all standard dataclass features, such as custom methods, `__post_init__`, etc.
+ * Doesn't take over your CLI or impose certain structure on your program.
+ * Support for parsing a wide variety of types and type hints, including optionals and unions.
+ * Scales to projects with many config variations or sub-components using `choice` and `plugin` fields.
+ * Easily couple code variations with config choices in a type-safe way using `Component`.
+
+## Tour
+
+### Basic example
+
+```python
+@dataclass
+class ModelConfig:
+    num_layers: int = 5
+    embed_dim: int = 512
+
+@dataclass
+class TrainConfig:
+    workers: int = 5
+    steps: list[int] = field(default_factory=lambda: [50, 100 150])
+    model: ModelConfig = field(default_factory=ModelConfig)
+
+# Load from yaml string
+cfg = haven.load(TrainConfig, """
+steps: [1,2,3]
+model:
+  num_layers: 16
+""")
+assert cfg.model.num_layers == 16
+
+# Or load from file
+with open("config.yaml") as f:
+    cfg = haven.load(TrainConfig, f)
+
+# Update using "dotlist" style overrides (e.g. from CLI args)
+cfg = haven.update_from_dotlist(cfg, ["workers=3", "model.num_layers=2"])
+
+# Print yaml
+print(haven.dump(cfg))
+```
+
+
+### Choice fields
+
+More complex projects often want to support many variations for each application component. This can be accomplished through subclassing and choice fields.
+
+```python
+@dataclass
+class ModelConfig:
+    name: str
+
+# Two types of models
+@dataclass
+class GPT2Config(ModelConfig):
+    num_layers: int
+
+@dataclass
+class Llama2Config(ModelConfig):
+    embed_dim: int = 512
+
+@dataclass
+class TrainConfig:
+    workers: int = 5
+    steps: list[int] = field(default_factory=lambda: [50, 100 150])
+
+    # Choose config class based on value of `ModelConfig.name`.
+    model: ModelConfig = haven.choice(
+        [GPT2Config, Llama2Config],
+        key_field="name",
+        default_factory=Llama2Config,
+    )
+
+# Load from yaml string
+cfg = haven.load(TrainConfig, """
+steps: [1,2,3]
+model:
+  name: GPT2Config
+  num_layers: 16
+""")
+assert isinstance(cfg.model, GPT2Config)
+```
+
+Chocies can also be module + object paths that are imported lazily:
+
+```python
+@dataclass
+class TrainConfig:
+    model: ModelConfig = haven.choice([
+        "models.llama.Llama2Config",
+        "models.gpt.GPT2Config",
+    ])
+```
+
+The benefit of this style of configuration is that all of the available choices are documented directly in the config  definition. This works well when there are a small to medium number of variations. For more flexibility,
+a plugin system is available:
+
+```python
+@dataclass
+class TrainConfig:
+    model: ModelConfig = haven.plugin(
+        discover_packages_path="mypackage.models",
+        attr="MODEL_CONFIG",
+    )
+```
+
+Each module under the `mypackage.models` namespace that contains the attribute `MODEL_CONFIG` will then be an available choice. The choice name is the same as the name of the module.
+
+### Components
+
+The problem with choice fields alone is that typically, you want to run different code in your application depending on which variant of the config was selected. `haven.Component` provides a simple mechanism for linking each variation to a callable.
+
+```python
+# Sample model definitions
+class ModelBase(nn.Module):
+    pass
+
+class Llama2(Model):
+    def __init__(self, cfg: Llama2Config):
+        pass
+
+class GPT(Model):
+    def __init__(self, cfg: GPTConfig):
+        pass
+
+@dataclass
+class TrainConfig:
+    model: haven.Component[ModelConfig, ModelBase] = haven.choice([
+        Llama2
+        GPT,
+    ])
+
+cfg = haven.load(TrainConfig, "model: Llama2")
+
+# Instantiate the chosen class, passing the appropriate config as the first arg.
+model = cfg.model()
+assert isinstance(model, Llama2)
+```
+
+The config dataclass to use for each variation is automatically derived from the type hint on the first argument of the callable.
+
+### More examples
+
+See the examples directory in the source code for more complete examples.
+
+## API
+
+Full documentation [here](https://jonmorton.github.io/haven/).
+
+## Acknowledgements
+
+This project is inspired by and borrows code from [Pyrallis](https://github.com/eladrich/pyrallis), [SimpleParsing](https://github.com/lebrice/SimpleParsing), and [draccus](https://github.com/dlwh/draccus), and [Hydra](https://hydra.cc/)
