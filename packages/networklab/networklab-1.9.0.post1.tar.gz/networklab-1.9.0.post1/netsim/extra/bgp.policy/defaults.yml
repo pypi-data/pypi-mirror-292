@@ -1,0 +1,60 @@
+# bgp.policy default settings -- mostly attributes
+#
+---
+#
+# The device settings are mostly inherited from the 'routing' module, the only
+# extra settings you can specify here are 'bandwidth' and '_default_locpref'
+#
+devices:
+  cat8000v.features.bgp:
+    _default_locpref: True
+    bandwidth:
+      in: auto
+  csr.features.bgp:
+    _default_locpref: True
+    bandwidth:
+      in: auto
+  cumulus.features.bgp:
+    _default_locpref: True
+    bandwidth:
+      in: int
+      out: int
+  eos.features.bgp:
+    bandwidth:
+      in: int
+      out: int
+  frr.features.bgp:
+    _default_locpref: True
+    bandwidth:
+      in: int
+      out: int
+  iosv.features.bgp:
+    _default_locpref: True
+    bandwidth:
+      in: auto
+  sros.features.bgp:
+    bandwidth:
+      in: auto
+      out: auto
+
+bgp:
+  attributes:
+    p_attr:                                               # BGP policy attributes
+      direct: [ weight, prefix_filter, as_filter ]        # Things that can be applied directly to a neighbor
+      node: [ locpref ]
+      link: [ locpref, med ]
+      interface: [ locpref, med, prepend, weight ]
+      compound:                                           # Things that have to be applied to in/out policy
+        locpref: in
+        med: out
+        prepend: out
+        bandwidth: both
+
+    interface:
+      policy:
+        in: str
+        out: str
+      bandwidth:
+        _alt_types: [ autobw ]
+        in: autobw
+        out: autobw
