@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: lsl-gateway-client
+Version: 24.8.0
+Summary: Gateway from Python to LSL in Second Life - client
+License: LGPL-3.0-or-later
+Author: erfea
+Author-email: erfea.tux@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: aiohttp (>=3.10.5,<4.0.0)
+Requires-Dist: dependency-injector (==4.42.0b1)
+Requires-Dist: lsl-gateway-lib (>=24.8.0,<25.0.0)
+Description-Content-Type: text/markdown
+
+# Tools for interacting with LSL in Second Life using python, asyncio and pydantic.
+
+## ⚠ It is in the early stages of development. ⚠
+
+## Tests
+
+### Unit tests
+
+- Just run pytest
+
+```bash
+pytest
+```
+
+### Integration tests
+
+- Place the script `lsl/server.lsl` in an object in Second Life.
+- Get the URL from it in the local chat.
+- Run pytest with this URL in `--integration` argument
+
+```bash
+pytest --integration <url>
+```
+
