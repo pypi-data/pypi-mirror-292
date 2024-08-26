@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zpdatafetch"
+dynamic = ["version", "authors", "description", "readme", "license", "urls"]
+requires-python = ">=3.10"
+dependencies = [
+  "anyio",
+  "beautifulsoup4",
+  "certifi",
+  "h11",
+  "httpcore",
+  "httpx",
+  "idna",
+  "iniconfig",
+  "jaraco-classes",
+  "jaraco-context",
+  "jaraco-functools",
+  "keyring",
+  "keyrings-alt",
+  "lxml",
+  "more-itertools",
+  "pip",
+  "pluggy",
+  "sniffio",
+  "soupsieve",
+]
+
+[project.scripts]
+zpdata = "zpdatafetch.cli:main"
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".hg",
+  ".ipynb_checkpoints",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pyenv",
+  ".pytest_cache",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  ".vscode",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "site-packages",
+  "venv",
+]
+
+line-length = 80
+indent-width = 2
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.pyright]
+venv = "3.12"
+venvPath = ".."
+
+[tool.uv]
+dev-dependencies = [
+  "wheel>=0.44.0",
+  "setuptools>=73.0.1",
+  "pytest>=8.3.2",
+  "packaging>=24.1",
+  "ruff>=0.6.2",
+  "build>=1.2.1",
+]
