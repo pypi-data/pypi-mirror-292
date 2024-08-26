@@ -1,0 +1,85 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: ${{ matrix.test-env }} on ${{ matrix.container }}
+    strategy:
+      fail-fast: false
+      matrix:
+        test-env:
+          - prepro
+          - numerics
+          - models
+          - benchmark
+          - utils
+          - workflow-single
+          - workflow-multi
+          - graphics-mpl
+        container:
+          - ghcr.io/oggm/untested_base:20231004
+          - ghcr.io/oggm/untested_base:py3.10
+          - ghcr.io/oggm/untested_base:py3.9
+        include:
+          - container: python:3.11-slim
+            test-env: minimal
+    runs-on: ubuntu-latest
+    container: ${{ matrix.container }}
+    continue-on-error: ${{ contains(matrix.container, 'py3') }}
+    steps:
+      - name: Install tools
+        if: ${{ contains(matrix.container, 'slim') }}
+        run: apt-get -y update && apt-get -y install git curl
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Fix Git-Permissions
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Test
+        run: ./ci/run_tests.sh "${{ matrix.test-env }}" "${{ matrix.container }}"
+        env:
+          STATIC_MAP_API_KEY: ${{ secrets.STATIC_MAP_API_KEY }}
+      - name: Normalize Artifact Name
+        id: sanitize-name
+        if: failure()
+        shell: bash
+        run: |
+          SANITIZED_NAME="pytest-mpl-results-${{ matrix.test-env }}-${{ matrix.container }}"
+          SANITIZED_NAME="${SANITIZED_NAME//:/_}"
+          SANITIZED_NAME="${SANITIZED_NAME//\//_}"
+          SANITIZED_NAME="${SANITIZED_NAME//./_}"
+          echo "sanitized_name=${SANITIZED_NAME}" >> $GITHUB_OUTPUT
+      - name: Upload pytest-mpl artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ steps.sanitize-name.outputs.sanitized_name }}"
+          path: /tmp/oggm-mpl-results/
+      - name: Upload Coverage
+        if: ${{ !contains(matrix.container, 'py3') }}
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          COVERALLS_SERVICE_NAME: github
+          COVERALLS_PARALLEL: true
+        run: coveralls
+  finish-coveralls:
+    name: Coveralls Finished
+    needs: test
+    runs-on: ubuntu-latest
+    container: python:3.11-slim
+    continue-on-error: true
+    steps:
+    - name: Coveralls Finished
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+        COVERALLS_SERVICE_NAME: github
+      run: |
+        pip3 install --upgrade coveralls &&
+        coveralls --finish
