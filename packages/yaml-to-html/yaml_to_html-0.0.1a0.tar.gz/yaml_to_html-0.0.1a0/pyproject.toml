@@ -1,0 +1,50 @@
+[project]
+name = "yaml-to-html"
+version = "0.0.1-alpha"
+authors = [
+    { name="Anirudh Dutt", email="1468519+aneroid@users.noreply.github.com" },
+]
+description = "A small example package"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/aneroid/yaml-to-html"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/aneroid/yaml-to-html.git"
+Issues = "https://github.com/aneroid/yaml-to-html/issues"
+"Bug Tracker" = "https://github.com/aneroid/yaml-to-html/issues"
+Changelog = "https://github.com/aneroid/yaml-to-html/blob/master/CHANGELOG.md"
+
+[tool.poetry]
+name = "yaml-to-html"
+version = "0.0.1-alpha"
+description = "Write your HTML in YAML!"
+authors = ["Anirudh Dutt <1468519+aneroid@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "yaml2html"}]
+package-mode = true
+
+[tool.poetry.dependencies]
+python = "^3.8"
+beautifulsoup4 = "^4"
+pyyaml = "^6"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
