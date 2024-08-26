@@ -1,0 +1,79 @@
+Metadata-Version: 2.3
+Name: torchrunx
+Version: 0.1.3
+Summary: Automatically initialize distributed PyTorch environments
+Project-URL: Repository, https://github.com/apoorvkh/torchrunx.git
+Project-URL: Documentation, https://torchrunx.readthedocs.io
+Author-email: Apoorv Khandelwal <mail@apoorvkh.com>, Peter Curtin <peter_curtin@brown.edu>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8.1
+Requires-Dist: cloudpickle>=3.0.0
+Requires-Dist: fabric>=3.0.0
+Requires-Dist: numpy<2
+Requires-Dist: numpy>=1.26.0; python_version == '3.12'
+Requires-Dist: torch>=2.0.0
+Description-Content-Type: text/markdown
+
+# torchrunx 🔥
+
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/torchrunx)](https://github.com/apoorvkh/torchrunx/blob/main/pyproject.toml)
+[![PyPI - Version](https://img.shields.io/pypi/v/torchrunx)](https://pypi.org/project/torchrunx/)
+![Tests](https://img.shields.io/github/actions/workflow/status/apoorvkh/torchrunx/.github%2Fworkflows%2Fmain.yml)
+[![Docs](https://readthedocs.org/projects/torchrunx/badge/?version=stable)](https://torchrunx.readthedocs.io)
+[![GitHub License](https://img.shields.io/github/license/apoorvkh/torchrunx)](https://github.com/apoorvkh/torchrunx/blob/main/LICENSE)
+
+Automatically launch functions and initialize distributed PyTorch environments on multiple machines
+
+## Installation
+
+```bash
+pip install torchrunx
+```
+
+Requirements:
+- Operating System: Linux
+- Python >= 3.8.1
+- PyTorch >= 2.0
+- Shared filesystem & passwordless SSH between hosts
+
+## Usage
+
+```python
+# Simple example
+def distributed_function():
+    pass
+```
+
+```python
+import torchrunx as trx
+
+trx.launch(
+    func=distributed_function,
+    func_kwargs={},
+    hostnames=["node1", "node2"],  # or just: ["localhost"]
+    workers_per_host=2
+)
+```
+
+### In a SLURM allocation
+
+```python
+trx.launch(
+    # ...
+    hostnames=trx.slurm_hosts(),
+    workers_per_host=trx.slurm_workers()
+)
+```
+
+## Compared to other tools
+
+## Contributing
+
+We use the [`pixi`](https://pixi.sh) package manager. Simply [install `pixi`](https://pixi.sh/latest/#installation) and run `pixi shell` in this repository. We use `ruff` for linting and formatting, `pyright` for static type checking, and `pytest` for testing. We build for `PyPI` and `conda-forge`. Our release pipeline is powered by Github Actions.
