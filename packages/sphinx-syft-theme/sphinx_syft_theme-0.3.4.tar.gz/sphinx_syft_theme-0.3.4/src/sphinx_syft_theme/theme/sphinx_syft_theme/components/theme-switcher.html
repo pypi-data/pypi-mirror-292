@@ -1,0 +1,17 @@
+{# Displays an icon to switch between light mode, dark mode, and auto (use browser's setting). #}
+{# As the theme switcher will only work when JavaScript is enabled, we hide it with `pst-js-only`. #}
+<button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" title="{{ _('light/dark') }}" aria-label="{{ _('light/dark') }}" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <g clip-path="url(#clip0_4286_147)">
+      <path d="M16 23.9999V7.99992C18.1217 7.99992 20.1566 8.84278 21.6569 10.3431C23.1572 11.8434 24 13.8782 24 15.9999C24 18.1217 23.1572 20.1565 21.6569 21.6568C20.1566 23.1571 18.1217 23.9999 16 23.9999ZM26.6667 20.4133L31.08 15.9999L26.6667 11.5866V5.33325H20.4133L16 0.919922L11.5867 5.33325H5.33335V11.5866L0.920013 15.9999L5.33335 20.4133V26.6666H11.5867L16 31.0799L20.4133 26.6666H26.6667V20.4133Z" fill="#5E5A72"/>
+    </g>
+    <defs>
+      <clipPath id="clip0_4286_147">
+        <rect width="32" height="32" fill="white"/>
+      </clipPath>
+    </defs>
+  </svg>
+  <!-- <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i> -->
+  <!-- <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i> -->
+  <!-- <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i> -->
+</button>
