@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.poetry]
+name = "animegirlapi"
+version = "0.1.0"
+description = "A short description of your package"
+authors = ["Allexx <allexx129@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+requests = "^2.25.1"  # Specify the version or range of versions
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"  # Example for development dependencies
+
+[tool.poetry.scripts]
+# Define any command-line scripts your package might have here
