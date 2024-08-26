@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[bdist_wheel]
+universal = 0
+
+[project]
+name = "tx_tools"
+version = "0.2434.1"
+description = "Tui tools"
+readme = "README.md"
+authors = [
+    {name = "Louis RIVIERE", email = "louis@riviere.xyz"},
+]
+requires-python = ">=3.8"
+dependencies = [
+    "pybrary",
+    "tx_widgets",
+]
+keywords = [
+    'util',
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+pypi = 'https://pypi.org/project/tx-tools'
+repository = 'https://notabug.org/dugres/tx_tools'
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+exclude = ["*test*"]
+
+[project.scripts]
+maker = "maker.main:main"
