@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "cyberjake-test-deploy"
+version = "0.1.0"
+description = ""
+authors = ["Cyb3r-Jak3 <git@Cyberjake.xyz>"]
+readme = "README.md"
+packages = [
+    { include = "cyberjake-test-deploy" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
