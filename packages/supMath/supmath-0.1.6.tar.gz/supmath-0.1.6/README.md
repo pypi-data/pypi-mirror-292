@@ -1,0 +1,62 @@
+#supMath Library#
+
+##What is this##
+This module contains plenty of different mathematical functions and operators
+which can be used in loads of operations.
+
+##Quick Guide##
+Library consists of 3 modules: supOperators, supGeometry and supConverters.
+Here are some funcs from supOperators module:
+
+	sigma(start,end,rule):
+		Returns the sum of rules with i in range[start,end]
+
+		sigma(1,4,"i+2") => 
+
+		You should be careful with these type funcs, as to transform string formula to an operating one,
+		eval() func is used - You have been warned!
+
+		There is also an advanced version where powers are introduced the way they
+		are in int_sum(power,n)
+
+	div_sigma(num,power,aliquocy):
+		Returns sum of all num's divs raising each div to the power.
+		aliquocy is 1 ==> the num**power is subtracted from result.
+
+		It can be a powerful tool when working with nums and their properties.
+		With help of this, you can check if num is prime or perfect.
+	
+	int_sum(power,n):
+		Returns the int sum from 1 to n (power = 1):
+				
+			int_sum(1,4) => 1+2+3+4 => 10
+		
+		Increasing the power, returns sum of sums of ints from 1 to n.
+
+			int_sum(2,4) => int_sum(1,1) + int_sum(1,2) + int_sum(1,3) + int_sum(1,4) => 20
+
+		You can increase the power indefinitely.
+		This tool gives an opportunity to work with Pascal triangle and its sequences.
+		Func actually returns n-th unit of (power+2)-th sequence in Pascal triangle.
+
+supGeometry module contains various geometrical formulas, more of them are coming in further library updates:
+		
+	pythagor(a,b):
+		returns the hypotenuse value => sqrt(a**2+b**2)
+
+	circle_area(r):	
+		returns circle's area with radiues given => pi*r**2
+
+supConverters module has a range of measure-to measure and numerical converting functions:
+
+	convert(num,scale_base):
+		Converts decimal to any notation scale:
+			
+			convert(2,2) => 10
+			convert(10,16) => A
+			
+		As you can see, letters are supported.
+
+	lb_to_kg(lb):
+		Converts pounds to kilograms.
+		kg_to_lb(kg) is also supported
