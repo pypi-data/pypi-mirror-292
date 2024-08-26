@@ -1,0 +1,53 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Paslauga jau sukonfig\u016bruota",
+            "cannot_connect": "Nepavyko prisijungti"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Host",
+                    "port": "Prievadas"
+                },
+                "data_description": {
+                    "host": "GPSD pagrindinio kompiuterio pavadinimas arba IP adresas."
+                }
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "climb": {
+                "name": "Lipti"
+            },
+            "elevation": {
+                "name": "Auk\u0161tis"
+            },
+            "latitude": {
+                "name": "Platuma"
+            },
+            "longitude": {
+                "name": "Ilguma"
+            },
+            "mode": {
+                "name": "Re\u017eimas",
+                "state": {
+                    "2d_fix": "2D taisymas",
+                    "3d_fix": "3D taisymas"
+                },
+                "state_attributes": {
+                    "latitude": {
+                        "name": "Platuma"
+                    },
+                    "longitude": {
+                        "name": "Ilguma"
+                    }
+                }
+            },
+            "time": {
+                "name": "Laikas"
+            }
+        }
+    }
+}
