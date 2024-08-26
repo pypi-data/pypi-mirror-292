@@ -1,0 +1,41 @@
+[build-system]
+requires = ["poetry-core>=1.0.0,<2.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "dlpacker"
+version = "1.0.3"
+description = "DLPacker: Deep Learning-based prediction of amino acid side chain conformations in proteins"
+authors = ["Mikita Misiura <mikita.misiura@gmail.com>"]
+
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/nekitmm/DLPacker"
+classifiers = [
+    "Topic :: Scientific/Engineering :: Bio-Informatics"
+]
+
+packages = [
+    { include = "dlpacker" },
+]
+
+[tool.poetry.dependencies]
+
+python = ">=3.8"
+biopython = ">=1.78"
+tensorflow = ">=2.5.0, <2.16.0"
+numpy = "^1.19.2"
+py7zr = "0.20.8"
+
+[tool.black]
+line-length = 79
+target-version = ['py38']
+skip-string-normalization = true
+
+include = '''
+/(
+  | dlpacker
+)/
+'''
+
+exclude = "dlpacker/data"
