@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: pyco_sqlalchemy
+Version: 1.3.2
+Summary: Simple ORM BaseModel for Flask depends on SqlAlchemy
+Home-page: https://github.com/dodoru/pyco-sqlalchemy
+Author: Nico Ning
+Author-email: dodoru@foxmail.com
+License: MIT
+Platform: any
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Development Status :: 4 - Beta
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Utilities
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >= 3.6
+Description-Content-Type: text/markdown
+Requires-Dist: PySql-ORM>=2.5.8
+Requires-Dist: SQLAlchemy>=1.4.36
+
+# pyco-sqlalchemy
+
+- Base On `SqlAlchemy`, according to regular web sevices, encapsulate A interface class(`CoModel`), expanded general APIs
+  for CURD, which makes SqlAlchemy's ORM even simpler for humans, support with Flask/Django/OtherWebFrames.
+
+---
+
+## Release:
+
+```text
+GitCommit=c61b52b2b8c0b3babc70a9f2451fe6fc75790eb5
+PublishAt=2024-08-27 10:32
+PublishVersion=1.3.2
+```
+
+---
+## General APIs:
+
+-  Pyco-Sqlalchemy v1.2.*
+
+|:-:|:---:|:---:|:---:|:---:|
+|:-:|:---:|:---:|:---| :--- |
+|   |<td colspan=3> Pyco-Sqlalchemy v1.2.*
+| \ |  @语义    | @HTTP-Method | @Self-API             | @Cls-API | 
+| C |  Create | POST      |  self.save()          | insert(form, **kws) | 
+| R | Read    | GET       |  self.to_dict(**kws)  | filter_by, page_items, getOr404, lastOrNone | 
+| U | Update  | PUT/POST  |  self.update(**kws)   | upsert_one(filter_cond:dict, **updated_kws) |
+| D | Delete  | DELETE    |  self.remove()        | discard(filter_cond=None, limit=1, **kws) |
+ 
+
+<p style="display:none">
+基于`sqlalchemy`， 基于web常规业务，封装接口类`CoModel`，提供自定义的通用接口。
+</p>  
+
+## Usage Samples:
+
+```python
+from pyco_sqlalchemy._flask import BaseModel, db
+
+
+class User(db.Model, BaseModel):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(32))
+    email = db.Column(db.String(64), unique=True)
+
+
+form = dict(name="dev")
+u1 = User.insert(form, email="dev@pypi.com")
+u3 = User.upsert_one(form, email="dev@oncode.cc")
+assert u1.id == u3.id
+
+```
