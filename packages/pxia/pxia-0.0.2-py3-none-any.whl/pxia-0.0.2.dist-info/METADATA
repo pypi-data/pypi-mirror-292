@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: pxia
+Version: 0.0.2
+Summary: a repository for PXIA models
+Home-page: https://github.com/not-lain/pxia
+License: Apache 2.0 License
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: setuptools>=42
+Requires-Dist: wheel>=0.37
+Requires-Dist: torch>=2.2.1
+Requires-Dist: huggingface-hub>=0.24
+
+# PXIA
+A repository for phoenix-ia models 
+
+This repository is using Hugging Face's PyTorchModelHubMixin classes
+
+## How to use
+
+```
+pip install pxia
+```
+
+```python
+from pxia import GPT2
+model = GPT2(a=2,b=1)
+model.push_to_hub("phxia/gpt2")
+
+pretrained_model = Hannibal.from_pretrained("phxia/gpt2")
+```
+
+
+![pxia](https://github.com/not-lain/pxia/blob/main/logo.png?raw=true)
