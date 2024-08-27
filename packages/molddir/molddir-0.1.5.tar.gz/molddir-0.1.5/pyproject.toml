@@ -1,0 +1,65 @@
+[tool.poetry]
+name = "molddir"
+version = "0.1.5"
+description = "molddir simplifies merging directory files into a single file. It's especially useful for sending entire codebases to Large Language Models (LLMs) by encoding the codebase into one string"
+authors = ["RahulDas-dev <r.das699@gmail.com>"]
+maintainers = ["RahulDas-dev <r.das699@gmail.com>"]
+license = "MIT"
+homepage = "https://github.com/RahulDas-dev/molddir/"
+repository = "https://github.com/RahulDas-dev/molddir/"
+documentation = "https://github.com/RahulDas-dev/molddir/"
+keywords = ["llm for coding",
+            "code Compression",
+            "Directory Falttening"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.4"
+pyclean = "^3.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+exclude = [
+    ".ruff_cache",
+    ".git",
+    ".ipynb_checkpoints",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    "__pycache__",
+    "dist"
+]
+extend-include = ["*.ipynb"]
+line-length = 120
+indent-width = 4
+target-version = "py39"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint]
+ignore = []
+fixable = ["ALL"]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "double"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 120
+
+[tool.poetry.scripts]
+molddir = "molddir.main:main"
