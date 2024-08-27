@@ -1,0 +1,85 @@
+Metadata-Version: 2.1
+Name: stompy-ocean
+Version: 0.0.5
+Summary: Various python modules related to modeling and oceanographic data analysis.
+Home-page: https://github.com/rustychris/stompy
+Author: Rusty Holleman
+Author-email: Rusty Holleman <rustychris@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2018 Rusty Holleman
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+        
+Project-URL: Homepage, https://github.com/rustychris/stompy
+Keywords: modeling,oceanography,grid
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: cmocean
+Requires-Dist: matplotlib
+Requires-Dist: netCDF4
+Requires-Dist: pandas
+Requires-Dist: requests
+Requires-Dist: scipy
+Requires-Dist: Shapely
+Requires-Dist: six
+Requires-Dist: xarray
+Requires-Dist: seawater
+Requires-Dist: gdal<3.9
+Requires-Dist: numpy<2.0
+Requires-Dist: cgal
+
+# stompy: spatial tools for ocean modeling in python
+
+Various python modules related to modeling and oceanographic data analysis.
+
+## Prerequisites
+
+ `stompy` requires a Python 3 environment with `gdal` installed. There are many ways to set this up. The recommended method would be creating a `mamba` (or `conda`) environment:
+
+ ```
+mamba create -n <env-name> python gdal
+mamba activate <env-name>
+```
+
+## Installation
+
+
+### Installing with `pip`
+
+```
+pip install stompy-ocean
+```
+
+### Installing with `mamba`/`conda`
+
+Coming soon
+
+## Documentation
+
+See the [Documentation pages](https://stompy.readthedocs.io/en/latest/) for descriptions of the various modules.
+
+## Issues
+
+If you run into any bugs using `stompy`, you are encouraged to submit an [Issue](https://github.com/rustychris/stompy/issues) or PR to this repo.
