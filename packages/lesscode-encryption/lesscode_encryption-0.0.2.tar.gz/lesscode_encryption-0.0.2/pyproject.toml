@@ -1,0 +1,22 @@
+[build-system]
+requires = ["maturin>=1.7"]
+build-backend = "maturin"
+
+[project]
+name = "lesscode_encryption"
+version = "0.0.2"
+description = "lesscode_encryption是基于Rust语言开发的加密算法库"
+authors = [{ name = "navysummere", email = "navysummer@yeah.net" }]
+license = { text = "MIT" }
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Programming Language :: Rust",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.7"
+
+[tool.maturin]
+manylinux = "off"
