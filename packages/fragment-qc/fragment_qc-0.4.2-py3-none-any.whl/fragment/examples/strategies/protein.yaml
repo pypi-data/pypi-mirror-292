@@ -1,0 +1,86 @@
+##
+## Copyright 2018-2024 Fragment Contributors
+## SPDX-License-Identifier: Apache-2.0
+##
+systems:
+  -
+    name: tetrapeptide
+    source: tetrapeptide.pdb
+    note: Tetrapeptide with two charged atoms
+    charges:
+      352: -1 #ASP
+      414: 1 #LYS 
+
+fragmenters:
+  -
+    name: PDB
+    fragmenter: PDB
+    note: Fragmenter for protein systems
+
+mods:
+  -
+    name: mod_rcaps
+    mod_name: RCaps
+    tolerance: 1.2
+    k: 8
+    cutoff: 3.0
+    ignore_charged: True
+    note: Caps severed covalent bonds between residues (using default settings)
+
+
+backends: 
+  -
+    name: b3lyp
+    program: QChem
+    note: b3lyp through QChem
+    template: |
+        ! Name: {name}
+        $molecule
+        {charge} {mult}
+        {geometry}
+        $end
+        $rem
+            basis 6-31+g*
+            method b3lyp
+            job_type sp
+            thresh  12
+            scf_convergence 8
+            max_scf_cycles 500
+            no_reorient true
+            sym_ignore true
+        $end
+
+calculations:
+  -
+    name: MBE1_b3lyp
+    system: tetrapeptide
+    note: MBE(1) calculation at b3lyp level
+    layers:
+      - 
+        view: 
+          order: 1
+          fragmenter: PDB
+        backend: b3lyp
+        mods: ["mod_rcaps"]
+  -
+    name: MBE2_b3lyp
+    system: tetrapeptide
+    note: MBE(2) calculation at b3lyp level
+    layers:
+      - 
+        view: 
+          order: 2
+          fragmenter: PDB
+        backend: b3lyp
+        mods: ["mod_rcaps"]
+  -
+    name: MBE3_b3lyp
+    system: tetrapeptide
+    note: MBE(3) calculation at b3lyp level
+    layers:
+      - 
+        view: 
+          order: 3
+          fragmenter: PDB
+        backend: b3lyp
+        mods: ["mod_rcaps"]

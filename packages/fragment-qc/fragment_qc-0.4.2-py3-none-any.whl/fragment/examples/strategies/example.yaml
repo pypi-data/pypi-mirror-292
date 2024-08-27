@@ -1,0 +1,34 @@
+##
+## Copyright 2018-2024 Fragment Contributors
+## SPDX-License-Identifier: Apache-2.0
+##
+fragmenters:
+  -
+    name: water_default
+    note: Splits system in water molecules
+    fragmenter: Water
+
+mods:
+  -
+    name: rcapper_default
+    mod_name: RCaps
+    note: The default RCapper accepting the default values
+
+backends:
+  -
+    name: xyz
+    program: XYZ
+    note: XYZ Dummy backend
+
+calculations:
+  -
+    name: test_calc_1
+    note: Test calc 1
+    system: water6
+    layers:
+      - 
+        backend: xyz
+        view:
+          order: 1
+          fragmenter: supersystem
+    
