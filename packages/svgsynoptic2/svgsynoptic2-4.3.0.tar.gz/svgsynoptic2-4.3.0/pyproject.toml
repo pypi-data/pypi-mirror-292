@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "svgsynoptic2/_version.py"
+
+[project]
+name = "svgsynoptic2"
+dynamic = ["version"]
+authors = [
+  {name = "Johan Forsberg", email = "kits-sw@maxiv.lu.se"},
+]
+description = "Widget for displaying a SVG synoptic."
+readme = "README.md"
+dependencies = ["pytango>=9.2.1", "taurus>=4.5", "pyqtwebengine"]
+requires-python = ">= 3.6"
+license = {file = "LICENSE.txt"}
+
+[project.urls]
+Source = "https://gitlab.com/MaxIV/lib-maxiv-svgsynoptic"
+
+[tool.ruff.lint]
+# In addition to the defaults rules, enable:
+# - flake8-bugbear (B)
+# - pyupgrade (UP)
+select = ["E4", "E7", "E9", "F", "B", "UP"]
