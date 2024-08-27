@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: self-discover
+Version: 1.0.4
+Summary: self-discover serves autodiscover (Outlook) and autoconfig (Thunderbird) XML files for mail auto-configuration.
+Author-email: Cyberfusion <support@cyberfusion.io>
+Project-URL: Source, https://github.com/CyberfusionIO/self-discover
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi[all] ==0.112.0
+Requires-Dist: defusedxml ==0.7.1
+
+# self-discover
+
+self-discover serves autodiscover (Outlook) and autoconfig (Thunderbird) XML files for mail auto-configuration.
+
+# Install
+
+## PyPI
+
+Run the following command to install the package from PyPI:
+
+    pip3 install self-discover
+
+# Configure
+
+Pass the following environment variables:
+
+* `IMAP_SERVER_HOSTNAME`
+* `POP3_SERVER_HOSTNAME`
+* `SMTP_SERVER_HOSTNAME`
+
+# Usage
+
+Run the app using an ASGI server such as Uvicorn.
