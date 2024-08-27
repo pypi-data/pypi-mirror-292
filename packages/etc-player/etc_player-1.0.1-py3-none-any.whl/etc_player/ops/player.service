@@ -1,0 +1,22 @@
+[Unit]
+Description=player daemon
+Requires=player.socket
+After=network.target
+
+[Service]
+Type=notify
+User=root
+Group=root
+RuntimeDirectory=player
+WorkingDirectory=/var/www/player
+Environment=PYTHONPATH=/opt/player/bin
+Environment=PLAYER_DIR=/var/www/player
+Environment=PLAYER_DEBUG=0
+ExecStart=/opt/player/bin/gunicorn -w 2 --timeout=600 --graceful-timeout=10 etc_player.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
