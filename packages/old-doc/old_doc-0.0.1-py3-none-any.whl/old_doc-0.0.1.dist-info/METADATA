@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: old-doc
+Version: 0.0.1
+Summary: Easily create synthetic data for HTR and OCR
+Home-page: https://github.com/wjbmattingly/bagpipes-spacy
+Author: WJB Mattingly
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: Pillow
+
+# old-doc
+
+Easily create synthetic data for HTR (Handwritten Text Recognition) and OCR (Optical Character Recognition).
+
+## Description
+
+old-doc is a Python package designed to generate synthetic data for training and testing HTR and OCR models. This tool streamlines the process of creating diverse datasets for improving text recognition systems, allowing users to generate custom manuscript-like pages with various text styles, layouts, and effects.
+
+## Installation
+
+You can install old-doc using pip:
+
+```bash
+pip install old-doc
+```
+
+Note: old-doc requires Python 3.8 or later.
+
+## Features
+
+- Generate synthetic handwritten text images
+- Create synthetic printed document images
+- Customize text content, fonts, layouts, and degradation effects
+- Support for curved text, drop caps, and marginalia
+- Export data in image format and ALTO XML for HTR and OCR tasks
+
+## Usage
+
+Here's an example of how to use old-doc to create a sample manuscript page:
+
+```python
+from old_doc import TextBlock, Column, Row, Page
+
+title = TextBlock("Simple Document", block_type="heading", font_size=40, font_color=(100, 0, 0))
+content = TextBlock("This is a sample text for our document. " * 5, 
+                    font_size=16, font_color=(0, 0, 0), 
+                    curve_amount=0.1,  # Slight curve to the text
+                    word_spacing=10
+                    )
+
+# Create layout
+header_row = Row([Column([title], width=800)], height=60)
+content_row = Row([Column([content], width=800)], height=400)
+
+# Create page
+page = Page([header_row, content_row], 
+            cell_padding=20, 
+            background_color=(250, 240, 230))  # Light parchment color
+
+# Generate the page
+image, alto = page.generate()
+
+# Save the results
+image.save("example.png")
+page.save_alto_xml("example.alto.xml")
+
+# Display the image (optional, requires matplotlib)
+page.visualize_results()
+```
+
+This example creates a manuscript page with a header, date, main content with curved text and potential drop caps, and marginalia. It then generates the page, visualizes it, and saves both the image and ALTO XML output.
