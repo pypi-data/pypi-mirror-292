@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: django-model-viewer
+Version: 1.0.3
+Summary: A useful tool for viewing Django models, their relationships and functions.
+Home-page: https://github.com/lysykot/django-model-viewer
+Author: Mikołaj Łysakowski
+Author-email: mikolaj.lysakowski01@gmail.com
+License: This software may be used, modified, and distributed freely for personal, educational, or research purposes. Commercial use, including but not limited to selling or offering the software as part of a product or service, is prohibited without prior written permission from the author.
+Platform: UNKNOWN
+Classifier: Framework :: Django
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: Django
+
+
+# django-model-viewer
+
+An application that facilitates identification and operation on models. 
+
+It searches for all available models in the project and allows you to select and view details about them by holding the mouse on the parameter of interest. 
+
+After selecting the path between models through relations, after clicking CREATE we will get a path that allows you to get to the last model. 
+
+It is also possible to select a model and click on its name and it will take you to Visual Studio Code to the file and line of the given model.
+
+
+## Installation
+
+
+
+```bash
+  pip install django-model-viewer
+```
+
+Open your project settings and add:
+
+```py
+INSTALLED_APPS = [
+    ***
+    'django_model_viewer',
+    ***
+]
+
+MIDDLEWARE = [
+    ***
+    'django_model_viewer.middleware.AppendApplication',
+    ***
+]
+```
+
+Add path to main urls file
+
+```py
+urlpatterns = [
+    path('models-view/', include('django_model_viewer.urls')),
+    ***
+]
+```
+
+### Run server and use at '/models-view' url
+
+## Authors
+
+- self
+
+
+
