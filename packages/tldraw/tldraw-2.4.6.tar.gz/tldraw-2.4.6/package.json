@@ -1,0 +1,15 @@
+{
+	"scripts": {
+		"dev": "esbuild js/*.jsx --minify --format=esm --bundle --outdir=src/tldraw/static --sourcemap=inline --watch",
+		"build": "node node_config.mjs"
+	},
+	"dependencies": {
+		"@anywidget/react": "^0.0.2",
+		"@tldraw/tldraw": "^2.4.5",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
+	},
+	"devDependencies": {
+		"esbuild": "^0.19.5"
+	}
+}
