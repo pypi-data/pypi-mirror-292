@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkjupyterlab_display_name=self.webpackChunkjupyterlab_display_name||[]).push([[509],{509:(a,e,l)=>{l.r(e),l.d(e,{default:()=>p});const p={id:"jupyterlab-display-name:plugin",activate(){}}}}]);
