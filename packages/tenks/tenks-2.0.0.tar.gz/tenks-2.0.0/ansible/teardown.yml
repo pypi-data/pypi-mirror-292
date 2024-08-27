@@ -1,0 +1,35 @@
+---
+- name: Teardown Tenks resources
+  hosts: all
+  tags:
+    - always
+  tasks:
+    - name: Set command for teardown
+      set_fact:
+        cmd: teardown
+
+- name: Schedule removal of nodes
+  import_playbook: schedule.yml
+
+- name: Deregister flavors in Nova
+  import_playbook: flavor_registration.yml
+  tags: openstack
+
+- name: Perform Ironic node deconfiguration
+  import_playbook: node_enrolment.yml
+  tags: openstack
+
+- name: Deconfigure virtual node BMCs
+  import_playbook: node_bmc.yml
+
+- name: De-instantiate nodes
+  import_playbook: node_instantiation.yml
+
+- name: Deconfigure node networking
+  import_playbook: node_networking.yml
+
+- name: Perform deployment host deconfiguration
+  import_playbook: host_setup.yml
+
+- name: Clean up Tenks state
+  import_playbook: cleanup_state.yml

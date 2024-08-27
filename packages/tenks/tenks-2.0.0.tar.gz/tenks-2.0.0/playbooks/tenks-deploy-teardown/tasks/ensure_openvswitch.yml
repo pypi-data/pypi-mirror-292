@@ -1,0 +1,25 @@
+---
+- name: Install Open vSwitch package repository
+  become: true
+  package:
+    name: "{{ openvswitch_package_repo_name }}"
+    state: present
+  register: result
+  until: result is success
+  retries: 3
+  when: openvswitch_package_repo_name is not none
+
+- name: Install Open vSwitch
+  become: true
+  package:
+    name: "{{ openvswitch_package_name }}"
+    state: present
+  register: result
+  until: result is success
+  retries: 3
+
+- name: Start Open vSwitch service
+  become: true
+  service:
+    name: "{{ openvswitch_service_name }}"
+    state: started

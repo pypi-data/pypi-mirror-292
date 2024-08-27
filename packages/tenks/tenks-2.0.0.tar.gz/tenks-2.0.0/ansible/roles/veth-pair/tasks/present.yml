@@ -1,0 +1,62 @@
+---
+- name: Create veth pair
+  command: >-
+    ip link add dev {{ veth_pair_peer_link_name }}
+    type veth
+    peer name {{ veth_pair_source_link_name }}
+  register: res
+  changed_when: res.rc == 0
+  # Return code 2 means the veth pair already exists
+  failed_when: res.rc not in [0, 2]
+  become: true
+
+- name: Bring each end of veth up
+  command: ip link set {{ item }} up
+  loop:
+    - "{{ veth_pair_peer_link_name }}"
+    - "{{ veth_pair_source_link_name }}"
+  become: true
+  # if the interface is already up, this ultimately ends up being a noop, see:
+  # https://github.com/torvalds/linux/blob/63bdf4284c38a48af21745ceb148a087b190cd21/net/core/dev.c#L7563
+  changed_when: false
+
+- name: Plug veth into OVS bridge
+  openvswitch_port:
+    bridge: "{{ veth_pair_peer_bridge }}"
+    port: "{{ veth_pair_peer_link_name }}"
+  when: veth_pair_peer_bridge_type == "openvswitch"
+  become: true
+
+- name: Plug veth into source bridge
+  when: veth_pair_peer_bridge_type == "linuxbridge"
+  block:
+    - include_tasks: is-attached.yml
+      vars:
+        bridge: "{{ veth_pair_peer_bridge }}"
+        interface: "{{ veth_pair_peer_link_name }}"
+
+    - name: Plug veth into source bridge
+      command: >-
+        ip link set {{ veth_pair_peer_link_name }} master
+        {{ veth_pair_peer_bridge }}
+      when:
+        - not veth_pair_is_attached
+      changed_when: true
+      become: true
+
+- name: Plug veth into source bridge
+  when: veth_pair_plug_into_source | bool
+  block:
+    - include_tasks: is-attached.yml
+      vars:
+        bridge: "{{ veth_pair_source_bridge }}"
+        interface: "{{ veth_pair_source_link_name }}"
+
+    - name: Plug veth into source bridge
+      command: >-
+        ip link set {{ veth_pair_source_link_name }} master
+        {{ veth_pair_source_bridge }}
+      when:
+        - not veth_pair_is_attached
+      changed_when: true
+      become: true

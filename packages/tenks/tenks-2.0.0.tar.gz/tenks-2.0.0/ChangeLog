@@ -1,0 +1,271 @@
+CHANGES
+=======
+
+2.0.0
+-----
+
+* Add Python 3.10 to supported versions
+* Add retries for get\_url and package tasks
+* Fix CI failures
+* Follow ups to venv
+* Skip more ansible-lint style checks
+* Use Yoga branch of Kayobe for gating CI job (p2)
+* Use Yoga branch of Kayobe for gating CI job
+* [CI] Name the Debian version
+* [CI] Ignore .ansible-lint in the main jobs
+* [ansible-lint] Unignore jinja[spacing]
+* [ansible-lint] Restore sanity
+* [CI] Optimise ovs setup
+* [CI] Remove CentOS 7 support leftovers
+* [CI] Gate on CentOS Stream 9 and Rocky Linux 9
+* Use venv instead of virtualenv
+* Add support for EL9
+* Use TOX\_CONSTRAINTS\_FILE
+* Fix ansible-lint errors
+* remove unicode from code
+* Remove py2 unicode markers
+* Add Ubuntu 22.04 Jammy support
+* [CI] Drop Python 3.7 job. Fix ansible-lint errors
+* Use yoga upper constraints for openstack-tox-py36
+* Remove Python 2 leftovers
+* Use Yoga upper constraints to avoid Python version conflict
+* CI: Removing tenks job queue
+* Use jinja2.pass\_context instead of contextfilter
+* [TrivialFix] Use correct project badge in README
+* Add Debian support
+* [CI] Stop overriding default python
+* docs: linux bridge, supported OS distros
+* CI: switch Ubuntu jobs to Focal 20.04
+* Use ansible\_facts to reference facts
+* [CI] Optimise irrelevant files
+* Support UEFI boot mode
+* Explicitly set boot\_mode to legacy BIOS
+* Migrate jobs from CentOS 8 to CentOS 8 Stream
+* Test all supported python version
+* Fix 'The \`libvirt\` module is not importable' error
+* Update pip and setuptools before installing requirements
+* setup.cfg: Replace dashes with underscores
+* Fix ansible lint
+* Fix virtualbmc installation after release of cryptography 3.4
+* Test idempotence of deploy and teardown in CI
+* Increase verbosity of ansible lint command
+* CI: Fix ansible-lint failure
+* Fix invalid argument formatting in the exception message
+* Add py38 package metadata
+* Remove install unnecessary packages
+* Use importlib to take place of imp module
+* Fix ansiblelint 208
+* Use victoria tests
+* Add skip list to ansible lint
+* Set min version of tox to 3.2.1
+* Trust receive filters of baremetal nodes
+* Install python setuptools & virtualenv
+* Switch to newer openstackdocstheme and reno versions
+* Py2 - Remove six, mock and future
+* Drop CentOS 7 jobs
+* Add pep8 import order check
+* Fix issue with VirtualBMC client path
+* Update master for stable/1.0
+* Cleanup py27 support
+* Refactor virtualbmc-domain tasks into a module
+* Ensure veth pairs are uniquely named
+* Fix node scheduling with pipe in hostvars
+* Support linux bridge in addition to OVS
+* Stop gzipping logs in get-logs.sh
+* CI: Switch to kayobe-overcloud-centos8
+* CentOS 8 support
+* Bump ansible version constraints to >=2.7,<2.10
+* Pin virtualbmc to <2 when using Python 2
+* Install virtualbmc to system when SELinux is enabled
+* Use Python 2 on CentOS 7
+* Enforce running tox with correct python version based on env
+* Drop python 2.7 support and testing
+* CI: Use python3 in deploy-teardown jobs
+
+1.0.0
+-----
+
+* Add missing ws between words
+* Switch to Ussuri job
+* Do not install Open vSwitch
+* Add debugging statements to wait for resources loop
+* Build pdf doc
+* Update Python 3 test runtimes for Train
+* Fix ansible lint job
+* Ignore traits with a COMPUTE\_ prefix in wait for placement
+* Use zuul checkout for stackhpc-libvirt roles
+* Replace git.openstack.org URLs with opendev.org URLs
+* OpenDev Migration Patch
+* Ignore COMPUTE\_NET\_ATTACH\_INTERFACE trait when waiting for placement
+* Fix Zuul galaxy install task
+* Add playbook tags
+* Adding python 3.6 unit test
+* Fix ansible lint and ubuntu deployment
+* Support specifying deploy images via URL
+* Default Ironic node properties are bogus
+* Use node state rather than 'cmd'
+* Configure VM interfaces in macvtap passthrough mode
+* Allow setting node and volume name prefixes per-spec
+* Change openstack-dev to openstack-discuss in setup.cfg
+* Add os-client-config to requirements.txt
+* Check for specific error messages in ironic version check
+* Changes to support standalone ironic
+* Support legacy drivers
+* Support ocata release of ironic
+* Gate on kayobe overcloud deploy job
+* Fix ansible-lint nits
+* Changes following becoming an official project
+* Use only the first 6 characters of the node name in link names
+* Fix skipping glance check if deploy images not defined
+* Pass node and volume name prefixes to tenks\_update\_state
+* Fail nicely if ironic port lookup fails
+* Fix deploy and teardown without node enrolment
+* Add support for setting the libvirt connection uri
+* Wait for resources to become available
+* Add venv tox environment
+* Add support for generating release notes
+* Add a zuul job to deploy and teardown a tenks cluster
+* Remove dependency on bridge-utils
+* Open vSwitch service name is different between distros
+* Use state: started instead of state:running
+* Abstract over differerences in Open vSwitch package name
+* Add an initial set of zuul jobs
+* Add an initial noop job to bootstrap zuul
+* Only set Ironic port attributes when changed
+* Fix lint warning concerning task names
+* Use extend-ignore in preference to ignore
+* Add a .gitreview file
+* ip on RedHat based distros is at /usr/sbin/ip
+* Use /usr/bin/virsh instead of /bin/virsh
+* ovs-vsctl list-br requires root privileges
+* Support Debian based GNU/Linux distributions
+* Use package instead of yum
+* path of \`ip\` command is system dependent
+* Reorder installation steps
+* Bring each end of veth pair up after creation
+* Move deploy image ID finding to enrolment role
+* Add boot mode configuration to to-do list
+* Add assumptions to install
+* Add to-do list to development
+* Add more substance to README
+* Add flavors and deploy images to example overrides
+* Address doc review comments
+* Allow deploy\_kernel/ramdisk names to be specified
+* Migrate documentation to Sphinx
+* Prefix volume names with node name
+* Add stestr config file
+* Document console\_log\_enabled flag
+* Add additional tox environments to Travis
+* Fix typo in README
+* Move absent node pruning to cleanup section
+* Remove unnecessary test
+* Add additional \_process\_specs tests
+* Run coverage testing by default in tox
+* Add \_process\_specs tests
+* Add coverage testing
+* Save task arguments and vars in object
+* Fix mock import for Python 2
+* Add basis for action plugin tests
+* Update documentation
+* Persist physnet indices in state file
+* Add inventory\_hostname parameter to filter plugins
+* Add new tenks\_state\_update plugin
+* Add updated diagram
+* Add names to set\_fact tasks
+* Improve comments for override file variables
+* Split deployment and teardown playbooks
+* Disable automatic power-on of Libvirt nodes
+* Fix multiple 'when' clauses
+* Allow teardown in Ironic enrolment
+* Allow teardown of Nova flavors
+* Rename virtualbmc-domain internal variable
+* Fix veth-pair role for teardown
+* Ensure physical\_network.yml handles teardown
+* Fix veth\_pair\_state typo
+* Add 'teardown' action to virtualbmc-domain role
+* Add 'teardown' action to veth-pair role
+* Restructure playbooks for multiple commands
+* Fix Markdown title formatting
+* Add documentation about override file
+* Extract Ironic node extra specs dicts
+* Set interfaces and properties on Ironic nodes
+* Add defaults for all Ironic interfaces
+* Remove 'bmc type' concept
+* Add diagram update instructions
+* Copy requirements file to remote host
+* Use become for all Open vSwitch tasks
+* Use full path for ip command
+* Move pip settings to group\_vars/all
+* Fix upper constraints typo
+* Use round-robin scheduling instead of all-on-one
+* Use basepython of 2.7
+* Add Travis CI config file
+* Add Ansible structure diagram to README
+* Add Nova flavor registration
+* Use node ironic\_config details during enrolment
+* Add bmc\_type checking for virtualbmc
+* Save ironic\_config in node details
+* Make specs, types and flavors more extensible
+* Remove properties from Ironic nodes
+* Move node enrolment up a level
+* Fix PEP8 and ansible-lint warnings
+* Split deployment into stages
+* Split deploy.yml
+* Allow binary and decimal capacities in size string
+* Use dict query instead of iteritems
+* Fix IPMI address typo
+* Fix PEP8 issues
+* Add Ironic enrolment Ansible role
+* Ensure nodes are always sorted alphabetically
+* Add additional network naming filter plugins
+* Consolidate interface/link naming
+* Use loop rather than with\_items
+* Install package dependencies for virtualbmc daemon
+* Use become=true for OVS bridge creation
+* Fix OVS detection
+* Fix path to playbook in README
+* Extract IPMI configuration out of role
+* Move VBMCD service name into vars file
+* Set up VBMCD with Libvirt host setup
+* Check IPMI port count before creating VMs
+* Split Virtual BMC role into two
+* Refer to nodes, rather than VMs
+* Check existence of node types referenced in specs
+* Fix typo in scheduling plugin
+* Extract Virtual BMC tasks into a role
+* Move Python package vars together
+* Gather hypervisor facts in parallel pre-scheduling
+* Fix veth-pair role README typos
+* Use a separate requirements file for venv packages
+* Use Ansible variables for relative paths
+* Configure Virtual BMC
+* Use Ansible variables for relative paths
+* Remove unused variable
+* Remove defaults for specs and vm\_types
+* Remove unnecessary Pip dependency
+* Perform Libvirt host setup after Tenks host setup
+* fix Python doc typo
+* Fix Ansible lint errors
+* Fix PEP8 import errors
+* Add basic package structure
+* Rename flavours to VM types
+* Add downloaded Galaxy roles to .gitignore
+* Add header to Python files
+* Use base log directory
+* Remove 'controllers' group in favour of localhost
+* Add dependency installation to README
+* Add basis for README
+* Formatting fixes
+* Update Libvirt interfaces plugin for veth naming
+* Use more logical names for playbooks
+* Fix veth suffix naming scheme
+* Use contextfilter decorator to simplify plugin
+* WIP: Libvirt VM creation
+* Clean up scheduling code
+* Add libvirt\_vm\_config.py filter plugins
+* Add veth-pair role
+* WIP: Create Libvirt VMs
+* Add basis for VM scheduling to hypervisors
+* Split out group\_vars
+* Add initial host setup
+* Initial commit

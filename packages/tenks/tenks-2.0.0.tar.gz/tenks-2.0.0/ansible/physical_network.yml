@@ -1,0 +1,168 @@
+---
+
+- name: Gather os specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_facts.distribution }}-{{ ansible_facts.distribution_major_version }}.yml"
+        - "{{ ansible_facts.distribution }}.yml"
+        - "{{ ansible_facts.os_family }}.yml"
+      skip: true
+  tags: vars
+
+- name: Fail if source interface does not exist
+  fail:
+    msg: >
+      The interface {{ source_interface }} specified for the physical network
+      {{ network_name }} does not exist.
+  when: source_interface not in ansible_facts.interfaces
+
+### Firstly, some fact gathering.
+# Start off by assuming the source interface is direct, unless proven
+# otherwise.
+- name: Set initial value for source_type
+  set_fact:
+    source_type: direct
+
+- name: Get source interface details
+  command: >
+    {{ tenks_ip_path }} -details link show {{ source_interface }}
+  register: if_details
+  changed_when: false
+
+- name: Register source interface as a Linux bridge
+  set_fact:
+    source_type: linuxbridge
+  when: if_details.stdout_lines[-1].split()[0] == 'bridge'
+
+- name: Register source interface as an Open vSwitch bridge
+  when: if_details.stdout_lines[-1].split()[0] == 'openvswitch'
+  block:
+    - name: Get list of OVS bridges
+      command: ovs-vsctl list-br
+      register: ovs_bridges
+      changed_when: false
+      become: true
+
+    - name: Register source interface as an Open vSwitch bridge
+      set_fact:
+        source_type: openvswitch
+      when: source_interface in ovs_bridges.stdout_lines
+
+
+### Actual configuration starts here.
+- name: Ensure Open vSwitch bridge is in the correct state
+  openvswitch_bridge:
+    bridge: "{{ tenks_bridge }}"
+    state: "{{ state }}"
+  become: true
+  when: bridge_type == "openvswitch"
+
+- name: Create Tenks bridge
+  when: bridge_type == "linuxbridge"
+  block:
+    - name: Check if Tenks bridge exists
+      stat:
+        path: /sys/class/net/{{ tenks_bridge }}
+      register: stat_result
+
+    - name: Ensure Tenks bridge exists
+      vars:
+        link_operation: "{{ 'add' if state == 'present' else 'del' }}"
+      command: >-
+        {{ tenks_ip_path }} link {{ link_operation }} {{ tenks_bridge }} type bridge
+      changed_when: true
+      become: true
+      when: >-
+        state == 'present' and not stat_result.stat.exists or
+        state == 'absent' and stat_result.stat.exists
+
+    - name: Ensure Tenks bridge is up
+      command: >-
+        {{ tenks_ip_path }} link set {{ tenks_bridge }} up
+      changed_when: true
+      become: true
+      when:
+        - state == 'present'
+        - not stat_result.stat.exists
+
+- name: Configure existing Linux bridge
+  when: source_type == 'linuxbridge'
+  include_role:
+    name: veth-pair
+  vars:
+    veth_pair_peer_bridge_type: "{{ bridge_type }}"
+    veth_pair_peer_bridge: "{{ tenks_bridge }}"
+    veth_pair_peer_link_name: >-
+      {{ veth_prefix + tenks_bridge + veth_bridge_peer_suffix }}
+    veth_pair_source_bridge: "{{ source_interface }}"
+    veth_pair_source_link_name: >-
+      {{ veth_prefix + tenks_bridge + veth_bridge_source_suffix }}
+    veth_pair_plug_into_source: true
+    veth_pair_state: "{{ state }}"
+
+- name: Configure existing Open vSwitch bridge
+  when: source_type == 'openvswitch'
+  block:
+    - name: Configure patch port on Tenks bridge
+      openvswitch_port:
+        bridge: "{{ tenks_bridge }}"
+        port: "{{ veth_prefix + tenks_bridge + veth_bridge_peer_suffix }}"
+        # Despite the module documentation, `set` will happily take multiple
+        # properties.
+        set: >-
+          Interface {{ veth_prefix + tenks_bridge + veth_bridge_peer_suffix }}
+            type=patch
+            options:peer={{ veth_prefix + tenks_bridge +
+                            veth_bridge_source_suffix }}
+      # If 'absent', we've already deleted the bridge earlier, so no need to
+      # delete the port.
+      when: state != 'absent'
+      become: true
+
+    - name: Configure patch port on source bridge
+      openvswitch_port:
+        bridge: "{{ source_interface }}"
+        port: "{{ veth_prefix + tenks_bridge + veth_bridge_source_suffix }}"
+        set: >-
+          Interface {{ veth_prefix + tenks_bridge + veth_bridge_source_suffix }}
+            type=patch
+            options:peer={{ veth_prefix + tenks_bridge +
+                            veth_bridge_peer_suffix }}
+        state: "{{ state }}"
+      become: true
+
+- name: Plug source interface into Tenks OVS bridge
+  openvswitch_port:
+    bridge: "{{ tenks_bridge }}"
+    port: "{{ source_interface }}"
+    state: "{{ state }}"
+  when:
+    - bridge_type == 'openvswitch'
+    - source_type == 'direct'
+    # If 'absent', we've already deleted the bridge earlier, so no need to
+    # unplug the interface.
+    - state != 'absent'
+  become: true
+
+- name: Plug source interface into Tenks Linux bridge
+  when:
+    - bridge_type == 'linuxbridge'
+    - source_type == 'direct'
+    # If 'absent', we've already deleted the bridge earlier, so no need to
+    # unplug the interface.
+    - state != 'absent'
+  become: true
+  block:
+    - name: Speculatively check interface's master
+      command: >-
+        realpath /sys/class/net/{{ source_interface }}/master
+      register: master_result
+      failed_when: false
+      changed_when: false
+
+    - name: Plug source interface into Tenks Linux bridge
+      command: >-
+        {{ tenks_ip_path }} link set dev {{ source_interface }} master {{ tenks_bridge }}
+      changed_when: true
+      when: master_result.rc != 0

@@ -1,0 +1,13 @@
+---
+- name: Ensure domain {{ vbmc_domain }} is configured
+  virtualbmc_domain:
+    domain: "{{ vbmc_domain }}"
+    ipmi_address: "{{ vbmc_ipmi_address }}"
+    ipmi_port: "{{ vbmc_ipmi_port }}"
+    ipmi_username: "{{ vbmc_ipmi_username }}"
+    ipmi_password: "{{ vbmc_ipmi_password }}"
+    libvirt_uri: "{{ vbmc_libvirt_uri | default(omit, true) }}"
+    log_directory: "{{ vbmc_log_directory | default(omit, true) }}"
+    state: "{{ vbmc_state }}"
+    vbmc_path: "{{ vbmc_virtualenv_path | default('/usr/local', true) ~ '/bin/vbmc' }}"
+  become: true

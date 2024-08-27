@@ -1,0 +1,27 @@
+---
+- name: Enroll nodes in Ironic
+  hosts: localhost
+  tags:
+    - node-enrolment
+    - node-enrollment
+  tasks:
+    - name: Load state from file
+      include_vars:
+        file: "{{ state_file_path }}"
+        name: tenks_state
+
+    - name: Perform Ironic enrolment for each hypervisor's nodes
+      include_role:
+        name: ironic-enrolment
+      vars:
+        ironic_deploy_kernel: "{{ deploy_kernel }}"
+        ironic_deploy_ramdisk: "{{ deploy_ramdisk }}"
+        ironic_nodes: "{{ alloc.value.nodes }}"
+        ironic_hypervisor: "{{ alloc.key }}"
+        ironic_virtualenv_path: "{{ virtualenv_path }}"
+        ironic_python_upper_constraints_url: >-
+          {{ python_upper_constraints_url }}
+      loop: "{{ query('dict', tenks_state) }}"
+      loop_control:
+        loop_var: alloc
+      when: ironic_nodes | selectattr('ironic_config', 'defined') | list | length > 0

@@ -1,0 +1,49 @@
+---
+- name: Ensure we have facts about all hypervisors before scheduling begins.
+  hosts: hypervisors
+  tags:
+    - schedule
+  gather_facts: true
+
+- name: Update Tenks state
+  hosts: localhost
+  tags:
+    - schedule
+  tasks:
+    - name: Check that all specified node types exist
+      fail:
+        msg: >
+          The non-existent node type {{ item.type }} was specified in
+          'specs'.
+      when: item.type not in node_types
+      loop: "{{ specs }}"
+
+    - name: Check if an existing state file exists
+      stat:
+        path: "{{ state_file_path }}"
+      register: stat_result
+
+    - name: Read existing state from file
+      include_vars:
+        file: "{{ state_file_path }}"
+        name: current_state
+      when: stat_result.stat.exists
+
+    - name: Get updated state
+      tenks_update_state:
+        node_name_prefix: "{{ node_name_prefix | default(omit) }}"
+        node_types: "{{ node_types }}"
+        specs: "{{ specs }}"
+        state: "{{ current_state | default(omit) }}"
+        vol_name_prefix: "{{ vol_name_prefix | default(omit) }}"
+      register: new_state
+
+    - name: Write new state to file
+      copy:
+        # tenks_schedule lookup plugin outputs a dict. Pretty-print this to
+        # persist it in a YAML file.
+        # NOTE(mgoddard): Use .get to avoid a nasty error in ansible-lint
+        # (cannot represent an object).
+        content: "{{ new_state.get('result') | to_nice_yaml }}"
+        dest: "{{ state_file_path }}"
+        mode: preserve

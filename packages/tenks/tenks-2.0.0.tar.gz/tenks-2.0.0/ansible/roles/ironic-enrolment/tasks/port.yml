@@ -1,0 +1,55 @@
+---
+- name: Get Ironic port UUID
+  command: >-
+    '{{ ironic_virtualenv_path }}/bin/openstack' baremetal port list
+       --format value
+       --column UUID
+       --address {{ mac }}
+  register: uuid
+  changed_when: false
+
+- name: Fail if port is not found
+  fail:
+    msg: Ironic port with MAC address {{ mac }} not found
+  when: not uuid.stdout
+
+- name: Get physical network name
+  set_fact:
+    physnet: >-
+      {{ source_interface |
+         source_link_to_physnet_name(inventory_hostname=ironic_hypervisor) }}
+
+- name: Get bridge name
+  set_fact:
+    bridge: "{{ physnet | bridge_name }}"
+
+- name: Get existing Ironic port attributes
+  command: >-
+    {{ ironic_virtualenv_path }}/bin/openstack baremetal port show
+      {{ uuid.stdout }} -f json
+  register: port_attributes_output
+  changed_when: false
+
+- name: Set Ironic port attributes
+  vars:
+    port_attributes: "{{ port_attributes_output.stdout | from_json }}"
+    switch_id: "{{ hostvars[ironic_hypervisor].ansible_facts[bridge].macaddress }}"
+    switch_info: "{{ bridge }}"
+    port_id: >-
+      {{ source_interface
+        | source_to_peer_link_name(inventory_hostname=ironic_hypervisor) }}
+  command: >-
+    '{{ ironic_virtualenv_path }}/bin/openstack' baremetal port set
+      {{ uuid.stdout }}
+      {% if supports_port_physnet %}
+      --physical-network '{{ physnet }}'
+      {% endif %}
+      --local-link-connection switch_id='{{ switch_id }}'
+      --local-link-connection switch_info='{{ bridge }}'
+      --local-link-connection port_id='{{ port_id }}'
+  changed_when: true
+  when: >-
+    (supports_port_physnet and port_attributes.physical_network != physnet) or
+    port_attributes.local_link_connection.get('switch_id') != switch_id or
+    port_attributes.local_link_connection.get('switch_info') != switch_info or
+    port_attributes.local_link_connection.get('port_id') != port_id

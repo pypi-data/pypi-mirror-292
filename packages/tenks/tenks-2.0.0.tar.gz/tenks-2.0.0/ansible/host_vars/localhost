@@ -1,0 +1,132 @@
+---
+# The Tenks command to perform. 'deploy' will spin up a cluster to the given
+# specification; 'teardown' will tear it down.
+cmd: deploy
+
+# node_types is a dict that defines different sets of node specifications,
+# keyed by a 'node type name' to associate with each set of specifications. An
+# example of the format of this variable is below:
+#
+# node_types:
+#   # The type name.
+#   type0:
+#     # The amount of RAM, in mebibytes.
+#     memory_mb: 1024
+#     # The number of virtual CPUs.
+#     vcpus: 2
+#     # A list of volumes, each with a capacity.
+#     volumes:
+#       - capacity: 2GB
+#     # A list of physical network names to connect to. These physical network
+#     # names should be keyed in `physnet_mappings` in each hypervisor's host
+#     # vars.
+#     physical_networks:
+#       - physnet1
+#     # The Ironic driver for nodes of this type. If not set,
+#     # `default_ironic_driver` will be used.
+#     ironic_driver: ipmi
+#     # If true, log the nodes' console output to files in `log_directory`,
+#     # instead of to a PTY. If false, direct terminal output to a PTY at
+#     # serial port 0. If not set, the stackhpc.libvirt-vm role will handle the
+#     # default behaviour.
+#     console_log_enabled: false
+node_types: {}
+
+# specs is a list of configurations of nodes to be created. Each configuration
+# can specify the number of nodes to be created, the type (from `node_types`)
+# of these nodes, and optionally configuration for the Ironic nodes to be
+# enroled from these nodes. If `ironic_config` is not set, Ironic enrolment
+# will be skipped for that spec.
+# For example:
+#
+# specs:
+#     # The type in `node_types` that this spec refers to. Required.
+#   - type: type0
+#     # The number of nodes to create of this spec. Required.
+#     count: 4
+#     # Node name prefix for this spec. Optional. If unspecified the global
+#     'node_name_prefix' variable will be used instead (default 'tk').
+#     node_name_prefix: bm
+#     # Volume name prefix. Optional. If unspecified the global
+#     'vol_name_prefix' variable will be used instead (default 'vol').
+#     vol_name_prefix: volly
+#     # The Ironic configuration for nodes of this spec. Optional.
+#     ironic_config:
+#       # The resource class that nodes of this spec should use in Ironic.
+#       # Required if `ironic_config` has been specified.
+#       resource_class: my_rc
+#       # Traits that nodes of this spec should have in Ironic. Optional -
+#       # defaults to [].
+#       traits: []
+#       # A dict of key-value pairs to be set as properties on the Ironic
+#       # nodes. Can be used to set capabilities. Optional - defaults to {}.
+#       properties: {}
+#       # The following variables are all optional; if not set, Ironic's
+#       # default value will be used.
+#       bios_interface: no-bios
+#       boot_interface: pxe
+#       console_interface: ipmitool-socat
+#       deploy_interface: iscsi
+#       inspect_interface: inspector
+#       management_interface: ipmitool
+#       network_interface: neutron
+#       power_interface: ipmitool
+#       raid_interface: no-raid
+#       storage_interface: noop
+#       vendor_interface: ipmitool
+specs: []
+
+# nova_flavors is a list of Nova flavors to be created. Each flavor must
+# specify the resource class it is associated with, as well as the Tenks node
+# type whose hardware specs should be used.
+# For example:
+#
+# nova_flavors:
+#     # Required.
+#   - resource_class: my_rc
+#     # Required.
+#     node_type: type0
+#     # Defaults to `resource_class`.
+#     name: my_flavor
+#     # Optional, defaults to [].
+#     required_traits: []
+#     # Optional, defaults to [].
+#     forbidden_traits: []
+#     # Extra key-value pairs to add to the flavor's specs. Optional, defaults
+#     # to {}.
+#     custom_specs: {}
+nova_flavors: []
+
+# The Glance name or UUID of the image to use for the deployment kernel.
+deploy_kernel:
+# The Glance name or UUID of the image to use for the deployment ramdisk.
+deploy_ramdisk:
+
+# The path to the file which contains the state of the current Tenks cluster
+# that is deployed. This includes details such as allocations of nodes to
+# hypervisors, and unique indices of physical networks.
+state_file_path: >-
+    {{ '/'.join([(playbook_dir | dirname), 'state.yml']) }}
+
+# The default Ironic driver of a node. Can be overridden per-node.
+default_ironic_driver: ipmi
+
+# The default boot mode of a node. One of 'bios' or 'uefi'. Can be
+# overridden per-node via properties.capabilities.boot_mode.
+default_boot_mode: bios
+
+# Maps Ironic drivers to the BMC emulation tool they support.
+bmc_emulators:
+  agent_ipmitool: virtualbmc
+  agent_ipmitool_socat: virtualbmc
+  ipmi: virtualbmc
+  pxe_ipmitool: virtualbmc
+  pxe_ipmitool_socat: virtualbmc
+  pxe_snmp: virtualpdu
+  redfish: sushy-tools
+  snmp: virtualpdu
+
+# Whether to wait for nodes' resources to be registered in the Placement
+# service. If the Placement service is not in use, for example in standalone
+# ironic installations, this flag should be set to 'false'.
+wait_for_placement: true

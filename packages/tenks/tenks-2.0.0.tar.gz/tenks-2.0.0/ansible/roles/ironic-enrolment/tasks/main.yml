@@ -1,0 +1,121 @@
+---
+- name: Check that OpenStack credentials exist in the environment
+  fail:
+    msg: >
+      OpenStack credentials were not found in the environment.  Ensure the
+      OpenStack credentials exist in your environment, perhaps by sourcing your
+      RC file.
+  when:
+    - not lookup('env', 'OS_USERNAME')
+    - not lookup('env', 'OS_CLOUD')
+
+- name: Ensure the latest versions of pip and setuptools are installed
+  pip:
+    name: "{{ item }}"
+    state: latest # noqa package-latest
+    virtualenv: "{{ ironic_virtualenv_path }}"
+    extra_args: >-
+      -c {{ ironic_python_upper_constraints_url }}
+  with_items:
+    - pip
+    - setuptools
+
+# This is useful to get a uniquely generated temporary path.
+- name: Create temporary file for pip requirements
+  tempfile:
+  register: req_file
+
+- name: Copy requirements file to temporary location
+  copy:
+    src: requirements.txt
+    dest: "{{ req_file.path }}"
+    mode: preserve
+
+- name: Ensure Python requirements are installed
+  pip:
+    requirements: "{{ req_file.path }}"
+    extra_args: >-
+      -c {{ ironic_python_upper_constraints_url }}
+    virtualenv: "{{ ironic_virtualenv_path }}"
+  register: result
+  until: result is success
+  retries: 3
+
+# If using clouds.yaml for authentication we need to pass in the ironic_url
+# argument to the os_ironic module, due to a quirk in its implementation.
+# Grab the endpoint from the file.
+- name: Set ironic_url for os_ironic module
+  when: lookup('env', 'OS_CLOUD') | length > 0
+  block:
+    - name: Query clouds.yaml
+      os_client_config:
+        clouds: "{{ lookup('env', 'OS_CLOUD') }}"
+      delegate_to: localhost
+      vars:
+        ansible_python_interpreter: >-
+          {{ lookup('env', 'VIRTUAL_ENV') | default('/usr', true) ~ '/bin/python' }}
+
+    - name: Fail if the cloud was not found
+      fail:
+        msg: >
+          Cloud {{ lookup('env', 'OS_CLOUD') }} was not found in clouds.yaml
+      when: >-
+        openstack.clouds | length == 0 or
+        not openstack.clouds[0].get('auth', {}).get('endpoint')
+
+    - name: Set a fact about the ironic API endpoint
+      set_fact:
+        ironic_url: "{{ openstack.clouds[0].auth.endpoint }}"
+
+- name: Detect ironic API version
+  command: >-
+    {{ ironic_virtualenv_path }}/bin/openstack
+    --os-baremetal-api-version 1.34
+    baremetal node list
+  register: api_version_result
+  changed_when: false
+  failed_when:
+    - api_version_result.rc != 0
+    # 'invalid choice' if the client doesn't support 1.34.
+    - "'invalid choice' not in api_version_result.stderr"
+    # 'not supported' if the server doesn't support 1.34.
+    - "'not supported' not in api_version_result.stderr"
+
+# This is used in port.yml.
+- name: Set a fact about whether Ironic supports physical network awareness
+  set_fact:
+    supports_port_physnet: "{{ api_version_result.rc == 0 }}"
+
+# This command will return the UUIDs, regardless of whether
+# ironic_deploy_kernel and ironic_deploy_ramdisk are image UUIDs or names.
+- name: Get OpenStack deployment image UUIDs
+  command: >-
+    '{{ ironic_virtualenv_path }}/bin/openstack' image show
+      '{{ item }}' --format value --column id
+  loop:
+    - "{{ ironic_deploy_kernel }}"
+    - "{{ ironic_deploy_ramdisk }}"
+  # ironic_deploy_kernel/ramdisk default to none. We don't need to know them
+  # for enrolment to continue.
+  when:
+    - item is not none
+    - item | length > 0
+    - item is not match('^http[s]?://')
+  register: deploy_image_ids
+  changed_when: false
+
+- name: Configure Ironic node enrolment
+  include_tasks: node.yml
+  vars:
+    node: "{{ ironic_node }}"
+    ipmi_port: "{{ ironic_node.ipmi_port }}"
+    ironic_deploy_kernel_uuid: >-
+      {{ deploy_image_ids.results.0.stdout | default(ironic_deploy_kernel) }}
+    ironic_deploy_ramdisk_uuid: >-
+      {{ deploy_image_ids.results.1.stdout | default(ironic_deploy_ramdisk) }}
+  loop: "{{ ironic_nodes | sort(attribute='name') }}"
+  loop_control:
+    loop_var: ironic_node
+  # If no ironic_config options were set, this means that enrolment should not
+  # be performed.
+  when: "'ironic_config' in ironic_node"

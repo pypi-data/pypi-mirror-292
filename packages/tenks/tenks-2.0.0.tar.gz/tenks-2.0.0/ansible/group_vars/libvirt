@@ -1,0 +1,36 @@
+---
+libvirt_pool_name: tenks
+libvirt_pool_path: /var/lib/libvirt/tenks_pool/
+libvirt_pool_type: dir
+# Capacity is irrelevant for directory-based pools.
+libvirt_pool_capacity:
+libvirt_pool_mode: 755
+libvirt_pool_owner: "{{ ansible_facts.user_id }}"
+libvirt_pool_group: "{{ ansible_facts.user_id }}"
+
+# By default, allow QEMU without hardware virtualisation since this is a
+# development tool.
+libvirt_require_vt: false
+
+# This determines the libvirt unix_sock_dir configuration option. You can set
+# this option to the empty string if you want to use the default location. The
+# main use case is to run multiple instances of libvirt side-by-side.
+libvirt_custom_socket_path: ""
+
+# Sets the path to the libvirtd PID file. You will need to change this if you
+# want to run multiple instances of the libvirt daemon side-by-side.
+libvirt_custom_pid_path: >-
+  {%- if libvirt_custom_socket_path -%}
+  {{ libvirt_custom_socket_path }}/libvirt.pid
+  {%- endif -%}
+
+# This controls the libvirt connection URI. This value is used on commands run
+# on the hypervisor (as opposed to remote connections).
+libvirt_local_uri: >-
+  {%- if libvirt_custom_socket_path -%}
+  qemu+unix:///system?socket={{ libvirt_custom_socket_path }}/libvirt-sock
+  {%- endif %}
+
+# Whether to trust the receive filters of Tenks VMs. This gets mapped to the
+# trustGuestRxFilters' attribute of VM interfaces.
+libvirt_vm_trust_guest_rx_filters: true

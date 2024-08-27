@@ -1,0 +1,44 @@
+---
+# Map physical network names to their source device. This can be either an
+# existing interface or an existing bridge.
+physnet_mappings: {}
+
+system_requirements:
+  - python3-libvirt
+
+# Tenks bridge type. Options are "openvswitch", "linuxbridge".  Default is
+# "openvswitch". Note that this relates to bridges created by Tenks, not the
+# source devices in physnet_mappings.
+bridge_type: "openvswitch"
+
+# Naming scheme for bridges created by tenks for physical networks is
+# {{ bridge_prefix + i }}, where `i` is the index of the physical network in
+# physnet_mappings (sorted alphabetically by key).
+bridge_prefix: brtenks
+
+# Prefix for all veth links.
+veth_prefix: 'p-'
+
+# Suffix for veth links attached to a Tenks bridge.
+veth_bridge_peer_suffix: '-{% if bridge_type == "openvswitch" %}ovs{% else %}br{% endif %}'
+# Suffix for veth links attached to a source Linux bridge.
+veth_bridge_source_suffix: '-phy'
+
+# Suffix for veth links attached to a Tenks bridge.
+veth_node_peer_suffix: '-{% if bridge_type == "openvswitch" %}ovs{% else %}br{% endif %}'
+# Suffix for veth links attached to a node. Nodes aren't physical so '-phy'
+# doesn't seem right.
+veth_node_source_suffix: '-tap'
+
+# Directory in which to store Tenks logs.
+log_directory: /var/log/tenks/
+
+# The address on which VBMC will listen for node IPMI communication.
+ipmi_address: 0.0.0.0
+# The range of ports available for use for node IPMI communication.
+ipmi_port_range_start: 6230
+ipmi_port_range_end: 6240
+# The username to use for node IPMI communication.
+ipmi_username: username
+# The password to use for node IPMI communication.
+ipmi_password: password

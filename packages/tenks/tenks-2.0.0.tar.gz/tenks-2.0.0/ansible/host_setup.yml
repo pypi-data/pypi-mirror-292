@@ -1,0 +1,83 @@
+---
+- name: Create Tenks venv
+  hosts: localhost:hypervisors
+  tags:
+    - host-setup
+  tasks:
+    - name: Ensure Tenks venv is properly set up
+      when: virtualenv_path
+      block:
+
+        - name: Init Tenks venv and upgrade pip
+          pip:
+            name: pip
+            state: latest  # noqa package-latest
+            virtualenv: "{{ virtualenv_path }}"
+            virtualenv_command: "{{ ansible_facts.python.executable }} -m venv"
+            virtualenv_site_packages: true
+
+        - name: Upgrade setuptools
+          pip:
+            name: setuptools
+            state: latest  # noqa package-latest
+            virtualenv: "{{ virtualenv_path }}"
+
+- name: Load current Tenks state
+  hosts: localhost
+  tags:
+    - host-setup
+  tasks:
+    - name: Load state from file
+      include_vars:
+        file: "{{ state_file_path }}"
+        name: tenks_state
+
+- name: Run hypervisor setup
+  hosts: hypervisors
+  tags:
+    - host-setup
+  vars:
+    physnet_indices: >-
+      {{ hostvars.localhost.tenks_state[inventory_hostname].physnet_indices }}
+  tasks:
+    - include_tasks: hypervisor_setup.yml
+
+- name: Set up libvirt and vbmc
+  hosts: libvirt
+  tags:
+    - host-setup
+  tasks:
+    - name: Set up host
+      when: cmd == 'deploy'
+      block:
+        - name: Configure host for Libvirt
+          include_role:
+            name: stackhpc.libvirt-host
+          vars:
+            libvirt_host_pools:
+              - name: "{{ libvirt_pool_name }}"
+                type: "{{ libvirt_pool_type }}"
+                capacity: "{{ libvirt_pool_capacity }}"
+                path: "{{ libvirt_pool_path }}"
+                mode: "{{ libvirt_pool_mode }}"
+                owner: "{{ libvirt_pool_owner }}"
+                group: "{{ libvirt_pool_group }}"
+            libvirt_host_require_vt: "{{ libvirt_require_vt }}"
+            libvirt_host_uri: "{{ libvirt_local_uri }}"
+            libvirt_host_socket_dir: "{{ libvirt_custom_socket_path }}"
+            libvirt_host_pid_path: "{{ libvirt_custom_pid_path }}"
+            libvirt_host_enable_efi_support: >-
+              {{ hostvars.localhost.tenks_state[inventory_hostname].nodes |
+                 default([]) |
+                 map('set_libvirt_boot_firmware') |
+                 selectattr('boot_firmware', 'equalto', 'efi') |
+                 list |
+                 length > 0 }}
+
+        - name: Set up Virtual BMC daemon
+          include_role:
+            name: virtualbmc-daemon
+          vars:
+            vbmcd_virtualenv_path: "{{ virtualenv_path }}"
+            vbmcd_python_upper_constraints_url: >-
+              {{ python_upper_constraints_url }}
