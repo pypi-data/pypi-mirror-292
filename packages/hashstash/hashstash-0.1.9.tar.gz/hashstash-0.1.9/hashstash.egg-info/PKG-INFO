@@ -1,0 +1,249 @@
+Metadata-Version: 2.1
+Name: hashstash
+Version: 0.1.9
+Summary: A simple file-based caching system using hash-based file names
+Author-email: Dr Ryan Heuser <ryan.heuser@gmail.com>
+Project-URL: Homepage, https://github.com/quadrismegistus/hashstash
+Project-URL: Bug Tracker, https://github.com/quadrismegistus/hashstash/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: jsonpickle
+Requires-Dist: jsonpickle; extra == "jsonpickle"
+Requires-Dist: numpy; extra == "jsonpickle"
+Requires-Dist: pandas; extra == "jsonpickle"
+Provides-Extra: dataframe
+Requires-Dist: pandas; extra == "dataframe"
+Requires-Dist: polars; extra == "dataframe"
+Requires-Dist: numpy; extra == "dataframe"
+Requires-Dist: pyarrow; extra == "dataframe"
+Requires-Dist: fastparquet; extra == "dataframe"
+Provides-Extra: sqlite
+Requires-Dist: sqlitedict; extra == "sqlite"
+Provides-Extra: redis
+Requires-Dist: redis; extra == "redis"
+Requires-Dist: redis_dict; extra == "redis"
+Provides-Extra: mongo
+Requires-Dist: pymongo; extra == "mongo"
+Provides-Extra: lmdb
+Requires-Dist: lmdb; extra == "lmdb"
+Provides-Extra: diskcache
+Requires-Dist: diskcache; extra == "diskcache"
+Provides-Extra: pandas
+Requires-Dist: pandas; extra == "pandas"
+Requires-Dist: numpy; extra == "pandas"
+Provides-Extra: polars
+Requires-Dist: pandas; extra == "polars"
+Requires-Dist: polars; extra == "polars"
+Requires-Dist: numpy; extra == "polars"
+Provides-Extra: filebased
+Requires-Dist: pandas; extra == "filebased"
+Requires-Dist: polars; extra == "filebased"
+Requires-Dist: numpy; extra == "filebased"
+Requires-Dist: pyarrow; extra == "filebased"
+Requires-Dist: fastparquet; extra == "filebased"
+Requires-Dist: sqlitedict; extra == "filebased"
+Requires-Dist: diskcache; extra == "filebased"
+Requires-Dist: lmdb; extra == "filebased"
+Provides-Extra: servers
+Requires-Dist: redis; extra == "servers"
+Requires-Dist: redis_dict; extra == "servers"
+Requires-Dist: pymongo; extra == "servers"
+Provides-Extra: engines
+Requires-Dist: pandas; extra == "engines"
+Requires-Dist: polars; extra == "engines"
+Requires-Dist: numpy; extra == "engines"
+Requires-Dist: pyarrow; extra == "engines"
+Requires-Dist: fastparquet; extra == "engines"
+Requires-Dist: lmdb; extra == "engines"
+Requires-Dist: sqlitedict; extra == "engines"
+Requires-Dist: diskcache; extra == "engines"
+Requires-Dist: redis; extra == "engines"
+Requires-Dist: redis_dict; extra == "engines"
+Requires-Dist: mongo; extra == "engines"
+Provides-Extra: dev
+Requires-Dist: pandas; extra == "dev"
+Requires-Dist: polars; extra == "dev"
+Requires-Dist: numpy; extra == "dev"
+Requires-Dist: pyarrow; extra == "dev"
+Requires-Dist: fastparquet; extra == "dev"
+Requires-Dist: lmdb; extra == "dev"
+Requires-Dist: sqlitedict; extra == "dev"
+Requires-Dist: diskcache; extra == "dev"
+Requires-Dist: redis; extra == "dev"
+Requires-Dist: redis_dict; extra == "dev"
+Requires-Dist: mongo; extra == "dev"
+Requires-Dist: jsonpickle; extra == "dev"
+Requires-Dist: orjson; extra == "dev"
+Requires-Dist: tqdm; extra == "dev"
+Requires-Dist: plotnine; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: setuptools-scm; extra == "dev"
+Requires-Dist: ipython; extra == "dev"
+Provides-Extra: all
+Requires-Dist: pandas; extra == "all"
+Requires-Dist: polars; extra == "all"
+Requires-Dist: numpy; extra == "all"
+Requires-Dist: pyarrow; extra == "all"
+Requires-Dist: fastparquet; extra == "all"
+Requires-Dist: lmdb; extra == "all"
+Requires-Dist: sqlitedict; extra == "all"
+Requires-Dist: diskcache; extra == "all"
+Requires-Dist: redis; extra == "all"
+Requires-Dist: redis_dict; extra == "all"
+Requires-Dist: mongo; extra == "all"
+Requires-Dist: jsonpickle; extra == "all"
+Requires-Dist: orjson; extra == "all"
+Requires-Dist: tqdm; extra == "all"
+Requires-Dist: plotnine; extra == "all"
+
+# HashStash
+
+
+HashStash is a versatile and efficient caching library for Python that supports multiple storage engines and encoding options. It provides a simple dictionary-like interface for caching data with various backend options.
+
+## Features
+
+- Multiple storage engines: file, sqlite, memory, shelve, redis, pickledb, diskcache, and lmdb
+- Compression and base64 encoding options
+- Simple dictionary-like interface
+- Efficient storage and retrieval of cached data
+- Support for any JSON-serializable Python object
+- Performance profiling tools
+
+## Installation
+
+You can install HashStash using pip:
+
+```bash
+pip install hashstash
+```
+
+## Usage
+
+Here's a quick example of how to use HashStash:
+
+```python
+from hashstash import HashStash
+
+# Create a cache instance
+cache = HashStash(name="my_cache", engine="pairtree", compress=True, b64=True)
+
+# Store a value
+cache["my_key"] = {"name": "John", "age": 30}
+
+# Retrieve a value
+data = cache["my_key"]
+print(data)  # Output: {'name': 'John', 'age': 30}
+
+# Check if a key exists
+if "my_key" in cache:
+    print("Key exists!")
+
+# Get a value with a default
+value = cache.get("non_existent_key", "default_value")
+print(value)  # Output: default_value
+
+# Clear the cache
+cache.clear()
+```
+
+## Supported Engines
+
+HashStash supports the following storage engines:
+
+1. File (`engine="pairtree"`)
+2. SQLite (`engine="sqlite"`)
+3. In-memory (`engine="memory"`)
+4. Shelve (`engine="shelve"`)
+5. Redis (`engine="redis"`)
+6. PickleDB (`engine="pickledb"`)
+7. DiskCache (`engine="diskcache"`)
+8. LMDB (`engine="lmdb"`)
+
+Each engine has its own characteristics and is suitable for different use cases. Choose the engine that best fits your needs.
+
+## API
+
+### `HashStash(name: str = DEFAULT_NAME, engine: ENGINE_TYPES = DEFAULT_ENGINE_TYPE, *args, **kwargs)`
+
+Create a new HashStash instance.
+
+- `name`: The name of the cache (default: "unnamed")
+- `engine`: The type of cache to create (one of the supported engines)
+- `*args`, `**kwargs`: Additional arguments to pass to the cache constructor
+
+### Methods
+
+HashStash implements the `MutableMapping` interface, providing the following methods:
+
+- `__setitem__(key: str, value: Any)`: Set an item in the cache
+- `__getitem__(key: str) -> Any`: Get an item from the cache
+- `__contains__(key: str) -> bool`: Check if a key exists in the cache
+- `get(key: str, default: Any = None) -> Any`: Get an item with a default value
+- `clear() -> None`: Clear all items from the cache
+- `__len__() -> int`: Return the number of items in the cache
+- `__iter__()`: Iterate over all keys in the cache
+
+Additional methods:
+
+- `keys()`: Return an iterator over the cache keys
+- `values()`: Return an iterator over the cache values
+- `items()`: Return an iterator over the cache key-value pairs
+- `update(other=None, **kwargs)`: Update the cache with key-value pairs from another dictionary or keyword arguments
+- `setdefault(key, default=None)`: Set a key with a default value if it doesn't exist, and return the value
+- `pop(key, default=None)`: Remove and return the value for a key, or return the default if the key doesn't exist
+- `popitem()`: Remove and return a (key, value) pair from the cache
+
+## Performance Profiling
+
+HashStash includes a performance profiling tool to help you evaluate different cache configurations. You can use it as follows:
+
+```python
+from hashstash import HashStash
+
+# Create a cache instance
+cache = HashStash(name="profile_cache", engine="pairtree")
+
+# Run the profiler
+results = cache.profile(
+    engine=["pairtree", "sqlite", "memory"],
+    compress=[True, False],
+    b64=[True, False],
+    size=[1000, 10000, 100000],
+    iterations=5
+)
+
+# The results are returned as a pandas DataFrame
+print(results)
+```
+
+For more detailed usage of the profiler, refer to the `performance.py` file.
+
+## Utilities
+
+HashStash provides various utility functions for encoding, serialization, and more. These utilities are used internally but can also be helpful for advanced users. Some key utilities include:
+
+- `stashed_result`: A decorator for caching function results
+- `Encoder` and `Decoder` classes for handling data encoding and decoding
+- `Serializer` and `Deserializer` classes for object serialization
+
+## Running Tests
+
+To run the tests, use the following command:
+
+```bash
+pytest
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the GNU License.
