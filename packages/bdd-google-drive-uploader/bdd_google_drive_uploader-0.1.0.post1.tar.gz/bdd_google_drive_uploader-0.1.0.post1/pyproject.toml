@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "bdd-google-drive-uploader"
+version = "0.1.0.post1"
+description = "A simple Google Drive file uploader tool."
+authors = ["Ray Lu <raylu@gamania.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "google_drive_uploader" }]
+exclude = ["test.py", ".venv/", ".env", "poetry.lock", "token.pickle", "credentials.json"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+google-auth = "^2.34.0"
+google-auth-oauthlib = "^1.2.1"
+google-auth-httplib2 = "^0.2.0"
+google-api-python-client = "^2.142.0"
+httplib2 = "^0.22.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
