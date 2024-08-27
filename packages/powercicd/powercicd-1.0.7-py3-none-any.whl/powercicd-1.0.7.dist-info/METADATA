@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: powercicd
+Version: 1.0.7
+Summary: Utility to automate the CI/CD process for Power Platform projects
+Home-page: https://github.com/jeromerg/powercicd
+Author: jeromerg
+Author-email: jeromerg@gmx.net
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp
+Requires-Dist: azure-identity
+Requires-Dist: coverage
+Requires-Dist: jsonpath-ng
+Requires-Dist: nest-asyncio
+Requires-Dist: pydantic
+Requires-Dist: pyyaml
+Requires-Dist: requests
+Requires-Dist: selenium
+Requires-Dist: tabulate
+Requires-Dist: tenacity
+Requires-Dist: typer[all]
+
+# Power CI/CD
+
+!!! WORK IN PROGRESS !!!
+
+Utility to automate the CI/CD process for Power Platform projects.
+
+## Requirements
+
+- Python 3.11 or later
+- git
+
+## Installation
+
+```powershell
+# install python if you don't have it
+winget install python.python.3.11
+
+# ALTERNATIVE 1: WITHOUT VIRTUAL ENVIRONMENT
+pip install powercicd
+
+# ALTERNATIVE 2: WITH VIRTUAL ENVIRONMENT
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install powercicd 
+```
+
+## Example
+
+- prepare a powerbi workspace `my-workspace-dev` in your own tenant, e.g. `mytenant.onmicrosoft.com`
+- copy the example project `.\doc\examples\my_project\` to your local machine
+- init git in the project folder
+  - `git init` if you want a minor version based on the git commit history length 
+- edit the `power-project-dev.yaml`
+  - change the `tenant` to the name of your tenant, e.g. `mytenant.onmicrosoft.com`
+- cd to the project folder
+
+## Example - local execution
+
+### First time: create enviroment
+
+```powershell
+py -3.11 -m venv .venv
+. .\.venv\Scripts\Activate.ps1
+pip install powercicd
+```
+
+### Run the command
+
+```powershell
+. .\.venv\Scripts\Activate.ps1
+function pow { python -m powercicd.cli --stage dev --project-dir .\my_work\capman $args }
+pow powerbi --help
+```
