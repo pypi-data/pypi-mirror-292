@@ -1,0 +1,59 @@
+name: Python Unit Testing using Conda
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Setup conda
+      uses: s-weigand/setup-conda@v1
+      with:
+        update-conda: true
+        python-version: ${{ matrix.python-version }}
+        conda-channels: anaconda, conda-forge
+    - name: Install dependencies
+      run: |
+        # setup requirements
+        conda install cython numpy
+        # testing requirements
+        conda install pytest-cov pre-commit scipy jax
+        python -m pip install --upgrade pip setuptools
+    - name: Install package
+      run: |
+        export CYTHON_COVERAGE=1
+        python -m pip install -v -e .
+    - name: Run pre-commit checks
+      run: |
+        pre-commit install
+        pre-commit run --all-files --verbose --show-diff-on-failure
+    - name: List installed
+      run: |
+        python -m pip list
+    - name: Test with pytest
+      run: |
+        pytest --pyargs cached_interpolate.test --cov cached_interpolate -ra --color yes --cov-report=xml --junitxml=pytest.xml
+    - name: Publish coverage to Codecov
+      uses: codecov/codecov-action@v1.2.1
+      with:
+        files: coverage.xml
+        flags: python${{ matrix.python-version }}
+    - name: Coverage report
+      run: python -m coverage report --show-missing
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: pytest-${{ matrix.python-version }}
+        path: pytest.xml
