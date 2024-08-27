@@ -1,0 +1,92 @@
+Metadata-Version: 2.1
+Name: PowerWrapper
+Version: 0.0.4
+Summary: A powerful library that wraps advanced functions.
+Home-page: 
+Author: SapphireKR
+Author-email: sapphirekr11@protonmail.com
+License: MIT
+Keywords: python,wrapper
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Education
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# A powerful library that wraps mid-advanced functions.
+
+
+### Maths module:
+```py
+# Importing the module
+from PowerWrapper import maths
+m = maths()
+```
+Usage:
+```py
+# Mean
+print(m.getMean([5, 10, 10, 15]))
+# Median
+print(m.getMedian([5, 10, 10, 15]))
+# Mode
+print(m.getMode([5, 10, 10, 15]))
+# Square root
+print(m.squareRoot(25))
+# Modulus
+print(m.getMod(10, 6))
+```
+
+### Error module
+```py
+importing the module
+from PowerWrapper import errors
+e = errors()
+```
+Usage:
+```py
+# GUI Information box
+e.showInfo("title", "text")
+# GUI Warning box
+e.showWarning("title", "text")
+# GUI Error box
+e.showError("title", "text")
+```
+
+### System module
+
+```py
+# importing the module
+from PowerWrapper import system
+s = system()
+```
+
+Usage:
+```py
+# Installing external dependencies (with pip)
+s.installDependancy('libraryName')
+
+# Creating a file.
+s.createFile('createFiledirectory')
+
+# Moving/renaming a file.
+s.moveFile('fileDirectory', 'newFiledirectory')
+
+# Removing/deleting a file.
+s.removeFile('fileDirectory')
+
+# Executing/running a file/program.
+s.executeFile('fileDirectory')
+
+# Run command in the python shell
+s.runCommand('command')
+
+# Run command in command prompt
+s.runCommandprompt('command')
+
+# Run command in powershell
+s.runPowershell('command')
+```
+
+Rewrote the messy code.
