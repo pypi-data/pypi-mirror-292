@@ -1,0 +1,165 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qbraid"
+dynamic = ["version"]
+description = "Platform-agnostic quantum runtime framework."
+readme = "README.md"
+authors = [{name = "qBraid Development Team"}, {email = "contact@qbraid.com"}]
+license = {text = "GNU General Public License v3.0"}
+keywords = ["qbraid", "quantum", "openqasm", "runtime"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics"
+]
+dependencies = [
+    "rustworkx>=0.14.2",
+    "numpy>=1.17",
+    "openqasm3[parser]>=0.4.0",
+    "qbraid-core>=0.1.13",
+    "pydantic>2.0.0"
+]
+requires-python = ">=3.9,<3.13"
+
+[project.urls]
+Homepage = "https://sdk.qbraid.com/"
+Documentation = "https://docs.qbraid.com/sdk"
+"Source Code" = "https://github.com/qBraid/qBraid"
+"Bug Tracker" = "https://github.com/qBraid/qBraid/issues"
+Discord = "https://discord.gg/TPBU2sa8Et"
+"Launch on Lab" = "https://account.qbraid.com/?gitHubUrl=https://github.com/qBraid/qBraid.git"
+
+[project.optional-dependencies]
+bloqade = ["bloqade>=0.15.13"]
+braket = ["amazon-braket-sdk>=1.83.0,<1.87.0", "pytket-braket>=0.30,<0.38"]
+cirq = ["cirq-core>=1.3,<1.5", "cirq-ionq>=1.3,<1.5", "ply>=3.6", "attrs>=21.3.0"]
+oqc = ["oqc-qcaas-client>=3.9.1"]
+pennylane = ["pennylane<0.38"]
+pyquil = ["pyquil>=4.4"]
+pytket = ["pytket>=1.31"]
+qir = ["qbraid-qir>=0.2"]
+qiskit = ["qiskit>=0.44,<1.3", "qiskit-ibm-runtime>=0.25.0,<0.29", "qiskit-qasm3-import>=0.4.2", "qiskit-qir>=0.5.0"]
+visualization = ["ipython", "matplotlib", "pylatexenc"]
+test = ["pytest", "pytest-cov", "sympy"]
+lint = ["black", "isort", "pylint", "qbraid-cli>=0.8.2"]
+docs = ["sphinx>=7.2,<8.1", "sphinx-autodoc-typehints>=1.24,<2.3", "sphinx-rtd-theme>=1.3,<2.1", "docutils<0.22", "sphinx-copybutton"]
+
+[project.entry-points."qbraid.programs"]
+braket_ahs = "qbraid.programs.ahs.braket_ahs:BraketAHS"
+braket = "qbraid.programs.circuits.braket:BraketCircuit"
+cirq = "qbraid.programs.circuits.cirq:CirqCircuit"
+pennylane = "qbraid.programs.circuits.pennylane:PennylaneTape"
+pyquil = "qbraid.programs.circuits.pyquil:PyQuilProgram"
+qiskit = "qbraid.programs.circuits.qiskit:QiskitCircuit"
+pytket = "qbraid.programs.circuits.pytket:PytketCircuit"
+qasm2 = "qbraid.programs.circuits.qasm:OpenQasm2Program"
+qasm3 = "qbraid.programs.circuits.qasm:OpenQasm3Program"
+
+[tool.setuptools.dynamic]
+version = {attr = "qbraid._version.__version__"}
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+log_cli = false
+log_cli_level = "CRITICAL"
+log_cli_format = "%(message)s"
+log_file = "pytest.log"
+log_file_level = "WARNING"
+log_file_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_file_date_format = "%Y-%m-%d %H:%M:%S"
+testpaths = [
+  "tests",
+]
+markers = [
+  "remote: mark a test as requiring a remote connection",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::urllib3.exceptions.InsecureRequestWarning",
+    "ignore::RuntimeWarning:numpy.linalg.linalg",
+    "ignore::pytest.PytestCollectionWarning",
+]
+
+[tool.coverage.run]
+parallel = true
+source = ["qbraid"]
+omit = [
+  "**/qbraid/runtime/braket/tracker.py",
+  "**/qbraid/visualization/draw_circuit.py",
+  "**/qbraid/_compat.py",
+  "**/qbraid/transpiler/conversions/*/*_extras.py"
+]
+
+[tool.coverage.paths]
+source = ["qbraid", ".tox/*/lib/python*/site-packages/qbraid"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+ignore_errors = true
+exclude_lines = [
+  "raise NotImplementedError",
+  "return NotImplemented",
+  "def __repr__",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "logger.debug",
+  "logger.info",
+  "__all__",
+  "def __getattr__",
+  "def __dir__",
+  "# pragma: no cover"
+]
+
+[tool.coverage.html]
+directory = "build/coverage"
+
+[tool.coverage.xml]
+output = "build/coverage/coverage.xml"
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.__pycache__
+  | \.tox
+  | \.venv
+  | dist
+)/
+'''
+
+[tool.pylint.'MESSAGES CONTROL']
+max-line-length = 100
+disable = "C0103, E0401, R0801, R0902, R0903, R0911, R0912, R0914, W0212, W0511"
+extension-pkg-whitelist = ["rustworkx"]
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 100
+
+[tool.mypy]
+disable_error_code = [
+    "valid-type",
+    "import-untyped"
+]
+exclude = "^(qbraid/(programs/(circuits/|ahs/)|transpiler/conversions/|interface/|runtime/(oqc/|ionq/|qiskit|braket)))"
