@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: call-graph
+Version: 0.1.0
+Summary: `call-graph` is a package for viewing call graph.
+Home-page: https://github.com/SaitoTsutomu/call-graph
+License: MIT
+Author: SaitoTsutomu
+Author-email: tsutomu7@hotmail.co.jp
+Requires-Python: >=3.12,<4.0
+Classifier: Development Status :: 1 - Planning
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development
+Requires-Dist: more-itertools (>=10.4,<11.0)
+Description-Content-Type: text/x-rst
+
+`call-graph` is a package for viewing call graph.
+::
+
+   $ call-graph
+   usage: call-graph [-h] [-p PATH] [-u] [-o] [-n NO_TARGET] module func
+   call-graph: error: the following arguments are required: module, func
+   
+   $ call-graph call_graph main
+   main
+   ├ get_names
+   ├ get_call_graph
+   └ call_graph_view
+
+* "NO_TARGET" is used for ignoring names.
+* Methods are ignored.
+* Use `_ = function` for dummy call.
+
+Requirements
+------------
+* Python 3.8 later, more-itertools
+
+Features
+--------
+* nothing
+
+Setup
+-----
+::
+
+   $ pip install call-graph
+
+History
+-------
+0.0.1 (2020-4-21)
+~~~~~~~~~~~~~~~~~~
+* first release
+
+
