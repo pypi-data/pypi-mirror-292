@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "pp-python-utils"
+version = "1.0.4"
+description = "Internal python utility library"
+authors = ["Shahak <yaakov@lightricks.com>"]
+readme = "README.md"
+packages = [
+    { include = "pp_python_utils", from = "src" }
+]
+include = [
+    "src/pp_python_utils/py.typed"
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "2.8.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
