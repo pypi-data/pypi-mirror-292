@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: SynthShapes
+Version: 0.1.1
+Summary: A 3D shape generator implemented in pure pytorch for biomedical image augmentation.
+Author: Etienne Chollet
+Author-email: etiennepchollet@gmail.com
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: ~=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: cupy-cuda116
+Requires-Dist: torch
+Requires-Dist: torchvision
+Requires-Dist: torchaudio
+Requires-Dist: torchmetrics
+Requires-Dist: matplotlib
+Requires-Dist: cornucopia
+Requires-Dist: nibabel
+
+![SynthShapes](https://github.com/user-attachments/assets/2e6a3aa6-3e87-4762-aa8d-28c18f8ca6df)
+
+
+
+# Introduction
+
+This this is a toolbox for generating randomized, semi-realistic shapes that can be used for biomedical image augmentation.
+
+# Installation
+
+It is suggested that you create and activate a new mamba environment with python 3.9. You can learn how to install mamba by following the instructions provided in the [Miniforge repo](https://github.com/conda-forge/miniforge).
+
+```bash
+mamba create -n synthshapes python=3.9
+mamba activate synthshapes
+```
+
+Now let's install install SynthShapes from pypi! It's as easy as that!
+
+```bash
+pip install SynthShapes
+```
