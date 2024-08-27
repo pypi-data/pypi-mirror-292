@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: wwai_sdk
+Version: 0.0.3
+Summary: 万网AI云平台SDK
+Home-page: 
+Author: mrhua
+Author-email: 
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: diskcache
+Requires-Dist: redis
+Requires-Dist: cryptography
+Requires-Dist: pycryptodome
+
+# WWAI云平台SDK
+
+## demo 说明
+```shell
+pip install wwai-sdk
+```
+
+```python
+import wwai_sdk
+import asyncio
+
+# grant_type="client_credential" 为客户端模式
+# authorization 从WWAI云平台获取，路径：系统管理 > 终端管理 > 新建终端
+client = wwai_sdk.create_client(
+    grant_type="client_credential",
+    authorization="Basic xxxxxxx"
+)
+
+# 身份证识别
+res = asyncio.run(client.ocr_idcard("https://ai.bdstatic.com/file/96D2F45674F54D4287EB9FBF9E6AB19A", "front"))
+print(res)
+```
