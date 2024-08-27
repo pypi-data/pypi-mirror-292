@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "opticalflowleo"
+version = "0.7.2"
+authors = [
+  { name="T.Rink", email="rink@ssec.wisc.edu" },
+]
+description = "Optical Flow derived winds from overlapping LEO granules"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+"numpy",
+"xarray",
+"boto3",
+"botocore",
+"Cartopy",
+"dask",
+"h5py",
+"largestinteriorrectangle",
+"matplotlib",
+"MetPy",
+"pandas",
+"Pillow",
+"pyproj",
+"pyresample",
+"scipy",
+"torch",
+"torchvision"
+]
+
+[project.urls]
+Homepage = "https://gitlab.ssec.wisc.edu/rink/windflow_leo"
