@@ -1,0 +1,56 @@
+[tool.rye.scripts]
+check = "basedpyright"
+
+[project]
+name = "pdm-una"
+dynamic = ["version"]
+description = "Python monorepo tooling"
+authors = [
+    { name = "Chris Arderne", email = "chris@rdrn.me" }
+]
+readme = "README.md"
+license = {text = "MIT License"}
+requires-python = ">= 3.11"
+keywords = ["rye", "pdm", "monorepo", "build", "python"]
+
+classifiers = [
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: Unix",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+
+dependencies = []
+
+[project.urls]
+homepage = "https://github.com/carderne/una"
+repository = "https://github.com/carderne/una"
+
+[project.entry-points."pdm.build.hook"]
+una = "pdm_una.hook"
+
+[tool.rye]
+managed = true
+dev-dependencies = ["pdm-backend"]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+raw-options = { root = "../.." }
+
+[tool.basedpyright]
+venvPath = "../.."
+venv = ".venv"
+pythonVersion = "3.11"
+strict = ["**/*.py"]
+reportUnnecessaryTypeIgnoreComment = true
+reportImplicitOverride = false
+reportUnusedCallResult = false
+enableTypeIgnoreComments = true
