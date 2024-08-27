@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: aijson-ml
+Version: 0.1.8
+Summary: AI JSON Machine Learning Actions | LLMs, transformers
+License: MIT
+Author: Rafael Irgolic
+Author-email: hello@irgolic.com
+Requires-Python: >=3.10,<3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Provides-Extra: all
+Provides-Extra: anthropic
+Provides-Extra: api
+Provides-Extra: aws
+Provides-Extra: gcloud
+Provides-Extra: openai
+Provides-Extra: transformers
+Requires-Dist: aijson-core
+Requires-Dist: anthropic (>=0.21.3,<0.22.0) ; extra == "anthropic" or extra == "api" or extra == "all"
+Requires-Dist: boto3 (>=1.28.57) ; extra == "api" or extra == "all"
+Requires-Dist: google-cloud-aiplatform (>=1.43.0,<2.0.0) ; extra == "gcloud" or extra == "api" or extra == "all"
+Requires-Dist: infinity-emb[optimum,torch] (>=0.0.32,<0.0.33) ; extra == "transformers" or extra == "all"
+Requires-Dist: litellm (>=1.43.6)
+Requires-Dist: openai (>=1,<2) ; extra == "openai" or extra == "api" or extra == "all"
+Requires-Dist: types-aioboto3[s3] (>=12.2.0,<13.0.0)
+Description-Content-Type: text/markdown
+
+# AI JSON – ML
+
+This package contains AI JSON actions for prompting language models, and embedding/retrieval.
