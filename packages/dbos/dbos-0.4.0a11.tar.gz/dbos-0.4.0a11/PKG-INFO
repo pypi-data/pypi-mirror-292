@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: dbos
+Version: 0.4.0a11
+Summary: A Python framework for backends that scale
+Author-Email: "DBOS, Inc." <contact@dbos.dev>
+License: MIT
+Requires-Python: >=3.9
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: jsonschema>=4.23.0
+Requires-Dist: alembic>=1.13.2
+Requires-Dist: psycopg2-binary>=2.9.9
+Requires-Dist: typing-extensions>=4.12.2; python_version < "3.10"
+Requires-Dist: typer>=0.12.3
+Requires-Dist: jsonpickle>=3.2.2
+Requires-Dist: opentelemetry-api>=1.26.0
+Requires-Dist: opentelemetry-sdk>=1.26.0
+Requires-Dist: opentelemetry-exporter-otlp-proto-http>=1.26.0
+Requires-Dist: python-dateutil>=2.9.0.post0
+Description-Content-Type: text/markdown
+
+# DBOS Transact Python
+
+**DBOS Python is under construction! 🚧🚧🚧 Check back regularly for updates, release coming in mid-September!**
+
+This package uses [`pdm`](https://pdm-project.org/en/latest/) for package and virtual environment management.
+To install `pdm`, run:
+
+```
+curl -sSL https://pdm-project.org/install-pdm.py | python3 -
+```
+
+On Ubuntu, it may be necessary to do the following:
+```
+apt install python3.10-venv
+```
+
+To install dependencies:
+
+```
+pdm install
+pdm run pre-commit install
+```
+
+To run unit tests:
+
+```
+pdm run pytest
+```
+
+To check types:
+
+```
+pdm run mypy .
+```
+
+We use alembic to manage system table schema migrations.
+To generate a new migration, run:
+```
+pdm run alembic revision -m "<new migration name>"
+```
+
+This command will add a new file under the `dbos/migrations/versions/` folder.
+For more information, read [alembic tutorial](https://alembic.sqlalchemy.org/en/latest/tutorial.html).
