@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: efmtool_link
+Version: 0.0.7.5
+Summary: Exposes various efmtool functionality in Python.
+Author-email: Axel von Kamp <vonkamp@mpi-magdeburg.mpg.de>
+Project-URL: Homepage, https://github.com/cnapy-org/efmtool_link
+Project-URL: Issues, https://github.com/cnapy-org/efmtool_link/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: jpype1
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: cobra>=0.26.3
+Requires-Dist: psutil
+Requires-Dist: install-jdk>=1.1
+
+# efmtool_link
+Framework for calling selected functions of efmtool (https://csb.ethz.ch/tools/software/efmtool.html) from Python.
+
+Installation:
+Clone the repository, go into the top efmtool_link directory and install into your current Python environment with:
+
+pip install .
+
+Tip: If you use the -e option during installation then updates from a 'git pull' are at once available in your Python envrionment without the need for a reinstallation.
+
+Example:
+The efmtool_link.ipynb Jupyter notebook demonstrates some use cases of this package.
