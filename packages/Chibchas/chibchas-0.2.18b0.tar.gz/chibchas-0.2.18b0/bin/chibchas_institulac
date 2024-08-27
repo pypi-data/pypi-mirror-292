@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+import argparse
+from chibchas.tools import main, time, encrypted_login
+import tempfile
+import shutil
+import sys
+#__file__='.........'
+parser = argparse.ArgumentParser(description='Chibchas Institulac')
+parser.add_argument('--gdrive_path', type=str,required=True,
+                    help='Google drive mount point path to save the data')
+parser.add_argument('--target_data',type=str, default='Pert', help='target product from institulac:NoAval, Aval, Pert or All')
+parser.add_argument('--institution', type=str, default='UNIVERSIDAD DE ANTIOQUIA',
+                    help='''InstituLAC official institution Name in login page. 
+                           DEFAULT="UNIVERSIDAD DE ANTIOQUIA"''')
+parser.add_argument('--max_tries', type=int, default=10,
+                    help='max tries in case of error downloading')
+#See:  https://stackoverflow.com/a/52403318
+parser.add_argument('-headless','--headless', default=True, action='store_true',
+                    help='DEFAULT: disable the browser for helium.')
+parser.add_argument('-no_headless','--no_headless', dest='headless', action='store_false',
+                    help='enable the browser for helium.')
+parser.add_argument('--debug', type=bool, default=False,
+                    help='Allows to print messages for debugging')
+parser.add_argument('--start', type=int, default=0,
+                    help='Starting Group')
+parser.add_argument('--end', type=int, default=None,
+                    help='Ending Group')
+parser.add_argument('--COL_Group', type=str, default='',
+                    help='Extract info for code `COL Group` isntead of start/end')
+parser.add_argument('-keep_tmp','--keep_tmp', default=True, action='store_true',
+                    help='DEFAULT: Keep the output in /tmp folder')
+parser.add_argument('-remove_tmp','--remove_tmp', dest='keep_tmp', action='store_false',
+                    help='Remove the output in /tmp folder')
+
+args = parser.parse_args()
+
+if __name__=='__main__':
+    user, password = encrypted_login()
+    if args.debug:
+        print(user," ",password)
+    tmp_path = tempfile.gettempdir()+"/chibchas/"+user
+    print("Saving data on temporal folder {}".format(tmp_path))
+    max_tries=args.max_tries
+    for n in range(max_tries):
+        try:
+            #Set end=None to reach the last element
+            LOGIN = main(user,password,target_data=args.target_data, institution=args.institution,DIR=tmp_path,
+                           CHECKPOINT=True,headless=args.headless,
+                           start=args.start,end=args.end,COL_Group=args.COL_Group,
+                           start_time=time.time())
+            if not LOGIN:
+                break
+            for i in range(max_tries):
+                try:
+                    if sys.version_info[:3]>=(3,8,0):
+                        shutil.copytree(tmp_path, args.gdrive_path, dirs_exist_ok=True)
+                    else:
+                        shutil.copytree(tmp_path, args.gdrive_path)
+
+                    if not args.keep_tmp:
+                        shutil.rmtree(tmp_path)
+                    break
+                except Exception as e:
+                    time.sleep(5)
+                    print("Unexpected error:", sys.exc_info()[0], " ", e)
+            break
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            print('='*80)
+            print(f'try {n}/{max_tries}')
+            print('='*80)
