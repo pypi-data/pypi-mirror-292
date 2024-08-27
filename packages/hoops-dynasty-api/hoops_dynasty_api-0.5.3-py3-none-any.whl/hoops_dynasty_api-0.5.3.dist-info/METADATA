@@ -1,0 +1,175 @@
+Metadata-Version: 2.1
+Name: hoops-dynasty-api
+Version: 0.5.3
+Summary: connects to hoops dynasty in whatifsports and pulls data
+Home-page: https://gitlab.com/whatifsports-data-integration/packages/hoops-dynasty-api
+License: MIT
+Project-URL: Repository, https://gitlab.com/zachstocker/hoops-dynasty-api
+Classifier: Development Status :: 4 - Beta
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: /builds/whatifsports-data-integration/packages/hoops-dynasty-api/LICENSE
+Requires-Dist: selenium==4.21.0
+Requires-Dist: beautifulsoup4==4.9.3
+Requires-Dist: pandas==2.2.2
+Requires-Dist: openpyxl==3.0.7
+Requires-Dist: click==8.1.7
+Requires-Dist: pypandoc==1.13
+Requires-Dist: undetected-chromedriver==3.5.5
+Requires-Dist: xlsxwriter==3.2.0
+Requires-Dist: numpy<2.0
+Requires-Dist: pyarrow==14.0.1
+Requires-Dist: google-cloud-bigquery==3.11.4
+Requires-Dist: pandas-gbq==0.23.1
+
+Hoops Dynasty Data Extraction
+=============================
+
+This repository contains CLI tools for extracting team and player data
+from the WhatifSports Hoops Dynasty Game. The CLI commands allow you to
+pull data for specified team or player IDs and optionally save the
+results to an Excel file. To use this
+
+**Note**: this is not affiliated with whatifsports, hoops dynasty or
+fanball
+
+Installation
+------------
+
+Install CLI
+~~~~~~~~~~~
+
+.. code:: bash
+
+   pip install hoops_dynasty_api
+
+Usage
+-----
+
+The CLI commands are defined using the click library. There are two main
+commands: pull_hd_team_data and pull_hd_player_data.
+
+**Note**: as of version 0.4.0 the –save-excel-file flag is automatically
+set to True and does not need to be included to write out to excel
+
+Pull Team Data
+~~~~~~~~~~~~~~
+
+Use the pull-hd-team-data command to pull data for specific teams.
+
+**Arguments** team_ids: The list of team IDs to pull data for (multiple
+values allowed).
+
+**Options** –save-excel-file, -sef: Flag to save the output to the
+current path. –save-path, -sp: Path to save the output file (default is
+the current directory).
+
+.. code:: bash
+
+   pull-hd-team-data 123 456 789 --save-excel-file --save-path /path/to/save
+
+Pull Player Data
+~~~~~~~~~~~~~~~~
+
+Use the pull-hd-player-data command to pull data for specific players.
+
+**Arguments** player_ids: The list of player IDs to pull data for
+(multiple values allowed).
+
+**Options** –save-excel-file, -sef: Flag to save the output to the
+current path. –save-path, -sp: Path to save the output file (default is
+the current directory).
+
+.. code:: bash
+
+   pull-hd-player-data 101 102 103 --save-excel-file --save-path /path/to/save
+
+Pull Players by Team Ids
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the pull-hd-players-by-team-id command to pull a file for each teams
+ids roster
+
+**Arguments** player_ids: The list of player IDs to pull data for
+(multiple values allowed).
+
+**Options** –save-excel-file, -sef: Flag to save the output to the
+current path. –save-path, -sp: Path to save the output file (default is
+the current directory).
+
+.. code:: bash
+
+   pull-hd-players-by-team-id 1 2 3 --save-excel-file --save-path ./data
+
+Errors
+~~~~~~
+
+WebBrowserCreationError 
+^^^^^^^^^^^^^^^^^^^^^^^
+
+At times the browser doesn’t build correctly and the run fails. just
+click up and run your same command again, working on figuring this out
+
+Development
+-----------
+
+Setup 
+~~~~~
+
+To install repo and contribute first, clone the repository and navigate
+to the project directory:
+
+.. code:: bash
+
+   # clone project
+   git clone https://gitlab.com/whatifsports-data-integration/packages/hoops-dynasty-api
+   cd hoops-dynasty-api
+
+   # create virtual env and activate it
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`
+
+   # install requirements
+   pip install -r requirements.txt
+
+   # Create a new branch and check it out
+   NEW_BRANCH="new-feature-branch"  # Replace with your branch name
+   git checkout -b $NEW_BRANCH
+
+Contribute
+~~~~~~~~~~
+
+To contribute to this project, fork the repository, create a new branch,
+and submit a pull request.
+
+.. code:: bash
+
+   git checkout -b feature-branch
+
+Make your changes and commit them:
+
+.. code:: bash
+
+   git commit -m "Description of the changes"
+
+Push your changes to your fork:
+
+.. code:: bash
+
+   git push origin feature-branch
+
+Create a pull request from your feature branch to the main repository.
+
+License
+-------
+
+This project is licensed under the MIT License. See the LICENSE file for
+details.
+
+Contributors
+------------
+
+-  Zach Stocker (@zachstocker)
