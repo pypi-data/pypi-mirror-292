@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "triangle_cubature"
+version = "1.1.0"
+dependencies = [
+    "numpy",
+    "p1afempy"
+]
+requires-python = ">=3.9.18"
+authors = [
+  { name="Raphael Leu", email="raphaelleu95@gmail.com" },
+]
+description = "cubature rules on triangles"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/leuraph/triangle_cubature"
+Issues = "https://github.com/leuraph/triangle_cubature/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["dev_tools"]  # alternatively: `include = ["pkg*"]`
+namespaces = false
