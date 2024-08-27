@@ -1,0 +1,86 @@
+Metadata-Version: 2.1
+Name: pydipapi
+Version: 0.0.3
+Summary: pydipapi Package - A simple wrapper around the API of the German Bundestag.
+Home-page: https://github.com/lichtbaer/pydipapi
+Author: JG
+Author-email: <jg@politikpraxis.de>
+Keywords: Bundestag
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Education
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: pydantic
+Provides-Extra: pandas
+Requires-Dist: pandas; extra == "pandas"
+
+# pydipapi
+
+pydipapi is a Python package that provides a simple and convenient wrapper around the API of the German Bundestag. This package allows developers to easily access various endpoints of the Bundestag's API to retrieve information about legislative processes, documents, and more.
+
+> **Important:** Not production ready! This library is currently still under massive development. Use for test purposes only. Errors are to be expected. 
+
+> **Note:** The author is not affiliated with the German Bundestag or any of its institutions.
+> 
+> **Disclaimer:** The author is not responsible for the accuracy or completeness of the data retrieved from the Bundestag API. Please refer to the official documentation for more information.
+
+## Features
+
+- Retrieve information about persons, activities, documents, and plenary protocols.
+- Access detailed data on legislative processes and their positions.
+- Designed to be easy to use and integrate into your projects.
+
+## Requirements
+
+- An API key is required to use the Bundestag API. You can obtain this key from the German Bundestag.
+- Get your API key [here](https://dip.bundestag.de/%C3%BCber-dip/hilfe/api#content).
+- Python 3.7 or later.
+
+## Documentation
+
+For more information on the API and how to obtain an API key, please refer to the official documentation.
+
+## License
+
+This project is licensed under the GPLv3 License.
+
+## Installation
+
+It is recommended to use a virtual environment. You can install the package using pip:
+
+```sh
+pip install pydipapi
+```
+## Usage
+
+Here's a quick example of how to use the package:
+### Initialize the API
+
+```python
+from pydipapi import DipAnfrage
+
+# Initialize with your API key
+dip = DipAnfrage(apikey='your_api_key_here')
+```
+### Example: Retrieve Persons
+    
+```python
+# Retrieve a list of persons
+persons = dip.get_person(anzahl=10)
+print(persons)
+```
+
+### Example:  Retrieve a Single Person by ID
+
+```python
+# Retrieve a single person by ID
+person = dip.get_person_id(id=12345)
+print(person)
+```
+
+## Contributing
+Contributions are welcome! Please feel free to submit a pull request or open an issue if you have suggestions for improvements or find any bugs.  
+
+## Contact
+For any inquiries, please contact the package author via GitHub.
