@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: tenks
+Version: 2.0.0
+Summary: Deployment of virtual bare metal clusters with Tenks
+Home-page: https://docs.openstack.org/tenks/latest/
+Author: OpenStack
+Author-email: openstack-discuss@lists.openstack.org
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Environment :: OpenStack
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.6
+Requires-Dist: ansible (<6.0,>=2.7.0)
+Requires-Dist: os-client-config
+Requires-Dist: pbr (>=2.0)
+Requires-Dist: selinux
+
+Tenks
+=====
+
+.. image:: https://governance.openstack.org/badges/tenks.svg
+    :target: https://governance.openstack.org/reference/tags/index.html
+
+Tenks is a utility that manages virtual bare metal clusters for development and
+testing purposes. It offers:
+
+* Declarative definition of clusters using Ansible's familiar YAML
+  syntax
+
+* Automated creation and deletion of virtualised bare metal nodes across any
+  number of hypervisors
+
+* In-built management of Open vSwitch bridges for physical networks
+
+* Registration of nodes and ports with OpenStack Ironic, and creation of
+  OpenStack Nova flavors
+
+* Simple cluster reconfiguration and tear-down
+
+To get started with Tenks, see the documentation (linked below).
+
+* License: Apache License, Version 2.0
+* Documentation: https://docs.openstack.org/tenks/
+* Source: https://opendev.org/openstack/tenks/
+* Bugs: https://storyboard.openstack.org/#!/project/openstack/tenks
+* Known issues/limitations: refer to the documentation.
+
+
+
