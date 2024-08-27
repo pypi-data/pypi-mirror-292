@@ -1,0 +1,91 @@
+[tool.poetry]
+name = "target-db2"
+version = "0.1.1"
+description = "`target-db2` is a Singer target for db2, built with the Meltano Singer SDK."
+readme = "README.md"
+authors = ["Haleemur Ali <haleemur@infostrux.com>"]
+homepage = "https://www.infostrux.com"
+repository = "https://github.com/Infostrux-Solutions/target-db2"
+keywords = [
+    "ELT",
+    "IBM",
+    "Db2",
+    "Singer",
+    "Singer Target",
+    "Meltano",
+    "Meltano SDK"
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.13"
+singer-sdk = { version="~=0.38.0", extras = ["faker"] }
+fs-s3fs = { version = "~=1.1.1", optional = true }
+requests = "~=2.32.0"
+ibm-db = "^3.2.3"
+
+[tool.poetry.extras]
+s3 = ["fs-s3fs"]
+
+[tool.poetry.group.dev.dependencies]
+jupyterlab = "^4.2.3"
+ruff = ">=0.5.2,<0.7.0"
+psycopg2-binary = "^2.9.9"
+pytest = ">=7.4.0"
+meltano = "^3.5.0"
+
+# 3.5.0 is the latest pre-commit to support python 3.8. The current version only support 3.9+
+# We should plan to drop 3.8 support 1 years after 3.8 stops receiving security updates.
+# as in, on 2025-10. (Python 3.8 has scheduled EOL on 2024-10)
+pre-commit = "3.5.0"
+
+
+[tool.ruff]
+src = ["target_db2"]
+target-version = "py38"
+
+[tool.ruff.lint]
+ignore = [
+    "ANN101",  # missing-type-self
+    "ANN102",  # missing-type-cls
+    "COM812",  # missing-trailing-comma
+    "ISC001",  # single-line-implicit-string-concatenation
+]
+exclude = ["target_db2/ibm_db_sa"]
+select = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101", # asserts allowed in tests...
+    "ARG", # Unused function args -> fixtures nevertheless are functionally relevant...
+    "FBT", # Don't care about booleans as positional arguments in tests, e.g. via @pytest.mark.parametrize()
+    "PLR2004", # Magic value used in comparison, ...
+    "S311", # Standard pseudo-random generators are not suitable for cryptographic purposes
+]
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["target_db2"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+
+[build-system]
+requires = ["poetry-core==1.9.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+# CLI declaration
+target-db2 = 'target_db2.target:TargetDb2.cli'
