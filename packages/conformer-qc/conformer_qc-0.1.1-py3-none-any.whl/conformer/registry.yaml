@@ -1,0 +1,24 @@
+##
+## Copyright 2018-2024 Fragment Contributors
+## SPDX-License-Identifier: Apache-2.0
+##
+requires:
+  - "conformer_core"
+database:
+  provides: 
+    - "conformer.db.models.DBAtom"
+    - "conformer.db.models.DBUnitCell"
+    - "conformer.db.models.DBSystem"
+    - "conformer.db.models.DBSystemLabel"
+    - "conformer.db.models.DBAtomToSystem"
+    - "conformer.db.models.DBSystemRecord"
+stages:
+  provides:
+    - "conformer.stages.GetSystem"
+    - "conformer.stages.Calculation"
+    - "conformer.mods.counterpoise.CounterpoiseSubsystemMod"
+    - "conformer.mods.MIC.MICSystemMod"
+    - "conformer.mods.capping.HCapsMod"
+
+# settings:
+# CONFORMER_SPATIAL_TOLORANCE: 1e-6
