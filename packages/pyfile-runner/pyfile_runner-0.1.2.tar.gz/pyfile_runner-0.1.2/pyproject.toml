@@ -1,0 +1,15 @@
+[project]
+name = "pyfile-runner"
+version = "0.1.2"
+description = "Simple Python library to help run multiple Python files and view their output while running"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ruff>=0.6.2",
+    "textual>=0.77.0",
+    "loguru>=0.7.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
