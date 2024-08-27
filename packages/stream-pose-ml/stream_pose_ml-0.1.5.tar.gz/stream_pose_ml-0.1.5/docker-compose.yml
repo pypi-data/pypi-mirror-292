@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  stream_pose_ml_api:
+    image: mrilikecoding/stream_pose_ml_api:latest
+    ports:
+      - "5001:5001"
+    networks:
+      - app-tier
+    volumes:
+      - ./stream_pose_ml:/usr/src/app
+      - ${PWD}/data/trained_models:/usr/src/app/data/trained_models
+    environment:
+      - FLASK_APP=run.py
+    command: >
+      bash -c "python run.py"
+
+  web_ui:
+    image: mrilikecoding/stream_pose_ml_web_ui:latest
+    depends_on:
+      - stream_pose_ml_api
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    networks:
+      - app-tier
+    entrypoint: >
+          bash -c "yarn build  && yarn serve --host --port 3000"
+    volumes:
+      - ./web_ui:/usr/src/app/my-app
+      - ./web_ui/logs:/root/.npm/_logs
+      - /usr/src/app/my-app/node_modules # anonymous persistent volume to prevent local machine override
+
+networks:
+  app-tier:
+    driver: bridge
