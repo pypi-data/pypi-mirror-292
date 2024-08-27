@@ -1,0 +1,3 @@
+- 2024-01-21
+  - [ ] test the normalized function in the `read_gaia` module
+  - [ ] complete the sample of the catalog comparison for extragalactic sources

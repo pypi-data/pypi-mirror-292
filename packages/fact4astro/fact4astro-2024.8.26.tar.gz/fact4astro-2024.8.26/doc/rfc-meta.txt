@@ -1,0 +1,218 @@
+# VLBI SOURCE POSITION CATALOGUE  Format version of 2010.09.11 
+# Catalogue was created by Leonid Petrov ( lpetrov@astrogeo )
+#                       at 2024.01.03-22:36:17
+#                          with using program rfc_fused version of 2022.11.27
+#
+# This catalogue contains positions and estimates of flux density
+# of 21,907 compact radio source from reanalysis of 1033 VLBI experiments
+# under 65 absolute astrometry programs at the VLBA, LBA, EVN, and CVN
+# in 1994-2023, as well as all VLBI data under geodesy programs since
+# 1980.04.11 through 2023.12.07, in total 18,994 experiments. The positions
+# were derived from 23.7 millions of group delays collected in these
+# observing sessions.
+#
+# Home page: http://astrogeo.org/sol/rfc_2023d
+#            ============================================
+#
+# If you use positions and/or estimates of correlated flux densities
+# from this catalogue in your work, for example, for scheduling phase
+# referencing observations, you are encouraged to include in your paper
+# references to original publications:
+#
+#  1) Beasley, A.J., Gordon, D., Peck, A.B., Petrov, L., MacMillan, D.S.,
+#        Fomalont, E.B., & Ma, C., The VLBA Calibrator Survey - VCS1, 2002,
+#        Astrophys. J. Sup., 141, 13
+#
+#  2) Fomalont, E., Petrov, L., McMillan, D.S., Gordon, D., Ma, C.,
+#        The Second VLBA Calibrator Survery: VCS2, 2003, Astron. J., 126, 2562
+#
+#  3) Petrov, L., Kovalev, Yu.Y., Fomalont, E., and Gordon, D.,
+#        The Third VLBA Calibrator Survey -- VCS3, Astron. J., 2005, 129, 1163
+#
+#  4) Petrov, L., Kovalev, Yu.Y., Fomalont, E., and Gordon, D.,
+#        The Fourth VLBA Calibrator Survey -- VCS4, Astron. J., 2006, 131, 1872
+#
+#  5) Kovalev, Yu.Y., Petrov, L., Fomalont, E., and Gordon, D.,
+#        The Fifth VLBA Calibrator Survey -- VCS5, Astron. J., 2007, 133, 1236
+#
+#  6) Petrov, L., Kovalev, Yu.Y., Fomalont, E., and Gordon, D.,
+#        The Sixth VLBA Calibrator Survey -- VCS6, Astron. J., 2008, 136, 580
+#
+#  7) Petrov, L., Phillips, C., Bertarini, A., Murphy, T., Sadler, E.M,
+#     The LBA Calibrator Survey of southern compact extragalactic
+#     radio sources --- LCS1, Mon. Not. of Roy. Astron. Soc.,
+#     2011, 414(3), 2528-2539
+#
+#  8) Petrov, L., Kovalev, Y.Y., Fomalont, E.B., Gordon, D. "The VLBA Galactic
+#        Plane Survey --- VGaPS", Astron J, 2011, 142, 35
+#
+#  9) Immer, K., Brunthaler, A., Reid, M. J., Bartkiewicz, A., Choi, Y. K.,
+#        Menten, K. M., Moscadelli, L., Sanna, A., Wu, Y. W., Xu, Y.,
+#        Zhang, B., Zheng, X. W., The VLBA Calibrator Search for the BeSSeL
+#        Survey, ApJS, vol., 194, 25
+#
+# 10) Petrov, L., Taylor, G., Precise absolute astrometry from the VLBA
+#        imaging and polarimetry survey at 5 GHz, Astron. J., 2011, 142, 89
+#
+# 11) Petrov, L., The catalogue of positions of optically bright extragalactic
+#        radio sources OBRS-1, 2011, Astron. J., 142, 105
+#
+# 12) Petrov, L., The catalogue of positions of optically bright extragalactic
+#        radio sources OBRS-2, 2013, Astron. J., 146, 5
+#
+# 13) Petrov, L., "The EVN Galactic Plane Survey --- EGaPS",
+#        MNRAS, 2012, 416, 1097-1105
+#
+# 14) Gordon D., C. Jacobs , A. Beasley , A. Peck , R. Gaume , P. Charlot,
+#        A. Fey, C. Ma, O. Titov, D. Boboltz, "Second epoch VLBA calibrator
+#        survey observations: VCS-II", 2016, Astron. J., 151--154
+#
+# 15) Shu F., Petrov L., Jiang W., Xia B., Chen Zh., Hao L.,
+#        Liu X., Takefuji K., McCallum J., Lovell J., Yi S.-O. , and
+#        Li J., The VLBI ecliptic plane survey VEPS-1, 2017, The Astrophysical
+#        Journal Supplement Series, 230:13 (10pp).
+#
+# 16) Petrov, L., de Witt A., Sadler E. M., Phillips, C., Horiuchi S.
+#        The Second LBA Calibrator Survey of southern compact
+#        extragalactic radio sources -- LCS2, 2019, MNRAS, 485(1), 88-101.
+#
+# 17) Popkov, A.V., Kovalev, Y.Y., Petrov, L., Kovalev, Y.A., "Parsec-scale
+#        properties of steep and flat spectrum extragalactic radio sources from
+#        a VLBA survey of a complete north polar cap sample",
+#        (2021), Astronomical Journal, 161(2), 88 (20pp).
+#
+# 18) L. Petrov, "The wide-field VLBA calibrator survey -- WFCS", 2021,
+#        The Astronomical  Journal, 898 (1): 51. [10.3847/1538-4357/ab989b]
+#
+# 19) Condon, J., Darling, J., Kovalev, Y.~Y., Petrov, L.,
+#        VLBA observations of a complete sample of 2MASS galaxies, (2013),
+#        NARIT Conference Series, NCS Vol 1 Proceedings of APRIM2011.
+#
+# 20) Fomalont, E.B., Frey, S., Paragi, Z., Gurvits, L.I., Scott, W.K., Taylor, A.R.,
+#        Edwards, P.G., Hirabayashi, H., "The VSOP 5 GHz Continuum Survey:
+#        The Prelaunch VLBA Observations", J. Supp. Ser.,
+#        131:1, 95--183.
+#
+# 21) Linford, J.D., Taylor, G.B., Romani, R.W., Helmboldt, J.F., Readhead, A.C.S.,
+#        Reeves, R., Richards, J.~L., "Contemporaneous VLBA 5 GHz Observations of
+#        Large Area Telescope Detected Blazars", Astropys. J., (2012), 744:2, 177.
+#
+# 22) Majid, W.A., Fomalont, E.B., Bagri, D.S.,
+#        "Compactness of Weak Radio Sources at High Frequencies", (2009), in
+#        'Approaching Micro-Arcsecond Resolution with VSOP-2: Astrophysics and Technologies',
+#        Astronomical Society of the Pacific Conference Series, 402, 448.
+#
+# 23) Fey, A.L., Charlot, P., "VLBA Observations of Radio Reference Frame Sources.
+#        II. Astrometric Suitability Based on Observed Structure", (1997),
+#        Astrophys. J. Supp. Ser., 111:1, 95-142.
+#
+# 24) Schinzel, F.K., Petrov, L., Taylor, G.B., Mahony, E.K., Edwards, P.G., Kovalev, Y.Y.,
+#        "New Associations of Gamma-Ray Sources from the Fermi Second Source Catalog",
+#        (2015), Astrophys. J. Supp. Ser., 217:4, 4.
+#
+# 25) Schinzel, F.K., Petrov, L., Taylor, Edwards, P.G.,
+#        "Radio Follow-up on All Unassociated Gamma-Ray Sources from the Third Fermi
+#        Large Area Telescope Source Catalog", (2017), Astrophys. J. 838, 139.
+#
+# 26) Liuzzo, E., Giovannini, G., Giroletti, M., Taylor, G.B.,
+#        The Bologna complete sample of nearby radio sources. II. Phase referenced
+#        observations of faint nuclear sources", (2009), Astron. & Astrophys., 505:2, 509-520.
+#
+# 27) Charlot, P, Fey, A.L., Jacobs, C.S., Ma, C., Sovers, O.J., Baudry, A.,
+#        "Densification of the International Celestial Reference Frame: Results
+#        of EVN Observations", (2004), In European VLBI Network on New Developments
+#        in VLBI Science and Technology, 2004, 313--316, astro-ph/0412458.
+#
+# 28) Ulvestad, J.S., Fomalont, E.B., Kimora, H.,
+#        A VLBA Survey of Flat-Spectrum FIRST Sources", (1999)
+#        American Astronomical Society Meeting Abstracts #194,
+#        50.23.
+#
+# 29) Britzen, S., Vermeulen, R.C., Taylor, G.B., Campbell, R.M., Pearson, T.J.,
+#        Readhead, A.C.S., Xu, W., Browne, I.W.A., Henstock, D.R., Wilkinson, P.,
+#        "A multi-epoch VLBI survey of the kinematics of CJF sources.
+#        I. Model-fit parameters and maps", (2007), Astron. & Astrophys., 472:3, 763-771.
+#
+# 30) de Witt, A., Jacobs, C.S., Gordon, D., Bietenholz, M., Nickola, M., Bertarini, A.
+#        "The Celestial Reference Frame at K Band: Imaging. I. The First 28 Epochs",
+#        Astron. J. 165, 4, 139.
+#
+# 31) Weston, S., de Witt, A., Krasna, H., Le Bail, K., Hardin, S.,  Gordon, D.,
+#        Shu Fe., Fey, A., Schartner, M., Basu, S., Titov, O., Behrend, D.,
+#        Jacobs, C. S., Hankey, W., Salguero, F., Reynolds, J. E. "On more than two
+#        decades of Celestial Reference Frame VLBI observations in the deep south:
+#        IVS-CRDS (1995-2021)", (2023), Publications of the Astronomical Society
+#        of Australia, Volume 40, article id. e041
+#
+#  Acknowledgments:
+#
+#   The use of Very Long Baseline Array (VLBA) data is acknowledged. VLBA is operated
+# by the National Radio Astronomy Observatory, which is a facility of the National
+# Science Foundation, and operated under cooperative agreement by Associated
+# Universities, Inc. The use of the VLBA under the US Naval Observatory's time
+# allocation is acknowledged. This work supports USNO's ongoing research into the
+# celestial reference frame and geodesy. These data were retrieved from the
+# VLBA public archive.
+#
+#   The use of Long Baseline Array (LBA) data is acknowledged. The LBA is a part of the
+# Australia Telescope National Facility which is funded by the Commonwealth of Australia
+# for operation as a National Facility managed by CSIRO.
+#
+#   The use of European VLBI Network (EVN) data is acknowledged.
+# The European VLBI Network is a joint facility of independent European, African,
+# Asian, and North American radio astronomy institutes.
+#
+#   The use of Korean and VLBI Exploration for Astrometry VLBI Networks
+# (KVN and KaVa) data. The KVN and VERA are operated by the the Korea Astronomy
+# and Space Science Institute and the National Astronomical Observatory of Japan.
+#
+# Field    1:1    A1    Category: C (calibrator), N (non-calibrator), U (unreliable coordinates)
+# Field    4:11   A8    IVS name (B1950)
+# Field   13:22   A10   IAU name (J2000.0)
+# Field   25:26   I2    Right ascension: hours
+# Field   28:29   I2    Right ascension: minutes
+# Field   31:39   F9.6  Right ascension: seconds
+# Field   41:43   I3    Declination: degrees
+# Field   45:46   I3    Declination: minutes
+# Field   48:57   F8.5  Declination: seconds
+# Field   58:63   F6.2  Inflated error in right ascension in mas
+# Field   65:70   F6.2  Inflated error in declination in mas
+# Field   73:78   F6.3  Correlation between right ascension and declination
+# Field   80:85   I6    Number of observations used
+#
+# Field   88:88   A1    Blank or < or - for S-band total flux density integrated over entire map
+# Field   89:93   F5.3  S-band total flux density integrated over entire map,  Jy
+# Field   95:95   A1    Blank or < or - for S-band unresolved flux density at VLBA baselines, Jy
+# Field   96:100  F5.3  S-band unresolved flux density at long VLBA baselines, Jy
+#
+# Field  103:103  A1    Blank or < or - for C-band total flux density integrated over entire map
+# Field  104:108  F5.3  C-band total flux density integrated over entire map,  Jy
+# Field  110:110  A1    Blank or < or - for C-band unresolved flux density at VLBA baselines
+# Field  111:115  F5.3  C-band unresolved flux density at long VLBA baselines, Jy
+#
+# Field  118:118  A1    Blank or < or - for X-band total flux density integrated over entire map
+# Field  119:123  F5.3  X-band total flux density integrated over entire map,  Jy
+# Field  125:125  A1    Blank or < or - for X-band unresolved flux density at VLBA baselines
+# Field  126:130  F5.3  X-band unresolved flux density at long VLBA baselines, Jy
+#
+# Field  133:133  A1    Blank or < or - for U-band total flux density integrated over entire map
+# Field  134:138  F5.3  U-band total flux density integrated over entire map,  Jy
+# Field  140:140  A1    Blank or < or - for U-band unresolved flux density at VLBA baselines
+# Field  141:145  F5.3  U-band unresolved flux density at long VLBA baselines, Jy
+#
+# Field  148:148  A1    Blank or < or - for K-band total flux density integrated over entire map
+# Field  149:153  F5.3  K-band total flux density integrated over entire map,  Jy
+# Field  155:155  A1    Blank or < or - for K-band unresolved flux density at VLBA baselines
+# Field  156:160  F5.3  K-band unresolved flux density at long VLBA baselines, Jy
+#
+# Field  163:165  A3    Used Band: S, C, X, U, K or X/S
+# Field  168:175  A8    Catalogue name
+#
+# Missing value: -1.0
+# minus in columns 88, 95, 103, 110, 118, 125, 133, 140, 148, 155 means that no data in the following column present
+# <     in columns 88, 95, 103, 110, 118, 125, 133, 140, 148, 155 means that the upper limit of the flux density is presented in the following column.
+#
+#  IVS name J2000 name  Right ascension Declination        D_alp  D_Del   Corr    #Obs  S-band flux    C-band Flux    X-band Flux   U-band flux    K-band Flux    Type Cat
+#                                                                                       Total  Unres   Total  Unres   Total  Unres  Total  Unres   Total  Unres
+#                       hr mn seconds   deg mn seconds      mas    mas                   Jy     Jy      Jy     Jy      Jy     Jy     Jy     Jy      Jy     Jy
+#
