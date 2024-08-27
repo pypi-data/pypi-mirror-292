@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: inference-interface
+Version: 0.0.3
+Summary: Functions to read, convert and handle toyMC simulations, fit results and templates used by the XENONnT inference codes
+Home-page: https://github.com/XENONnT/inference_interface
+Author: XENONnT collaboration
+Author-email: knut.dundas.moraa@columbia.edu
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: h5py
+Requires-Dist: multihist
+Requires-Dist: numpy
+
+# inference_interface
+Common format and handlers for inference toyMC, templates and fit results
+
+[![PyPI version shields.io](https://img.shields.io/pypi/v/inference_interface.svg)](https://pypi.python.org/pypi/inference_interface/)
+
+
+0.0.3 / 2024-08-27
+------------------
+* Enable returning metadata by @hammannr in https://github.com/XENONnT/inference_interface/pull/7
+* Fix typos by @yuema137 in https://github.com/XENONnT/inference_interface/pull/10
+* Better metadata loading for toyfiles by @hammannr in https://github.com/XENONnT/inference_interface/pull/8
+* Fix hist1d interface by @yuema137 in https://github.com/XENONnT/inference_interface/pull/9
+* Better treatment of empty dicts by @hammannr in https://github.com/XENONnT/inference_interface/pull/11
+
+New Contributors
+* @hammannr made their first contribution in https://github.com/XENONnT/inference_interface/pull/7
+* @yuema137 made their first contribution in https://github.com/XENONnT/inference_interface/pull/10
+
+**Full Changelog**: https://github.com/XENONnT/inference_interface/compare/v0.0.2...v0.0.3
+
