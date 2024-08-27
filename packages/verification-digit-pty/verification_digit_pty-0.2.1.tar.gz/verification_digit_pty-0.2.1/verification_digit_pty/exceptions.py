@@ -1,0 +1,2 @@
+class VerificationDigitError(Exception):
+    pass
