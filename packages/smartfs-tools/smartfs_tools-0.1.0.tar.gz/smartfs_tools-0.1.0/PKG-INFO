@@ -1,0 +1,33 @@
+Metadata-Version: 2.3
+Name: smartfs_tools
+Version: 0.1.0
+Summary: Python library and utilities for creating a dump of SmartsFS from a directory.
+Project-URL: Documentation, https://github.com/shizacat/smartfs-tools
+Project-URL: repository, https://github.com/shizacat/smartfs-tools
+Author-email: Alexey Matveev <tippet@yandex.ru>
+License: Apache License (2.0)
+Keywords: dump,filesystem,filesystem dump,nuttx,smartfs
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: crc
+Requires-Dist: pydantic<3,>=2
+Description-Content-Type: text/markdown
+
+# SmartFS tools
+
+Python library and utilities for creating a dump of SmartsFS from a directory. The dump will be written on flash memory next.
+
+SmartFS is a file system usage in NuttX. SmartFS stands for Sector Mapped Allocation for Really Tiny (SMART) flash.
+
+# Links
+
+- [SmartFS Internals](https://cwiki.apache.org/confluence/display/NUTTX/SmartFS+Internals)
+
+# Developemnt
+
+Run script:
+```bash
+python -m smartfs_tools.script
+```
