@@ -1,0 +1,152 @@
+Metadata-Version: 2.1
+Name: OpenForest
+Version: 0.1
+Summary: A brief description of the OpenForest library
+Home-page: https://github.com/yourusername/OpenForest
+Author: Your Name
+Author-email: your.email@example.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+
+# OpenForest
+
+**OpenForest** is a comprehensive Python toolkit designed to provide a variety of functionalities, including server setup, file operations, data transformations, GUI components, and more. This project aims to streamline development with a set of useful tools and utilities.
+
+## Features
+
+- **Flask Server Setup**: Simple method to start a local server with error handling and logging.
+- **File Operations**: Practical methods for reading and writing files with robust exception handling.
+- **Pipeline and Transformations**: Includes a `Pipeline` method for processing user input and applying transformations like Uppercase, Lowercase, and StripSpace.
+- **LoadingBar**: Progress bar and spinner for visual feedback during long-running operations.
+- **GetImage**: Method for downloading and saving images with URL validation and content checks.
+- **GUI Components**: Tkinter-based GUI with functionalities such as buttons, labels, sliders, and a file dialog.
+- **BasicWords**: Simple chatbot responses with potential for integration with more complex NLP.
+- **Custom Decorators**: Versatile decorators including After, Before, Around, Replace, Retry, Cache, and RateLimit.
+
+## Installation
+
+To use OpenForest, you need Python 3.6 or higher. Install the required packages using pip:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+### Flask Server
+
+Start the local server with:
+
+```python
+from OpenForest import LocalHost
+
+LocalHost()
+```
+
+### File Operations
+
+Read from a file:
+
+```python
+from OpenForest import read_file
+
+content = read_file('example.txt')
+```
+
+Write to a file:
+
+```python
+from OpenForest import write_file
+
+write_file('example.txt', 'Hello, World!')
+```
+
+### Pipeline and Transformations
+
+Use the `Pipeline` method for data processing:
+
+```python
+from OpenForest import Pipeline
+
+result = Pipeline(input_data, transformations)
+```
+
+### LoadingBar
+
+Show a progress bar:
+
+```python
+from OpenForest import LoadingBar
+
+LoadingBar.show_progress(iterable, delay=0.1)
+```
+
+### GetImage
+
+Download and save an image:
+
+```python
+from OpenForest import GetImage
+
+GetImage.download_image('http://example.com/image.jpg', 'local_image.jpg')
+```
+
+### Tkinter GUI
+
+Create a GUI with buttons, labels, and more:
+
+```python
+from OpenForest import OpenGui
+
+gui = OpenGui()
+gui.run()
+```
+
+### BasicWords
+
+Chatbot responses example:
+
+```python
+from OpenForest import BasicWords
+
+response = BasicWords.get_response('Hello')
+```
+
+### Custom Decorators
+
+Use custom decorators:
+
+```python
+from OpenForest.decorators import Retry
+
+@Retry(retries=3)
+def my_function():
+    pass
+```
+
+## Documentation
+
+Each method and class is documented with docstrings. For more details on individual components, refer to the inline documentation.
+
+## Testing
+
+To ensure all methods function correctly, implement and run tests using your preferred testing framework. Tests can be found in the `tests` directory.
+
+## Code Style
+
+This project follows PEP 8 guidelines for Python code style. Consistent formatting and naming conventions are used to ensure readability and maintainability.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request to help improve the project.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Feel free to adjust the details as needed for your project. This README should help users understand the functionalities and how to use your OpenForest toolkit.
