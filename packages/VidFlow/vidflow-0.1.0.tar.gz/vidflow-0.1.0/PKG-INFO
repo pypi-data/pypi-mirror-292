@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: VidFlow
+Version: 0.1.0
+Summary: making videos at lightspeed
+License: MIT
+Author: Andy Sit
+Author-email: andysit173@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: asttokens (==2.4.1)
+Requires-Dist: certifi (==2024.6.2)
+Requires-Dist: cffi (==1.16.0)
+Requires-Dist: charset-normalizer (==3.3.2)
+Requires-Dist: colorama (==0.4.6)
+Requires-Dist: contourpy (==1.2.1)
+Requires-Dist: cycler (==0.12.1)
+Requires-Dist: executing (==2.0.1)
+Requires-Dist: ffmpeg-python (==0.2.0)
+Requires-Dist: fonttools (==4.53.0)
+Requires-Dist: future (==1.0.0)
+Requires-Dist: google-api-python-client (>=2.142.0,<3.0.0)
+Requires-Dist: google-auth (>=2.34.0,<3.0.0)
+Requires-Dist: google-auth-httplib2 (>=0.2.0,<0.3.0)
+Requires-Dist: google-auth-oauthlib (>=1.2.1,<2.0.0)
+Requires-Dist: icecream (==2.1.3)
+Requires-Dist: idna (==3.7)
+Requires-Dist: imageio (==2.34.1)
+Requires-Dist: importlib-resources (==6.4.0)
+Requires-Dist: joblib (==1.4.2)
+Requires-Dist: kiwisolver (==1.4.5)
+Requires-Dist: lazy-loader (==0.4)
+Requires-Dist: matplotlib (==3.9.0)
+Requires-Dist: networkx (==3.2.1)
+Requires-Dist: numpy (==1.26.4)
+Requires-Dist: opencv-python (==4.10.0.82)
+Requires-Dist: packaging (==24.0)
+Requires-Dist: pandas (==2.2.2)
+Requires-Dist: pillow (==10.3.0)
+Requires-Dist: pycparser (==2.22)
+Requires-Dist: pygments (==2.18.0)
+Requires-Dist: pyparsing (==3.1.2)
+Requires-Dist: python-dateutil (==2.9.0.post0)
+Requires-Dist: pytz (==2024.1)
+Requires-Dist: requests (==2.32.3)
+Requires-Dist: scikit-image (==0.22.0)
+Requires-Dist: scikit-learn (==1.5.0)
+Requires-Dist: scipy (==1.13.1)
+Requires-Dist: six (==1.16.0)
+Requires-Dist: srt (==3.5.3)
+Requires-Dist: threadpoolctl (==3.5.0)
+Requires-Dist: tifffile (==2024.5.22)
+Requires-Dist: tqdm (==4.66.4)
+Requires-Dist: tzdata (==2024.1)
+Requires-Dist: urllib3 (==2.2.1)
+Requires-Dist: vosk (==0.3.45)
+Requires-Dist: websockets (==12.0)
+Requires-Dist: zipp (==3.19.2)
+Description-Content-Type: text/markdown
+
+# Video-Content-Pipeline
+Making videos at lightspeed
+
+## Purpose
+
+In this project I wanted to mass edit large videos for streams on twitch for personal and school club reasons. I always thought this project was really interesting which is why I decided to spend some time this summer coding it.
+
+## Highlights
+
+- Takes large videos and filters out silence intervals
+- Each interval are consider clips which then is processed futher using opencv image processing algorithms
+- Clips then are ranked based on citeria ie loudness, color, and percentage white pixels after thresholding
+- Average the points and merge the above average clips together to form a videos
+
+This returns a condense video of key moments within a large stream which can be taken futher for editing or whatever needs.
+
+
+## Installation
+
+```bash
+  pip install -r requirements.txt
+```
+
+## Screenshots
+
+![Valorant - Full Screen](assets/processed_valorant_match.PNG)
+![Valorant - Crosshair](assets/reyna_orb_proccesed.png)
+
+
+## Comments
+This project is still very new and I still have lots that I want to implement, so come back every week and hopefully it will be nicer. If you have any questions send me an email at andysit173@gmail.com and let me know any feedback or changes you think will help.
