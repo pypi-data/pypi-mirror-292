@@ -1,0 +1,15 @@
+[package]
+name = "lesscode_encryption"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gmsm = "0.1.0"
+
+
+[dependencies.pyo3]
+version = "0.22.2"
+features = ["extension-module"]
+
+[lib]
+crate-type = ["cdylib"]
