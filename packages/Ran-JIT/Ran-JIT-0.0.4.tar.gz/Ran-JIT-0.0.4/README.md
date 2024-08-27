@@ -1,0 +1,1 @@
+This lib made by me coden is used too optimize code when imported.... to import use import ran
