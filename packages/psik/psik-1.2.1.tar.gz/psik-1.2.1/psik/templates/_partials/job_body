@@ -1,0 +1,19 @@
+if(~ $#jobndx 0) jobndx = -1
+if(~ $#base 0) base = '{{base}}'
+psik = ({{psik}})
+rc = ({{rc}})
+
+$psik reached -- $base $jobndx active $jobid
+
+# what to do on failure
+fn fail {
+	$psik reached -- $base $jobndx failed $jobid
+}
+
+$base/scripts/run >$base/log/stdout.$jobndx \
+				  >[2]$base/log/stderr.$jobndx
+if(! ~ $status '' 0) {
+    fail
+}
+
+$psik reached -- $base $jobndx completed $jobid
