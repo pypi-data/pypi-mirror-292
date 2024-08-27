@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: motleycoder
+Version: 0.1.0
+Summary: A set of tools for building AI coders
+Author: MotleyCrew
+Author-email: github@motleycrew.ai
+Requires-Python: >=3.10,<=3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: GitPython (>=3.1.43,<4.0.0)
+Requires-Dist: diskcache (>=5.6.3,<6.0.0)
+Requires-Dist: flake8 (>=7.1.1,<8.0.0)
+Requires-Dist: grep-ast (>=0.3.3,<0.4.0)
+Requires-Dist: litellm (>=1.44.5,<2.0.0)
+Requires-Dist: motleycrew (>=0.1.12,<0.2.0)
+Requires-Dist: networkx (>=3.3,<4.0)
+Requires-Dist: rich (>=13.7.1,<14.0.0)
+Requires-Dist: tree-sitter (==0.21.3)
+Requires-Dist: tree-sitter-languages (>=1.10.2,<2.0.0)
+Description-Content-Type: text/markdown
+
+## motleycoder: a code editor for AI agents
+
+This is a collection of tools and utilities that help agents write code.
+
+MotleyCoder uses a combination of static code analysis and retrieval techniques for building a map of the codebase and navigating it.
+
+MotleyCoder consists of the following main elements:
+- `RepoMap`: provides the agent with an initial overview of the parts of the codebase relevant to the current task.
+- `InspectEntityTool`: a tool given to the agent so it can inspect and navigate the codebase, read the code of specific entities or files, and list directories.
+- `FileEditTool`: a tool that allows editing code in a way an LLM can comprehend.
+
+Please check out the [demo notebook](https://github.com/ShoggothAI/motleycoder/blob/main/motleycoder_demo.ipynb) to see how it all works.
+
+MotleyCoder was originally designed for use with our [motleycrew](https://github.com/ShoggothAI/motleycrew) library, but its flexible nature allows using it in other contexts.
+
+Credits to [aider](https://github.com/paul-gauthier/aider) for the original idea and code of the RepoMap.
+
