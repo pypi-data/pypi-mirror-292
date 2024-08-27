@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "battery_management"
+version = "v0.1.0"
+description = "Battery Optimization"
+authors = ["Abdelrashied, Mostafa <Mostafa.Abdelrashied@outlook.de>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "battery_management" }]
+
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+loguru = "^0.7.2"
+ortools = "^9.10.4067"
+numpy = "^2.1.0"
+pandas = "^2.2.2"
+matplotlib = "^3.9.2"
+mip = "^1.15.0"
+scipy = "^1.14.1"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.0"
+pre-commit = "^3.7.1"
+coverage = "^7.6.0"
+ipykernel = "^6.29.5"
+mock = "^5.1.0"
+pytest = "^8.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
