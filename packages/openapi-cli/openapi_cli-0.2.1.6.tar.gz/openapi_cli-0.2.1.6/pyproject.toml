@@ -1,0 +1,61 @@
+[tool.poetry]
+name = "openapi-cli"
+version = "0.2.1.6"
+description = "Use OpenAPI schema to generate command line client"
+authors = ["Yury Sokov (Yurzs) <me@yurzs.dev>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4"
+click = {"version" = ">=8.1", optional = true}
+openapi-python-client = {"version" = ">=0.21,<1", optional = true}
+plumbum = {"version" = "^1.8.3", optional = true}
+httpx = {"version" = ">=0.27, <1", optional = true}
+ruff = {"version" = "^0.6.2", optional = true}
+click-didyoumean = {version = "^0.3.1", optional = true}
+pydantic = {version = "^2.8.2", optional = true}
+cattrs = {version = "^23.2.3", optional = true}
+
+[tool.poetry.extras]
+full = [
+    "ruff",
+    "plumbum",
+    "openapi-python-client",
+    "httpx",
+    "click-didyoumean",
+    "pydantic",
+    "cattrs",
+    "click",
+]
+
+[tool.poetry.scripts]
+openapi-cli = "openapi_cli.cli:main"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+isort = "^5.13.2"
+autoflake = "^2.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 100
+
+[tool.black]
+line_length = 100
+target_version = ["py312"]
+preview = true
+
+[tool.pylint]
+target_versions = ["py312"]
+max-line-length = 100
+profile = "black"
+
+[tool.autoflake]
+remove_all_unused_imports = true
+remove_unused_variables = true
