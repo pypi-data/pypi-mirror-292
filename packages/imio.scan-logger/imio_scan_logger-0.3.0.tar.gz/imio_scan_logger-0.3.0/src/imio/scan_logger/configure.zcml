@@ -1,0 +1,45 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="imio.scan_logger">
+
+  <!--i18n:registerTranslations directory="locales" /-->
+
+  <!--include package=".browser" /-->
+  <include package="imio.helpers"/>
+  <include package="plone.restapi"/>
+
+  <genericsetup:registerProfile
+      name="default"
+      title="imio.scan_logger"
+      directory="profiles/default"
+      description="Installs the imio.scan_logger add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler=".setuphandlers.post_install"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="imio.scan_logger (uninstall)"
+      directory="profiles/uninstall"
+      description="Uninstalls the imio.scan_logger add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler=".setuphandlers.uninstall"
+      />
+
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="imio.scan_logger-hiddenprofiles"
+      />
+
+  <plone:service
+      method="POST"
+      factory=".services.MessageReceiver"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="plone.restapi.UseRESTAPI"
+      name="@message-receiver"
+      />
+
+</configure>
