@@ -1,0 +1,571 @@
+/* ====== */
+/* Widget */
+/* ====== */
+
+/* Caracteristics :
+    - Edges : black
+*/
+QWidget[class="solidWidget"]
+{
+    border: 1px solid black;
+    background-color : white;
+}
+
+/* ===== */
+/* Label */
+/* ===== */
+
+/* Caracteristics :
+    - Text : bold
+    - Text : centered
+*/
+QLabel[class="titleLabel"]
+{
+    text-align: center;
+    font-size: 8pt;
+    font-weight: bold;
+    qproperty-alignment: AlignCenter;
+}
+
+/* Caracteristics :
+    - Text : normal  - Value : bold
+*/
+QLabel[class="filterParamLabel"],
+QLabel[class="infoLabel"],
+QLabel[class="standardLabel"]
+{
+    font-size: 10pt;
+    padding : 0 0 0 0;
+}
+
+QLabel[class="infoLabel"]
+{
+    qproperty-alignment: 'AlignVCenter | AlignRight';
+}
+
+QLabel#openedFiles_Label
+{
+    font-weight : bold;
+    qproperty-alignment: AlignHCenter
+}
+
+QLabel[class="valueLabel"]
+{
+    qproperty-alignment: AlignCenter;
+    font-size : 10pt;
+    font-weight : bold;
+    border : 1px solid black;
+    border-radius : 3px;
+}
+
+/* Caracteristics :
+    - Text : red
+*/
+QLabel[class="errorLabel"]
+{
+    font-size : 10pt;
+    color : red;
+    font-weight: bold;
+    qproperty-alignment: AlignCenter;
+}
+
+QLabel[class="noFileLabel"]
+{
+
+    font-size : 20pt;
+    font-weight: bold;
+    text-decoration: underline;
+    qproperty-alignment: AlignCenter;
+}
+
+QLabel[class="loadingPopup"]
+{
+    font-size: 14px;
+    font-weight: bold;
+    qproperty-alignment: AlignCenter;
+}
+
+QFrame[class=displayEdgesColor]
+{
+    border-color : rgb(0, 0, 0);
+    border-style : solid;
+    border-width : 1px
+}
+
+/* ======================= */
+/* ToolButton / PushButton */
+/* ======================= */
+
+/* Caracteristics :
+    - BG : white
+    - Edges : black
+    - Corners rounded
+    - When hovered : light gray
+    - When clicked : gray
+*/
+QToolButton[class="grayRoundedButton"],
+QPushButton[class="grayRoundedButton"]
+{
+    border : 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+    padding : 3 5 3 5;
+    font-size : 10pt;
+}
+
+QToolButton[class="grayRoundedButton"]::hover,
+QPushButton[class="grayRoundedButton"]::hover
+{
+    background-color: rgb(210, 210, 210);
+}
+
+QToolButton[class="grayRoundedButton"]::pressed,
+QPushButton[class="grayRoundedButton"]::pressed
+{
+    background-color: rgb(190, 190, 190);
+}
+
+
+QToolButton[class="whiteBGButton"],
+QPushButton[class="whiteBGButton"]
+{
+    border : 1px solid white;
+    border-radius: 5px;
+    text-align: center;
+    padding : 3 5 3 5;
+    font-size : 10pt;
+    background-color: rgb(255, 255, 255);
+}
+
+QToolButton[class="grayBGButton"],
+QPushButton[class="grayBGButton"]
+{
+    border : 1px solid white;
+    border-radius: 5px;
+    text-align: center;
+    padding : 3 5 3 5;
+    font-size : 10pt;
+    background-color: gray;
+}
+
+
+/* ======== */
+/* GroupBox */
+/* ======== */
+
+/* Caracteristics :
+    - BG : gradient white to light gray
+    - Edges : black
+    - Corners : rounded
+*/
+QGroupBox[class="filterGroupBox"]
+{
+    font-size : 12pt;
+    margin-top : 10px;
+    padding-top : 5px;
+    border: 1px solid black;
+    border-radius : 5px;
+    background-color : qlineargradient(
+    spread:reflect, x1:0, y1:0, x2:1, y2:1,
+    stop:0 rgba(255, 255, 255, 255),
+    stop:1 rgba(211, 211, 211, 255));
+    /* set title font size */
+}
+
+QGroupBox[class="filterGroupBox"]::title
+{
+    subcontrol-position: top left;
+    left: 10px;
+    font-size : 12pt;
+    top: -0.5em;
+}
+
+
+/* ========= */
+/* TabWidget */
+/* ========= */
+
+/* Caracteristics :
+    - BG : white
+    - Corners : rounded
+    - Selected tab : white BG
+    - Non selected tab : gray BG
+*/
+QTabWidget[class="whiteGrayTabWidget"]::pane
+{
+    border: 1px solid black;
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+    background-color: white;
+}
+
+QTabWidget[class="whiteGrayTabWidget"]::tab-bar:top
+{
+    top: 1px;
+}
+
+
+QTabWidget[class="whiteGrayTabWidget"]
+> QTabBar::tab
+{
+    border: 1px solid black;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+QTabWidget[class="whiteGrayTabWidget"]
+> QTabBar::tab:selected
+{
+    background: white;
+}
+
+QTabWidget[class="whiteGrayTabWidget"]
+> QTabBar::tab:!selected
+{
+    background: rgb(210, 210, 210);
+}
+
+
+QTabWidget[class="whiteGrayTabWidget"]
+> QTabBar:tab:!selected:hover
+{
+    background: rgb(190, 190, 190);
+}
+
+QTabWidget[class="whiteGrayTabWidget"]
+> QTabBar::tab:bottom:!selected {
+    margin-bottom: 3px;
+}
+
+QTabWidget[class="whiteGrayTabWidget"]
+> QTabBar::tab:top,
+QTabBar::tab:bottom
+{
+    margin-right: 2px;
+    padding: 5px 10px;
+}
+
+QTabWidget[class="whiteGrayTabWidget"]
+> QTabBar::tab:top:selected
+{
+    border-bottom-color: white;
+}
+
+QTabWidget[class="whiteGrayTabWidget"]
+> QTabBar > QToolButton
+{
+    border : 1px solid black;
+    background-color : white;
+    border-radius: 5px;
+}
+
+/* Font size and dimensions depends on the tabWidget */
+QTabWidget#mainTabWidget
+> QTabBar::tab
+{
+    font-size : 12pt;
+    width : 70px;
+    height : 20px;
+}
+
+QTabWidget#pieTabWidget
+> QTabBar::tab
+{
+    width : 130px;
+    height : 18px;
+}
+
+QTabWidget#importFiles_TabWidget,
+QTabWidget#limitedGraph_TabWidget,
+QTabWidget#pieTabWidget
+> QTabBar::tab
+{
+    font-size : 10pt;
+}
+
+
+
+
+/* ======== */
+/* CheckBox */
+/* ======== */
+
+/* Caracteristics :
+    - BG : white
+    - Edges : black
+    - Corners : rounded
+    - When hovered  : light gray
+    - When pressed  : gray
+    - When checked  : black
+    - When checked + hovered : dark gray
+*/
+/* TODO : peut être remplacer le texte de la checkbox par un label pour qu'il soit bien centré */
+QCheckBox[class="blackCheckBox"]
+{
+    font-size: 10pt;
+}
+
+QCheckBox[class="blackCheckBox"]::indicator
+{
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0, 0, 0);
+}
+
+QCheckBox[class="blackCheckBox"]::indicator:hover
+{
+    background-color: rgb(210, 210, 210);
+}
+
+QCheckBox[class="blackCheckBox"]::indicator:pressed
+{
+    background-color: rgb(190, 190, 190);
+}
+
+QCheckBox[class="blackCheckBox"]::indicator:checked
+{
+    background-color: rgb(0, 0, 0);
+}
+
+QCheckBox[class="blackCheckBox"]::indicator:checked:hover
+{
+    background-color: rgb(50, 50, 50);
+
+}
+
+
+/* ======== */
+/* LineEdit */
+/* ======== */
+
+/* Caracteristics :
+    - BG : white
+    - Edges : black
+    - Corners : rounded
+*/
+QLineEdit[class="blackLineEdit"]
+{
+    font-size : 10pt;
+    background : white;
+    border: 1 solid black;
+    border-radius: 2px;
+}
+
+
+
+/* ======== */
+/* ComboBox */
+/* ======== */
+
+/* Caracteristics :
+    - BG : white
+    - Edges : black
+    - Corners : rounded
+*/
+QComboBox[class="blackComboBox"]
+{
+    font-size : 10pt;
+    background : white;
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+QComboBox[class="blackComboBox"]::drop-down
+{
+    border: 0px;
+}
+
+QComboBox::down-arrow
+{
+    image : url(./resources/images/arrowdown.png);
+}
+
+
+/* ======== */
+/* MenuBar */
+/* ======== */
+
+/* Caracteristics :
+    - BG : white
+    - Edges : black
+    - Corners : rounded
+*/
+QMenuBar
+{
+    font-size : 10pt;
+    background : transparent;
+    spacing : 5px;
+
+}
+
+QMenuBar::item
+{
+    padding : 3px 5px;
+}
+
+QMenuBar::item:selected
+{
+    background-color: rgb(210, 210, 210);
+}
+
+QMenuBar::item:pressed
+{
+    background-color: rgb(190, 190, 190);
+}
+
+
+/* ====== */
+/* Slider */
+/* ====== */
+
+/* Caracteristics :
+    - Groove : gray;
+    - Slider : black
+*/
+QSlider::groove:vertical
+{
+    background: gray;
+    width: 20px;
+    border-radius: 5px;
+}
+
+QSlider::handle:vertical
+{
+    background: black;
+    width: 50px;
+    height: 40px;
+    margin-left: -5px;
+    margin-right: -5px;
+    border-radius: 10px;
+}
+
+
+/* ========== */
+/* ListWidget */
+/* ========== */
+
+/* Caracteristics :
+    - Header : black border
+    - Grid : black border;
+*/
+QTableWidget#infoList_tableWidget
+{
+    border : 1px solid black;
+    gridline-color: black;
+}
+
+QTableWidget#infoList_tableWidget
+> QHeaderView::section
+{
+    padding: 5px;
+    border-style: none;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+QTableWidget#infoList_tableWidget::item
+{
+    padding : 5px;
+}
+
+/* ========== */
+/* ListWidget */
+/* ========== */
+
+/* Caracteristics :
+    - Edges : black
+    - Corners : rounded
+*/
+QListWidget[class="blackListWidget"]
+{
+    border : 1px solid black;
+    border-radius : 10px;
+    background-color : white;
+}
+
+
+/* ======= */
+/* SpinBox */
+/* ======= */
+
+/* Caracteristics :
+    - Edges : black
+    - Corners : rounded
+*/
+
+QDoubleSpinBox[class="blackSpinBox"],
+QSpinBox[class="blackSpinBox"]
+{
+    border: 1px solid black;
+    border-radius : 5px;
+    font-size : 10pt;
+    height : 20px;
+}
+
+QDoubleSpinBox[class="blackSpinBox"]::up-button,
+QSpinBox[class="blackSpinBox"]::up-button
+{
+    border: 1px solid black;
+    border-top-right-radius : 5px;
+    subcontrol-position: top right;
+    subcontrol-origin: border;
+}
+
+QDoubleSpinBox[class="blackSpinBox"]::down-button,
+QSpinBox[class="blackSpinBox"]::down-button
+{
+    border: 1px solid black;
+    border-bottom-right-radius : 5px;
+    subcontrol-position: bottom right;
+    subcontrol-origin: border;
+}
+
+QDoubleSpinBox[class="blackSpinBox"]::up-arrow,
+QSpinBox[class="blackSpinBox"]::up-arrow
+{
+    image : url(./resources/images/up-arrow.png);
+}
+
+
+QDoubleSpinBox[class="blackSpinBox"]::down-arrow,
+QSpinBox[class="blackSpinBox"]::down-arrow
+{
+    image : url(./resources/images/down-arrow.png);
+}
+
+QDoubleSpinBox[class="blackSpinBox"]::up-button:hover,
+QDoubleSpinBox[class="blackSpinBox"]::down-button:hover,
+QSpinBox[class="blackSpinBox"]::up-button:hover,
+QSpinBox[class="blackSpinBox"]::down-button:hover
+{
+    border-color :  rgb(70, 70, 70);
+}
+
+QDoubleSpinBox[class="blackSpinBox"]::up-button:pressed,
+QDoubleSpinBox[class="blackSpinBox"]::down-button:pressed,
+QSpinBox[class="blackSpinBox"]::up-button:pressed,
+QSpinBox[class="blackSpinBox"]::down-button:pressed
+{
+    border-color :  rgb(120, 120, 120);
+}
+
+
+/* ===== */
+/* QMenu */
+/* ===== */
+QMenu {
+    menu-scrollable: 1;
+    background-color : white;
+}
+
+QMenu::item:selected {
+    background-color : rgb(230, 230, 230); /*light gray */
+    color : black;
+}
+
+QDialog {
+    background-color: #f0f0f0;
+    border: 2px solid #cccccc;
+}
+
