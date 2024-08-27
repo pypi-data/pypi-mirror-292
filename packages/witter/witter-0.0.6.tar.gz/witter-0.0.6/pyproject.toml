@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "witter"
+version = "0.0.6"
+description = "Witter - generate random text in the style of the document you provide."
+keywords = ["text", "generator", "ml", "statistics", "random"]
+authors = ["Jason Ross (big-jr) <jason@softwarepragmatism.com>"]
+maintainers = ["Jason Ross (big-jr) <jason@softwarepragmatism.com>"]
+readme = "README.md"
+license = "Apache-2.0"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: 3",
+    "Environment :: Console",
+    "Operating System :: OS Independent"
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+isort = "^5.0.0"
+safety = "^3.0.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+witter = "witter.__main__:main"
