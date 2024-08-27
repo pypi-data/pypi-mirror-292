@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        font-family: helvetica;
+      }
+      #header, #footer {
+        background: #AA076B; 
+        background: -webkit-linear-gradient(to right, #61045F, #AA076B); 
+        background: linear-gradient(to right, #61045F, #AA076B); 
+        height: 60px;
+      }
+      #header {
+        display: flex;
+      }
+      .menu-item {
+        padding: 16px;
+        text-align: center;
+      }
+      .menu-item a, .menu-item a:hover, .menu-item a:visited {
+        color: white;
+        text-decoration: none;
+        font-size: 30px;
+    
+      }
+      h1, a, a:visited {
+        color: #61045f;
+      }
+      h2, a:hover {
+        color: #aa076b;
+      }
+      #main {
+        flex: 1 1;
+      }
+      #container {
+        width: 80%;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      pre {
+        background-color: #ffd9f0;
+        border: 1px solid #ea70bb;
+        border-radius: 8px;
+        padding: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      {% block menu %}
+        <div class="menu-item">
+          <a href="{% url 'api' %}">API</a>
+        </div>
+      {% endblock %}
+    </div>
+    <div id="main">
+      <div id="container">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+    <div id="footer">
+    </div>
+    
+  </body>
+</html>
