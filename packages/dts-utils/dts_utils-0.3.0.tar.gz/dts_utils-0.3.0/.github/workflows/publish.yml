@@ -1,0 +1,40 @@
+# SPDX-FileCopyrightText: 2024 Ledger SAS
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: Upload Python Package
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: release
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install twine
+        run: |
+          pip install twine build
+
+      - name: Mint token
+        id: mint
+        uses: tschm/token-mint-action@v1.0.3
+
+      - name: Publish the package with Twine
+        run: |
+          python -m build
+          twine check dist/*.whl
+          twine upload --disable-progress-bar -u __token__ -p '${{ steps.mint.outputs.api-token }}' dist
