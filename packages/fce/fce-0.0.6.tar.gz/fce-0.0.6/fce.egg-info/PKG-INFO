@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: fce
+Version: 0.0.6
+Summary: Future Collider Experiment
+Home-page: https://github.com/kskovpen/FCE
+Author: Kirill Skovpen
+Author-email: kirill.skovpen@ugent.be
+License: LGPL-2.1
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: PyQt6
+Requires-Dist: boost_histogram
+Requires-Dist: uproot
+Requires-Dist: matplotlib
+Requires-Dist: mplhep
+Requires-Dist: pyhf
+Requires-Dist: cabinetry
+Requires-Dist: vector
+Requires-Dist: pandas
+
+# Future Collider Experiment
+
+The Future Collider Experiment (FCE) project provides a sneak peek
+into the particle physics processes that will become available at the
+Future Circular Collider (FCC) in a user-friendly environment.
+
+## Main screen interface
+
+![](https://raw.githubusercontent.com/kskovpen/fce/main/fce/data/fce-screen.png "FCE main screen capture")
+
+## Install
+
+```console
+foo@bar:~$ pip install fce --user
+```
+
+## Run
+
+```console
+foo@bar:~$ fce
+```
+
+## Data sets
+
+The simulated collision events are available for the four main
+center-of-mass energies (91, 160, 240, and 365 GeV) and can be
+downloaded by:
+
+```console
+foo@bar:~$ fce-datasets
+```
+
+This will download all available datasets in the current directory.
