@@ -1,0 +1,444 @@
+# shinybroker
+
+------------------------------------------------------------------------
+
+title: Query and Display Market Data jupyter: python3
+
+------------------------------------------------------------------------
+
+So you’ve installed Shinybroker and gotten the hello world example to
+work. Congrats! Now it’s time to actually build an app that uses some of
+the features.
+
+This example will introduce you, in steps, to using ShinyBroker to write
+an app that will calculate beta between two assets, display that
+information, and use it to trade. Each step below adds a layer of
+functionality to the app. You can use this example to learn how to:
+
+- access & use the ShinyBroker reactive variables in `sb_rvs`
+- implement some initial setup logic to fetch data from IBKR
+- process your data and display it
+
+**Coming Soon**: live updating data, dynamic contract entry, positions,
+order placement, and finally– *a video walkthrough of all this* :)
+
+### Step 1: `sb_rvs` and setup logic
+
+We’re interested in calculating beta between two assets, so first we’re
+going to need to pull price data from IBKR in order to make the
+calculation.
+
+We can accomplish this task with the code below, which operates as
+follows:
+
+1.  Defines a Shiny server function
+2.  Sets a reactive variable named `run_once`
+3.  Defines a setup function named `make_historical_data_queries` that
+    fetches data for Apple & the S&P 500 index. Don’t worry, in later
+    steps we’ll add the ability to dynamically pick what two assets you
+    want, but for now we’ll hard-code the logic for Apple and SPX.
+4.  Creates an `app` object from the server function that connects to a
+    running instance of TWS (don’t forget run TWS or else it can’t
+    connect!)
+5.  Runs the app.
+
+#### The Design Pattern
+
+The server function, appropriately named `a_server_function`, first sets
+the value of a reactive variable named `run_once` to `True`. That design
+pattern is needed because `start_historical_data_subscription` can only
+be called within a reactive context, and also because when the shiny app
+loads, the reactive variables in `a_server_function` will be registered,
+set, and detected by the setup function `make_historical_data_queries`
+only *after* ShinyBroker has connected to TWS. In other words, by the
+time `run_once` is set, detected by `make_historical_data_queries`, and
+triggers the data fetching logic, you can be sure that the socket
+connection to IBKR (which takes place in the ShinyBroker backend) is set
+up and ready for use.
+
+#### The setup function
+
+Once triggered, `make_historical_data_queries` makes two calls to
+`start_historical_data_subscription`, a function provided by the
+ShinyBroker library. Even though in this case we’re performing a static,
+one-time data query, the word “subscription” appears in the function’s
+name because it can be called by setting the `keepUpToDate` parameter to
+`True`. Doing so results in the historical data being kept up-to-date
+with live market data as it becomes available, and we’ll do exactly this
+in a later step.
+
+For now, you should understand three things about
+`start_historical_data_subscription`:
+
+1.  The data it fetches is written to the reactive variable named
+    ‘historical_data’. Because this is a native ShinyBroker reactive
+    variable, you can always access it with `sb_rvs['historical_data']`
+2.  `sb_rvs['historical_data']` is a dictionary that contains the data
+    retrieved by each query. That dictionary is keyed by the
+    integer-valued `subscription_id` you pass to it. If you *don’t* pass
+    a subscription id, as in the code below, then ShinyBroker will just
+    find the maximum subscription id already used in a historical data
+    query for that session, add `1` to that, and treat the result as the
+    `subscription_id`, beginning with `1` if no previous subscriptions
+    are found for the current session.
+3.  You must define the `contract` for which you want data using the
+    `Contract` constructor, which is provided by the ShinyBroker
+    package.
+
+##### Run the code below
+
+1.  View your Shiny app in a browser
+2.  Navigate to the **Market Data** panel
+3.  Open the “Historical Data” accordion panel …and you should see an
+    output of the historical data fetched by your query that looks
+    something like the below: ![Step 1 Success](data/step_1.png) Once
+    you’ve successfully accomplished that, you can move on to the next
+    step!
+
+##### Code:
+
+``` python
+import select
+import shinybroker as sb
+from shiny import Inputs, Outputs, Session, reactive
+
+
+# Declare a server function...
+#   ...just like you would when making an ordinary Shiny app.
+# remember that your server functions must always include the five inputs that
+#   appear in the signature below.
+def a_server_function(
+        input: Inputs, output: Outputs, session: Session, ib_socket, sb_rvs
+):
+    # Only set this variable once. Reactive functions that depend upon it will
+    #   run when the app is initialized, after the socket has been connected
+    #   and properly set up by ShinyBroker.
+    run_once = reactive.value(True)
+
+    @reactive.effect
+    @reactive.event(run_once)
+    def make_historical_data_queries():
+
+        # Fetch the hourly trade data for AAPL for the past 3 days.
+        sb.start_historical_data_subscription(
+            historical_data=sb_rvs['historical_data'],
+            hd_socket=ib_socket,
+            contract=sb.Contract({
+                'symbol': "AAPL",
+                'secType': "STK",
+                'exchange': "SMART",
+                'currency': "USD",
+            }),
+            durationStr="3 D",
+            barSizeSetting="1 hour"
+        )
+
+        # Do the same, but for the S&P 500 Index
+        sb.start_historical_data_subscription(
+            historical_data=sb_rvs['historical_data'],
+            hd_socket=ib_socket,
+            contract=sb.Contract({
+                'symbol': 'SPX',
+                'secType': 'IND',
+                'currency': 'USD',
+                'exchange': 'CBOE'
+            }),
+            durationStr="3 D",
+            barSizeSetting="1 hour"
+        )
+
+
+# create an app object using your server function
+# Adjust your connection parameters if not using the default TWS paper trader,
+#   or if you want a different client id, etc.
+app = sb.sb_app(
+    server_fn=a_server_function,
+    host='127.0.0.1',
+    port=7497,
+    client_id=10742,
+    verbose=True
+)
+
+# run the app.
+app.run()
+```
+
+### Step 2: Calculations and ui
+
+In this step we’ll add the calculations of alpha and beta, including the
+observed historical returns over the time period, as well as a few
+pieces of UI.
+
+We’re using some additional Python libraries like
+[faicons](https://pypi%20.org/project/faicons/) and
+[sklearn](https://pypi.org/project/scikit-learn/), so be sure to have
+those libraries installed and available for use.
+
+#### The UI
+
+The code below follows the same general design pattern of Step 1, but
+adds in a ui object named `a_ui_obj`. This object contains within it the
+HTML structure that `sb_app()` will place in the **Home** tab of the
+rendered app. Reference documentation for for these and other
+webpage-generating ui objects available within Shiny can be found on
+Shiny’s [documentation page](https://shiny.posit%20.co/py/api/core/).
+
+Examine the definition of `a_ui_obj` in the code below. You will notice
+that it contains the four new ui features that have been added in this
+step:
+
+1.  An HTML level 5 title tag which reads ‘Calculated Returns’
+2.  A dataframe output that displays the returns calculated for the two
+    assets
+3.  An info box for calculated alpha value
+4.  An info box for calculated beta value
+
+Any valid Shiny ui object passed to `sb_app()` will be rendered in the
+Home tab.
+
+#### The Server Function
+
+In order to populate the new ui objects with data, we need to add logic
+to the server function.
+
+##### The `calculate_log_returns()` Function
+
+The [reactive
+calculation](https://shiny.posit.co/py/api/core/reactive.calc%20.html)
+that operates on the retreived historical data is named
+`calculate_log_returns()`. The function operates as follows.
+
+First, it looks at the data stored in `sb_rvs['historical_data']` and
+assigns it to a new variable `hd` for the analysis. If `hd` doesn’t
+contain TWO entries – one for AAPL and one for SPX – then we can’t
+perform the calculation for alpha & beta becaues we need both.
+Therefore, if `hd['2']['hst_dta'].loc[1:,   'close']` causes a
+**KeyError** exception because the entry doesn’t yet exist (because it
+hasn’t yet been received from IBKR and added to
+`sb_rvs['historical_data']`), the function exits early without a fatal
+error by calling
+[`req('')`](https://shiny.posit.co/py/api/core/req.html). Calculation
+proceeds otherwise.
+
+The period-over-period log returns are calculated for each asset and
+stored in two dataframes named `asset_1` and `asset_2` alongside a
+column named **timestamp** that contains the date & time at which each
+return was observed. Note that in order to make this datetime conversion
+easier, the calls to `start_historical_data_subscription` were made with
+the `formatDate` argument set to `2`. [IBKR’s
+documentation](https://www.interactivebrokers%20.com/campus/ibkr-api-page/twsapi-doc/#hist-format-date)
+for historical data requests tells us that datetimes received with this
+choice of parameter will be in Unix Epoch Date format, which is nice and
+easy to handle in Python for datetime conversions.
+
+Once dataframes for both `asset_1` and `asset_2` are calculated, they
+are merged together via an inner join on **timestamp**. The reason for
+doing so is because sometimes, one asset might be updated before the
+other one, meaning that it has one more measured return. By creating a
+new df using the merge on datetime, we ensure that our returns match up
+for an equal number of observations of both assets.
+
+That merged dataframe is the return value of `calculate_log_returns()`.
+Therefore, when `calculate_log_returns()` is called within any other
+reactive function in the app, Shiny will ensure that the value returned
+always contains the most up-to-date calculation, even if the historical
+data changes.
+
+##### The `log_returns_df()` Function
+
+This simple function says the following to Shiny: “whenever the value of
+’calculate_log_returns()\` changes, render the output as html and insert
+it into the ui object named having the same name as this function (which
+in this case is”log_returns_df”)“. Therefore, the data in the datatable
+display in the UI will always be kept up to date with the historical
+data calculation.
+
+##### Declaring `alpha` and `beta` as reactive variables
+
+Next we define two new reactive variables– `alpha` and `beta`. You can
+perform whatever calculations you like with these variables; for
+example, you might have some specific trading logic you’d like to
+trigger if `beta` moves beyond a threshold that you set. First, however,
+we must calculate values for them, which we do as follows.
+
+##### The `update_alpha_beta()` Function
+
+`update_alpha_beta()` is a [reactive
+effect](https://shiny.posit%20.co/py/api/core/reactive.effect.html)
+function that uses `sklearn` to fit a basic linear regression model to
+the calculated returns, with the benchmark (SPX) on the X axis and the
+asset (AAPL) on the Y. **Beta** is defined as the slope of the
+regression, and **alpha** is the x-intercept. Each parameter thus
+obtained is
+[set](https://shiny.posit.co/py/api/core/reactive.Value.html#shiny%20.reactive.value.set)
+to its respective reactive variable.
+
+##### Rendering the Value Box Text
+
+Finally, the last two functions place text values in the value boxes for
+display to the user. They take in alpha and beta, perform some string
+manipulation, and put the result in the UI text object having the same
+name as the function definition. Because these UI objects were defined
+as the `value` parameter within the value box definition in `a_ui_obj`,
+the value box’s contents gets updated for the user.
+
+##### Run & View the App
+
+When you see something like the below when you run your app, you are
+successful! Move on to the next step when ready :) ![Step 2
+Success](data/step_2.png)
+
+##### Code:
+
+``` python
+import numpy as np
+import pandas as pd
+import shinybroker as sb
+
+from datetime import datetime
+from faicons import icon_svg
+from sklearn import linear_model
+from shiny import Inputs, Outputs, Session, reactive, ui, req, render
+
+# Definition of the ui that will show up in the Home tab
+a_ui_obj = ui.page_fluid(
+    ui.row(
+        ui.h5('Calculated Returns'),
+        ui.column(
+            7,
+            ui.output_data_frame('log_returns_df')
+        ),
+        ui.column(
+            5,
+            ui.value_box(
+                title="Alpha",
+                value=ui.output_ui('alpha_txt'),
+                showcase=icon_svg('chart-line')
+            ),
+            ui.value_box(
+                title="Beta",
+                value=ui.output_ui('beta_txt'),
+                showcase=icon_svg('chart-line')
+            )
+        )
+    )
+)
+
+# Declare a server function...
+#   ...just like you would when making an ordinary Shiny app.
+def a_server_function(
+        input: Inputs, output: Outputs, session: Session, ib_socket, sb_rvs
+):
+    # Only set this variable once. Reactive functions that depend upon it will
+    #   run when the app is initialized, after the socket has been connected
+    #   and properly set up by ShinyBroker.
+    run_once = reactive.value(True)
+
+    @reactive.effect
+    @reactive.event(run_once)
+    def make_historical_data_queries():
+
+        # Fetch the hourly trade data for AAPL for the past 3 days.
+        sb.start_historical_data_subscription(
+            historical_data=sb_rvs['historical_data'],
+            hd_socket=ib_socket,
+            contract=sb.Contract({
+                'symbol': "AAPL",
+                'secType': "STK",
+                'exchange': "SMART",
+                'currency': "USD",
+            }),
+            durationStr="3 D",
+            barSizeSetting="1 hour",
+            formatDate=2
+        )
+
+        # Do the same, but for the S&P 500 Index
+        sb.start_historical_data_subscription(
+            historical_data=sb_rvs['historical_data'],
+            hd_socket=ib_socket,
+            contract=sb.Contract({
+                'symbol': 'SPX',
+                'secType': 'IND',
+                'currency': 'USD',
+                'exchange': 'CBOE'
+            }),
+            durationStr="3 D",
+            barSizeSetting="1 hour",
+            formatDate=2
+        )
+
+    @reactive.calc
+    def calculate_log_returns():
+        hd = sb_rvs['historical_data']()
+
+        # Make sure that BOTH assets have been added to historical_data
+        try:
+            hd['2']['hst_dta'].loc[1:, 'close']
+        except KeyError:
+            req('')
+
+        asset_1 = pd.DataFrame({
+            'timestamp': [
+                datetime.fromtimestamp(int(x)) for
+                x in hd['1']['hst_dta'].loc[1:, 'timestamp']
+            ],
+            'aapl_returns': np.log(
+                hd['1']['hst_dta'].loc[1:, 'close'].reset_index(drop=True) /
+                hd['1']['hst_dta'].iloc[:-1]['close'].reset_index(drop=True)
+            )
+        })
+        asset_2 = pd.DataFrame({
+            'timestamp': [
+                datetime.fromtimestamp(int(x)) for
+                x in hd['2']['hst_dta'].loc[1:, 'timestamp']
+            ],
+            'spx_returns': np.log(
+                hd['2']['hst_dta'].loc[1:, 'close'].reset_index(drop=True) /
+                hd['2']['hst_dta'].iloc[:-1]['close'].reset_index(drop=True)
+            )
+        })
+        return pd.merge(asset_1, asset_2, on='timestamp', how='inner')
+
+    @render.data_frame
+    def log_returns_df():
+        return render.DataTable(calculate_log_returns())
+
+    alpha = reactive.value()
+    beta = reactive.value()
+
+    @reactive.effect
+    def update_alpha_beta():
+        log_rtns = calculate_log_returns()
+        regr = linear_model.LinearRegression()
+        regr.fit(
+            log_rtns.spx_returns.values.reshape(log_rtns.shape[0], 1),
+            log_rtns.aapl_returns.values.reshape(log_rtns.shape[0], 1)
+        )
+        alpha.set(regr.intercept_[0])
+        beta.set(regr.coef_[0][0])
+
+    @render.text
+    def alpha_txt():
+        return f"{alpha() * 100:.7f} %"
+
+    @render.text
+    def beta_txt():
+        return str(round(beta(), 3))
+
+
+# create an app object using your server function and ui
+# Adjust your connection parameters if not using the default TWS paper trader,
+#   or if you want a different client id, etc.
+app = sb.sb_app(
+    home_ui=a_ui_obj,
+    server_fn=a_server_function,
+    host='127.0.0.1',
+    port=7497,
+    client_id=10742,
+    verbose=True
+)
+
+# run the app.
+app.run()
+```
