@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: STCC
+Version: 1.0.2
+Summary: consensus clustering enhances spatial domain detection for spatial transcriptomics data.
+Home-page: https://github.com/hucongcong97/STCC
+Author: congconghu
+Author-email: 2578073006@qq.com
+License: MIT
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+# STCC
+consensus clustering enhances spatial domain detection for spatial transcriptomics data.
+
+![image-20240213115617896](STCC/STCC.png)
+
+# 1. Installation
+
+```
+pip install STCC
+```
+
+# 2. Data preparation
+
+The input of STCC is a matrix composed of label vectors of different clustering results, where **the rows represent spots** and **the columns represent the indices of different clustering results**.
+
+```
+df = pd.read_csv('tests/test data.csv',index_col=0)
+```
+
+![image-20240213124443246](tests/data_display.png)
+
+# 3. Running STCC
+
+```
+n_clusters = 15   # cluster numbers
+method = 'wNMF-based' #  'Average-based','Onehot-based','wNMF-based'
+seed = 2024 # random seed
+if method == 'wNMF-based':
+    labels_consensus, contributions = consensus_STCC(df,n_clusters,methods=method,seed=seed)
+    print(f'Consensus labels are: {labels_consensus}')
+    print(f'weight of {method} is:{contributions}')
+else:
+    labels_consensus = consensus_STCC(df,n_clusters,methods=method,seed=seed)
+    print(f'Consensus labels are: {labels_consensus}')
+```
+
+![image-20240826204932456](F:\spatial transcriptomics\github\package\tests\results.png)
+
