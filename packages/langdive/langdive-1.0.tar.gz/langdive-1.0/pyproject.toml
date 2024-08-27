@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=72.1.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project]
+name = "langdive"
+version = "1.0"
+authors = [
+  { name="Natural Language Processing group at the Innovation Center of the School of Electrical Engineering in Belgrade", email="vuk.batanovic@ic.etf.bg.ac.rs" },
+]
+description = "LangDive is a library for measuring the level of linguistic diversity in multilingual NLP datasets"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+    'Development Status :: 5 - Production/Stable'
+]
+dependencies = [
+    'setuptools>=72.1.0',
+    'scipy>=1.14.0',
+    'lang2vec>=1.1.2',
+    'PyICU>=2.13',
+    'pandas>=2.2.2',
+    'seaborn>=0.13.2',
+    'segments>=2.2.1',
+    'six>=1.16.0',
+]
+
+[project.urls]
+Homepage = "https://github.com/ICEF-NLP/jmm_diversity/tree/langdive-lib"
+
+
