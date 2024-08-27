@@ -1,0 +1,42 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "kmer_counter"
+version = "0.2.2"
+description = "Count kmers in regions or at SNVs or at indel breakpoints."
+authors = ["Søren Besenbacher <besenbacher@clin.au.dk>"]
+license = "MIT License"
+readme = "README.md"
+repository = "https://github.com/besenbacher/kmer_counter"
+keywords = []
+packages = [ { include = "kmer_counter", from = "src" } ]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+py2bit = "^0.3.0"
+argparse = "^1.4.0"
+#importlib-metadata = {version = "1.7.0", python = "<3.8"}
+
+[tool.poetry.dev-dependencies]
+# formatting, quality, tests
+black = "^20.8b1"
+pytest = "^6.2.2"
+pytest-cov = "^2.11.1"
+pytest-randomly = "^3.5.0"
+pytest-sugar = "^0.9.4"
+pytest-xdist = "^2.2.0"
+
+# tasks
+duty = "^0.6.0"
+git-changelog = "^0.4.2"
+jinja2-cli = "^0.7.0"
+toml = "^0.10.2"
+
+[tool.poetry.scripts]
+kmer_counter = "kmer_counter.cli:main"
+
+[tool.black]
+line-length = 120
+exclude = "tests/fixtures"
