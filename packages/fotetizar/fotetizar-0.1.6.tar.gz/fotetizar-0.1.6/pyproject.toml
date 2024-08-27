@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "fotetizar"
+version = "0.1.6"
+description = "A tool to generate images from code with different themes."
+authors = ["Torrez, Milton <torrez.mn@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+keywords = ["code", "share_code", "images"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pillow = "^10.4.0"
+
+
+
+[tool.poetry.scripts]
+code2image = "code2image.fotetizar:main"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
