@@ -1,0 +1,146 @@
+[tool.poetry]
+name = "metamorfo"
+version = "0.3.1"
+description = "Pacotes de funções utilitárias e classes de uso geral em aplicações"
+authors = ["Guilherme Costa <guiijc96@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pymongo = { version="^4.6.1", optional = true }
+redis = { version="^5.0.1", optional = true }
+sqlalchemy = { version="^2.0.25", optional = true }
+trino = { version="^0.327.0", optional = true }
+psycopg2 = { version="^2.9.9", optional = true }
+
+[tool.poetry.extras]
+database = [
+    "pymongo"
+    , "redis"
+    , "sqlalchemy"
+    , "trino"
+    , "psycopg2"
+]
+
+[[tool.poetry.source]]
+name = "pypi.org"
+url = "https://pypi.org/simple"
+priority = "primary"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+pytest-cov = "^5.0.0"
+ruff = "^0.6.2"
+pyright = "^1.1.377"
+rich = "^13.7.1"
+taskipy = "^1.13.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+format = "ruff format --preview ."
+lint = "ruff check --fix  --exit-non-zero-on-fix"
+test = "pytest"
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+
+[tool.ruff]
+target-version = 'py312'
+line-length = 79
+preview = true
+# line-length = 120
+exclude = [
+    "migrations",
+    "__pycache__",
+    "manage.py",
+    "settings.py",
+    "env",
+    ".env",
+    "venv",
+    ".venv",
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = [
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "D",  # pydocstyle
+    "E",  # Error
+    "F",  # pyflakes
+    "I",  # isort
+    "N",  # pep8-naming
+    "PGH",  # pygrep-hooks
+    "PTH", # flake8-use-pathlib
+    "Q",  # flake8-quotes
+    "S",  # bandit
+    "SIM",  # flake8-simplify
+    "TRY",  # tryceratops
+    "UP",  # pyupgrade
+    "W",  # Warning
+    "YTT", # flake8-2020
+]
+
+ignore = [
+    "B905",  # zip strict=True; remove once python <3.10 support is dropped.
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D200",
+    "D401",
+    "E402",
+    "E501",
+    "F401",
+    "S501",  # verify ssl disable
+    "TRY003",  # Avoid specifying messages outside exception class; overly strict, especially for ValueError
+]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = [
+    "chr",
+    "typer.Argument",
+    "typer.Option",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = [
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "S101",  # use of "assert"
+    "S102",  # use of "exec"
+    "S106",  # possible hardcoded password.
+    "PGH001",  # use of "eval"
+]
+
+[tool.ruff.lint.pep8-naming]
+staticmethod-decorators = [
+    "pydantic.validator",
+    "pydantic.root_validator",
+]
+
+[tool.creosote]
+paths=["metamorfo"]
+deps-file="pyproject.toml"
+sections=["tool.poetry.dependencies"]
+exclude-deps =[]
