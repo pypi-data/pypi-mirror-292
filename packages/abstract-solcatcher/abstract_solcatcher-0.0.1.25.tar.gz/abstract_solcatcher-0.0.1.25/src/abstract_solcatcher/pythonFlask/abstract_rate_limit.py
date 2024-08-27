@@ -1,0 +1,8 @@
+from ..async_utils.abstract_async_rate_limit import async_log_response,async_get_rate_limit_url
+from ..utils import getEndpointUrl
+import asyncio
+def get_rate_limit_url(method_name,*args, **kwargs):
+   return asyncio.run(async_get_rate_limit_url(method_name,*args, **kwargs))
+def log_response(method_name, response_data,endpoint=None, *args, **kwargs):
+    return asyncio.run(async_log_response(method_name, response_data,endpoint=endpoint, *args, **kwargs))
+
