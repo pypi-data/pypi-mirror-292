@@ -1,0 +1,43 @@
+name: Workflow CI
+
+on:
+  push:
+    branches: "main"
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run_workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: setup-mamba
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: 3.11
+          mamba-version: "*"
+          channels: bioconda,conda-forge
+          channel-priority: true
+          auto-update-conda: true
+          activate-environment: true
+      
+      - name: setup data
+        shell: bash -el {0}
+        run: |
+          pushd tests
+          bash -el setup.sh
+          popd
+
+      - name: run workflow
+        shell: bash -el {0}
+        run: |
+          pushd tests
+          bash -el test.sh --quick
+          popd
+
+      - name: cat all log files on failure
+        if: ${{ failure() }}
+        run: |
+           find tests/ -name '*.log' -exec tail -n 1000 {} \;

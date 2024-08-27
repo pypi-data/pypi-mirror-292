@@ -1,0 +1,126 @@
+# These rules are part of Acanthophis. See https://github.com/kdm9/Acanthophis.
+# This file *could* be modified, but then be careful when you update them. And
+# please, if you find a bug, raise an issue on github so the fix gets shared
+# with everyone.
+#
+# Copyright 2016-2024 Kevin Murray/Gekkonid Consulting
+#
+# This Source Code Form is subject to the terms of the Mozilla Public License,
+# v. 2.0. If a copy of the MPL was not distributed with this file, You can
+# obtain one at http://mozilla.org/MPL/2.0/.
+
+def metagenome_reads(wc):
+    if wc.type.startswith("unmapped"):
+        key = re.sub("^unmapped~", "", wc.type)
+        return {r: T(f"alignments/unmapped_reads/{key}~{wc.sample}_{R}.fastq.gz") for r in ["R1", "R2", "se"]}
+    elif wc.type == "qcd":
+        return {r: P(f"reads/samples/{wc.sample}_{r}.fastq.gz") for r in ["R1", "R2", "se"]}
+    else:
+        raise ValueError(f"Unknown type '{wc.type}'")
+
+
+rule megahit:
+    input:
+        unpack(metagenome_reads),
+    output:
+        contigs=P("metagenome/megahit/{type}/{sample}.contigs.fa"),
+    log: L("metagenome/megahit/{type}~{sample}.log"),
+    benchmark: L("metagenome/megahit/{type}~{sample}.bench.csv"),
+    resources: **rule_resources(config, "megahit", runtime=180, mem_gb=16, disk_gb=16, cores=16)
+    conda: "envs/megahit.yml"
+    container: "docker://vout/megahit"
+    params:
+        mem_bytes = lambda wc, resources: resources.mem_mb * 1024,
+    shell:
+        "( O=$(dirname {output.contigs})/workdir_{wildcards.type}_{wildcards.sample};"
+        " rm -rf $O;"
+        " megahit"
+        "   --out-dir $O"
+        "   --out-prefix {wildcards.sample}"
+        "   --memory {params.mem_bytes}"
+        "   -1 {input.R1}"
+        "   -2 {input.R2}"
+        "   -r {input.se}"
+        "   --num-cpu-threads {threads}"
+        "; cp $O/*.contigs.fa {output.contigs}"
+        ") &>{log}"
+
+
+
+rule diamondx_reads2db:
+    input:
+        unpack(metagenome_reads),
+        db=lambda wc: R(config["data_paths"]["diamond"][wc.db]),
+    output:
+        tsv=P("metagenome/diamondx/{type}/{sample}~{db}.tsv.zstd"),
+    log:
+        L("metagenome/diamondx/{type}/{sample}~{db}.tsv.log"),
+    benchmark: 
+        L("metagenome/diamondx/{type}/{sample}~{db}.tsv.bench.csv"),
+    conda: "envs/diamond.yml"
+    container: "docker://ghcr.io/kdm9/acanthophis-diamond:latest"
+    resources: **rule_resources(config, "diamondx_reads2db", runtime=7200, mem_gb=72, disk_gb=5, cores=24)
+    shell:
+        'T=/tmp/holopipe_$RANDOM; mkdir -p $T; trap "rm -rf $T" INT EXIT TERM;'
+        "diamond blastx"
+        "   --threads {threads}"
+        "   --db {input.db}"
+        "   --query <(blsl pairs {input.R1} {input.R2} {input.se})"
+        "   --fast"
+        "   --unal 1"
+        "   --outfmt tab qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore"
+        "   --block-size 6"
+        "   --index-chunks 4"
+        "   --tmpdir $T"
+        "   --ignore-warnings"
+        "   --out >(zstd -T{threads} >{output.tsv})"
+        " &> {log}"
+
+
+rule plass:
+    input:
+        unpack(metagenome_reads),
+    output:
+        contigs=P("metagenome/plass/{type}/{sample}.faa"),
+        dir=directory(T("metagenome/plass/{type}/{sample}")),
+    log: L("metagenome/plass/{type}/{sample}.log"),
+    benchmark: L("metagenome/plass/{type}/{sample}.bench.csv"),
+    resources: **rule_resources(config, "plass", runtime=360, mem_gb=64, disk_gb=16, cores=24)
+    #conda: "envs/plass.yml"
+    container: "docker://ghcr.io/kdm9/acanthophis-plass:latest"
+    shell:
+        "( blsl pairs {input.R1} {input.R2} {input.se} |"
+        " plass"
+        "   assemble"
+        "   stdin"
+        "   {output.contigs}"
+        "   {output.dir}"
+        "   --threads {threads}"
+        ") &>{log}"
+
+
+
+rule all_plass:
+    input:
+        [P(f"metagenome/plass/{type}/{sample}.faa")
+           for sampleset in config["samplesets"]
+           for sample in config["SAMPLESETS"][sampleset]
+           for type in config["samplesets"][sampleset].get("plass", {}).get("types", [])
+           ],
+
+rule all_megahit:
+    input:
+        [P(f"metagenome/megahit/{type}/{sample}.contigs.fa")
+           for sampleset in config["samplesets"]
+           for sample in config["SAMPLESETS"][sampleset]
+           for type in config["samplesets"][sampleset].get("megahit", {}).get("types", [])
+           ],
+
+rule all_diamondx:
+    input:
+        [P(f"metagenome/diamondx/{type}/{sample}~{db}.tsv.zstd")
+           for sampleset in config["samplesets"]
+           for sample in config["SAMPLESETS"][sampleset]
+           for type in config["samplesets"][sampleset].get("diamondx", {}).get("types", [])
+           for db in config["samplesets"][sampleset].get("diamondx", {}).get("dbs", [])
+           ],
