@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "etc-player"
+version = "1.0.0"
+description = ""
+authors = ["Brian Kohan <bckohan@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+packages = [{include = "etc_player"}]
+classifiers = [
+    "Environment :: Console",
+    "Framework :: Django",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Django :: 4.2",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Site Management",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.2"
+django-enum = "^1.3.3"
+enum-properties = "^1.8.0"
+gunicorn = "^20.1.0"
+tzlocal = "^4.3"
+
+[tool.poetry.group.pyaudio]
+optional = true
+
+[tool.poetry.group.pyaudio.dependencies]
+pyaudio = "0.2.11"
+
+[tool.poetry.scripts]
+player = 'etc_player.player:main'
+
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.13.2"
+ipdb = "^0.13.13"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
