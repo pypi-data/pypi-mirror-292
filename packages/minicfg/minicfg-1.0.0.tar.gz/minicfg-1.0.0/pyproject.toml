@@ -1,0 +1,49 @@
+[project]
+name = "minicfg"
+version = "1.0.0"
+description = "Lightweight and opinionated config library for your Python services."
+authors = [
+    { name = "jieggii", email = "jieggii@protonmail.com" },
+]
+dependencies = []
+requires-python = ">=3.8"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "isort>=5.13.2",
+    "black>=24.8.0",
+    "coverage>=7.6.1",
+]
+
+[tool.pdm.scripts]
+test = "coverage run -m unittest discover"
+cover = "coverage html"
+
+[tool.pdm.scripts.fmt]
+shell = "isort ./minicfg ./tests ./examples && black ./minicfg ./tests ./examples"
+
+[tool.black]
+line-length = 120
+target-version = [
+    "py312",
+]
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 120
