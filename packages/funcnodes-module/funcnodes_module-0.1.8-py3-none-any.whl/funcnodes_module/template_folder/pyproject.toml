@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "{{ package-name }}"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+funcnodes = "*"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+pre-commit = "*"
+funcnodes-module = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.plugins."funcnodes.module"]
+module = "{{ module_name }}"
+shelf = "{{ module_name }}:NODE_SHELF"
