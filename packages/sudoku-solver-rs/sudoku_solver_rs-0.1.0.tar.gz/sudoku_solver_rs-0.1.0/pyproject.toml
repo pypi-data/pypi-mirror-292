@@ -1,0 +1,32 @@
+[build-system]
+requires = ["maturin>=1.4,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "sudoku-solver-rs"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+version = "0.1.0"
+description = "Rust Sudoku solver with Python bindings"
+authors = [
+    {name = "gendaineko2222", email = "gendaineko2222@gmail.com"},
+]
+dependencies = []
+readme = "README.md"
+license = {text = "MIT"}
+[tool.maturin]
+features = ["pyo3/extension-module"]
+python-source = "python"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=8.3.2",
+    "pytest-icdiff>=0.9",
+]
