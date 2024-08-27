@@ -1,0 +1,81 @@
+import os
+
+import grpc
+from iotics.lib.grpc import AuthInterface, IoticsApi
+from iotics.lib.grpc.helpers import KEEP_ALIVE_CHANNEL_OPTIONS
+
+from .identity_auth import IdentityAuth, IdentityAuthError
+
+DID_TOKEN_DURATION = os.getenv("DID_TOKEN_DURATION", "30")
+
+
+class HostClient:
+    verify_ssl: bool = True
+    identity: IdentityAuth = None
+    api: IoticsApi = None
+    fqdn: str = None
+
+    def __init__(self, config: dict):
+        """
+        Initialize a HostClient instance.
+
+        Args:
+            config: A dictionary containing the configuration parameters.
+                Required keys: 'host_url', 'resolver_url', 'did_user_id', 'did_agent_id', 'did_agent_key_name',
+                               'did_agent_name', 'did_agent_secret'
+                Optional keys: 'host_verify_ssl'
+        """
+        host_url = config.get("_host_url")
+        if host_url is None:
+            host_url = os.getenv("HOST_ADDRESS", "localhost:10000")
+        self.verify_ssl = config.get("_host_verify_ssl", True)
+
+        try:
+            self.identity = IdentityAuth(
+                host_url,
+                config.get("_resolver_url"),
+                config.get("_did_user_id"),
+                config.get("_did_agent_id"),
+                config.get("_did_agent_key_name"),
+                config.get("_did_agent_name"),
+                config.get("_did_agent_secret"),
+                DID_TOKEN_DURATION,
+                self.verify_ssl,
+            )
+        except IdentityAuthError as error:
+            raise error
+
+        self.fqdn = self.identity.get_host_with_scheme()
+
+    def __enter__(self):
+        self.identity.refresh_token()
+        self.api = IoticsApi(
+            auth=self.identity,
+            channel=get_channel(auth=self.identity, verify_ssl=self.verify_ssl),
+        )
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.api.channel.close()
+
+
+def get_channel(auth: AuthInterface, verify_ssl: bool = True, channel_options: [tuple, ...] = None) -> grpc.Channel:
+    """Creates a gRPC channel to IOTICSpace and instantiates API stub.
+
+    Args:
+        auth: Required to get a space host name and authentication token.
+        verify_ssl: Whether to verify the SSL certificate
+        channel_options: options argument passed to the grpc.secure_channel call
+          by default will use KEEP_ALIVE_CHANNEL_OPTIONS
+
+    Returns: gRPC channel.
+    """
+
+    if channel_options is None:
+        channel_options = KEEP_ALIVE_CHANNEL_OPTIONS
+
+    channel_credentials = grpc.ssl_channel_credentials() if verify_ssl else grpc.local_channel_credentials()
+
+    call_credentials = grpc.access_token_call_credentials(auth.get_token())
+    composite_credentials = grpc.composite_channel_credentials(channel_credentials, call_credentials)
+    return grpc.secure_channel(auth.get_host(), composite_credentials, options=channel_options)
