@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: docketanalyzer
+Version: 0.2.0
+Home-page: https://github.com/docketanalyzer/docketanalyzer
+Author: Nathan Dahlberg
+License-File: LICENSE
+Requires-Dist: awscli
+Requires-Dist: bs4
+Requires-Dist: click
+Requires-Dist: elasticsearch
+Requires-Dist: pandas
+Requires-Dist: pathlib
+Requires-Dist: peewee
+Requires-Dist: psycopg2-binary
+Requires-Dist: python-dotenv
+Requires-Dist: regex
+Requires-Dist: requests
+Requires-Dist: simplejson
+Requires-Dist: toolz
+Requires-Dist: tqdm
+Requires-Dist: twine
+Provides-Extra: all
+Requires-Dist: docketanalyzer-ocr >=0.0.2 ; extra == 'all'
+Requires-Dist: docketanalyzer-chat >=0.0.2 ; extra == 'all'
+Requires-Dist: docketanalyzer-flp >=0.0.2 ; extra == 'all'
+Requires-Dist: docketanalyzer-pipelines >=0.0.9 ; extra == 'all'
+Provides-Extra: chat
+Requires-Dist: docketanalyzer-chat >=0.0.2 ; extra == 'chat'
+Provides-Extra: flp
+Requires-Dist: docketanalyzer-flp >=0.0.2 ; extra == 'flp'
+Provides-Extra: ocr
+Requires-Dist: docketanalyzer-ocr >=0.0.2 ; extra == 'ocr'
+Provides-Extra: pipelines
+Requires-Dist: docketanalyzer-pipelines >=0.0.9 ; extra == 'pipelines'
+
