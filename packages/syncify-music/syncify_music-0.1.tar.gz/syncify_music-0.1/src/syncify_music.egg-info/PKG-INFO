@@ -1,0 +1,113 @@
+Metadata-Version: 2.1
+Name: syncify-music
+Version: 0.1
+Summary: Syncs spotify playlists with local json
+Home-page: https://github.com/collinbarlage/syncify
+Author: collin
+Author-email: collinbarlage@gmail.com
+License: CC0-1.0 license
+Description: ```
+         _____             _ ___
+        |   __|_ _ ___ ___|_|  _|_ _
+        |__   | | |   |  _| |  _| | |
+        |_____|_  |_|_|___|_|_| |_  |
+              |___|             |___|
+        ```
+        
+        Syncs spotify playlists -> local files
+        
+        makes use of [spotify_to_ytmusic](https://github.com/linsomniac/spotify_to_ytmusic) and [yt-dlp](https://github.com/yt-dlp/yt-dlp)
+        
+        
+        ### question:
+        - do i really need to oauth, or could we just use spotify urls ()
+        
+        ## directory context:
+        ```
+        /syncify
+          /rave
+          /bounce
+          syncify.json
+            {
+              oauth: "xyz",
+              refresh_token: "abc",
+              expires: 1234,
+              last_synced: 1234,
+              playlists:
+                [
+                  bounce: {
+                    sync: true,
+                    url: "...",
+                    tracks: [
+                      title: "string"
+                      artist: "string"
+                      album: "string"
+                      length: "string"
+                      url_sp: "string"
+                      url_yt: "string"
+                      bitrate: 320.00
+                      downloaded: false
+                      error: false
+                    ]
+                  }
+                  rave: {}
+                ]
+            }
+        ```
+        
+        
+        ## sudo:
+        
+        ```
+        > syncify
+        if (!syncify.json) {
+          > enter spotify oauth
+        }
+        if (syncify.playlists.length == 0) { // or > syncify --add
+          > enter playlust name (select from list / gui?)
+        }
+        
+        
+        // sync
+        for each (playlist in syncify.json)
+          use spotify_to_ytmusic to make/update map.json, which is a map of the spotify track -> yturl
+        
+          this map will also include a parameter 'downloaded'
+        
+        // download
+        for each (playlist in syncify.json)
+          for each (track in playlist)
+            if (!downloaded)
+              downlaod track with yt_dl
+        
+        ```
+        
+        ## possible commands:
+        ```
+        syncify --help
+          syncify --add
+            > enter playlist url:
+          syncify --only
+            // just syncs doesn't download
+          syncify --download
+            // just downloads doesn't sync
+          syncify --fix "song filename" "correct url"
+            // deletes song, sets download: false, and updates new url_yt
+          syncify
+        ```
+        
+        
+        fixing errors woukd entail manually updating json file (changing url, setting downloaded: false)
+        
+        
+        
+        ## nice to haves:
+        - spotify specific metadata (added on)
+        - warning when mapping (top three results seem dodgy)
+        - warning when bitrate < 120
+        - deletions
+        - refresh_token
+        - backup file (.syncify__mmddyyyy.json)
+        - just use yt playlists
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
