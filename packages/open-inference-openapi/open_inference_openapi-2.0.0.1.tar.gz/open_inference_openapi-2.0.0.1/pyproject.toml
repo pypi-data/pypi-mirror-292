@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "open-inference-openapi"
+version = "2.0.0.1"
+description = "Generated OpenAPI client library for the open-inference-protocol"
+authors = ["Zev Isert <zevisert@users.noreply.github.com>"]
+maintainers = ["Zev Isert <zevisert@users.noreply.github.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/open-inference/python-clients"
+packages = [{ include = "open_inference", from = "generated" }]
+keywords = [
+    "mlserver",
+    "kserve",
+    "triton",
+    "seldon",
+    "openvino",
+    "amdinfer",
+    "pytorch-serve",
+    "openapi",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/open-inference/python-clients/issues"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = "*,>1"
+httpx = "*"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.11.0"
+mypy = "^1.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
