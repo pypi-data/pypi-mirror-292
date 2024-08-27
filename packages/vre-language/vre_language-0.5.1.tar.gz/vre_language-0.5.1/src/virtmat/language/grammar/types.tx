@@ -1,0 +1,50 @@
+/* built-in types */
+
+TrueBOOL:
+  !/[0-9]/ BOOL
+;
+
+PlainType:
+  Quantity | Bool | String
+;
+
+PlainTypeTerm:
+  PlainType &/^|;|\,|\)|$/
+;
+
+Units:
+  /\w+(\s*([\*\/]\s*\w+|\*{2}\s*[+-]?\d+(\.\d*)*))*/
+;
+
+Null:
+  __null ?= 'null' | __default ?= 'default'
+;
+
+Imaginary[noskipws]:
+  /\s*/- NUMBER /[^\S\r\n]/- /[Jj]/-
+;
+
+Number:
+  imag_ = Imaginary | ( real = NUMBER ( sign = /[+-]/ imag_ = Imaginary )? )
+;
+
+ScalarNumerical:
+  Number | Null
+;
+
+Quantity:
+  ( 'Quantity' need_input ?= 'from' ( 'url' url = STRING | 'file' filename = STRING ) ) |
+  ( inp_value = ScalarNumerical ( '[' inp_units = Units ']' )? )
+;
+
+Bool:
+  ( 'Bool' need_input ?= 'from'
+    ( 'url' url = STRING | 'file' filename = STRING )
+  ) | ( __value = TrueBOOL )
+;
+
+String:
+  ( 'String' need_input ?= 'from'
+    ( 'url' url = STRING | 'file' filename = STRING )
+  ) | ( __value = STRING )
+;

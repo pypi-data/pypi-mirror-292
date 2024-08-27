@@ -1,0 +1,33 @@
+// a keyword is no valid identifier
+
+Keyword:
+  /\b(String|Quantity|Bool|Series|Table|BoolArray|StrArray|IntArray|FloatArray|real|imag|true|false|not|and|or|if|else|print|use|from|with|all|any|select|where|sum|range|map|filter|reduce|null|default|type|tag)\b/
+;
+
+// valid identifier
+
+TrueID:
+  !Keyword ID
+;
+
+// identifier used in series
+
+SeriesID:
+  TrueID | STRING
+;
+
+// QuotedStringID:
+//   /[\'\"]/- /\w+([^\S\r\n]+\w+)*/ /[\'\"]/-
+// ;
+
+// dummy variable identifier
+
+Dummy:
+  name = TrueID &/,|\)|\:/
+;
+
+// semantic versioning
+
+SemVer:
+  INT('.' INT)*
+;
