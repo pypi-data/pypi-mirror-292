@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: vkmusix
+Version: 3.3.1
+Summary: Библиотека для взаимодействия с VK Music. Документация: vkmusix.ru/docs.
+Home-page: https://github.com/to4no4sv/vkmusix
+Author: thswq
+Author-email: admin@vkmusix.ru
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# VKMusix
+
+## Установка и обновление
+```bash
+pip install --upgrade vkmusix
+```
+
+## Быстрый старт
+```python
+from vkmusix import Client
+
+client = Client()
+
+result = client.searchArtists("prombl")
+print(result)
+
+client.close()
+```
+
+
