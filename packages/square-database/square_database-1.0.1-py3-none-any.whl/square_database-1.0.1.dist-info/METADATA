@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: square-database
+Version: 1.0.1
+Summary: database layer for my personal server.
+Home-page: https://github.com/thepmsquare/square_database
+Author: thePmSquare
+Author-email: thepmsquare@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+Requires-Dist: sqlalchemy>=2.0.23
+Requires-Dist: psycopg2-binary>=2.9.9
+Requires-Dist: uvicorn>=0.24.0.post1
+Requires-Dist: fastapi>=0.104.1
+Requires-Dist: python-multipart>=0.0.6
+Requires-Dist: websockets>=12.0
+Requires-Dist: httpx>=0.26.0
+Requires-Dist: pytest>=8.0.0
+Requires-Dist: square-logger>=1.0.0
+Requires-Dist: square-commons>=0.0.3
+Provides-Extra: all
+Requires-Dist: square-database-structure>=0.0.1; extra == "all"
+
+# square_database
+
+## about
+
+database layer for my personal server.
+
+## installation
+
+```shell
+pip install square_database[all]
+```
+
+## usage (WIP)
+
+### change password in config.ini.
+
+### CREATE_SCHEMA = True to create database from scratch.
+
+### LOG_FILE_NAME and configure logger
+
+### link to square_database_structure
+
+## config
+
+square_database\data\config.ini
+
+## env
+
+- python>=3.12.0
+
+## changelog
+
+### v1.0.1
+
+- no changes
+
+### v1.0.0
+
+- initial commit
+
+## Feedback is appreciated. Thank you!
+
+
