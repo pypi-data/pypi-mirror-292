@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "ms-shared-nb"
+version = "0.1.1"
+description = ""
+authors = ["smudit <mudit.sharma@btinternet.com>"]
+readme = "README.md"
+packages = [{include = "ms_shared_nb"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+plotly = "^5.18.0"
+matplotlib = "^3.8.2"
+seaborn = "^0.13.1"
+hvplot = "^0.9.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
