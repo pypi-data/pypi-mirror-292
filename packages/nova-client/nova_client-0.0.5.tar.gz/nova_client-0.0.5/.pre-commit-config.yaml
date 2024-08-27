@@ -1,0 +1,39 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+default_stages: [ commit, push ]
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: check-added-large-files
+  # Black formatter
+  - repo: https://github.com/psf/black
+    rev: 24.3.0
+    hooks:
+      - id: black
+        entry: black --line-length 120 src/
+  # Pylint
+  - repo: https://github.com/pycqa/pylint
+    rev: v3.0.3
+    hooks:
+      - id: pylint
+        exclude: tests/
+        args:
+          - --max-line-length=120
+          - --disable=C0114 # C0114:missing-module-docstring
+          - --disable=R0801 # R0801:Similar lines in 2 files
+          - --disable=C0116 # C0116:missing-function-docstring
+          - --disable=E0401 # E0401:import-error
+          - --disable=C0115 # C0115:missing-class-docstring
+          - --disable=R0903 # R0903:Too few public methods
+          - --disable=W0603 # W0603:Using the global statement
+          - --disable=C0103 # C0103:naming-style
+          - --disable=W0236 # W0236:invalid-overridden-method
+          - --disable=R0913 # R0913:Too many arguments
+          - --disable=W0511 # W0511:fixme
+          - --disable=R0915 # R0915:Too many statements
+          - --disable=R0914 # R0914:Too many local variables
