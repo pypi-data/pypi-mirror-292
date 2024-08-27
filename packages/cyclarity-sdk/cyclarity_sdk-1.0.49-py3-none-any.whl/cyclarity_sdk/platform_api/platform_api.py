@@ -1,0 +1,60 @@
+from cyclarity_sdk.platform_api.Iplatform_connector import IPlatformConnectorApi
+from cyclarity_sdk.platform_api.connectors.cli_connector import CliConnector
+from cyclarity_sdk.sdk_models.artifacts import TestArtifact, TestReportDescription, ArtifactType
+from cyclarity_sdk.sdk_models.findings import Finding, PTFinding, FindingModelType
+from cyclarity_sdk.sdk_models import ExecutionState, ExecutionStatus
+from clarity_common.models.common_models.models import MessageType
+from typing import Optional
+
+
+class PlatformApi:
+    def __init__(
+        self,
+        platform_connector: Optional[IPlatformConnectorApi] = None
+    ):
+        if not platform_connector:
+            platform_connector = CliConnector()
+        self.set_api(platform_connector)
+
+    def set_api(self, platform_api: IPlatformConnectorApi):
+        self.platform_connector = platform_api
+
+    def send_test_report_description(self, description: str):  # noqa
+        execution_metadata = self.platform_connector.get_execution_meta_data()
+
+        test_report_description = TestReportDescription(
+            type=ArtifactType.REPORT_DESCRIPTION,
+            description=description
+        )
+
+        artifact = TestArtifact(
+            execution_metadata=execution_metadata,
+            type=MessageType.TEST_ARTIFACT,
+            data=test_report_description
+        )
+
+        return self.platform_connector.send_artifact(artifact)
+
+    def send_finding(self, pt_finding: PTFinding):
+        execution_metadata = self.platform_connector.get_execution_meta_data()
+
+        finding = Finding(
+            metadata=execution_metadata,
+            model_type=FindingModelType.PT_FINDING,
+            data=pt_finding,
+            type=MessageType.FINDING
+        )
+
+        return self.platform_connector.send_finding(finding)
+
+    def send_execution_state(self, percentage: int, status: ExecutionStatus, error_message: str = None):  # noqa
+        execution_metadata = self.platform_connector.get_execution_meta_data()
+
+        execution_state = ExecutionState(
+            execution_metadata=execution_metadata,
+            percentage=percentage,
+            status=status,
+            error_message=error_message
+        )
+
+        return self.platform_connector.send_state(execution_state)
