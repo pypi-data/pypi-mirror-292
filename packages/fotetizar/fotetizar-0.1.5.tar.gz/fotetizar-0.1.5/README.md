@@ -1,0 +1,119 @@
+---
+
+# `code2image`: Because Code Deserves Art!
+
+Ever wondered why your code looks so dull on a plain text editor? It’s time to bring some pizzazz to your programming! With `code2image`, you can transform your code into beautiful, themed images. Whether you want to share your code with flair or just need a cool screenshot for your portfolio, this tool’s got you covered.
+
+## Installation
+
+To get started with `code2image`, you’ll need Python and Poetry. If you don’t have Poetry installed, you can follow the installation guide [here](https://python-poetry.org/docs/#installation).
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/yourusername/code2image.git
+   cd code2image
+   ```
+
+2. **Install Dependencies**
+
+   With Poetry, you can install all required dependencies with a single command:
+
+   ```bash
+   poetry install
+   ```
+
+3. **Install the Package**
+
+   If you want to install the package locally for development purposes:
+
+   ```bash
+   poetry install --editable .
+   ```
+
+## Usage
+
+`code2image` can be used both in code and from the command line.
+
+### In Code
+
+Here’s a quick example of how to use `code2image` programmatically:
+
+```python
+from code2image import render_image
+
+input_file = 'example_script.py'
+theme = 'dracula'
+font_path = 'path/to/custom/font.ttf'
+mode = 'editor'
+
+render_image(input_file, theme, font_path, mode)
+```
+
+This will generate an image of the code in `example_script.py` using the "dracula" theme and the specified font, in "editor" mode.
+
+### In Console
+
+To use `code2image` from the command line, you can run the following command:
+
+```bash
+code2image example_script.py dracula --mode editor
+```
+
+This command generates an image of `example_script.py` using the "dracula" theme in "editor" mode.
+
+## Options / Arguments
+
+Here are the available options and arguments for `code2image`:
+
+- **`input_file`** (required): The path to the input file you want to render. This should be a Python script or any text file containing code.
+  - Example: `example_script.py`
+
+- **`theme`** (required): The color theme to use for rendering.
+  - Available themes:
+    - `monokai`
+    - `blackandwhite`
+    - `solarized`
+    - `gruvbox`
+    - `nord`
+    - `dracula`
+    - `github`
+    - `one_dark`
+    - `atom`
+    - `vscode`
+    - `commodore64`
+  - Example: `dracula`
+
+- **`--font`** (optional): Path to a custom font file to use for rendering.
+  - Example: `path/to/custom/font.ttf`
+
+- **`--mode`** (optional): The rendering mode, either "editor" or "console".
+  - Example: `editor`
+
+### Examples
+
+1. **Generate an image with the "dracula" theme and "editor" mode**:
+
+   ```bash
+   code2image example_script.py dracula --mode editor
+   ```
+
+2. **Generate an image with a custom font and "console" mode**:
+
+   ```bash
+   code2image example_script.py nord --font path/to/custom/font.ttf --mode console
+   ```
+
+3. **Use the "commodore64" theme with default settings**:
+
+   ```bash
+   code2image example_script.py commodore64
+   ```
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+Feel free to adjust the examples and other details to better fit your use case and project specifics!
