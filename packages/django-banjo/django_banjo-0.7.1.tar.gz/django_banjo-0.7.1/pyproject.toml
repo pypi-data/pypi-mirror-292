@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "django-banjo"
+version = "0.7.1"
+description = "A simplified abstraction over django for beginners."
+license = "MIT"
+authors = ["Chris Proctor <chris@chrisproctor.net>"]
+readme = "README.md"
+homepage = "https://github.com/cproctor/django-banjo"
+repository = "https://github.com/cproctor/django-banjo"
+documentation = "https://django-banjo.readthedocs.io"
+packages = [{include = "banjo"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^5.0.3"
+django-extensions = "^3.2.3"
+environ = "^1.0"
+
+[tool.poetry.group.dev.dependencies]
+sphinx = "^7.2.6"
+furo = "^2024.1.29"
+
+[tool.poetry.scripts]
+banjo = "banjo.runner:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

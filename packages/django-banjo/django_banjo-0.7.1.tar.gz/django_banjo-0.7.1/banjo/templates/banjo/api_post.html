@@ -1,0 +1,22 @@
+{% extends "banjo/base.html" %}
+
+{% block content %}
+  <h1>{{route.human_name}}</h1>
+  <p>POST URL: {{route.url}}</p>
+  <p>{{route.description}}</p>
+  {% if form %}
+    <form method="POST" action="{{ route.api_url }}">
+      {{ form.as_p }}
+      <input type="submit" value="Submit">
+    </form>
+  {% endif %}
+  {% if errors %}
+    <h2>Error</h2>
+    <pre>{{errors}}</pre>
+  {% endif %}
+  {% if result %}
+    <h2>Result</h2>
+    <pre>{{result}}</pre>
+  {% endif %}
+{% endblock %}
+
