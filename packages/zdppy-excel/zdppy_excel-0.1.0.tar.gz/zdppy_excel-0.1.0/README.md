@@ -1,0 +1,198 @@
+# zdppy_excel
+
+Python处理Excel的专属工具库
+
+## 特性
+
+- 1、零依赖
+- 2、国产框架，有完整的中文文档
+- 3、使用简单
+- 4、低代码开发
+
+## 安装
+
+```bash
+pip install zdppy_excel
+```
+
+## 使用教程
+
+### 写入数据
+
+```python
+from zdppy_excel import Workbook
+import datetime
+
+# 创建一个 workbook
+wb = Workbook()
+
+# 获取被激活的 worksheet
+ws = wb.active
+
+# 设置单元格内容
+ws['A1'] = 42
+
+# 设置一行内容
+ws.append([1, 2, 3])
+
+# python 数据类型可以被自动转换
+ws['A2'] = datetime.datetime.now()
+
+# 保存 Excel 文件
+wb.save("sample.xlsx")
+```
+
+### 加载Excel
+
+```python
+from zdppy_excel import load_workbook
+
+wb = load_workbook('sample.xlsx')
+
+# 显示文档中包含的 表单 名称
+print(wb.sheetnames)
+```
+
+### 工作表的基础操作
+
+```python
+from zdppy_excel import load_workbook
+
+wb = load_workbook('sample.xlsx')
+ws = wb.active
+
+ws1 = wb.create_sheet("sheet")  # 创建一个 sheet 名为 sheet
+ws1.title = "新表单"  # 设置 sheet 标题
+ws2 = wb.create_sheet("mysheet", 0)  # 创建一个 sheet，插入到最前面 默认插在后面
+ws2.title = u"你好"  # 设置 sheet 标题
+
+ws1.sheet_properties.tabColor = "1072BA"  # 设置 sheet 标签背景色
+
+# 获取 sheet
+ws3 = wb.get_sheet_by_name(u"你好")
+# ws4 = wb['New Title']
+
+# 复制 sheet
+ws1_copy = wb.copy_worksheet(ws1)
+
+# 删除 sheet
+wb.remove(ws1)
+
+wb.save("sample1.xlsx")
+```
+
+### 遍历某列数据
+
+```python
+from zdppy_excel import load_workbook
+
+wb = load_workbook('sample.xlsx')
+ws = wb.active
+
+# 操作单列
+for cell in ws["A"]:
+    print(cell.value)
+```
+
+### 遍历某行数据
+
+```python
+from zdppy_excel import load_workbook
+
+wb = load_workbook('sample.xlsx')
+ws = wb.active
+
+# 操作单行
+for cell in ws["1"]:
+    print(cell.value)
+```
+
+### 遍历多列数据
+
+```python
+from zdppy_excel import load_workbook
+
+wb = load_workbook('sample.xlsx')
+ws = wb.active
+
+# 操作多列
+for column in ws['A:C']:
+    for cell in column:
+        print(cell.value)
+```
+
+### 遍历多行数据
+
+```python
+from zdppy_excel import load_workbook
+
+wb = load_workbook('sample.xlsx')
+ws = wb.active
+
+# 操作多行
+for row in ws['1:3']:
+    for cell in row:
+        print(cell.value)
+```
+
+### 遍历指定行列范围数据
+
+```python
+from zdppy_excel import load_workbook
+
+wb = load_workbook('sample.xlsx')
+ws = wb.active
+
+# 指定范围
+for row in ws['A1:C3']:
+    for cell in row:
+        print(cell.value)
+```
+
+### 遍历所有行
+
+```python
+from zdppy_excel import load_workbook
+
+wb = load_workbook('sample.xlsx')
+ws = wb.active
+
+# 所有行
+for row in ws.iter_rows():
+    for cell in row:
+        print(cell.value)
+```
+
+### 遍历所有列
+
+```python
+from zdppy_excel import load_workbook
+
+wb = load_workbook('sample.xlsx')
+ws = wb.active
+
+# 所有列
+for column in ws.iter_cols():
+    for cell in column:
+        print(cell.value)
+```
+
+### 追加一行数据
+
+```python
+from zdppy_excel import load_workbook
+
+wb = load_workbook('sample.xlsx')
+ws = wb.active
+
+ws.append((1, 2, 3))
+
+# 保存 Excel 文件
+wb.save("sample.xlsx")
+```
+
+## 版本历史
+
+### v0.1.0
+
+- 基础功能
