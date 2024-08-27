@@ -1,0 +1,40 @@
+[project]
+name = "rcdata"
+version = "0.2.0"
+description = "Default template for PDM package"
+authors = [
+    { name = "break-soul", email = "57186766+break-soul@users.noreply.github.com" },
+]
+requires-python = ">=3.8"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Repository = "https://github.com/break-soul/rcdata"
+
+[project.optional-dependencies]
+all = [
+    "zstandard>=0.23.0",
+    "cryptography>=43.0.0",
+]
+compact = [
+    "zstandard>=0.23.0",
+]
+encryption = [
+    "cryptography>=43.0.0",
+]
+
+[build-system]
+requires = [
+    "pdm-pep517>=1.0",
+]
+build-backend = "pdm.pep517.api"
+
+[tool.pdm]
+distribution = true
+
+[tool.isort]
+profile = "black"
+line_length = 100
