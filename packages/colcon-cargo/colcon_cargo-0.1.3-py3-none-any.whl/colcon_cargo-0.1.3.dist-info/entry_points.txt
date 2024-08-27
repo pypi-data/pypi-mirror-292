@@ -1,0 +1,12 @@
+[colcon_argcomplete.argcomplete_completer]
+cargo_args = colcon_cargo.argcomplete_completer.cargo_args:CargoArgcompleteCompleter
+
+[colcon_core.package_identification]
+cargo = colcon_cargo.package_identification.cargo:CargoPackageIdentification
+
+[colcon_core.task.build]
+cargo = colcon_cargo.task.cargo.build:CargoBuildTask
+
+[colcon_core.task.test]
+cargo = colcon_cargo.task.cargo.test:CargoTestTask
+
