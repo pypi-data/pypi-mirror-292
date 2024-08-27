@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pylogfunctionusage"
+version = "0.1.1"
+dependencies = []
+requires-python = ">=3.6"
+authors = [
+  { name="Ambroise Dobosz"},
+]
+maintainers = [
+  {name = "Ambroise Dobosz"}
+]
+description = "LogFunctionUsage in pylogfunctionusage is a Python decorator designed to enhance the logging capabilities of your functions by wrapping them in a try: block. It logs function usage, including calls, exceptions, and results, to an SQLite table"
+readme = "README.md"
+license = {file = "LICENSE.txt"}
+keywords = ["logging", "monitoring", "sql", "sqlite", "pylogfunctionusage", "LogFunctionUsage"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Ambroise-D/pylogfunctionusage"
+Issues = "https://github.com/Ambroise-D/pylogfunctionusage/issues"
