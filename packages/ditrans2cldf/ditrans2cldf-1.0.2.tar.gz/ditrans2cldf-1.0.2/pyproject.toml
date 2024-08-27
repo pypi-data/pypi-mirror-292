@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ditrans2cldf"
+version = "1.0.2"
+requires-python = ">= 3.8"
+dependencies = [
+    "cldfbench[glottolog]",
+    "openpyxl",
+    "pybtex",
+    "unidecode",
+]
+authors = [
+    { name="Johannes Englisch", email="johannes_englisch@eva.mpg.de" },
+]
+description = "Small library for converting Ditransitive-style Filemaker databases to CLDF"
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["data", "linguistics"]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Repository = "https://github.com/cldf/ditrans2cldf"
+Issues = "https://github.com/cldf/ditrans2cldf/issues"
+
+[project.optional-dependencies]
+dev = [ "flake8" ]
+test = [ "tox", "pytest", "pytest-cov", "coverage" ]
+
+[project.entry-points."cldfbench.scaffold"]
+ditransitive_db = "ditrans2cldf.scaffold:DitransDBTemplate"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"ditrans2cldf.dataset_template" = ["**/*"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
