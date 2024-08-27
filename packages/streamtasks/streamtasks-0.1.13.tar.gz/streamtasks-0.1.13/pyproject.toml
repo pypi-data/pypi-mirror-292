@@ -1,0 +1,79 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools", "wheel", "pybind11"]
+
+[project]
+name = "streamtasks"
+version = "0.1.13"
+authors = [
+  {name = "leopf"},
+]
+description = "A python task orchestrator to simplify real-time, static data pipelines."
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE"}
+dependencies = [
+  "typing_extensions>=4.0.0,<5.0.0",
+  "lark>=1.1.9,<2.0.0",
+  "msgpack>=1.0.0,<2.0.0",
+  "pydantic>=2.7.1,<3.0.0",
+  "numpy>=1.26.4,<2.0.0",
+  "uvicorn[standard]>=0.29.0,<1.0.0",
+  "websockets>=12.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/leopf/streamtasks"
+Documentation = "https://leopf.github.io/streamtasks/"
+Repository = "https://github.com/leopf/streamtasks"
+
+[project.optional-dependencies]
+dev = [
+  "ruff",
+]
+media = [
+  "av>=12.0.0,<13.0.0",
+  "opencv_python>=4.9.0.80,<5.0.0",
+  "sounddevice>=0.4.0,<1.0.0",
+  "mss>=9.0.0,<10.0.0",
+  "pillow>=10.0.0"
+]
+inference = [
+  "speechbrain>=1.0.0,<2.0.0",
+  "torch>=2.0.0,<3.0.0",
+  "llama-cpp-python>=0.2.0,<1.0.0",
+  "transformers>=4.30.0,<5.0.0"
+]
+testing = [
+  "httpx>=0.27.0,<1.0.0"
+]
+
+[project.scripts]
+streamtasks = "streamtasks.bin:main_cli"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["streamtasks*"]
+
+[tool.ruff]
+line-length = 150
+indent-width = 2
+target-version = "py311"
+preview = true
+
+lint.select = [
+    "F",
+    "W293",
+    "W291",
+    "W191",
+    "W292",
+    "W391",
+    "E703",
+]
+
+include = [
+    "streamtasks/*.py",
+    "tests/**.py",
+    "extra/**.py",
+    "examples/**.py",
+    "setup.py"
+]
