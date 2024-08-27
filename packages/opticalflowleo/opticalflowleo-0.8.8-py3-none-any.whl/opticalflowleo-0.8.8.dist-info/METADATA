@@ -1,0 +1,29 @@
+Metadata-Version: 2.3
+Name: opticalflowleo
+Version: 0.8.8
+Summary: Optical Flow derived winds from overlapping LEO granules
+Project-URL: Homepage, https://gitlab.ssec.wisc.edu/rink/windflow_leo
+Author-email: "T.Rink" <rink@ssec.wisc.edu>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# windflow_leo
+A package for deriving atmospheric winds from overlapping granules of satellites in a LEO (low earth orbit)
+train formation, using dense feature tracking of CrIS retrievals of specific humidity (JPSS) or AVHRR imagery (MetOp).
+
+This package runs inference on a pre-trained model based on WindFlow: Dense feature tracking of atmospheric winds with deep optical flow:
+
+Vandal, T., Duffy, K., McCarty, W., Sewnath, A., & Nemani, R. (2022). Dense feature tracking of atmospheric winds with deep optical flow, Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining.
+
+Note: this project uses git submodules. Use this command to clone:  
+
+`git clone --recursive https://gitlab.ssec.wisc.edu/rink/windflow_leo.git`
+
+To install and run:  
+`conda env create -f opticalflowleo.yml`  
+`conda activate opticalflowleo
+`pip install opticalflowleo`
