@@ -1,0 +1,110 @@
+Metadata-Version: 2.1
+Name: cchess
+Version: 1.24.1
+Summary: ChineseChess (AKA XiangQi) library
+License: GPL3
+Keywords: XiangQi,Xiang Qi,ChineseChess
+Author: walker8088
+Author-email: walker8088@gmail.com
+Requires-Python: >=3.6,<4.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Description-Content-Type: text/markdown
+
+# cchess
+
+cchess是一个Python版的中国象棋库，主要功能如下:
+
+##棋盘显示
+```
+board_strs = board.text_view()
+print()
+for s in board_strs:
+    print(s)
+#or    
+board.print_board()
+```
+
+##走子(内部格式), 中文显示
+```
+move = board.copy().move((0,0),(0,1))
+print(move.to_text())
+```
+
+##走子(ICCS纵线格式),中文显示
+```
+move = board.copy().move_iccs('a0a1')
+print(move.to_text())
+```
+
+##走子(中文格式,尚待完善),中文显示
+```
+move = board.copy().move_text('车九进一')
+print(move.to_text())
+```
+
+##产生某个棋子的合法走子
+```
+moves = board.create_piece_moves((0,0))
+for mv in moves:
+    move = board.copy().move(*mv)
+    print(move.to_text())
+```
+
+##产生所有合法走子
+```
+moves = board.create_moves()
+for mv in moves:
+    move = board.copy().move(*mv)
+    print(move.to_text())
+```
+
+##将军检测
+```
+board.from_fen('3k5/9/9/9/9/3R5/9/9/9/4K4 w - - 0 1') 
+print(board.is_checking()) #True
+```
+
+##将死对方检测
+```
+print(board.is_checkmate())      #True 
+```
+
+##走子被将军检测
+```
+board.from_fen('3k5/9/9/9/9/3R5/9/9/9/4K4 b - - 0 1')
+mv = move.from_iccs('d9e9') 
+print(board.is_checked_move(*mv)) #True
+```
+
+##被对方将死检测
+```
+print(board.no_moves())    #True
+```
+
+##读取xqf文件, 显示棋谱
+```
+#8.读取xqf文件, 显示棋谱
+game = read_from_xqf("WildHouse.xqf")
+game.init_board.print_board()
+board_strs = game.init_board.text_view()
+print()
+for s in board_strs:
+    print(s)
+    
+game.print_text_moves()
+```
+
+以上参见demo/demo_base.py
+
+##加载引擎进行对弈
+
+参见demo/end_game.py
+
