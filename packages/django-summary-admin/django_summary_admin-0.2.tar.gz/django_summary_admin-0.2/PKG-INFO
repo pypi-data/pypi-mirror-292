@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: django-summary-admin
+Version: 0.2
+Summary: Using summaries for totals in Django admin
+Author-email: Eduardo Stefanello <eduardo@stefanello.cc>
+Project-URL: Homepage, https://github.com/dudustefanello/django_summary_admin/
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 5.0
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: django>=5.0
+
+## Django Summery Admin
+
+Using summaries for totals in Django admin
+
+### Installation:
+
+```shell
+pip install -i django-summary-admin
+```
+```python
+# settings.py
+INSTALLED_APPS = [
+    ...
+    'django_summary_admin',
+    ...
+]
+```
+
+### Usage:
+
+```python
+# admin.py
+from django.db import models
+
+from django_summary_admin.admin import SummaryAdmin
+
+
+class MyModelAdmin(SummaryAdmin):
+    fields = [
+        'description',
+        'total', # Same name in aggregate
+    ]
+    
+    def get_summary(self, queryset):
+        return queryset.aggregate(total=models.Sum('value'))
+```
+
