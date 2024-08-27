@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "loe_simp_app_fw"
+authors = [
+  { name="loeeeee", email="95266635+loeeeee@users.noreply.github.com" },
+]
+description = "A super simple python app framework that includes a logger and a config manager. Also usable in jupyter notebook."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "pyyaml",
+  "requests"
+]
+keywords = ["framework", "logger", "config mangager"]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/loeeeee/loe-simp-app-fw"
+Issues = "https://github.com/loeeeee/loe-simp-app-fw/issues"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/src/tests",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "loe_simp_app_fw.__version__"}
