@@ -1,0 +1,91 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "simple-app-indexing-azure",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/simple-app/app/main.py",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "args": [
+                "indexer",
+                "index",
+                "--input-file",
+                "${workspaceFolder}/examples/input-data/book.txt",
+                "--output-dir",
+                "${workspaceFolder}/tmp",
+                "--cache-dir",
+                "${workspaceFolder}/tmp/cache",
+                "--llm-type",
+                "azure_openai",
+                "--llm-model",
+                "gpt-4o",
+                "--embedding-type",
+                "azure_openai",
+                "--embedding-model",
+                "text-embedding-3-small",
+            ]
+        },
+        {
+            "name": "simple-app-global-query-azure",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/simple-app/app/main.py",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "args": [
+                "query",
+                "global-search",
+                "--output-dir",
+                "${workspaceFolder}/tmp",
+                "--cache-dir",
+                "${workspaceFolder}/tmp/cache",
+                "--query",
+                "What are the top themes in this story?",
+                "--llm-type",
+                "azure_openai",
+                "--llm-model",
+                "gpt-4o"
+            ]
+        },
+        {
+            "name": "simple-app-local-query-azure",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/simple-app/app/main.py",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "args": [
+                "query",
+                "local-search",
+                "--output-dir",
+                "${workspaceFolder}/tmp",
+                "--cache-dir",
+                "${workspaceFolder}/tmp/cache",
+                "--query",
+                "Who is Scrooge, and what are his main relationships?",
+                "--llm-type",
+                "azure_openai",
+                "--llm-model",
+                "gpt-4o",
+                "--embedding-type",
+                "azure_openai",
+                "--embedding-model",
+                "text-embedding-3-small",
+            ]
+        }
+    ]
+}
