@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: python3-cyberfusion-queue-support
+Version: 1.1.3
+Summary: Library to queue actions.
+Author-email: Cyberfusion <support@cyberfusion.io>
+Project-URL: Source, https://github.com/CyberfusionIO/python3-cyberfusion-queue-support
+Description-Content-Type: text/markdown
+Requires-Dist: python3-cyberfusion-systemd-support~=1.0
+
+# python3-cyberfusion-queue-support
+
+Library to queue actions.
+
+# Install
+
+## PyPI
+
+Run the following command to install the package from PyPI:
+
+    pip3 install python3-cyberfusion-queue-support
+
+## Debian
+
+Run the following commands to build a Debian package:
+
+    mk-build-deps -i -t 'apt -o Debug::pkgProblemResolver=yes --no-install-recommends -y'
+    dpkg-buildpackage -us -uc
+
+# Configure
+
+No configuration is supported.
+
+# Usage
+
+## Example
+
+```python
+from cyberfusion.QueueSupport import Queue
+from cyberfusion.QueueSupport.items.chmod import ChmodItem
+
+queue = Queue()
+
+item = ChmodItem(path="/tmp/example.txt", mode=0o600)
+print(item.outcomes)
+
+queue.add(item)
+
+preview = True or False
+
+outcomes = queue.process(preview=preview)
+
+for outcome in outcomes:
+    print(str(outcome))
+```
