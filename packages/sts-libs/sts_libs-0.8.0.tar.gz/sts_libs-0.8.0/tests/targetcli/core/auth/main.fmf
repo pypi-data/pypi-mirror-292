@@ -1,0 +1,18 @@
+summary: iscsi chap authentication test suite
+description: >
+  Test suite for iscsi chap authentication, including 1-way CHAP
+  and 2-ways at discovery, tpg and acl level, with different
+  combinations of userid and password.
+
+  Test with a single character as userid and password
+  Test with 254 characters as userid and password
+  Test with random characters as userid and password
+test: pytest chap.py
+duration: 20m
+environment:
+  TARGET_IQN: iqn.2003-01.com.redhat:target
+  INITIATOR_IQN: iqn.2003-01.com.redhat:initiator
+  CHAP_USERNAME: userid
+  CHAP_PASSWORD: password
+  CHAP_TARGET_USERNAME: mutualuserid
+  CHAP_TARGET_PASSWORD: mutualpassword
