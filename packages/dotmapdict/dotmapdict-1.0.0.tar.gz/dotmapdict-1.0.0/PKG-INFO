@@ -1,0 +1,103 @@
+Metadata-Version: 2.1
+Name: dotmapdict
+Version: 1.0.0
+Summary: A dictionary that supports dot notation access
+Home-page: https://github.com/m-sarabi/dotmapdict
+Author: Mohammad Sarabi
+Author-email: Mohammad Sarabi <m.sarabi.jkd@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 Mohammad Sarabi
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/m-sarabi/dotmapdict
+Project-URL: Documentation, https://github.com/m-sarabi/dotmapdict
+Project-URL: Repository, https://github.com/m-sarabi/dotmapdict
+Project-URL: Issues, https://github.com/m-sarabi/dotmapdict/issues
+Project-URL: Changelog, https://github.com/m-sarabi/dotmapdict/blob/main/CHANGELOG.MD
+Keywords: dictionary,dot notation,access,nested,dot,dict,dotdict
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# dotmapdict
+
+`dotmapdict` is a Python package that enhances the standard dictionary with dot notation access. This makes it easier to work with nested dictionaries by allowing you to access and modify their elements using attribute-style access.
+
+## Features
+
+- **Dot Notation Access**: Access dictionary keys as attributes.
+- **Nested Dictionary Handling**: Automatically converts nested dictionaries into `DotDict` instances.
+- **Merge Support**: Merge another dictionary into the existing `DotDict`.
+- **Flexible Updates**: Update dictionary keys with dot notation.
+- **Convert to Standard Dictionary**: Easily convert `DotDict` instances back to standard Python dictionaries.
+- **Full Unit Test Coverage**: Comprehensive tests ensure the robustness of `dotmapdict`.
+
+## Installation
+
+Install `dotmapdict` via pip:
+
+```bash
+pip install dotmapdict
+```
+
+Usage
+Here's a basic example of how to use dotmapdict:
+
+```python
+from dotmapdict import DotDict
+
+# Initialize a DotDict instance with nested dictionaries
+config = DotDict({"database": {"host": "localhost", "port": 5432}}, debug=True)
+
+# Access values using dot notation
+print(config.database.host)  # Output: localhost
+print(config.debug)  # Output: True
+
+# Update values using dot notation
+config.database.username = "admin"
+print(config.database.username)  # Output: admin
+
+# Convert back to a standard dictionary
+# Output: {'database': {'host': 'localhost', 'port': 5432, 'username': 'admin'}, 'debug': True}
+print(config.to_dict())
+print(type(config.to_dict()))  # Output: <class 'dict'>
+
+# Merge another dictionary into the existing DotDict
+config.merge({"database": {"password": "secret"}})
+print(config.database.password)  # Output: secret
+
+# Update the DotDict with another dictionary
+config.update({"database": {"port": 5433, "ssl": False}})
+print(config.database.port)  # Output: 5433
+print(config.database.ssl)  # Output: False
+
+# Delete a value using dot notation
+del config.database.username
+del config.database.port
+print(config.database.username)  # Output: None
+print(config.database)  # Output: {'host': 'localhost', 'password': 'secret', 'ssl': False}
+```
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+For any inquiries or issues, create an [issue](https://github.com/m-sarabi/dotmapdict/issues)
