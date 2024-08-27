@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "ai-mock"
+version = "0.1.1"
+description = "Mock clients for your favorite LLM APIs"
+authors = ["Anibal Angulo <ajcardoza2000@gmail.com>"]
+packages = [{ "include" = "mockai" }]
+readme = "README.md"
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.7.4"
+fastapi = { extras = ["standard"], version = "^0.111.0" }
+typer = { extras = ["all"], version = "^0.12.3" }
+
+[tool.poetry.scripts]
+mockai-server = "mockai.cli:cli"
+
+[tool.poe.tasks]
+test = "pytest -v"
+lint = "ruff check --fix"
+format = "ruff format"
+ruff = ["lint", "format"]
+
+[tool.poetry.group.dev.dependencies]
+openai = "^1.35.1"
+pytest = "^8.2.2"
+pytest-asyncio = "^0.23.7"
+ruff = "^0.4.9"
+mistralai = "^0.4.1"
+cohere = "^5.5.8"
+poethepoet = "^0.26.1"
+anthropic = "^0.30.0"
+ipykernel = "^6.29.4"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
