@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mkdocs-execute-plugin"
+dynamic = ["version"]
+dependencies = [
+    "mkdocs>=1.4",
+    "nbconvert",
+    "jupytext",
+    "markdown",
+    "traitlets",
+    "ipykernel",
+]
+requires-python = ">=3.8"
+authors = [
+    {name = "MkDocs Execute Plugin Authors", email = "authors@kwant-project.org"},
+]
+description = "A MkDocs plugin to execute notebooks and embed the results in the documentation."
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "Operating System :: OS Independent",
+    "Framework :: MkDocs",
+]
+
+[project.urls]
+Homepage = "https://gitlab.kwant-project.org/qt/mkdocs-execute-plugin"
+Issues = "https://gitlab.kwant-project.org/qt/mkdocs-execute-plugin/-/issues"
+Repository = "https://gitlab.kwant-project.org/qt/mkdocs-execute-plugin.git"
+
+[tool.hatch.version]
+source = "vcs"
+
+[project.entry-points."mkdocs.plugins"]
+execute = "mkdocs_execute_plugin.plugin:ExecutePlugin"
