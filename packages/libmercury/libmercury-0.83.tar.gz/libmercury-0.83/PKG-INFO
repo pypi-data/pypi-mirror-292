@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: libmercury
+Version: 0.83
+Summary: A batteries included web framework written in python
+Author-email: Ahsan Ahmed <ahsan.ahmed3246@gmail.com.com>
+Maintainer-email: Ahsan Ahmed <ahsan.ahmed3246@gmail.com.com>
+License: MIT License
+        
+        Copyright (c) 2024 MercuryFramework
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/MercuryFramework
+Project-URL: Repository, https://github.com/MercuryFramework/mercury.git
+Project-URL: Bug Tracker, https://github.com/MercuryFramework/mercury/issues
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python
+Classifier: Topic :: Internet
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development
+Classifier: Typing :: Typed
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Internet :: WWW/HTTP
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: routes
+Requires-Dist: werkzeug
+Requires-Dist: colorama
+Requires-Dist: MarsRouter
+Requires-Dist: SQLAlchemy
+
+# Mercury
+Mercury is a batteries included framework like Django, but with the simplicity of Flask. It allows
+you to build web API's in a fast timely manner. The project uses the already existing Werkzeug
+wrappers for a similar and efficient field when developing.
+
+# Features
+ - Dynamic routing
+ - ORM with custom migration system
+ - Custom validation API that handles bad requests for you
+ - Custom JWT token system
+ - Inovative autogeneration system that writes commonly used API's for you
