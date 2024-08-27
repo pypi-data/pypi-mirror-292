@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=60"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fm-transfer"
+dynamic = ["version"]
+readme = "README.md"
+authors = [{name = "Matteo Tenca", email = "matteo.tenca@gmail.com"}]
+description = "Send and receive data via radio transceivers"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+]
+urls = {Homepage = "https://github.com/matteotenca/fm-transfer"}
+dependencies = ["pyqt6", "pyserial", "gg-transfer", "quiet-transfer"]
+
+[project.scripts]
+fm-transfer = "fmtransfer.__main__:_main"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.dynamic]
+version = {attr = "fmtransfer.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
