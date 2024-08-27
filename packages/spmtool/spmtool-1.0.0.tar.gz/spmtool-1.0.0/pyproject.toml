@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=62"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spmtool"
+version = "1.0.0"
+description = "Read/write SPM motor controller configuration over serial connection"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+keywords = ["serial", "spm", "kelly"]
+authors = [
+    {email = "ndf-zz@6-v.org", name = "Nathan Fraser"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+]
+
+dependencies = [
+    "pyserial",
+]
+
+[project.urls]
+homepage = "https://github.com/ndf-zz/spmtool"
+
+[project.scripts]
+spmtool = "spmtool:main"
