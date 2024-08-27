@@ -1,0 +1,31 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout  code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+
+      - name: Install Package
+        run: |
+          python -m pip install -r requirements.txt
+
+      - name: Add private pypirc vars
+        run: |
+          echo "[pypi]" > ~/.pypirc
+          echo "username = __token__" >> ~/.pypirc
+          echo "password = pypi-AgEIcHlwaS5vcmcCJDRiZjZmNjQ3LWU2OTYtNDYzYS05ZDEwLTc5OGM2ZTEzYjllZgACI1sxLFsiZmFzdGFwaS1taWNyb3NlcnZpY2UtaGVscGVyIl1dAAIsWzIsWyJiZjNhNWViMS03MGU2LTRmOWMtYjBiNC02ZTkyM2JlMGViMTQiXV0AAAYgmQ2qkvcMmm59tTbZIRgUEvo4hysTox-F9_CfIm_6aQM" >> ~/.pypirc
+
+      - name: Build and pubish package
+        run: ./build_and_publish.sh
