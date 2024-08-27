@@ -1,0 +1,80 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "trick17"
+dynamic = ["version"]
+description = "Systemd utility functions in pure python"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = [
+  "systemd",
+]
+authors = [
+  { name = "Stefano Miccoli", email = "stefano.miccoli@polimi.it" },
+]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/miccoli/trick17#readme"
+Issues = "https://github.com/miccoli/trick17/issues"
+Source = "https://github.com/miccoli/trick17"
+
+#
+# hatch
+#
+[tool.hatch.version]
+path = "src/trick17/__about__.py"
+
+[tool.hatch.envs.default]
+installer = "uv"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+  "pytest",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/trick17 tests}"
+
+#
+# coverage
+#
+[tool.coverage.run]
+source_pkgs = ["trick17", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/trick17/__about__.py",
+]
+
+[tool.coverage.paths]
+trick17 = ["src/trick17", "*/trick17/src/trick17"]
+tests = ["tests", "*/trick17/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+#
+# pytest
+#
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
