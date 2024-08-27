@@ -1,0 +1,3 @@
+Neural Network Design (Second Edition) implementation in PyTorch.
+
+> Work in porgress...

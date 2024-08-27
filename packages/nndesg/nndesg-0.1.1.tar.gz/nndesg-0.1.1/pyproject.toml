@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "nndesg"
+version = "0.1.1"
+description = "PyTorch implementation of Neural Network Design (Second Edition)."
+authors = ["Cylix Lee <cylix.lee@outlook.com>"]
+readme = "README.md"
+license = "MIT"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+torch = "^2.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# The Mirror of PyPI used indirectly by Poetry.
+#
+# Change this to your local mirror by `poetry source add`, or delete this if the official
+# PyPI source is desired.
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+priority = "primary"
