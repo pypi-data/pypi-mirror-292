@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "flask-gem"
+version = "1.2"
+description = "Library for Generating Flask Applications in Rails-like Style"
+authors = ["Sushmitha Popuri"]
+readme = "README.md"
+packages = [{include="src"}]
+license = "MIT License"
+keywords = ["Python","Flask", "FlaskPython", "FlaskWebFramework", "FlaskWebDevelopment", "CodeGeneration", "FlaskDeveloperTools","FlaskRapidDevelopment", "FlaskDevTools", "scaffold", "FlaskScaffold","FlaskAPIDevelopment","Instant App"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+click = "^8.1.7"
+inflect = "^7.3.1"
+
+[tool.poetry.scripts]
+scaffold = "src.cli:cli"
+new = "src.cli:new"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+ruff = "^0.5.7"
+coverage = "^7.6.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 200
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "N",  # PEP8 naming convetions
+    "D"  # pydocstyle
+]
+ignore = [
+    "C901",  # too complex
+    "W191",  # indentation contains tabs
+    "D401",  # imperative mood
+    "D103",  # Missing Docstring in public function
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.coverage.run]
+command_line = "-m pytest"
+
+[tool.coverage.report]
+include = ["src/*.py"]
+show_missing = true
