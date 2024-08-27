@@ -1,0 +1,23 @@
+[build-system]
+requires = ["maturin>=0.12,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "rpaudio"
+version = "0.0.4"
+authors = [
+  { name="Ryan Skiles", email="r.p.skiles@gmail.com" },
+  { name="Beaux44"}
+]
+description = "Rust audio api binding for python"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/sockheadrps/rpaudio"
+Issues = "https://github.com/sockheadrps/rpaudio/issues"
