@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: delos-unichunking
+Version: 0.4.0
+Summary: 
+Author: AlexandreBertinDelos
+Author-email: alexandrebertin@delosintelligence.fr
+Requires-Python: >=3.9,<3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: delos-llmax (>=0.10.3,<0.11.0)
+Requires-Dist: loguru (>=0.7.2,<0.8.0)
+Requires-Dist: nbformat (>=5.10.4,<6.0.0)
+Requires-Dist: openpyxl (>=3.1.5,<4.0.0)
+Requires-Dist: pydantic-settings (>=2.4.0,<3.0.0)
+Requires-Dist: pymupdf (>=1.24.9,<2.0.0)
+Requires-Dist: python-docx (>=1.1.2,<2.0.0)
+Requires-Dist: python-pptx (>=1.0.2,<2.0.0)
+Requires-Dist: unstructured (>=0.15.7,<0.16.0)
+Requires-Dist: xlcalculator (>=0.5.0,<0.6.0)
+Description-Content-Type: text/markdown
+
+# Unichunking
+
+Extract LLM-friendly chunks from any file type.
+
+Supported file types are :
+
+ - DOCX & DOCX-like (DOC, ODT)
+ - PPTX & PPTX-like (PPT, ODP)
+ - XLSX & XLSX-like (XLS, ODS)
+ - TXT, MD, CSV
+ - IPYNB
+
