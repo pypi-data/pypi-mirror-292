@@ -1,0 +1,184 @@
+# ------------------------------------------------------------------------------
+# Copyright (c) 2022 Korawich Anuttra. All rights reserved.
+# Licensed under the MIT License. See LICENSE in the project root for
+# license information.
+# ------------------------------------------------------------------------------
+from __future__ import annotations
+
+import json
+import logging
+import os
+from abc import ABC, abstractmethod
+from datetime import datetime
+from functools import lru_cache
+from pathlib import Path
+from typing import Optional, Union
+
+from ddeutil.core import str2bool
+from pydantic import BaseModel, Field
+from pydantic.functional_validators import model_validator
+from typing_extensions import Self
+
+from .__types import DictData
+from .utils import config
+
+
+@lru_cache
+def get_logger(name: str):
+    """Return logger with an input module name."""
+    logger = logging.getLogger(name)
+    formatter = logging.Formatter(
+        fmt=(
+            "%(asctime)s.%(msecs)03d (%(name)-10s, %(process)-5d, "
+            "%(thread)-5d) [%(levelname)-7s] %(message)-120s "
+            "(%(filename)s:%(lineno)s)"
+        ),
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    stream = logging.StreamHandler()
+    stream.setFormatter(formatter)
+    logger.addHandler(stream)
+
+    debug: bool = str2bool(os.getenv("WORKFLOW_LOG_DEBUG_MODE", "true"))
+    logger.setLevel(logging.DEBUG if debug else logging.INFO)
+    return logger
+
+
+class BaseLog(BaseModel, ABC):
+    """Base Log Pydantic Model abstraction that implement only model fields."""
+
+    name: str = Field(description="A pipeline name.")
+    on: str = Field(description="A cronjob string of this piepline schedule.")
+    release: datetime = Field(description="A release datetime.")
+    context: DictData = Field(
+        default_factory=dict,
+        description=(
+            "A context data that receive from a pipeline execution result.",
+        ),
+    )
+    parent_run_id: Optional[str] = Field(default=None)
+    run_id: str
+    update: datetime = Field(default_factory=datetime.now)
+
+    @model_validator(mode="after")
+    def __model_action(self):
+        if str2bool(os.getenv("WORKFLOW_LOG_ENABLE_WRITE", "false")):
+            self.do_before()
+        return self
+
+    def do_before(self) -> None:
+        """To something before end up of initial log model."""
+
+    @abstractmethod
+    def save(self, excluded: list[str] | None) -> None:
+        """Save logging"""
+        raise NotImplementedError("Log should implement ``save`` method.")
+
+
+class FileLog(BaseLog):
+    """File Log Pydantic Model that use to saving log data from result of
+    pipeline execution. It inherit from BaseLog model that implement the
+    ``self.save`` method for file.
+    """
+
+    def do_before(self) -> None:
+        """Create directory of release before saving log file."""
+        self.pointer().mkdir(parents=True, exist_ok=True)
+
+    @classmethod
+    def find_logs(cls, name: str):
+        pointer: Path = config().engine.paths.root / f"./logs/pipeline={name}"
+        for file in pointer.glob("./release=*/*.log"):
+            with file.open(mode="r", encoding="utf-8") as f:
+                yield json.load(f)
+
+    @classmethod
+    def find_log(cls, name: str, release: datetime | None = None):
+        if release is not None:
+            pointer: Path = (
+                config().engine.paths.root
+                / f"./logs/pipeline={name}/release={release:%Y%m%d%H%M%S}"
+            )
+            if not pointer.exists():
+                raise FileNotFoundError(
+                    f"Pointer: ./logs/pipeline={name}/"
+                    f"release={release:%Y%m%d%H%M%S} does not found."
+                )
+            return cls.model_validate(
+                obj=json.loads(pointer.read_text(encoding="utf-8"))
+            )
+        raise NotImplementedError("Find latest log does not implement yet.")
+
+    @classmethod
+    def is_pointed(
+        cls,
+        name: str,
+        release: datetime,
+        *,
+        queue: list[datetime] | None = None,
+    ) -> bool:
+        """Check this log already point in the destination.
+
+        :param name: A pipeline name.
+        :param release: A release datetime.
+        :param queue: A list of queue of datetime that already run in the
+            future.
+        """
+        # NOTE: Check environ variable was set for real writing.
+        if not str2bool(os.getenv("WORKFLOW_LOG_ENABLE_WRITE", "false")):
+            return False
+
+        # NOTE: create pointer path that use the same logic of pointer method.
+        pointer: Path = (
+            config().engine.paths.root
+            / f"./logs/pipeline={name}/release={release:%Y%m%d%H%M%S}"
+        )
+
+        if not queue:
+            return pointer.exists()
+        return pointer.exists() or (release in queue)
+
+    def pointer(self) -> Path:
+        """Return release directory path that was generated from model data.
+
+        :rtype: Path
+        """
+        return (
+            config().engine.paths.root
+            / f"./logs/pipeline={self.name}/release={self.release:%Y%m%d%H%M%S}"
+        )
+
+    def save(self, excluded: list[str] | None) -> Self:
+        """Save logging data that receive a context data from a pipeline
+        execution result.
+
+        :param excluded: An excluded list of key name that want to pass in the
+            model_dump method.
+        :rtype: Self
+        """
+        # NOTE: Check environ variable was set for real writing.
+        if not str2bool(os.getenv("WORKFLOW_LOG_ENABLE_WRITE", "false")):
+            return self
+
+        log_file: Path = self.pointer() / f"{self.run_id}.log"
+        log_file.write_text(
+            json.dumps(
+                self.model_dump(exclude=excluded),
+                default=str,
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+        return self
+
+
+class SQLiteLog(BaseLog):
+
+    def save(self, excluded: list[str] | None) -> None:
+        raise NotImplementedError("SQLiteLog does not implement yet.")
+
+
+Log = Union[
+    FileLog,
+    SQLiteLog,
+]
