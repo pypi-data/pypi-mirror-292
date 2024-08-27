@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: pydseamslib
+Version: 0.0.1
+Summary: Python bindings for seams-core
+Author-Email: Amrita Goswami <amrita16thaug646@gmail.com>, Ruhila S <ruhiresearcher209@gmail.com>, Rohit Goswami <rgoswami@ieee.org>
+License: MIT
+Requires-Python: >=3.10
+Requires-Dist: numpy>=1.26.4
+Requires-Dist: pybind11>=2.12.0
+Requires-Dist: pytest>=8.3.1; extra == "testing"
+Requires-Dist: approvaltests>=14.0.0; extra == "testing"
+Requires-Dist: pytest-approvaltests>=0.2.4; extra == "testing"
+Requires-Dist: ase>=3.23.0; extra == "adapters"
+Requires-Dist: sphinx>=8.0.2; extra == "docs"
+Requires-Dist: myst-parser>=4.0.0; extra == "docs"
+Requires-Dist: sphinx-contributors>=0.2.7; extra == "docs"
+Requires-Dist: sphinx-copybutton>=0.5.2; extra == "docs"
+Requires-Dist: sphinx-design>=0.6.1; extra == "docs"
+Requires-Dist: sphinxcontrib-napoleon>=0.7; extra == "docs"
+Requires-Dist: sphinx-book-theme>=1.1.3; extra == "docs"
+Requires-Dist: sphinxcontrib-bibtex>=2.6.2; extra == "docs"
+Provides-Extra: testing
+Provides-Extra: adapters
+Provides-Extra: docs
+Description-Content-Type: text/markdown
+
+# `PydSEAMSlib`
+
+Python bindings to the [C++ engine](https://github.com/d-SEAMS/seams-core) (`seams-core`) of the [d-SEAMS](https://dseams.info) (Deferred Structural Elucidation Analysis for Molecular Simulations) project.
+
+# Contributions
+
+All contributions are welcome, this includes code and documentation
+contributions but also questions or other clarifications. Note that we expect
+all contributors to follow our [Code of Conduct](https://github.com/d-SEAMS/PydSEAMSlib/blob/main/CODE_OF_CONDUCT.md).
+
+# Acknowledgments
+This project was conceived as part of d-SEAM’s participation under the Python Software Foundation (PSF) in the [2023 iteration of the Google Summer of Code programme](https://summerofcode.withgoogle.com/programs/2023/projects/WAft7HXq). At that point it was called `pyseams`.
+
+# License
+[MIT](https://github.com/d-SEAMS/PydSEAMSlib/blob/main/LICENSE).
