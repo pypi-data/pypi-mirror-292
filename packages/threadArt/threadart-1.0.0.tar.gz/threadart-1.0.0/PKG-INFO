@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: threadArt
+Version: 1.0.0
+Summary: A python module for generating thread art sequences.
+Home-page: https://github.com/quintindunn/threadArt
+Author: Quintin Dunn
+Author-email: dunnquintin07@gmail.com
+License: MIT
+Keywords: art,string art,thread art
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+Requires-Dist: pillow
+Requires-Dist: numpy
+Requires-Dist: scikit-image
+Requires-Dist: opencv-python
+
+# Thread Portrait Algorithm
+Generates the sequence to create thread/string art from an input image.
+
+## Credit:
+This program is a modified versiion of [JennyNotJen's thread portrait algorithm](https://github.com/jennynotjen/threadPortraitAlgorithm).
+
+## Usage:
+This algorithm takes as input an image you want to draw, and will output, a series of numbers corresponding to each nail where the thread should be placed (stored in results.txt)
