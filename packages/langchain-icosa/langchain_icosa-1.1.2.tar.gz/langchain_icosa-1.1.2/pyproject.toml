@@ -1,0 +1,30 @@
+[project]
+name = "langchain_icosa"
+version = "1.1.2"
+authors = [
+  { name="Icosa Computing", email="vmittal@icosacomputing.com" },
+]
+description = "LangChain plugin for Icosa Computing's Combinatorial Reasoning generative AI pipeline."
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+"langchain-core==0.2.24", 
+"requests==2.32.3",
+"openai==1.37.1",
+"langchain-openai==0.1.19"
+]
+
+[project.urls]
+Homepage = "https://github.com/Icosa-Computing/langchain-icosa"
+Repository = "https://github.com/Icosa-Computing/langchain-icosa"
+
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
