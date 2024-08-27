@@ -1,0 +1,34 @@
+[project]
+name = "dartmouth_langchain"
+version = "0.2.7"
+authors = [
+  { name="Simon Stone", email="simon.stone@dartmouth.edu" },
+]
+description = "LangChain components for Dartmouth-hosted models."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "dartmouth-auth",
+    "langchain",
+    "langchain_community",
+    "langchain_huggingface",
+    "langchain_openai",
+    "text_generation",
+    "python-dotenv",
+]
+
+[project.urls]
+Homepage = "https://github.com/Dartmouth-Libraries/dartmouth-langchain"
+Issues = "https://github.com/Dartmouth-Libraries/dartmouth-langchain/issues"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths =[
+   "tests"
+]
