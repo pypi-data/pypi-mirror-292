@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: python-jr
+Version: 2.0.2
+Summary: python plugin system for jr, the data random generator
+Author: JR Team
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: grpcio (>=1.66.0,<2.0.0)
+Requires-Dist: grpcio-health-checking (>=1.59.0,<2.0.0)
+Requires-Dist: grpcio-tools (>=1.66.0,<2.0.0)
+Requires-Dist: protobuf (>=5.27.3,<6.0.0)
+Requires-Dist: setuptools (>=73.0.1,<74.0.0)
+Description-Content-Type: text/markdown
+
+# Python Plugin package for JR, the data random generator
+This package implements a framework to write a producer plugin for [JR](https://github.io/jrnd-io/jrv2) in python.
+
+## Example
+A simple plugin can be written as follows:
+
+```python
+import logging
+import python_jr.jrplugin as jr
+import python_jr.producer_pb2 as pb2
+
+
+# Define a logger with the correct level
+logger = jr.Logger(logging_level=logging.DEBUG)
+log = logger.log
+
+class MyProducer(jr.JRProducer):
+    def Produce(self, request, context):
+        key = request.key.decode("utf-8")
+        value = request.value.decode("utf-8")
+        # do something with the key and value
+
+        # return a response
+        response = pb2.ProduceResponse()
+        response.bytes = len(request.value)
+        response.message = "Some message"
+
+        return response
+
+
+if __name__ == "__main__":
+    jr.serve(MyProducer(), logger)
+```
+
+
