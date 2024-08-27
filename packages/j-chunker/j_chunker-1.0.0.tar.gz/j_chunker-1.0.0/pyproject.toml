@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "j_chunker"
+dynamic = ["version", "dependencies"]
+authors = [{ name = "Pavan Shiraguppi", email = "shiraguppipavan@ibm.com" }]
+description = "A package for chunking Japanese PDF documents"
+readme = "docs/pypi-long-description.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+
+[project.scripts]
+j_chunker = "j_chunker.chunker:main"
+
+[project.urls]
+homepage = "https://github.ibm.com/shiraguppipavan/J-Chunker"
+source = "https://github.ibm.com/shiraguppipavan/J-Chunker"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.dynamic]
+version = {attr = "j_chunker.__version__"}
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["j_chunker", "j_chunker.*"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "flake8",
+    "black",
+    "isort",
+]
+
+[tool.pytest.ini_options]
+testpaths = "tests"
