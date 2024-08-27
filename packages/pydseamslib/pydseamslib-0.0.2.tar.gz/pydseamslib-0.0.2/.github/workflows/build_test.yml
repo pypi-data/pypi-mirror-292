@@ -1,0 +1,41 @@
+name: "Build pyseams and test"
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build_test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # TODO(ruhila): Fix windows-2022, see gh-14
+        os: [ubuntu-24.04, macos-13, macos-14]
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: environment.yml
+
+      - name: Build pyseams (dev)
+        shell: bash -l {0}
+        run: |
+          micromamba activate pyseamsdev
+          meson setup bbdir
+          meson compile -C bbdir
+
+      - name: Run an import test (dev)
+        shell: bash -l {0}
+        run: |
+          python -c 'import bbdir.cyoda'
+
+
+      - name: Run standard tests
+        shell: bash -l {0}
+        run: |
+          pip install -v .[testing,adapters]
+          python -m pytest -vvv tests  --approvaltests-add-reporter='PythonNativeReporter'
