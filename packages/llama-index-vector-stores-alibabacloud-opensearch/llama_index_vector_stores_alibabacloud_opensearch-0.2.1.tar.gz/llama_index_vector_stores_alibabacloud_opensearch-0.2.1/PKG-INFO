@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: llama-index-vector-stores-alibabacloud-opensearch
+Version: 0.2.1
+Summary: llama-index vector_stores Alibaba Cloud OpenSearch integration
+License: MIT
+Author: goctave
+Author-email: gshuiwang@gmail.com
+Requires-Python: >=3.8.1,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: alibabacloud_ha3engine_vector (>=1.1.8,<2.0.0)
+Requires-Dist: llama-index-core (>=0.11.0,<0.12.0)
+Description-Content-Type: text/markdown
+
+# LlamaIndex Vector_Stores Integration: Alibaba Cloud OpenSearch
+
+Please refer to the [notebook](../../../docs/docs/examples/vector_stores/AlibabaCloudOpenSearchIndexDemo.ipynb) for usage of AlibabaCloud OpenSearch as vector store in LlamaIndex.
+
+## Example Usage
+
+```sh
+pip install llama-index
+pip install llama-index-vector-stores-alibabacloud-opensearch
+```
+
+```python
+# Connect to existing instance
+from llama_index.core import VectorStoreIndex
+from llama_index.vector_stores.alibabacloud_opensearch import (
+    AlibabaCloudOpenSearchStore,
+    AlibabaCloudOpenSearchConfig,
+)
+
+config = AlibabaCloudOpenSearchConfig(
+    endpoint="***",
+    instance_id="***",
+    username="your_username",
+    password="your_password",
+    table_name="llama",
+)
+
+vector_store = AlibabaCloudOpenSearchStore(config)
+
+# Create index from existing stored vectors
+index = VectorStoreIndex.from_vector_store(vector_store)
+query_engine = index.as_query_engine()
+response = query_engine.query(
+    "What did the author study prior to working on AI?"
+)
+print(response)
+```
+
