@@ -1,0 +1,116 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "elfdeps"
+authors = [
+    {name = "Christian Heimes", email="cheimes@redhat.com"},
+]
+description = "Python implementation of RPM elfdeps"
+readme = "README.md"
+dynamic = ["version"]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Utilities",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pyelftools",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "coverage[toml]",
+]
+
+[project.urls]
+Repository = "https://github.com/python-wheel-build/elfdeps"
+
+[project.scripts]
+elfdeps = "elfdeps.__main__:main"
+
+[tool.coverage.run]
+branch = true
+parallel = true
+relative_files = true
+source = [
+    "elfdeps",
+    "tests/",
+]
+
+[tool.coverage.paths]
+source = [
+   "src/elfdeps",
+   ".tox/py*/**/site-packages/elfdeps",
+]
+tests = [
+   "tests/",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    "pragma: no cover",
+    "@abc.abstractmethod",
+    "@typing.overload",
+    "if typing.TYPE_CHECKING",
+]
+
+[tool.setuptools_scm]
+# do not include +gREV local version, required for Test PyPI upload
+local_scheme = "no-local-version"
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+
+[tool.ruff.lint]
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL", "UP006"]
+unfixable = []
+extend-safe-fixes = ["UP006", "UP007"]
+select = [
+  "B",  # flake8-bugbear
+  "E",  # pycodestyle
+  "F",  # pyflakes
+  "Q",  # flake8-quotes
+  "I",  # isort
+  "N",  # pep8-naming
+  "W",  # pycodestyle
+  "RUF", # ruff-specific rules
+  "UP",  # pyupgrade
+  "TID", # flake8-tidy-imports
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["elfdeps"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = ["elfdeps.*"]
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["elftools.*"]
+ignore_missing_imports = true
