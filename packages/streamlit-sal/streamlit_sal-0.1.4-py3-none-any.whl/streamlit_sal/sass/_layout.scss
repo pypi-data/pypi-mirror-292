@@ -1,0 +1,70 @@
+@import 'utilities';
+
+/* This file contains styling for prebuilt app layouts
+* Use them via the arguments given to `with sal_stylesheet`
+* reduce_markdown_spacing [Defaults to True]
+* move_sidebar_right  [Defaults to False]
+* The `hidden` class can be added to any custom markdown span/style
+*/
+
+/*
+* Streamlit adds margins and heights to every st.markdown element, even if it doesnt contain any visible
+* elements. Hide all elements that contain a span, script or style tag with the 'hidden' class.
+*/
+#{streamlit_element_container_selector('hidden', '', null)},
+#{streamlit_element_container_selector('hidden', '', null, 'script')},
+#{streamlit_element_container_selector('hidden', '', null, 'style')} {
+  display: none;
+}
+
+/* Reduces the empty space around main section and the large padding around block-container element. */
+.block-container:has(span.sal-reduce-main-container-space) {
+  padding: 4rem 1rem 0;
+  min-height: 80%;
+}
+
+/* Flip the Streamlit sidebar to the right side of the view. */
+div.stApp:has(span.sal-move-sidebar-right) {
+  header[data-testid="stHeader"] {
+    z-index: 991;
+  }
+
+  div[data-testid="collapsedControl"] {
+    top: 3rem;
+    right: 0.25rem;
+    left: auto;
+    height: 100%;
+    z-index: 990;
+  }
+
+  div[data-testid="collapsedControl"] > button {
+    transform: scaleX(-1)
+  }
+
+  div.appview-container section[data-testid="stSidebar"]:first-child {
+    top: 3rem;
+    order: 2;
+    transform: none;
+    transition: transform 300ms ease 0s, min-width 300ms ease 0s, max-width 300ms ease 0s;
+    z-index: 990;
+  }
+
+  div.appview-container section[data-testid="stSidebar"]:nth-child(2) {
+    top: 3rem;
+    order: 2;
+    transform: translateX(+336px);
+    transition: transform 300ms ease 0s, min-width 300ms ease 0s, max-width 300ms ease 0s;
+    z-index: 990;
+  }
+
+  @media only screen and (max-width: 767px) {
+    div.appview-container {
+      place-content: flex-end;
+    }
+  }
+
+  div[data-testid="stSidebarContent"] + div > div {
+    /* Hides the sidebar resize handle, it cannot function properly when flipped to the right */
+    display: none;
+  }
+}
