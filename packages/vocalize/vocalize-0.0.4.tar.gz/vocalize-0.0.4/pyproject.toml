@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling", "hatch-requirements-txt"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vocalize"
+version = "0.0.4"
+requires-python = ">=3.11"
+authors = [
+    { name = "Damon Guzman", email = "damonguzman.dev@gmail.com"},
+]
+description = "A library to simply and easily have conversations with AI Agents."
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["pydantic", "loguru", "httpx", "websockets", ]
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements.txt"]
+
+
+[project.urls]
+homepage = "https://github.com/damonguzman/vocalize"
+issues = "https://github.com/damonguzman/vocalize/issues"
