@@ -1,0 +1,28 @@
+setuptools
+numpy
+pyparsing
+
+[:python_version <= "3.8"]
+importlib_resources
+
+[all]
+coverage
+pytest
+pytest-cov
+Sphinx
+numpydoc
+
+[all:platform_system == "Linux"]
+psutil
+
+[doc]
+Sphinx
+numpydoc
+
+[test]
+coverage
+pytest
+pytest-cov
+
+[test:platform_system == "Linux"]
+psutil
