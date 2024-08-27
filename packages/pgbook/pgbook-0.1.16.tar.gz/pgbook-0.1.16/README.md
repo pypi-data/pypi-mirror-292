@@ -1,0 +1,124 @@
+## Pygame Function Book
+
+pygame be used easier
+
+#### 1.下载 download
+
+```shell
+pip install pgbook
+```
+
+#### 2.简单的程序 easiest program
+
+1.esay
+
+```python
+from pgbook.screen.window import Window
+
+
+mywindow = Window()
+#窗口对象
+mywindow.show()
+#展示
+
+
+'''
+这段代码生成了一个空白窗口
+'''
+```
+
+2.window
+
+```python
+from pgbook.screen.window import Window
+
+
+mywindow = Window()
+#窗口对象
+mywindow.set_name('Hello World')
+#set_name:用于修改名称
+mywindow.set_ico('logo.ico')
+#set_ico:用于设置图标
+mywindow.set_rect(0.4,0.4)
+#set_rect:(w,h):
+# w,h<=1 大小为屏幕大小的w,h倍
+# w,h>1 大小为w,h
+mywindow.show()
+#展示
+
+
+'''
+这段代码展示了Window类的使用
+'''
+```
+
+3.事件系统
+
+```python
+from pgbook.eventlist.thinglist import Thing,ThingList
+
+
+t=Thing()
+#单个事件对象
+
+# 设置事件 方式1
+def k(get1,get2):
+    print(str(get1)+' and '+str(get2))
+t.connect(k)
+
+# 设置事件 方式2
+@t.connect()
+def k(get1,get2):
+    print(str(get1)+' and '+str(get2))
+
+
+t.set_name('PrintA')
+#设置对象名称，用于寻找
+t.did(256,None)
+#输出：256 and None
+#did:执行，传入参数
+t.did_n(1024,False)
+#输出：256 and False
+#did:如果名称符合则执行，传入参数
+
+
+t.lock(True)# 上锁did did_n不执行(也不报错)
+t.lock(False)# 开锁 默认
+t.lock()# 更改锁的方向
+
+
+tl=ThingList()
+# 事件列表，可叠多层
+
+tl.set_name('PrintList')#检索名称
+tl.lock(True)#锁功能同上，不执行本列表，但子对象不上锁
+
+
+#添加事件 方式1
+tl.connect(t)#Thing或ThingList均可，但不可传入自身，以防锁死
+#添加事件 方式2
+@tl.connect(name='PrintA')
+def k(get1,get2):#注意保持参数统一
+    print(str(get1)+' and '+str(get2))
+#自动创建一个Thing对象，name为'PrintA'
+
+
+tl.did('pan',64)#所有对象执行，同时受本身和子对象的锁影响
+tl.did_n('apple',64)#名称正确对象执行
+
+tl.lock_n('PrintA')
+#给所有name='PrintA'的对象上锁
+#不受tl.lock(True)的影响
+
+tl.find_n('PrintA')
+#返回第一个name='PrintA'的对象
+#不受tl.lock(True)的影响
+
+tl.find_n('PrintA').did()
+
+'''
+这段代码展示了事件系统的使用
+'''
+```
+
+
