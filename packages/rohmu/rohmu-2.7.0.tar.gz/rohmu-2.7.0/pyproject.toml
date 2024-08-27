@@ -1,0 +1,131 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rohmu"
+authors = [
+  { name="Aiven", email="opensource@aiven.io" },
+]
+description = "Rohmu is a python library providing an interface to various cloud storage providers."
+readme = "README.rst"
+requires-python = ">=3.8"
+license = {text = "Apache-2.0 license"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = [
+    "azure-common >= 1.1.28, < 2",
+    "azure-storage-blob >= 2.1.0",
+    "botocore",
+    "cryptography",
+    "google-api-python-client",
+    "httplib2",
+    "oauth2client",
+    "paramiko",
+    "pydantic >= 1.10.17",
+    "python-dateutil",
+    "python-snappy",
+    "python-swiftclient",
+    "requests",
+    "typing_extensions; python_version<'3.12'",
+    "zstandard",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    # Kept in sync with the versions in CI
+    "ruff==0.3.3",
+    "mypy==1.9.0",
+    # Kept in sync with Fedora versions
+    "python-snappy==0.6.1",
+    "zstandard==0.21.0",
+    'typing_extensions >= 3.10, < 5; python_version<"3.12"',
+    # Unpinned dependencies, latest is fine
+    "botocore",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-timeout",
+    "pytest-asyncio",
+    "rstfmt",
+    "boto3-stubs[s3]",
+    "types-python-dateutil",
+    "types-paramiko",
+    "types-httplib2",
+    "types-mock",
+    "types-requests",
+    # Extra stubs
+    "google-api-python-client-stubs"
+]
+
+docs  = [
+  "sphinx==5.3.0",
+  "sphinx-rtd-theme==1.0.0",
+  "autodoc-pydantic==1.9.0"  # upgrade to 2.x when rohmu migrates to Pydantic 2.x
+]
+
+[project.urls]
+"Source Repository" = "https://github.com/Aiven-Open/rohmu/"
+
+
+[tool.ruff]
+target-version = "py38"
+line-length = 125
+
+[tool.ruff.lint]
+extend-select = [
+  "F",
+  "E",
+  "I",
+  "UP",
+  "BLE",
+  "C4",
+  "Q",
+  "TID",
+  "PL",
+  "RUF100", # unused-noqa
+]
+extend-ignore = [
+  "PLR0904", # too-many-public-methods
+  "PLR0912", # too-many-branches
+  "PLR0913", # too-many-arguments
+  "PLR0914", # too-many-locals
+  "PLR0915", # too-many-statements
+  "PLR0916", # too-many-boolean-expressions
+  "PLR2004", # magic-value-comparison
+  "UP006", # non-pep585-annotation
+  "UP007", # non-pep604-annotation
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+from-first = true
+lines-between-types = 1
+no-sections = true
+order-by-type = false
+
+[tool.setuptools]
+platforms = [
+    "POSIX",
+    "MacOS"
+]
+
+[tool.hatch.version]
+source = "vcs"
+tag-pattern = "^releases/(?P<version>\\d+.\\d+.\\d+)$"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "rohmu/version.py"

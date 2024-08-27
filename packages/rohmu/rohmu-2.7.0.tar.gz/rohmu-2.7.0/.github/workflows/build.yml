@@ -1,0 +1,113 @@
+name: Build rohmu
+
+# Default to read-only access to all APIs.
+permissions: read-all
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '**'
+  pull_request:
+
+jobs:
+
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # only use one version for the lint step
+        python-version: ["3.11"]
+
+    steps:
+
+      - id: checkout-code
+        uses: actions/checkout@v3
+        with:
+          # Do not persist the token during execution of this job.
+          persist-credentials: false
+
+      - id: prepare-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - id: dependencies
+        run: |
+          sudo apt-get install -y libsnappy-dev
+          pip install ".[dev]"
+
+      - id: lint
+        run: make lint
+
+      - id: mypy
+        run: make mypy
+
+      - id: validate-style
+        run: |
+          make fmt
+          if [ $(git diff --name-only --diff-filter=ACMR | wc -l ) != 0 ]; then
+            echo "Reformatting failed! Please run make fmt on your commits and resubmit!" 1>&2;
+            git diff;
+            exit 1;
+          fi
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ["3.12", "3.11", "3.10", "3.9", "3.8"]
+
+    steps:
+      - id: checkout-code
+        uses: actions/checkout@v3
+
+      - id: prepare-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - id: dependencies
+        run: |
+          sudo apt-get install -y libsnappy-dev
+          pip install ".[dev]"
+
+      - id: unittest
+        run: make coverage
+
+      - id: upload-codecov
+        # Third-party action pinned to v2.1.0
+        uses: codecov/codecov-action@f32b3a3741e1053eb607407145bc9619351dc93b
+        with:
+          verbose: true
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout-src-docs
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          path: pr
+
+      - id: checkout-gh-pages
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          path: gh-pages
+          ref: gh-pages
+
+      - id: prepare-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - id: prepare-sphinx
+        run: pip install "./pr[docs]"
+
+      - id: run-sphinx
+        run: sphinx-build -b html pr/docs gh-pages -E -d $GITHUB_WORKSPACE/.doctree

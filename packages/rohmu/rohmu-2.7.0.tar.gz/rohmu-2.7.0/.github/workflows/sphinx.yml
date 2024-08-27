@@ -1,0 +1,50 @@
+name: Sphinx Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+   contents: write
+
+jobs:
+  build:
+    name: Sphinx Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Main Branch"
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          path: main
+          ref: main
+
+      - name: "Checkout GitHub Pages Branch"
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          path: gh-pages
+          ref: gh-pages
+
+      - name: "Setup Python & Install Sphinx"
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: "Install Sphinx & Theme"
+        run: pip install -e './main[docs]'
+
+      - name: "Run Sphinx"
+        run: sphinx-build -b html main/docs gh-pages -E -d $GITHUB_WORKSPACE/.doctree
+
+      - name: "Commit & Push Changes (If Any)"
+        run: |
+          cd gh-pages
+          git add -A
+          git config --global user.email "$(git show --format=%ae -s)"
+          git config --global user.name "$(git show --format=%an -s)"
+          git diff-index --quiet HEAD || git commit -m "From $GITHUB_REF $(echo ${GITHUB_SHA} | cut -c 1-8)"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push
