@@ -1,0 +1,32 @@
+##
+## Copyright 2018-2024 Fragment Contributors
+## SPDX-License-Identifier: Apache-2.0
+##
+requires:
+  - "conformer"
+  - "conformer_core"
+  - "atomdriver"
+database:
+  provides: 
+    - "fragment.db.models.DBView"
+    - "fragment.db.models.DBSystemToView"
+    - "fragment.db.models.DBViewNode"
+    - "fragment.db.models.DBViewEdge"
+    - "fragment.db.models.DBViewRecord"
+stages:
+  provides:
+    - "fragment.fragmenting.abstract.FullFragmenter"
+    - "fragment.fragmenting.abstract.TopDownFragmenter"
+    - "fragment.fragmenting.abstract.BottomUpFragmenter"
+    - "fragment.fragmenting.water.WaterFragmenter"
+    - "fragment.fragmenting.covalent_components.CovalentComponentsFragmenter"
+    - "fragment.fragmenting.interaction_energy.InteractionEnergy"
+    - "fragment.fragmenting.groups.GroupFragmenter"
+    - "fragment.fragmenting.groups.PDBFragmenter"
+    - "fragment.mods.property_delta.DeltaPropertyAccessor"
+    - "fragment.mods.property_delta.DeltaProperyFilter"
+    - "fragment.mods.MIC.ValidMICSystemFilter"
+    - "fragment.mods.distance.MaxDistanceFilter"
+    - "fragment.mods.distance.NearestNeighborDistanceFilter"
+settings:
+  DB_NAME: "fragment.db"

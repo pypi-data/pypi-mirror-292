@@ -1,0 +1,79 @@
+##
+## Copyright 2018-2024 Fragment Contributors
+## SPDX-License-Identifier: Apache-2.0
+##
+systems:
+  - 
+    name: water6
+    note: 6 waters
+    source: ../systems/water6.xyz
+    subsystems:
+      -
+        name: left
+        note: Left part of the water cluster
+        include: atoms(1-3, 4-6, 7,8,9)
+      - name: right
+        note: Right part of the water cluster
+        exclude: system(water6.left)
+
+mods:
+  -
+    name: distance_8A
+    note: Distance cuttoff for 8 Å
+    mod_name: distance
+    distance: 8.0
+      
+backends:
+  -
+    name: pm7
+    program: MOPAC 
+    note: PM7 method with MOPAC
+    template: |
+      PM7 XYZ PRECISE NOSYM NOREOR GEO-OK
+
+
+      {geometry}
+  -
+    name: hf3c
+    program: QChem
+    note: HF-3C method with QChem
+    template: |
+      ! Name: {name}
+      $molecule
+      {charge} {mult} 
+      {geometry}
+      $end
+
+      $rem
+          basis minix
+          method hf3c
+          job_type sp
+      $end
+
+fragmenters:
+  -
+    name: waterMBE
+    note: Fragmenter for water systems
+    fragmenter: Water
+  -
+    name: supersystem2
+    note: A second version of the Supersystem fragmenter
+    fragmenter: Supersystem
+      
+calculations:
+  -
+    name: mbe2_at_PM7.HF3C
+    note: MBE(2) calculation at PM7 level with a supersystem correction
+    system: ALL
+    layers:
+      -
+        backend: pm7
+        view:
+          fragmenter: waterMBE
+          order: 2
+      -
+        backend: hf3c
+        view:
+          fragmenter: supersystem
+          order: 1
+      

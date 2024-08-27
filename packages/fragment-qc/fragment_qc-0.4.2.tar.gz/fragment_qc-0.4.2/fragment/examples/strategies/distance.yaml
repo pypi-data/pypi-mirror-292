@@ -1,0 +1,42 @@
+##
+## Copyright 2018-2024 Fragment Contributors
+## SPDX-License-Identifier: Apache-2.0
+##
+backends: 
+  test:
+    program: XYZ
+    note: Just generating xyz files to check if distance screening is working
+    options:
+      template:
+
+mods:
+  distance_with_cutoff_7: 
+    mod: DistanceFilter
+    note: Filter of 7 Angstroms
+    options:
+      distance: 7
+
+fragmenters:
+
+  waterMBEwfilter:
+    fragmenter: Water
+    note: Fragmenter for water systems with the filter
+    options:
+      mods: [distance_with_cutoff_7]
+
+  waterMBE:
+    fragmenter: Water
+    note: Good old fragmenter for water systems
+
+supersystems:
+  water20:
+    source: 
+    note: Using the water20 xyz fused-cubes 1 file provided by Dustin
+
+views:
+  - system: water20
+    fragmenter: waterMBEwfilter
+    order: 2
+  - system: water20
+    fragmenter: waterMBE
+    order: 2

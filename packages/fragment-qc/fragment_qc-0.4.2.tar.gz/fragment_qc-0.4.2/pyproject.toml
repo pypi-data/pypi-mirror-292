@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fragment-qc"
+version = "0.4.2"
+authors = [
+    {name = "Dustin Broderick", email = "broderick.62@osu.edu"},
+    {name = "Paige Bowling", email = "bowling.181@osu.edu"}
+]
+description = "A Fragmentation Framework"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["ab initio", "chemistry"]
+license = { text = "Apache-2.0" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Development Status :: 3 - Alpha",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "conformer-qc >= 0.1.0 ",
+    "atomdriver-qc >= 0.1.2",
+    "numpy >= 1.21",
+    "scipy >= 1.7",
+    "Click",
+    "tdqm",
+    "peewee >= 3.16, < 4.0",
+    "pydantic >=2.7, <3.0",
+    "networkx >=3.1, <4.0",
+    "lru-dict >=1.3",
+    "xarray >= 2024.6",
+]
+
+[project.optional-dependencies]
+docs = ["sphinx", "sphinx-autodoc-typehints", "sphinxcontrib-katex", "furo"]
+dev = ["esbonio", "licenseheaders", "ruff", "unittest-xml-reporting"]
+build = ["build", "twine"]
+
+[project.urls]
+Homepage = "https://john-herbert-group.gitlab.io"
+Source = "https://gitlab.com/john-herbert-group/fragment"
+Issues = "https://gitlab.com/john-herbert-group/fragment/-/issues"
+
+[project.scripts]
+fragment = "fragment.app.cli.__main__:main"
+
+[tool.setuptools]
+packages = ["fragment"]
+
+[tool.ruff.lint]
+ignore = ["E741"]
+extend-select = ["I"]

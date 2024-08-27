@@ -1,0 +1,38 @@
+##
+## Copyright 2018-2024 Fragment Contributors
+## SPDX-License-Identifier: Apache-2.0
+##
+image: condaforge/miniforge3
+
+before_script:
+  - conda config --set channel_priority strict
+  - conda create -y --name deploy "python >= 3.10" xtb-python
+  - conda run -n deploy python -m pip install .[dev,docs]
+
+unit-test:
+  stage: test
+  script:
+    - conda run -n deploy ruff check .
+    - conda run -n deploy python deploy/check_license.py 
+    - conda run -n deploy python deploy/unittest_report.py
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+  artifacts:
+    when: always
+    paths:
+      - unittest_report.xml
+    reports:
+      junit: unittest_report.xml
+
+pages:
+  stage: deploy
+  script:
+    # - conda install -n deploy nodejs
+    - conda run -n deploy sphinx-build -b html docs public
+  artifacts:
+    paths:
+      - public
+  rules:
+    # This rule makes it so that your website is published and updated only when
+    # you push to the default branch of your repository (e.g. "master" or "main").
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
