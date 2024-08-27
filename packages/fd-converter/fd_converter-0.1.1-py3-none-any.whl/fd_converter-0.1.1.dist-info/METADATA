@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: fd-converter
+Version: 0.1.1
+Summary: 
+Author: dimnissv
+Author-email: dimnissv@yandex.kz
+Requires-Python: >=3.8,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Description-Content-Type: text/markdown
+
+## Install
+
+Firstly install python.
+Visit [scoop.sh](https://scoop.sh/) or [python.org](https://www.python.org/downloads/).
+
+## GUI
+
+usage: `python -OOm fd_converter.gui`
+
+## CLI
+
+### Help:
+
+usage: `python -m fd_converter [-h] -v VIDEO -a AUDIO [-s SUBS] [-l LOGO] [-i INTRO] [-im INTRO_IMG] [-lh LOGO_HEIGHT] [-fp FFMPEG_PARAMS] -o OUT [-r REWRITE]`
+
+```
+options:
+  -h, --help            show this help message and exit
+  -v VIDEO, --video VIDEO
+                        Video path
+  -a AUDIO, --audio AUDIO
+                        Audio path
+  -s SUBS, --subs SUBS  Logo path
+  -l LOGO, --logo LOGO  Logo path
+  -i INTRO, --intro INTRO
+                        Intro path
+  -im INTRO_IMG, --intro-img INTRO_IMG
+                        Intro is image
+  -lh LOGO_HEIGHT, --logo-height LOGO_HEIGHT
+                        Logo height
+  -fp FFMPEG_PARAMS, --ffmpeg-params FFMPEG_PARAMS
+                        Out path
+  -o OUT, --out OUT     Out path
+  -r REWRITE, --rewrite REWRITE
+                        Rewrite (y/n)
+```
+
+ffmpeg defaults: -fp -c:a aac -c:v hevc_nvenc -b:a 224k -b:v 2M
