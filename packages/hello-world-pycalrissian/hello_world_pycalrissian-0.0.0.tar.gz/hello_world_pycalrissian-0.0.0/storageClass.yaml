@@ -1,0 +1,13 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: openebs-kernel-nfs-scw
+provisioner: openebs.io/provisioner-iscsi
+parameters:
+  blockCleanerInterval: "1m"
+  blockCleanupDelay: "10m"
+  fsType: ext4
+  storagePoolClaim: openebs-storage-pool
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+volumeBindingMode: Immediate
