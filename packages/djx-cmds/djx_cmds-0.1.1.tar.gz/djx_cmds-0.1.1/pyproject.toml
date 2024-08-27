@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "djx-cmds"
+version = "0.1.1"
+description = ""
+authors = ["nope"]
+readme = "README.md"
+packages = [{ include = "djx_cmds" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = ">=4.1"
+inflection = "^0.5.1"
+jinja2 = "^3.1.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
