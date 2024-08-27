@@ -1,0 +1,398 @@
+Metadata-Version: 2.3
+Name: tensortrade-ng
+Version: 2.0.0a1
+Summary: TensorTrade-NG: A reinforcement learning library for training, evaluating, and deploying robust trading agents.
+Project-URL: Homepage, https://tensortrade-ng.io
+Project-URL: Documentation, https://tensortrade-ng.io
+Project-URL: Repository, https://github.com/erhardtconsulting/tensortrade-ng.git
+Project-URL: Issues, https://github.com/erhardtconsulting/tensortrade-ng/issues
+Author-email: Simon Erhardt <simon@erhardt.consulting>, Adam King <adamjking3@gmail.com>, Matthew Brulhardt <mwbrulhardt@gmail.com>
+Maintainer-email: Simon Erhardt <simon@erhardt.consulting>
+License: 
+                                         Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright 2024 Erhardt Consulting GmbH
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+License-File: LICENSE
+Keywords: ai,artificial intelligence,finance,machine learning,tensortrade,trading
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Office/Business :: Financial
+Classifier: Topic :: Office/Business :: Financial :: Investment
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Distributed Computing
+Requires-Python: >=3.12
+Requires-Dist: deprecated>=1.2.14
+Requires-Dist: gymnasium>=0.29.1
+Requires-Dist: matplotlib>=3.9.2
+Requires-Dist: numpy>=1.26.4
+Requires-Dist: pandas>=2.2.2
+Requires-Dist: plotly>=5.23.0
+Requires-Dist: pyyaml>=6.0.2
+Provides-Extra: dev
+Requires-Dist: hatch-vcs>=0.4.0; extra == 'dev'
+Requires-Dist: hatch>=1.12.0; extra == 'dev'
+Requires-Dist: ipykernel>=6.29.5; extra == 'dev'
+Requires-Dist: ipython>=8.26.0; extra == 'dev'
+Requires-Dist: ipywidgets>=8.1.3; extra == 'dev'
+Requires-Dist: nbsphinx-link>=1.3.0; extra == 'dev'
+Requires-Dist: nbsphinx>=0.9.5; extra == 'dev'
+Requires-Dist: pytest-cov>=5.0.0; extra == 'dev'
+Requires-Dist: pytest>=5.1.1; extra == 'dev'
+Requires-Dist: recommonmark>=0.7.1; extra == 'dev'
+Requires-Dist: scikit-learn>=1.5.1; extra == 'dev'
+Requires-Dist: sphinx-autobuild>=2024.4.16; extra == 'dev'
+Requires-Dist: sphinx-markdown-tables>=0.0.17; extra == 'dev'
+Requires-Dist: sphinx-rtd-theme>=2.0.0; extra == 'dev'
+Requires-Dist: sphinx>=7.4.7; extra == 'dev'
+Requires-Dist: sphinxcontrib-apidoc>=0.5.0; extra == 'dev'
+Requires-Dist: stable-baselines3>=2.3.2; extra == 'dev'
+Requires-Dist: ta>=0.11.0; extra == 'dev'
+Requires-Dist: ta>=0.4.7; extra == 'dev'
+Requires-Dist: tox>=4.18.0; extra == 'dev'
+Provides-Extra: doc
+Requires-Dist: ipython>=8.26.0; extra == 'doc'
+Requires-Dist: nbsphinx-link>=1.3.0; extra == 'doc'
+Requires-Dist: nbsphinx>=0.9.5; extra == 'doc'
+Requires-Dist: recommonmark>=0.7.1; extra == 'doc'
+Requires-Dist: sphinx-autobuild>=2024.4.16; extra == 'doc'
+Requires-Dist: sphinx-markdown-tables>=0.0.17; extra == 'doc'
+Requires-Dist: sphinx-rtd-theme>=2.0.0; extra == 'doc'
+Requires-Dist: sphinx>=7.4.7; extra == 'doc'
+Requires-Dist: sphinxcontrib-apidoc>=0.5.0; extra == 'doc'
+Provides-Extra: jlab
+Requires-Dist: ipykernel>=6.29.5; extra == 'jlab'
+Requires-Dist: ipython>=8.26.0; extra == 'jlab'
+Requires-Dist: ipywidgets>=8.1.3; extra == 'jlab'
+Requires-Dist: scikit-learn>=1.5.1; extra == 'jlab'
+Requires-Dist: stable-baselines3>=2.3.2; extra == 'jlab'
+Requires-Dist: ta>=0.11.0; extra == 'jlab'
+Provides-Extra: test
+Requires-Dist: ipython>=8.26.0; extra == 'test'
+Requires-Dist: pytest-cov>=5.0.0; extra == 'test'
+Requires-Dist: pytest>=5.1.1; extra == 'test'
+Requires-Dist: ta>=0.4.7; extra == 'test'
+Description-Content-Type: text/markdown
+
+﻿[![Apache License](https://img.shields.io/github/license/erhardtconsulting/tensortrade-ng.svg?color=brightgreen)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120/)
+
+---
+
+<div align="center">
+  <img src="https://github.com/notadamking/tensortrade/blob/master/docs/source/_static/logo.jpg">
+</div>
+
+---
+
+> **ℹ️ TensorTrade-NG was forked from the [TensorTrade](https://github.com/tensortrade-org/tensortrade)-Project, mainly because the code needed a lot refactoring, was outdated and it looked not really maintained anymore. Therefor we did a lot of breaking changes, removed old unused stuff and cleaned up. We tried to preserve the APIs but if you want to switch from TensorTrade to TensorTrade-NG be aware that it may take a little bit of effort. Apart from that we thank all the former developers and community for their awesome work and are happy to welcome them here.**
+
+**TensorTrade-NG is still in Beta, meaning it should be used very cautiously if used in production, as it may contain bugs.**
+
+TensorTrade-NG is an open source Python framework for building, training, evaluating, and deploying robust trading algorithms using reinforcement learning. The framework focuses on being highly composable and extensible, to allow the system to scale from simple trading strategies on a single CPU, to complex investment strategies run on a distribution of HPC machines.
+
+Under the hood, the framework uses many of the APIs from existing machine learning libraries to maintain high quality data pipelines and learning models. One of the main goals of TensorTrade is to enable fast experimentation with algorithmic trading strategies, by leveraging the existing tools and pipelines provided by `numpy`, `pandas` and `gymnasium`. The idea behind Tensorflow-NG is not to implement all the machine learning stuff itself. But to provide a solid framework that makes it possible to quickly provide a working environment for other tools such as [Stable-Baselines3](https://stable-baselines3.readthedocs.io).
+
+Every piece of the framework is split up into re-usable components, allowing you to take advantage of the general use components built by the community, while keeping your proprietary features private. The aim is to simplify the process of testing and deploying robust trading agents using deep reinforcement learning, to allow you and I to focus on creating profitable strategies.
+
+_The goal of this framework is to enable fast experimentation, while maintaining production-quality data pipelines._
+
+Read [the documentation](https://tensortrade-ng.io/).
+
+## Guiding principles
+
+_Inspired by [Keras' guiding principles](https://github.com/keras-team/keras)._
+
+- **User friendliness.** TensorTrade is an API designed for human beings, not machines. It puts user experience front and center. TensorTrade follows best practices for reducing cognitive load: it offers consistent & simple APIs, it minimizes the number of user actions required for common use cases, and it provides clear and actionable feedback upon user error.
+
+- **Modularity.** A trading environment is a conglomeration of fully configurable modules that can be plugged together with as few restrictions as possible. In particular, exchanges, feature pipelines, action schemes, reward schemes, trading agents, and performance reports are all standalone modules that you can combine to create new trading environments.
+
+- **Easy extensibility.** New modules are simple to add (as new classes and functions), and existing modules provide ample examples. To be able to easily create new modules allows for total expressiveness, making TensorTrade suitable for advanced research and production use.
+
+## Getting Started
+
+You can get started testing on Google Colab or your local machine, by viewing our [many examples](https://github.com/erhardtconsulting/tensortrade-ng/tree/master/examples).
+
+**Recommended beginning points:**
+
+* [Sample Environment as Python Script](https://github.com/erhardtconsulting/tensortrade-ng/blob/main/examples/simple_training_environment.py)
+* 
+
+## Installation
+
+TensorTrade-NG requires Python >= 3.12.0 for all functionality to work as expected.
+
+### As package
+You can install TensorTrade-NG both as a pre-packaged solution by running the default setup command.
+```bash
+pip install tensortrade-ng
+```
+
+### Via git
+You can also alternatively install TensorTrade-NG directly from the master code repository, pulling directly from the latest commits. This will give you the latest features/fixes, but it is highly untested code, so proceed at your own risk.
+```bash
+pip install git+https://github.com/erhardtconsulting/tensortrade-ng.git
+```
+
+### Cloning the repository
+
+> **⚠️ Warning**: This repository uses *git-lfs* for storing the Jupyter Notebooks and other big files. Make sure to install the [git-lfs Extension](https://git-lfs.com/) before cloning the repository.
+
+You can clone/download the repository in your local environment and manually install the requirements, either the "base" ones, or the ones that also include requirements to run the examples in the documentation.
+
+```bash
+# install only base requirements
+pip install -e .
+
+# install all requirements
+pip install -e ".[dev]"
+```
+
+### Build Documentation
+
+You can either build the documentation once or serve it locally.
+
+> **Prerequisites:** You need to have [pandoc](https://pandoc.org/installing.html) installed locally for converting jupyter notebooks. Otherwise it won't work. The *pip*-version won't work, because it's just a wrapper. You need to use your package manager, like `brew` or `apt`. 
+
+**Run documentation as local webserver**
+
+```bash
+hatch run docs:serve
+```
+
+**Build documentation**
+
+```bash
+hatch run docs:build
+```
+
+### Run Test Suite
+
+To run the test suite, execute the following command.
+
+```bash
+hatch test
+```
+
+## Support
+
+You can also post **bug reports and feature requests** in [GitHub issues](https://github.com/erhardtconsulting/tensortrade-ng/issues). Make sure to read [our guidelines](https://github.com/erhardtconsulting/tensortrade-ng/blob/master/CONTRIBUTING.md) first.
+
+If you have **questions or anything else** that needs to be discussed. Please use [GitHub Discussions](https://github.com/erhardtconsulting/tensortrade-ng/discussions) rather than opening an issue.
+
+
+## Contributors
+
+Contributions are encouraged and welcomed. This project is meant to grow as the community around it grows. Let us know on [GitHub Discussions](https://github.com/erhardtconsulting/tensortrade-ng/discussions) if there is anything that you would like to see in the future, or if there is anything you feel is missing.
+
+**Working on your first Pull Request?** You can learn how from this _free_ series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
+
+![https://github.com/erhardtconsulting/tensortrade-ng/graphs/contributors](https://contributors-img.firebaseapp.com/image?repo=erhardtconsulting/tensortrade-ng)
