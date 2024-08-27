@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: networkx-gdf
+Version: 1.5.1
+Summary: Python package to read and write NetworkX graphs in GDF (Graph Data Format).
+Author-email: Nelson Aloysio Reis de Almeida Passos <nelson.reis@phd.unipi.it>
+Project-URL: Homepage, https://pypi.org/p/networkx-gdf/
+Project-URL: Documentation, https://networkx-gdf.readthedocs.io
+Project-URL: Repository, https://github.com/nelsonaloysio/networkx-gdf
+Project-URL: Issues, https://github.com/nelsonaloysio/networkx-gdf/issues
+Project-URL: Changelog, https://github.com/nelsonaloysio/networkx-gdf/blob/main/CHANGELOG.md
+Keywords: Network,Graph,GDF
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: networkx >=2.1
+Requires-Dist: pandas >=1.1.0
+Provides-Extra: docs
+Requires-Dist: sphinx-autodoc-typehints >=1.23.0 ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme >=2.0.0 ; extra == 'docs'
+
+# networkx-gdf
+
+[![PyPI package](https://badge.fury.io/py/networkx-gdf.svg)](https://pypi.org/p/networkx-gdf/)
+[![Documentation Status](https://readthedocs.org/projects/networkx-gdf/badge/?version=latest)](https://networkx-gdf.readthedocs.io/en/latest/?badge=latest)
+[![Downloads](https://static.pepy.tech/badge/networkx-gdf)](https://pepy.tech/project/networkx-gdf)
+[![Downloads](https://static.pepy.tech/badge/networkx-gdf/month)](https://pepy.tech/project/networkx-gdf)
+[![License](https://img.shields.io/pypi/l/networkx-temporal)](https://github.com/nelsonaloysio/networkx-gdf/blob/main/LICENSE.md)
+
+Python package to read and write NetworkX graphs as GDF (Graph Data Format).
+
+GDF is a compact file format originally implemented by [GUESS](https://graphexploration.cond.org). Although the software itself is not anymore maintained, the format is still supported by active open-source projects such as [Gephi](https://gephi.org/) (see details [here](https://networkx-gdf.readthedocs.io/en/stable/api.html#networkx_gdf.GDF)).
+
+## Requirements
+
+* **Python>=3.7**
+* networkx>=2.1
+* pandas>=1.1.0
+
+## Install
+
+Package is available to install on [PyPI](https://pypi.org/project/networkx-gdf/):
+
+```bash
+$ pip install networkx-gdf
+```
+
+## Usage
+
+The following is an example covering the package's functionality:
+
+```python
+from networkx_gdf import read_gdf, write_gdf
+
+# Builds NetworkX graph object from file.
+G = read_gdf("input_file.gdf")
+
+# Writes NetworkX graph object to file.
+write_gdf(G, "output_file.gdf")
+```
+
+For detailed information on usage, please refer to its [official documentation](https://networkx-gdf.readthedocs.io).
+
+## License
+
+This package is released under the [MIT License](https://github.com/nelsonaloysio/networkx-gdf/blob/main/LICENSE.md).
