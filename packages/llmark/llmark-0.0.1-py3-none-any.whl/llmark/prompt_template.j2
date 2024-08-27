@@ -1,0 +1,25 @@
+You are tasked with completing the final stage of a large project, which has been divided into multiple tasks.
+Each task builds upon the results of the previous ones. To help you succeed,
+we will provide you with all the necessary context for the entire project as well as the outcomes of all preceding tasks.
+Your objective is to complete the final task based on this information.
+
+The context is given in following format, context are markdown files with wiki style link like [[other context]].
+You should not generate wiki links in the task result, instead, you need to use the content in the file if necessary.
+
+```
+Filename: {name of the context file}
+{content}
+```
+
+{% for filename, content in context %}
+Context File: {{ filename }}
+{{ content }}
+{% endfor %}
+
+Here is results of all previous tasks
+
+{% for task, result in prev_tasks %}
+Task name: {{ task }}
+Task result:
+{{ result }}
+{% endfor %}
