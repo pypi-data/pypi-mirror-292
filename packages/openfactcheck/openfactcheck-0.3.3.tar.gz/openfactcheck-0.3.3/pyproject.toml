@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openfactcheck"
+version = "0.3.3"
+authors = [
+    {name = "Hasan Iqbal", email = "hasan.iqbal@mbzuai.ac.ae"},
+    {name = "Yuxia Wang", email = "yuxia.wang@mbzuai.ac.ae"},
+    {name = "Minghan Wang", email = "minghan.wang@monash.edu"},
+    {name = "Georgi Georgiev", email = "geoergi@uni-sofia.bg"},
+    {name = "Jiahui Geng", email = "jiahui.geng@mbzuai.ac.ae"},
+    {name = "Preslav Nakov", email = "preslav.nakov@mbzuai.ac.ae"}
+]
+maintainers = [
+    {name = "Hasan Iqbal", email = "hasan.iqbal@mbzuai.ac.ae"},
+]
+description = "An Open-source Factuality Evaluation Demo for LLMs"
+readme = "README.md"
+keywords=["NLP", "deep learning", "transformer", "pytorch", "factuality evaluation"]
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/hasaniqbal777/openfactcheck"
+"Bug Tracker" = "https://github.com/hasaniqbal777/openfactcheck/issues"
+"Repository" = "https://github.com/hasaniqbal777/openfactcheck"
+"Documentation" = "https://openfactcheck.readthedocs.io"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.optional-dependencies]
+docs = [
+  "sphinx",
+  "sphinx-design",
+  "sphinx-favicon",
+  "sphinx-autobuild",
+  "sphinx-copybutton",
+  "sphinxext-rediraffe",
+  "sphinx-togglebutton",
+  "pydata-sphinx-theme",
+  "myst-parser"
+]
+
+[tool.setuptools.package-data]
+openfactcheck = [
+  "data/*.jsonl",
+  "templates/solver_configs/*.yaml",
+  "templates/configs/*.json",
+  "templates/factchecker/*.jsonl",
+  "templates/factchecker/*.csv",
+  "templates/factchecker/**/*.jsonl",
+  "templates/llm/*.csv",
+  "templates/report/*.tex"
+]
+
