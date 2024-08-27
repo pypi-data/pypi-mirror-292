@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: indico-client
+Version: 6.8.0
+Summary: A Python Wrapper for indico app API.
+Home-page: https://github.com/IndicoDataSolutions/indico-client-python
+Author: indico
+Author-email: engineering@indico.io
+License: MIT License (See LICENSE)
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: msgpack>=0.5.6
+Requires-Dist: msgpack-numpy==0.4.4.3
+Requires-Dist: numpy>=1.16.0
+Requires-Dist: Pillow>=6.2.0
+Requires-Dist: requests>=2.22.0
+Requires-Dist: setuptools>=41.4.0
+Requires-Dist: pandas>=1.0.3
+Requires-Dist: importlib-metadata~=1.0; python_version < "3.8"
+Requires-Dist: deprecation>=2.1.0
+Requires-Dist: jsons
+Requires-Dist: aiohttp[speedups]
+
+indicoio-py
+===============
+
+A wrapper for the `indico API <http://indico.io>`__.
+
+The indico API is free to use, and no training data is required.
+
+Installation
+------------
+
+From PyPI:
+
+.. code:: bash
+
+    pip install indico-client
+
+From source:
+
+.. code:: bash
+
+    git clone https://github.com/IndicoDataSolutions/indico-client-python.git
+    python setup.py install
