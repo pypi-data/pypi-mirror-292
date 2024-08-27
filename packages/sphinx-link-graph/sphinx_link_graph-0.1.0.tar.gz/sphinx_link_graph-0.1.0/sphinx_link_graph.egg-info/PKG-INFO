@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: sphinx-link-graph
+Version: 0.1.0
+Summary: Link graph generator for Sphinx
+Author-email: Jared Dillard <jared.dillard@gmail.com>
+Maintainer-email: Jared Dillard <jared.dillard@gmail.com>
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Documentation :: Sphinx
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Framework :: Sphinx :: Extension
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: sphinx>=1.2
+Provides-Extra: dev
+Requires-Dist: tox; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: sphinx; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+
+# Sphinx link graph extension
+
+A Sphinx extension to generate an interactive graph of internal links.
+
+![Parallel safe](https://img.shields.io/badge/parallel%20safe-false-red)
+
+## Installing
+
+Directly install via pip by using:
+
+```
+pip install sphinx-link-graph
+```
+
+Add `sphinx_gitstamp` to the [extensions](https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-extensions) array in your Sphinx **conf.py**.
+For example:
+
+```python
+extensions = ['sphinx_link_graph']
+```
+
+## Usage
+
+After building the docs, open `/_static/link-graph.html` in the browser.
+
+## Inspiration
+
+- https://github.com/ninjaconcept/d3-force-directed-graph
