@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: data-agent-aspen-ip21
+Version: 0.2.0
+Summary: Aspen IP21 historian plugin for `data-agent` package
+Home-page: https://github.com/imubit/data-agent-aspen-ip21/
+Author: Meir Tseitlin
+License: LGPL-3.0-only
+Project-URL: Documentation, https://github.com/imubit/data-agent-aspen-ip21/
+Project-URL: Source, https://github.com/imubit/data-agent-aspen-ip21/
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+License-File: LICENSE.txt
+Requires-Dist: pyodbc
+Requires-Dist: pandas
+Requires-Dist: pypika
+Requires-Dist: data-agent
+Requires-Dist: importlib-metadata ; python_version < "3.8"
+Provides-Extra: testing
+Requires-Dist: setuptools ; extra == 'testing'
+Requires-Dist: pytest ; extra == 'testing'
+Requires-Dist: pytest-cov ; extra == 'testing'
+
+
+[![Built Status](https://api.cirrus-ci.com/github/imubit/data-agent-aspen-ip21.svg?branch=main)](https://cirrus-ci.com/github/imubit/data-agent-aspen-ip21)
+[![PyPI-Server](https://img.shields.io/pypi/v/data-agent-aspen-ip21.svg)](https://pypi.org/project/data-agent-aspen-ip21/)
+[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/)
+
+# data-agent-aspen-ip21
+
+> Data Agent plugin for AspenTech InfoPlus.21
+
+The plugin allows Data Extractor do access data on IP21 systems using ODBC connection.
