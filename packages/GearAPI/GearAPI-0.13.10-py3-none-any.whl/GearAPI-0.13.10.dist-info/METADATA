@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: GearAPI
+Version: 0.13.10
+Summary: An API wrapper for cumulocity API. Made for researcher. Focus on Measurements and events resources from GEAR data
+Home-page: https://github.com/kajimadev-KaTRIS/gear-api
+Author: Darius Lim Hong Yi
+Author-email: hy.lim@kajima.com.sg
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: pandas (<=2.2.2)
+Requires-Dist: requests
+Requires-Dist: dataclasses (==0.6)
+Requires-Dist: wheel (==0.37.1)
+
+This is a Python client for the Cumulocity Data API. The GearAPI package is a wrapper to simplify GET requests and JSON response parsing from the Measurement and Event Resources. 
+
+This library abstracts:
+1. API endpoint handling
+2. pagnation handling
+3. API retry
+4. file handling
+5. Handling API from multiple devices 
+
+## how to use
+1. setup a config.ini
+```
+[API]
+USER = <IoT Platform User Name>
+PASSWORD = <IoT Platform User Password>
+BASE_URL = https://thegear.jp.cumulocity.com
+TENANT_ID = t21092648
+
+```
+
+2. `pip install gear-api`
+
+
+```
+import Client
+client = Client()
+
+date_start = "2024-01-01"
+date_end = "2024-01-02"
+device_params = {
+    "devicetype": "iaq"
+}
+client.download(date_start, date_end, device_params)
+
+"""
+output: all the iaq devices data from 2024-01-01 to 2024-01-02
+"""
+```
