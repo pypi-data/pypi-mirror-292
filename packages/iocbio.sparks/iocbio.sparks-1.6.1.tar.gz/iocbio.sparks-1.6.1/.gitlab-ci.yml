@@ -1,0 +1,78 @@
+stages:
+  - style
+  - docs
+  - build
+
+style:
+  stage: style
+  image: python:3.10
+  script:
+    - python -m pip install --upgrade pip
+    - pip install flake8
+    - pip install flake8-class-attributes-order
+    - flake8
+    - pip install black
+    - black iocbio --check
+
+pages:
+  stage: docs
+  image: python:buster
+  script:
+  - pip3 install --upgrade pip
+  - pip3 install mkdocs
+  - pip3 install sphinx sphinx-glpi-theme recommonmark
+  - mkdocs build
+  - mv site public
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
+  
+.windows_build_task:
+  stage: build
+  tags:
+  - shared-windows
+  - windows
+  - windows-1809
+  script:
+  - choco install -y python3 --version=3.10.8
+  - $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
+  - Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+  - refreshenv
+  - python.exe -m pip install --upgrade pip
+  - pip.exe install msvc-runtime
+  - pip.exe install pywin32
+  - pip.exe install -r requirements.txt
+  - pip.exe install pyinstaller
+  - copy .\packaging\pyinstaller\gui.spec .
+  - copy .\packaging\pyinstaller\gui.py .
+  - pyinstaller gui.spec
+  - dir dist
+  - ren dist Sparks
+  - copy .\packaging\pyinstaller\sparks.bat .\Sparks
+  - dir Sparks
+  - dir
+  - mkdir .\Sparks\app\iocbio\sparks\modules
+  - dir Sparks
+  - 7z a Sparks.zip .\Sparks 
+  - If ($CI_COMMIT_TAG -like '') {$NAME = 'sparks-windows-dev.zip'}
+  - If ($CI_COMMIT_TAG -notlike '') {$NAME = -join('sparks-windows-', $CI_COMMIT_TAG, '.zip')}
+  - ren Sparks.zip $NAME
+  - wget.exe --no-check-certificate https://dl.min.io/client/mc/release/windows-amd64/mc.exe
+  - .\mc.exe cp --insecure $NAME sysbio/iocbio-sparks/
+  - .\mc.exe ls --insecure sysbio/iocbio-sparks/
+
+build_windows_on_tags:
+  extends: .windows_build_task
+  only:
+    - tags
+
+build_windows_manually:
+  extends: .windows_build_task
+  when: manual
+  only:
+    - master
+    - /^bugfix*/
+    - /^feature.*/
+    - /^release.*/
