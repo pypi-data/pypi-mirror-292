@@ -1,0 +1,68 @@
+[build-system]
+requires = ["hatchling", "hatch-nodejs-version", "jupyterlab>=4.2.4,<5"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jupyterlab-display-name"
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+  "Framework :: Jupyter",
+  "Framework :: Jupyter :: JupyterLab",
+  "Framework :: Jupyter :: JupyterLab :: 4",
+  "Framework :: Jupyter :: JupyterLab :: Extensions",
+  "Framework :: Jupyter :: JupyterLab :: Extensions :: Prebuilt",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.9"
+dynamic = ["version", "description", "authors", "urls", "keywords"]
+dependencies = ["jupyter_server>=2.14.2,<3", "tornado>=6.4.1,<7"]
+
+[tool.hatch.version]
+source = "nodejs"
+
+[tool.hatch.metadata.hooks.nodejs]
+fields = ["description", "authors", "urls", "keywords"]
+
+[tool.hatch.build.targets.sdist]
+artifacts = ["labextension"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["jupyterlab_display_name"]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"jupyter_server_config.json" = "etc/jupyter/jupyter_server_config.d/jupyterlab_display_name.json"
+"labextension" = "share/jupyter/labextensions/jupyterlab-display-name"
+"install.json" = "share/jupyter/labextensions/jupyterlab-display-name/install.json"
+
+[tool.hatch.build.hooks.jupyter-builder]
+dependencies = ["hatch-jupyter-builder>=0.9.1"]
+build-function = "hatch_jupyter_builder.npm_builder"
+ensured-targets = ["labextension/package.json"]
+skip-if-exists = ["labextension/package.json"]
+
+[tool.hatch.build.hooks.jupyter-builder.build-kwargs]
+build_cmd = "build"
+npm = ["jlpm"]
+
+[tool.hatch.envs.default]
+description = "For running JupyterLab in development"
+dependencies = ["jupyterlab>=4.2.4,<5", "jupyter-collaboration>=2.1.2,<3"]
+
+[tool.hatch.envs.lint]
+description = "For linting and type checking Python"
+dependencies = [
+  "flake8>=7.1.1,<8",
+  "pylint>=3.2.6,<4",
+  "mypy>=1.11.2,<2",
+  "black>=24.8.0,<25",
+]
+
+[tool.mypy]
+strict = true
