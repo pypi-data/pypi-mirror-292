@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-akinator"
+version = "0.0.1"
+authors = [
+    {name = "Rio", email = "contact@devrio.org"},
+]
+description = "A Python library for interacting with the Akinator game API"
+readme = "README.md"
+requires-python = ">=3.6"
+license = {text = "MIT License"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+]
+dependencies = [
+    "requests",
+    "aiohttp",
+    "beautifulsoup4",
+]
+keywords = ["akinator", "game", "api", "async"]
+
+[project.urls]
+"Homepage" = "https://github.com/DevsCommons/akinator-py"
+"Bug Tracker" = "https://github.com/DevsCommons/akinator-py/issues"
+
+[tool.setuptools]
+packages = ["akinator"]
