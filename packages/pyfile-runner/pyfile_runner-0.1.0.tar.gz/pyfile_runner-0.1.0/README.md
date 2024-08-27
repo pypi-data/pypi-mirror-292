@@ -1,0 +1,3 @@
+```
+uv run ruff check
+```
