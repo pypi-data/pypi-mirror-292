@@ -1,0 +1,415 @@
+Metadata-Version: 2.1
+Name: pywhu3d
+Version: 0.2.17
+Summary: Example pywhu3d tool Package
+Home-page: https://github.com/astroy
+Author: Xu Han
+Author-email: hanxu@glad3d.com
+Keywords: whu3d,dataset,package
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.21.6
+Requires-Dist: h5py>=3.7.0
+Requires-Dist: laspy>=2.1.0
+Requires-Dist: open3d>=0.9.0
+Requires-Dist: plyfile>=0.7.4
+Requires-Dist: rich>=10.12.0
+Requires-Dist: prettytable
+Requires-Dist: xlwt
+Requires-Dist: scipy
+Provides-Extra: dev
+Requires-Dist: check-manifest; extra == "dev"
+
+
+<a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/dataset-whu3d-green"></a> <a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
+
+# Description
+
+This is a Python tool for the [WHU-Urban3D](https://whu3d.com) dataset. Contact Xu Han (hanxuwhu[at]whu[dot]edu[dot]com or hanxu@whu3d.com) if you have any questions.
+
+# Installation
+
+To use the pywhu3d tool, you need to install the pwhu3d library for your interpreter. We recommend you use python=3.7 to follow this tutorial.
+
+```zsh
+# this will install the latest version of pywhu3d
+pip install pywhu3d
+```
+
+# Usage
+
+## Initialization
+
+Create a WHU3D object:
+
+```python
+from pywhu3d.tool import WHU3D
+
+data_root = '/data/datasets/whu3d-dataset'  
+scenes = ['0404', '0940']
+# whu3d = WHU3D(data_root=data_root, data_type='mls', format='txt')
+whu3d = WHU3D(data_root=data_root, data_type='mls', format='h5', scenes=scenes)
+```
+
+Parameters:
+
+ - **data_root**: [data root folder]
+ - **data_type**: `als`, `mls`, `pc`, `img`  
+ - **format**: `txt`, `ply`, `npy`, `h5`, `pickle`  
+ - **[optional] scenes**: a list of scenes, if not specified, will be represented by all of the files
+
+The structure of the data folder should be like this:
+
+```
+data_root
+├── als
+│   ├── h5
+│   │   ├── [scene_1].h5
+│   │   ├── [scene_2].h5
+│   │   └── [scene_*].h5
+│   └── [optional] pkl/npy/pth
+└── mls
+	├── images
+    ├── h5
+    │   ├── [scene_1].h5
+    │   ├── [scene_2].h5
+    │   └── [scene_*].h5
+    └── [optional] pkl/npy/pth
+```
+
+If you have not downloaded the dataset, you could use the `get_download` function. For the case where we define whu3d as `WHU3D(data_root=data_root, data_type='mls', format='h5', scenes=scenes)`, the downloaded data is MLS point cloud with h5 format. Or you could download the whole dataset using the parameter `full=True`. You could also choose to download the dataset from BaiduNetdisk or Google Drive.
+
+```python
+# this will open a download page for your defined whu3d
+whu3d.get_download(src='google')
+
+# if you want to download the full dataset
+whu3d.get_download(full=True, src='baidu')
+```
+
+It is also recommended to use default split scenes to create a whu3d object, by using `whu3d.train_split`.
+
+```python
+# print(whu3d.split.val)
+whu3d = WHU3D(data_root=data_root, data_type='mls', format='txt', scenes=whu3d.val_split)
+```
+
+Then some of the attributes could be directly accessed, including data_root, data_type, scenes, download_link
+
+```python
+# e.g., you could print current scenes
+print(whu3d.scenes)
+```
+
+## Attributes
+
+The attributes of whu3d may differ depending on your operations (e.g., after applying the `compute_normals` function, the attributes may include `normals` that may not exist before). Nonetheless, you could always use the `list_attributes` function to see the current attributes that you could currently access.
+
+```python
+# this command will show you a table with all the attributes
+# that you could currently use.
+whu3d.list_attributes()
+```
+
+You could simply get a specific attribute of all scenes by using `get_attribute` function.
+
+```python
+# this function will return a list of the attributes
+attr = whu3d.get_attribute('coords')
+```
+
+### Data
+
+You could access the data of a specific scene by using `whu3d.data[scene][attribute]`.
+
+```python
+xyz = whu3d.data['0414']['coords']
+```
+
+### Labels
+
+Labels could also be directly accessed.
+
+```python
+semantics = whu3d.labels['0414']['semantics']
+instances = whu3d.labels['0414']['instances']
+```
+
+If you have interpreted the labels by using `interprete_labels` function, you could also get interpreted labels.
+
+```python
+semantics = whu3d.interpreted_labels['0414']['semantics']
+instances = whu3d.interpreted_labels['0414']['instances']
+```
+
+## Visualization
+
+### Point cloud
+
+You can visualize a specific scene or a list of scenes using the `vis` function. By default, this function will show both the point cloud and image frames, and the points are randomly sampled with sample_ratio = 0.01 for faster visualization. It will show color according to the height of the point if `color` is not specified, or you could choose a specific color, including intensity, normals, semantics, instances, and other features (some features should be computed first via whu3d functions if they do not exist, and you could use `whu3d.list_attributes()` to see the current attributes first).
+
+```python
+# This will show sampled points and images
+whu3d.vis(scene='0414', type='pc', color='intensity')
+
+# Show all the points
+whu3d.vis(scene='0414', sample_ratio=1.0, type='pc', color='intensity')
+
+# if you want to show normals, please set 'show_normals' to True
+whu3d.vis(scene='0414', type='pc', color='normals', show_normals=True)
+```
+
+or you can use a remote visualization function that allows you to visualize the scene on your local machine if the script is run on a remote server.
+
+```python
+# This function should be used if you want to visualize points
+# and the script is run on a remote machine.
+whu3d.remote_vis(scene='0424', type='pc', color='intensity')
+```
+
+Before running the `remove_vis` function on your remote machine, you should start another ssh connection to your remote machine, and launch open3d on your local machine.
+
+### Images
+
+Similarly, you could use the `vis` function to see a series of images of a specific scene.
+
+```python
+whu3d.vis(scene='0414', type='img')
+```
+
+### BEV
+
+[Will be available soon.]
+
+### Renderings
+
+[Will be available soon.]
+
+### Labels
+
+If you want to visualize the labels of semantics or instances, you must run the `interprete_labels` function first (please refer to the 'labels interpretation' section).
+
+```python
+# you should run this function first to interpret the labels
+info, labels = whu3d.interprete_labels()
+
+# you could visualize semantics with specified colors
+whu3d.vis(scene='0414', type='pc', color='semantics')
+
+# or you could visualize instances with random colors
+whu3d.vis(scene='0414', type='pc', color='instances')
+```
+
+
+## Export 
+
+Note that all the `export` functions will export data to `self.data_path` by default and you should better not change it if you want to load it later via pywhu3d.
+
+### Export data
+
+You could export other formats of whu3d, including las, ply, numpy, pickle, h5py, image, et al, by just using the `export_[type]` function.
+
+```python
+scenes = ['0404', '0940']
+whu3d.export_h5(output='.')
+whu3d.export_images(output='.', scenes=scenes)
+
+# this will export las to the '[self.data_path]/las' folder if
+# output is not specified, you can also specify 'scenes'
+whu3d.export_las()
+```
+
+If `scenes` is not specified, it will export all the scenes by default.
+
+### Export labels
+
+`export_labels` function could export raw labels or interpreted labels.
+
+```python
+# this will export '[scene].labels' files to your 'output' folder
+whu3d.export_labels(output='./labels', scenes=scenes)
+# whu3d.export_labels()
+```
+
+### Export statistics
+
+You could also export detailed statistics of the data and label to excel by using the `export_statistics` function.
+
+```python
+whu3d.export_statistics(output='./whu3d_statistics.xlsx')
+```
+
+For the export of metrics, you could refer to the 'Evaluation' part.
+
+###  Custom export
+
+You could use the `export` function to export a specified type of data.
+
+```python
+whu3d.export(output='', attribute='interpreted_labels')
+```
+
+## Labels interpretation
+
+You could use the `interprete_labels` function to merge similar categories and remap the labels to consecutive numbers like 0, 1, 2, ...
+
+```python
+# this will interpret the labels and create the 'gt' attribute
+whu3d.interprete_labels()
+```
+
+After applying this function, you could access the interpreted labels by using `whu3d.gt`. For more information, you could use the `get_label_map` function to see the interpretation table.
+
+```python
+# this will output a table showing the detailed information
+# this only shows you the information of semantics
+whu3d.get_label_map()
+```
+
+### Block division
+
+If you want to divide the whole scene into rectangle blocks along XY plane, you could use `save_divided_blocks`  function. This function will directly save the divided blocks into `.h5` file.
+
+```python
+# this will divide the scene into 10m * 10m blocks with 5m overlap$
+whu3d.save_divided_blocks(out_dir='', num_points=4096, size=(10, 10), stride=5, threshold=100, show_points=False)
+```
+
+### Custom interpretation
+
+If you could use your own file to interpret the labels, you should follow the steps:
+
+Step1: Create `label_interpretion.json`. This file should include 
+
+```json
+{
+"sem_no_list_ins": "2, 3, 7",
+"sem_label_mapping": [
+		{"175": "2"},
+		{"18": "5"}
+	]
+}
+```
+
+`sem_no_list_ins` exclude the categories which should be not interpreted as instances;
+`sem_label_mapping` specifies the mapping rules of semantic labels.
+
+Step 2: Put the JSON file into the data root folder.
+
+Step 3: Perform the `interprete_labels` function.
+
+## Evaluation
+
+The interpretation of predicted results should be consistent with that of the interpreted labels.
+
+### Semantic segmentation evaluation
+
+Or you could use the evaluation tool as in the 'instance segmentation evaluation' section, just by replacing the instance results with semantics.
+
+### Instance segmentation evaluation
+
+For instance segmentation evaluation, you should use our `evaluation.Evaluator` tool. 
+
+```python
+# define an evaluator for evaluation
+# preds is a list with num_scenes items: 
+# [scene_1_gt_arr, ..., scene_k_gt_arr]. Each item is a 2D
+# array with shape (num_points, 2), of which the first column
+# is semantic prediction and the second is instance prediction
+# there are two ways to create an evaluator
+# first way
+evaluator = whu3d.create_evaluator(preds)
+# second way
+from pywhu3d.evluation import Evaluator
+evaluator = Evaluator(whu3d, preds)
+
+# then you could use evaluator functions
+evaluator.compute_metrics()
+```
+
+You could get metrics, including:
+- instance metrics: MUCov, MWCov, Pre, Rec, F1-score
+- semantic metrics: oAcc, mAcc, mIoU
+
+```python
+print(evaluator.info)
+print(evaluator.eval_list)
+print(evaluator.eval_table)
+```
+
+You could also export evaluation results.
+
+```python
+# this will export an Excel file with detailed metrics
+evaluator.export(output_dir='./')
+```
+
+### Custom evaluation
+
+If you want to define a different list of ground truth labels instead of using the default labels, you could use `set_gt` function to set the ground truth labels
+
+```python
+from pywhu3d.evluation import Evaluator
+evaluator = Evaluator(whu3d, preds)
+
+# use this script to define your custom labels
+# truths: a list of scenes [scene_1_gt_arr, ..., scene_k_gt_arr]
+# gt_arr is a numpy array with shape (num_points, 2)
+eval.set_gt(truths)
+
+# then you could use evaluator functions
+evaluator.compute_metrics()
+```
+
+# Custom dataset
+
+You can also use the whu3d tool to customize your own dataset for all pywhu3d features simply by using the `format` function.
+
+```python
+data_root = '/data/datasets/you_custom_dataset'  
+scenes = ['scene1', 'scene2']  
+whu3d = WHU3D(data_root=data_root, data_type='mls', format='txt', scenes=scenes)
+
+# this will format your data as whu3d format
+# 'attributes' should be consistent with your input data
+in_attributes = ['coords', 'semantics', 'instances', 'intensities']
+whu3d.format(attributes=in_attributes)
+```
+
+After applying the `format` function, you could use all the features the whu3d tool provides just as the whu3d-dataset.
+
+## Demo
+
+This is a demo for preprocessing MLS dataset.
+
+```python
+from pywhu3d.tool import WHU3D
+
+data_root = 'data/whu-dataset'  
+mls_scenes = ['0404', '0940']  
+# als_scenes = ['5033', '3922']
+# whu3d = WHU3D(data_root=data_root, data_type='mls', format='txt')
+whu3d = WHU3D(data_root=data_root, data_type='mls', format='h5', scenes=mls_scenes)
+
+whu3d.norm_coords()  
+# self.compute_normals()  
+whu3d.interprete_labels() # only for the dataset of city A
+whu3d.compute_normals(radius=0.8)
+whu3d.save_divided_blocks(out_dir='', num_points=60000, size=(20, 20), stride=10, threshold=100, show_points=False)
+```
+
+# More
+
+`pywhu3d` is a tool to manage the whu3d dataset, with limited ability to process the dataset (e.g., segmentation). But if you need more features for processing the outdoor scene dataset, you could refer to [well soon be available]. For more details about our dataset, please refer to our website.
