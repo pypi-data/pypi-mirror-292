@@ -1,0 +1,37 @@
+[project]
+name = "armw"
+dynamic = ["version"]
+description = "ARMW"
+readme = "README.txt"
+keywords = ["Library", "Python Modules", "Scientific/Engineering"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.6",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)"
+]
+requires-python = ">=3.6"
+dependencies = []
+
+[[project.authors]]
+name = "Nathan McGuire"
+email = "nmcguire@whoi.edu"
+
+[project.urls]
+homepage = "http://acomms.whoi.edu"
+
+[project.scripts]
+# No scripts for now; we may add scripts in /bin in a future release
+
+[project.optional-dependencies]
+# No optional dependencies
+
+[build-system]
+requires = ["setuptools>=64", "wheel", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "armw/_version.py"
