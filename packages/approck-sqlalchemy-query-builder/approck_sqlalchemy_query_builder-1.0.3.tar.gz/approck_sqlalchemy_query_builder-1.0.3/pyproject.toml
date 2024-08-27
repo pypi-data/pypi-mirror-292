@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "approck-sqlalchemy-query-builder"
+version = "1.0.3"
+description = ""
+authors = ["Aleksey Dalekin <ald@approck.pro>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+SQLAlchemy = { extras = ["mypy"], version = ">=2.0.0" }
+pydantic = ">=2.4.1,<3.0.0"
+python = "^3.10"
+python-dateutil = "^2.8.2"
+
+[tool.poetry.dev-dependencies]
+mypy = "^1.10.0"
+pytest = "^8.2.1"
+ruff = "^0.4.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
