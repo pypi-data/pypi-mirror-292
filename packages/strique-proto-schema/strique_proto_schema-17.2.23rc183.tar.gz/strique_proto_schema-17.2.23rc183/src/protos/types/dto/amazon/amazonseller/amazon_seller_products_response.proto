@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package strique.types.dto.amazon;
+
+option java_outer_classname = "AmazonSellerProductResponseProto";
+option java_package = "com.strique.types.dto.amazon";
+
+// Next Id: 2
+message ReportSpecification {
+  string dataStartTime = 1 [json_name = "dataStartTime"];
+}
+
+// Next Id: 2
+message Amount {
+  double amount = 1 [json_name = "amount"];
+}
+
+// Next Id: 3
+message SalesByAsin {
+  int32 unitsOrdered = 1 [json_name = "unitsOrdered"];
+  Amount orderedProductSales = 2 [json_name = "orderedProductSales"];
+}
+
+// Next Id: 5
+message TrafficByAsin {
+  int32 sessions = 1 [json_name = "sessions"];
+  int32 pageViews = 2 [json_name = "pageViews"];
+  int32 pageViewsB2B = 3 [json_name = "pageViewsB2B"];
+  double buyBoxPercentage = 4 [json_name = "buyBoxPercentage"];
+}
+
+// Next Id: 5
+message SalesAndTrafficByAsin {
+  string parentAsin = 1 [json_name = "parentAsin"];
+  string childAsin = 2 [json_name = "childAsin"];
+  SalesByAsin salesByAsin = 3 [json_name = "salesByAsin"];
+  TrafficByAsin trafficByAsin = 4 [json_name = "trafficByAsin"];
+}
+
+// Next Id: 3
+message AmazonProductReportResponse {
+  ReportSpecification reportSpecification = 1 [json_name = "reportSpecification"];
+  repeated SalesAndTrafficByAsin salesAndTrafficByAsin = 2 [json_name = "salesAndTrafficByAsin"];
+}
+
+// Next Id: 2
+message AsinItemSummary {
+    string item_name = 1 [json_name = "itemName"];
+}
+
+// Next Id: 3
+message AsinItem {
+    string asin = 1 [json_name = "asin"];
+    repeated AsinItemSummary summaries = 2 [json_name = "itemSummary"];
+}
+
+// Next Id: 2
+message AsinItems {
+    repeated AsinItem items = 1 [json_name = "items"];
+}
