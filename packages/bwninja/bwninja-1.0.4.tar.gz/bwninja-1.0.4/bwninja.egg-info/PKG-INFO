@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: bwninja
+Version: 1.0.4
+Summary: A modern replacement for iftop
+Author-email: Tom Flanagan <tom@zkpq.ca>
+Project-URL: Homepage, https://bwninja.zkpq.ca
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console :: Curses
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: Intended Audience :: Telecommunications Industry
+Classifier: License :: Free For Educational Use
+Classifier: License :: Free For Home Use
+Classifier: License :: Free for non-commercial use
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python
+Classifier: Topic :: Internet
+Classifier: Topic :: System :: Monitoring
+Classifier: Topic :: System :: Networking :: Monitoring
+Classifier: Topic :: Utilities
+Description-Content-Type: text/markdown
+Requires-Dist: blessed
+Requires-Dist: bcc
+Requires-Dist: pandas
+
+# Bandwidth Ninja (bwninja)
+
+A modern replacement for `iftop`
+
+Why?
+- Colors!
+- More easily readable UI
+- Can track all interfaces
+- Less overhead (uses eBPF to collect metrics, and does not need to copy and process packets in userspace)
+
+
+## Install
+
+```sh
+sudo pip install bwninja --break-system-packages
+```
+
+Yup, as root ¯\_(ツ)_/¯.  Just like `iftop`
+
+LMK if you have a better way to package a python tool that requires running
+as root.
+
+
+## Run
+
+```sh
+sudo bwninja
+```
