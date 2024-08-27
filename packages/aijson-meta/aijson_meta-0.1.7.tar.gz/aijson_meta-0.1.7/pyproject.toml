@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "aijson-meta"
+version = "0.1.7"
+description = "AI JSON Quickstart | Low-code config language for AI Pipelines"
+authors = ["Rafael Irgolic <hello@irgolic.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+aijson-core = ">=0.1.21"
+aijson-ml = {version = ">=0.1.8", extras = ["api"]}
+aijson-pdf = {version = "*"}
+aijson-db = {version = "*"}
+aijson-utils = {version = "*"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
