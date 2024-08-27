@@ -1,0 +1,97 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    job_name: job-1724675355624999-65ea8b46-ed87-4232-a9cf-a4a24be5576d
+  name: job-1724675355624999-65ea8b46-ed87-4232-a9cf-a4a24be5576d
+  namespace: test
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      labels:
+        pod_name: calrissian_pod
+      name: calrissian_pod
+    spec:
+      containers:
+        - args:
+            - --stdout
+            - /calrissian/output.json
+            - --stderr
+            - /calrissian/stderr.log
+            - --usage-report
+            - /calrissian/report.json
+            - --max-ram
+            - 4G
+            - --max-cores
+            - '2'
+            - --tmp-outdir-prefix
+            - /calrissian/
+            - --outdir
+            - /calrissian/
+            - --tool-logs-basepath
+            - /calrissian
+            - --enable-ext
+            - /workflow-input/workflow.cwl#hello-world
+            - /workflow-params/params.yml
+          command:
+            - calrissian
+          env:
+            - name: CALRISSIAN_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          image: docker.io/terradue/calrissian:0.12.0
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - sleep 30
+          name: calrissian
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 2G
+            requests:
+              cpu: 1000m
+              memory: 1G
+          volumeMounts:
+            - mountPath: /workflow-input
+              name: volume-cwl-workflow
+            - mountPath: /workflow-params
+              name: volume-params
+            - mountPath: /calrissian
+              name: volume-calrissian-wdir
+              readOnly: false
+      restartPolicy: Never
+      securityContext:
+        fsGroup: 0
+        runAsGroup: 0
+        runAsUser: 0
+      terminationGracePeriodSeconds: 120
+      volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: cwl-workflow
+                mode: 420
+                path: workflow.cwl
+            name: cwl-workflow
+            optional: false
+          name: volume-cwl-workflow
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: params
+                mode: 420
+                path: params.yml
+            name: params
+            optional: false
+          name: volume-params
+        - name: volume-calrissian-wdir
+          persistentVolumeClaim:
+            claimName: calrissian-wdir
+            readOnly: false
