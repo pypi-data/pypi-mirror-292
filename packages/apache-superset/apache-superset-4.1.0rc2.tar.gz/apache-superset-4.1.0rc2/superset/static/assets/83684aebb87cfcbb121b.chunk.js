@@ -1,0 +1,2 @@
+"use strict";(globalThis.webpackChunksuperset=globalThis.webpackChunksuperset||[]).push([[8701],{88701:(t,i,e)=>{e.r(i),e.d(i,{default:()=>r});var h=e(9857),n=e(61988),a=e(35944);function r({data:t,initialMinEventCount:i,height:e=400,width:r=400}){return t?(0,a.tZ)(h.App,{width:r,height:e,data:t,initialMinEventCount:i,initialShowControls:!1}):(0,a.tZ)("div",{style:{height:e,width:r},children:(0,a.tZ)("div",{children:(0,n.t)("Sorry, there appears to be no data")})})}}}]);
+//# sourceMappingURL=83684aebb87cfcbb121b.chunk.js.map
