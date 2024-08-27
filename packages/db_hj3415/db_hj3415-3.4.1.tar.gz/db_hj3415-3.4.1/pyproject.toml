@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "db_hj3415"
+version = "3.4.1"
+authors = [{name = "Hyungjin Kim", email = "hj3415@gmail.com"}]
+description = "Manage db modules"
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: MIT License"]
+dependencies = [
+    "pandas>=2.2.2",
+    "pymongo>=4.8.0",
+    "utils-hj3415>=2.6.0",
+    "cryptography>=43.0.0",
+    "redis>=5.0.8",
+]
+
+[project.scripts]
+db = "db_hj3415.cli:db"
+
+
+[project.urls]
+Home = "https://www.hyungjin.kr"
+
+[tool.flit.sdist]
+exclude = [
+    "tests/",
+    "db_hj3415/dummy/"
+]
