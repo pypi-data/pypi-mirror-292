@@ -1,0 +1,91 @@
+Metadata-Version: 2.1
+Name: visbrain_sleep_port
+Version: 0.0.1
+Summary: Standalone version of Sleep module from Visbrain suite
+Download-URL: https://github.com/EtienneCmb/visbrain/archive/v0.0.1.tar.gz
+Author: Visbrain developers
+Author-email: anjopag31@berkeley.edu
+Maintainer: Anjo Pagdanganan
+License: New BSD License
+        
+        Copyright (c) 2007–2017 The Visbrain developers.
+        All rights reserved.
+        
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+          a. Redistributions of source code must retain the above copyright notice,
+             this list of conditions and the following disclaimer.
+          b. Redistributions in binary form must reproduce the above copyright
+             notice, this list of conditions and the following disclaimer in the
+             documentation and/or other materials provided with the distribution.
+          c. Neither the name of the Visbrain Developers  nor the names of
+             its contributors may be used to endorse or promote products
+             derived from this software without specific prior written
+             permission. 
+        
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+        ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+        ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+        LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+        OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+        DAMAGE.
+Keywords: brain MNI GPU visualization data OpenGL vispy neuroscience sleep data-mining
+Platform: any
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Natural Language :: English
+License-File: LICENSE
+Requires-Dist: numpy >=1.13
+Requires-Dist: scipy
+Requires-Dist: vispy >=0.5.2
+Requires-Dist: matplotlib >=1.5.5
+Requires-Dist: pyqt5
+Requires-Dist: pillow
+Requires-Dist: PyOpenGL
+Provides-Extra: full
+Requires-Dist: mne ; extra == 'full'
+Requires-Dist: tensorpac ; extra == 'full'
+Requires-Dist: pandas ; extra == 'full'
+Requires-Dist: xlrd ; extra == 'full'
+Requires-Dist: scikit-image ; extra == 'full'
+Requires-Dist: nibabel ; extra == 'full'
+Provides-Extra: roi
+Requires-Dist: pandas ; extra == 'roi'
+Requires-Dist: xlrd ; extra == 'roi'
+Provides-Extra: sleep
+Requires-Dist: mne ; extra == 'sleep'
+Requires-Dist: tensorpac ; extra == 'sleep'
+Provides-Extra: topo
+Requires-Dist: scikit-image ; extra == 'topo'
+
+# Visbrain Sleep Port
+
+## !! Under construction !!
+
+This is a modified version of Visbrain containing only the Sleep module.
+
+You can run the program from the .exe provided on the releases page, or you can check the examples folder to see how to deploy the code using python.
+
+The documentation provided covers all Visbrain modules, including those apart from Sleep.
+
+Original authors:
+Etienne Combrisson, Raphael Vallat, and Christian O Reilly.
+
+Combrisson E, Vallat R, Eichenlaub J-B, O'Reilly C, Lajnef T, Guillot A, Ruby PM and Jerbi K (2017) Sleep: An Open-Source Python Software for Visualization, Analysis, and Staging of Sleep Data. Front. Neuroinform. 11:60. doi: 10.3389/fninf.2017.00060
