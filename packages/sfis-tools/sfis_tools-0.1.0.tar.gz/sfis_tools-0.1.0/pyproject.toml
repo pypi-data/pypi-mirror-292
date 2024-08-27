@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "sfis-tools"
+version = "0.1.0"
+description = ""
+authors = ["Erik Hartwig <erik.hartwig@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.scripts]
+sfis = "sfis_tools.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+typer = {extras = ["all"], version = "^0.12.4"}
+keyring = "^25.3.0"
+platformdirs = "^4.2.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
