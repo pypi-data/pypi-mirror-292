@@ -1,0 +1,93 @@
+[build-system]
+requires = ["hatchling>=1.5.0", "hatch-nodejs-version>=0.3.2", "jupyterlab>=4.0.0,<5"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jupyterlab_blockly"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Framework :: Jupyter",
+    "Framework :: Jupyter :: JupyterLab",
+    "Framework :: Jupyter :: JupyterLab :: 4",
+    "Framework :: Jupyter :: JupyterLab :: Extensions",
+    "Framework :: Jupyter :: JupyterLab :: Extensions :: Prebuilt",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "jupyterlab_widgets~=3.0.11"
+]
+dynamic = ["version", "description", "authors", "urls", "keywords"]
+
+[project.optional-dependencies]
+dev = [
+    "click",
+    "pre-commit",
+    "jupyter_releaser"
+]
+
+[tool.hatch.version]
+source = "nodejs"
+
+[tool.hatch.build.hooks.version]
+path = "jupyterlab_blockly/_version.py"
+
+[tool.hatch.metadata.hooks.nodejs]
+fields = ["description", "authors", "urls"]
+
+[tool.hatch.build.targets.sdist]
+artifacts = ["/jupyterlab_blockly/labextension"]
+exclude = ["/.github", "/binder", "node_modules"]
+
+[tool.hatch.build.targets.sdist.force-include]
+"./packages" = "packages"
+
+[tool.hatch.build.targets.wheel.shared-data]
+"jupyterlab_blockly/labextension" = "share/jupyter/labextensions/jupyterlab-blockly-extension"
+"install.json" = "share/jupyter/labextensions/jupyterlab-blockly-extension/install.json"
+
+[tool.hatch.build.hooks.jupyter-builder]
+dependencies = ["hatch-jupyter-builder>=0.5"]
+build-function = "hatch_jupyter_builder.npm_builder"
+ensured-targets = [
+    "jupyterlab_blockly/labextension/static/style.js",
+    "jupyterlab_blockly/labextension/package.json",
+]
+skip-if-exists = ["jupyterlab_blockly/labextension/static/style.js"]
+
+[tool.hatch.build.hooks.jupyter-builder.build-kwargs]
+npm = ["jlpm"]
+build_cmd = "build:prod"
+
+[tool.hatch.build.hooks.jupyter-builder.editable-build-kwargs]
+build_cmd = "install:extension"
+npm = ["jlpm"]
+source_dir = "src"
+build_dir = "jupyterlab_blockly/labextension"
+
+[tool.jupyter-releaser.options]
+version_cmd = "python scripts/bump-version.py --force"
+
+[tool.jupyter-releaser.hooks]
+before-bump-version = [
+    "python -m pip install 'jupyterlab>=4.0.0,<5'",
+    "jlpm"
+]
+before-build-npm = [
+    "YARN_ENABLE_IMMUTABLE_INSTALLS=0 jlpm build:prod"
+]
+before-build-python = [
+    # Build the assets
+    "jlpm build:prod"
+]
+
+[tool.check-wheel-contents]
+ignore = ["W002"]
