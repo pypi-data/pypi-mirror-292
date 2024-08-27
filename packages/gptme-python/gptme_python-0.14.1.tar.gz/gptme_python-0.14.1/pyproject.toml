@@ -1,0 +1,130 @@
+[tool.poetry]
+name = "gptme-python"
+version = "0.14.1"
+description = "A fancy CLI to interact with LLMs in a Chat-style interface, with additional capabilities like executing commands on the local machine."
+authors = ["Erik Bjäreholt <erik@bjareho.lt>"]
+readme = "README.md"
+license = "MIT"
+packages = [
+    { include = "gptme" },
+]
+
+include = ["static/**/*", "media/logo.png"]
+
+[tool.poetry.scripts]
+gptme = "gptme.cli:main"
+gptme-server = "gptme.server.cli:main"
+gptme-eval = "gptme.eval.main:main"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+click = "^8.0"
+python-dotenv = "^1.0.0"
+rich = "^13.5.2"
+tabulate = "^0.9.0"
+pick = "^2.2.0"
+tiktoken = "^0.5.1"
+tomlkit = "^0.12.1"
+typing-extensions = "^4.8.0"
+platformdirs = "^3.11.0"
+
+# tools
+ipython = "^8.17.2"
+bashlex = "^0.18"
+
+# llm-providers
+openai = "^1.0"
+anthropic = "^0.34.0"
+
+# optionals
+playwright = {version = "^1.37.0", optional=true}
+jedi = {version = "^0.19.0", optional=true}
+
+# datascience essentials
+matplotlib = {version = "*", optional=true}
+pandas = {version = "*", optional=true}
+numpy = {version = "*", optional=true}
+pillow = {version = "*", optional=true}
+
+# training
+torch = {version = "*", optional=true}
+transformers = {version = "*", optional=true}
+
+# server
+flask = {version = "^2.3", optional=true}
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2"
+pytest-cov = "*"
+pytest-xdist = "^3.5.0"
+pytest-profiling = "^1.7.0"
+pytest-dotenv = "^0.5.2"
+pytest-timeout = "^2.2.0"
+mypy = "*"
+ruff = "*"
+black = "*"
+sphinx = "^6.0"
+sphinx-click = "^5.0.1"
+sphinx-book-theme = "^1.0.1"
+myst-parser = "^2.0.0"
+pyupgrade = "^3.15.0"
+greenlet = "*"  # dependency of playwright, but needed for coverage
+types-tabulate = "^0.9.0.20240106"
+pytest-retry = "^1.6.3"
+
+[tool.poetry.extras]
+server = ["flask"]
+browser = ["playwright"]
+datascience = ["matplotlib", "pandas", "numpy", "pillow"]
+training = ["torch", "transformers"]
+all = [
+    # server
+    "flask",
+    # browser
+    "playwright",
+    # datascience
+    "matplotlib", "pandas", "numpy", "pillow",
+    # training
+    "torch", "transformers",
+]
+
+
+[tool.ruff]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E4", "E7", "E9", "F", "B", "UP"]
+ignore = ["E402", "E501"]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "eval: marks tests as evals (deselect with '-m \"not eval\"'), these may fail, and will not run in CI",
+    "serial",
+]
+
+[tool.coverage.run]
+# Needed to get playwright to play nice with coverage
+# https://stackoverflow.com/a/28589618/965332
+concurrency = ["greenlet"]
+#branch = true
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Don't complain if tests don't hit defensive assertion code
+    "raise NotImplementedError",
+
+    # Don't complain about interactive stuff
+    "except KeyboardInterrupt:",
+    "if interactive:",
+    "if ask:",
+
+    # Don't complain if non-runnable code isn't run:
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
