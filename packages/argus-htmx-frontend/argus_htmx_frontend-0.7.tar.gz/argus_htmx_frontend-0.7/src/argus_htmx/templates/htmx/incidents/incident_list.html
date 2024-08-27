@@ -1,0 +1,14 @@
+{% extends base %}
+
+{% block main %}
+    <section>
+        {% include "htmx/incidents/_incidents_menubar.html" %}
+    </section>
+
+    <section class="overflow-x-auto">
+        {% block table %}
+            {% include "htmx/incidents/_incident_table.html" %}
+        {% endblock table %}
+    </section>
+
+{% endblock main %}
