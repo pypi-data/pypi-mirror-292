@@ -1,0 +1,233 @@
+# config.toml
+
+[spectra_layout]
+  title_text = ""
+  showlegend = true
+  title = ''
+  margin = { l = 50, r = 50, t = 20, b = 70 }
+  paper_bgcolor = "white"
+
+  [spectra_layout.font]
+    family = 'Times New Roman, monospace'
+    size = 20
+    color = 'black'
+
+  [spectra_layout.xaxis]
+    title = 'Wavenumber (cm<sup>-1</sup>)'
+    exponentformat = 'none'
+    showgrid = false
+    showline = true
+    tickmode = 'linear'
+    ticks = 'outside'
+    showticklabels = true
+    linewidth = 4
+    linecolor = 'black'
+    ticklen = 15
+    tickwidth = 4
+    tickcolor = 'black'
+
+    [spectra_layout.xaxis.minor]
+      ticks = 'outside'
+      ticklen = 7
+      showgrid = false
+
+
+    [spectra_layout.xaxis.tickfont]
+      family = 'Times new roman, monospace'
+      size = 20
+      color = 'black'
+
+    [spectra_layout.xaxis.titlefont]
+      family = 'Times new roman, monospace'
+      size = 20
+      color = 'black'
+
+  [spectra_layout.yaxis]
+    title = 'Intensity (arb. units.)'
+    exponentformat = 'none'
+    showgrid = false
+    zeroline = false
+    showline = true
+    ticks = ''
+    tickmode = 'linear'
+    dtick = 10
+    ticklen = 15
+    tickwidth = 4
+    showticklabels = false
+    linewidth = 4
+    linecolor = 'black'
+
+    [spectra_layout.yaxis.titlefont]
+      family = 'Times new roman, monospace'
+      size = 20
+      color = 'black'
+
+
+
+[transient_layout]
+  title_text = ""
+  margin = { l = 50, r = 50, t = 20, b = 70 }
+  paper_bgcolor = "white"
+  [transient_layout.font]
+    family = 'Times New Roman, monospace'
+    size = 20
+    color = 'black'
+
+  [transient_layout.xaxis]
+    title = 'Time (ms)'
+    exponentformat = 'none'
+    showgrid = false
+    showline = true
+    zeroline = false
+    range = [0.0, 0.05]  # Explicitly specify the types as floating-point numbers
+    tickmode = 'linear'
+    ticks = 'outside'
+    tick0 = 0
+    dtick = 0.025
+    linewidth = 4
+    linecolor = 'black'
+    ticklen = 14
+    tickwidth = 4
+    tickcolor = 'black'
+
+    [transient_layout.xaxis.minor]
+      ticks = 'outside'
+      ticklen = 7
+      showgrid = false
+
+    [transient_layout.xaxis.tickfont]
+      family = 'Times new roman, monospace'
+      size = 20
+      color = 'black'
+
+    [transient_layout.xaxis.titlefont]
+      family = 'Times new roman, monospace'
+      size = 20
+      color = 'black'
+
+  [transient_layout.yaxis]
+    title = 'Intensity (arb. units.)'
+    exponentformat = 'none'
+    showgrid = false
+    zeroline = false
+    showline = true
+    ticks = 'outside'
+    dtick = 1
+    tickwidth = 4
+    showticklabels = false 
+    ticklen = 14
+    linewidth = 4
+    linecolor = 'black'
+
+    [transient_layout.yaxis.minor]
+      ticks = 'outside'
+      ticklen = 7
+      showgrid = false
+
+    [transient_layout.yaxis.titlefont]
+      family = 'Times new roman, monospace'
+      size = 20
+      color = 'black'
+
+
+
+[structure_3d_layout]
+  title = ""
+  margin = { l = 15, r = 30, t = 0, b = 15 }
+  paper_bgcolor = "white"
+
+  [structure_3d_layout.titlefont]
+    family = "Times New Roman, monospace"
+    size = 30
+    color = "black"
+
+  [structure_3d_layout.scene]
+    [structure_3d_layout.scene.camera]
+      eye = {x = 1.5, y = 1.5, z = 1.0}
+
+    [structure_3d_layout.scene.xaxis]
+      showbackground = true
+      backgroundcolor = "rgb(255, 255, 255)"
+      title = ""
+      showgrid = true
+      zeroline = true
+      showline = true
+      linewidth = 5
+      linecolor = "black"
+      mirror = true
+      gridwidth = 1
+      gridcolor = "black"
+      tick0 = 0
+      dtick = 2.5
+      ticklen = 8
+      tickwidth = 1
+      ticks = ""
+      showticklabels = false
+
+      [structure_3d_layout.scene.xaxis.tickfont]
+        family = "Times new roman, monospace"
+        size = 16
+        color = "black"
+
+      [structure_3d_layout.scene.xaxis.titlefont]
+        family = "Times New Roman, monospace"
+        size = 16
+        color = "black"
+
+    [structure_3d_layout.scene.yaxis]
+      showbackground = true
+      backgroundcolor = "rgb(255, 255, 255)"
+      title = ""
+      showgrid = true
+      zeroline = true
+      showline = true
+      linewidth = 5
+      linecolor = "black"
+      mirror = true
+      gridwidth = 1
+      gridcolor = "black"
+      tick0 = 0
+      dtick = 2.5
+      ticklen = 8
+      tickwidth = 1
+      ticks = ""
+      showticklabels = false
+
+      [structure_3d_layout.scene.yaxis.tickfont]
+        family = "Times new roman, monospace"
+        size = 16
+        color = "black"
+
+      [structure_3d_layout.scene.yaxis.titlefont]
+        family = "Times New Roman, monospace"
+        size = 16
+        color = "black"
+
+    [structure_3d_layout.scene.zaxis]
+      showbackground = true
+      backgroundcolor = "rgb(255, 255, 255)"
+      title = ""
+      showgrid = true
+      zeroline = true
+      showline = true
+      linewidth = 5
+      linecolor = "black"
+      mirror = true
+      gridwidth = 1
+      gridcolor = "black"
+      tick0 = 0
+      dtick = 2
+      ticklen = 8
+      tickwidth = 1
+      ticks = ""
+      showticklabels = false
+
+      [structure_3d_layout.scene.zaxis.tickfont]
+        family = "Times new roman, monospace"
+        size = 16
+        color = "black"
+
+      [structure_3d_layout.scene.zaxis.titlefont]
+        family = "Times New Roman, monospace"
+        size = 16
+        color = "black"
