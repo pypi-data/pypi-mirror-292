@@ -1,0 +1,13 @@
+##
+## Copyright 2018-2024 Fragment Contributors
+## SPDX-License-Identifier: Apache-2.0
+##
+database:
+    provides:
+        - "conformer_core.db.models.DBMigration"
+        - "conformer_core.db.models.DBStage"
+        - "conformer_core.db.models.DBStageLink"
+        - "conformer_core.db.models.DBRecord"
+        - "conformer_core.db.models.DBCalculationRecord"
+settings:
+    DB_NAME: ":memory:"
