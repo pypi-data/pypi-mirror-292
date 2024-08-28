@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: ownlayer
+Version: 0.3.0
+Summary: Ownlayer Python SDK
+Author: Diego Sisto
+Author-email: diego@ownlayer.com
+Requires-Python: >=3.12,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Provides-Extra: anthropic
+Provides-Extra: openai
+Requires-Dist: anthropic (>=0.34.0,<0.35.0) ; extra == "anthropic"
+Requires-Dist: datetime (>=5.5,<6.0)
+Requires-Dist: openai (>=1.37.2,<2.0.0) ; extra == "openai"
+Requires-Dist: pydantic (>=2.8.2,<3.0.0)
+Requires-Dist: python-dotenv (>=1.0.1,<2.0.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Requires-Dist: wrapt (>=1.16.0,<2.0.0)
+Description-Content-Type: text/markdown
+
+# Ownlayer Python SDK
+Python SDK to integrate Ownlayer
+
+## Usage
+
+Install SDK
+
+```shell
+pip install ownlayer
+```
+
+Change openai import to use Ownlayer wrapper
+```diff
+- import openai
++ from ownlayer.openai import openai
+
+
+def some_AI_func:
+    # use AI as you did before
+    return openai.chat.completions.create(
+        ...
+    )
+```
+
+Be sure to have add `OWNLAYER_API_KEY` to your `.env` file:
+
+```dotenv
+OWNLAYER_API_KEY=ey...xxx
+```
+
+## Running examples
+
+First you'll need to install the SDK of your choice (or all of them)
+
+```bash
+poetry install --extras "openai" # needed to use openai
+poetry install --extras "anthropic" # needed to use anthropic
+```
+
+The "examples" folder holds demos of how to use this SDK. In order to run one from root folder run:
+
+```bash
+python -m examples.<path-to-example>
+```
+
+E.g. to run `openai/chat_completion.py` example, run:
+
+```bash
+python -m examples.openai.chat_completion
+```
+
