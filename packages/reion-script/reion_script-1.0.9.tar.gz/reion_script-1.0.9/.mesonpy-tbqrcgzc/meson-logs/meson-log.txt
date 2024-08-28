@@ -1,0 +1,248 @@
+Build started at 2024-08-27T11:48:40.192066
+Main binary: /tmp/build-env-wgerpzhi/bin/python
+Build Options: -Dbuildtype=release -Db_ndebug=if-release -Db_vscrt=md --native-file=/home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-python-native-file.ini
+Python system: Linux
+The Meson build system
+Version: 1.5.1
+Source dir: /home/idies/workspace/Storage/ncradivesh/persistent/script
+Build dir: /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc
+Build type: native build
+Project name: reion_script
+Project version: 1.0.5
+-----------
+Detecting compiler via: `gfortran --version` -> 0
+stdout:
+GNU Fortran (GCC) 8.3.1 20191121 (Red Hat 8.3.1-5)
+Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+-----------
+pre-processor extraction using -cpp -x fortran failed, falling back w/o lang
+Running command: -E -dM -
+-----
+-----------
+Detecting linker via: `gfortran -Wl,--version` -> 0
+stdout:
+GNU ld version 2.30-58.el8.0.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+This program is free software; you may redistribute it under the terms of
+the GNU General Public License version 3 or (at your option) a later version.
+This program has absolutely no warranty.
+-----------
+stderr:
+collect2 version 8.3.1 20191121 (Red Hat 8.3.1-5)
+/usr/bin/ld -plugin /usr/libexec/gcc/x86_64-redhat-linux/8/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-redhat-linux/8/lto-wrapper -plugin-opt=-fresolution=/tmp/cc8bZpeN.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 /usr/lib/gcc/x86_64-redhat-linux/8/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/8/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/8/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/8 -L/usr/lib/gcc/x86_64-redhat-linux/8/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/8/../../.. --version -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-redhat-linux/8/crtend.o /usr/lib/gcc/x86_64-redhat-linux/8/../../../../lib64/crtn.o
+-----------
+Sanity testing Fortran compiler: gfortran
+Is cross compiler: False.
+Sanity check compiler command line: gfortran sanitycheckf.f -o sanitycheckf.exe
+Sanity check compile stdout:
+
+-----
+Sanity check compile stderr:
+
+-----
+Running test binary command:  /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/sanitycheckf.exe
+Fortran compiler for the host machine: gfortran (gcc 8.3.1 "GNU Fortran (GCC) 8.3.1 20191121 (Red Hat 8.3.1-5)")
+Fortran linker for the host machine: gfortran ld.bfd 2.30-58
+-----------
+Detecting archiver via: `gcc-ar --version` -> 0
+stdout:
+GNU ar version 2.30-58.el8.0.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+This program is free software; you may redistribute it under the terms of
+the GNU General Public License version 3 or (at your option) any later version.
+This program has absolutely no warranty.
+-----------
+-----------
+Detecting compiler via: `gfortran --version` -> 0
+stdout:
+GNU Fortran (GCC) 8.3.1 20191121 (Red Hat 8.3.1-5)
+Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+-----------
+pre-processor extraction using -cpp -x fortran failed, falling back w/o lang
+Running command: -E -dM -
+-----
+-----------
+Detecting linker via: `gfortran -Wl,--version` -> 0
+stdout:
+GNU ld version 2.30-58.el8.0.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+This program is free software; you may redistribute it under the terms of
+the GNU General Public License version 3 or (at your option) a later version.
+This program has absolutely no warranty.
+-----------
+stderr:
+collect2 version 8.3.1 20191121 (Red Hat 8.3.1-5)
+/usr/bin/ld -plugin /usr/libexec/gcc/x86_64-redhat-linux/8/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-redhat-linux/8/lto-wrapper -plugin-opt=-fresolution=/tmp/ccxbfJim.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 /usr/lib/gcc/x86_64-redhat-linux/8/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/8/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/8/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/8 -L/usr/lib/gcc/x86_64-redhat-linux/8/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/8/../../.. --version -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-redhat-linux/8/crtend.o /usr/lib/gcc/x86_64-redhat-linux/8/../../../../lib64/crtn.o
+-----------
+Sanity testing Fortran compiler: gfortran
+Is cross compiler: False.
+Sanity check compiler command line: gfortran sanitycheckf.f -o sanitycheckf.exe
+Sanity check compile stdout:
+
+-----
+Sanity check compile stderr:
+
+-----
+Running test binary command:  /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/sanitycheckf.exe
+Fortran compiler for the build machine: gfortran (gcc 8.3.1 "GNU Fortran (GCC) 8.3.1 20191121 (Red Hat 8.3.1-5)")
+Fortran linker for the build machine: gfortran ld.bfd 2.30-58
+-----------
+Detecting archiver via: `gcc-ar --version` -> 0
+stdout:
+GNU ar version 2.30-58.el8.0.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+This program is free software; you may redistribute it under the terms of
+the GNU General Public License version 3 or (at your option) any later version.
+This program has absolutely no warranty.
+-----------
+Build machine cpu family: x86_64
+Build machine cpu: x86_64
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Target machine cpu family: x86_64
+Target machine cpu: x86_64
+Program python found: YES (/tmp/build-env-wgerpzhi/bin/python)
+Searching for 'python-3.8' via pkgconfig lookup in LIBPC
+Pkg-config binary missing from cross or native file, or env var undefined.
+Trying a default Pkg-config fallback at pkg-config
+Found pkg-config: YES (/usr/bin/pkg-config) 1.4.2
+Determining dependency 'python-3.8' with pkg-config executable '/usr/bin/pkg-config'
+env[PKG_CONFIG_LIBDIR]: /home/idies/miniconda3/envs/py38/lib/pkgconfig
+env[PKG_CONFIG_PATH]: 
+env[PKG_CONFIG]: /usr/bin/pkg-config
+-----------
+Called: `/usr/bin/pkg-config --modversion python-3.8` -> 0
+stdout:
+3.8
+-----------
+env[PKG_CONFIG_LIBDIR]: /home/idies/miniconda3/envs/py38/lib/pkgconfig
+env[PKG_CONFIG_PATH]: 
+env[PKG_CONFIG]: /usr/bin/pkg-config
+-----------
+Called: `/usr/bin/pkg-config --cflags python-3.8` -> 0
+stdout:
+-I/home/idies/miniconda3/envs/py38/include/python3.8
+-----------
+env[PKG_CONFIG_LIBDIR]: /home/idies/miniconda3/envs/py38/lib/pkgconfig
+env[PKG_CONFIG_ALLOW_SYSTEM_LIBS]: 1
+env[PKG_CONFIG_PATH]: 
+env[PKG_CONFIG]: /usr/bin/pkg-config
+-----------
+Called: `/usr/bin/pkg-config --libs python-3.8` -> 0
+env[PKG_CONFIG_LIBDIR]: /home/idies/miniconda3/envs/py38/lib/pkgconfig
+env[PKG_CONFIG_PATH]: 
+env[PKG_CONFIG]: /usr/bin/pkg-config
+-----------
+Called: `/usr/bin/pkg-config --libs python-3.8` -> 0
+Run-time dependency python found: YES 3.8
+Running command: /tmp/build-env-wgerpzhi/bin/python -c '
+import sys
+import subprocess
+try:
+    import numpy
+    from packaging import version
+    if version.parse(numpy.__version__) != version.parse("1.24.4"):
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy==1.24.4"])
+        import numpy  # Re-import to get the new version
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy==1.24.4"])
+    import numpy
+print(numpy.get_include())
+'
+--- stdout ---
+/tmp/build-env-wgerpzhi/lib/python3.8/site-packages/numpy/core/include
+
+--- stderr ---
+
+
+WARNING: You should add the boolean check kwarg to the run_command call.
+         It currently defaults to false,
+         but it will default to true in future releases of meson.
+         See also: https://github.com/mesonbuild/meson/issues/9300
+Running command: /usr/bin/sh -c 'echo $HOME/fftw/include'
+--- stdout ---
+/home/idies/fftw/include
+
+--- stderr ---
+
+
+Running command: /usr/bin/sh -c 'echo $HOME/fftw/lib'
+--- stdout ---
+/home/idies/fftw/lib
+
+--- stderr ---
+
+
+Running compile:
+Working directory:  /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmplimd34ei
+Code:
+
+        #include<stddef.h>
+        #include<stdio.h>
+        int main(void) {
+            printf("%ld\n", (long)(sizeof(void *)));
+            return 0;
+        }
+-----------
+Command line: `gfortran /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmplimd34ei/testfile.f90 -o /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmplimd34ei/output.exe -D_FILE_OFFSET_BITS=64 -O0` -> 1
+stderr:
+/home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmplimd34ei/testfile.f90:2:9:
+
+         #include<stddef.h>
+         1
+Error: Invalid character in name at (1)
+/home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmplimd34ei/testfile.f90:3:9:
+
+         #include<stdio.h>
+         1
+Error: Invalid character in name at (1)
+/home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmplimd34ei/testfile.f90:4:8:
+
+         int main(void) {
+        1
+Error: Unclassifiable statement at (1)
+/home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmplimd34ei/testfile.f90:5:12:
+
+             printf("%ld\n", (long)(sizeof(void *)));
+            1
+Error: Unclassifiable statement at (1)
+/home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmplimd34ei/testfile.f90:6:18:
+
+             return 0;
+                  1
+Error: Alternate RETURN statement at (1) is only allowed within a SUBROUTINE
+/home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmplimd34ei/testfile.f90:7:9:
+
+         }
+         1
+Error: Invalid character in name at (1)
+-----------
+Could not compile test file /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmplimd34ei/testfile.f90: 1
+
+Running compile:
+Working directory:  /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmpekeafy0l
+Code:
+
+-----------
+Command line: `gfortran /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmpekeafy0l/testfile.f90 -o /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-private/tmpekeafy0l/output.obj -D_FILE_OFFSET_BITS=64 -c -O0 --print-search-dirs` -> 0
+stdout:
+install: /usr/lib/gcc/x86_64-redhat-linux/8/
+programs: =/usr/libexec/gcc/x86_64-redhat-linux/8/:/usr/libexec/gcc/x86_64-redhat-linux/8/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/8/:/usr/lib/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/8/../../../../x86_64-redhat-linux/bin/x86_64-redhat-linux/8/:/usr/lib/gcc/x86_64-redhat-linux/8/../../../../x86_64-redhat-linux/bin/
+libraries: =/usr/lib/gcc/x86_64-redhat-linux/8/:/usr/lib/gcc/x86_64-redhat-linux/8/../../../../x86_64-redhat-linux/lib/x86_64-redhat-linux/8/:/usr/lib/gcc/x86_64-redhat-linux/8/../../../../x86_64-redhat-linux/lib/../lib64/:/usr/lib/gcc/x86_64-redhat-linux/8/../../../x86_64-redhat-linux/8/:/usr/lib/gcc/x86_64-redhat-linux/8/../../../../lib64/:/lib/x86_64-redhat-linux/8/:/lib/../lib64/:/usr/lib/x86_64-redhat-linux/8/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-redhat-linux/8/../../../../x86_64-redhat-linux/lib/:/usr/lib/gcc/x86_64-redhat-linux/8/../../../:/lib/:/usr/lib/
+-----------
+Library fftw3 found: YES
+Build targets in project: 1
+
+reion_script 1.0.5
+
+  User defined options
+    Native files: /home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/meson-python-native-file.ini
+    buildtype   : release
+    b_ndebug    : if-release
+    b_vscrt     : md
+
+Found ninja-1.11.1.git.kitware.jobserver-1 at /home/idies/miniconda3/envs/py38/bin/ninja

@@ -1,0 +1,80 @@
+[
+  {
+    "name": "script_fortran_modules.cpython-38-x86_64-linux-gnu",
+    "id": "script_fortran_modules.cpython-38-x86_64-linux-gnu.so@sha",
+    "type": "shared module",
+    "defined_in": "/home/idies/workspace/Storage/ncradivesh/persistent/script/meson.build",
+    "filename": [
+      "/home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/script_fortran_modules.cpython-38-x86_64-linux-gnu.so"
+    ],
+    "build_by_default": true,
+    "target_sources": [
+      {
+        "language": "fortran",
+        "compiler": [
+          "gfortran"
+        ],
+        "parameters": [
+          "-I/home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc/script_fortran_modules.cpython-38-x86_64-linux-gnu.so.p",
+          "-I/home/idies/workspace/Storage/ncradivesh/persistent/script/.mesonpy-tbqrcgzc",
+          "-I/home/idies/workspace/Storage/ncradivesh/persistent/script",
+          "-I/home/idies/fftw/include",
+          "-I/tmp/build-env-wgerpzhi/lib/python3.8/site-packages/numpy/core/include",
+          "-I/home/idies/miniconda3/envs/py38/include/python3.8",
+          "-fdiagnostics-color=always",
+          "-DNDEBUG",
+          "-D_FILE_OFFSET_BITS=64",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-fimplicit-none",
+          "-O3",
+          "-fPIC",
+          "-ffree-form",
+          "-ffree-line-length-none"
+        ],
+        "sources": [
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/onedspline.f90",
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/nrint.f90",
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/powspec.f90",
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/sort_grid_points.f90",
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/pc.f90",
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/es.f90",
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/rsd.f90",
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/fcoll_grid.f90",
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/matter_fields.f90",
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/matter_fields_haloes.f90",
+          "/home/idies/workspace/Storage/ncradivesh/persistent/script/fortran/ionization_map.f90"
+        ],
+        "generated_sources": [],
+        "unity_sources": []
+      },
+      {
+        "linker": [
+          "gfortran"
+        ],
+        "parameters": [
+          "-Wl,--as-needed",
+          "-Wl,--allow-shlib-undefined",
+          "-Wl,-O1",
+          "-shared",
+          "-fPIC",
+          "-Wl,-rpath,/home/idies/fftw/lib",
+          "-Wl,-rpath-link,/home/idies/fftw/lib",
+          "/home/idies/fftw/lib/libfftw3.so"
+        ]
+      }
+    ],
+    "extra_files": [],
+    "subproject": null,
+    "dependencies": [
+      "python-3.8",
+      "fftw3"
+    ],
+    "depends": [],
+    "installed": true,
+    "install_filename": [
+      "/usr/local/lib/python3.8/site-packages/script_fortran_modules.cpython-38-x86_64-linux-gnu.so"
+    ]
+  }
+]

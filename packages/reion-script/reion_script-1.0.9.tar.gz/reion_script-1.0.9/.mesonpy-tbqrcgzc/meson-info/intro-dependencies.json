@@ -1,0 +1,36 @@
+[
+  {
+    "name": "python-3.8",
+    "type": "pkgconfig",
+    "version": "3.8",
+    "compile_args": [
+      "-I/home/idies/miniconda3/envs/py38/include/python3.8"
+    ],
+    "link_args": [],
+    "include_directories": [],
+    "sources": [],
+    "extra_files": [],
+    "dependencies": [],
+    "depends": [],
+    "meson_variables": [
+      "py3_dep"
+    ]
+  },
+  {
+    "name": "fftw3",
+    "type": "library",
+    "version": "unknown",
+    "compile_args": [],
+    "link_args": [
+      "/home/idies/fftw/lib/libfftw3.so"
+    ],
+    "include_directories": [],
+    "sources": [],
+    "extra_files": [],
+    "dependencies": [],
+    "depends": [],
+    "meson_variables": [
+      "fftw_lib"
+    ]
+  }
+]
