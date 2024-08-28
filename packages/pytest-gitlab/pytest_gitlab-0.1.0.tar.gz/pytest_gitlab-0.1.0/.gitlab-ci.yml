@@ -1,0 +1,35 @@
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+
+services:
+  - docker:dind
+
+include:
+  - component: $CI_SERVER_FQDN/thht-ci-components/python/test@1.4.0
+    inputs:
+      job_name: lint
+      test_stage: lint
+      test_cmd: pixi run lint_ci
+
+  - component: $CI_SERVER_FQDN/thht-ci-components/python/test@1.4.0
+    inputs:
+      job_name: test
+      run_before_script: |
+        apt-get update
+        apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+        curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+        apt-get update
+        echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+        apt-get update
+        apt-get install -y docker-ce docker-compose
+        dockerd &
+        
+
+  - component: $CI_SERVER_FQDN/thht-ci-components/python/build_distribute@1.4.0
