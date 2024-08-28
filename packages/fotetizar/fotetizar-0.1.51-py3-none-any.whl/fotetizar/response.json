@@ -1,0 +1,84 @@
+{
+  "url": "https://api.github.com/gists/a395d545bc8c5ad8501ca2cbc156829a",
+  "forks_url": "https://api.github.com/gists/a395d545bc8c5ad8501ca2cbc156829a/forks",
+  "commits_url": "https://api.github.com/gists/a395d545bc8c5ad8501ca2cbc156829a/commits",
+  "id": "a395d545bc8c5ad8501ca2cbc156829a",
+  "node_id": "G_kwDOALR7N9oAIGEzOTVkNTQ1YmM4YzVhZDg1MDFjYTJjYmMxNTY4Mjlh",
+  "git_pull_url": "https://gist.github.com/a395d545bc8c5ad8501ca2cbc156829a.git",
+  "git_push_url": "https://gist.github.com/a395d545bc8c5ad8501ca2cbc156829a.git",
+  "html_url": "https://gist.github.com/TorrezMN/a395d545bc8c5ad8501ca2cbc156829a",
+  "files": {
+    "fotetizar.py": {
+      "filename": "fotetizar.py",
+      "type": "application/x-python",
+      "language": "Python",
+      "raw_url": "https://gist.githubusercontent.com/TorrezMN/a395d545bc8c5ad8501ca2cbc156829a/raw/ad3c6fe8cbc922a0e23fc9e435788d7eaaa39ac6/fotetizar.py",
+      "size": 5752,
+      "truncated": false,
+      "content": "import os\nfrom PIL import Image, ImageDraw, ImageFont\n\n# Define color themes\nTHEMES = {\n    \"monokai\": {\"background\": (39, 40, 34), \"text\": (248, 248, 242), \"line_number\": (128, 128, 128)},\n    \"blackandwhite\": {\"background\": (255, 255, 255), \"text\": (0, 0, 0), \"line_number\": (128, 128, 128)},\n    \"solarized\": {\"background\": (0, 43, 54), \"text\": (131, 148, 150), \"line_number\": (108, 113, 122)},\n    \"gruvbox\": {\"background\": (40, 40, 40), \"text\": (235, 219, 178), \"line_number\": (160, 113, 24)},\n    \"nord\": {\"background\": (46, 52, 64), \"text\": (216, 222, 233), \"line_number\": (136, 192, 208)},\n    \"dracula\": {\"background\": (40, 42, 54), \"text\": (248, 248, 242), \"line_number\": (98, 114, 164)},\n    \"github\": {\"background\": (255, 255, 255), \"text\": (36, 41, 46), \"line_number\": (199, 199, 199)},\n    \"one_dark\": {\"background\": (40, 44, 52), \"text\": (171, 178, 191), \"line_number\": (106, 115, 125)},\n    \"atom\": {\"background\": (33, 37, 43), \"text\": (171, 178, 191), \"line_number\": (109, 130, 143)},\n    \"vscode\": {\"background\": (30, 30, 30), \"text\": (212, 212, 212), \"line_number\": (128, 128, 128)},\n    \"commodore64\": {\"background\": (66, 77, 72), \"text\": (152, 219, 160), \"line_number\": (255, 255, 255)},  # Custom theme for Commodore64 mode\n}\n\ndef draw_editor(d, img, lines, font, line_number_font, text_color, line_number_color):\n    # Draw the mac-style window header\n    header_height = 30\n    d.rectangle([0, 0, img.width, header_height], fill=(60, 60, 60))\n    \n    # Draw the window control icons\n    icon_radius = 10\n    icon_spacing = 15\n    icon_colors = [(255, 0, 0), (255, 255, 0), (0, 255, 0)]  # Red, Yellow, Green\n    for i, color in enumerate(icon_colors):\n        d.ellipse((icon_spacing + i * (2 * icon_radius + icon_spacing), 5, \n                  icon_spacing + (i + 1) * (2 * icon_radius) + i * icon_spacing, 5 + 2 * icon_radius),\n                  fill=color)\n    \n    # Draw the file content\n    line_number_width = 30  # Width reserved for line numbers\n    x_text = line_number_width + 10  # Padding after line numbers\n    for i, line in enumerate(lines):\n        # Draw line number\n        line_number_text = f\"{i + 1}\"\n        d.text((10, header_height + 10 + i * 18), line_number_text, font=line_number_font, fill=line_number_color)\n        \n        # Draw code text\n        d.text((x_text, header_height + 10 + i * 18), line, font=font, fill=text_color)\n\ndef draw_console(d, img, lines, font, text_color, file_name):\n    linux_prompt = \"user@hostname:~$\"\n    # Console theme colors\n    console_bg_color = (0, 0, 0)  # Black background\n    prompt_color = (0, 255, 0)    # Green color for the prompt and text\n    \n    # Draw the old-style console background\n    d.rectangle([0, 0, img.width, img.height], fill=console_bg_color)\n\n    # Set up prompt text and spacing\n    prompt_font = ImageFont.truetype(font.path, size=18)\n    prompt_text = f\"{linux_prompt} cat {file_name}\"\n    prompt_y = 10\n\n    # Draw the Linux prompt and file content\n    d.text((10, prompt_y), prompt_text, font=prompt_font, fill=prompt_color)\n    \n    # Draw file content below the prompt\n    content_y = prompt_y + 30  # Leave space below the prompt\n    for i, line in enumerate(lines):\n        d.text((10, content_y + i * 18), line, font=font, fill=prompt_color)\n    \n    # Draw the end of the file content prompt\n    end_prompt_text = f\"{linux_prompt}\"\n    end_prompt_y = content_y + len(lines) * 18 + 10  # Space after content\n    d.text((10, end_prompt_y), end_prompt_text, font=prompt_font, fill=prompt_color)\n\ndef render_image(input_file, theme, font_path=None, mode=\"editor\"):\n    # Determine the default font directory and default font path\n    default_font_dir = os.path.join(os.path.dirname(__file__), '../fonts')\n    default_font_path = os.path.join(default_font_dir, 'UbuntuMono-Regular.ttf')\n\n    # Use the provided font or fallback to the default font\n    font = ImageFont.truetype(font_path or default_font_path, size=14)  # Adjust size as needed\n    line_number_font = ImageFont.truetype(font_path or default_font_path, size=14)  # Same size for line numbers\n\n    # Load the input file\n    with open(input_file, 'r') as f:\n        code = f.read()\n\n    # Get the selected theme colors\n    theme_colors = THEMES.get(theme, THEMES[\"monokai\"])\n    text_color = theme_colors[\"text\"]\n    line_number_color = theme_colors[\"line_number\"]\n\n    # Calculate the image size\n    lines = code.split('\\n')\n    max_line_length = max([len(line) for line in lines])\n    image_width = max_line_length * 10 + 40  # 10 is an approximate character width in pixels\n    image_height = len(lines) * 18 + 40  # 18 is an approximate line height in pixels\n\n    img = Image.new('RGB', (image_width, image_height), color=theme_colors[\"background\"])\n    d = ImageDraw.Draw(img)\n\n    if mode == \"editor\":\n        draw_editor(d, img, lines, font, line_number_font, text_color, line_number_color)\n    elif mode == \"console\":\n        draw_console(d, img, lines, font, text_color, os.path.basename(input_file))\n\n    # Save the image\n    mode_suffix = \"_console\" if mode == \"console\" else \"\"\n    output_file = f\"{os.path.splitext(os.path.basename(input_file))[0]}_{theme}{mode_suffix}.png\"\n    img.save(output_file)\n    print(f\"Image saved as {output_file}\")\n\nif __name__ == \"__main__\":\n    import argparse\n\n    parser = argparse.ArgumentParser()\n    parser.add_argument(\"input_file\", help=\"Path to the input file\")\n    parser.add_argument(\"theme\", help=\"Theme to use for rendering\")\n    parser.add_argument(\"--font\", help=\"Optional custom font file to use\", default=None)\n    parser.add_argument(\"--mode\", help=\"Scenario type (console or editor)\", default=\"editor\")\n\n    args = parser.parse_args()\n\n    render_image(args.input_file, args.theme, args.font, args.mode)\n\n"
+    }
+  },
+  "public": false,
+  "created_at": "2024-08-26T23:54:38Z",
+  "updated_at": "2024-08-26T23:54:38Z",
+  "description": "Crear fotos estilo mac y consola.",
+  "comments": 0,
+  "user": null,
+  "comments_url": "https://api.github.com/gists/a395d545bc8c5ad8501ca2cbc156829a/comments",
+  "owner": {
+    "login": "TorrezMN",
+    "id": 11828023,
+    "node_id": "MDQ6VXNlcjExODI4MDIz",
+    "avatar_url": "https://avatars.githubusercontent.com/u/11828023?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/TorrezMN",
+    "html_url": "https://github.com/TorrezMN",
+    "followers_url": "https://api.github.com/users/TorrezMN/followers",
+    "following_url": "https://api.github.com/users/TorrezMN/following{/other_user}",
+    "gists_url": "https://api.github.com/users/TorrezMN/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/TorrezMN/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/TorrezMN/subscriptions",
+    "organizations_url": "https://api.github.com/users/TorrezMN/orgs",
+    "repos_url": "https://api.github.com/users/TorrezMN/repos",
+    "events_url": "https://api.github.com/users/TorrezMN/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/TorrezMN/received_events",
+    "type": "User",
+    "site_admin": false
+  },
+  "forks": [
+
+  ],
+  "history": [
+    {
+      "user": {
+        "login": "TorrezMN",
+        "id": 11828023,
+        "node_id": "MDQ6VXNlcjExODI4MDIz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/11828023?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/TorrezMN",
+        "html_url": "https://github.com/TorrezMN",
+        "followers_url": "https://api.github.com/users/TorrezMN/followers",
+        "following_url": "https://api.github.com/users/TorrezMN/following{/other_user}",
+        "gists_url": "https://api.github.com/users/TorrezMN/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/TorrezMN/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/TorrezMN/subscriptions",
+        "organizations_url": "https://api.github.com/users/TorrezMN/orgs",
+        "repos_url": "https://api.github.com/users/TorrezMN/repos",
+        "events_url": "https://api.github.com/users/TorrezMN/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/TorrezMN/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "version": "7f793ab40746b688f76070f398a9bda203dcb11b",
+      "committed_at": "2024-08-26T23:54:38Z",
+      "change_status": {
+        "total": 121,
+        "additions": 121,
+        "deletions": 0
+      },
+      "url": "https://api.github.com/gists/a395d545bc8c5ad8501ca2cbc156829a/7f793ab40746b688f76070f398a9bda203dcb11b"
+    }
+  ],
+  "truncated": false
+}
