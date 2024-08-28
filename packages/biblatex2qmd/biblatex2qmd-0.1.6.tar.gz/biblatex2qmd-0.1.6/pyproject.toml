@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+   name = "biblatex2qmd"
+   description = "BibLaTeX Processor is a Python package that processes BibLaTeX files, extracts information from each entry, creates individual Markdown files for each entry, and generates a combined corpus file."
+   readme = "README.md"
+   authors = [{ name = "Jan-Ru Muller", email = "janru.muller@edu.vlerick.com" }]
+   license = { file = "LICENSE" }
+   classifiers = [
+       "License :: OSI Approved :: MIT License",
+       "Programming Language :: Python",
+       "Programming Language :: Python :: 3",
+   ]
+   keywords = ["bib", "latex", "processor"]
+   dependencies = [
+       "bibtexparser",
+       "pytest"
+   ]
+   requires-python = ">=3.7"
+dynamic = ["version"]
+
+   [tool.setuptools.packages.find]
+   where = ["."]
+   include = ["biblatex2qmd*"]
+
+   [tool.setuptools.package-data]
+   biblatex2qmd = ["*.py"]
+
+
+[tool.hatch]
+   [project.urls]
+   Homepage = "https://github.com/jan-ru/biblatex2qmd"
+
+   [project.scripts]
+   biblatex2qmd = "biblatex2qmd.bib_processor:main"
+
+[tool.hatch.version]
+path = "src/biblatex2qmd/__about__.py"
+   
