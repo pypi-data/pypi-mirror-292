@@ -1,0 +1,148 @@
+[project]
+name = "neura-library"
+version = "0.2.4"
+requires-python = ">=3.9"
+description = "Utility tools for system neuroscience research, including Open Source Wrapper or Parser"
+authors = [
+    { name = "Yu-Ting Wei", email = "ytsimon2004@gmail.com" },
+    { name = "Ta-Shun Su", email = "antoniost29@gmail.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+keywords = ["Neuroscience", "visual neuroscience", "cellular imaging", "brain mapping", "spatial navigation"]
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+    'Intended Audience :: Science/Research',
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "attrs",
+    "colorama",
+    "colorlog",
+    "matplotlib",
+    "seaborn",
+    "numpy>=1.26.0, <2.0",
+    "scipy",
+    "scikit-image",
+    "pandas",
+    "polars>=1.0.0",
+    "pyarrow",
+    "tifffile",
+    "opencv-python>=4.8.0.76",
+    "tqdm",
+    "requests",
+    "rich",
+    "typing_extensions"
+]
+
+
+
+[project.optional-dependencies]
+atlas = [
+    #    "allensdk"  # matplotlib build error, thus use pip install allensdk if needed
+    "brainrender",
+    "iblatlas",
+    "anytree",
+    "plotly",
+]
+
+scanner = [
+    "xmltodict",
+    "aicspylibczi"
+]
+
+calimg = [
+    "scanimage-tiff-reader",
+    "suite2p",
+    "sbxreader",
+    "tensorflow", # cascade spike prediction
+    "ruamel.yaml",
+    "numba"  # oasis dcnv batch processing
+]
+
+segmentation = [
+    "pyqt6",
+    "pyqtgraph",
+    "cellpose",
+    "stardist",
+    "csbdeep",
+    "roifile",
+    "napari"
+]
+
+model = [
+    "rastermap"
+]
+
+plot = [
+    "matplotlib_venn"
+]
+
+track = [
+    "facemap"
+]
+
+gpu = [
+    "torch",
+    "tensorflow",
+    "psutil"
+]
+
+profile = [
+    "memory_profiler",
+    "numba"
+]
+
+imagelib = [
+    "pdf2image",
+    "imageio"  # gif usage
+]
+
+tools = [
+    "slackclient",
+    "gspread"
+]
+
+all = [
+    "bokeh",
+    "neura-library[atlas]",
+    "neura-library[scanner]",
+    "neura-library[calimg]",
+    "neura-library[segmentation]",
+    "neura-library[plot]",
+    "neura-library[model]",
+    "neura-library[track]",
+    "neura-library[gpu]",
+    "neura-library[profile]",
+    "neura-library[imagelib]",
+    "neura-library[tools]",
+]
+
+
+doc = [
+    #    "pandoc",  # use conda install pandoc
+    "sphinx",
+    "nbsphinx",
+    "sphinx-toolbox",
+    "sphinx-rtd-theme",
+    "neura-library[all]",
+]
+
+[project.urls]
+Homepage = "https://github.com/ytsimon2004/neuralib"
+Documentation = "https://neuralib.readthedocs.io/en/latest/index.html"
+Repository = "https://github.com/ytsimon2004/neuralib"
+Issues = "https://github.com/ytsimon2004/neuralib/issues"
+
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0"]
+
+[project.scripts]
+brender = "neuralib.atlas.brainrender.main_app:main"

@@ -1,0 +1,234 @@
+Metadata-Version: 2.1
+Name: neura-library
+Version: 0.2.4
+Summary: Utility tools for system neuroscience research, including Open Source Wrapper or Parser
+Author-email: Yu-Ting Wei <ytsimon2004@gmail.com>, Ta-Shun Su <antoniost29@gmail.com>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2023, YT.WEI
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice, this
+           list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation
+           and/or other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its
+           contributors may be used to endorse or promote products derived from
+           this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+Project-URL: Homepage, https://github.com/ytsimon2004/neuralib
+Project-URL: Documentation, https://neuralib.readthedocs.io/en/latest/index.html
+Project-URL: Repository, https://github.com/ytsimon2004/neuralib
+Project-URL: Issues, https://github.com/ytsimon2004/neuralib/issues
+Keywords: Neuroscience,visual neuroscience,cellular imaging,brain mapping,spatial navigation
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering
+Classifier: Intended Audience :: Science/Research
+Classifier: Typing :: Typed
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: attrs
+Requires-Dist: colorama
+Requires-Dist: colorlog
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Requires-Dist: numpy<2.0,>=1.26.0
+Requires-Dist: scipy
+Requires-Dist: scikit-image
+Requires-Dist: pandas
+Requires-Dist: polars>=1.0.0
+Requires-Dist: pyarrow
+Requires-Dist: tifffile
+Requires-Dist: opencv-python>=4.8.0.76
+Requires-Dist: tqdm
+Requires-Dist: requests
+Requires-Dist: rich
+Requires-Dist: typing_extensions
+Provides-Extra: atlas
+Requires-Dist: brainrender; extra == "atlas"
+Requires-Dist: iblatlas; extra == "atlas"
+Requires-Dist: anytree; extra == "atlas"
+Requires-Dist: plotly; extra == "atlas"
+Provides-Extra: scanner
+Requires-Dist: xmltodict; extra == "scanner"
+Requires-Dist: aicspylibczi; extra == "scanner"
+Provides-Extra: calimg
+Requires-Dist: scanimage-tiff-reader; extra == "calimg"
+Requires-Dist: suite2p; extra == "calimg"
+Requires-Dist: sbxreader; extra == "calimg"
+Requires-Dist: tensorflow; extra == "calimg"
+Requires-Dist: ruamel.yaml; extra == "calimg"
+Requires-Dist: numba; extra == "calimg"
+Provides-Extra: segmentation
+Requires-Dist: pyqt6; extra == "segmentation"
+Requires-Dist: pyqtgraph; extra == "segmentation"
+Requires-Dist: cellpose; extra == "segmentation"
+Requires-Dist: stardist; extra == "segmentation"
+Requires-Dist: csbdeep; extra == "segmentation"
+Requires-Dist: roifile; extra == "segmentation"
+Requires-Dist: napari; extra == "segmentation"
+Provides-Extra: model
+Requires-Dist: rastermap; extra == "model"
+Provides-Extra: plot
+Requires-Dist: matplotlib_venn; extra == "plot"
+Provides-Extra: track
+Requires-Dist: facemap; extra == "track"
+Provides-Extra: gpu
+Requires-Dist: torch; extra == "gpu"
+Requires-Dist: tensorflow; extra == "gpu"
+Requires-Dist: psutil; extra == "gpu"
+Provides-Extra: profile
+Requires-Dist: memory_profiler; extra == "profile"
+Requires-Dist: numba; extra == "profile"
+Provides-Extra: imagelib
+Requires-Dist: pdf2image; extra == "imagelib"
+Requires-Dist: imageio; extra == "imagelib"
+Provides-Extra: tools
+Requires-Dist: slackclient; extra == "tools"
+Requires-Dist: gspread; extra == "tools"
+Provides-Extra: all
+Requires-Dist: bokeh; extra == "all"
+Requires-Dist: neura-library[atlas]; extra == "all"
+Requires-Dist: neura-library[scanner]; extra == "all"
+Requires-Dist: neura-library[calimg]; extra == "all"
+Requires-Dist: neura-library[segmentation]; extra == "all"
+Requires-Dist: neura-library[plot]; extra == "all"
+Requires-Dist: neura-library[model]; extra == "all"
+Requires-Dist: neura-library[track]; extra == "all"
+Requires-Dist: neura-library[gpu]; extra == "all"
+Requires-Dist: neura-library[profile]; extra == "all"
+Requires-Dist: neura-library[imagelib]; extra == "all"
+Requires-Dist: neura-library[tools]; extra == "all"
+Provides-Extra: doc
+Requires-Dist: sphinx; extra == "doc"
+Requires-Dist: nbsphinx; extra == "doc"
+Requires-Dist: sphinx-toolbox; extra == "doc"
+Requires-Dist: sphinx-rtd-theme; extra == "doc"
+Requires-Dist: neura-library[all]; extra == "doc"
+
+# neuralib
+
+[![Document Status](https://readthedocs.org/projects/neuralib/badge/?version=latest)](https://neuralib.readthedocs.io/en/latest/index.html)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/neura-library)
+[![PyPI version](https://badge.fury.io/py/neura-library.svg)](https://badge.fury.io/py/neura-library)
+[![Downloads](https://static.pepy.tech/badge/neura-library)](https://pepy.tech/project/neura-library)
+
+## Utility tools for rodent system neuroscience research, including Open Source Wrapper or Parser
+
+## See the [Documentation ](https://neuralib.readthedocs.io/en/latest/index.html) and [Examples](doc/source/notebooks)
+
+## Checkout [Release notes](https://github.com/ytsimon2004/neuralib/releases)
+
+# Installation
+
+- First, install common dependencies in the conda env with Python~=3.9.0 (for common dependencies)
+    - `pip install neura-library`
+
+- Install all dependencies using
+    - `pip install neural-library[all]`
+
+- Install the minimal required dependencies according to usage purpose . For example:
+  - Choices
+    in `[]`: `atlas`, `scanner`, `calimg`, `segmentation`, `model`, `track`, `gpu`, `profile`, `imagelib`, `tools`,
+    `all`
+  - Use `atlas` module: `pip install neural-library[atlas]`
+  - Use `segmentation` module: `pip install neural-library[segmentation]`
+
+----------------------------
+
+# Open-Source tools API call / data parsing
+
+## atlas
+
+- Module for whole brain, slice view visualization and rois classification
+    - `neuralib.atlas.ccf`: Customized hierarchical classification for the mouse brain atlas
+    - `neuralib.atlas.brainrender`: cli-based wrapper for [brainrender](https://github.com/brainglobe/brainrender)
+    - `neuralib.atlas.cellatlas`: Volume and cell types counts for each brain region, refer
+      to [Cell Atlas](https://portal.bluebrain.epfl.ch/resources/models/cell-atlas/)
+    - `neuralib.atlas.ibl`: Slice view plotting wrapper
+      for [ibllib](https://github.com/int-brain-lab/ibllib?tab=readme-ov-file)
+      and [iblatlas](https://int-brain-lab.github.io/iblenv/_autosummary/ibllib.atlas.html)
+
+## calimg
+
+- Module for 2photon calcium imaging acquisition and result parsing
+    - `neuralib.calimg.scan_image`: Data acquired from [ScanImage](https://www.mbfbioscience.com/products/scanimage/) (
+      under
+      DEV)
+    - `neuralib.calimg.scanbox`: Data acquired from [Scanbox](https://scanbox.org/tag/two-photon/)
+    - `neuralib.calimg.suite2p`:  Result parser for [suite2p](https://github.com/MouseLand/suite2p)
+  - `neuralib.calimg.spike`: dF/F to spike activity (OASIS/Cascade)
+
+## segmentation
+
+- Module for neuronal segmentation
+    - `neuralib.segmentation.cellpose`: Result Parser and batch running
+      for [cellpose](https://github.com/MouseLand/cellpose)
+    - `neuralib.segmentation.stardist`: Result Parser and batch running
+      for [stardist](https://github.com/stardist/stardist)
+
+## model
+
+- `neuralib.model.bayes_decoding`: Position decoding using population neuronal activity
+
+- `neuralib.model.rastermap`: Run and result parser for [rastermap](https://github.com/MouseLand/rastermap)
+
+## tracking
+
+- Module for other open-source tools wrapper
+    - `neuralib.tracking.deeplabcut`: Result parser for [DeepLabCut](https://github.com/DeepLabCut/DeepLabCut)
+
+    - `neuralib.tracking.facemap`: Result parser for [facemap](https://github.com/MouseLand/facemap)
+
+## Utilities Modules
+
+- `neuralib.argp`: Use argparse as dataclass field
+
+- `neuralib.persistence`: caching the analyzed results (i.e., concatenation for statistic purpose)
+
+- `neuralib.bokeh_model`: Interactive dashboard visualization
+
+- `neuralib.sqlp`: Python functions to build a SQL (sqlite3) statement.
+
+- `neuralib.plot`: Module for general plotting purpose
+
+- `neuralib.imglib`: Image processing library (under DEV)
+
+- `neuralib.tools.gspread`: Google spreadsheet API wrapper for read/write
+
+- `neuralib.tools.slack_bot`: Real-time slack notification bot for analysis pipeline
+
+- `neuralib.util.cli_args`: run script as subprocess
+
+- `neuralib.util.color_logging`: logging with color format
+
+- `neuralib.util.csv`: csv context manager
+
+- `neuralib.util.gpu`: OS-dependent gpu info
+
+- `neuralib.util.profile_test`: simple benchmark profile testing
+
+- `neuralib.util.table`: rich table visualization
+
+# CLI project.scripts
+
+- `brender`: see examples in [api](https://neuralib.readthedocs.io/en/latest/api/neuralib.atlas.brainrender.html)
