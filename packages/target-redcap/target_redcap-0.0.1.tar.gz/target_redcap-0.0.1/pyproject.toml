@@ -1,0 +1,66 @@
+[tool.poetry]
+name = "target-redcap"
+version = "0.0.1"
+description = "Singer target for redcap, built with the Meltano Singer SDK."
+readme = "README.md"
+authors = ["Nick Van Kuren <vankurenn@chop.edu>"]
+keywords = [
+    "ELT",
+    "redcap",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+singer-sdk = { version="~=0.39.0" }
+fs-s3fs = { version = "~=1.1.1", optional = true }
+requests = "~=2.32.3"
+
+
+[tool.poetry.dev-dependencies]
+pytest = ">=8"
+singer-sdk = { version="~=0.39.0", extras = ["testing"] }
+
+[tool.poetry.extras]
+s3 = ["fs-s3fs"]
+
+[tool.poetry.group.dev.dependencies]
+
+[tool.ruff]
+src = ["target_redcap"]
+target-version = "py38"
+
+[tool.ruff.lint]
+ignore = [
+    "ANN101",  # missing-type-self
+    "ANN102",  # missing-type-cls
+    "COM812",  # missing-trailing-comma
+    "ISC001",  # single-line-implicit-string-concatenation
+]
+select = ["ALL"]
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["target_redcap"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[build-system]
+requires = ["setuptools","poetry-core==1.9.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+# CLI declaration
+target-redcap = 'target_redcap.target:Targetredcap.cli'
