@@ -1,0 +1,885 @@
+import { resemble_native } from "@reboot-dev/resemble";
+{% if import_ids|length > 0 %}
+{% for unique_import_id, path in import_ids.items() %}
+import { importPys as {{ unique_import_id }}importPys } from "{{ path }}.js"
+{% endfor %}
+{% endif %}
+
+{#
+NOTE: The following if block includes most of the rest of this file. Most of
+this generated code is meant for Resemble services. In some cases, we generate
+_rsm files for services that aren't Resemble services, to help with transitive
+imports. grep for 'END RESEMBLE SPECIFIC CODE' to see the end of this if block.
+#}
+{# BEGIN RESEMBLE SPEFICIC CODE #}
+{% if services | length > 0 %}
+
+{% if google_protobuf_used_messages is defined and google_protobuf_used_messages|length > 0%}
+import {
+  {{ google_protobuf_used_messages|join(', \n  ') }}
+} from "@bufbuild/protobuf";
+{% endif %}
+{% if proto.messages_and_enums | length > 0 %}
+import {
+{% for message in proto.messages_and_enums | unique | list %}
+  {% if message not in proto.states %}
+  {{ message }},
+  {% endif %}
+{% endfor %}
+} from "./{{ pb_name }}.js";
+
+// Additionally re-export all messages_and_enums from the pb module.
+export {
+  {% for message in proto.messages_and_enums | unique | list %}
+  {% if message not in proto.states %}
+  {{ message }},
+  {% endif %}
+  {% endfor %}
+};
+{% endif %}
+
+{# Since we are creating a new class named {{ state }}, we can't import the same
+name from the {{ pb_name }}.js, so we have to alias that to use inside of that
+file, to the enduser we export that type as {{ state }}.State #}
+{% if proto.states|length > 0 %}
+{% for state in proto.states %}
+import {
+  {{ state }} as {{ state }}Proto,
+} from "./{{ pb_name }}.js";
+{% endfor %}
+{% endif %}
+
+import * as uuid from "uuid";
+
+import * as resemble from "@reboot-dev/resemble";
+import {
+  Context,
+  ExternalContext,
+  WorkflowContext,
+  ReaderContext,
+  WriterContext,
+  TransactionContext,
+} from "@reboot-dev/resemble";
+import { fileURLToPath } from "node:url";
+import * as path from "node:path";
+import * as protobuf_es from "@bufbuild/protobuf";
+import * as resemble_api from "@reboot-dev/resemble-api";
+
+{% if imports|length > 0 %}
+// Include all transitive imports.
+{% for import_path, unique_name in imports.items() %}
+import * as {{ unique_name }} from "{{ import_path }}.js";
+{% endfor %}
+{% endif %}
+
+// To support writers seeing partial updates of transactions,
+// and transactions seeing updates from writers, we need to store
+// a reference to the latest state in an ongoing transaction.
+//
+// Moreover, we need to update that _reference_ after each writer
+// executes within a transaction. We do that in the generated
+// code, see below.
+const ongoingTransactionStates: { [id: string] : any; } = {};
+
+{# Start generated Interface code #}
+{% for service in services %}
+
+{# TODO: don't generate errors in both react and nodejs. #}
+{% for method in service.methods %}
+const {{ service.options.proto.state_name | to_screaming_snake }}_{{ method.proto.name | to_screaming_snake }}_ERROR_TYPES = [
+  // TODO(benh): don't copy these errors everywhere.
+  //
+  // gRPC errors.
+  resemble_api.errors_pb.Cancelled,
+  resemble_api.errors_pb.Unknown,
+  resemble_api.errors_pb.InvalidArgument,
+  resemble_api.errors_pb.DeadlineExceeded,
+  resemble_api.errors_pb.NotFound,
+  resemble_api.errors_pb.AlreadyExists,
+  resemble_api.errors_pb.PermissionDenied,
+  resemble_api.errors_pb.ResourceExhausted,
+  resemble_api.errors_pb.FailedPrecondition,
+  resemble_api.errors_pb.Aborted,
+  resemble_api.errors_pb.OutOfRange,
+  resemble_api.errors_pb.Unimplemented,
+  resemble_api.errors_pb.Internal,
+  resemble_api.errors_pb.Unavailable,
+  resemble_api.errors_pb.DataLoss,
+  resemble_api.errors_pb.Unauthenticated,
+  // Resemble errors.
+  //
+  // NOTE: also add any new errors into `resemble/v1alpha1/index.ts`.
+  resemble_api.errors_pb.StateAlreadyConstructed,
+  resemble_api.errors_pb.StateNotConstructed,
+  resemble_api.errors_pb.TransactionParticipantFailedToPrepare,
+  resemble_api.errors_pb.TransactionParticipantFailedToCommit,
+  resemble_api.errors_pb.UnknownService,
+  resemble_api.errors_pb.UnknownTask,
+  // Method errors.
+  {% for error, type in method.options.errors.items() %}
+  {{ type }},
+  {% endfor %}
+] as const; // Need `as const` to ensure TypeScript infers this as a tuple!
+
+type {{ service.options.proto.state_name | to_camel }}{{ method.proto.name | to_camel }}AbortedError =
+  resemble_api.InstanceTypeForErrorTypes<
+    typeof {{ service.options.proto.state_name | to_screaming_snake }}_{{ method.proto.name | to_screaming_snake }}_ERROR_TYPES
+  >[number];
+
+{% endfor %}
+
+export abstract class {{ service.options.proto.state_name }}Interface extends resemble.Servicer<{{ service.options.proto.state_name }}.State> {
+  static __rsmModule__ = "{{ rsm_name }}";
+  static __servicerNodeAdaptor__ = "{{ service.options.proto.state_name }}ServicerNodeAdaptor";
+
+  // External reference to the native `Servicer`.
+  #external?: any | undefined;
+
+  protected lookup() {
+    return new {{ service.options.proto.state_name }}.WeakReference(null);
+  }
+
+  {% for method in service.methods %}
+  abstract {{ method.proto.name | to_lower_camel }}(
+    {% if method.options.proto.kind == 'reader' %}
+    context: ReaderContext,
+    {% elif method.options.proto.kind == 'writer' %}
+    context: WriterContext,
+    {% elif method.options.proto.kind == 'transaction' %}
+    context: TransactionContext,
+    {% elif method.options.proto.kind == 'workflow' %}
+    context: WorkflowContext,
+    {% endif %}
+    {% if method.options.proto.kind != 'workflow' %}
+    state: {{ service.options.proto.state_name }}.State,
+    {% endif %}
+    request: {{ method.input_type }},
+  ): Promise<
+  {{ method.output_type }} | protobuf_es.PartialMessage<{{ method.output_type }}>
+  {% if method.options.proto.kind == 'workflow' %}
+  | resemble.Loop
+  {% endif %}
+  >;
+  {% endfor %}
+
+  {% for method in service.methods %}
+  async _{{ method.proto.name }}(
+    {% if method.options.proto.kind == 'reader' %}
+    context: ReaderContext,
+    {% elif method.options.proto.kind == 'writer' %}
+    context: WriterContext,
+    {% elif method.options.proto.kind == 'transaction' %}
+    context: TransactionContext,
+    {% elif method.options.proto.kind == 'workflow' %}
+    context: WorkflowContext,
+    {% endif %}
+    jsonState: string,
+    jsonRequest: string
+  ): Promise<string> {
+    try {
+      {% if method.options.proto.kind != 'workflow' %}
+      let state = {{ service.options.proto.state_name }}.State.fromJsonString(
+        jsonState
+      );
+      {% endif %}
+      {% if method.options.proto.kind == 'writer' %}
+      if (context.stateId in ongoingTransactionStates) {
+        state = ongoingTransactionStates[context.stateId].clone();
+      }
+      {% elif method.options.proto.kind == 'transaction' %}
+      // TODO: assert that there are no ongoing transactions for this state.
+      ongoingTransactionStates[context.stateId] = state;
+      {% endif %}
+      const response = await this.{{ method.proto.name | to_lower_camel }}(
+        context,
+        {% if method.options.proto.kind != 'workflow' %}
+        state,
+        {% endif %}
+        {{ method.input_type }}.fromJsonString(jsonRequest)
+      );
+      {% if method.options.proto.kind == 'writer' %}
+      // TODO: it's premature to overwrite the state now given that the
+      // writer might still "fail" and an error will get propagated back
+      // to the ongoing transaction which will still see the effects of
+      // this writer. What we should be doing instead is creating a
+      // callback API that we invoke only after a writer completes
+      // that lets us update the state _reference_ then.
+      if (context.stateId in ongoingTransactionStates) {
+        ongoingTransactionStates[context.stateId].copyFrom(state);
+      }
+      {% elif method.options.proto.kind == 'transaction' %}
+      delete ongoingTransactionStates[context.stateId];
+      {% endif %}
+      return JSON.stringify({
+        {% if method.options.proto.kind in ['writer', 'transaction'] %}
+        effects: new {{ service.options.proto.state_name }}.{{ method.proto.name }}Effects({ state, response })
+        {% elif method.options.proto.kind == 'workflow' %}
+        ...(response instanceof resemble.Loop && { loop: { when: response.when } } ||  { response }),
+        {% else %}
+        response
+        {% endif %}
+      });
+    } catch (e) {
+      let error;
+      if (e instanceof resemble_api.Aborted) {
+        return JSON.stringify({
+          status: e.toStatus()
+        });
+      } else if (e instanceof Error) {
+        error = e;
+      } else {
+        // TODO: is there a better way to get the stringification
+        // of an object?
+        error = new Error(`${e}`);
+      }
+      console.warn(
+        `Unhandled (in '{{ proto.package_name }}.{{ service.options.proto.state_name }}.{{ method.proto.name | to_lower_camel }}') ${error.message}; propagating as 'Unknown'\n${error.stack}`
+      );
+      throw (error);
+    }
+  }
+
+  {% endfor %}
+
+  __storeExternal(external: any) {
+    this.#external = external;
+  }
+
+  get __external() {
+    if (this.#external === undefined) {
+      throw new Error(`Unexpected undefined external`);
+    }
+    return this.#external;
+  }
+
+  async read(
+    context: resemble.WorkflowContext
+  ): Promise<{{ service.options.proto.state_name }}.State> {
+    return {{ service.options.proto.state_name }}.State.fromJsonString(
+      await resemble_native.Servicer_read(
+        this.__external,
+        context.__external
+      )
+    );
+  }
+
+  async _write(
+    context: resemble.TransactionContext | resemble.WorkflowContext,
+    writer: (context: resemble.WriterContext, state: {{ service.options.proto.state_name }}.State) => Promise<void>,
+    idempotencyOptions?: resemble_api.IdempotencyOptions
+  ): Promise<void> {
+    let state: {{ service.options.proto.state_name }}.State | undefined = undefined;
+
+    if (context instanceof resemble.TransactionContext) {
+       state = ongoingTransactionStates[context.stateId].clone();
+    }
+
+    await resemble_native.Servicer_write(
+      this.__external,
+      context.__external,
+      async (context: resemble.WriterContext, jsonState: string) => {
+        if (state === undefined) {
+          state = {{ service.options.proto.state_name }}.State.fromJsonString(
+            jsonState
+          );
+        }
+        try {
+          await writer(context, state);
+          return JSON.stringify(state);
+        } catch (e) {
+          if (e instanceof Error) {
+            throw e;
+          } else {
+            throw new Error(`${e}`);
+          }
+        }
+      },
+      JSON.stringify(idempotencyOptions && { idempotency: idempotencyOptions } || {}),
+    );
+
+    if (context instanceof resemble.TransactionContext) {
+      // TODO: assert context.stateId in ongoingTransactionStates
+      ongoingTransactionStates[context.stateId].copyFrom(state);
+    }
+  }
+
+  async write(
+    context: resemble.TransactionContext | resemble.WorkflowContext,
+    writer: (context: resemble.WriterContext, state: {{ service.options.proto.state_name }}.State) => Promise<void>
+  ): Promise<void> {
+    await this._write(context, writer);
+  }
+
+  static _Idempotently = class {
+
+    #servicer: resemble.Servicer<{{ service.options.proto.state_name }}.State>;
+    #options: resemble_api.IdempotencyOptions;
+
+    constructor(
+      servicer: resemble.Servicer<{{ service.options.proto.state_name }}.State>,
+      options: resemble_api.IdempotencyOptions
+    ) {
+      this.#servicer = servicer;
+      this.#options = options;
+    }
+
+    async write(
+      context: resemble.TransactionContext | resemble.WorkflowContext,
+      writer: (context: resemble.WriterContext, state: {{ service.options.proto.state_name }}.State) => Promise<void>
+    ) {
+      await this.#servicer._write(context, writer, this.#options);
+    }
+  };
+
+  public idempotently(aliasOrOptions: string | resemble_api.IdempotencyOptions) {
+    return new {{ service.options.proto.state_name }}Interface._Idempotently(
+      this,
+      typeof aliasOrOptions === "string" ? { alias: aliasOrOptions } : aliasOrOptions,
+    );
+  }
+}
+{% endfor %}
+{# End generated Interface code #}
+{# Start generated Service code #}
+{% for service in services %}
+
+export class {{ service.options.proto.state_name }}State extends {{ service.options.proto.state_name }}Proto {
+
+  static fromBinary(
+    bytes: Uint8Array,
+    options?: Partial<protobuf_es.BinaryReadOptions>
+  ) {
+    const state = new {{ service.options.proto.state_name }}.State();
+    state.fromBinary(bytes, options);
+    return state;
+  }
+
+  static fromJson(
+    jsonValue: protobuf_es.JsonValue,
+    options?: Partial<protobuf_es.JsonReadOptions>
+  ) {
+    const state = new {{ service.options.proto.state_name }}.State();
+    state.fromJson(jsonValue, options);
+    return state;
+  }
+
+  static fromJsonString(
+    jsonString: string,
+    options?: Partial<protobuf_es.JsonReadOptions>
+  ) {
+    const state = new {{ service.options.proto.state_name }}.State();
+    state.fromJsonString(jsonString, options);
+    return state;
+  }
+
+  public clone() {
+    const state = new {{ service.options.proto.state_name }}.State();
+    state.copyFrom(super.clone());
+    return state;
+  }
+
+  public copyFrom(that: {{ service.options.proto.state_name }}.State | {{ service.options.proto.state_name }}Proto) {
+    // Unfortunately, protobuf-es does not have `CopyFrom` like Python
+    // or C++ protobuf. Instead, protobuf-es has `fromJson` but it
+    // performs a merge. Thus, we have to first clear all of the fields
+    // in the message before calling `fromJson`.
+    resemble.clearFields(this);
+    this.fromJson(that.toJson());
+  }
+}
+
+{% for method in service.methods %}
+
+export class {{ service.options.proto.state_name }}{{ method.proto.name }}Aborted extends resemble_api.Aborted {
+  static fromStatus(status: resemble_api.Status) {
+    let error = resemble_api.errorFromGoogleRpcStatusDetails(
+      status,
+      {{ service.options.proto.state_name | to_screaming_snake }}_{{ method.proto.name | to_screaming_snake }}_ERROR_TYPES,
+    );
+
+    if (error !== undefined) {
+      return new {{ service.options.proto.state_name | to_camel }}.{{ method.proto.name | to_camel }}Aborted(
+        error, { message: status.message }
+      );
+    }
+
+    error = resemble_api.errorFromGoogleRpcStatusCode(status);
+
+    // TODO(benh): also consider getting the type names from
+    // `status.details` and including that in `message` to make
+    // debugging easier.
+
+    return new {{ service.options.proto.state_name | to_camel }}.{{ method.proto.name | to_camel }}Aborted(
+      error, { message: status.message }
+    );
+  }
+
+  public toStatus(): resemble_api.Status {
+    const isObject = (value: unknown): value is object => {
+      return typeof value === 'object';
+    };
+
+    const isArray = (value: unknown): value is any[]  => {
+      return Array.isArray(value);
+    };
+
+    const error = this.error.toJson();
+
+    if (!isObject(error) || isArray(error)) {
+      throw new Error("Expecting 'error' to be an object (and not an array)");
+    }
+
+    const detail = { ...error };
+    detail["@type"] = `type.googleapis.com/${this.error.getType().typeName}`;
+
+    return new resemble_api.Status({
+      code: this.code,
+      message: this.#message,
+      details: [detail]
+    });
+  }
+
+  constructor(
+    error: {{ service.options.proto.state_name | to_camel }}{{ method.proto.name | to_camel }}AbortedError,
+    { message }: { message?: string } = {}
+  ) {
+    super();
+
+    // Set the name of this error for even more information!
+    this.name = this.constructor.name;
+
+    this.error = error;
+
+    let code = resemble_api.grpcStatusCodeFromError(this.error);
+
+    if (code === undefined) {
+      // Must be one of the Resemble specific errors.
+      code = resemble_api.StatusCode.ABORTED;
+    }
+
+    this.code = code;
+
+    this.#message = message;
+  }
+
+  toString(): string {
+    return `${this.name}: ${this.message}`;
+  }
+
+  get message(): string {
+    return `${this.error.getType().typeName}${this.#message ? " with message " + this.#message : ""}`;
+  }
+
+  readonly error: {{ service.options.proto.state_name | to_camel }}{{ method.proto.name | to_camel }}AbortedError;
+  readonly code: resemble_api.StatusCode;
+  readonly #message?: string;
+}
+
+{% endfor %}
+
+export class {{ service.options.proto.state_name }}WeakReference {
+  #external: any;
+  #id?: string;
+
+  // TODO: using `null` to do "lazy" construction
+  // once we have the id from a context.
+  constructor(id: string | null) {
+    if (typeof id === "string") {
+      this.#id = id;
+    } else if (id !== null) {
+      throw new Error("Expecting 'id'");
+    }
+  }
+
+  public __external(context: Context | ExternalContext) {
+    if (this.#external === undefined) {
+      if (this.#id === undefined) {
+        if (!(context instanceof Context)) {
+          throw new Error(
+            "Lazy construction of '{{ service.options.proto.state_name }}.WeakReference' " +
+            "only valid when using a context, e.g., 'ReaderContext', 'WriterContext', etc"
+          );
+        }
+        this.#id = context.stateId;
+      }
+      this.#external = resemble_native.Service_constructor({
+        rsmModule: "{{ rsm_name }}",
+        nodeAdaptor: "{{ service.options.proto.state_name }}WeakReferenceNodeAdaptor",
+        id: this.#id,
+      });
+    }
+    return this.#external;
+  }
+
+  {% for method in service.methods %}
+  async __externalServiceCall{{ method.proto.name }}(
+    context: Context | ExternalContext,
+    partialRequest?: protobuf_es.PartialMessage<{{ method.input_type }}>,
+    options?: resemble_api.CallOptions
+  ): Promise<any> {
+    const request = partialRequest instanceof {{ method.input_type }} ?
+      partialRequest : new {{ method.input_type }}(partialRequest);
+
+    const json = JSON.parse(
+      await resemble_native.Service_call({
+        external: this.__external(context),
+        kind: "{{ method.options.proto.kind }}",
+        method: "{{ method.proto.name }}",
+        {% if method.python_request_message_module is not none %}
+        requestModule: "{{ method.python_request_message_module }}",
+        {% else %}
+        requestModule: "{{ pb2_name }}",
+        {% endif %}
+        requestType: "{{ method.python_input_type }}",
+        context: context.__external,
+        jsonRequest: JSON.stringify(request || {}),
+        jsonOptions: JSON.stringify(options || {}),
+      })
+    );
+
+    if ("status" in json) {
+      throw {{ service.options.proto.state_name }}
+        .{{ method.proto.name }}Aborted
+        .fromStatus(resemble_api.Status.fromJson(json["status"]));
+    }
+
+    return json;
+  }
+
+  {% if not method.options.proto.constructor and method.options.proto.kind != 'workflow' %}
+  async {{ method.proto.name | to_lower_camel }}(
+    {% if method.options.proto.kind == 'reader' %}
+    context: ReaderContext | WriterContext | TransactionContext | WorkflowContext | ExternalContext,
+    {% elif method.options.proto.kind in ['writer', 'transaction'] %}
+    context: TransactionContext | WorkflowContext | ExternalContext,
+    {% endif %}
+    partialRequest?: protobuf_es.PartialMessage<{{ method.input_type }}>,
+  ): Promise<{{ method.output_type }}> {
+    const json = await this.__externalServiceCall{{ method.proto.name }}(
+      context,
+      partialRequest,
+    );
+
+    // TODO: assert("response" in json)
+
+    return {{ method.output_type }}.fromJson(json["response"]);
+  }
+
+  {% endif %}
+  {% endfor %}
+
+  static _Idempotently = class {
+
+    #weakReference: any;
+    #options: resemble_api.IdempotencyOptions;
+
+    constructor(
+      weakReference: any,
+      options: resemble_api.IdempotencyOptions
+    ) {
+      this.#weakReference = weakReference;
+      this.#options = options;
+    }
+
+    {% for method in service.methods %}
+    {% if method.options.proto.kind in ['writer', 'transaction'] and not method.options.proto.constructor %}
+    async {{ method.proto.name | to_lower_camel }}(
+      context: resemble.TransactionContext | resemble.WorkflowContext | resemble.ExternalContext,
+      partialRequest?: protobuf_es.PartialMessage<{{ method.input_type }}>
+    ): Promise<{{ method.output_type }}> {
+      const json = await this.#weakReference.__externalServiceCall{{ method.proto.name }}(
+        context,
+        partialRequest,
+        { idempotency: this.#options },
+      );
+
+       // TODO: assert("response" in json)
+
+       return {{ method.output_type }}.fromJson(json["response"]);
+    }
+
+    {% endif %}
+    {% endfor %}
+
+    public schedule(options?: resemble_api.ScheduleOptions) {
+      return new {{ service.options.proto.state_name }}.WeakReference._Schedule(
+        this.#weakReference,
+        options || { when: new Date() },
+        this.#options,
+      );
+    }
+  };
+
+  public idempotently(aliasOrOptions: string | resemble_api.IdempotencyOptions = {} as resemble_api.IdempotencyOptions) {
+    return new {{ service.options.proto.state_name }}.WeakReference._Idempotently(
+      this,
+      typeof aliasOrOptions === "string" ? { alias: aliasOrOptions } : aliasOrOptions,
+    );
+  }
+
+  static _Schedule = class {
+
+    #weakReference: any;
+    #options: resemble_api.ScheduleOptions;
+    #idempotencyOptions?: resemble_api.IdempotencyOptions;
+
+    constructor(
+      weakReference: any,
+      options: resemble_api.ScheduleOptions,
+      idempotencyOptions?: resemble_api.IdempotencyOptions,
+    ) {
+      this.#weakReference = weakReference;
+      this.#options = options;
+      this.#idempotencyOptions = idempotencyOptions
+    }
+
+    {% for method in service.methods %}
+    {% if not method.options.proto.constructor %}
+    async {{ method.proto.name | to_lower_camel }}(
+      context: resemble.WriterContext | resemble.TransactionContext,
+      partialRequest?: protobuf_es.PartialMessage<{{ method.input_type }}>
+    ): Promise<resemble_api.TaskEffect>;
+
+    async {{ method.proto.name | to_lower_camel }}(
+      context: resemble.WorkflowContext | resemble.ExternalContext,
+      partialRequest?: protobuf_es.PartialMessage<{{ method.input_type }}>
+    ): Promise<{ responsePromise: Promise<{{ method.output_type }}>; taskId: resemble_api.tasks_pb.TaskId }>;
+
+    async {{ method.proto.name | to_lower_camel }}(
+      context: resemble.WriterContext | resemble.TransactionContext | resemble.WorkflowContext | resemble.ExternalContext,
+      partialRequest?: protobuf_es.PartialMessage<{{ method.input_type }}>
+    ): Promise<resemble_api.TaskEffect | { responsePromise: Promise<{{ method.output_type }}>; taskId: resemble_api.tasks_pb.TaskId }> {
+      const json = await this.#weakReference.__externalServiceCall{{ method.proto.name }}(
+        context,
+        partialRequest,
+        {
+          schedule: this.#options,
+          ...(this.#idempotencyOptions && { idempotency: this.#idempotencyOptions }),
+        },
+      );
+
+      // TODO: assert("taskId" in json)
+
+      const taskId = resemble_api.tasks_pb.TaskId.fromJson(json["taskId"]);
+
+      if (
+        context instanceof resemble.WriterContext ||
+        context instanceof resemble.TransactionContext
+      ) {
+        return { taskId } as resemble_api.TaskEffect;
+      }
+
+      return {
+        responsePromise: new Promise(async (resolve, reject) => {
+          const json = JSON.parse(
+            await resemble_native.Future_await({
+              external: this.#weakReference.__external(context),
+              context: context.__external,
+              method: "{{ method.proto.name }}",
+              jsonTaskId: JSON.stringify(taskId),
+            })
+          );
+
+          if ("status" in json) {
+            reject(
+              {{ service.options.proto.state_name }}
+                .{{ method.proto.name }}Aborted
+                .fromStatus(resemble_api.Status.fromJson(json["status"]))
+            );
+          } else {
+            // TODO: assert("response" in json)
+            resolve({{ method.output_type }}.fromJson(json["response"]));
+          }
+        }),
+        taskId,
+      };
+    }
+
+    {% endif %}
+    {% endfor %}
+
+  };
+
+  public schedule(options?: resemble_api.ScheduleOptions) {
+    return new {{ service.options.proto.state_name }}.WeakReference._Schedule(
+      this,
+      options || { when: new Date() },
+    );
+  }
+}
+
+export class {{ service.options.proto.state_name }} {
+
+  static Interface = {{ service.options.proto.state_name }}Interface;
+  static State = {{ service.options.proto.state_name }}State;
+  static WeakReference = {{ service.options.proto.state_name }}WeakReference;
+
+  {% for method in service.methods %}
+
+  static {{ method.proto.name }}Aborted = {{ service.options.proto.state_name }}{{ method.proto.name }}Aborted;
+
+  {% if method.options.proto.kind in ['writer', 'transaction'] %}
+  static {{ method.proto.name }}Effects = class {
+    state: {{ service.options.proto.state_name }}Proto;
+    response: {{ method.output_type }};
+
+    constructor(effects: {
+      state: protobuf_es.PartialMessage<{{ service.options.proto.state_name }}Proto>;
+      response: protobuf_es.PartialMessage<{{ method.output_type }}>;
+    }) {
+      this.state = effects.state instanceof {{ service.options.proto.state_name }}Proto
+        ? effects.state
+        : new {{ service.options.proto.state_name }}Proto(effects.state);
+
+      this.response = effects.response instanceof {{ method.output_type }}
+        ? effects.response
+        : new {{ method.output_type }}(effects.response);
+    }
+  };
+
+  {% endif %}
+  {% endfor %}
+
+  public static lookup(id: string) {
+    return new {{ service.options.proto.state_name }}.WeakReference(id);
+  }
+
+  static _Construct = class {
+    #id?: string;
+
+    constructor(id?: string) {
+      this.#id = id;
+    }
+
+    {% for method in service.methods %}
+    {%- if method.options.proto.kind == 'workflow' %}
+    {# TODO(benh): support constructor "tasks" and workflows. #}
+    {%- else %}
+    {% if method.options.proto.constructor or (not service.proto.has_constructor and method.options.proto.kind in ['transaction', 'writer']) %}
+    public async {{ method.proto.name | to_lower_camel }}(
+      context: resemble.TransactionContext | resemble.WorkflowContext | resemble.ExternalContext,
+      partialRequest?: protobuf_es.PartialMessage<{{ method.input_type }}>
+    ): Promise<[
+      {{ service.options.proto.state_name }}.WeakReference,
+      {{ method.output_type }}
+    ]> {
+      if (this.#id === undefined) {
+        this.#id = uuid.v4();
+      }
+
+      const weakReference = {{ service.options.proto.state_name }}.lookup(this.#id);
+
+      const json = await weakReference.__externalServiceCall{{ method.proto.name }}(
+        context,
+        partialRequest,
+      );
+
+      // TODO: assert("response" in json)
+
+      return [
+        weakReference,
+        {{ method.output_type }}.fromJson(json["response"])
+      ];
+    }
+
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+
+    public idempotently(aliasOrOptions: string | resemble_api.IdempotencyOptions = {} as resemble_api.IdempotencyOptions) {
+      return new {{ service.options.proto.state_name }}._ConstructIdempotently(
+        typeof aliasOrOptions === "string" ? { alias: aliasOrOptions } : aliasOrOptions,
+        this.#id,
+      );
+    }
+  };
+
+  public static construct(options?: { id: string }) {
+    return new {{ service.options.proto.state_name }}._Construct(options?.id);
+  }
+
+  static _ConstructIdempotently = class {
+    #options: resemble_api.IdempotencyOptions;
+    #id?: string;
+
+    constructor(options: resemble_api.IdempotencyOptions, id?: string) {
+      this.#options = options;
+      this.#id = id;
+    }
+
+    {% for method in service.methods %}
+    {%- if method.options.proto.kind == 'workflow' %}
+    {# TODO(benh): support constructor "tasks" and workflows. #}
+    {%- else %}
+    {% if method.options.proto.constructor or (not service.proto.has_constructor and method.options.proto.kind in ['transaction', 'writer']) %}
+    public async {{ method.proto.name | to_lower_camel }}(
+      context: resemble.TransactionContext | resemble.WorkflowContext | resemble.ExternalContext,
+      partialRequest?: protobuf_es.PartialMessage<{{ method.input_type }}>
+    ): Promise<[
+      {{ service.options.proto.state_name }}.WeakReference,
+      {{ method.output_type }}
+    ]> {
+      if (this.#id === undefined) {
+        this.#id = await context.generateIdempotentStateId(
+          "{{ proto.package_name }}.{{ service.options.proto.state_name }}",
+          "{{ method.proto.name }}",
+          this.#options,
+        ) as string;
+      }
+
+      const weakReference = {{ service.options.proto.state_name }}.lookup(this.#id);
+
+      const json = await weakReference.__externalServiceCall{{ method.proto.name }}(
+        context,
+        partialRequest,
+        { idempotency: this.#options },
+      );
+
+      // TODO: assert("response" in json)
+
+      return [
+        weakReference,
+        {{ method.output_type }}.fromJson(json["response"])
+      ];
+    }
+
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+  };
+}
+
+{% for method in service.methods if method.options.proto.kind in ['writer', 'transaction'] %}
+export namespace {{ service.options.proto.state_name }} {
+  export type {{ method.proto.name }}Aborted = typeof {{ service.options.proto.state_name }}.{{ method.proto.name }}Aborted.prototype;
+  export type {{ method.proto.name }}Effects = typeof {{ service.options.proto.state_name }}.{{ method.proto.name }}Effects.prototype;
+}
+{% endfor %}
+
+export namespace {{ service.options.proto.state_name }} {
+  export type WeakReference = typeof {{ service.options.proto.state_name }}.WeakReference.prototype;
+  {# That State alias is responsible for allowing users use
+  {{ service.options.proto.state_name }}.State as a type #}
+  export type State = typeof {{ service.options.proto.state_name }}.State.prototype;
+}
+{% endfor %}
+{# End generated Service code #}
+
+{% endif %}
+{# END RESEMBLE SPEFICIC CODE #}
+
+export function importPys() {
+    {% if import_ids|length > 0 %}
+    {% for unique_import_id, _ in import_ids.items() %}
+    {{ unique_import_id }}importPys()
+    {% endfor %}
+    {% endif %}
+
+    resemble_native.importPy("{{ pb2_name }}", "{{ base64_gzip_pb2_py }}");
+    resemble_native.importPy("{{ pb2_grpc_name }}", "{{ base64_gzip_pb2_grpc_py }}");
+    {% if services | length > 0 %}
+    resemble_native.importPy("{{ rsm_name }}", "{{ base64_gzip_rsm_py }}");
+    {% endif %}
+}
+
+importPys()
