@@ -1,0 +1,142 @@
+\begin{table}[bt]
+
+
+((* if tmpl_data.test_regime == 'Enforcement' *))
+	((* set prop_title = "Proportion Enforced" *))
+((* else *))
+	((* set prop_title = "Proportion Cleared" *))
+((* endif *))
+((* set prop_title = prop_title|replace(" ", "\\\\") *))
+
+((* if tmpl_data.obs_merger_class_0 == 'All Markets' *))
+	((* set obs_merger_class_0 = "All Markets" *))
+((* else *))
+	((* set obs_merger_class_0 = "Markets with, ``" + tmpl_data.obs_merger_class_0 + "''" *))
+((* endif *))
+
+((* if tmpl_data.obs_summary_type == 'ByConcZone' *))
+	((* set hdrcol_align = "left" *))
+((* else *))
+	((* set hdrcol_align = "center" *))
+((* endif *))
+
+((* set obs_merger_class_1 = "Markets with, ``" + tmpl_data.obs_merger_class_1 + "''" *))
+
+
+
+	\centering
+	\caption{FTC Merger Investigations Data}\label{tbl:FTCInvData_\JINVAR{- tmpl_data.obs_summary_type }}
+	{\footnotesize
+        \JINVAR{ tmpl_data.obs_summary_type_title }  \\
+		Grouped by Entry Conditions and Reporting Period \\[0.5\baselineskip]
+    }
+	\begin{tikzpicture}[auto, font = \sffamily]
+        \matrix[
+            datatable,
+            nodes = {text width = 27pt,},
+            column 1/.style = {nodes = {
+                hdrtext,
+                text width=\JINVAR{ tmpl_data.hdrcol_width -}, fill=OBSHDRFill,
+                align=\JINVAR{ hdrcol_align -},
+                },},
+            record matrix dimensions,
+        ] (invres_rate_raw) {
+            \JINVAR{ tmpl_data.invdata_datstr -}
+        };
+        % Horizontal scoring for totals
+        \draw[color = OBSHDRFill, line width = 1pt]
+            ($(invres_rate_raw-\the\tnr-2.north west) + (- \JINVAR{ tmpl_data.hdrcol_width } - 6pt + 0.25\pgflinewidth, 0pt)$)
+            -- (invres_rate_raw-\the\tnr-\the\tnc.north east)
+        ;
+        % Vertical scoring for column groups
+        \draw[color = OBSHDRFill, line width = 1pt] (invres_rate_raw-1-3.north east) -- (invres_rate_raw-\the\tnr-3.south east);
+        \draw[color = OBSHDRFill, line width = 1pt] (invres_rate_raw-1-5.north east) -- (invres_rate_raw-\the\tnr-5.south east);
+        \draw[color = OBSHDRFill, line width = 1pt] (invres_rate_raw-1-7.north east) -- (invres_rate_raw-\the\tnr-7.south east);
+
+
+        %% Header column - row heads - description
+        \matrix[
+            hcol,
+            above right=0pt of invres_rate_raw.north west,
+            nodes = {
+                text width=\JINVAR{- tmpl_data.hdrcol_width -},
+                text depth=10pt,
+            },
+        ] (hdrcol_desc) {
+            \node[align = center,] { \JINVAR{- tmpl_data.hdrcol_desc_text } \\ }; \\
+        };
+
+        % Header row - column heads
+		\matrix[
+            hrow,
+			above right = 0 pt of hdrcol_desc.south east,
+			nodes = {
+                rotate = 90,
+                minimum height = 33pt,
+                text depth = 10pt,
+                align = left,
+            },  %
+        ] (hdrrow_raw) {
+            {Relative \\ Frequency} &
+			{\JINVAR{ prop_title }} &
+			{Relative \\ Frequency} &
+			{\JINVAR{ prop_title }} &
+			{Relative \\ Frequency} &
+			{\JINVAR{ prop_title }} &
+			{Relative \\ Frequency} &
+			{\JINVAR{ prop_title }} \\
+			};
+
+        %% Header row - columns description -- Markets 0 - period 1-2
+		\matrix[hrow, above right = 0pt of hdrrow_raw.north west, nodes = {minimum height = 12.5pt, text width = 59.6pt,},] (descrow_pds) {
+			\JINVAR{ tmpl_data.obs_periods_str } & \JINVAR{ tmpl_data.obs_periods_str } \\
+			\JINVAR{ tmpl_data.mkt_counts_str_class_0 } & \JINVAR{ tmpl_data.mkt_counts_str_class_1 } \\
+			};
+
+		% Header row - Market-1
+		\matrix[hrow, above right = 0pt of descrow_pds.north west, nodes = {minimum height = 12.5pt, text width = 124.8pt},] (descrow_mkts) {
+            \JINVAR{ obs_merger_class_0 } & \JINVAR{ obs_merger_class_1 } \\
+			};
+		% Header row - columns description
+		\matrix[hrow, above right = 0pt of descrow_mkts.north west, nodes = {minimum height = 12.5pt, text width = 255.2pt},] (descrow_obs) {
+			Observed Data \\
+			};
+
+		%% Vertical scoring delineating column groups
+		\draw[color = white, line width = 1pt] (descrow_pds-1-1.north east) -- (invres_rate_raw-1-3.north east);
+		\draw[color = white, line width = 1pt] (descrow_mkts-1-1.north east) -- (invres_rate_raw-1-5.north east);
+		\draw[color = white, line width = 1pt] (descrow_pds-1-3.north east) -- (invres_rate_raw-1-7.north east);
+
+        %% Fill along header
+		\draw[color = OBSHDRFill, fill = OBSHDRFill,]
+		(hdrcol_desc.north west |- descrow_obs.north west)
+		rectangle
+		(hdrcol_desc.north east)
+		;
+
+	\end{tikzpicture}
+
+    \setlist{nosep}
+    \vspace{\baselineskip}
+    {\raggedright\sffamily\tiny%
+    %
+    % NOTES:
+    % \begin{itemize}
+    %     \item Data for period, 2004--2011 calculated by subtracting reported figures for 1996--2003 from reported figures for 1996--2011
+    %     \item Ranges of $\Delta HHI$ are defined as half-open intervals with \(\Delta_L \leqslant \Delta HHI < \Delta_H\), except that \(2500 \text{ pts.} \leqslant \Delta HHI \leqslant 5000 \text{ pts.}\) in the closed interval [2500, 5000] pts.
+    % \end{itemize}
+
+    % SOURCES:
+    % \begin{itemize}
+    %     % \item \fullcite{FTCInvData2003}, Table~4.1 and Table~10.2
+    %     \item Fed. Trade Comm'n (2003), at note~\cref{fn:FTCInvData1996to2003}
+    %     \item Fed. Trade Comm'n (2011), at note~\cref{fn:FTCInvData1996to2011}
+    % \end{itemize}
+    \JINVAR{ tmpl_data.invdata_notestr }
+    \vspace{\baselineskip}
+    \JINVAR{ tmpl_data.invdata_sourcestr }
+    }
+    \vspace{\baselineskip}
+\end{table}
+
+
