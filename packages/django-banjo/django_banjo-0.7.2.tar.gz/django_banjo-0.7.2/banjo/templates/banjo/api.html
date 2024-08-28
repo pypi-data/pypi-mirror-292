@@ -1,0 +1,25 @@
+{% extends "banjo/base.html" %}
+
+{% block content %}
+<h1>API</h1>
+<p>View as <a href="{% url "api_json" %}">JSON</a></p>
+{% for route in routes %}
+  <h2><a href="{{ route.api_url }}">{{route.human_name}}</a></h2>
+  {% if route.method == "GET" %}
+    <p>GET URL: <a href="{{ route.url }}">{{route.url}}</a></p>
+  {% else %}
+    <p>POST URL: {{route.url}}</p>
+  {% endif %}
+  <p>{{route.description}}</p>
+  {% if route.arguments %}
+  <p>
+    Arguments:
+    <ul>
+    {% for name, type_ in route.arguments.items %}
+      <li>{{name}}: {{type_}}</li>
+    {% endfor %}
+    </ul>
+  </p>
+  {% endif %}
+{% endfor %}
+{% endblock %}
