@@ -1,0 +1,82 @@
+[build-system]
+requires = [
+    "setuptools>=64.0.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nirwals"
+version = "0.1.6"
+
+authors = [
+  { name="Ralf Kotulla", email="ralf.kotulla@gmail.com" },
+]
+description = "basic instrument signature removal for the NIRWALS instrument on the SALT telescope"
+readme = "README.md"
+license = { text = "BSD-3-Clause" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "astropy",
+    "matplotlib",
+    "multiparlog==1.0.9",
+    "numpy",
+    "pandas",
+    "scipy",
+    "scikit-learn",
+    "pyvo",
+    "watchdog",
+    "sysv_ipc"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/SALT-NIRWALS/nirwals"
+"Bug Tracker" = "https://github.com/SALT-NIRWALS/nirwals/issues"
+
+[project.scripts]
+nirwals_reduce = "nirwals.nirwals_reduce:main"
+nirwals_fit_nonlinearity = "nirwals.nirwals_fit_nonlinearity:main"
+nirwals_provenance = "nirwals.provenance:main"
+nirwals_watchdog = "nirwals.nirwals_watchdog:main"
+
+# 'src/nirwals_reduce.py'
+##     src/nirwals_makedark.py
+##     src/nirwals_makemasterdark.py
+#    nirwals_fit_nonlinearity = 'src/nirwals_fit_nonlinearity.py'
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ['src']
+
+[tool.setuptools.package-data]
+"nirwals.data" = ["*.csv"]
+
+#[tool.poetry]
+#name='nirwals'
+#version = "0.0.0"
+#description = "basic instrument signature removal for the NIRWALS instrument on the SALT telescope"
+#readme = "README.md"
+#authors = [ name="Ralf Kotulla", email="ralf.kotulla@gmail.com" }
+#license = "BSD-3-Clause"
+#classifiers = [
+#    "Programming Language :: Python :: 3",
+#    "License :: OSI Approved :: MIT License",
+#    "Operating System :: OS Independent",
+#]
+#
+#
+#[tool.poetry-dynamic-versioning]
+#enable = true
+#vcs = "git"
+##style = "semver"
+#style = 'pep440'
+#
+
+
