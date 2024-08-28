@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "dbt-opiner"
+version = "0.2.0"
+description = "A tool to keep dbt projects on rails"
+authors=["Rodrigo Loredo <loredo.rod@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+
+[tool.poetry.scripts]
+dbt-opiner = "dbt_opiner.cli:main"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+click = ">=8.1"
+loguru = "^0.7.2"
+pyyaml = "^6.0.1"
+setuptools = "^72.1.0"
+sqlglot = "^25.10.0"
+pyfiglet = "^1.0.2"
+requests = "^2.32.3"
+
+[tool.poetry.group.dev.dependencies]
+pytest-cov = "^4.1"
+pre-commit = "^2"
+pytest = "^7.4"
+pytest-xdist = "^3.6.1"
+tox = "^4.18.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "--ignore=tests/demo_multi_project"
+
+[tool.tox]
+legacy_tox_ini = """
+  [tox]
+  envlist = py310, py311, py312
+
+  [testenv]
+  deps = poetry
+  commands_pre =
+    poetry lock --quiet
+    poetry install --no-root --quiet
+  commands = poetry run pytest
+"""
