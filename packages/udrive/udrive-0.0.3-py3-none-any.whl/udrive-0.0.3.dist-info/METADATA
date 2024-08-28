@@ -1,0 +1,102 @@
+Metadata-Version: 2.1
+Name: udrive
+Version: 0.0.3
+Summary: Python module for mDrive boards to control brushless motors version 0.0.3
+Author: UNIT ELECTRONICS
+Author-email: cesar.bautista@uelectronics.com
+License: MIT License
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: appdirs ==1.4.4
+Requires-Dist: blinker ==1.8.2
+Requires-Dist: click ==8.1.7
+Requires-Dist: colorama ==0.4.6
+Requires-Dist: itsdangerous ==2.2.0
+Requires-Dist: Jinja2 ==3.1.4
+Requires-Dist: MarkupSafe ==2.1.5
+Requires-Dist: pyserial ==3.5
+Requires-Dist: pyusb ==1.2.1
+Requires-Dist: setuptools ==72.1.0
+Requires-Dist: Werkzeug ==3.0.3
+
+# uDrive Module Library
+
+This library offers a collection of functions for managing mDrive module boards, specifically for controlling brushless motors.
+
+### Features
+
+- version 0.0.3
+- Compatible with mDrive board. 
+- Python 3.11, 3.12
+
+For system Windows requirements, you need to install the following packages:
+
+```bash
+pip instal pywin32
+pip install pyusb
+```
+
+## Installation
+
+To install the library, you can use the following command:
+
+```bash
+pip install udrive
+```
+
+## Usage
+
+To use the library, you can import it as follows:
+```python 
+import udrive 
+
+
+device = udrive.find_any(path="usb", timeout=30)
+
+print("device:", device)
+
+```
+
+When you run the code, you will see the following output:
+
+```bash
+udrive: ufibre imported
+device: vbus_voltage = 23.183788299560547 (float)
+ibus = 0.00032408745028078556 (float)
+ibus_report_filter_k = 1.0 (float)
+serial_number = 206E35753056 (int)
+hw_version_major = 3 (int)
+hw_version_minor = 5 (int)
+hw_version_variant = 48 (int)
+fw_version_major = 0 (int)
+fw_version_minor = 0 (int)
+fw_version_revision = 0 (int)
+fw_version_unreleased = 1 (int)
+brake_resistor_armed = True (bool)
+brake_resistor_saturated = False (bool)
+system_stats:
+  uptime = 561893 (int)
+  min_heap_space = 41560 (int)
+  min_stack_space_axis0 = 1612 (int)
+  min_stack_space_axis1 = 1724 (int)
+  min_stack_space_comms = 3880 (int)
+  min_stack_space_usb = 3740 (int)
+  min_stack_space_uart = 3964 (int)
+  min_stack_space_can = 836 (int)
+  min_stack_space_usb_irq = 1828 (int)
+  min_stack_space_startup = 1668 (int)
+  stack_usage_axis0 = 436 (int)
+  stack_usage_axis1 = 324 (int)
+  stack_usage_comms = 216 (int)
+  stack_usage_usb = 356 (int)
+  stack_usage_uart = 132 (int)
+  stack_usage_usb_irq = 220 (int)
+  stack_usage_startup = 380 (int)
+  stack_usage_can = 188 (int)
+  usb: ...
+  i2c: ...
+```
+
+## Modify the library
+
+Delete requirements library pywin32.
