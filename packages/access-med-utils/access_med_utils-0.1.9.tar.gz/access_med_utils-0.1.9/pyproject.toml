@@ -1,0 +1,36 @@
+[project]
+name = "access_med_utils"
+authors = [
+    { name = "ACCESS-NRI" },
+]
+description = "ACCESS MED Utilities"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "APACHE-2.0"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["argparse", "pyyaml", "dask", "xarray",  "netcdf4", "cdms2"]
+dynamic = ["version"]
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+  "setuptools >= 61.0.0",
+  "versioneer[toml]",
+]
+
+[project.scripts]
+ilamb-tree-generator = "access_med_utils.ilamb:tree_generator"
+check-hackathon = "access_med_utils.hackathon:check_hackathon"
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "access_med_utils/_version.py"
+versionfile_build = "access_med_utils/_version.py"
+tag_prefix = "v"
+parentdir_prefix = "access_med_utils-"
