@@ -1,0 +1,8 @@
+[hatch]
+vcs = gitv.plugins.hatch
+
+[poetry.plugin]
+vcs = gitv.plugins.poetry:GitVersionPlugin
+
+[setuptools.finalize_distribution_options]
+vcs = gitv.plugins.setup:configure

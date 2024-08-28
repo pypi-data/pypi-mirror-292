@@ -1,0 +1,68 @@
+Metadata-Version: 2.1
+Name: gitv
+Version: 2.2.1
+Summary: A biased Git versioning tool for Python project.
+Author: figroc
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: hatch
+Requires-Dist: hatch ; extra == 'hatch'
+Provides-Extra: poetry
+Requires-Dist: poetry ; extra == 'poetry'
+
+# Git Versioning for Python Project
+
+A biased git versioning tool. It versions as following:
+
+- On `v*` tag: version as tag if not `sticky`
+
+  i.e. `0.1.0`
+
+- On `main` or `master` branch: version as *rc*
+
+  i.e. `0.1.0-rc{BUILD_NUMBER}+{GIT_COMMIT_SHORT_SHA}`
+
+- Others: version as *dev*
+
+  i.e. `0.1.0-dev{BUILD_NUMBER}+{GIT_COMMIT_SHORT_SHA}`
+
+If env `VERSIONING_GIT_BRANCH` is set, it will be used instead of `git branch --current`.
+
+## Usage
+
+It currently support *setuptools*, *hatch* and *poetry*.
+
+### setuptools
+
+```python
+setuptools.setup(
+  version="0.1.0",
+  setup_requires=["gitv"]
+)
+  ```
+
+### hatch
+
+```toml
+[build-system]
+requires = ["hatchling", "gitv"]
+
+[project]
+dynamic = ["version"]
+
+[tool.hatch.version]
+version = "0.1.0"
+source = "vcs"
+```
+
+### poetry
+
+```toml
+[build-system]
+requires = ["poetry-core", "gitv"]
+
+[tool.poetry]
+version = "0.1.0"
+```
+
