@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "checkmate3"
+version = "0.2.1"
+description = "A meta-code checker written in Python."
+readme = "README.md"
+license = { text = "AGPL-3.0" }
+
+
+classifiers = [
+  "Intended Audience :: Developers",
+  "Programming Language :: Python",
+  "Topic :: Software Development :: Quality Assurance"
+]
+dependencies = [
+  "blitzdb3_ce",
+  "pylint",
+  "pyflakes",
+  "pep8",
+  "chardet",
+  "pyyaml",
+  "sqlalchemy"
+]
+
+
