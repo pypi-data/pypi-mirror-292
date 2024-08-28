@@ -1,0 +1,47 @@
+[build-system]
+requires = [
+    'setuptools',
+]
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'ommlx'
+authors = [
+    {name = 'wrmsr'},
+]
+urls = {source = 'https://github.com/wrmsr/omlish'}
+license = {text = 'BSD-3-Clause'}
+requires-python = '>=3.12'
+version = '0.0.0.dev10'
+classifiers = [
+    'License :: OSI Approved :: BSD License',
+    'Development Status :: 2 - Pre-Alpha',
+    'Intended Audience :: Developers',
+    'Operating System :: OS Independent',
+    'Operating System :: POSIX',
+]
+description = 'ommlx'
+dependencies = [
+    'omlish == 0.0.0.dev10',
+]
+
+[project.optional-dependencies]
+all = [
+    'torch >= 2.4',
+]
+torch = [
+    'torch >= 2.4',
+]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+include = [
+    'ommlx',
+    'ommlx.*',
+]
+exclude = [
+    '*.tests',
+    '*.tests.*',
+]
