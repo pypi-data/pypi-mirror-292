@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: congrad
+Version: 0.0.1
+Summary: Generic conjugate gradient solver that works with your favorite backend
+Author-email: "P. Michael Kielstra" <pmkielstra@math.berkeley.edu>
+Project-URL: Homepage, https://github.com/PMKielstra/PyConGrad
+Project-URL: Issues, https://github.com/PMKielstra/PyConGrad/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: tqdm
+Provides-Extra: cupy
+Requires-Dist: cupy ; extra == 'cupy'
+Provides-Extra: numpy
+Requires-Dist: numpy ; extra == 'numpy'
+Provides-Extra: torch
+Requires-Dist: torch ; extra == 'torch'
+
+# PyConGrad
+A somewhat optimized generic batch conjugate gradient algorithm that works with PyTorch, NumPy, CuPy, and whatever other backend you like as long as you code it up.
+
+Heavily inspired by [sbarratt/torch_cg](https://github.com/sbarratt/torch_cg) and uses similar function signatures.
+
+For more information, documentation, and detailed instructions, see the `examples` folder.  In particular, notebook 2 in that folder discusses how to exactly duplicate the behavior of the original torch_cg.
