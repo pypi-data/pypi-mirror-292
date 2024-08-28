@@ -1,0 +1,31 @@
+[project]
+name = "docstring2argparse"
+version = "0.1.2"
+description = "A simple library to convert docstrings to argparse command line interface"
+readme = "README.md"
+authors = [
+  { name="Lingfei Wang", email="Lingfei.Wang.github@outlook.com" },
+  { name="Nikolaos Trasanidis", email="ntrasanidis@mgh.harvard.edu" },
+  { name="Luca Pinello", email="lpinello@mgh.harvard.edu" },
+]
+requires-python = ">=3"
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"License :: OSI Approved :: GNU Affero General Public License v3",
+	"Intended Audience :: Developers",
+	"Operating System :: OS Independent",
+	"Programming Language :: Python :: 3"
+]
+dependencies = [
+	"docutils"
+]
+
+[project.urls]
+Homepage = "https://github.com/lingfeiwang/docstring2argparse"
+Issues = "https://github.com/lingfeiwang/docstring2argparse/issues"
+Repository = "https://github.com/lingfeiwang/docstring2argparse.git"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
