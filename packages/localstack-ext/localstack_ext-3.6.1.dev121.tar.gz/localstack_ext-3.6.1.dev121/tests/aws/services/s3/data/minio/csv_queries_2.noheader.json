@@ -1,0 +1,27 @@
+[
+   {
+    "id": "select-non_exiting_values",
+    "query": "SELECT s._1 as \"first\", s._100 from s3object s LIMIT 1",
+    "expected": "{\"first\":\"1\",\"_100\":\"\"}"
+  },
+  {
+    "id": "select-is_null_noresults",
+    "query": "select _2 from S3object where _2 IS NULL",
+    "expected": ""
+  },
+  {
+    "id": "select-is_null_results",
+    "query": "select s._2 from S3Object s WHERE s._100 = ''",
+    "expected": "{\"_2\":\"2010-01-01T\"}\n{\"_2\":\"2017-01-02T03:04Z\"}"
+  },
+  {
+    "id": "select-is_not_null_results",
+    "query": "select _2 from S3object where _2 IS NOT NULL",
+    "expected": "{\"_2\":\"2010-01-01T\"}\n{\"_2\":\"2017-01-02T03:04Z\"}"
+  },
+  {
+    "id": "select-is_not_null_noresults",
+    "query": "select _2 from S3object WHERE _100 != ''",
+    "expected": ""
+  }
+]

@@ -1,0 +1,585 @@
+{
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_job": {
+    "recorded-date": "08-09-2022, 14:03:03",
+    "recorded-content": {
+      "stack_outputs": {
+        "JobRef": "<job:1>"
+      },
+      "stack_resource_descriptions": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "MyJob",
+            "PhysicalResourceId": "<job:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::Glue::Job",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "MyJobRole",
+            "PhysicalResourceId": "<role:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IAM::Role",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "job": {
+        "Job": {
+          "AllocatedCapacity": 10,
+          "Command": {
+            "Name": "glueetl",
+            "PythonVersion": "2",
+            "ScriptLocation": "s3://empty-bucket/script"
+          },
+          "CreatedOn": "datetime",
+          "ExecutionProperty": {
+            "MaxConcurrentRuns": 1
+          },
+          "GlueVersion": "0.9",
+          "LastModifiedOn": "datetime",
+          "MaxCapacity": 10.0,
+          "MaxRetries": 0,
+          "Name": "<job:1>",
+          "Role": "<role:1>",
+          "Timeout": 2880
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_database": {
+    "recorded-date": "05-09-2022, 15:03:40",
+    "recorded-content": {
+      "stack_outputs": {
+        "DatabaseRef": "<database-name:1>"
+      },
+      "stack_resource_descriptions": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "LogicalResourceId": "GlueDatabase",
+          "PhysicalResourceId": "<database-name:1>",
+          "ResourceType": "AWS::Glue::Database",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "database": {
+        "Database": {
+          "CatalogId": "111111111111",
+          "CreateTableDefaultPermissions": [
+            {
+              "Permissions": [
+                "ALL"
+              ],
+              "Principal": {
+                "DataLakePrincipalIdentifier": "IAM_ALLOWED_PRINCIPALS"
+              }
+            }
+          ],
+          "CreateTime": "datetime",
+          "Description": "Database to hold tables for flights data",
+          "LocationUri": "s3://crawler-public-<region>/flight/2016/csv/",
+          "Name": "<database-name:1>",
+          "Parameters": {}
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_classifier": {
+    "recorded-date": "07-09-2022, 09:03:39",
+    "recorded-content": {
+      "stack_outputs": {
+        "ClasifierRef": "<classifier-name:1>"
+      },
+      "stack_resource_descriptions": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "LogicalResourceId": "Classifier",
+          "PhysicalResourceId": "<classifier-name:1>",
+          "ResourceType": "AWS::Glue::Classifier",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "classifier": {
+        "GrokClassifier": {
+          "Classification": "greedy",
+          "CreationTime": "datetime",
+          "GrokPattern": "%{GREEDYDATA:message}",
+          "LastUpdated": "datetime",
+          "Name": "<classifier-name:1>",
+          "Version": 1
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_table": {
+    "recorded-date": "21-05-2024, 13:28:30",
+    "recorded-content": {
+      "stack_outputs": {
+        "CatalogId": "111111111111",
+        "TableRef": "<table-name:1>"
+      },
+      "stack_resource_descriptions": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "LogicalResourceId": "GlueDatabase",
+          "PhysicalResourceId": "<database-name:1>",
+          "ResourceType": "AWS::Glue::Database",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "LogicalResourceId": "GlueTable",
+          "PhysicalResourceId": "<table-name:1>",
+          "ResourceType": "AWS::Glue::Table",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "table": {
+        "CatalogId": "111111111111",
+        "CreateTime": "datetime",
+        "CreatedBy": "arn:<partition>:iam::111111111111:user/<resource:2>",
+        "DatabaseName": "<database-name:1>",
+        "IsMultiDialectView": false,
+        "IsRegisteredWithLakeFormation": false,
+        "Name": "<table-name:1>",
+        "Retention": 0,
+        "TableType": "EXTERNAL_TABLE",
+        "UpdateTime": "datetime",
+        "VersionId": "0"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_workflow": {
+    "recorded-date": "07-09-2022, 11:43:12",
+    "recorded-content": {
+      "stack_outputs": {
+        "WorkflowRef": "<workflow-name:1>"
+      },
+      "stack_resource_descriptions": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "LogicalResourceId": "Workflow",
+          "PhysicalResourceId": "<workflow-name:1>",
+          "ResourceType": "AWS::Glue::Workflow",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "workflow": {
+        "CreatedOn": "datetime",
+        "LastModifiedOn": "datetime",
+        "Name": "<workflow-name:1>"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_trigger": {
+    "recorded-date": "07-09-2022, 12:21:49",
+    "recorded-content": {
+      "stack_outputs": {
+        "TriggerRef": "<trigger-name:1>"
+      },
+      "stack_resource_description": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "LogicalResourceId": "Trigger",
+          "PhysicalResourceId": "<trigger-name:1>",
+          "ResourceType": "AWS::Glue::Trigger",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "trigger": {
+        "Actions": [
+          {
+            "Arguments": {
+              "--job-bookmark-option": "job-bookmark-enable"
+            },
+            "JobName": "prod-job2"
+          }
+        ],
+        "Name": "<trigger-name:1>",
+        "State": "CREATED",
+        "Type": "ON_DEMAND"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_registry": {
+    "recorded-date": "06-05-2024, 06:35:52",
+    "recorded-content": {
+      "stack_outputs": {
+        "RegistryRef": "arn:<partition>:glue:<region>:111111111111:registry/<resource:1>"
+      },
+      "stack_resource_description": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+          "LogicalResourceId": "MyRegistry",
+          "PhysicalResourceId": "arn:<partition>:glue:<region>:111111111111:registry/<resource:1>",
+          "ResourceType": "AWS::Glue::Registry",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "registry": {
+        "CreatedTime": "date",
+        "Description": "My Glue Registry",
+        "RegistryArn": "arn:<partition>:glue:<region>:111111111111:registry/<resource:1>",
+        "RegistryName": "<resource:1>",
+        "Status": "AVAILABLE",
+        "UpdatedTime": "date",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_schema": {
+    "recorded-date": "06-05-2024, 12:01:21",
+    "recorded-content": {
+      "stack_outputs": {
+        "RegistryRef": "arn:<partition>:glue:<region>:111111111111:registry/<resource:1>",
+        "SchemaRef": "arn:<partition>:glue:<region>:111111111111:schema/<resource:1>/<resource:2>",
+        "SchemaVersionRef": "<uuid:1>"
+      },
+      "stack_resource_description": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MyRegistry",
+          "PhysicalResourceId": "arn:<partition>:glue:<region>:111111111111:registry/<resource:1>",
+          "ResourceType": "AWS::Glue::Registry",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MySchema",
+          "PhysicalResourceId": "arn:<partition>:glue:<region>:111111111111:schema/<resource:1>/<resource:2>",
+          "ResourceType": "AWS::Glue::Schema",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MySchemaVersion",
+          "PhysicalResourceId": "<uuid:1>",
+          "ResourceType": "AWS::Glue::SchemaVersion",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MySchemaVersionMetadata",
+          "PhysicalResourceId": "<uuid:1>|foo|bar",
+          "ResourceType": "AWS::Glue::SchemaVersionMetadata",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "schema": {
+        "Compatibility": "BACKWARD",
+        "CreatedTime": "date",
+        "DataFormat": "AVRO",
+        "Description": "My Glue Schema",
+        "LatestSchemaVersion": 2,
+        "NextSchemaVersion": 3,
+        "RegistryArn": "arn:<partition>:glue:<region>:111111111111:registry/<resource:1>",
+        "RegistryName": "<resource:1>",
+        "SchemaArn": "arn:<partition>:glue:<region>:111111111111:schema/<resource:1>/<resource:2>",
+        "SchemaCheckpoint": 1,
+        "SchemaName": "<resource:2>",
+        "SchemaStatus": "AVAILABLE",
+        "UpdatedTime": "date",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_schema_version": {
+    "recorded-date": "06-05-2024, 12:02:31",
+    "recorded-content": {
+      "stack_outputs": {
+        "RegistryRef": "arn:<partition>:glue:<region>:111111111111:registry/<resource:1>",
+        "SchemaRef": "arn:<partition>:glue:<region>:111111111111:schema/<resource:1>/<resource:2>",
+        "SchemaVersionRef": "<uuid:1>"
+      },
+      "stack_resource_description": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MyRegistry",
+          "PhysicalResourceId": "arn:<partition>:glue:<region>:111111111111:registry/<resource:1>",
+          "ResourceType": "AWS::Glue::Registry",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MySchema",
+          "PhysicalResourceId": "arn:<partition>:glue:<region>:111111111111:schema/<resource:1>/<resource:2>",
+          "ResourceType": "AWS::Glue::Schema",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MySchemaVersion",
+          "PhysicalResourceId": "<uuid:1>",
+          "ResourceType": "AWS::Glue::SchemaVersion",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MySchemaVersionMetadata",
+          "PhysicalResourceId": "<uuid:1>|foo|bar",
+          "ResourceType": "AWS::Glue::SchemaVersionMetadata",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "schema_version": {
+        "CreatedTime": "date",
+        "DataFormat": "AVRO",
+        "SchemaArn": "arn:<partition>:glue:<region>:111111111111:schema/<resource:1>/<resource:2>",
+        "SchemaDefinition": {
+          "type": "record",
+          "name": "Person",
+          "namespace": "com.amazonaws.glue",
+          "fields": [
+            {
+              "name": "firstName",
+              "type": "string"
+            },
+            {
+              "name": "lastName",
+              "type": "string"
+            },
+            {
+              "name": "age",
+              "type": "int"
+            },
+            {
+              "name": "middleName",
+              "type": "string",
+              "default": "N/A"
+            }
+          ]
+        },
+        "SchemaVersionId": "<uuid:1>",
+        "Status": "AVAILABLE",
+        "VersionNumber": 2,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_schema_version_metadata": {
+    "recorded-date": "06-05-2024, 12:47:20",
+    "recorded-content": {
+      "stack_outputs": {
+        "RegistryRef": "arn:<partition>:glue:<region>:111111111111:registry/<resource:1>",
+        "SchemaRef": "arn:<partition>:glue:<region>:111111111111:schema/<resource:1>/<resource:2>",
+        "SchemaVersionRef": "<uuid:1>"
+      },
+      "stack_resource_description": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MyRegistry",
+          "PhysicalResourceId": "arn:<partition>:glue:<region>:111111111111:registry/<resource:1>",
+          "ResourceType": "AWS::Glue::Registry",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MySchema",
+          "PhysicalResourceId": "arn:<partition>:glue:<region>:111111111111:schema/<resource:1>/<resource:2>",
+          "ResourceType": "AWS::Glue::Schema",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MySchemaVersion",
+          "PhysicalResourceId": "<uuid:1>",
+          "ResourceType": "AWS::Glue::SchemaVersion",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:3>",
+          "LogicalResourceId": "MySchemaVersionMetadata",
+          "PhysicalResourceId": "<uuid:1>|foo|bar",
+          "ResourceType": "AWS::Glue::SchemaVersionMetadata",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "schema_version_metadata": {
+        "MetadataInfoMap": {
+          "foo": {
+            "CreatedTime": "date",
+            "MetadataValue": "bar",
+            "OtherMetadataValueList": []
+          }
+        },
+        "SchemaVersionId": "<uuid:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_glue.py::test_connection": {
+    "recorded-date": "03-05-2024, 10:14:36",
+    "recorded-content": {
+      "stack_outputs": {
+        "ConnectionRef": "<connection-name:1>"
+      },
+      "stack_resource_description": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "LogicalResourceId": "MyConnection",
+          "PhysicalResourceId": "<connection-name:1>",
+          "ResourceType": "AWS::Glue::Connection",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "connection": {
+        "Connection": {
+          "ConnectionProperties": {
+            "JDBC_CONNECTION_URL": "jdbc:mysql://example.com:3306/mydb",
+            "PASSWORD": "mypassword",
+            "USERNAME": "myusername"
+          },
+          "ConnectionType": "JDBC",
+          "CreationTime": "datetime",
+          "Description": "My test connection",
+          "LastUpdatedBy": "user/cross-acccount",
+          "LastUpdatedTime": "datetime",
+          "Name": "<connection-name:1>",
+          "PhysicalConnectionRequirements": {
+            "SecurityGroupIdList": [
+              "sg-1234567890abcdef0"
+            ],
+            "SubnetId": "subnet-1234567890abcdef0"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

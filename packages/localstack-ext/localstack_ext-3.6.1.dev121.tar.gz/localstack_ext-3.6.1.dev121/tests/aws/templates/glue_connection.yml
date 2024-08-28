@@ -1,0 +1,31 @@
+Description: "AWS Glue Connection Test"
+
+Parameters:
+  ConnectionName:
+    Type: String
+  SubnetId:
+    Type: String
+  SecurityGroupId:
+    Type: String
+
+Resources:
+  MyConnection:
+    Type: AWS::Glue::Connection
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      ConnectionInput:
+        Name: !Ref ConnectionName
+        ConnectionType: JDBC
+        ConnectionProperties:
+          USERNAME: myusername
+          PASSWORD: mypassword
+          JDBC_CONNECTION_URL: "jdbc:mysql://example.com:3306/mydb"
+        PhysicalConnectionRequirements:
+          SubnetId: !Ref SubnetId
+          SecurityGroupIdList:
+            - !Ref SecurityGroupId
+        Description: "My test connection"
+
+Outputs:
+  ConnectionRef:
+    Value: !Ref MyConnection

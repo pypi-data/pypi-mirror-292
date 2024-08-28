@@ -1,0 +1,626 @@
+{
+  "tests/aws/services/kafka/test_kafka.py::TestKafka::test_cluster_v2_lifecycle": {
+    "recorded-date": "31-10-2023, 22:02:29",
+    "recorded-content": {
+      "create-cluster-v2-result": {
+        "ClusterArn": "arn:<partition>:kafka:<region>:111111111111:cluster/<cluster-name:1>/<uuid>-1",
+        "ClusterName": "<cluster-name:1>",
+        "ClusterType": "PROVISIONED",
+        "State": "CREATING",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-clusters-v2-result-before-ready": [
+        {
+          "ClusterType": "PROVISIONED",
+          "ClusterArn": "arn:<partition>:kafka:<region>:111111111111:cluster/<cluster-name:1>/<uuid>-1",
+          "ClusterName": "<cluster-name:1>",
+          "CreationTime": "datetime",
+          "CurrentVersion": "KTVPDKIKX0DER",
+          "State": "CREATING",
+          "Tags": {},
+          "Provisioned": {
+            "BrokerNodeGroupInfo": {
+              "BrokerAZDistribution": "DEFAULT",
+              "ClientSubnets": "client-subnets",
+              "InstanceType": "kafka.m5.large",
+              "SecurityGroups": "security-groups",
+              "StorageInfo": {
+                "EbsStorageInfo": {
+                  "VolumeSize": 1000
+                }
+              },
+              "ConnectivityInfo": {
+                "PublicAccess": {
+                  "Type": "DISABLED"
+                },
+                "VpcConnectivity": {
+                  "ClientAuthentication": {
+                    "Sasl": {
+                      "Scram": {
+                        "Enabled": false
+                      },
+                      "Iam": {
+                        "Enabled": false
+                      }
+                    },
+                    "Tls": {
+                      "Enabled": false
+                    }
+                  }
+                }
+              }
+            },
+            "CurrentBrokerSoftwareInfo": {
+              "KafkaVersion": "3.3.1"
+            },
+            "EncryptionInfo": {
+              "EncryptionAtRest": {
+                "DataVolumeKMSKeyId": "arn:<partition>:kms:<region>:111111111111:key/<uuid>"
+              },
+              "EncryptionInTransit": {
+                "ClientBroker": "TLS",
+                "InCluster": true
+              }
+            },
+            "EnhancedMonitoring": "DEFAULT",
+            "OpenMonitoring": {
+              "Prometheus": {
+                "JmxExporter": {
+                  "EnabledInBroker": false
+                },
+                "NodeExporter": {
+                  "EnabledInBroker": false
+                }
+              }
+            },
+            "NumberOfBrokerNodes": 2,
+            "StorageMode": "LOCAL"
+          }
+        }
+      ],
+      "list-clusters-result-before-ready": [
+        {
+          "BrokerNodeGroupInfo": {
+            "BrokerAZDistribution": "DEFAULT",
+            "ClientSubnets": "client-subnets",
+            "InstanceType": "kafka.m5.large",
+            "SecurityGroups": "security-groups",
+            "StorageInfo": {
+              "EbsStorageInfo": {
+                "VolumeSize": 1000
+              }
+            },
+            "ConnectivityInfo": {
+              "PublicAccess": {
+                "Type": "DISABLED"
+              },
+              "VpcConnectivity": {
+                "ClientAuthentication": {
+                  "Sasl": {
+                    "Scram": {
+                      "Enabled": false
+                    },
+                    "Iam": {
+                      "Enabled": false
+                    }
+                  },
+                  "Tls": {
+                    "Enabled": false
+                  }
+                }
+              }
+            }
+          },
+          "ClusterArn": "arn:<partition>:kafka:<region>:111111111111:cluster/<cluster-name:1>/<uuid>-1",
+          "ClusterName": "<cluster-name:1>",
+          "CreationTime": "datetime",
+          "CurrentBrokerSoftwareInfo": {
+            "KafkaVersion": "3.3.1"
+          },
+          "CurrentVersion": "KTVPDKIKX0DER",
+          "EncryptionInfo": {
+            "EncryptionAtRest": {
+              "DataVolumeKMSKeyId": "arn:<partition>:kms:<region>:111111111111:key/<uuid>"
+            },
+            "EncryptionInTransit": {
+              "ClientBroker": "TLS",
+              "InCluster": true
+            }
+          },
+          "EnhancedMonitoring": "DEFAULT",
+          "OpenMonitoring": {
+            "Prometheus": {
+              "JmxExporter": {
+                "EnabledInBroker": false
+              },
+              "NodeExporter": {
+                "EnabledInBroker": false
+              }
+            }
+          },
+          "NumberOfBrokerNodes": 2,
+          "State": "CREATING",
+          "Tags": {},
+          "StorageMode": "LOCAL"
+        }
+      ],
+      "describe-cluster-v2-result-before-ready": {
+        "ClusterInfo": {
+          "ClusterArn": "arn:<partition>:kafka:<region>:111111111111:cluster/<cluster-name:1>/<uuid>-1",
+          "ClusterName": "<cluster-name:1>",
+          "ClusterType": "PROVISIONED",
+          "CreationTime": "datetime",
+          "CurrentVersion": "KTVPDKIKX0DER",
+          "Provisioned": {
+            "BrokerNodeGroupInfo": {
+              "BrokerAZDistribution": "DEFAULT",
+              "ClientSubnets": "client-subnets",
+              "ConnectivityInfo": {
+                "PublicAccess": {
+                  "Type": "DISABLED"
+                },
+                "VpcConnectivity": {
+                  "ClientAuthentication": {
+                    "Sasl": {
+                      "Iam": {
+                        "Enabled": false
+                      },
+                      "Scram": {
+                        "Enabled": false
+                      }
+                    },
+                    "Tls": {
+                      "Enabled": false
+                    }
+                  }
+                }
+              },
+              "InstanceType": "kafka.m5.large",
+              "SecurityGroups": "security-groups",
+              "StorageInfo": {
+                "EbsStorageInfo": {
+                  "VolumeSize": 1000
+                }
+              }
+            },
+            "CurrentBrokerSoftwareInfo": {
+              "KafkaVersion": "3.3.1"
+            },
+            "EncryptionInfo": {
+              "EncryptionAtRest": {
+                "DataVolumeKMSKeyId": "arn:<partition>:kms:<region>:111111111111:key/<uuid>"
+              },
+              "EncryptionInTransit": {
+                "ClientBroker": "TLS",
+                "InCluster": true
+              }
+            },
+            "EnhancedMonitoring": "DEFAULT",
+            "NumberOfBrokerNodes": 2,
+            "OpenMonitoring": {
+              "Prometheus": {
+                "JmxExporter": {
+                  "EnabledInBroker": false
+                },
+                "NodeExporter": {
+                  "EnabledInBroker": false
+                }
+              }
+            },
+            "StorageMode": "LOCAL"
+          },
+          "State": "CREATING",
+          "Tags": {}
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-cluster-result-before-ready": {
+        "ClusterInfo": {
+          "BrokerNodeGroupInfo": {
+            "BrokerAZDistribution": "DEFAULT",
+            "ClientSubnets": "client-subnets",
+            "ConnectivityInfo": {
+              "PublicAccess": {
+                "Type": "DISABLED"
+              },
+              "VpcConnectivity": {
+                "ClientAuthentication": {
+                  "Sasl": {
+                    "Iam": {
+                      "Enabled": false
+                    },
+                    "Scram": {
+                      "Enabled": false
+                    }
+                  },
+                  "Tls": {
+                    "Enabled": false
+                  }
+                }
+              }
+            },
+            "InstanceType": "kafka.m5.large",
+            "SecurityGroups": "security-groups",
+            "StorageInfo": {
+              "EbsStorageInfo": {
+                "VolumeSize": 1000
+              }
+            }
+          },
+          "ClusterArn": "arn:<partition>:kafka:<region>:111111111111:cluster/<cluster-name:1>/<uuid>-1",
+          "ClusterName": "<cluster-name:1>",
+          "CreationTime": "datetime",
+          "CurrentBrokerSoftwareInfo": {
+            "KafkaVersion": "3.3.1"
+          },
+          "CurrentVersion": "KTVPDKIKX0DER",
+          "EncryptionInfo": {
+            "EncryptionAtRest": {
+              "DataVolumeKMSKeyId": "arn:<partition>:kms:<region>:111111111111:key/<uuid>"
+            },
+            "EncryptionInTransit": {
+              "ClientBroker": "TLS",
+              "InCluster": true
+            }
+          },
+          "EnhancedMonitoring": "DEFAULT",
+          "NumberOfBrokerNodes": 2,
+          "OpenMonitoring": {
+            "Prometheus": {
+              "JmxExporter": {
+                "EnabledInBroker": false
+              },
+              "NodeExporter": {
+                "EnabledInBroker": false
+              }
+            }
+          },
+          "State": "CREATING",
+          "StorageMode": "LOCAL",
+          "Tags": {}
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-cluster-v2-result-after-ready": {
+        "ClusterInfo": {
+          "ClusterArn": "arn:<partition>:kafka:<region>:111111111111:cluster/<cluster-name:1>/<uuid>-1",
+          "ClusterName": "<cluster-name:1>",
+          "ClusterType": "PROVISIONED",
+          "CreationTime": "datetime",
+          "CurrentVersion": "K3AEGXETSR30VB",
+          "Provisioned": {
+            "BrokerNodeGroupInfo": {
+              "BrokerAZDistribution": "DEFAULT",
+              "ClientSubnets": "client-subnets",
+              "ConnectivityInfo": {
+                "PublicAccess": {
+                  "Type": "DISABLED"
+                },
+                "VpcConnectivity": {
+                  "ClientAuthentication": {
+                    "Sasl": {
+                      "Iam": {
+                        "Enabled": false
+                      },
+                      "Scram": {
+                        "Enabled": false
+                      }
+                    },
+                    "Tls": {
+                      "Enabled": false
+                    }
+                  }
+                }
+              },
+              "InstanceType": "kafka.m5.large",
+              "SecurityGroups": "security-groups",
+              "StorageInfo": {
+                "EbsStorageInfo": {
+                  "VolumeSize": 1000
+                }
+              },
+              "ZoneIds": [
+                "euc1-az3",
+                "euc1-az2"
+              ]
+            },
+            "CurrentBrokerSoftwareInfo": {
+              "KafkaVersion": "3.3.1"
+            },
+            "EncryptionInfo": {
+              "EncryptionAtRest": {
+                "DataVolumeKMSKeyId": "arn:<partition>:kms:<region>:111111111111:key/<uuid>"
+              },
+              "EncryptionInTransit": {
+                "ClientBroker": "TLS",
+                "InCluster": true
+              }
+            },
+            "EnhancedMonitoring": "DEFAULT",
+            "NumberOfBrokerNodes": 2,
+            "OpenMonitoring": {
+              "Prometheus": {
+                "JmxExporter": {
+                  "EnabledInBroker": false
+                },
+                "NodeExporter": {
+                  "EnabledInBroker": false
+                }
+              }
+            },
+            "StorageMode": "LOCAL",
+            "ZookeeperConnectString": "<zookeeper-connect-string>",
+            "ZookeeperConnectStringTls": "<zookeeper-connect-string>"
+          },
+          "State": "ACTIVE",
+          "Tags": {}
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-cluster-result-after-ready": {
+        "ClusterInfo": {
+          "BrokerNodeGroupInfo": {
+            "BrokerAZDistribution": "DEFAULT",
+            "ClientSubnets": "client-subnets",
+            "ConnectivityInfo": {
+              "PublicAccess": {
+                "Type": "DISABLED"
+              },
+              "VpcConnectivity": {
+                "ClientAuthentication": {
+                  "Sasl": {
+                    "Iam": {
+                      "Enabled": false
+                    },
+                    "Scram": {
+                      "Enabled": false
+                    }
+                  },
+                  "Tls": {
+                    "Enabled": false
+                  }
+                }
+              }
+            },
+            "InstanceType": "kafka.m5.large",
+            "SecurityGroups": "security-groups",
+            "StorageInfo": {
+              "EbsStorageInfo": {
+                "VolumeSize": 1000
+              }
+            },
+            "ZoneIds": [
+              "euc1-az3",
+              "euc1-az2"
+            ]
+          },
+          "ClusterArn": "arn:<partition>:kafka:<region>:111111111111:cluster/<cluster-name:1>/<uuid>-1",
+          "ClusterName": "<cluster-name:1>",
+          "CreationTime": "datetime",
+          "CurrentBrokerSoftwareInfo": {
+            "KafkaVersion": "3.3.1"
+          },
+          "CurrentVersion": "K3AEGXETSR30VB",
+          "EncryptionInfo": {
+            "EncryptionAtRest": {
+              "DataVolumeKMSKeyId": "arn:<partition>:kms:<region>:111111111111:key/<uuid>"
+            },
+            "EncryptionInTransit": {
+              "ClientBroker": "TLS",
+              "InCluster": true
+            }
+          },
+          "EnhancedMonitoring": "DEFAULT",
+          "NumberOfBrokerNodes": 2,
+          "OpenMonitoring": {
+            "Prometheus": {
+              "JmxExporter": {
+                "EnabledInBroker": false
+              },
+              "NodeExporter": {
+                "EnabledInBroker": false
+              }
+            }
+          },
+          "State": "ACTIVE",
+          "StorageMode": "LOCAL",
+          "Tags": {},
+          "ZookeeperConnectString": "<zookeeper-connect-string>",
+          "ZookeeperConnectStringTls": "<zookeeper-connect-string>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-clusters-v2-result-after-ready": [
+        {
+          "ClusterType": "PROVISIONED",
+          "ClusterArn": "arn:<partition>:kafka:<region>:111111111111:cluster/<cluster-name:1>/<uuid>-1",
+          "ClusterName": "<cluster-name:1>",
+          "CreationTime": "datetime",
+          "CurrentVersion": "K3AEGXETSR30VB",
+          "State": "ACTIVE",
+          "Tags": {},
+          "Provisioned": {
+            "BrokerNodeGroupInfo": {
+              "BrokerAZDistribution": "DEFAULT",
+              "ClientSubnets": "client-subnets",
+              "InstanceType": "kafka.m5.large",
+              "SecurityGroups": "security-groups",
+              "StorageInfo": {
+                "EbsStorageInfo": {
+                  "VolumeSize": 1000
+                }
+              },
+              "ConnectivityInfo": {
+                "PublicAccess": {
+                  "Type": "DISABLED"
+                },
+                "VpcConnectivity": {
+                  "ClientAuthentication": {
+                    "Sasl": {
+                      "Scram": {
+                        "Enabled": false
+                      },
+                      "Iam": {
+                        "Enabled": false
+                      }
+                    },
+                    "Tls": {
+                      "Enabled": false
+                    }
+                  }
+                }
+              },
+              "ZoneIds": [
+                "euc1-az3",
+                "euc1-az2"
+              ]
+            },
+            "CurrentBrokerSoftwareInfo": {
+              "KafkaVersion": "3.3.1"
+            },
+            "EncryptionInfo": {
+              "EncryptionAtRest": {
+                "DataVolumeKMSKeyId": "arn:<partition>:kms:<region>:111111111111:key/<uuid>"
+              },
+              "EncryptionInTransit": {
+                "ClientBroker": "TLS",
+                "InCluster": true
+              }
+            },
+            "EnhancedMonitoring": "DEFAULT",
+            "OpenMonitoring": {
+              "Prometheus": {
+                "JmxExporter": {
+                  "EnabledInBroker": false
+                },
+                "NodeExporter": {
+                  "EnabledInBroker": false
+                }
+              }
+            },
+            "NumberOfBrokerNodes": 2,
+            "ZookeeperConnectString": "<zookeeper-connect-string>",
+            "ZookeeperConnectStringTls": "<zookeeper-connect-string>",
+            "StorageMode": "LOCAL"
+          }
+        }
+      ],
+      "list-clusters-result-after-ready": [
+        {
+          "BrokerNodeGroupInfo": {
+            "BrokerAZDistribution": "DEFAULT",
+            "ClientSubnets": "client-subnets",
+            "InstanceType": "kafka.m5.large",
+            "SecurityGroups": "security-groups",
+            "StorageInfo": {
+              "EbsStorageInfo": {
+                "VolumeSize": 1000
+              }
+            },
+            "ConnectivityInfo": {
+              "PublicAccess": {
+                "Type": "DISABLED"
+              },
+              "VpcConnectivity": {
+                "ClientAuthentication": {
+                  "Sasl": {
+                    "Scram": {
+                      "Enabled": false
+                    },
+                    "Iam": {
+                      "Enabled": false
+                    }
+                  },
+                  "Tls": {
+                    "Enabled": false
+                  }
+                }
+              }
+            },
+            "ZoneIds": [
+              "euc1-az3",
+              "euc1-az2"
+            ]
+          },
+          "ClusterArn": "arn:<partition>:kafka:<region>:111111111111:cluster/<cluster-name:1>/<uuid>-1",
+          "ClusterName": "<cluster-name:1>",
+          "CreationTime": "datetime",
+          "CurrentBrokerSoftwareInfo": {
+            "KafkaVersion": "3.3.1"
+          },
+          "CurrentVersion": "K3AEGXETSR30VB",
+          "EncryptionInfo": {
+            "EncryptionAtRest": {
+              "DataVolumeKMSKeyId": "arn:<partition>:kms:<region>:111111111111:key/<uuid>"
+            },
+            "EncryptionInTransit": {
+              "ClientBroker": "TLS",
+              "InCluster": true
+            }
+          },
+          "EnhancedMonitoring": "DEFAULT",
+          "OpenMonitoring": {
+            "Prometheus": {
+              "JmxExporter": {
+                "EnabledInBroker": false
+              },
+              "NodeExporter": {
+                "EnabledInBroker": false
+              }
+            }
+          },
+          "NumberOfBrokerNodes": 2,
+          "State": "ACTIVE",
+          "Tags": {},
+          "ZookeeperConnectString": "<zookeeper-connect-string>",
+          "ZookeeperConnectStringTls": "<zookeeper-connect-string>",
+          "StorageMode": "LOCAL"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/kafka/test_kafka.py::TestKafka::test_create_function_v2_exceptions": {
+    "recorded-date": "17-01-2023, 16:22:42",
+    "recorded-content": {
+      "create-cluster-without-config": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "You must specify a cluster type, either provisioned or serverless."
+        },
+        "InvalidParameter": "clusterType",
+        "Message": "You must specify a cluster type, either provisioned or serverless.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-cluster-with-both-config": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "You can specify only one cluster type, either provisioned or serverless."
+        },
+        "InvalidParameter": "clusterType",
+        "Message": "You can specify only one cluster type, either provisioned or serverless.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  }
+}

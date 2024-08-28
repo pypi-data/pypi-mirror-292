@@ -1,0 +1,219 @@
+{
+  "tests/aws/services/iot_data/test_iot_data.py::TestIoTShadows::test_delete_shadow": {
+    "recorded-date": "05-03-2024, 10:21:17",
+    "recorded-content": {
+      "get_thing_shadow": {
+        "payload": {
+          "state": {
+            "desired": {
+              "key": "value"
+            },
+            "delta": {
+              "key": "value"
+            }
+          },
+          "metadata": {
+            "desired": {
+              "key": {
+                "timestamp": "timestamp"
+              }
+            }
+          },
+          "version": 1,
+          "timestamp": "timestamp"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_thing_shadow": {
+        "payload": {
+          "version": 1,
+          "timestamp": "timestamp"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot_data/test_iot_data.py::TestDeviceShadowServiceREST::test_delete_shadow": {
+    "recorded-date": "26-04-2024, 07:55:56",
+    "recorded-content": {
+      "get_thing_shadow": {
+        "payload": {
+          "state": {
+            "desired": {
+              "key": "value"
+            },
+            "delta": {
+              "key": "value"
+            }
+          },
+          "metadata": {
+            "desired": {
+              "key": {
+                "timestamp": "timestamp"
+              }
+            }
+          },
+          "version": 1,
+          "timestamp": "timestamp"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_thing_shadow": {
+        "payload": {
+          "version": 1,
+          "timestamp": "timestamp"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot_data/test_iot_data.py::TestDeviceShadowServiceREST::test_delete_shadow[classic]": {
+    "recorded-date": "30-04-2024, 13:01:01",
+    "recorded-content": {
+      "get_thing_shadow": {
+        "payload": {
+          "state": {
+            "desired": {
+              "key": "value"
+            },
+            "delta": {
+              "key": "value"
+            }
+          },
+          "metadata": {
+            "desired": {
+              "key": {
+                "timestamp": "timestamp"
+              }
+            }
+          },
+          "version": 1,
+          "timestamp": "timestamp"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_thing_shadow": {
+        "payload": {
+          "version": 1,
+          "timestamp": "timestamp"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot_data/test_iot_data.py::TestDeviceShadowServiceREST::test_delete_shadow[named]": {
+    "recorded-date": "30-04-2024, 13:00:58",
+    "recorded-content": {
+      "get_thing_shadow": {
+        "payload": {
+          "state": {
+            "desired": {
+              "key": "value"
+            },
+            "delta": {
+              "key": "value"
+            }
+          },
+          "metadata": {
+            "desired": {
+              "key": {
+                "timestamp": "timestamp"
+              }
+            }
+          },
+          "version": 1,
+          "timestamp": "timestamp"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_thing_shadow": {
+        "payload": {
+          "version": 1,
+          "timestamp": "timestamp"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot_data/test_iot_data.py::TestDeviceShadowServiceREST::test_thing_shadow_update_reported_null_value": {
+    "recorded-date": "28-05-2024, 14:24:21",
+    "recorded-content": {
+      "shadow_update_reported": {
+        "metadata": {
+          "reported": {
+            "key1": {
+              "timestamp": "timestamp"
+            },
+            "key2": {
+              "timestamp": "timestamp"
+            },
+            "key3": {
+              "timestamp": "timestamp"
+            },
+            "key4": {
+              "timestamp": "timestamp"
+            }
+          }
+        },
+        "state": {
+          "reported": {
+            "key1": "value1",
+            "key2": 1,
+            "key3": "value3",
+            "key4": "value4"
+          }
+        },
+        "timestamp": "timestamp",
+        "version": 1
+      },
+      "shadow_update_reported_null_values": {
+        "metadata": {
+          "reported": {
+            "key1": {
+              "timestamp": "timestamp"
+            },
+            "key3": {
+              "timestamp": "timestamp"
+            },
+            "key4": {
+              "timestamp": "timestamp"
+            }
+          }
+        },
+        "state": {
+          "reported": {
+            "key1": "value1",
+            "key3": "",
+            "key4": 0
+          }
+        },
+        "timestamp": "timestamp",
+        "version": 2
+      }
+    }
+  }
+}

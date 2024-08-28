@@ -1,0 +1,75 @@
+{
+  "Resources": {
+    "FirehoseDeliveryStream": {
+      "Type": "AWS::KinesisFirehose::DeliveryStream",
+      "Properties": {
+        "DeliveryStreamName": "firehose-deliverystream",
+        "DeliveryStreamType": "KinesisStreamAsSource",
+        "KinesisStreamSourceConfiguration": {
+          "KinesisStreamARN": {
+            "Fn::ImportValue": "KinesisFirehoseRedshiftStack1:ExportsOutputFnGetAttKinesisStream46752A3EArn31449AD9"
+          },
+          "RoleARN": {
+            "Fn::ImportValue": "KinesisFirehoseRedshiftStack1:ExportsOutputFnGetAttFirehoseKinesisRole0AD86762ArnFFCAF3A0"
+          }
+        },
+        "RedshiftDestinationConfiguration": {
+          "CloudWatchLoggingOptions": {
+            "Enabled": true,
+            "LogGroupName": "firehose-s3-log-group",
+            "LogStreamName": "firehose-s3-log-stream"
+          },
+          "ClusterJDBCURL": {
+            "Fn::Join": [
+              "",
+              [
+                "jdbc:redshift://",
+                {
+                  "Fn::ImportValue": "KinesisFirehoseRedshiftStack1:ExportsOutputFnGetAttRedshiftClusterEndpointAddress69DA547E"
+                },
+                ":5439/streaming_db"
+              ]
+            ]
+          },
+          "CopyCommand": {
+            "CopyOptions": "json 'auto' blanksasnull emptyasnull",
+            "DataTableColumns": "user_id,name,age,country,device_id,hr_value,novel_stress_marker,timestamp",
+            "DataTableName": "user_health_data"
+          },
+          "Password": "123456789Test",
+          "RoleARN": {
+            "Fn::ImportValue": "KinesisFirehoseRedshiftStack1:ExportsOutputFnGetAttFirehoseS3Role226C92CCArn0E0CBF8C"
+          },
+          "S3Configuration": {
+            "BucketARN": {
+              "Fn::ImportValue": "KinesisFirehoseRedshiftStack1:ExportsOutputFnGetAttS3Bucket07682993Arn6D6BF9FF"
+            },
+            "BufferingHints": {
+              "IntervalInSeconds": 1,
+              "SizeInMBs": 1
+            },
+            "CloudWatchLoggingOptions": {
+              "Enabled": true,
+              "LogGroupName": "firehose-s3-log-group",
+              "LogStreamName": "firehose-s3-log-stream"
+            },
+            "CompressionFormat": "UNCOMPRESSED",
+            "EncryptionConfiguration": {
+              "NoEncryptionConfig": "NoEncryption"
+            },
+            "Prefix": "redshift-raw-data/",
+            "RoleARN": {
+              "Fn::ImportValue": "KinesisFirehoseRedshiftStack1:ExportsOutputFnGetAttFirehoseS3Role226C92CCArn0E0CBF8C"
+            }
+          },
+          "Username": "dwh_user"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "FirehoseDeliveryStreamName": {
+      "Value": "firehose-deliverystream"
+    }
+  }
+}

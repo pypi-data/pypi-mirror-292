@@ -1,0 +1,2471 @@
+{
+  "Resources": {
+    "vpcA2121C38": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet1Subnet2E65531E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.0.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTable48A2DF9B": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTableAssociation5D3F4579": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        }
+      }
+    },
+    "vpcPublicSubnet1DefaultRoute10708846": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcPublicSubnet1EIPDA49DCBE": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet1NATGateway9C16659E": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "vpcPublicSubnet1EIPDA49DCBE",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPublicSubnet1DefaultRoute10708846",
+        "vpcPublicSubnet1RouteTableAssociation5D3F4579"
+      ]
+    },
+    "vpcPublicSubnet2Subnet009B674F": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.64.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableEB40D4CB": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableAssociation21F81B59": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet2Subnet009B674F"
+        }
+      }
+    },
+    "vpcPublicSubnet2DefaultRouteA1EC0F60": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcPublicSubnet2EIP9B3743B1": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet2NATGateway9B8AE11A": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "vpcPublicSubnet2EIP9B3743B1",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet2Subnet009B674F"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PublicSubnet2"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPublicSubnet2DefaultRouteA1EC0F60",
+        "vpcPublicSubnet2RouteTableAssociation21F81B59"
+      ]
+    },
+    "vpcPrivateSubnet1Subnet934893E8": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.128.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PrivateSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet1RouteTableB41A48CC": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PrivateSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet1RouteTableAssociation67945127": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet1RouteTableB41A48CC"
+        },
+        "SubnetId": {
+          "Ref": "vpcPrivateSubnet1Subnet934893E8"
+        }
+      }
+    },
+    "vpcPrivateSubnet1DefaultRoute1AA8E2E5": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "vpcPublicSubnet1NATGateway9C16659E"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet1RouteTableB41A48CC"
+        }
+      }
+    },
+    "vpcPrivateSubnet2Subnet7031C2BA": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.192.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PrivateSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet2RouteTable7280F23E": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc/PrivateSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet2RouteTableAssociation007E94D3": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet2RouteTable7280F23E"
+        },
+        "SubnetId": {
+          "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+        }
+      }
+    },
+    "vpcPrivateSubnet2DefaultRouteB0E07F99": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "vpcPublicSubnet2NATGateway9B8AE11A"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet2RouteTable7280F23E"
+        }
+      }
+    },
+    "vpcIGWE57CBDCA": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PostgresExtensions/vpc"
+          }
+        ]
+      }
+    },
+    "vpcVPCGW7984C166": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "securityGroup32C48086": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "PostgresExtensions/securityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "PostgresDBInstance11SubnetGroup3211D29D": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for PostgresDBInstance-11 database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ]
+      }
+    },
+    "PostgresDBInstance11SecurityGroup10A62CD1": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for PostgresDBInstance-11 database",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "PostgresDBInstance11SecurityGroupfrom00000IndirectPort22FCB488": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "Description": "Open to the world",
+        "FromPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance114F2D54EB",
+            "Endpoint.Port"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance11SecurityGroup10A62CD1",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "ToPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance114F2D54EB",
+            "Endpoint.Port"
+          ]
+        }
+      }
+    },
+    "PostgresDBInstance11Secret249E0E94": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName"
+              }
+            ]
+          ]
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{\"username\":\"myuser\"}"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "PostgresDBInstance11SecretAttachmentC4D3F5C2": {
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+      "Properties": {
+        "SecretId": {
+          "Ref": "PostgresDBInstance11Secret249E0E94"
+        },
+        "TargetId": {
+          "Ref": "PostgresDBInstance114F2D54EB"
+        },
+        "TargetType": "AWS::RDS::DBInstance"
+      }
+    },
+    "PostgresDBInstance114F2D54EB": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "100",
+        "BackupRetentionPeriod": 0,
+        "CopyTagsToSnapshot": true,
+        "DBInstanceClass": "db.m5.large",
+        "DBName": "mydb",
+        "DBSubnetGroupName": {
+          "Ref": "PostgresDBInstance11SubnetGroup3211D29D"
+        },
+        "Engine": "postgres",
+        "EngineVersion": "11",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance11Secret249E0E94"
+              },
+              ":SecretString:password::}}"
+            ]
+          ]
+        },
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance11Secret249E0E94"
+              },
+              ":SecretString:username::}}"
+            ]
+          ]
+        },
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "PostgresDBInstance11SecurityGroup10A62CD1",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "HelperLambda11ServiceRole616FCFC7": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda11ServiceRoleDefaultPolicyCD8B16E1": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "PostgresDBInstance11SecretAttachmentC4D3F5C2"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "HelperLambda11ServiceRoleDefaultPolicyCD8B16E1",
+        "Roles": [
+          {
+            "Ref": "HelperLambda11ServiceRole616FCFC7"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda11SecurityGroup156C22A6": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Automatic security group for Lambda Function PostgresExtensionsHelperLambda1149AE194B",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda11CF9A02FE": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "-",
+              [
+                "localstack-testing",
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                {
+                  "Ref": "AWS::Region"
+                }
+              ]
+            ]
+          },
+          "S3Key": "query-lambda-helper.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "RDS_SECRET": {
+              "Ref": "PostgresDBInstance11SecretAttachmentC4D3F5C2"
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "HelperLambda11ServiceRole616FCFC7",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.10",
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "HelperLambda11SecurityGroup156C22A6",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "vpcPrivateSubnet1Subnet934893E8"
+            },
+            {
+              "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "HelperLambda11ServiceRoleDefaultPolicyCD8B16E1",
+        "HelperLambda11ServiceRole616FCFC7",
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "PostgresDBInstance12SubnetGroup17370A1D": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for PostgresDBInstance-12 database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ]
+      }
+    },
+    "PostgresDBInstance12SecurityGroupE59876F6": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for PostgresDBInstance-12 database",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "PostgresDBInstance12SecurityGroupfrom00000IndirectPortE5C006D8": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "Description": "Open to the world",
+        "FromPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance12E09F154C",
+            "Endpoint.Port"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance12SecurityGroupE59876F6",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "ToPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance12E09F154C",
+            "Endpoint.Port"
+          ]
+        }
+      }
+    },
+    "PostgresDBInstance12Secret7321122B": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName"
+              }
+            ]
+          ]
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{\"username\":\"myuser\"}"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "PostgresDBInstance12SecretAttachmentEE3742C8": {
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+      "Properties": {
+        "SecretId": {
+          "Ref": "PostgresDBInstance12Secret7321122B"
+        },
+        "TargetId": {
+          "Ref": "PostgresDBInstance12E09F154C"
+        },
+        "TargetType": "AWS::RDS::DBInstance"
+      }
+    },
+    "PostgresDBInstance12E09F154C": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "100",
+        "BackupRetentionPeriod": 0,
+        "CopyTagsToSnapshot": true,
+        "DBInstanceClass": "db.m5.large",
+        "DBName": "mydb",
+        "DBSubnetGroupName": {
+          "Ref": "PostgresDBInstance12SubnetGroup17370A1D"
+        },
+        "Engine": "postgres",
+        "EngineVersion": "12",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance12Secret7321122B"
+              },
+              ":SecretString:password::}}"
+            ]
+          ]
+        },
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance12Secret7321122B"
+              },
+              ":SecretString:username::}}"
+            ]
+          ]
+        },
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "PostgresDBInstance12SecurityGroupE59876F6",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "HelperLambda12ServiceRole0C192C77": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda12ServiceRoleDefaultPolicy6B240128": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "PostgresDBInstance12SecretAttachmentEE3742C8"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "HelperLambda12ServiceRoleDefaultPolicy6B240128",
+        "Roles": [
+          {
+            "Ref": "HelperLambda12ServiceRole0C192C77"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda12SecurityGroupC48628C3": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Automatic security group for Lambda Function PostgresExtensionsHelperLambda121789E819",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda12EDC14AAE": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "-",
+              [
+                "localstack-testing",
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                {
+                  "Ref": "AWS::Region"
+                }
+              ]
+            ]
+          },
+          "S3Key": "query-lambda-helper.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "RDS_SECRET": {
+              "Ref": "PostgresDBInstance12SecretAttachmentEE3742C8"
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "HelperLambda12ServiceRole0C192C77",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.10",
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "HelperLambda12SecurityGroupC48628C3",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "vpcPrivateSubnet1Subnet934893E8"
+            },
+            {
+              "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "HelperLambda12ServiceRoleDefaultPolicy6B240128",
+        "HelperLambda12ServiceRole0C192C77",
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "PostgresDBInstance13SubnetGroup95A000F4": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for PostgresDBInstance-13 database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ]
+      }
+    },
+    "PostgresDBInstance13SecurityGroup3D57986E": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for PostgresDBInstance-13 database",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "PostgresDBInstance13SecurityGroupfrom00000IndirectPortAD71ADDC": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "Description": "Open to the world",
+        "FromPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance13DDFE48E7",
+            "Endpoint.Port"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance13SecurityGroup3D57986E",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "ToPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance13DDFE48E7",
+            "Endpoint.Port"
+          ]
+        }
+      }
+    },
+    "PostgresDBInstance13SecretD48F5292": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName"
+              }
+            ]
+          ]
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{\"username\":\"myuser\"}"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "PostgresDBInstance13SecretAttachment1A64DB6C": {
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+      "Properties": {
+        "SecretId": {
+          "Ref": "PostgresDBInstance13SecretD48F5292"
+        },
+        "TargetId": {
+          "Ref": "PostgresDBInstance13DDFE48E7"
+        },
+        "TargetType": "AWS::RDS::DBInstance"
+      }
+    },
+    "PostgresDBInstance13DDFE48E7": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "100",
+        "BackupRetentionPeriod": 0,
+        "CopyTagsToSnapshot": true,
+        "DBInstanceClass": "db.m5.large",
+        "DBName": "mydb",
+        "DBSubnetGroupName": {
+          "Ref": "PostgresDBInstance13SubnetGroup95A000F4"
+        },
+        "Engine": "postgres",
+        "EngineVersion": "13",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance13SecretD48F5292"
+              },
+              ":SecretString:password::}}"
+            ]
+          ]
+        },
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance13SecretD48F5292"
+              },
+              ":SecretString:username::}}"
+            ]
+          ]
+        },
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "PostgresDBInstance13SecurityGroup3D57986E",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "HelperLambda13ServiceRoleC1C5000B": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda13ServiceRoleDefaultPolicy9E78DE32": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "PostgresDBInstance13SecretAttachment1A64DB6C"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "HelperLambda13ServiceRoleDefaultPolicy9E78DE32",
+        "Roles": [
+          {
+            "Ref": "HelperLambda13ServiceRoleC1C5000B"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda13SecurityGroupFA7F9A6D": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Automatic security group for Lambda Function PostgresExtensionsHelperLambda1383312591",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda138BEC09B2": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "-",
+              [
+                "localstack-testing",
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                {
+                  "Ref": "AWS::Region"
+                }
+              ]
+            ]
+          },
+          "S3Key": "query-lambda-helper.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "RDS_SECRET": {
+              "Ref": "PostgresDBInstance13SecretAttachment1A64DB6C"
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "HelperLambda13ServiceRoleC1C5000B",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.10",
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "HelperLambda13SecurityGroupFA7F9A6D",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "vpcPrivateSubnet1Subnet934893E8"
+            },
+            {
+              "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "HelperLambda13ServiceRoleDefaultPolicy9E78DE32",
+        "HelperLambda13ServiceRoleC1C5000B",
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "PostgresDBInstance14SubnetGroupBCA0BE37": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for PostgresDBInstance-14 database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ]
+      }
+    },
+    "PostgresDBInstance14SecurityGroup0BE4CFDF": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for PostgresDBInstance-14 database",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "PostgresDBInstance14SecurityGroupfrom00000IndirectPort11AF90E7": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "Description": "Open to the world",
+        "FromPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance143FEA72B2",
+            "Endpoint.Port"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance14SecurityGroup0BE4CFDF",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "ToPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance143FEA72B2",
+            "Endpoint.Port"
+          ]
+        }
+      }
+    },
+    "PostgresDBInstance14Secret876ABCA3": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName"
+              }
+            ]
+          ]
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{\"username\":\"myuser\"}"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "PostgresDBInstance14SecretAttachment67B59F04": {
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+      "Properties": {
+        "SecretId": {
+          "Ref": "PostgresDBInstance14Secret876ABCA3"
+        },
+        "TargetId": {
+          "Ref": "PostgresDBInstance143FEA72B2"
+        },
+        "TargetType": "AWS::RDS::DBInstance"
+      }
+    },
+    "PostgresDBInstance143FEA72B2": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "100",
+        "BackupRetentionPeriod": 0,
+        "CopyTagsToSnapshot": true,
+        "DBInstanceClass": "db.m5.large",
+        "DBName": "mydb",
+        "DBSubnetGroupName": {
+          "Ref": "PostgresDBInstance14SubnetGroupBCA0BE37"
+        },
+        "Engine": "postgres",
+        "EngineVersion": "14",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance14Secret876ABCA3"
+              },
+              ":SecretString:password::}}"
+            ]
+          ]
+        },
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance14Secret876ABCA3"
+              },
+              ":SecretString:username::}}"
+            ]
+          ]
+        },
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "PostgresDBInstance14SecurityGroup0BE4CFDF",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "HelperLambda14ServiceRole42D19225": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda14ServiceRoleDefaultPolicy6BBEF343": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "PostgresDBInstance14SecretAttachment67B59F04"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "HelperLambda14ServiceRoleDefaultPolicy6BBEF343",
+        "Roles": [
+          {
+            "Ref": "HelperLambda14ServiceRole42D19225"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda14SecurityGroupF10EC516": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Automatic security group for Lambda Function PostgresExtensionsHelperLambda1418BD4273",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda147D985F74": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "-",
+              [
+                "localstack-testing",
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                {
+                  "Ref": "AWS::Region"
+                }
+              ]
+            ]
+          },
+          "S3Key": "query-lambda-helper.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "RDS_SECRET": {
+              "Ref": "PostgresDBInstance14SecretAttachment67B59F04"
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "HelperLambda14ServiceRole42D19225",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.10",
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "HelperLambda14SecurityGroupF10EC516",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "vpcPrivateSubnet1Subnet934893E8"
+            },
+            {
+              "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "HelperLambda14ServiceRoleDefaultPolicy6BBEF343",
+        "HelperLambda14ServiceRole42D19225",
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "PostgresDBInstance15SubnetGroup3FAD4A87": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for PostgresDBInstance-15 database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ]
+      }
+    },
+    "PostgresDBInstance15SecurityGroup6CB761D4": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for PostgresDBInstance-15 database",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "PostgresDBInstance15SecurityGroupfrom00000IndirectPortE4BFC9C9": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "Description": "Open to the world",
+        "FromPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance159A4EE1BC",
+            "Endpoint.Port"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance15SecurityGroup6CB761D4",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "ToPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance159A4EE1BC",
+            "Endpoint.Port"
+          ]
+        }
+      }
+    },
+    "PostgresDBInstance15Secret51ABF151": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName"
+              }
+            ]
+          ]
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{\"username\":\"myuser\"}"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "PostgresDBInstance15SecretAttachmentC61F2141": {
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+      "Properties": {
+        "SecretId": {
+          "Ref": "PostgresDBInstance15Secret51ABF151"
+        },
+        "TargetId": {
+          "Ref": "PostgresDBInstance159A4EE1BC"
+        },
+        "TargetType": "AWS::RDS::DBInstance"
+      }
+    },
+    "PostgresDBInstance159A4EE1BC": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "100",
+        "BackupRetentionPeriod": 0,
+        "CopyTagsToSnapshot": true,
+        "DBInstanceClass": "db.m5.large",
+        "DBName": "mydb",
+        "DBSubnetGroupName": {
+          "Ref": "PostgresDBInstance15SubnetGroup3FAD4A87"
+        },
+        "Engine": "postgres",
+        "EngineVersion": "15",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance15Secret51ABF151"
+              },
+              ":SecretString:password::}}"
+            ]
+          ]
+        },
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance15Secret51ABF151"
+              },
+              ":SecretString:username::}}"
+            ]
+          ]
+        },
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "PostgresDBInstance15SecurityGroup6CB761D4",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "HelperLambda15ServiceRoleA6E6B6AD": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda15ServiceRoleDefaultPolicyC0AFC84E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "PostgresDBInstance15SecretAttachmentC61F2141"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "HelperLambda15ServiceRoleDefaultPolicyC0AFC84E",
+        "Roles": [
+          {
+            "Ref": "HelperLambda15ServiceRoleA6E6B6AD"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda15SecurityGroup9AE16EC0": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Automatic security group for Lambda Function PostgresExtensionsHelperLambda1520B730AD",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda159C82B6E3": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "-",
+              [
+                "localstack-testing",
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                {
+                  "Ref": "AWS::Region"
+                }
+              ]
+            ]
+          },
+          "S3Key": "query-lambda-helper.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "RDS_SECRET": {
+              "Ref": "PostgresDBInstance15SecretAttachmentC61F2141"
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "HelperLambda15ServiceRoleA6E6B6AD",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.10",
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "HelperLambda15SecurityGroup9AE16EC0",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "vpcPrivateSubnet1Subnet934893E8"
+            },
+            {
+              "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "HelperLambda15ServiceRoleDefaultPolicyC0AFC84E",
+        "HelperLambda15ServiceRoleA6E6B6AD",
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "PostgresDBInstance16SubnetGroupF80ADF19": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for PostgresDBInstance-16 database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ]
+      }
+    },
+    "PostgresDBInstance16SecurityGroup32B77CAE": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for PostgresDBInstance-16 database",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "PostgresDBInstance16SecurityGroupfrom00000IndirectPort2F799305": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "Description": "Open to the world",
+        "FromPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance16E751E43C",
+            "Endpoint.Port"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance16SecurityGroup32B77CAE",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "ToPort": {
+          "Fn::GetAtt": [
+            "PostgresDBInstance16E751E43C",
+            "Endpoint.Port"
+          ]
+        }
+      }
+    },
+    "PostgresDBInstance16Secret53EE58CE": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName"
+              }
+            ]
+          ]
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{\"username\":\"myuser\"}"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "PostgresDBInstance16SecretAttachmentC1535669": {
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+      "Properties": {
+        "SecretId": {
+          "Ref": "PostgresDBInstance16Secret53EE58CE"
+        },
+        "TargetId": {
+          "Ref": "PostgresDBInstance16E751E43C"
+        },
+        "TargetType": "AWS::RDS::DBInstance"
+      }
+    },
+    "PostgresDBInstance16E751E43C": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "100",
+        "BackupRetentionPeriod": 0,
+        "CopyTagsToSnapshot": true,
+        "DBInstanceClass": "db.m5.large",
+        "DBName": "mydb",
+        "DBSubnetGroupName": {
+          "Ref": "PostgresDBInstance16SubnetGroupF80ADF19"
+        },
+        "Engine": "postgres",
+        "EngineVersion": "16",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance16Secret53EE58CE"
+              },
+              ":SecretString:password::}}"
+            ]
+          ]
+        },
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "PostgresDBInstance16Secret53EE58CE"
+              },
+              ":SecretString:username::}}"
+            ]
+          ]
+        },
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "PostgresDBInstance16SecurityGroup32B77CAE",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "HelperLambda16ServiceRole626E5017": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda16ServiceRoleDefaultPolicy726F9113": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "PostgresDBInstance16SecretAttachmentC1535669"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "HelperLambda16ServiceRoleDefaultPolicy726F9113",
+        "Roles": [
+          {
+            "Ref": "HelperLambda16ServiceRole626E5017"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda16SecurityGroup13C65500": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Automatic security group for Lambda Function PostgresExtensionsHelperLambda160FB85B87",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "HelperLambda16AAFCFB43": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "-",
+              [
+                "localstack-testing",
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                {
+                  "Ref": "AWS::Region"
+                }
+              ]
+            ]
+          },
+          "S3Key": "query-lambda-helper.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "RDS_SECRET": {
+              "Ref": "PostgresDBInstance16SecretAttachmentC1535669"
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "HelperLambda16ServiceRole626E5017",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.10",
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "HelperLambda16SecurityGroup13C65500",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "vpcPrivateSubnet1Subnet934893E8"
+            },
+            {
+              "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "HelperLambda16ServiceRoleDefaultPolicy726F9113",
+        "HelperLambda16ServiceRole626E5017",
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    }
+  },
+  "Outputs": {
+    "HelperFunc11": {
+      "Value": {
+        "Ref": "HelperLambda11CF9A02FE"
+      }
+    },
+    "DatabaseArn11": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              "Ref": "AWS::Partition"
+            },
+            ":rds:",
+            {
+              "Ref": "AWS::Region"
+            },
+            ":",
+            {
+              "Ref": "AWS::AccountId"
+            },
+            ":db:",
+            {
+              "Ref": "PostgresDBInstance114F2D54EB"
+            }
+          ]
+        ]
+      }
+    },
+    "DatabaseIdentifier11": {
+      "Value": {
+        "Ref": "PostgresDBInstance114F2D54EB"
+      }
+    },
+    "HelperFunc12": {
+      "Value": {
+        "Ref": "HelperLambda12EDC14AAE"
+      }
+    },
+    "DatabaseArn12": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              "Ref": "AWS::Partition"
+            },
+            ":rds:",
+            {
+              "Ref": "AWS::Region"
+            },
+            ":",
+            {
+              "Ref": "AWS::AccountId"
+            },
+            ":db:",
+            {
+              "Ref": "PostgresDBInstance12E09F154C"
+            }
+          ]
+        ]
+      }
+    },
+    "DatabaseIdentifier12": {
+      "Value": {
+        "Ref": "PostgresDBInstance12E09F154C"
+      }
+    },
+    "HelperFunc13": {
+      "Value": {
+        "Ref": "HelperLambda138BEC09B2"
+      }
+    },
+    "DatabaseArn13": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              "Ref": "AWS::Partition"
+            },
+            ":rds:",
+            {
+              "Ref": "AWS::Region"
+            },
+            ":",
+            {
+              "Ref": "AWS::AccountId"
+            },
+            ":db:",
+            {
+              "Ref": "PostgresDBInstance13DDFE48E7"
+            }
+          ]
+        ]
+      }
+    },
+    "DatabaseIdentifier13": {
+      "Value": {
+        "Ref": "PostgresDBInstance13DDFE48E7"
+      }
+    },
+    "HelperFunc14": {
+      "Value": {
+        "Ref": "HelperLambda147D985F74"
+      }
+    },
+    "DatabaseArn14": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              "Ref": "AWS::Partition"
+            },
+            ":rds:",
+            {
+              "Ref": "AWS::Region"
+            },
+            ":",
+            {
+              "Ref": "AWS::AccountId"
+            },
+            ":db:",
+            {
+              "Ref": "PostgresDBInstance143FEA72B2"
+            }
+          ]
+        ]
+      }
+    },
+    "DatabaseIdentifier14": {
+      "Value": {
+        "Ref": "PostgresDBInstance143FEA72B2"
+      }
+    },
+    "HelperFunc15": {
+      "Value": {
+        "Ref": "HelperLambda159C82B6E3"
+      }
+    },
+    "DatabaseArn15": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              "Ref": "AWS::Partition"
+            },
+            ":rds:",
+            {
+              "Ref": "AWS::Region"
+            },
+            ":",
+            {
+              "Ref": "AWS::AccountId"
+            },
+            ":db:",
+            {
+              "Ref": "PostgresDBInstance159A4EE1BC"
+            }
+          ]
+        ]
+      }
+    },
+    "DatabaseIdentifier15": {
+      "Value": {
+        "Ref": "PostgresDBInstance159A4EE1BC"
+      }
+    },
+    "HelperFunc16": {
+      "Value": {
+        "Ref": "HelperLambda16AAFCFB43"
+      }
+    },
+    "DatabaseArn16": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              "Ref": "AWS::Partition"
+            },
+            ":rds:",
+            {
+              "Ref": "AWS::Region"
+            },
+            ":",
+            {
+              "Ref": "AWS::AccountId"
+            },
+            ":db:",
+            {
+              "Ref": "PostgresDBInstance16E751E43C"
+            }
+          ]
+        ]
+      }
+    },
+    "DatabaseIdentifier16": {
+      "Value": {
+        "Ref": "PostgresDBInstance16E751E43C"
+      }
+    }
+  }
+}

@@ -1,0 +1,1111 @@
+{
+  "tests/aws/services/stepfunctions/test_batch_integration.py::TestBatchIntegration::test_batch_request_response": {
+    "recorded-date": "15-07-2024, 11:15:48",
+    "recorded-content": {
+      "get_execution_history": {
+        "events": [
+          {
+            "executionStartedEventDetails": {
+              "input": {},
+              "inputDetails": {
+                "truncated": false
+              },
+              "roleArn": "<role-arn:1>"
+            },
+            "id": 1,
+            "previousEventId": 0,
+            "timestamp": "<datetime>",
+            "type": "ExecutionStarted"
+          },
+          {
+            "id": 2,
+            "previousEventId": 0,
+            "stateEnteredEventDetails": {
+              "input": {},
+              "inputDetails": {
+                "truncated": false
+              },
+              "name": "BatchTask"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateEntered"
+          },
+          {
+            "id": 3,
+            "previousEventId": 2,
+            "taskScheduledEventDetails": {
+              "parameters": {
+                "JobDefinition": "<job-definition:1>",
+                "JobName": "<job-name:1>",
+                "JobQueue": "<job-queue:1>"
+              },
+              "region": "<region>",
+              "resource": "submitJob",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskScheduled"
+          },
+          {
+            "id": 4,
+            "previousEventId": 3,
+            "taskStartedEventDetails": {
+              "resource": "submitJob",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStarted"
+          },
+          {
+            "id": 5,
+            "previousEventId": 4,
+            "taskSucceededEventDetails": {
+              "output": {
+                "JobArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>",
+                "JobId": "<uuid:1>",
+                "JobName": "<job-name:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Access-Control-Expose-Headers": [
+                      "X-amzn-errortype,X-amzn-requestid,X-amzn-errormessage,X-amzn-trace-id,X-amz-apigw-id,date"
+                    ],
+                    "x-amz-apigw-id": "x-amz-apigw-id",
+                    "Access-Control-Allow-Origin": [
+                      "*"
+                    ],
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:2>"
+                    ],
+                    "Content-Length": [
+                      "165"
+                    ],
+                    "Date": "date",
+                    "X-Amzn-Trace-Id": "X-Amzn-Trace-Id",
+                    "Content-Type": [
+                      "application/json"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Expose-Headers": "X-amzn-errortype,X-amzn-requestid,X-amzn-errormessage,X-amzn-trace-id,X-amz-apigw-id,date",
+                    "Connection": "keep-alive",
+                    "Content-Length": "165",
+                    "Content-Type": "application/json",
+                    "Date": "date",
+                    "x-amz-apigw-id": "x-amz-apigw-id",
+                    "x-amzn-RequestId": "<uuid:2>",
+                    "X-Amzn-Trace-Id": "X-Amzn-Trace-Id"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:2>"
+                }
+              },
+              "outputDetails": {
+                "truncated": false
+              },
+              "resource": "submitJob",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskSucceeded"
+          },
+          {
+            "id": 6,
+            "previousEventId": 5,
+            "stateExitedEventDetails": {
+              "name": "BatchTask",
+              "output": {
+                "JobArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>",
+                "JobId": "<uuid:1>",
+                "JobName": "<job-name:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Access-Control-Expose-Headers": [
+                      "X-amzn-errortype,X-amzn-requestid,X-amzn-errormessage,X-amzn-trace-id,X-amz-apigw-id,date"
+                    ],
+                    "x-amz-apigw-id": "x-amz-apigw-id",
+                    "Access-Control-Allow-Origin": [
+                      "*"
+                    ],
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:2>"
+                    ],
+                    "Content-Length": [
+                      "165"
+                    ],
+                    "Date": "date",
+                    "X-Amzn-Trace-Id": "X-Amzn-Trace-Id",
+                    "Content-Type": [
+                      "application/json"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Expose-Headers": "X-amzn-errortype,X-amzn-requestid,X-amzn-errormessage,X-amzn-trace-id,X-amz-apigw-id,date",
+                    "Connection": "keep-alive",
+                    "Content-Length": "165",
+                    "Content-Type": "application/json",
+                    "Date": "date",
+                    "x-amz-apigw-id": "x-amz-apigw-id",
+                    "x-amzn-RequestId": "<uuid:2>",
+                    "X-Amzn-Trace-Id": "X-Amzn-Trace-Id"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:2>"
+                }
+              },
+              "outputDetails": {
+                "truncated": false
+              }
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateExited"
+          },
+          {
+            "executionSucceededEventDetails": {
+              "output": {
+                "JobArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>",
+                "JobId": "<uuid:1>",
+                "JobName": "<job-name:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Access-Control-Expose-Headers": [
+                      "X-amzn-errortype,X-amzn-requestid,X-amzn-errormessage,X-amzn-trace-id,X-amz-apigw-id,date"
+                    ],
+                    "x-amz-apigw-id": "x-amz-apigw-id",
+                    "Access-Control-Allow-Origin": [
+                      "*"
+                    ],
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:2>"
+                    ],
+                    "Content-Length": [
+                      "165"
+                    ],
+                    "Date": "date",
+                    "X-Amzn-Trace-Id": "X-Amzn-Trace-Id",
+                    "Content-Type": [
+                      "application/json"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Expose-Headers": "X-amzn-errortype,X-amzn-requestid,X-amzn-errormessage,X-amzn-trace-id,X-amz-apigw-id,date",
+                    "Connection": "keep-alive",
+                    "Content-Length": "165",
+                    "Content-Type": "application/json",
+                    "Date": "date",
+                    "x-amz-apigw-id": "x-amz-apigw-id",
+                    "x-amzn-RequestId": "<uuid:2>",
+                    "X-Amzn-Trace-Id": "X-Amzn-Trace-Id"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:2>"
+                }
+              },
+              "outputDetails": {
+                "truncated": false
+              }
+            },
+            "id": 7,
+            "previousEventId": 6,
+            "timestamp": "<datetime>",
+            "type": "ExecutionSucceeded"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/stepfunctions/test_batch_integration.py::TestBatchIntegration::test_batch_sync": {
+    "recorded-date": "15-07-2024, 11:22:59",
+    "recorded-content": {
+      "get_execution_history": {
+        "events": [
+          {
+            "executionStartedEventDetails": {
+              "input": {},
+              "inputDetails": {
+                "truncated": false
+              },
+              "roleArn": "<role-arn:1>"
+            },
+            "id": 1,
+            "previousEventId": 0,
+            "timestamp": "<datetime>",
+            "type": "ExecutionStarted"
+          },
+          {
+            "id": 2,
+            "previousEventId": 0,
+            "stateEnteredEventDetails": {
+              "input": {},
+              "inputDetails": {
+                "truncated": false
+              },
+              "name": "BatchTask"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateEntered"
+          },
+          {
+            "id": 3,
+            "previousEventId": 2,
+            "taskScheduledEventDetails": {
+              "parameters": {
+                "JobDefinition": "<job-definition:1>",
+                "JobName": "<job-name:1>",
+                "JobQueue": "<job-queue:1>",
+                "ContainerOverrides": {
+                  "Environment": [
+                    {
+                      "Name": "MANAGED_BY_AWS",
+                      "Value": "STARTED_BY_STEP_FUNCTIONS"
+                    }
+                  ]
+                }
+              },
+              "region": "<region>",
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskScheduled"
+          },
+          {
+            "id": 4,
+            "previousEventId": 3,
+            "taskStartedEventDetails": {
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStarted"
+          },
+          {
+            "id": 5,
+            "previousEventId": 4,
+            "taskSubmittedEventDetails": {
+              "output": {
+                "JobArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>",
+                "JobId": "<uuid:1>",
+                "JobName": "<job-name:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Access-Control-Expose-Headers": [
+                      "X-amzn-errortype,X-amzn-requestid,X-amzn-errormessage,X-amzn-trace-id,X-amz-apigw-id,date"
+                    ],
+                    "x-amz-apigw-id": "x-amz-apigw-id",
+                    "Access-Control-Allow-Origin": [
+                      "*"
+                    ],
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:2>"
+                    ],
+                    "Content-Length": [
+                      "165"
+                    ],
+                    "Date": "date",
+                    "X-Amzn-Trace-Id": "X-Amzn-Trace-Id",
+                    "Content-Type": [
+                      "application/json"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Expose-Headers": "X-amzn-errortype,X-amzn-requestid,X-amzn-errormessage,X-amzn-trace-id,X-amz-apigw-id,date",
+                    "Connection": "keep-alive",
+                    "Content-Length": "165",
+                    "Content-Type": "application/json",
+                    "Date": "date",
+                    "x-amz-apigw-id": "x-amz-apigw-id",
+                    "x-amzn-RequestId": "<uuid:2>",
+                    "X-Amzn-Trace-Id": "X-Amzn-Trace-Id"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:2>"
+                }
+              },
+              "outputDetails": {
+                "truncated": false
+              },
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskSubmitted"
+          },
+          {
+            "id": 6,
+            "previousEventId": 5,
+            "taskSucceededEventDetails": {
+              "output": {
+                "Attempts": [
+                  {
+                    "Container": {
+                      "ExitCode": 0,
+                      "LogStreamName": "<log-stream-name:1>",
+                      "NetworkInterfaces": [
+                        {
+                          "AttachmentId": "<uuid:3>",
+                          "PrivateIpv4Address": "private-ipv4-address"
+                        }
+                      ],
+                      "TaskArn": "<task-arn:1>"
+                    },
+                    "StartedAt": "time",
+                    "StatusReason": "Essential container in task exited",
+                    "StoppedAt": "time"
+                  }
+                ],
+                "Container": {
+                  "Command": [
+                    "bash",
+                    "-c",
+                    "echo Done"
+                  ],
+                  "Environment": [
+                    {
+                      "Name": "MANAGED_BY_AWS",
+                      "Value": "STARTED_BY_STEP_FUNCTIONS"
+                    }
+                  ],
+                  "ExecutionRoleArn": "<execution-role-arn:1>",
+                  "ExitCode": 0,
+                  "FargatePlatformConfiguration": {
+                    "PlatformVersion": "LATEST"
+                  },
+                  "Image": "amazonlinux",
+                  "LogStreamName": "<log-stream-name:1>",
+                  "MountPoints": [],
+                  "NetworkConfiguration": {
+                    "AssignPublicIp": "DISABLED"
+                  },
+                  "NetworkInterfaces": [
+                    {
+                      "AttachmentId": "<uuid:3>",
+                      "PrivateIpv4Address": "private-ipv4-address"
+                    }
+                  ],
+                  "ReadonlyRootFilesystem": false,
+                  "ResourceRequirements": [
+                    {
+                      "Type": "MEMORY",
+                      "Value": "1024"
+                    },
+                    {
+                      "Type": "VCPU",
+                      "Value": "0.5"
+                    }
+                  ],
+                  "RuntimePlatform": {
+                    "CpuArchitecture": "X86_64",
+                    "OperatingSystemFamily": "LINUX"
+                  },
+                  "Secrets": [],
+                  "TaskArn": "<task-arn:1>",
+                  "Ulimits": [],
+                  "Volumes": []
+                },
+                "CreatedAt": "time",
+                "DependsOn": [],
+                "EksAttempts": [],
+                "JobArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>",
+                "JobDefinition": "<job-definition:1>",
+                "JobId": "<uuid:1>",
+                "JobName": "<job-name:1>",
+                "JobQueue": "<job-queue:1>",
+                "Parameters": {},
+                "PlatformCapabilities": [
+                  "FARGATE"
+                ],
+                "PropagateTags": false,
+                "StartedAt": "time",
+                "Status": "SUCCEEDED",
+                "StatusReason": "Essential container in task exited",
+                "StoppedAt": "time",
+                "Tags": {
+                  "resourceArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>"
+                },
+                "Timeout": {
+                  "AttemptDurationSeconds": 300
+                }
+              },
+              "outputDetails": {
+                "truncated": false
+              },
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskSucceeded"
+          },
+          {
+            "id": 7,
+            "previousEventId": 6,
+            "stateExitedEventDetails": {
+              "name": "BatchTask",
+              "output": {
+                "Attempts": [
+                  {
+                    "Container": {
+                      "ExitCode": 0,
+                      "LogStreamName": "<log-stream-name:1>",
+                      "NetworkInterfaces": [
+                        {
+                          "AttachmentId": "<uuid:3>",
+                          "PrivateIpv4Address": "private-ipv4-address"
+                        }
+                      ],
+                      "TaskArn": "<task-arn:1>"
+                    },
+                    "StartedAt": "time",
+                    "StatusReason": "Essential container in task exited",
+                    "StoppedAt": "time"
+                  }
+                ],
+                "Container": {
+                  "Command": [
+                    "bash",
+                    "-c",
+                    "echo Done"
+                  ],
+                  "Environment": [
+                    {
+                      "Name": "MANAGED_BY_AWS",
+                      "Value": "STARTED_BY_STEP_FUNCTIONS"
+                    }
+                  ],
+                  "ExecutionRoleArn": "<execution-role-arn:1>",
+                  "ExitCode": 0,
+                  "FargatePlatformConfiguration": {
+                    "PlatformVersion": "LATEST"
+                  },
+                  "Image": "amazonlinux",
+                  "LogStreamName": "<log-stream-name:1>",
+                  "MountPoints": [],
+                  "NetworkConfiguration": {
+                    "AssignPublicIp": "DISABLED"
+                  },
+                  "NetworkInterfaces": [
+                    {
+                      "AttachmentId": "<uuid:3>",
+                      "PrivateIpv4Address": "private-ipv4-address"
+                    }
+                  ],
+                  "ReadonlyRootFilesystem": false,
+                  "ResourceRequirements": [
+                    {
+                      "Type": "MEMORY",
+                      "Value": "1024"
+                    },
+                    {
+                      "Type": "VCPU",
+                      "Value": "0.5"
+                    }
+                  ],
+                  "RuntimePlatform": {
+                    "CpuArchitecture": "X86_64",
+                    "OperatingSystemFamily": "LINUX"
+                  },
+                  "Secrets": [],
+                  "TaskArn": "<task-arn:1>",
+                  "Ulimits": [],
+                  "Volumes": []
+                },
+                "CreatedAt": "time",
+                "DependsOn": [],
+                "EksAttempts": [],
+                "JobArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>",
+                "JobDefinition": "<job-definition:1>",
+                "JobId": "<uuid:1>",
+                "JobName": "<job-name:1>",
+                "JobQueue": "<job-queue:1>",
+                "Parameters": {},
+                "PlatformCapabilities": [
+                  "FARGATE"
+                ],
+                "PropagateTags": false,
+                "StartedAt": "time",
+                "Status": "SUCCEEDED",
+                "StatusReason": "Essential container in task exited",
+                "StoppedAt": "time",
+                "Tags": {
+                  "resourceArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>"
+                },
+                "Timeout": {
+                  "AttemptDurationSeconds": 300
+                }
+              },
+              "outputDetails": {
+                "truncated": false
+              }
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateExited"
+          },
+          {
+            "executionSucceededEventDetails": {
+              "output": {
+                "Attempts": [
+                  {
+                    "Container": {
+                      "ExitCode": 0,
+                      "LogStreamName": "<log-stream-name:1>",
+                      "NetworkInterfaces": [
+                        {
+                          "AttachmentId": "<uuid:3>",
+                          "PrivateIpv4Address": "private-ipv4-address"
+                        }
+                      ],
+                      "TaskArn": "<task-arn:1>"
+                    },
+                    "StartedAt": "time",
+                    "StatusReason": "Essential container in task exited",
+                    "StoppedAt": "time"
+                  }
+                ],
+                "Container": {
+                  "Command": [
+                    "bash",
+                    "-c",
+                    "echo Done"
+                  ],
+                  "Environment": [
+                    {
+                      "Name": "MANAGED_BY_AWS",
+                      "Value": "STARTED_BY_STEP_FUNCTIONS"
+                    }
+                  ],
+                  "ExecutionRoleArn": "<execution-role-arn:1>",
+                  "ExitCode": 0,
+                  "FargatePlatformConfiguration": {
+                    "PlatformVersion": "LATEST"
+                  },
+                  "Image": "amazonlinux",
+                  "LogStreamName": "<log-stream-name:1>",
+                  "MountPoints": [],
+                  "NetworkConfiguration": {
+                    "AssignPublicIp": "DISABLED"
+                  },
+                  "NetworkInterfaces": [
+                    {
+                      "AttachmentId": "<uuid:3>",
+                      "PrivateIpv4Address": "private-ipv4-address"
+                    }
+                  ],
+                  "ReadonlyRootFilesystem": false,
+                  "ResourceRequirements": [
+                    {
+                      "Type": "MEMORY",
+                      "Value": "1024"
+                    },
+                    {
+                      "Type": "VCPU",
+                      "Value": "0.5"
+                    }
+                  ],
+                  "RuntimePlatform": {
+                    "CpuArchitecture": "X86_64",
+                    "OperatingSystemFamily": "LINUX"
+                  },
+                  "Secrets": [],
+                  "TaskArn": "<task-arn:1>",
+                  "Ulimits": [],
+                  "Volumes": []
+                },
+                "CreatedAt": "time",
+                "DependsOn": [],
+                "EksAttempts": [],
+                "JobArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>",
+                "JobDefinition": "<job-definition:1>",
+                "JobId": "<uuid:1>",
+                "JobName": "<job-name:1>",
+                "JobQueue": "<job-queue:1>",
+                "Parameters": {},
+                "PlatformCapabilities": [
+                  "FARGATE"
+                ],
+                "PropagateTags": false,
+                "StartedAt": "time",
+                "Status": "SUCCEEDED",
+                "StatusReason": "Essential container in task exited",
+                "StoppedAt": "time",
+                "Tags": {
+                  "resourceArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>"
+                },
+                "Timeout": {
+                  "AttemptDurationSeconds": 300
+                }
+              },
+              "outputDetails": {
+                "truncated": false
+              }
+            },
+            "id": 8,
+            "previousEventId": 7,
+            "timestamp": "<datetime>",
+            "type": "ExecutionSucceeded"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/stepfunctions/test_batch_integration.py::TestBatchIntegration::test_batch_invalid": {
+    "recorded-date": "15-07-2024, 11:32:23",
+    "recorded-content": {
+      "get_execution_history": {
+        "events": [
+          {
+            "executionStartedEventDetails": {
+              "input": {},
+              "inputDetails": {
+                "truncated": false
+              },
+              "roleArn": "<role-arn:1>"
+            },
+            "id": 1,
+            "previousEventId": 0,
+            "timestamp": "<datetime>",
+            "type": "ExecutionStarted"
+          },
+          {
+            "id": 2,
+            "previousEventId": 0,
+            "stateEnteredEventDetails": {
+              "input": {},
+              "inputDetails": {
+                "truncated": false
+              },
+              "name": "BatchTask"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateEntered"
+          },
+          {
+            "id": 3,
+            "previousEventId": 2,
+            "taskScheduledEventDetails": {
+              "parameters": {
+                "JobDefinition": "<job-definition:1>",
+                "JobName": "<job-name:1>",
+                "JobQueue": "<job-queue:1>",
+                "ContainerOverrides": {
+                  "Environment": [
+                    {
+                      "Name": "MANAGED_BY_AWS",
+                      "Value": "STARTED_BY_STEP_FUNCTIONS"
+                    }
+                  ]
+                }
+              },
+              "region": "<region>",
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskScheduled"
+          },
+          {
+            "id": 4,
+            "previousEventId": 3,
+            "taskStartedEventDetails": {
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStarted"
+          },
+          {
+            "id": 5,
+            "previousEventId": 4,
+            "taskFailedEventDetails": {
+              "cause": "Error executing request, Exception : Job name should match valid pattern, RequestId: <request_id> (Service: AWSBatch; Status Code: 400; Error Code: ClientException; Request ID: <request_id>; Proxy: null)",
+              "error": "Batch.ClientException",
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskFailed"
+          },
+          {
+            "executionFailedEventDetails": {
+              "cause": "Error executing request, Exception : Job name should match valid pattern, RequestId: <request_id> (Service: AWSBatch; Status Code: 400; Error Code: ClientException; Request ID: <request_id>; Proxy: null)",
+              "error": "Batch.ClientException"
+            },
+            "id": 6,
+            "previousEventId": 5,
+            "timestamp": "<datetime>",
+            "type": "ExecutionFailed"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/stepfunctions/test_batch_integration.py::TestBatchIntegration::test_batch_failure": {
+    "recorded-date": "15-07-2024, 11:38:42",
+    "recorded-content": {
+      "get_execution_history": {
+        "events": [
+          {
+            "executionStartedEventDetails": {
+              "input": {},
+              "inputDetails": {
+                "truncated": false
+              },
+              "roleArn": "<role-arn:1>"
+            },
+            "id": 1,
+            "previousEventId": 0,
+            "timestamp": "<datetime>",
+            "type": "ExecutionStarted"
+          },
+          {
+            "id": 2,
+            "previousEventId": 0,
+            "stateEnteredEventDetails": {
+              "input": {},
+              "inputDetails": {
+                "truncated": false
+              },
+              "name": "BatchTask"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateEntered"
+          },
+          {
+            "id": 3,
+            "previousEventId": 2,
+            "taskScheduledEventDetails": {
+              "parameters": {
+                "JobDefinition": "<job-definition:1>",
+                "JobName": "<job-name:1>",
+                "JobQueue": "<job-queue:1>",
+                "ContainerOverrides": {
+                  "Environment": [
+                    {
+                      "Name": "MANAGED_BY_AWS",
+                      "Value": "STARTED_BY_STEP_FUNCTIONS"
+                    }
+                  ]
+                }
+              },
+              "region": "<region>",
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskScheduled"
+          },
+          {
+            "id": 4,
+            "previousEventId": 3,
+            "taskStartedEventDetails": {
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStarted"
+          },
+          {
+            "id": 5,
+            "previousEventId": 4,
+            "taskSubmittedEventDetails": {
+              "output": {
+                "JobArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>",
+                "JobId": "<uuid:1>",
+                "JobName": "<job-name:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Access-Control-Expose-Headers": [
+                      "X-amzn-errortype,X-amzn-requestid,X-amzn-errormessage,X-amzn-trace-id,X-amz-apigw-id,date"
+                    ],
+                    "x-amz-apigw-id": "x-amz-apigw-id",
+                    "Access-Control-Allow-Origin": [
+                      "*"
+                    ],
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:2>"
+                    ],
+                    "Content-Length": [
+                      "165"
+                    ],
+                    "Date": "date",
+                    "X-Amzn-Trace-Id": "X-Amzn-Trace-Id",
+                    "Content-Type": [
+                      "application/json"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Expose-Headers": "X-amzn-errortype,X-amzn-requestid,X-amzn-errormessage,X-amzn-trace-id,X-amz-apigw-id,date",
+                    "Connection": "keep-alive",
+                    "Content-Length": "165",
+                    "Content-Type": "application/json",
+                    "Date": "date",
+                    "x-amz-apigw-id": "x-amz-apigw-id",
+                    "x-amzn-RequestId": "<uuid:2>",
+                    "X-Amzn-Trace-Id": "X-Amzn-Trace-Id"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:2>"
+                }
+              },
+              "outputDetails": {
+                "truncated": false
+              },
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskSubmitted"
+          },
+          {
+            "id": 6,
+            "previousEventId": 5,
+            "taskFailedEventDetails": {
+              "cause": {
+                "Attempts": [
+                  {
+                    "Container": {
+                      "ExitCode": 1,
+                      "LogStreamName": "<log-stream-name:1>",
+                      "NetworkInterfaces": [
+                        {
+                          "AttachmentId": "<uuid:3>",
+                          "PrivateIpv4Address": "private-ipv4-address"
+                        }
+                      ],
+                      "TaskArn": "<task-arn:1>"
+                    },
+                    "StartedAt": "time",
+                    "StatusReason": "Essential container in task exited",
+                    "StoppedAt": "time"
+                  }
+                ],
+                "Container": {
+                  "Command": [
+                    "bash",
+                    "-c",
+                    "exit 1"
+                  ],
+                  "Environment": [
+                    {
+                      "Name": "MANAGED_BY_AWS",
+                      "Value": "STARTED_BY_STEP_FUNCTIONS"
+                    }
+                  ],
+                  "ExecutionRoleArn": "<execution-role-arn:1>",
+                  "ExitCode": 1,
+                  "FargatePlatformConfiguration": {
+                    "PlatformVersion": "LATEST"
+                  },
+                  "Image": "amazonlinux",
+                  "LogStreamName": "<log-stream-name:1>",
+                  "MountPoints": [],
+                  "NetworkConfiguration": {
+                    "AssignPublicIp": "DISABLED"
+                  },
+                  "NetworkInterfaces": [
+                    {
+                      "AttachmentId": "<uuid:3>",
+                      "PrivateIpv4Address": "private-ipv4-address"
+                    }
+                  ],
+                  "ReadonlyRootFilesystem": false,
+                  "ResourceRequirements": [
+                    {
+                      "Type": "MEMORY",
+                      "Value": "1024"
+                    },
+                    {
+                      "Type": "VCPU",
+                      "Value": "0.5"
+                    }
+                  ],
+                  "RuntimePlatform": {
+                    "CpuArchitecture": "X86_64",
+                    "OperatingSystemFamily": "LINUX"
+                  },
+                  "Secrets": [],
+                  "TaskArn": "<task-arn:1>",
+                  "Ulimits": [],
+                  "Volumes": []
+                },
+                "CreatedAt": "time",
+                "DependsOn": [],
+                "EksAttempts": [],
+                "JobArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>",
+                "JobDefinition": "<job-definition:1>",
+                "JobId": "<uuid:1>",
+                "JobName": "<job-name:1>",
+                "JobQueue": "<job-queue:1>",
+                "Parameters": {},
+                "PlatformCapabilities": [
+                  "FARGATE"
+                ],
+                "PropagateTags": false,
+                "StartedAt": "time",
+                "Status": "FAILED",
+                "StatusReason": "Essential container in task exited",
+                "StoppedAt": "time",
+                "Tags": {
+                  "resourceArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>"
+                },
+                "Timeout": {
+                  "AttemptDurationSeconds": 300
+                }
+              },
+              "error": "States.TaskFailed",
+              "resource": "submitJob.sync",
+              "resourceType": "batch"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskFailed"
+          },
+          {
+            "executionFailedEventDetails": {
+              "cause": {
+                "Attempts": [
+                  {
+                    "Container": {
+                      "ExitCode": 1,
+                      "LogStreamName": "<log-stream-name:1>",
+                      "NetworkInterfaces": [
+                        {
+                          "AttachmentId": "<uuid:3>",
+                          "PrivateIpv4Address": "private-ipv4-address"
+                        }
+                      ],
+                      "TaskArn": "<task-arn:1>"
+                    },
+                    "StartedAt": "time",
+                    "StatusReason": "Essential container in task exited",
+                    "StoppedAt": "time"
+                  }
+                ],
+                "Container": {
+                  "Command": [
+                    "bash",
+                    "-c",
+                    "exit 1"
+                  ],
+                  "Environment": [
+                    {
+                      "Name": "MANAGED_BY_AWS",
+                      "Value": "STARTED_BY_STEP_FUNCTIONS"
+                    }
+                  ],
+                  "ExecutionRoleArn": "<execution-role-arn:1>",
+                  "ExitCode": 1,
+                  "FargatePlatformConfiguration": {
+                    "PlatformVersion": "LATEST"
+                  },
+                  "Image": "amazonlinux",
+                  "LogStreamName": "<log-stream-name:1>",
+                  "MountPoints": [],
+                  "NetworkConfiguration": {
+                    "AssignPublicIp": "DISABLED"
+                  },
+                  "NetworkInterfaces": [
+                    {
+                      "AttachmentId": "<uuid:3>",
+                      "PrivateIpv4Address": "private-ipv4-address"
+                    }
+                  ],
+                  "ReadonlyRootFilesystem": false,
+                  "ResourceRequirements": [
+                    {
+                      "Type": "MEMORY",
+                      "Value": "1024"
+                    },
+                    {
+                      "Type": "VCPU",
+                      "Value": "0.5"
+                    }
+                  ],
+                  "RuntimePlatform": {
+                    "CpuArchitecture": "X86_64",
+                    "OperatingSystemFamily": "LINUX"
+                  },
+                  "Secrets": [],
+                  "TaskArn": "<task-arn:1>",
+                  "Ulimits": [],
+                  "Volumes": []
+                },
+                "CreatedAt": "time",
+                "DependsOn": [],
+                "EksAttempts": [],
+                "JobArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>",
+                "JobDefinition": "<job-definition:1>",
+                "JobId": "<uuid:1>",
+                "JobName": "<job-name:1>",
+                "JobQueue": "<job-queue:1>",
+                "Parameters": {},
+                "PlatformCapabilities": [
+                  "FARGATE"
+                ],
+                "PropagateTags": false,
+                "StartedAt": "time",
+                "Status": "FAILED",
+                "StatusReason": "Essential container in task exited",
+                "StoppedAt": "time",
+                "Tags": {
+                  "resourceArn": "arn:<partition>:batch:<region>:111111111111:job/<uuid:1>"
+                },
+                "Timeout": {
+                  "AttemptDurationSeconds": 300
+                }
+              },
+              "error": "States.TaskFailed"
+            },
+            "id": 7,
+            "previousEventId": 6,
+            "timestamp": "<datetime>",
+            "type": "ExecutionFailed"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

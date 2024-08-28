@@ -1,0 +1,396 @@
+{
+  "tests/aws/services/iam/test_iam_abac.py::TestIAMABAC::test_s3_iam_principal_tag_on_session": {
+    "recorded-date": "14-02-2024, 13:30:39",
+    "recorded-content": {
+      "denied-no-tags": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "denied-wrong-tag": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "allowed-right-tag": {
+        "EncodingType": "url",
+        "IsTruncated": false,
+        "KeyCount": 0,
+        "MaxKeys": 1000,
+        "Name": "<name:1>",
+        "Prefix": "",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_abac.py::TestIAMABAC::test_s3_iam_principal_tag_on_role": {
+    "recorded-date": "15-02-2024, 14:29:46",
+    "recorded-content": {
+      "denied-wrong-tag-override": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "allowed-right-tag": {
+        "EncodingType": "url",
+        "IsTruncated": false,
+        "KeyCount": 0,
+        "MaxKeys": 1000,
+        "Name": "<name:1>",
+        "Prefix": "",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_abac.py::TestIAMABAC::test_secretsmanager_tags_on_resource_and_principal": {
+    "recorded-date": "14-02-2024, 13:31:05",
+    "recorded-content": {
+      "create-role-result": {
+        "Role": {
+          "Arn": "arn:<partition>:iam::111111111111:role/<role-name:1>",
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": [
+                  "sts:AssumeRole",
+                  "sts:TagSession"
+                ],
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": "111111111111"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "CreateDate": "datetime",
+          "Path": "/",
+          "RoleId": "<role-id:1>",
+          "RoleName": "<role-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "denied-no-tag": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": "User: arn:<partition>:sts::111111111111:assumed-role/<role-name:1>/Session1 is not authorized to perform: secretsmanager:GetSecretValue on resource: arn:<partition>:secretsmanager:<region>:111111111111:secret:<name:1><ArnPart-0idx> because no identity-based policy allows the secretsmanager:GetSecretValue action"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "denied-wrong-tag": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": "User: arn:<partition>:sts::111111111111:assumed-role/<role-name:1>/Session2 is not authorized to perform: secretsmanager:GetSecretValue on resource: arn:<partition>:secretsmanager:<region>:111111111111:secret:<name:1><ArnPart-0idx> because no identity-based policy allows the secretsmanager:GetSecretValue action"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "allowed-right-tag": {
+        "ARN": "arn:<partition>:secretsmanager:<region>:111111111111:secret:<name:1><ArnPart-0idx>",
+        "CreatedDate": "datetime",
+        "Name": "<name:1>",
+        "SecretString": "test",
+        "VersionId": "<uuid:1>",
+        "VersionStages": [
+          "AWSCURRENT"
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_abac.py::TestIAMABAC::test_s3_iam_principal_tag_in_policy_resource_arn": {
+    "recorded-date": "14-02-2024, 14:56:03",
+    "recorded-content": {
+      "denied-wrong-bucket-tag": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "denied-wrong-key-tag": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "denied-wrong-leading-key": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "denied-wrong-leading-key-right-key-nested": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_abac.py::TestIAMABAC::test_s3_iam_principal_tag_list_bucket_prefix": {
+    "recorded-date": "14-02-2024, 15:04:00",
+    "recorded-content": {
+      "denied-wrong-key-tag": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "denied-no-prefix": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "allowed-list-objects": {
+        "Contents": [
+          {
+            "ETag": "\"86c0460e2f881850a75eac2f5e0b7d07\"",
+            "Key": "right-key/some-file",
+            "LastModified": "datetime",
+            "Size": 11,
+            "StorageClass": "STANDARD"
+          }
+        ],
+        "EncodingType": "url",
+        "IsTruncated": false,
+        "KeyCount": 1,
+        "MaxKeys": 1000,
+        "Name": "<name:1>",
+        "Prefix": "right-key",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_abac.py::TestIAMABAC::test_dynamodb_leading_keys_tags": {
+    "recorded-date": "19-02-2024, 15:02:14",
+    "recorded-content": {
+      "create-role-result": {
+        "Role": {
+          "Arn": "arn:<partition>:iam::111111111111:role/<role-name:1>",
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": [
+                  "sts:AssumeRole",
+                  "sts:TagSession"
+                ],
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": "111111111111"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "CreateDate": "datetime",
+          "Path": "/",
+          "RoleId": "<role-id:1>",
+          "RoleName": "<role-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-table-result": {
+        "TableDescription": {
+          "AttributeDefinitions": [
+            {
+              "AttributeName": "TestAttribute",
+              "AttributeType": "S"
+            }
+          ],
+          "BillingModeSummary": {
+            "BillingMode": "PAY_PER_REQUEST"
+          },
+          "CreationDateTime": "datetime",
+          "DeletionProtectionEnabled": false,
+          "ItemCount": 0,
+          "KeySchema": [
+            {
+              "AttributeName": "TestAttribute",
+              "KeyType": "HASH"
+            }
+          ],
+          "ProvisionedThroughput": {
+            "NumberOfDecreasesToday": 0,
+            "ReadCapacityUnits": 0,
+            "WriteCapacityUnits": 0
+          },
+          "TableArn": "arn:<partition>:dynamodb:<region>:111111111111:table/<table-name:1>",
+          "TableId": "<uuid:1>",
+          "TableName": "<table-name:1>",
+          "TableSizeBytes": 0,
+          "TableStatus": "CREATING"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "denied-wrong-key": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": "User: arn:<partition>:sts::111111111111:assumed-role/<role-name:1>/Session1 is not authorized to perform: dynamodb:PutItem on resource: arn:<partition>:dynamodb:<region>:111111111111:table/<table-name:1> because no identity-based policy allows the dynamodb:PutItem action"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "right-key": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "right-key-prefix": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "denied-batch-write-one-wrong-key": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": "User: arn:<partition>:sts::111111111111:assumed-role/<role-name:1>/Session1 is not authorized to perform: dynamodb:BatchWriteItem on resource: arn:<partition>:dynamodb:<region>:111111111111:table/<table-name:1> because no identity-based policy allows the dynamodb:BatchWriteItem action"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "right-batch-write": {
+        "UnprocessedItems": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "denied-batch-get-one-wrong-key": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": "User: arn:<partition>:sts::111111111111:assumed-role/<role-name:1>/Session1 is not authorized to perform: dynamodb:BatchGetItem on resource: arn:<partition>:dynamodb:<region>:111111111111:table/<table-name:1> because no identity-based policy allows the dynamodb:BatchGetItem action"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "right-batch-get": {
+        "Responses": {
+          "<table-name:1>": [
+            {
+              "AdditionalAttribute": {
+                "S": "SomeKey"
+              },
+              "TestAttribute": {
+                "S": "RightKey"
+              }
+            },
+            {
+              "AdditionalAttribute": {
+                "S": "SomeKey"
+              },
+              "TestAttribute": {
+                "S": "RightKey-suffix1"
+              }
+            }
+          ]
+        },
+        "UnprocessedKeys": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_abac.py::TestIAMABAC::test_s3_iam_principal_tag_on_session_independence": {
+    "recorded-date": "15-02-2024, 16:27:27",
+    "recorded-content": {
+      "allowed-right-tag": {
+        "EncodingType": "url",
+        "IsTruncated": false,
+        "KeyCount": 0,
+        "MaxKeys": 1000,
+        "Name": "<name:1>",
+        "Prefix": "",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "denied-wrong-tag": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      }
+    }
+  }
+}

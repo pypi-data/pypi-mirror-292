@@ -1,0 +1,172 @@
+Resources:
+  testpool783EBD50:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_phone_number
+            Priority: 1
+          - Name: verified_email
+            Priority: 2
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true
+      EmailVerificationMessage: {{ "The verification code to your new account is {####}" }}
+      EmailVerificationSubject: Verify your new account
+      SmsVerificationMessage: {{ "The verification code to your new account is {####}" }}
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_CODE
+        EmailMessage: {{ "The verification code to your new account is {####}" }}
+        EmailSubject: Verify your new account
+        SmsMessage: {{ "The verification code to your new account is {####}" }}
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+  testpoolUserPoolAuthorizerClient4B499B18:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId:
+        Ref: testpool783EBD50
+      AllowedOAuthFlows:
+        - implicit
+        - code
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthScopes:
+        - profile
+        - phone
+        - email
+        - openid
+        - aws.cognito.signin.user.admin
+      CallbackURLs:
+        - https://example.com
+      SupportedIdentityProviders:
+        - COGNITO
+  fnServiceRole5D180AFD:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  fn5FF616E3:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+
+          def handler(event, ctx):
+              return {"statusCode": 200, "body": "hello"}
+      Role:
+        Fn::GetAtt:
+          - fnServiceRole5D180AFD
+          - Arn
+      Handler: index.handler
+      Runtime: python3.8
+    DependsOn:
+      - fnServiceRole5D180AFD
+  apiC8550315:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: api
+      ProtocolType: HTTP
+  apiDefaultStage04B80AC9:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId:
+        Ref: apiC8550315
+      StageName: $default
+      AutoDeploy: true
+  apiANYhellohelloIntegration9568BB80:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId:
+        Ref: apiC8550315
+      IntegrationType: AWS_PROXY
+      IntegrationUri:
+        Fn::GetAtt:
+          - fn5FF616E3
+          - Arn
+      PayloadFormatVersion: "2.0"
+  apiANYhellohelloIntegrationPermissionCFE4C127:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - fn5FF616E3
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: apiC8550315
+            - /*/*/hello
+  apiANYhello59ACC4D1:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: apiC8550315
+      RouteKey: ANY /hello
+      AuthorizationType: {{ "JWT" if use_authorizer else "NONE" }}
+      {% if use_authorizer %}
+      AuthorizerId:
+        Ref: apipoolAuthorizer8A16453F
+      {% endif %}
+      Target:
+        Fn::Join:
+          - ""
+          - - integrations/
+            - Ref: apiANYhellohelloIntegration9568BB80
+  {% if use_authorizer %}
+  apipoolAuthorizer8A16453F:
+    Type: AWS::ApiGatewayV2::Authorizer
+    Properties:
+      ApiId:
+        Ref: apiC8550315
+      AuthorizerType: JWT
+      Name: poolAuthorizer
+      IdentitySource:
+        - $request.header.Authorization
+      JwtConfiguration:
+        Audience:
+          - Ref: testpoolUserPoolAuthorizerClient4B499B18
+        Issuer:
+          Fn::Join:
+            - ""
+            - - https://cognito-idp.
+              - Ref: AWS::Region
+              - .amazonaws.com/
+              - Ref: testpool783EBD50
+  {% endif %}
+Outputs:
+  CallFnName:
+    Value:
+      Ref: fn5FF616E3
+  apiOutput:
+    Value:
+      Fn::Join:
+        - /
+        - - Fn::GetAtt:
+              - apiC8550315
+              - ApiEndpoint
+          - hello
+  routeIdOutput:
+    Value:
+      Ref: apiANYhello59ACC4D1
+  apiIdOutput:
+    Value:
+      Ref: apiC8550315

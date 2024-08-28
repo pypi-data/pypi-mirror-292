@@ -1,0 +1,42 @@
+{
+  "tests/aws/scenario/rds_neptune_docdb/test_rds_neptune_docdb.py::TestRdsNeptuneDocDB::test_rds_lambda": {
+    "recorded-date": "18-09-2023, 15:55:50",
+    "recorded-content": {
+      "CREATE": {
+        "results": "ok",
+        "status": "SUCCESS"
+      },
+      "INSERT": {
+        "results": "ok",
+        "status": "SUCCESS"
+      },
+      "SELECT": {
+        "results": [
+          [
+            1,
+            "How to Anything",
+            "Jane Doe"
+          ],
+          [
+            2,
+            "Writing effective Tests",
+            "John Doe"
+          ]
+        ],
+        "status": "SUCCESS"
+      }
+    }
+  },
+  "tests/aws/scenario/rds_neptune_docdb/test_rds_neptune_docdb.py::TestRdsNeptuneDocDB::test_docdb_connection": {
+    "recorded-date": "06-11-2023, 20:43:21",
+    "recorded-content": {
+      "docdb-query": {
+        "body": {
+          "_id": "id",
+          "key": "value"
+        },
+        "statusCode": 200
+      }
+    }
+  }
+}

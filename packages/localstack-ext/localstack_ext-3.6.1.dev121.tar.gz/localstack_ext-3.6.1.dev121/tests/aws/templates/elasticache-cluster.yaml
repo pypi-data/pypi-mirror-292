@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ElastiCache Stack
+Parameters:
+  ClusterNameParam:
+    Type: String
+  ReplicationGroupIdParam:
+    Type: String
+
+Resources:
+  ElasticacheSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VPC
+      GroupDescription: ElastiCache Security Group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '11211'
+          ToPort: '11211'
+  ElasticacheCluster:
+    Type: AWS::ElastiCache::CacheCluster
+    Properties:
+      ClusterName: !Ref ClusterNameParam
+      AutoMinorVersionUpgrade: 'true'
+      Engine: redis
+      CacheNodeType: cache.t2.micro
+      NumCacheNodes: '1'
+      CacheSubnetGroupName: !Ref ClusterSubnetGroup
+      VpcSecurityGroupIds:
+        - Fn::GetAtt:
+            - ElasticacheSecurityGroup
+            - GroupId
+  ClusterParamsGroup:
+    Type: AWS::ElastiCache::ParameterGroup
+    Properties:
+      CacheParameterGroupFamily: memcached1.4
+      Description: test params 1
+      Properties:
+        cas_disabled: "1"
+      Tags:
+        - Key: k1
+          Value: v1
+  ClusterSecurityGroup:
+    Type: AWS::ElastiCache::SecurityGroup
+    Properties:
+      Description: test group 123
+      Tags:
+        - Key: k1
+          Value: v1
+  ClusterReplicationGroup:
+    Type: AWS::ElastiCache::ReplicationGroup
+    Properties:
+      ReplicationGroupId: !Ref ReplicationGroupIdParam
+      ReplicationGroupDescription: test repl group 123
+      Engine: redis
+      CacheNodeType: cache.t2.micro
+      NumCacheClusters: '3'
+      CacheSubnetGroupName: !Ref ClusterSubnetGroup
+      Tags:
+        - Key: k1
+          Value: v1
+  ClusterSubnetGroup:
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties:
+      Description: test subnet group 123
+      SubnetIds: [!Ref Subnet]
+      Tags:
+        - Key: k1
+          Value: v1
+
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+  Subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: us-east-1a
+      CidrBlock: 10.0.0.0/24
+      MapPublicIpOnLaunch: false
+
+Outputs:
+  ClusterAddress:
+    Value: !GetAtt ElasticacheCluster.RedisEndpoint.Address
+  ClusterPort:
+    Value: !GetAtt ElasticacheCluster.RedisEndpoint.Port
+  # TODO: investigate for AWS::ElastiCache::ReplicationGroup if/why this works with both PrimaryEndPoint and PrimaryEndpoint
+  ReplicationGroupAddress:
+    Value: !GetAtt ClusterReplicationGroup.PrimaryEndPoint.Address
+  ReplicationGroupPort:
+    Value: !GetAtt ClusterReplicationGroup.PrimaryEndPoint.Port

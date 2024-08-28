@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  PublicDNS:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: somedomain.com
+      HostedZoneConfig:
+        Comment: Test comment
+Outputs:
+  HostedZoneId:
+    Value: !Ref PublicDNS

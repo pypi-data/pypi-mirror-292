@@ -1,0 +1,44 @@
+Description: "AWS Glue Job Test"
+
+Parameters:
+  JobName:
+    Type: String
+
+Resources:
+  MyJobRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "glue.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        -
+          PolicyName: "accessToBucket"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action: "s3:*"
+                Resource: "arn:aws:s3:::*"
+
+  MyJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: glueetl
+        ScriptLocation: "s3://empty-bucket/script"
+      Name: !Ref JobName
+      Role: !Ref MyJobRole
+
+Outputs:
+  JobRef:
+    Value: !Ref MyJob

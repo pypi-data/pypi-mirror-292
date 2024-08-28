@@ -1,0 +1,85 @@
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: VPC
+
+  Subnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: us-east-1a
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: Subnet1
+
+  Subnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: us-east-1b
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: Subnet2
+
+  IGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: IGW
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref IGW
+
+  NLB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      IpAddressType: ipv4
+      Scheme: internet-facing
+      Type: network
+      Subnets:
+        - !Ref Subnet1
+        - !Ref Subnet2
+      Tags:
+        - Key: Name
+          Value: NLB
+
+  VPCEndpoint:
+    Type: AWS::EC2::VPCEndpointService
+    Properties:
+      NetworkLoadBalancerArns:
+        - !Ref NLB
+
+
+Outputs:
+  VPCId:
+    Description: The ID of the VPC
+    Value: !Ref VPC
+
+  SubnetId1:
+    Description: The ID of the first subnet
+    Value: !Ref Subnet1
+
+  SubnetId2:
+    Description: The ID of the second subnet
+    Value: !Ref Subnet2
+
+  NLBArn:
+    Description: The ARN of the Network Load Balancer
+    Value: !Ref NLB
+
+  VPCEndpointId:
+    Description: The ID of the VPC Endpoint
+    Value: !Ref VPCEndpoint

@@ -1,0 +1,740 @@
+{
+  "tests/aws/services/apigatewayv2/test_apigatewayv2_crud.py::TestDeploymentCrud::test_get_deployment": {
+    "recorded-date": "19-08-2024, 23:55:14",
+    "recorded-content": {
+      "api-id": "<api-id:1>",
+      "get-deployments-invalid-api": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid API identifier specified 111111111111:invalidId"
+        },
+        "Message": "Invalid API identifier specified 111111111111:invalidId",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "get-deployment-invalid-api": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid Deployment identifier specified"
+        },
+        "Message": "Invalid Deployment identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "get-deployment-invalid-deployment": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid Deployment identifier specified"
+        },
+        "Message": "Invalid Deployment identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "get-deployments": {
+        "Items": [
+          {
+            "AutoDeployed": false,
+            "CreatedDate": "datetime",
+            "DeploymentId": "<deployment-id:1>",
+            "DeploymentStatus": "DEPLOYED"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-deployment": {
+        "AutoDeployed": false,
+        "CreatedDate": "datetime",
+        "DeploymentId": "<deployment-id:1>",
+        "DeploymentStatus": "DEPLOYED",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigatewayv2/test_apigatewayv2_crud.py::TestDeploymentCrud::test_create_deployment": {
+    "recorded-date": "20-08-2024, 02:28:13",
+    "recorded-content": {
+      "api-id": "<api-id:1>",
+      "create_auto-stage": {
+        "AutoDeploy": true,
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "DeploymentId": "<deployment-id:1>",
+        "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID '<deployment-id:1>'",
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "auto",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "stages-before-deployments": [
+        {
+          "AutoDeploy": true,
+          "CreatedDate": "datetime",
+          "DefaultRouteSettings": {
+            "DetailedMetricsEnabled": false
+          },
+          "DeploymentId": "<deployment-id:1>",
+          "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID '<deployment-id:1>'",
+          "LastUpdatedDate": "datetime",
+          "RouteSettings": {},
+          "StageName": "auto",
+          "StageVariables": {},
+          "Tags": {}
+        },
+        {
+          "CreatedDate": "datetime",
+          "DefaultRouteSettings": {
+            "DetailedMetricsEnabled": false
+          },
+          "LastUpdatedDate": "datetime",
+          "RouteSettings": {},
+          "StageName": "stage",
+          "StageVariables": {},
+          "Tags": {}
+        }
+      ],
+      "create-invalid-api-id": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid API identifier specified 111111111111:invalidId"
+        },
+        "Message": "Invalid API identifier specified 111111111111:invalidId",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "create-with-invalid-stage": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Stage stage1 does not exist. StageName specified on a CreateDeployment request must exist so the stage can be updated with the new deployment."
+        },
+        "Message": "Stage stage1 does not exist. StageName specified on a CreateDeployment request must exist so the stage can be updated with the new deployment.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-with-no-stage": {
+        "AutoDeployed": false,
+        "CreatedDate": "datetime",
+        "DeploymentId": "<deployment-id:2>",
+        "DeploymentStatus": "DEPLOYED",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-with-stage": {
+        "AutoDeployed": false,
+        "CreatedDate": "datetime",
+        "DeploymentId": "<deployment-id:3>",
+        "DeploymentStatus": "DEPLOYED",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "stages-after-named-stage-deployment": [
+        {
+          "AutoDeploy": true,
+          "CreatedDate": "datetime",
+          "DefaultRouteSettings": {
+            "DetailedMetricsEnabled": false
+          },
+          "DeploymentId": "<deployment-id:1>",
+          "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID '<deployment-id:1>'",
+          "LastUpdatedDate": "datetime",
+          "RouteSettings": {},
+          "StageName": "auto",
+          "StageVariables": {},
+          "Tags": {}
+        },
+        {
+          "CreatedDate": "datetime",
+          "DefaultRouteSettings": {
+            "DetailedMetricsEnabled": false
+          },
+          "DeploymentId": "<deployment-id:3>",
+          "LastUpdatedDate": "datetime",
+          "RouteSettings": {},
+          "StageName": "stage",
+          "StageVariables": {},
+          "Tags": {}
+        }
+      ],
+      "create-with-auto-deploy-stage": {
+        "AutoDeployed": false,
+        "CreatedDate": "datetime",
+        "DeploymentId": "<deployment-id:4>",
+        "DeploymentStatus": "FAILED",
+        "DeploymentStatusMessage": {
+          "message": "Deployment ID cannot be set on this stage 111111111111:<api-id:1> because AutoDeploy is enabled."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "get-stages-after": [
+        {
+          "AutoDeploy": true,
+          "CreatedDate": "datetime",
+          "DefaultRouteSettings": {
+            "DetailedMetricsEnabled": false
+          },
+          "DeploymentId": "<deployment-id:1>",
+          "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID '<deployment-id:1>'",
+          "LastUpdatedDate": "datetime",
+          "RouteSettings": {},
+          "StageName": "auto",
+          "StageVariables": {},
+          "Tags": {}
+        },
+        {
+          "CreatedDate": "datetime",
+          "DefaultRouteSettings": {
+            "DetailedMetricsEnabled": false
+          },
+          "DeploymentId": "<deployment-id:3>",
+          "LastUpdatedDate": "datetime",
+          "RouteSettings": {},
+          "StageName": "stage",
+          "StageVariables": {},
+          "Tags": {}
+        }
+      ]
+    }
+  },
+  "tests/aws/services/apigatewayv2/test_apigatewayv2_crud.py::TestDeploymentCrud::test_update_deployment": {
+    "recorded-date": "19-08-2024, 23:55:25",
+    "recorded-content": {
+      "api-id": "<api-id:1>",
+      "create-with-no-stage": {
+        "AutoDeployed": false,
+        "CreatedDate": "datetime",
+        "DeploymentId": "<deployment-id:1>",
+        "DeploymentStatus": "DEPLOYED",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "update-with-invalid-api": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid Deployment identifier specified"
+        },
+        "Message": "Invalid Deployment identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "update-with-invalid-deployment": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid Deployment identifier specified"
+        },
+        "Message": "Invalid Deployment identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "update-with-no-description": {
+        "AutoDeployed": false,
+        "CreatedDate": "datetime",
+        "DeploymentId": "<deployment-id:1>",
+        "DeploymentStatus": "DEPLOYED",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "update-deployment-with-description": {
+        "AutoDeployed": false,
+        "CreatedDate": "datetime",
+        "DeploymentId": "<deployment-id:1>",
+        "DeploymentStatus": "DEPLOYED",
+        "Description": "description",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "update-override-description": {
+        "AutoDeployed": false,
+        "CreatedDate": "datetime",
+        "DeploymentId": "<deployment-id:1>",
+        "DeploymentStatus": "DEPLOYED",
+        "Description": "description",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigatewayv2/test_apigatewayv2_crud.py::TestDeploymentCrud::test_delete_deployment": {
+    "recorded-date": "19-08-2024, 23:55:30",
+    "recorded-content": {
+      "api-id": "<api-id:1>",
+      "create-deployment": {
+        "AutoDeployed": false,
+        "CreatedDate": "datetime",
+        "DeploymentId": "<deployment-id:1>",
+        "DeploymentStatus": "DEPLOYED",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "delete-invalid-api-id": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid API identifier specified 111111111111:invalidID"
+        },
+        "Message": "Invalid API identifier specified 111111111111:invalidID",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "delete-invalid-deployment-id": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid Deployment identifier specified"
+        },
+        "Message": "Invalid Deployment identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "delete-with-stage-still-pointing": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Active stages pointing to this deployment must be moved or deleted"
+        },
+        "Message": "Active stages pointing to this deployment must be moved or deleted",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "delete-deployment": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 204
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigatewayv2/test_apigatewayv2_crud.py::TestStageCrud::test_get_stage": {
+    "recorded-date": "20-08-2024, 00:09:22",
+    "recorded-content": {
+      "api-id": "<api-id:1>",
+      "get-stages-invalid-api": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid API identifier specified 111111111111:invalidID"
+        },
+        "Message": "Invalid API identifier specified 111111111111:invalidID",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "get-stage-invalid-api": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid API identifier specified 111111111111:invalidID"
+        },
+        "Message": "Invalid API identifier specified 111111111111:invalidID",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "get-stage-invalid-stage-name": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid stage identifier specified"
+        },
+        "Message": "Invalid stage identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "get-stages": {
+        "Items": [
+          {
+            "CreatedDate": "datetime",
+            "DefaultRouteSettings": {
+              "DetailedMetricsEnabled": false
+            },
+            "LastUpdatedDate": "datetime",
+            "RouteSettings": {},
+            "StageName": "stage",
+            "StageVariables": {},
+            "Tags": {}
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-stage": {
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "stage",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigatewayv2/test_apigatewayv2_crud.py::TestStageCrud::test_create_stage": {
+    "recorded-date": "20-08-2024, 01:07:59",
+    "recorded-content": {
+      "api-id": "<api-id:1>",
+      "create-stage-invalid-api": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid API identifier specified 111111111111:invalid"
+        },
+        "Message": "Invalid API identifier specified 111111111111:invalid",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "create-stage-empty-string": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Stage name must be non-empty"
+        },
+        "Message": "Stage name must be non-empty",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-stage-with-forward-slashes": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Stage name cannot contain slashes"
+        },
+        "Message": "Stage name cannot contain slashes",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-stage-with-special-char": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Stage name only allows a-zA-Z0-9_"
+        },
+        "Message": "Stage name only allows a-zA-Z0-9_",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-stage": {
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "stage",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-stage-with-same-name": {
+        "Error": {
+          "Code": "ConflictException",
+          "Message": "Stage already exists"
+        },
+        "Message": "Stage already exists",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 409
+        }
+      },
+      "create-default-stage": {
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "$default",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-stage-auto": {
+        "AutoDeploy": true,
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "auto",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "get-stage-auto": {
+        "AutoDeploy": true,
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "DeploymentId": "<deployment-id:1>",
+        "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID '<deployment-id:1>'",
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "auto",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-stage-from-existing": {
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "DeploymentId": "<deployment-id:1>",
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "from-existing",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "auto-deploy-stage": {
+        "AutoDeploy": true,
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "DeploymentId": "<deployment-id:2>",
+        "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID '<deployment-id:2>'",
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "auto",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigatewayv2/test_apigatewayv2_crud.py::TestStageCrud::test_update_stage": {
+    "recorded-date": "20-08-2024, 01:54:21",
+    "recorded-content": {
+      "api-id": "<api-id:1>",
+      "update-with-invalid-api": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid API identifier specified 111111111111:invalidId"
+        },
+        "Message": "Invalid API identifier specified 111111111111:invalidId",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "update-with-invalid-stage-name": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid stage identifier specified"
+        },
+        "Message": "Invalid stage identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "update-stage": {
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "Description": "description",
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "stage",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-stage-deployment": {
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "DeploymentId": "<deployment-id:1>",
+        "Description": "description",
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "stage",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-auto-deploy-and-deployment-id": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Deployment ID cannot be set on this stage 111111111111:<api-id:1> because AutoDeploy is enabled."
+        },
+        "Message": "Deployment ID cannot be set on this stage 111111111111:<api-id:1> because AutoDeploy is enabled.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "get-stage-after-auto-deploy-update-fail": {
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "DeploymentId": "<deployment-id:1>",
+        "Description": "description",
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "stage",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-stage-auto": {
+        "AutoDeploy": true,
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "DeploymentId": "<deployment-id:1>",
+        "Description": "description",
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "stage",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-stage-deployment-auto-deploy": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Deployment ID cannot be set on this stage 111111111111:<api-id:1> because AutoDeploy is enabled."
+        },
+        "Message": "Deployment ID cannot be set on this stage 111111111111:<api-id:1> because AutoDeploy is enabled.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigatewayv2/test_apigatewayv2_crud.py::TestStageCrud::test_delete_stage": {
+    "recorded-date": "20-08-2024, 00:47:17",
+    "recorded-content": {
+      "api-id": "<api-id:1>",
+      "delete-stage-invalid-api": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid API identifier specified 111111111111:invalidId"
+        },
+        "Message": "Invalid API identifier specified 111111111111:invalidId",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "delete-stage-invalid-name": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid stage identifier specified"
+        },
+        "Message": "Invalid stage identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "delete-stage": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 204
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigatewayv2/test_apigatewayv2_crud.py::TestStageCrud::test_auto_deploy_stage_http": {
+    "recorded-date": "21-08-2024, 00:10:26",
+    "recorded-content": {}
+  }
+}

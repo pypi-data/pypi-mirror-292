@@ -1,0 +1,164 @@
+{
+  "Resources": {
+    "vpc": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true
+      }
+    },
+    "Subnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            [
+              {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Fn::GetAZs": ""
+                  }
+                ]
+              },
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Fn::GetAZs": ""
+                  }
+                ]
+              }
+            ]
+          ]
+        },
+        "CidrBlock": "10.0.0.0/24",
+        "MapPublicIpOnLaunch": false,
+        "VpcId": {
+          "Ref": "vpc"
+        }
+      }
+    },
+    "Ec2SecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "security group description",
+        "SecurityGroupIngress": [
+          {
+            "FromPort": 11211,
+            "IpProtocol": "tcp",
+            "ToPort": 11211
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpc"
+        }
+      }
+    },
+    "SubnetGroup": {
+      "Type": "AWS::ElastiCache::SubnetGroup",
+      "Properties": {
+        "Description": "subnet description",
+        "SubnetIds": [
+          {
+            "Ref": "Subnet"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "k1",
+            "Value": "v1"
+          }
+        ]
+      }
+    },
+    "SecurityGroup": {
+      "Type": "AWS::ElastiCache::SecurityGroup",
+      "Properties": {
+        "Description": "test group",
+        "Tags": [
+          {
+            "Key": "k1",
+            "Value": "v1"
+          }
+        ]
+      }
+    },
+    "CacheCluster": {
+      "Type": "AWS::ElastiCache::CacheCluster",
+      "Properties": {
+        "AutoMinorVersionUpgrade": true,
+        "CacheNodeType": "cache.t2.micro",
+        "CacheSubnetGroupName": {
+          "Ref": "SubnetGroup"
+        },
+        "Engine": "redis",
+        "NumCacheNodes": 1,
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "Ec2SecurityGroup",
+              "GroupId"
+            ]
+          }
+        ]
+      }
+    },
+    "ParameterGroup": {
+      "Type": "AWS::ElastiCache::ParameterGroup",
+      "Properties": {
+        "CacheParameterGroupFamily": "memcached1.4",
+        "Description": "test desc 1",
+        "Properties": {
+          "cas_disabled": "1"
+        },
+        "Tags": [
+          {
+            "Key": "k1",
+            "Value": "v1"
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "CacheClusterRef": {
+      "Value": {
+        "Ref": "CacheCluster"
+      }
+    },
+    "CacheClusterAttRedisEndpointAddress": {
+      "Value": {
+        "Fn::GetAtt": [
+          "CacheCluster",
+          "RedisEndpoint.Address"
+        ]
+      }
+    },
+    "CacheClusterAttRedisEndpointPort": {
+      "Value": {
+        "Fn::GetAtt": [
+          "CacheCluster",
+          "RedisEndpoint.Port"
+        ]
+      }
+    },
+    "SecurityGroupRef": {
+      "Value": {
+        "Ref": "SecurityGroup"
+      }
+    },
+    "ParameterGroupRef": {
+      "Value": {
+        "Ref": "ParameterGroup"
+      }
+    },
+    "SubnetGroupRef": {
+      "Value": {
+        "Ref": "SubnetGroup"
+      }
+    }
+  }
+}

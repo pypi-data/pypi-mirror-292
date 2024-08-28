@@ -1,0 +1,711 @@
+{
+  "tests/aws/services/lambda_/test_lambda.py::TestLambdaLayerBehavior::test_function_using_layer": {
+    "recorded-date": "27-02-2023, 17:28:14",
+    "recorded-content": {
+      "invocation-result-1": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "value": 123,
+          "layer": [
+            "/opt/",
+            "/opt/python",
+            "/opt/python/__init__.py",
+            "/opt/python/a",
+            "/opt/python/a/__init__.py",
+            "/opt/python/a/b",
+            "/opt/python/a/b/__init__.py",
+            "/opt/python/a/b/c",
+            "/opt/python/a/b/c/__init__.py",
+            "/opt/python/a/b/c/mylib.py"
+          ],
+          "import_location": "/opt/python/a/b/c/mylib.py"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invocation-result-2": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "value": 123,
+          "layer": [
+            "/opt/",
+            "/opt/python",
+            "/opt/python/__init__.py",
+            "/opt/python/a",
+            "/opt/python/a/__init__.py",
+            "/opt/python/a/b",
+            "/opt/python/a/b/__init__.py",
+            "/opt/python/a/b/c",
+            "/opt/python/a/b/c/__init__.py",
+            "/opt/python/a/b/c/mylib.py"
+          ],
+          "import_location": "/opt/python/a/b/c/mylib.py"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invocation-result-3": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "value": 123,
+          "layer": [
+            "/opt/",
+            "/opt/python",
+            "/opt/python/__init__.py",
+            "/opt/python/a",
+            "/opt/python/a/__init__.py",
+            "/opt/python/a/b",
+            "/opt/python/a/b/__init__.py",
+            "/opt/python/a/b/c",
+            "/opt/python/a/b/c/__init__.py",
+            "/opt/python/a/b/c/mylib.py"
+          ],
+          "import_location": "/opt/python/a/b/c/mylib.py"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invocation-result-4": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "value": 456,
+          "layer": [
+            "/opt/",
+            "/opt/python",
+            "/opt/python/__init__.py",
+            "/opt/python/a",
+            "/opt/python/a/__init__.py",
+            "/opt/python/a/b",
+            "/opt/python/a/b/__init__.py",
+            "/opt/python/a/b/c",
+            "/opt/python/a/b/c/__init__.py",
+            "/opt/python/a/b/c/mylib.py"
+          ],
+          "import_location": "/opt/python/a/b/c/mylib.py"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda.py::TestLambdaLayerBehavior::test_function_using_layer_overriding_runtime": {
+    "recorded-date": "27-02-2023, 17:28:32",
+    "recorded-content": {
+      "invocation-result-without-layer": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "can_import_boto3": true,
+          "value": null
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invocation-result-with-layer": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "can_import_boto3": true,
+          "value": "test_value"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda.py::TestLambdaLayerBehavior::test_function_multiple_layers_override": {
+    "recorded-date": "27-02-2023, 17:28:56",
+    "recorded-content": {
+      "invocation-result-layer1-layer2": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "opt_contents": {
+            "/opt/a": "LAYER1\n",
+            "/opt/b": "LAYER2\n",
+            "/opt/c": "LAYER2\n"
+          }
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invocation-result-layer2-layer1": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "opt_contents": {
+            "/opt/a": "LAYER1\n",
+            "/opt/b": "LAYER1\n",
+            "/opt/c": "LAYER2\n"
+          }
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda.py::TestLambdaContainer::test_container_image_lambda_with_image_config": {
+    "recorded-date": "27-02-2023, 17:57:23",
+    "recorded-content": {
+      "invoke-container-result": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "test": "value"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda.py::TestExternalLayerDownload::test_external_layer_download": {
+    "recorded-date": "19-04-2024, 08:12:24",
+    "recorded-content": {
+      "create_function_external_layer": {
+        "CreateEventSourceMappingResponse": null,
+        "CreateFunctionResponse": {
+          "Architectures": [
+            "x86_64"
+          ],
+          "CodeSha256": "code-sha256",
+          "CodeSize": "<code-size>",
+          "Description": "",
+          "Environment": {
+            "Variables": {}
+          },
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+          "FunctionName": "<function-name:1>",
+          "Handler": "handler.handler",
+          "LastModified": "date",
+          "Layers": [
+            {
+              "Arn": "arn:<partition>:lambda:<region>:770693421928:layer:<resource:1>:1",
+              "CodeSize": "<code-size>"
+            }
+          ],
+          "LoggingConfig": {
+            "LogFormat": "Text",
+            "LogGroup": "/aws/lambda/<function-name:1>"
+          },
+          "MemorySize": 128,
+          "PackageType": "Zip",
+          "RevisionId": "<uuid:1>",
+          "Role": "arn:<partition>:iam::111111111111:role/<resource:2>",
+          "Runtime": "python3.9",
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:3>"
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "State": "Pending",
+          "StateReason": "The function is being created.",
+          "StateReasonCode": "Creating",
+          "Timeout": 30,
+          "TracingConfig": {
+            "Mode": "PassThrough"
+          },
+          "Version": "$LATEST",
+          "ResponseMetadata": {
+            "HTTPHeaders": {},
+            "HTTPStatusCode": 201
+          }
+        }
+      },
+      "get_layer_version_by_arn_cross_account_create": {
+        "CompatibleRuntimes": [
+          "python3.6",
+          "python3.7",
+          "python3.8",
+          "python3.9"
+        ],
+        "Content": {
+          "CodeSha256": "code-sha256",
+          "CodeSize": "<code-size>",
+          "Location": "<layer-location>"
+        },
+        "CreatedDate": "date",
+        "Description": "PyYAML==6.0 | 3b7c9a25838fc914f8ea7b5b15bfbf798e899b795ac8f0bb68a4131ba3ba0eb7",
+        "LayerArn": "arn:<partition>:lambda:<region>:770693421928:layer:<resource:1>",
+        "LayerVersionArn": "arn:<partition>:lambda:<region>:770693421928:layer:<resource:1>:1",
+        "LicenseInfo": "MIT",
+        "Version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invoke_external_layers_one": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "layer": [
+            "/opt/",
+            "/opt/python",
+            "/opt/python/PyYAML-6.0.dist-info",
+            "/opt/python/PyYAML-6.0.dist-info/INSTALLER",
+            "/opt/python/PyYAML-6.0.dist-info/LICENSE",
+            "/opt/python/PyYAML-6.0.dist-info/METADATA",
+            "/opt/python/PyYAML-6.0.dist-info/RECORD",
+            "/opt/python/PyYAML-6.0.dist-info/REQUESTED",
+            "/opt/python/PyYAML-6.0.dist-info/WHEEL",
+            "/opt/python/PyYAML-6.0.dist-info/top_level.txt",
+            "/opt/python/_yaml",
+            "/opt/python/_yaml/__init__.py",
+            "/opt/python/_yaml/__pycache__",
+            "/opt/python/_yaml/__pycache__/__init__.cpython-39.pyc",
+            "/opt/python/requirements.txt",
+            "/opt/python/yaml",
+            "/opt/python/yaml/__init__.py",
+            "/opt/python/yaml/__pycache__",
+            "/opt/python/yaml/__pycache__/__init__.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/composer.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/constructor.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/cyaml.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/dumper.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/emitter.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/error.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/events.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/loader.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/nodes.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/parser.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/reader.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/representer.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/resolver.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/scanner.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/serializer.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/tokens.cpython-39.pyc",
+            "/opt/python/yaml/_yaml.cpython-39-x86_64-linux-gnu.so",
+            "/opt/python/yaml/composer.py",
+            "/opt/python/yaml/constructor.py",
+            "/opt/python/yaml/cyaml.py",
+            "/opt/python/yaml/dumper.py",
+            "/opt/python/yaml/emitter.py",
+            "/opt/python/yaml/error.py",
+            "/opt/python/yaml/events.py",
+            "/opt/python/yaml/loader.py",
+            "/opt/python/yaml/nodes.py",
+            "/opt/python/yaml/parser.py",
+            "/opt/python/yaml/reader.py",
+            "/opt/python/yaml/representer.py",
+            "/opt/python/yaml/resolver.py",
+            "/opt/python/yaml/scanner.py",
+            "/opt/python/yaml/serializer.py",
+            "/opt/python/yaml/tokens.py"
+          ]
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update_function_configuration_external_layer": {
+        "Architectures": [
+          "x86_64"
+        ],
+        "CodeSha256": "code-sha256",
+        "CodeSize": "<code-size>",
+        "Description": "Changed-Description",
+        "Environment": {
+          "Variables": {}
+        },
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+        "FunctionName": "<function-name:1>",
+        "Handler": "handler.handler",
+        "LastModified": "date",
+        "LastUpdateStatus": "InProgress",
+        "LastUpdateStatusReason": "The function is being created.",
+        "LastUpdateStatusReasonCode": "Creating",
+        "Layers": [
+          {
+            "Arn": "arn:<partition>:lambda:<region>:770693421928:layer:<resource:1>:1",
+            "CodeSize": "<code-size>"
+          },
+          {
+            "Arn": "arn:<partition>:lambda:<region>:770693421928:layer:<resource:4>:2",
+            "CodeSize": "<code-size>"
+          }
+        ],
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/<function-name:1>"
+        },
+        "MemorySize": 128,
+        "PackageType": "Zip",
+        "RevisionId": "<uuid:2>",
+        "Role": "arn:<partition>:iam::111111111111:role/<resource:2>",
+        "Runtime": "python3.9",
+        "RuntimeVersionConfig": {
+          "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:3>"
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "State": "Active",
+        "Timeout": 30,
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "Version": "$LATEST",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_layer_version_by_arn_cross_account_update": {
+        "CompatibleRuntimes": [
+          "python3.6",
+          "python3.7",
+          "python3.8",
+          "python3.9"
+        ],
+        "Content": {
+          "CodeSha256": "code-sha256",
+          "CodeSize": "<code-size>",
+          "Location": "<layer-location>"
+        },
+        "CreatedDate": "date",
+        "Description": "idna==3.4 | 2cf82e44d783c7f24c946c564df874884c9e9d8575930e987d3213697553d97e",
+        "LayerArn": "arn:<partition>:lambda:<region>:770693421928:layer:<resource:4>",
+        "LayerVersionArn": "arn:<partition>:lambda:<region>:770693421928:layer:<resource:4>:2",
+        "LicenseInfo": "No-License-In-PyPI",
+        "Version": 2,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invoke_external_layers_two": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "layer": [
+            "/opt/",
+            "/opt/python",
+            "/opt/python/PyYAML-6.0.dist-info",
+            "/opt/python/PyYAML-6.0.dist-info/INSTALLER",
+            "/opt/python/PyYAML-6.0.dist-info/LICENSE",
+            "/opt/python/PyYAML-6.0.dist-info/METADATA",
+            "/opt/python/PyYAML-6.0.dist-info/RECORD",
+            "/opt/python/PyYAML-6.0.dist-info/REQUESTED",
+            "/opt/python/PyYAML-6.0.dist-info/WHEEL",
+            "/opt/python/PyYAML-6.0.dist-info/top_level.txt",
+            "/opt/python/_yaml",
+            "/opt/python/_yaml/__init__.py",
+            "/opt/python/_yaml/__pycache__",
+            "/opt/python/_yaml/__pycache__/__init__.cpython-39.pyc",
+            "/opt/python/idna",
+            "/opt/python/idna-3.4.dist-info",
+            "/opt/python/idna-3.4.dist-info/INSTALLER",
+            "/opt/python/idna-3.4.dist-info/LICENSE.md",
+            "/opt/python/idna-3.4.dist-info/METADATA",
+            "/opt/python/idna-3.4.dist-info/RECORD",
+            "/opt/python/idna-3.4.dist-info/REQUESTED",
+            "/opt/python/idna-3.4.dist-info/WHEEL",
+            "/opt/python/idna/__init__.py",
+            "/opt/python/idna/__pycache__",
+            "/opt/python/idna/__pycache__/__init__.cpython-39.pyc",
+            "/opt/python/idna/__pycache__/codec.cpython-39.pyc",
+            "/opt/python/idna/__pycache__/compat.cpython-39.pyc",
+            "/opt/python/idna/__pycache__/core.cpython-39.pyc",
+            "/opt/python/idna/__pycache__/idnadata.cpython-39.pyc",
+            "/opt/python/idna/__pycache__/intranges.cpython-39.pyc",
+            "/opt/python/idna/__pycache__/package_data.cpython-39.pyc",
+            "/opt/python/idna/__pycache__/uts46data.cpython-39.pyc",
+            "/opt/python/idna/codec.py",
+            "/opt/python/idna/compat.py",
+            "/opt/python/idna/core.py",
+            "/opt/python/idna/idnadata.py",
+            "/opt/python/idna/intranges.py",
+            "/opt/python/idna/package_data.py",
+            "/opt/python/idna/py.typed",
+            "/opt/python/idna/uts46data.py",
+            "/opt/python/requirements.txt",
+            "/opt/python/yaml",
+            "/opt/python/yaml/__init__.py",
+            "/opt/python/yaml/__pycache__",
+            "/opt/python/yaml/__pycache__/__init__.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/composer.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/constructor.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/cyaml.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/dumper.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/emitter.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/error.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/events.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/loader.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/nodes.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/parser.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/reader.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/representer.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/resolver.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/scanner.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/serializer.cpython-39.pyc",
+            "/opt/python/yaml/__pycache__/tokens.cpython-39.pyc",
+            "/opt/python/yaml/_yaml.cpython-39-x86_64-linux-gnu.so",
+            "/opt/python/yaml/composer.py",
+            "/opt/python/yaml/constructor.py",
+            "/opt/python/yaml/cyaml.py",
+            "/opt/python/yaml/dumper.py",
+            "/opt/python/yaml/emitter.py",
+            "/opt/python/yaml/error.py",
+            "/opt/python/yaml/events.py",
+            "/opt/python/yaml/loader.py",
+            "/opt/python/yaml/nodes.py",
+            "/opt/python/yaml/parser.py",
+            "/opt/python/yaml/reader.py",
+            "/opt/python/yaml/representer.py",
+            "/opt/python/yaml/resolver.py",
+            "/opt/python/yaml/scanner.py",
+            "/opt/python/yaml/serializer.py",
+            "/opt/python/yaml/tokens.py"
+          ]
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda.py::TestExternalLayerDownload::test_external_layer_specific": {
+    "recorded-date": "27-02-2023, 17:29:21",
+    "recorded-content": {
+      "invocation-result": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "foo": "bar",
+          "value": 0.0
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda.py::TestExternalLayerDownload::test_external_layer_exceptions": {
+    "recorded-date": "27-02-2023, 17:29:55",
+    "recorded-content": {
+      "create_function_wrong_layer_region": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": "User: arn:<partition>:iam::111111111111:user/localstack-testing is not authorized to perform: lambda:GetLayerVersion on resource: arn:<partition>:lambda:us-west-2:770693421928:layer:Klayers-p39-PyYAML:1 because no resource-based policy allows the lambda:GetLayerVersion action"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "create_function_layer_doesnotexist": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": "User: arn:<partition>:iam::111111111111:user/localstack-testing is not authorized to perform: lambda:GetLayerVersion on resource: arn:<partition>:lambda:<region>:770693421928:layer:doesnotexist:1 because no resource-based policy allows the lambda:GetLayerVersion action"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda.py::TestExternalLayerDownload::test_external_layer_multiple_versions": {
+    "recorded-date": "19-04-2024, 08:13:51",
+    "recorded-content": {
+      "create_function_external_layer_v1": {
+        "CreateEventSourceMappingResponse": null,
+        "CreateFunctionResponse": {
+          "Architectures": [
+            "x86_64"
+          ],
+          "CodeSha256": "code-sha256",
+          "CodeSize": "<code-size>",
+          "Description": "",
+          "Environment": {
+            "Variables": {}
+          },
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+          "FunctionName": "<function-name:1>",
+          "Handler": "handler.handler",
+          "LastModified": "date",
+          "Layers": [
+            {
+              "Arn": "arn:<partition>:lambda:<region>:770693421928:layer:<resource:1>:1",
+              "CodeSize": "<code-size>"
+            }
+          ],
+          "LoggingConfig": {
+            "LogFormat": "Text",
+            "LogGroup": "/aws/lambda/<function-name:1>"
+          },
+          "MemorySize": 128,
+          "PackageType": "Zip",
+          "RevisionId": "<uuid:1>",
+          "Role": "arn:<partition>:iam::111111111111:role/<resource:2>",
+          "Runtime": "python3.9",
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:3>"
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "State": "Pending",
+          "StateReason": "The function is being created.",
+          "StateReasonCode": "Creating",
+          "Timeout": 30,
+          "TracingConfig": {
+            "Mode": "PassThrough"
+          },
+          "Version": "$LATEST",
+          "ResponseMetadata": {
+            "HTTPHeaders": {},
+            "HTTPStatusCode": 201
+          }
+        }
+      },
+      "create_function_external_layer_v2": {
+        "CreateEventSourceMappingResponse": null,
+        "CreateFunctionResponse": {
+          "Architectures": [
+            "x86_64"
+          ],
+          "CodeSha256": "code-sha256",
+          "CodeSize": "<code-size>",
+          "Description": "",
+          "Environment": {
+            "Variables": {}
+          },
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:2>",
+          "FunctionName": "<function-name:2>",
+          "Handler": "handler.handler",
+          "LastModified": "date",
+          "Layers": [
+            {
+              "Arn": "arn:<partition>:lambda:<region>:770693421928:layer:<resource:1>:2",
+              "CodeSize": "<code-size>"
+            }
+          ],
+          "LoggingConfig": {
+            "LogFormat": "Text",
+            "LogGroup": "/aws/lambda/<function-name:2>"
+          },
+          "MemorySize": 128,
+          "PackageType": "Zip",
+          "RevisionId": "<uuid:2>",
+          "Role": "arn:<partition>:iam::111111111111:role/<resource:2>",
+          "Runtime": "python3.9",
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:3>"
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "State": "Pending",
+          "StateReason": "The function is being created.",
+          "StateReasonCode": "Creating",
+          "Timeout": 30,
+          "TracingConfig": {
+            "Mode": "PassThrough"
+          },
+          "Version": "$LATEST",
+          "ResponseMetadata": {
+            "HTTPHeaders": {},
+            "HTTPStatusCode": 201
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda.py::TestLambdaLayerBehavior::test_file_permissions_with_layer": {
+    "recorded-date": "24-10-2023, 16:59:05",
+    "recorded-content": {
+      "invoke-file-permission-introspection": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "paths": {
+            "_opt_mode": "drwxr-xr-x",
+            "_opt_bin_mode": "drwxr-xr-x",
+            "_opt_bin_true_mode": "-rwxr-xr-x",
+            "_opt_somedir_mode": "drwxr-xr-x",
+            "_opt_somedir_somefile_mode": "-rwxr-xr-x",
+            "_opt_somefile-600_mode": "-rwxr-xr-x",
+            "_opt_somefile-755_mode": "-rwxr-xr-x",
+            "_opt_somefile-777_mode": "-rwxr-xr-x",
+            "_var_task_mode": "drwxr-xr-x",
+            "_var_task_handler.py_mode": "-rwxr-xr-x"
+          }
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda.py::TestLambdaLayerBehavior::test_file_permissions_without_layer": {
+    "recorded-date": "24-10-2023, 16:42:03",
+    "recorded-content": {
+      "invoke-file-permission-introspection": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "paths": {
+            "_opt_mode": "drwxr-xr-x",
+            "_opt_bin_mode": null,
+            "_opt_bin_true_mode": null,
+            "_opt_somedir_mode": null,
+            "_opt_somedir_somefile_mode": null,
+            "_opt_somefile-600_mode": null,
+            "_opt_somefile-755_mode": null,
+            "_opt_somefile-777_mode": null,
+            "_var_task_mode": "drwxr-xr-x",
+            "_var_task_handler.py_mode": "-rwxrwxrwx"
+          }
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

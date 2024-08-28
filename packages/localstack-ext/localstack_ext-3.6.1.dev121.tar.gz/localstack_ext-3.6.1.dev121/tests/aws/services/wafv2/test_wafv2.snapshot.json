@@ -1,0 +1,61 @@
+{
+  "tests/aws/services/wafv2/test_wafv2.py::TestWafV2::test_create_and_list_web_acl": {
+    "recorded-date": "28-12-2023, 17:50:21",
+    "recorded-content": {
+      "create_web_acl": {
+        "Summary": {
+          "ARN": "arn:<partition>:wafv2:<region>:111111111111:regional/webacl/<acl-name>/<uuid:1>",
+          "Description": "",
+          "Id": "<uuid:1>",
+          "LockToken": "<lock-token>",
+          "Name": "<acl-name>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_web_acl": {
+        "LockToken": "<lock-token>",
+        "WebACL": {
+          "ARN": "arn:<partition>:wafv2:<region>:111111111111:regional/webacl/<acl-name>/<uuid:1>",
+          "Capacity": 0,
+          "DefaultAction": {
+            "Allow": {}
+          },
+          "Description": "",
+          "Id": "<uuid:1>",
+          "LabelNamespace": "awswaf:111111111111:webacl:<acl-name>:",
+          "ManagedByFirewallManager": false,
+          "Name": "<acl-name>",
+          "Rules": [],
+          "VisibilityConfig": {
+            "CloudWatchMetricsEnabled": true,
+            "MetricName": "<acl-name>Metric",
+            "SampledRequestsEnabled": true
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list_tags_for_resource": {
+        "NextMarker": "",
+        "TagInfoForResource": {
+          "ResourceARN": "arn:<partition>:wafv2:<region>:111111111111:regional/webacl/<acl-name>/<uuid:1>",
+          "TagList": [
+            {
+              "Key": "Name",
+              "Value": "AWSWAF"
+            }
+          ]
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

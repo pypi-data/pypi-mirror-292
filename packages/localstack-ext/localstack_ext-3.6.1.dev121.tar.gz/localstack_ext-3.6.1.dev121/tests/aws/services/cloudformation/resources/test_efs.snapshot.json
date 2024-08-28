@@ -1,0 +1,159 @@
+{
+  "tests/aws/services/cloudformation/resources/test_efs.py::test_file_system_deployment": {
+    "recorded-date": "24-04-2024, 17:35:30",
+    "recorded-content": {
+      "stack-details": {
+        "Stacks": [
+          {
+            "Capabilities": [
+              "CAPABILITY_AUTO_EXPAND",
+              "CAPABILITY_IAM",
+              "CAPABILITY_NAMED_IAM"
+            ],
+            "ChangeSetId": "arn:<partition>:cloudformation:<region>:111111111111:changeSet/<resource:1>",
+            "CreationTime": "datetime",
+            "DisableRollback": false,
+            "DriftInformation": {
+              "StackDriftStatus": "NOT_CHECKED"
+            },
+            "EnableTerminationProtection": false,
+            "LastUpdatedTime": "datetime",
+            "NotificationARNs": [],
+            "Outputs": [
+              {
+                "OutputKey": "AccessPointArn",
+                "OutputValue": "arn:<partition>:elasticfilesystem:<region>:111111111111:access-point/<resource:3>"
+              },
+              {
+                "OutputKey": "AccessPointId",
+                "OutputValue": "<resource:3>"
+              },
+              {
+                "OutputKey": "AccessPointRef",
+                "OutputValue": "<resource:3>"
+              },
+              {
+                "OutputKey": "FileSystemRef",
+                "OutputValue": "<resource:2>"
+              },
+              {
+                "OutputKey": "MountTargetId",
+                "OutputValue": "<mount-target-id:1>"
+              },
+              {
+                "OutputKey": "MountTargetIp",
+                "OutputValue": "<ip-address:1>"
+              },
+              {
+                "OutputKey": "MyFileSystemAttArn",
+                "OutputValue": "arn:<partition>:elasticfilesystem:<region>:111111111111:file-system/<resource:2>"
+              },
+              {
+                "OutputKey": "MyFileSystemAttFileSystemId",
+                "OutputValue": "<resource:2>"
+              }
+            ],
+            "RollbackConfiguration": {},
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:4>",
+            "StackName": "<stack-name:1>",
+            "StackStatus": "CREATE_COMPLETE",
+            "Tags": []
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "fs-details": {
+        "FileSystems": [
+          {
+            "CreationTime": "datetime",
+            "CreationToken": "<creation-token:1>",
+            "Encrypted": false,
+            "FileSystemArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:file-system/<resource:2>",
+            "FileSystemId": "<resource:2>",
+            "FileSystemProtection": {
+              "ReplicationOverwriteProtection": "ENABLED"
+            },
+            "LifeCycleState": "available",
+            "NumberOfMountTargets": 1,
+            "OwnerId": "111111111111",
+            "PerformanceMode": "generalPurpose",
+            "ProvisionedThroughputInMibps": 1.0,
+            "SizeInBytes": {
+              "Value": 6144,
+              "ValueInArchive": 0,
+              "ValueInIA": 0,
+              "ValueInStandard": 6144
+            },
+            "Tags": [
+              {
+                "Key": "test-key",
+                "Value": "test123"
+              }
+            ],
+            "ThroughputMode": "provisioned"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "mount-target": {
+        "MountTargets": [
+          {
+            "AvailabilityZoneId": "<availability-zone-id:1>",
+            "AvailabilityZoneName": "<availability-zone-name:1>",
+            "FileSystemId": "<resource:2>",
+            "IpAddress": "<ip-address:1>",
+            "LifeCycleState": "available",
+            "MountTargetId": "<mount-target-id:1>",
+            "NetworkInterfaceId": "<network-interface-id:1>",
+            "OwnerId": "111111111111",
+            "SubnetId": "<subnet-id:1>",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "access-point": {
+        "AccessPoints": [
+          {
+            "AccessPointArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:access-point/<resource:3>",
+            "AccessPointId": "<resource:3>",
+            "ClientToken": "<client-token:1>",
+            "FileSystemId": "<resource:2>",
+            "LifeCycleState": "available",
+            "OwnerId": "111111111111",
+            "PosixUser": {
+              "Gid": 1322,
+              "SecondaryGids": [
+                1344,
+                1452
+              ],
+              "Uid": 13234
+            },
+            "RootDirectory": {
+              "CreationInfo": {
+                "OwnerGid": 708798,
+                "OwnerUid": 7987987,
+                "Permissions": "0755"
+              },
+              "Path": "/testcfn/abc"
+            },
+            "Tags": []
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

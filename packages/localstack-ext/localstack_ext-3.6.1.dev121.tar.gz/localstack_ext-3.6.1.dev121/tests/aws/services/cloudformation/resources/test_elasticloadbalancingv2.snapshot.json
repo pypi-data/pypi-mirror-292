@@ -1,0 +1,129 @@
+{
+  "tests/aws/services/cloudformation/resources/test_elasticloadbalancingv2.py::test_elbv2_loadbalancer_resource": {
+    "recorded-date": "16-02-2024, 18:09:42",
+    "recorded-content": {
+      "outputs": {
+        "CanonicalHostedZoneIDOutput": "<canonical-hosted-zone-id:1>",
+        "DNSNameOutput": "<d-n-s-name:1>",
+        "LoadBalancerArnOutput": "arn:<partition>:elasticloadbalancing:<region>:111111111111:loadbalancer/app/<load-balancer-name:1>/<resource:1>",
+        "LoadBalancerFullNameOutput": "app/<load-balancer-name:1>/<resource:1>",
+        "LoadBalancerNameOutput": "<load-balancer-name:1>",
+        "SecurityGroupsOutput": "<security-group-id>"
+      },
+      "stack_resource_lb": {
+        "StackResourceDetail": {
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          },
+          "LastUpdatedTimestamp": "timestamp",
+          "LogicalResourceId": "MyAlbC124CC0D",
+          "Metadata": {},
+          "PhysicalResourceId": "arn:<partition>:elasticloadbalancing:<region>:111111111111:loadbalancer/app/<load-balancer-name:1>/<resource:1>",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "ResourceType": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+          "StackName": "<stack-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_lbs": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:1>",
+                "ZoneName": "<region>a"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:2>",
+                "ZoneName": "<region>b"
+              }
+            ],
+            "CanonicalHostedZoneId": "<canonical-hosted-zone-id:1>",
+            "CreatedTime": "datetime",
+            "DNSName": "<d-n-s-name:1>",
+            "IpAddressType": "ipv4",
+            "LoadBalancerArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:loadbalancer/app/<load-balancer-name:1>/<resource:1>",
+            "LoadBalancerName": "<load-balancer-name:1>",
+            "Scheme": "internal",
+            "SecurityGroups": [
+              "<security-group-id>"
+            ],
+            "State": {
+              "Code": "active"
+            },
+            "Type": "application",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_listener": {
+        "DefaultActions": [
+          {
+            "ForwardConfig": {
+              "TargetGroupStickinessConfig": {
+                "Enabled": false
+              },
+              "TargetGroups": [
+                {
+                  "TargetGroupArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:targetgroup/<target-group-name:1>/<resource:3>",
+                  "Weight": 1
+                }
+              ]
+            },
+            "TargetGroupArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:targetgroup/<target-group-name:1>/<resource:3>",
+            "Type": "forward"
+          }
+        ],
+        "ListenerArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:listener/app/<load-balancer-name:1>/<resource:1>/<resource:4>",
+        "LoadBalancerArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:loadbalancer/app/<load-balancer-name:1>/<resource:1>",
+        "Port": 80,
+        "Protocol": "HTTP"
+      },
+      "describe_target_group": {
+        "HealthCheckEnabled": true,
+        "HealthCheckIntervalSeconds": 30,
+        "HealthCheckPath": "/health",
+        "HealthCheckPort": "traffic-port",
+        "HealthCheckProtocol": "HTTP",
+        "HealthCheckTimeoutSeconds": 5,
+        "HealthyThresholdCount": 5,
+        "IpAddressType": "ipv4",
+        "LoadBalancerArns": [
+          "arn:<partition>:elasticloadbalancing:<region>:111111111111:loadbalancer/app/<load-balancer-name:1>/<resource:1>"
+        ],
+        "Matcher": {
+          "HttpCode": "200"
+        },
+        "Port": 80,
+        "Protocol": "HTTP",
+        "ProtocolVersion": "HTTP1",
+        "TargetGroupArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:targetgroup/<target-group-name:1>/<resource:3>",
+        "TargetGroupName": "<target-group-name:1>",
+        "TargetType": "ip",
+        "UnhealthyThresholdCount": 2,
+        "VpcId": "<vpc-id:1>"
+      },
+      "describe_lbs_after_destroy": {
+        "Error": {
+          "Code": "LoadBalancerNotFound",
+          "Message": "One or more load balancers not found",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "tests/aws/services/cloudformation/resources/test_wafv2.py::TestWafV2Resources::test_stack_resources_are_deployed": {
+    "recorded-date": "14-05-2024, 15:06:09",
+    "recorded-content": {
+      "stack-resources": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ApiAccountA18C9B29",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::ApiGateway::Account",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ApiCloudWatchRole73EC6FC4",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IAM::Role",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ApiDeploymentB17BE62Df6fcb44744065078fc125194978b967a",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::ApiGateway::Deployment",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ApiDeploymentStagedev51EE5D56",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::ApiGateway::Stage",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ApiF70053CD",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::ApiGateway::RestApi",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ApiGET9257B917",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::ApiGateway::Method",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "IPSet",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::WAFv2::IPSet",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "LogGroup",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::Logs::LogGroup",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "LoggingConfiguration",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::WAFv2::LoggingConfiguration",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "WebACL",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::WAFv2::WebACL",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "WebACLAssociation",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::WAFv2::WebACLAssociation",
+            "StackId": "<stack-id:1>",
+            "StackName": "Wafv2Resources-Sample",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_wafv2.py::TestWafV2Resources::test_web_acl": {
+    "recorded-date": "13-05-2024, 20:37:31",
+    "recorded-content": {
+      "WebACL": {
+        "LockToken": "<lock-token:1>",
+        "WebACL": {
+          "ARN": "arn:<partition>:wafv2:<region>:111111111111:regional/webacl/<web-acl-name>/<web-acl-id>",
+          "Capacity": 0,
+          "DefaultAction": {
+            "Allow": {}
+          },
+          "Description": "",
+          "Id": "<web-acl-id>",
+          "LabelNamespace": "awswaf:111111111111:webacl:<web-acl-name>:",
+          "ManagedByFirewallManager": false,
+          "Name": "<web-acl-name>",
+          "Rules": [],
+          "VisibilityConfig": {
+            "CloudWatchMetricsEnabled": true,
+            "MetricName": "<web-acl-name>Metric",
+            "SampledRequestsEnabled": true
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_wafv2.py::TestWafV2Resources::test_web_acl_association": {
+    "recorded-date": "13-05-2024, 20:37:31",
+    "recorded-content": {
+      "WebAclAssociation": {
+        "Id": "<web-acl-association-id>",
+        "Name": "<associated-resource-arn>"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_wafv2.py::TestWafV2Resources::test_ip_set": {
+    "recorded-date": "13-05-2024, 20:37:31",
+    "recorded-content": {
+      "IPSet": {
+        "IPSet": {
+          "ARN": "arn:<partition>:wafv2:<region>:111111111111:regional/ipset/test-ip-set/<uuid:1>",
+          "Addresses": [
+            "10.0.0.0/8"
+          ],
+          "Description": "",
+          "IPAddressVersion": "IPV4",
+          "Id": "<uuid:1>",
+          "Name": "test-ip-set"
+        },
+        "LockToken": "<lock-token:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_wafv2.py::TestWafV2Resources::test_logging_configuration": {
+    "recorded-date": "13-05-2024, 20:37:31",
+    "recorded-content": {
+      "LoggingConfiguration": {
+        "LoggingConfiguration": {
+          "LogDestinationConfigs": [
+            "<log-group-arn>*"
+          ],
+          "ManagedByFirewallManager": false,
+          "ResourceArn": "<web-acl-resource-arn:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

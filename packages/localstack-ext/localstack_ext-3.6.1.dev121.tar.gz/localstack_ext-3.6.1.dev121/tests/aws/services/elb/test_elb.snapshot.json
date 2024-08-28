@@ -1,0 +1,940 @@
+{
+  "tests/aws/services/elb/test_elb.py::TestELB::test_alb_modify_attributes": {
+    "recorded-date": "17-04-2023, 17:18:13",
+    "recorded-content": {
+      "create-alb": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "SubnetId": "subnet-a397ec33",
+                "ZoneName": "<region>a"
+              },
+              {
+                "SubnetId": "subnet-5cb8a592",
+                "ZoneName": "<region>b"
+              },
+              {
+                "SubnetId": "subnet-abf25d97",
+                "ZoneName": "<region>c"
+              }
+            ],
+            "CanonicalHostedZoneId": "<canonical-hosted-zone-id:1>",
+            "CreatedTime": "datetime",
+            "DNSName": "<d-n-s-name:1>",
+            "LoadBalancerArn": "<load-balancer-arn:1>",
+            "LoadBalancerName": "<load-balancer-name:1>",
+            "Scheme": "None",
+            "SecurityGroups": [
+              "<sg-id:1>"
+            ],
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "application",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "modify-alb-attributes": {
+        "Attributes": [
+          {
+            "Key": "access_logs.s3.bucket",
+            "Value": ""
+          },
+          {
+            "Key": "access_logs.s3.prefix",
+            "Value": ""
+          },
+          {
+            "Key": "deletion_protection.enabled",
+            "Value": "false"
+          },
+          {
+            "Key": "load_balancing.cross_zone.enabled",
+            "Value": "false"
+          },
+          {
+            "Key": "routing.http2.enabled",
+            "Value": "true"
+          },
+          {
+            "Key": "routing.http.drop_invalid_header_fields.enabled",
+            "Value": "false"
+          },
+          {
+            "Key": "routing.http.preserve_host_header.enabled",
+            "Value": "false"
+          },
+          {
+            "Key": "routing.http.desync_mitigation_mode",
+            "Value": "defensive"
+          }
+        ],
+        "_AttributesDict": {
+          "access_logs.s3.bucket": "",
+          "access_logs.s3.prefix": "",
+          "deletion_protection.enabled": "false",
+          "load_balancing.cross_zone.enabled": "false",
+          "routing.http.desync_mitigation_mode": "defensive",
+          "routing.http.drop_invalid_header_fields.enabled": "false",
+          "routing.http.preserve_host_header.enabled": "false",
+          "routing.http2.enabled": "true"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-alb-attributes": {
+        "Attributes": [
+          {
+            "Key": "access_logs.s3.bucket",
+            "Value": ""
+          },
+          {
+            "Key": "access_logs.s3.prefix",
+            "Value": ""
+          },
+          {
+            "Key": "deletion_protection.enabled",
+            "Value": "false"
+          },
+          {
+            "Key": "load_balancing.cross_zone.enabled",
+            "Value": "false"
+          },
+          {
+            "Key": "routing.http2.enabled",
+            "Value": "true"
+          },
+          {
+            "Key": "routing.http.drop_invalid_header_fields.enabled",
+            "Value": "false"
+          },
+          {
+            "Key": "routing.http.preserve_host_header.enabled",
+            "Value": "false"
+          },
+          {
+            "Key": "routing.http.desync_mitigation_mode",
+            "Value": "defensive"
+          }
+        ],
+        "_AttributesDict": {
+          "access_logs.s3.bucket": "",
+          "access_logs.s3.prefix": "",
+          "deletion_protection.enabled": "false",
+          "load_balancing.cross_zone.enabled": "false",
+          "routing.http.desync_mitigation_mode": "defensive",
+          "routing.http.drop_invalid_header_fields.enabled": "false",
+          "routing.http.preserve_host_header.enabled": "false",
+          "routing.http2.enabled": "true"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elb/test_elb.py::TestELB::test_alb_set_ip_address_type": {
+    "recorded-date": "01-09-2022, 19:42:50",
+    "recorded-content": {
+      "create-alb": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "subnet-01d00369bc70142df",
+                "ZoneName": "<region>e"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "subnet-0a15ea03b3fa6955c",
+                "ZoneName": "<region>d"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "subnet-0a42f5d95484b2cac",
+                "ZoneName": "<region>c"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "subnet-0e431b77d84fd10c5",
+                "ZoneName": "<region>f"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "subnet-0e47f8f7cef613885",
+                "ZoneName": "<region>a"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "subnet-0e9664896135bb5b8",
+                "ZoneName": "<region>b"
+              }
+            ],
+            "CanonicalHostedZoneId": "<canonical-hosted-zone-id:1>",
+            "CreatedTime": "datetime",
+            "DNSName": "<d-n-s-name:1>",
+            "IpAddressType": "ipv4",
+            "LoadBalancerArn": "<load-balancer-arn:1>",
+            "LoadBalancerName": "<load-balancer-name:1>",
+            "Scheme": "internet-facing",
+            "SecurityGroups": [
+              "<sg-id:1>"
+            ],
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "application",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "set-ip-address-type-ipv4": {
+        "IpAddressType": "ipv4",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "set-ip-address-type-internal": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "1 validation error detected: Value 'internal' at 'ipAddressType' failed to satisfy constraint: Member must satisfy enum value set: [ipv4, dualstack]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elb/test_elb.py::TestELB::test_load_balancing": {
+    "recorded-date": "04-07-2024, 10:54:25",
+    "recorded-content": {
+      "load-balancer-dns-name": {
+        "DNSName": "<d-n-s-name:1>",
+        "LoadBalancerName": "<load-balancer-name:1>"
+      },
+      "error-tg-port-missing": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "A port must be specified",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-tg-vpc-missing": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "A VPC ID must be specified",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-tg-proto-invalid": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Protocol cannot be specified for target groups with target type 'lambda'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-tg-port-invalid": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Port cannot be specified for target groups with target type 'lambda'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-tg-vpc-invalid": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "VPC ID cannot be specified for target groups with target type 'lambda'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "response-lambda": {
+        "body": "Rk9PQkFS",
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip, deflate",
+          "connection": "keep-alive",
+          "content-length": "6",
+          "host": "<d-n-s-name:1>",
+          "user-agent": "python-requests/test",
+          "x-amzn-trace-id": "<x-amzn-trace-id:1>",
+          "x-elb-name": "<load-balancer-name:1>",
+          "x-forwarded-for": "<x-forwarded-for:1>",
+          "x-forwarded-port": "80",
+          "x-forwarded-proto": "http"
+        },
+        "httpMethod": "POST",
+        "isBase64Encoded": true,
+        "path": "/lambda/foo/bar",
+        "queryStringParameters": {
+          "p1": "v1"
+        },
+        "requestContext": {
+          "elb": {
+            "targetGroupArn": "<lambda-target-arn>"
+          }
+        }
+      },
+      "response-lambda-json": {
+        "body": {
+          "test": "value"
+        },
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip, deflate",
+          "connection": "keep-alive",
+          "content-length": "17",
+          "content-type": "application/json",
+          "host": "<d-n-s-name:1>",
+          "user-agent": "python-requests/test",
+          "x-amzn-trace-id": "<x-amzn-trace-id:2>",
+          "x-elb-name": "<load-balancer-name:1>",
+          "x-forwarded-for": "<x-forwarded-for:1>",
+          "x-forwarded-port": "80",
+          "x-forwarded-proto": "http"
+        },
+        "httpMethod": "POST",
+        "isBase64Encoded": false,
+        "path": "/lambda/foo/bar",
+        "queryStringParameters": {
+          "p1": "v1"
+        },
+        "requestContext": {
+          "elb": {
+            "targetGroupArn": "<lambda-target-arn>"
+          }
+        }
+      },
+      "response-lambda-csv": {
+        "body": "test1,test2,test3",
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip, deflate",
+          "connection": "keep-alive",
+          "content-length": "17",
+          "content-type": "text/csv",
+          "host": "<d-n-s-name:1>",
+          "user-agent": "python-requests/test",
+          "x-amzn-trace-id": "<x-amzn-trace-id:3>",
+          "x-elb-name": "<load-balancer-name:1>",
+          "x-forwarded-for": "<x-forwarded-for:1>",
+          "x-forwarded-port": "80",
+          "x-forwarded-proto": "http"
+        },
+        "httpMethod": "POST",
+        "isBase64Encoded": false,
+        "path": "/lambda/foo/bar",
+        "queryStringParameters": {
+          "p1": "v1"
+        },
+        "requestContext": {
+          "elb": {
+            "targetGroupArn": "<lambda-target-arn>"
+          }
+        }
+      },
+      "response-lambda-csv-encoded": {
+        "body": "dGVzdDEsdGVzdDIsdGVzdDM=",
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip, deflate",
+          "connection": "keep-alive",
+          "content-encoding": "br",
+          "content-length": "17",
+          "content-type": "text/csv",
+          "host": "<d-n-s-name:1>",
+          "user-agent": "python-requests/test",
+          "x-amzn-trace-id": "<x-amzn-trace-id:4>",
+          "x-elb-name": "<load-balancer-name:1>",
+          "x-forwarded-for": "<x-forwarded-for:1>",
+          "x-forwarded-port": "80",
+          "x-forwarded-proto": "http"
+        },
+        "httpMethod": "POST",
+        "isBase64Encoded": true,
+        "path": "/lambda/foo/bar",
+        "queryStringParameters": {
+          "p1": "v1"
+        },
+        "requestContext": {
+          "elb": {
+            "targetGroupArn": "<lambda-target-arn>"
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/elb/test_elb.py::TestLoadBalancer::test_create_load_balancer": {
+    "recorded-date": "11-09-2023, 15:54:47",
+    "recorded-content": {
+      "create-load-balancer": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:1>",
+                "ZoneName": "<region:1>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:2>",
+                "ZoneName": "<region:2>"
+              }
+            ],
+            "CanonicalHostedZoneId": "canonical-hosted-zone-id",
+            "CreatedTime": "datetime",
+            "DNSName": "d-n-s-name",
+            "IpAddressType": "ipv4",
+            "LoadBalancerArn": "load-balancer-arn",
+            "LoadBalancerName": "load-balancer-name",
+            "Scheme": "internet-facing",
+            "SecurityGroups": [
+              "sg-id"
+            ],
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "application",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-load-balancer-with-already-existing-name": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:1>",
+                "ZoneName": "<region:1>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:2>",
+                "ZoneName": "<region:2>"
+              }
+            ],
+            "CanonicalHostedZoneId": "canonical-hosted-zone-id",
+            "CreatedTime": "datetime",
+            "DNSName": "d-n-s-name",
+            "IpAddressType": "ipv4",
+            "LoadBalancerArn": "load-balancer-arn",
+            "LoadBalancerName": "load-balancer-name",
+            "Scheme": "internet-facing",
+            "SecurityGroups": [
+              "sg-id"
+            ],
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "application",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-internal-load-balancer": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:1>",
+                "ZoneName": "<region:1>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:2>",
+                "ZoneName": "<region:2>"
+              }
+            ],
+            "CanonicalHostedZoneId": "canonical-hosted-zone-id",
+            "CreatedTime": "datetime",
+            "DNSName": "d-n-s-name",
+            "IpAddressType": "ipv4",
+            "LoadBalancerArn": "load-balancer-arn",
+            "LoadBalancerName": "load-balancer-name",
+            "Scheme": "internal",
+            "SecurityGroups": [
+              "sg-id"
+            ],
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "application",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-network-load-balancer": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:2>",
+                "ZoneName": "<region:2>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:1>",
+                "ZoneName": "<region:1>"
+              }
+            ],
+            "CanonicalHostedZoneId": "canonical-hosted-zone-id",
+            "CreatedTime": "datetime",
+            "DNSName": "d-n-s-name",
+            "IpAddressType": "ipv4",
+            "LoadBalancerArn": "load-balancer-arn",
+            "LoadBalancerName": "load-balancer-name",
+            "Scheme": "internet-facing",
+            "SecurityGroups": [
+              "sg-id"
+            ],
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "network",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-gateway-load-balancer": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "SubnetId": "<subnet-id:1>",
+                "ZoneName": "<region:1>"
+              },
+              {
+                "SubnetId": "<subnet-id:2>",
+                "ZoneName": "<region:2>"
+              }
+            ],
+            "CreatedTime": "datetime",
+            "IpAddressType": "ipv4",
+            "LoadBalancerArn": "load-balancer-arn",
+            "LoadBalancerName": "load-balancer-name",
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "gateway",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elb/test_elb.py::TestLoadBalancer::test_failing_create_load_balancer": {
+    "recorded-date": "11-09-2023, 15:54:50",
+    "recorded-content": {
+      "create-gateway-load-balancer-with-security-group": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Security Groups are not supported for Gateway Load Balancers.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elb/test_elb.py::TestLoadBalancer::test_describe_load_balancers": {
+    "recorded-date": "11-09-2023, 15:54:56",
+    "recorded-content": {
+      "describe-load-balancers-with-name": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:1>",
+                "ZoneName": "<region:1>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:2>",
+                "ZoneName": "<region:2>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:3>",
+                "ZoneName": "<region:3>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:4>",
+                "ZoneName": "<region:4>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:5>",
+                "ZoneName": "<region:5>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:6>",
+                "ZoneName": "<region:6>"
+              }
+            ],
+            "CanonicalHostedZoneId": "canonical-hosted-zone-id",
+            "CreatedTime": "datetime",
+            "DNSName": "d-n-s-name",
+            "IpAddressType": "ipv4",
+            "LoadBalancerArn": "load-balancer-arn",
+            "LoadBalancerName": "load-balancer-name",
+            "Scheme": "internet-facing",
+            "SecurityGroups": [
+              "sg-id"
+            ],
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "application",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-load-balancers-with-arn": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:1>",
+                "ZoneName": "<region:1>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:2>",
+                "ZoneName": "<region:2>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:3>",
+                "ZoneName": "<region:3>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:4>",
+                "ZoneName": "<region:4>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:5>",
+                "ZoneName": "<region:5>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:6>",
+                "ZoneName": "<region:6>"
+              }
+            ],
+            "CanonicalHostedZoneId": "canonical-hosted-zone-id",
+            "CreatedTime": "datetime",
+            "DNSName": "d-n-s-name",
+            "IpAddressType": "ipv4",
+            "LoadBalancerArn": "load-balancer-arn",
+            "LoadBalancerName": "load-balancer-name",
+            "Scheme": "internet-facing",
+            "SecurityGroups": [
+              "sg-id"
+            ],
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "application",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elb/test_elb.py::TestLoadBalancer::test_failing_describe_load_balancers": {
+    "recorded-date": "11-09-2023, 15:55:02",
+    "recorded-content": {
+      "describe-load-balancers-with-non-existing-name": {
+        "Error": {
+          "Code": "LoadBalancerNotFound",
+          "Message": "Load balancers '[elb-non-existing-name]' not found",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe-load-balancers-with-non-existing-arn": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'<load_balancer_arn_1>' is not a valid load balancer ARN",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe-load-balancers-with-non-existing-name-and-arn": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Load balancer names and load balancer ARNs cannot be specified at the same time",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe-load-balancers-with-multiple-non-existing-names": {
+        "Error": {
+          "Code": "LoadBalancerNotFound",
+          "Message": "Load balancers '[elb-non-existing-name, elb-non-existing-name-2]' not found",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe-load-balancers-with-multiple-non-existing-arns": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'<load_balancer_arn_1>' is not a valid load balancer ARN",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elb/test_elb.py::TestLoadBalancer::test_create_loadbalancer_rule": {
+    "recorded-date": "20-09-2023, 14:54:58",
+    "recorded-content": {
+      "create_load_balancer": {
+        "LoadBalancers": [
+          {
+            "AvailabilityZones": [
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:1>",
+                "ZoneName": "<region:1>"
+              },
+              {
+                "LoadBalancerAddresses": [],
+                "SubnetId": "<subnet-id:2>",
+                "ZoneName": "<region:2>"
+              }
+            ],
+            "CanonicalHostedZoneId": "canonical-hosted-zone-id",
+            "CreatedTime": "datetime",
+            "DNSName": "d-n-s-name",
+            "IpAddressType": "ipv4",
+            "LoadBalancerArn": "load-balancer-arn",
+            "LoadBalancerName": "load-balancer-name",
+            "Scheme": "internet-facing",
+            "SecurityGroups": [
+              "sg-id"
+            ],
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "application",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_listener": {
+        "Listeners": [
+          {
+            "DefaultActions": [
+              {
+                "FixedResponseConfig": {
+                  "ContentType": "text/plain",
+                  "StatusCode": "404"
+                },
+                "Order": 1,
+                "Type": "fixed-response"
+              }
+            ],
+            "ListenerArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:listener/app/<elb-name>/<resource:1>/<resource:2>",
+            "LoadBalancerArn": "load-balancer-arn",
+            "Port": 80,
+            "Protocol": "HTTP"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 15,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 2,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "Port": 8080,
+            "Protocol": "HTTP",
+            "ProtocolVersion": "HTTP1",
+            "TargetGroupArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:targetgroup/<target_group_name>/<resource:3>",
+            "TargetGroupName": "<target_group_name>",
+            "TargetType": "ip",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-rule": {
+        "Rules": [
+          {
+            "Actions": [
+              {
+                "ForwardConfig": {
+                  "TargetGroupStickinessConfig": {
+                    "Enabled": false
+                  },
+                  "TargetGroups": [
+                    {
+                      "TargetGroupArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:targetgroup/<target_group_name>/<resource:3>",
+                      "Weight": 1
+                    }
+                  ]
+                },
+                "Order": 1,
+                "TargetGroupArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:targetgroup/<target_group_name>/<resource:3>",
+                "Type": "forward"
+              }
+            ],
+            "Conditions": [
+              {
+                "Field": "path-pattern",
+                "PathPatternConfig": {
+                  "Values": [
+                    "/"
+                  ]
+                },
+                "Values": [
+                  "/"
+                ]
+              }
+            ],
+            "IsDefault": false,
+            "Priority": "1",
+            "RuleArn": "arn:<partition>:elasticloadbalancing:<region>:111111111111:listener-rule/app/<elb-name>/<resource:1>/<resource:2>/<resource:4>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elb/test_elb.py::TestRoute53Integrations::test_route53_elb_integration": {
+    "recorded-date": "10-10-2023, 16:17:36",
+    "recorded-content": {
+      "response-lambda": "lambda1",
+      "response-lambda-route53-host": "lambda1"
+    }
+  },
+  "tests/aws/services/elb/test_elb.py::TestRuleConditions::test_rule_conditions_integration": {
+    "recorded-date": "22-03-2024, 21:02:56",
+    "recorded-content": {
+      "response-default-route-rule": 404,
+      "response-path": "doget path called",
+      "response-path-get-condition": "pathget called",
+      "response-path-delete-condition": 404,
+      "response-path-head-condition": 404,
+      "response-path-post-condition": 404,
+      "response-path-put-condition": 404,
+      "response-doget2": "doget2 called",
+      "response-ip-wildcard": "ip called"
+    }
+  }
+}

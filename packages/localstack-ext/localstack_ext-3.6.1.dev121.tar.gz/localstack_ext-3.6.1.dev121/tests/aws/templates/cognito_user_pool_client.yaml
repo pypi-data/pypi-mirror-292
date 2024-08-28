@@ -1,0 +1,32 @@
+Parameters:
+    UserPoolName:
+        Type: String
+        Description: The name of the user pool
+Resources:
+  MyUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Ref UserPoolName
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+
+  MyUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: MyUserPoolClient
+      UserPoolId: !Ref MyUserPool
+      GenerateSecret: true
+      EnableTokenRevocation: "true"
+      EnablePropagateAdditionalUserContextData: false
+      AllowedOAuthFlowsUserPoolClient: "false"
+
+Outputs:
+  UserPoolId:
+    Value: !Ref MyUserPool
+  ClientId:
+    Value: !Ref MyUserPoolClient

@@ -1,0 +1,508 @@
+{
+  "Resources": {
+    "zoneEB40FF1E": {
+      "Type": "AWS::Route53::HostedZone",
+      "Properties": {
+        "Name": "fake.localstack.cloud."
+      }
+    },
+    "vpcA2121C38": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet1Subnet2E65531E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.0.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTable48A2DF9B": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTableAssociation5D3F4579": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        }
+      }
+    },
+    "vpcPublicSubnet1DefaultRoute10708846": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcPublicSubnet1EIPDA49DCBE": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet1NATGateway9C16659E": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "vpcPublicSubnet1EIPDA49DCBE",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPublicSubnet1DefaultRoute10708846",
+        "vpcPublicSubnet1RouteTableAssociation5D3F4579"
+      ]
+    },
+    "vpcPublicSubnet2Subnet009B674F": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.64.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableEB40D4CB": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableAssociation21F81B59": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet2Subnet009B674F"
+        }
+      }
+    },
+    "vpcPublicSubnet2DefaultRouteA1EC0F60": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcPublicSubnet2EIP9B3743B1": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet2NATGateway9B8AE11A": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "vpcPublicSubnet2EIP9B3743B1",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet2Subnet009B674F"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PublicSubnet2"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPublicSubnet2DefaultRouteA1EC0F60",
+        "vpcPublicSubnet2RouteTableAssociation21F81B59"
+      ]
+    },
+    "vpcPrivateSubnet1Subnet934893E8": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.128.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PrivateSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet1RouteTableB41A48CC": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PrivateSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet1RouteTableAssociation67945127": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet1RouteTableB41A48CC"
+        },
+        "SubnetId": {
+          "Ref": "vpcPrivateSubnet1Subnet934893E8"
+        }
+      }
+    },
+    "vpcPrivateSubnet1DefaultRoute1AA8E2E5": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "vpcPublicSubnet1NATGateway9C16659E"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet1RouteTableB41A48CC"
+        }
+      }
+    },
+    "vpcPrivateSubnet2Subnet7031C2BA": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.192.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PrivateSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet2RouteTable7280F23E": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc/PrivateSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet2RouteTableAssociation007E94D3": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet2RouteTable7280F23E"
+        },
+        "SubnetId": {
+          "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+        }
+      }
+    },
+    "vpcPrivateSubnet2DefaultRouteB0E07F99": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "vpcPublicSubnet2NATGateway9B8AE11A"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet2RouteTable7280F23E"
+        }
+      }
+    },
+    "vpcIGWE57CBDCA": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CfnRoute53RecordSetAliasStack/vpc"
+          }
+        ]
+      }
+    },
+    "vpcVPCGW7984C166": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "alb8A8B13C2": {
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+      "Properties": {
+        "LoadBalancerAttributes": [
+          {
+            "Key": "deletion_protection.enabled",
+            "Value": "false"
+          }
+        ],
+        "Scheme": "internal",
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "albSecurityGroup49866104",
+              "GroupId"
+            ]
+          }
+        ],
+        "Subnets": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ],
+        "Type": "application"
+      }
+    },
+    "albSecurityGroup49866104": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Automatically created Security Group for ELB CfnRoute53RecordSetAliasStackalbE866DAE9",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "255.255.255.255/32",
+            "Description": "Disallow all traffic",
+            "FromPort": 252,
+            "IpProtocol": "icmp",
+            "ToPort": 86
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "CustomResourceRecord": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "AliasTarget": {
+          "DNSName": {
+            "Fn::Join": [
+              "",
+              [
+                "dualstack.",
+                {
+                  "Fn::GetAtt": [
+                    "alb8A8B13C2",
+                    "DNSName"
+                  ]
+                }
+              ]
+            ]
+          },
+          "HostedZoneId": {
+            "Fn::GetAtt": [
+              "alb8A8B13C2",
+              "CanonicalHostedZoneID"
+            ]
+          }
+        },
+        "HostedZoneId": {
+          "Ref": "zoneEB40FF1E"
+        },
+        "Name": "api.fake.localstack.cloud.",
+        "Type": "A"
+      }
+    }
+  },
+  "Outputs": {
+    "RecordId": {
+      "Value": {
+        "Ref": "CustomResourceRecord"
+      }
+    },
+    "HostedZoneId": {
+      "Value": {
+        "Ref": "zoneEB40FF1E"
+      }
+    },
+    "AlbDnsName": {
+      "Value": {
+        "Fn::GetAtt": [
+          "alb8A8B13C2",
+          "DNSName"
+        ]
+      }
+    },
+    "AlbHostedZoneId": {
+      "Value": {
+        "Fn::GetAtt": [
+          "alb8A8B13C2",
+          "CanonicalHostedZoneID"
+        ]
+      }
+    }
+  }
+}

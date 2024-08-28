@@ -1,0 +1,660 @@
+# template generated from CDK program
+---
+Parameters:
+  ApiName:
+    Type: String
+  ContainerPort:
+    Type: Number
+    Default: 80
+Resources:
+  Vpc8378EB38:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: TmpStack/Vpc
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/Resource
+  VpcPublicSubnet1Subnet5C2D37C4:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/18
+      VpcId:
+        Ref: Vpc8378EB38
+      AvailabilityZone:
+        Fn::Select:
+        - 0
+        - Fn::GetAZs: ''
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: aws-cdk:subnet-name
+        Value: Public
+      - Key: aws-cdk:subnet-type
+        Value: Public
+      - Key: Name
+        Value: TmpStack/Vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet1/Subnet
+  VpcPublicSubnet1RouteTable6C95E38E:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: Vpc8378EB38
+      Tags:
+      - Key: Name
+        Value: TmpStack/Vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet1/RouteTable
+  VpcPublicSubnet1RouteTableAssociation97140677:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VpcPublicSubnet1RouteTable6C95E38E
+      SubnetId:
+        Ref: VpcPublicSubnet1Subnet5C2D37C4
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet1/RouteTableAssociation
+  VpcPublicSubnet1DefaultRoute3DA9E72A:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VpcPublicSubnet1RouteTable6C95E38E
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: VpcIGWD7BA715C
+    DependsOn:
+    - VpcVPCGWBF912B6E
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet1/DefaultRoute
+  VpcPublicSubnet1EIPD7E02669:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+      - Key: Name
+        Value: TmpStack/Vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet1/EIP
+  VpcPublicSubnet1NATGateway4D7517AA:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: VpcPublicSubnet1Subnet5C2D37C4
+      AllocationId:
+        Fn::GetAtt:
+        - VpcPublicSubnet1EIPD7E02669
+        - AllocationId
+      Tags:
+      - Key: Name
+        Value: TmpStack/Vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet1/NATGateway
+  VpcPublicSubnet2Subnet691E08A3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.64.0/18
+      VpcId:
+        Ref: Vpc8378EB38
+      AvailabilityZone:
+        Fn::Select:
+        - 1
+        - Fn::GetAZs: ''
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: aws-cdk:subnet-name
+        Value: Public
+      - Key: aws-cdk:subnet-type
+        Value: Public
+      - Key: Name
+        Value: TmpStack/Vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet2/Subnet
+  VpcPublicSubnet2RouteTable94F7E489:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: Vpc8378EB38
+      Tags:
+      - Key: Name
+        Value: TmpStack/Vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet2/RouteTable
+  VpcPublicSubnet2RouteTableAssociationDD5762D8:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VpcPublicSubnet2RouteTable94F7E489
+      SubnetId:
+        Ref: VpcPublicSubnet2Subnet691E08A3
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet2/RouteTableAssociation
+  VpcPublicSubnet2DefaultRoute97F91067:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VpcPublicSubnet2RouteTable94F7E489
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: VpcIGWD7BA715C
+    DependsOn:
+    - VpcVPCGWBF912B6E
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet2/DefaultRoute
+  VpcPublicSubnet2EIP3C605A87:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+      - Key: Name
+        Value: TmpStack/Vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet2/EIP
+  VpcPublicSubnet2NATGateway9182C01D:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: VpcPublicSubnet2Subnet691E08A3
+      AllocationId:
+        Fn::GetAtt:
+        - VpcPublicSubnet2EIP3C605A87
+        - AllocationId
+      Tags:
+      - Key: Name
+        Value: TmpStack/Vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PublicSubnet2/NATGateway
+  VpcPrivateSubnet1Subnet536B997A:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.128.0/18
+      VpcId:
+        Ref: Vpc8378EB38
+      AvailabilityZone:
+        Fn::Select:
+        - 0
+        - Fn::GetAZs: ''
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: aws-cdk:subnet-name
+        Value: Private
+      - Key: aws-cdk:subnet-type
+        Value: Private
+      - Key: Name
+        Value: TmpStack/Vpc/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PrivateSubnet1/Subnet
+  VpcPrivateSubnet1RouteTableB2C5B500:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: Vpc8378EB38
+      Tags:
+      - Key: Name
+        Value: TmpStack/Vpc/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PrivateSubnet1/RouteTable
+  VpcPrivateSubnet1RouteTableAssociation70C59FA6:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VpcPrivateSubnet1RouteTableB2C5B500
+      SubnetId:
+        Ref: VpcPrivateSubnet1Subnet536B997A
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PrivateSubnet1/RouteTableAssociation
+  VpcPrivateSubnet1DefaultRouteBE02A9ED:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VpcPrivateSubnet1RouteTableB2C5B500
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VpcPublicSubnet1NATGateway4D7517AA
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PrivateSubnet1/DefaultRoute
+  VpcPrivateSubnet2Subnet3788AAA1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.192.0/18
+      VpcId:
+        Ref: Vpc8378EB38
+      AvailabilityZone:
+        Fn::Select:
+        - 1
+        - Fn::GetAZs: ''
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: aws-cdk:subnet-name
+        Value: Private
+      - Key: aws-cdk:subnet-type
+        Value: Private
+      - Key: Name
+        Value: TmpStack/Vpc/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PrivateSubnet2/Subnet
+  VpcPrivateSubnet2RouteTableA678073B:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: Vpc8378EB38
+      Tags:
+      - Key: Name
+        Value: TmpStack/Vpc/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PrivateSubnet2/RouteTable
+  VpcPrivateSubnet2RouteTableAssociationA89CAD56:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VpcPrivateSubnet2RouteTableA678073B
+      SubnetId:
+        Ref: VpcPrivateSubnet2Subnet3788AAA1
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PrivateSubnet2/RouteTableAssociation
+  VpcPrivateSubnet2DefaultRoute060D2087:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VpcPrivateSubnet2RouteTableA678073B
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VpcPublicSubnet2NATGateway9182C01D
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/PrivateSubnet2/DefaultRoute
+  VpcIGWD7BA715C:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: TmpStack/Vpc
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/IGW
+  VpcVPCGWBF912B6E:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: Vpc8378EB38
+      InternetGatewayId:
+        Ref: VpcIGWD7BA715C
+    Metadata:
+      aws:cdk:path: TmpStack/Vpc/VPCGW
+  ClusterEB0386A7:
+    Type: AWS::ECS::Cluster
+    Metadata:
+      aws:cdk:path: TmpStack/Cluster/Resource
+  MyFargateServiceLBDE830E97:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      LoadBalancerAttributes:
+      - Key: deletion_protection.enabled
+        Value: 'false'
+      Scheme: internet-facing
+      SecurityGroups:
+      - Fn::GetAtt:
+        - MyFargateServiceLBSecurityGroup6FBF16F1
+        - GroupId
+      Subnets:
+      - Ref: VpcPublicSubnet1Subnet5C2D37C4
+      - Ref: VpcPublicSubnet2Subnet691E08A3
+      Type: application
+    DependsOn:
+    - VpcPublicSubnet1DefaultRoute3DA9E72A
+    - VpcPublicSubnet2DefaultRoute97F91067
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/LB/Resource
+  MyFargateServiceLBSecurityGroup6FBF16F1:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Automatically created Security Group for ELB TmpStackMyFargateServiceLB17E5AC5E
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        Description: Allow from anyone on port 80
+        FromPort: 80
+        IpProtocol: tcp
+        ToPort: 80
+      VpcId:
+        Ref: Vpc8378EB38
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/LB/SecurityGroup/Resource
+  MyFargateServiceLBSecurityGrouptoTmpStackMyFargateServiceSecurityGroup3C16E026808915B697:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      GroupId:
+        Fn::GetAtt:
+        - MyFargateServiceLBSecurityGroup6FBF16F1
+        - GroupId
+      IpProtocol: tcp
+      Description: Load balancer to target
+      DestinationSecurityGroupId:
+        Fn::GetAtt:
+        - MyFargateServiceSecurityGroup7016792A
+        - GroupId
+      FromPort: 80
+      ToPort: 80
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/LB/SecurityGroup/to TmpStackMyFargateServiceSecurityGroup3C16E026:80
+  MyFargateServiceLBPublicListener61A1042F:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - TargetGroupArn:
+          Ref: MyFargateServiceLBPublicListenerECSGroup4A3EDF05
+        Type: forward
+      LoadBalancerArn:
+        Ref: MyFargateServiceLBDE830E97
+      Port: 80
+      Protocol: HTTP
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/LB/PublicListener/Resource
+  MyFargateServiceLBPublicListenerECSGroup4A3EDF05:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Port: 80
+      Protocol: HTTP
+      TargetGroupAttributes:
+      - Key: stickiness.enabled
+        Value: 'false'
+      TargetType: ip
+      VpcId:
+        Ref: Vpc8378EB38
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/LB/PublicListener/ECSGroup/Resource
+  MyFargateServiceTaskDefTaskRole62C7D397:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: '2012-10-17'
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/TaskDef/TaskRole/Resource
+  MyFargateServiceTaskDef5DA17B39:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+      - Essential: true
+        Image: nginx
+        Memory: 512
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: MyFargateServiceTaskDefwebLogGroup4A6C44E8
+            awslogs-stream-prefix: MyFargateService
+            awslogs-region:
+              Ref: AWS::Region
+        Name: web
+        PortMappings:
+        - ContainerPort: !Ref ContainerPort
+          Protocol: tcp
+      Cpu: '256'
+      ExecutionRoleArn:
+        Fn::GetAtt:
+        - MyFargateServiceTaskDefExecutionRoleD6305504
+        - Arn
+      Family: TmpStackMyFargateServiceTaskDef6DFC4CEA
+      Memory: '512'
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+      TaskRoleArn:
+        Fn::GetAtt:
+        - MyFargateServiceTaskDefTaskRole62C7D397
+        - Arn
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/TaskDef/Resource
+  MyFargateServiceTaskDefwebLogGroup4A6C44E8:
+    Type: AWS::Logs::LogGroup
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/TaskDef/web/LogGroup/Resource
+  MyFargateServiceTaskDefExecutionRoleD6305504:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: '2012-10-17'
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/TaskDef/ExecutionRole/Resource
+  MyFargateServiceTaskDefExecutionRoleDefaultPolicyEC22B20F:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+        - Action:
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+          Effect: Allow
+          Resource:
+            Fn::GetAtt:
+            - MyFargateServiceTaskDefwebLogGroup4A6C44E8
+            - Arn
+        Version: '2012-10-17'
+      PolicyName: MyFargateServiceTaskDefExecutionRoleDefaultPolicyEC22B20F
+      Roles:
+      - Ref: MyFargateServiceTaskDefExecutionRoleD6305504
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/TaskDef/ExecutionRole/DefaultPolicy/Resource
+  MyFargateServiceF490C034:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster:
+        Ref: ClusterEB0386A7
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 50
+      DesiredCount: 1
+      EnableECSManagedTags: false
+      HealthCheckGracePeriodSeconds: 60
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: web
+        ContainerPort: !Ref ContainerPort
+        TargetGroupArn:
+          Ref: MyFargateServiceLBPublicListenerECSGroup4A3EDF05
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+          - Fn::GetAtt:
+            - MyFargateServiceSecurityGroup7016792A
+            - GroupId
+          Subnets:
+          - Ref: VpcPrivateSubnet1Subnet536B997A
+          - Ref: VpcPrivateSubnet2Subnet3788AAA1
+      TaskDefinition:
+        Ref: MyFargateServiceTaskDef5DA17B39
+    DependsOn:
+    - MyFargateServiceLBPublicListenerECSGroup4A3EDF05
+    - MyFargateServiceLBPublicListener61A1042F
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/Service/Service
+  MyFargateServiceSecurityGroup7016792A:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: TmpStack/MyFargateService/Service/SecurityGroup
+      SecurityGroupEgress:
+      - CidrIp: 0.0.0.0/0
+        Description: Allow all outbound traffic by default
+        IpProtocol: "-1"
+      VpcId:
+        Ref: Vpc8378EB38
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/Service/SecurityGroup/Resource
+  MyFargateServiceSecurityGroupfromTmpStackMyFargateServiceLBSecurityGroupDA064B1380052DE7DE:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      Description: Load balancer to target
+      FromPort: 80
+      GroupId:
+        Fn::GetAtt:
+        - MyFargateServiceSecurityGroup7016792A
+        - GroupId
+      SourceSecurityGroupId:
+        Fn::GetAtt:
+        - MyFargateServiceLBSecurityGroup6FBF16F1
+        - GroupId
+      ToPort: 80
+    Metadata:
+      aws:cdk:path: TmpStack/MyFargateService/Service/SecurityGroup/from TmpStackMyFargateServiceLBSecurityGroupDA064B13:80
+  HttpApiF5A9A8A7:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Ref ApiName
+      ProtocolType: HTTP
+    Metadata:
+      aws:cdk:path: TmpStack/HttpApi/Resource
+  HttpApiDefaultStage3EEB07D6:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId:
+        Ref: HttpApiF5A9A8A7
+      StageName: "$default"
+      AutoDeploy: true
+    Metadata:
+      aws:cdk:path: TmpStack/HttpApi/DefaultStage/Resource
+  HttpApiGETtestDefaultIntegration70D586BA:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId:
+        Ref: HttpApiF5A9A8A7
+      IntegrationType: HTTP_PROXY
+      ConnectionId:
+        Ref: HttpApiVpcLink159804837
+      ConnectionType: VPC_LINK
+      IntegrationMethod: ANY
+      IntegrationUri:
+        Ref: MyFargateServiceLBPublicListener61A1042F
+      PayloadFormatVersion: '1.0'
+    Metadata:
+      aws:cdk:path: TmpStack/HttpApi/GET--test/DefaultIntegration/Resource
+  HttpApiGETtestF50DD7C8:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: HttpApiF5A9A8A7
+      RouteKey: GET /test
+      AuthorizationType: NONE
+      Target:
+        Fn::Join:
+        - ''
+        - - integrations/
+          - Ref: HttpApiGETtestDefaultIntegration70D586BA
+    Metadata:
+      aws:cdk:path: TmpStack/HttpApi/GET--test/Resource
+  HttpApiVpcLink159804837:
+    Type: AWS::ApiGatewayV2::VpcLink
+    Properties:
+      Name: TmpStackHttpApiVpcLink18D136882
+      SubnetIds:
+      - Ref: VpcPrivateSubnet1Subnet536B997A
+      - Ref: VpcPrivateSubnet2Subnet3788AAA1
+      SecurityGroupIds: []
+    Metadata:
+      aws:cdk:path: TmpStack/HttpApi/VpcLink-1/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAA/31S207DMAz9Ft6zjMFeeGOM26QJqg3xnqWmmHVJlDhDqOq/k0u7lYF48vHxsRNfJnwyveDnZ9fi041kuR03UlvgzZqE3LIVOO2tBDZ/U8+ejCc218qR9ZIiN4yHQImEWrUs1mpAXvDm1cgYey3mrPCbGuXabxSk3CNaaU/wIjY1HPkjN3NOSxSx8kEcwd2iiOZJ0IMg+BRfrLC4D/BYeKEIbMC9IP+k82YUWnzfgSK2Bukt0teD1d6kP/xL3FUWnPtFL1TiWwbS8WZeexdeT5Pp4L2wlYhdue0tvKHCvqdTRisSqMAOuC53DXaPed4dTM+NjKDYquMzY8KU07SWWpQ3ohZKQnmSDrVwhLIOik1SoKr2YV1/Z6cmfvhDHYbeVKfp8SD+El4OG+gHOXBbhmLHm5XOe0+20CEvLSqjltW6CtNc6upQosfhzgxWeZnx849EZmYwSqKJbrjiKg8rgUjl+4koXkdlD4d14mZduN8lqm26nAzbtmVKl8A/3Hg/mfLJFb88+3CII+sV4Q74KttvQ3nuIFoDAAA=
+    Metadata:
+      aws:cdk:path: TmpStack/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Outputs:
+  MyFargateServiceLoadBalancerDNS704F6391:
+    Value:
+      Fn::GetAtt:
+      - MyFargateServiceLBDE830E97
+      - DNSName
+  MyFargateServiceServiceURL4CF8398A:
+    Value:
+      Fn::Join:
+      - ''
+      - - http://
+        - Fn::GetAtt:
+          - MyFargateServiceLBDE830E97
+          - DNSName
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+    - Fn::Or:
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - af-south-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - ap-east-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - ap-northeast-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - ap-northeast-2
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - ap-south-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - ap-southeast-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - ap-southeast-2
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - ca-central-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - cn-north-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - cn-northwest-1
+    - Fn::Or:
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - eu-central-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - eu-north-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - eu-south-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - eu-west-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - eu-west-2
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - eu-west-3
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - me-south-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - sa-east-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - us-east-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - us-east-2
+    - Fn::Or:
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - us-west-1
+      - Fn::Equals:
+        - Ref: AWS::Region
+        - us-west-2

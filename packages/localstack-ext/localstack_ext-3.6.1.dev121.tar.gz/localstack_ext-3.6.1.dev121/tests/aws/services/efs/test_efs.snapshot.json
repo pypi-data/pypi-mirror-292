@@ -1,0 +1,412 @@
+{
+  "tests/aws/services/efs/test_efs.py::TestEfsFileSystemCrud::test_create_filesystem": {
+    "recorded-date": "29-08-2023, 16:53:56",
+    "recorded-content": {
+      "describe-fs-before": {
+        "FileSystems": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-fs": {
+        "CreationTime": "datetime",
+        "CreationToken": "<creation-token:1>",
+        "Encrypted": false,
+        "FileSystemArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:file-system/<file-system-id:1>",
+        "FileSystemId": "<file-system-id:1>",
+        "LifeCycleState": "creating",
+        "NumberOfMountTargets": 0,
+        "OwnerId": "111111111111",
+        "PerformanceMode": "generalPurpose",
+        "SizeInBytes": {
+          "Value": 0,
+          "ValueInIA": 0,
+          "ValueInStandard": 0
+        },
+        "Tags": [],
+        "ThroughputMode": "bursting",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "describe-fs": {
+        "FileSystems": [
+          {
+            "CreationTime": "datetime",
+            "CreationToken": "<creation-token:1>",
+            "Encrypted": false,
+            "FileSystemArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:file-system/<file-system-id:1>",
+            "FileSystemId": "<file-system-id:1>",
+            "LifeCycleState": "available",
+            "NumberOfMountTargets": 0,
+            "OwnerId": "111111111111",
+            "PerformanceMode": "generalPurpose",
+            "SizeInBytes": {
+              "Value": 6144,
+              "ValueInIA": 0,
+              "ValueInStandard": 6144
+            },
+            "Tags": [],
+            "ThroughputMode": "bursting"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-fs-with-id": {
+        "FileSystems": [
+          {
+            "CreationTime": "datetime",
+            "CreationToken": "<creation-token:1>",
+            "Encrypted": false,
+            "FileSystemArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:file-system/<file-system-id:1>",
+            "FileSystemId": "<file-system-id:1>",
+            "LifeCycleState": "available",
+            "NumberOfMountTargets": 0,
+            "OwnerId": "111111111111",
+            "PerformanceMode": "generalPurpose",
+            "SizeInBytes": {
+              "Value": 6144,
+              "ValueInIA": 0,
+              "ValueInStandard": 6144
+            },
+            "Tags": [],
+            "ThroughputMode": "bursting"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-fs": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 204
+        }
+      },
+      "describe-deleted-fs": {
+        "Error": {
+          "Code": "FileSystemNotFound",
+          "Message": "File system '<file-system-id:1>' does not exist."
+        },
+        "ErrorCode": "FileSystemNotFound",
+        "Message": "File system '<file-system-id:1>' does not exist.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/efs/test_efs.py::TestEfsFileSystemCrud::test_lifecycle_configuration": {
+    "recorded-date": "29-08-2023, 15:40:40",
+    "recorded-content": {
+      "create-fs": {
+        "CreationTime": "datetime",
+        "CreationToken": "<creation-token:1>",
+        "Encrypted": false,
+        "FileSystemArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:file-system/<file-system-id:1>",
+        "FileSystemId": "<file-system-id:1>",
+        "LifeCycleState": "creating",
+        "NumberOfMountTargets": 0,
+        "OwnerId": "111111111111",
+        "PerformanceMode": "generalPurpose",
+        "SizeInBytes": {
+          "Value": 0,
+          "ValueInIA": 0,
+          "ValueInStandard": 0
+        },
+        "Tags": [],
+        "ThroughputMode": "bursting",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "malformed-put-lifecycle-conf": {
+        "Error": {
+          "Code": "BadRequest",
+          "Message": "One or more LifecyclePolicy objects specified are malformed."
+        },
+        "ErrorCode": "BadRequest",
+        "Message": "One or more LifecyclePolicy objects specified are malformed.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "put-lifecycle-conf": {
+        "LifecyclePolicies": [
+          {
+            "TransitionToIA": "AFTER_7_DAYS"
+          },
+          {
+            "TransitionToPrimaryStorageClass": "AFTER_1_ACCESS"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-lifecycle-conf": {
+        "LifecyclePolicies": [
+          {
+            "TransitionToIA": "AFTER_7_DAYS"
+          },
+          {
+            "TransitionToPrimaryStorageClass": "AFTER_1_ACCESS"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/efs/test_efs.py::TestEfsFileSystemCrud::test_mount_target": {
+    "recorded-date": "05-09-2023, 18:46:02",
+    "recorded-content": {
+      "create-fs": {
+        "CreationTime": "datetime",
+        "CreationToken": "<creation-token:1>",
+        "Encrypted": false,
+        "FileSystemArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:file-system/<file-system-id:1>",
+        "FileSystemId": "<file-system-id:1>",
+        "LifeCycleState": "creating",
+        "NumberOfMountTargets": 0,
+        "OwnerId": "111111111111",
+        "PerformanceMode": "generalPurpose",
+        "SizeInBytes": {
+          "Value": 0,
+          "ValueInIA": 0,
+          "ValueInStandard": 0
+        },
+        "Tags": [],
+        "ThroughputMode": "bursting",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "describe-mount-targets": {
+        "MountTargets": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-mount-target": {
+        "AvailabilityZoneId": "<availability-zone-id:1>",
+        "AvailabilityZoneName": "<availability-zone-name:1>",
+        "FileSystemId": "<file-system-id:1>",
+        "IpAddress": "<ip-address:1>",
+        "LifeCycleState": "creating",
+        "MountTargetId": "<mount-target-id:1>",
+        "NetworkInterfaceId": "<network-interface-id:1>",
+        "OwnerId": "111111111111",
+        "SubnetId": "<subnet-id:1>",
+        "VpcId": "<vpc-id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-mount-targets-after-create": {
+        "MountTargets": [
+          {
+            "AvailabilityZoneId": "<availability-zone-id:1>",
+            "AvailabilityZoneName": "<availability-zone-name:1>",
+            "FileSystemId": "<file-system-id:1>",
+            "IpAddress": "<ip-address:1>",
+            "LifeCycleState": "creating",
+            "MountTargetId": "<mount-target-id:1>",
+            "NetworkInterfaceId": "<network-interface-id:1>",
+            "OwnerId": "111111111111",
+            "SubnetId": "<subnet-id:1>",
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-fs": {
+        "FileSystems": [
+          {
+            "CreationTime": "datetime",
+            "CreationToken": "<creation-token:1>",
+            "Encrypted": false,
+            "FileSystemArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:file-system/<file-system-id:1>",
+            "FileSystemId": "<file-system-id:1>",
+            "LifeCycleState": "available",
+            "NumberOfMountTargets": 1,
+            "OwnerId": "111111111111",
+            "PerformanceMode": "generalPurpose",
+            "SizeInBytes": {
+              "Value": 6144,
+              "ValueInIA": 0,
+              "ValueInStandard": 6144
+            },
+            "Tags": [],
+            "ThroughputMode": "bursting"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-fs-with-mount-target": {
+        "Error": {
+          "Code": "FileSystemInUse",
+          "Message": "The file system '<file-system-id:1>' cannot be deleted because it has mount targets. You must delete the mount targets, and then try again."
+        },
+        "ErrorCode": "FileSystemInUse",
+        "Message": "The file system '<file-system-id:1>' cannot be deleted because it has mount targets. You must delete the mount targets, and then try again.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 409
+        }
+      },
+      "delete-mount-target": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 204
+        }
+      }
+    }
+  },
+  "tests/aws/services/efs/test_efs.py::TestEfsFileSystemCrud::test_access_point": {
+    "recorded-date": "06-09-2023, 18:33:02",
+    "recorded-content": {
+      "create-fs": {
+        "CreationTime": "datetime",
+        "CreationToken": "<creation-token:1>",
+        "Encrypted": false,
+        "FileSystemArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:file-system/<file-system-id:1>",
+        "FileSystemId": "<file-system-id:1>",
+        "LifeCycleState": "creating",
+        "NumberOfMountTargets": 0,
+        "OwnerId": "111111111111",
+        "PerformanceMode": "generalPurpose",
+        "SizeInBytes": {
+          "Value": 0,
+          "ValueInIA": 0,
+          "ValueInStandard": 0
+        },
+        "Tags": [],
+        "ThroughputMode": "bursting",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "describe-access-points": {
+        "AccessPoints": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-access-point": {
+        "AccessPointArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:access-point/<access-point-id:1>",
+        "AccessPointId": "<access-point-id:1>",
+        "ClientToken": "<client-token:1>",
+        "FileSystemId": "<file-system-id:1>",
+        "LifeCycleState": "creating",
+        "Name": "east-users",
+        "OwnerId": "111111111111",
+        "PosixUser": {
+          "Gid": 4,
+          "Uid": 22
+        },
+        "RootDirectory": {
+          "CreationInfo": {
+            "OwnerGid": 11,
+            "OwnerUid": 0,
+            "Permissions": "775"
+          },
+          "Path": "/efs/testpath/east"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "east-users"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-access-points-after-create": {
+        "AccessPoints": [
+          {
+            "AccessPointArn": "arn:<partition>:elasticfilesystem:<region>:111111111111:access-point/<access-point-id:1>",
+            "AccessPointId": "<access-point-id:1>",
+            "ClientToken": "<client-token:1>",
+            "FileSystemId": "<file-system-id:1>",
+            "LifeCycleState": "creating",
+            "Name": "east-users",
+            "OwnerId": "111111111111",
+            "PosixUser": {
+              "Gid": 4,
+              "Uid": 22
+            },
+            "RootDirectory": {
+              "CreationInfo": {
+                "OwnerGid": 11,
+                "OwnerUid": 0,
+                "Permissions": "775"
+              },
+              "Path": "/efs/testpath/east"
+            },
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "east-users"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-access-point": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 204
+        }
+      },
+      "describe-access-points-after-delete": {
+        "AccessPoints": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-access-points-after-delete-exc": {
+        "Error": {
+          "Code": "AccessPointNotFound",
+          "Message": "Access point '<access-point-id:1>' does not exist."
+        },
+        "ErrorCode": "AccessPointNotFound",
+        "Message": "Access point '<access-point-id:1>' does not exist.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  }
+}

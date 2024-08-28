@@ -1,0 +1,66 @@
+{
+  "tests/aws/services/ec2/test_ec2.py::TestEC2::test_associate_and_disassociate_vpc_cidr_block": {
+    "recorded-date": "28-08-2023, 18:19:16",
+    "recorded-content": {
+      "cidr_block_association": {
+        "CidrBlockAssociation": {
+          "AssociationId": "association-id",
+          "CidrBlock": "10.92.1.0/24",
+          "CidrBlockState": {
+            "State": "associating"
+          }
+        },
+        "VpcId": "vpc-id",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "cidr_block_dissociate": {
+        "CidrBlockAssociation": {
+          "AssociationId": "association-id",
+          "CidrBlock": "10.92.1.0/24",
+          "CidrBlockState": {
+            "State": "disassociating"
+          }
+        },
+        "VpcId": "vpc-id",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "ipv6_cidr_block_association": {
+        "Ipv6CidrBlockAssociation": {
+          "AssociationId": "association-id",
+          "Ipv6CidrBlockState": {
+            "State": "associating"
+          },
+          "Ipv6Pool": "Amazon",
+          "NetworkBorderGroup": "<region>"
+        },
+        "VpcId": "vpc-id",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "ipv6_cidr_block_dissociate": {
+        "Ipv6CidrBlockAssociation": {
+          "AssociationId": "association-id",
+          "Ipv6CidrBlock": "2600:1f10:47a1:d100::/56",
+          "Ipv6CidrBlockState": {
+            "State": "disassociating"
+          },
+          "Ipv6Pool": "Amazon",
+          "NetworkBorderGroup": "<region>"
+        },
+        "VpcId": "vpc-id",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

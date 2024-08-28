@@ -1,0 +1,95 @@
+{
+  "tests/aws/services/memorydb/test_memorydb.py::TestMemoryDB::test_cluster_default_crud": {
+    "recorded-date": "12-01-2024, 17:36:26",
+    "recorded-content": {
+      "cluster-creation": {
+        "Cluster": {
+          "ACLName": "<a-c-l-name:1>",
+          "ARN": "arn:<partition>:memorydb:<region>:111111111111:cluster/<name:1>",
+          "AutoMinorVersionUpgrade": true,
+          "AvailabilityMode": "SingleAZ",
+          "ClusterEndpoint": {
+            "Port": 6379
+          },
+          "DataTiering": "false",
+          "EnginePatchVersion": "7.0.7",
+          "EngineVersion": "7.0",
+          "MaintenanceWindow": "tue:03:30-tue:04:30",
+          "Name": "<name:1>",
+          "NodeType": "db.t4g.small",
+          "NumberOfShards": 1,
+          "ParameterGroupName": "default.memorydb-redis7",
+          "ParameterGroupStatus": "in-sync",
+          "SnapshotRetentionLimit": 0,
+          "SnapshotWindow": "07:00-08:00",
+          "Status": "creating",
+          "SubnetGroupName": "default",
+          "TLSEnabled": true
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "cluster-description": {
+        "Clusters": [
+          {
+            "ACLName": "<a-c-l-name:1>",
+            "ARN": "arn:<partition>:memorydb:<region>:111111111111:cluster/<name:1>",
+            "AutoMinorVersionUpgrade": true,
+            "ClusterEndpoint": {
+              "Address": "clustercfg.<name:1>.ebopnw.memorydb.<region>.amazonaws.com",
+              "Port": 6379
+            },
+            "DataTiering": "false",
+            "EnginePatchVersion": "7.0.7",
+            "EngineVersion": "7.0",
+            "MaintenanceWindow": "tue:03:30-tue:04:30",
+            "Name": "<name:1>",
+            "NodeType": "db.t4g.small",
+            "NumberOfShards": 1,
+            "ParameterGroupName": "default.memorydb-redis7",
+            "ParameterGroupStatus": "in-sync",
+            "SnapshotRetentionLimit": 0,
+            "SnapshotWindow": "07:00-08:00",
+            "Status": "available",
+            "SubnetGroupName": "default",
+            "TLSEnabled": true
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "cluster-deletion": {
+        "Cluster": {
+          "ARN": "arn:<partition>:memorydb:<region>:111111111111:cluster/<name:1>",
+          "AutoMinorVersionUpgrade": true,
+          "ClusterEndpoint": {
+            "Address": "clustercfg.<name:1>.ebopnw.memorydb.<region>.amazonaws.com",
+            "Port": 6379
+          },
+          "DataTiering": "false",
+          "EnginePatchVersion": "7.0.7",
+          "EngineVersion": "7.0",
+          "MaintenanceWindow": "tue:03:30-tue:04:30",
+          "Name": "<name:1>",
+          "NodeType": "db.t4g.small",
+          "NumberOfShards": 1,
+          "ParameterGroupName": "default.memorydb-redis7",
+          "ParameterGroupStatus": "in-sync",
+          "SnapshotRetentionLimit": 0,
+          "SnapshotWindow": "07:00-08:00",
+          "Status": "deleting",
+          "SubnetGroupName": "default",
+          "TLSEnabled": true
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

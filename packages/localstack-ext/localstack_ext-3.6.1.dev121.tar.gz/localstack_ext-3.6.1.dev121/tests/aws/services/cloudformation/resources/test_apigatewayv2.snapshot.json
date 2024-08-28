@@ -1,0 +1,34 @@
+{
+  "tests/aws/services/cloudformation/resources/test_apigatewayv2.py::TestApiGwV2Apis::test_domain_name_attributes": {
+    "recorded-date": "12-03-2023, 22:56:33",
+    "recorded-content": {
+      "stack-outputs": {
+        "RegionalDomainName": "<regional-domain-name:1>",
+        "RegionalHostedZoneId": "<hosted-zone-id:1>"
+      },
+      "domain-name": {
+        "ApiMappingSelectionExpression": "$request.basepath",
+        "DomainName": "<domain-name>",
+        "DomainNameConfigurations": [
+          {
+            "ApiGatewayDomainName": "<regional-domain-name:1>",
+            "CertificateArn": "arn:<partition>:acm:<region>:111111111111:certificate/<resource:1>",
+            "DomainNameStatus": "AVAILABLE",
+            "EndpointType": "REGIONAL",
+            "HostedZoneId": "<hosted-zone-id:1>",
+            "SecurityPolicy": "TLS_1_2"
+          }
+        ],
+        "Tags": {
+          "aws:cloudformation:logical-id": "ApiDomainName",
+          "aws:cloudformation:stack-id": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name>/<resource:2>",
+          "aws:cloudformation:stack-name": "<stack-name>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

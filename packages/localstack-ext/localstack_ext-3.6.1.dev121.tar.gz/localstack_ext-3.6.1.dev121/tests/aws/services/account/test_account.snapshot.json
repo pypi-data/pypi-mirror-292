@@ -1,0 +1,73 @@
+{
+  "tests/aws/services/account/test_account.py::TestAccount::test_contact_information": {
+    "recorded-date": "02-01-2024, 06:44:49",
+    "recorded-content": {
+      "put_contact_information": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_contact_information": {
+        "ContactInformation": {
+          "AddressLine1": "123 Main St",
+          "City": "Seattle",
+          "CountryCode": "US",
+          "FullName": "Jane Doe",
+          "PhoneNumber": "+19108085844",
+          "PostalCode": "98101",
+          "StateOrRegion": "WA"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/account/test_account.py::TestAccount::test_alternate_contact": {
+    "recorded-date": "02-01-2024, 06:44:51",
+    "recorded-content": {
+      "get_alternate_contact": {
+        "AlternateContact": {
+          "AlternateContactType": "BILLING",
+          "EmailAddress": "bill@ing.com",
+          "Name": "Bill Ing",
+          "PhoneNumber": "+1 555-555-5555",
+          "Title": "Billing"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_alternate_contact_notfound_exc": {
+        "Error": {
+          "Code": "ResourceNotFoundException",
+          "Message": "No contact of the inputted alternate contact type found."
+        },
+        "message": "No contact of the inputted alternate contact type found.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/account/test_account.py::TestAccount::test_unavailable_alternate_contact": {
+    "recorded-date": "02-01-2024, 06:44:51",
+    "recorded-content": {
+      "get_alternate_contact_notfound_exc": {
+        "Error": {
+          "Code": "ResourceNotFoundException",
+          "Message": "No contact of the inputted alternate contact type found."
+        },
+        "message": "No contact of the inputted alternate contact type found.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  }
+}

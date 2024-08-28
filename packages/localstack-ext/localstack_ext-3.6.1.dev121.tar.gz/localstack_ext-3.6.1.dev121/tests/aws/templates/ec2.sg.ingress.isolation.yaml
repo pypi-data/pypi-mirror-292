@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  SecurityGroupId:
+    Type: String
+Resources:
+  SgAIngressRule:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref SecurityGroupId
+      IpProtocol: '-1'
+      CidrIp: 10.70.0.0/20
+
+Outputs:
+  SecurityGroupIngressRef:
+    Value: !Ref SgAIngressRule

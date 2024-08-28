@@ -1,0 +1,13 @@
+Resources:
+  MyTopic:
+    Type: AWS::SNS::Topic
+
+  MyParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Type: String
+      Value: placeholder
+
+Outputs:
+  TopicRef: !Ref MyTopic
+  ParamRef: !Ref MyParam

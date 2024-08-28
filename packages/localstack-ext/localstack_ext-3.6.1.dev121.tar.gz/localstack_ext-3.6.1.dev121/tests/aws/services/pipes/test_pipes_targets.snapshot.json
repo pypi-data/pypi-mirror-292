@@ -1,0 +1,96 @@
+{
+  "tests/aws/services/pipes/test_pipes_targets.py::TestPipesTargets::test_target_events": {
+    "recorded-date": "23-04-2024, 16:51:39",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "sqs-messages-from-events-from-pipes": [
+        {
+          "MessageId": "<uuid:1>",
+          "ReceiptHandle": "receipt-handle",
+          "MD5OfBody": "m-d5-of-body",
+          "Body": {
+            "version": "0",
+            "id": "<uuid:2>",
+            "detail-type": "Event bridge pipes to event bus",
+            "source": "custom-source-name",
+            "account": "111111111111",
+            "time": "<timestamp:2022-07-13T13:48:01Z>",
+            "region": "<region>",
+            "resources": [],
+            "detail": {
+              "messageId": "<uuid:3>",
+              "receiptHandle": "receipt-handle",
+              "body": "{\"message\": \"Hello, World!\"}",
+              "attributes": {
+                "ApproximateReceiveCount": "1",
+                "SentTimestamp": "sent-timestamp",
+                "SenderId": "sender-id",
+                "ApproximateFirstReceiveTimestamp": "approximate-first-receive-timestamp"
+              },
+              "messageAttributes": {},
+              "md5OfBody": "md5-of-body",
+              "eventSource": "aws:sqs",
+              "eventSourceARN": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name>",
+              "awsRegion": "<region>"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/pipes/test_pipes_targets.py::TestPipesTargets::test_target_stepfunctions": {
+    "recorded-date": "24-04-2024, 14:22:59",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "sqs-messages-from-events-from-pipes": [
+        {
+          "MessageId": "<uuid:1>",
+          "ReceiptHandle": "receipt-handle",
+          "MD5OfBody": "m-d5-of-body",
+          "Body": [
+            {
+              "messageId": "<uuid:2>",
+              "receiptHandle": "receipt-handle",
+              "body": {
+                "message": "Hello, World!"
+              },
+              "attributes": {
+                "ApproximateReceiveCount": "1",
+                "SentTimestamp": "sent-timestamp",
+                "SenderId": "sender-id",
+                "ApproximateFirstReceiveTimestamp": "approximate-first-receive-timestamp"
+              },
+              "messageAttributes": {},
+              "md5OfBody": "md5-of-body",
+              "eventSource": "aws:sqs",
+              "eventSourceARN": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name>",
+              "awsRegion": "<region>"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,332 @@
+{
+  "tests/aws/services/cloudformation/resources/test_rds.py::test_db_instance_deployment": {
+    "recorded-date": "07-03-2023, 13:00:50",
+    "recorded-content": {
+      "db_instance_atts": {
+        "DbAddress": "<db-identifier:1>.ciexe6ez1zf4.<region>.rds.amazonaws.com",
+        "DbPort": "<db-port:1>",
+        "DbRef": "<db-identifier:1>"
+      },
+      "db_resource_description": {
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        },
+        "LogicalResourceId": "MyDB",
+        "PhysicalResourceId": "<db-identifier:1>",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceType": "AWS::RDS::DBInstance",
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+        "StackName": "<stack-name:1>",
+        "Timestamp": "timestamp"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_rds.py::test_db_cluster_deployment": {
+    "recorded-date": "02-05-2023, 12:36:31",
+    "recorded-content": {
+      "db_instance_atts": {
+        "DBClusterIdentifier": "<db-identifier:1>",
+        "EndpointAddress": "db-address",
+        "EndpointPort": "<db-port:1>",
+        "ReadEndpointAddress": "read-address"
+      },
+      "db_resource_description": {
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        },
+        "LogicalResourceId": "MyDBCluster",
+        "PhysicalResourceId": "<db-identifier:1>",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceType": "AWS::RDS::DBCluster",
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+        "StackName": "<stack-name:1>",
+        "Timestamp": "timestamp"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_rds.py::test_rds_cluster_with_kms": {
+    "recorded-date": "02-11-2023, 13:58:17",
+    "recorded-content": {
+      "db_cluster_with_secret_arn": {
+        "ClusterSecretArn": "<cluster-secret-arn:1>",
+        "DBClusterIdentifier": "<d-b-cluster-identifier:1>",
+        "KMSKeyArn": "<k-m-s-key-arn:1>"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_rds.py::test_db_proxy": {
+    "recorded-date": "07-02-2024, 18:31:30",
+    "recorded-content": {
+      "describe_db_instances": {
+        "DBInstances": [
+          {
+            "ActivityStreamStatus": "stopped",
+            "AllocatedStorage": 5,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZone": "<availability-zone:1>",
+            "BackupRetentionPeriod": 1,
+            "BackupTarget": "region",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "CertificateDetails": {
+              "CAIdentifier": "rds-ca-rsa2048-g1",
+              "ValidTill": "datetime"
+            },
+            "CopyTagsToSnapshot": true,
+            "CustomerOwnedIpEnabled": false,
+            "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<resource:1>",
+            "DBInstanceClass": "db.t3.micro",
+            "DBInstanceIdentifier": "<resource:1>",
+            "DBInstanceStatus": "available",
+            "DBParameterGroups": [
+              {
+                "DBParameterGroupName": "<d-b-parameter-group-name:1>",
+                "ParameterApplyStatus": "in-sync"
+              }
+            ],
+            "DBSecurityGroups": [],
+            "DBSubnetGroup": {
+              "DBSubnetGroupDescription": "Subnet group for dbinstance database",
+              "DBSubnetGroupName": "<d-b-subnet-group-name:1>",
+              "SubnetGroupStatus": "Complete",
+              "Subnets": [
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<availability-zone:1>"
+                  },
+                  "SubnetIdentifier": "<subnet-identifier:1>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<region>b"
+                  },
+                  "SubnetIdentifier": "<subnet-identifier:2>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                }
+              ],
+              "VpcId": "<vpc-id:1>"
+            },
+            "DbInstancePort": 0,
+            "DbiResourceId": "<dbi-resource-id:1>",
+            "DedicatedLogVolume": false,
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "Endpoint": {
+              "Address": "<address:1>",
+              "HostedZoneId": "<hosted-zone-id:1>",
+              "Port": 3306
+            },
+            "Engine": "mysql",
+            "EngineVersion": "8.0.35",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "InstanceCreateTime": "datetime",
+            "IsStorageConfigUpgradeAvailable": false,
+            "LatestRestorableTime": "datetime",
+            "LicenseModel": "general-public-license",
+            "MasterUsername": "admin",
+            "MonitoringInterval": 0,
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "OptionGroupMemberships": [
+              {
+                "OptionGroupName": "default:mysql-8-0",
+                "Status": "in-sync"
+              }
+            ],
+            "PendingModifiedValues": {},
+            "PerformanceInsightsEnabled": false,
+            "PreferredBackupWindow": "<preferred-backup-window:1>",
+            "PreferredMaintenanceWindow": "<preferred-maintenance-window:1>",
+            "PubliclyAccessible": false,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "StorageEncrypted": false,
+            "StorageThroughput": 0,
+            "StorageType": "gp2",
+            "TagList": [
+              {
+                "Key": "aws:cloudformation:stack-id",
+                "Value": "arn:<partition>:cloudformation:<region>:111111111111:stack/RdsDbProxyStack/<resource:2>"
+              },
+              {
+                "Key": "aws:cloudformation:stack-name",
+                "Value": "RdsDbProxyStack"
+              },
+              {
+                "Key": "aws:cloudformation:logical-id",
+                "Value": "dbinstance764242C7"
+              }
+            ],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_proxies": {
+        "DBProxies": [
+          {
+            "Auth": [
+              {
+                "AuthScheme": "SECRETS",
+                "ClientPasswordAuthType": "MYSQL_NATIVE_PASSWORD",
+                "IAMAuth": "DISABLED",
+                "SecretArn": "arn:<partition>:secretsmanager:<region>:111111111111:secret:<resource:3>"
+              }
+            ],
+            "CreatedDate": "datetime",
+            "DBProxyArn": "arn:<partition>:rds:<region>:111111111111:db-proxy:<resource:4>",
+            "DBProxyName": "dbproxy",
+            "DebugLogging": false,
+            "Endpoint": "dbproxy.proxy-cjmx1j4ngfhb.<region>.rds.amazonaws.com",
+            "EngineFamily": "MYSQL",
+            "IdleClientTimeout": 120,
+            "RequireTLS": false,
+            "RoleArn": "arn:<partition>:iam::111111111111:role/<resource:5>",
+            "Status": "available",
+            "UpdatedDate": "datetime",
+            "VpcId": "<vpc-id:1>",
+            "VpcSecurityGroupIds": [
+              "<vpc-group-id>"
+            ],
+            "VpcSubnetIds": [
+              "<subnet-identifier:1>",
+              "<subnet-identifier:2>"
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_proxy_targets": {
+        "Targets": [
+          {
+            "Endpoint": "<address:1>",
+            "Port": 3306,
+            "RdsResourceId": "<resource:1>",
+            "Role": "READ_WRITE",
+            "TargetHealth": {
+              "State": "AVAILABLE"
+            },
+            "Type": "RDS_INSTANCE"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_rds.py::test_parameter_group_creation": {
+    "recorded-date": "11-03-2024, 13:30:01",
+    "recorded-content": {
+      "db_parameter_group_description": {
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        },
+        "LogicalResourceId": "H3ParameterGroup",
+        "PhysicalResourceId": "testgroup",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceType": "AWS::RDS::DBParameterGroup",
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+        "StackName": "<stack-name:1>",
+        "Timestamp": "timestamp"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_rds.py::test_cluster_parameter_group_creation": {
+    "recorded-date": "20-04-2024, 01:34:44",
+    "recorded-content": {
+      "db_cluster_parameter_group_description": {
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        },
+        "LogicalResourceId": "H3ParameterGroup",
+        "PhysicalResourceId": "<resource:2>",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceType": "AWS::RDS::DBClusterParameterGroup",
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+        "StackName": "<stack-name:1>",
+        "Timestamp": "timestamp"
+      },
+      "describe_db_cluster_parameter_group": {
+        "DBClusterParameterGroups": [
+          {
+            "DBClusterParameterGroupArn": "arn:<partition>:rds:<region>:111111111111:cluster-pg:<resource:2>",
+            "DBClusterParameterGroupName": "<resource:2>",
+            "DBParameterGroupFamily": "postgres15",
+            "Description": "Test cluster parameter group for RDS PostgreSQL instance"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_parameters": {
+        "default_transaction_isolation": "repeatable read",
+        "shared_buffers": "16384",
+        "temp_buffers": "8192",
+        "work_mem": "8192"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_rds.py::test_db_cluster_deployment[rds_cluster.yml]": {
+    "recorded-date": "03-05-2024, 16:01:01",
+    "recorded-content": {
+      "db_instance_atts": {
+        "DBClusterIdentifier": "<db-identifier:1>",
+        "EndpointAddress": "db-address",
+        "EndpointPort": "<db-port:1>",
+        "ReadEndpointAddress": "read-address"
+      },
+      "db_resource_description": {
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        },
+        "LogicalResourceId": "MyDBCluster",
+        "PhysicalResourceId": "<db-identifier:1>",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceType": "AWS::RDS::DBCluster",
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+        "StackName": "<stack-name:1>",
+        "Timestamp": "timestamp"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_rds.py::test_db_cluster_deployment[rds_serverless_cluster.yml]": {
+    "recorded-date": "03-05-2024, 16:06:27",
+    "recorded-content": {
+      "db_instance_atts": {
+        "DBClusterIdentifier": "<db-identifier:1>",
+        "EndpointAddress": "db-address",
+        "EndpointPort": "<db-port:1>",
+        "ReadEndpointAddress": "read-address"
+      },
+      "db_resource_description": {
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        },
+        "LogicalResourceId": "MyDBCluster",
+        "PhysicalResourceId": "<db-identifier:1>",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceType": "AWS::RDS::DBCluster",
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<db-identifier:1>/<resource:1>",
+        "StackName": "<db-identifier:1>",
+        "Timestamp": "timestamp"
+      }
+    }
+  }
+}

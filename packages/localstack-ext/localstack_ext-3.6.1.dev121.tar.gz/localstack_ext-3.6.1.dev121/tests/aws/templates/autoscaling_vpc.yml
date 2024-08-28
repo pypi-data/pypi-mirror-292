@@ -1,0 +1,304 @@
+Parameters:
+  AutoscalingGroupName:
+    Type: String
+  LaunchConfigurationName:
+    Type: String
+  SsmParameterValueawsserviceecsoptimizedamiamazonlinuxrecommendedimageidC96584B6F00A464EAD1953AFF4B05118Parameter:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ecs/optimized-ami/amazon-linux/recommended/image_id
+  DesiredCapacity:
+    Type: Number
+    Default: 1
+
+Resources:
+  myVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc
+  myVpcPublicSubnet1Subnet0D439C92:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVpc
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.0.0/18
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PublicSubnet1
+  myVpcPublicSubnet1RouteTable347B4FC5:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: myVpc
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PublicSubnet1
+  myVpcPublicSubnet1RouteTableAssociationE92D83F6:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: myVpcPublicSubnet1RouteTable347B4FC5
+      SubnetId:
+        Ref: myVpcPublicSubnet1Subnet0D439C92
+  myVpcPublicSubnet1DefaultRoute8F50EF0F:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: myVpcPublicSubnet1RouteTable347B4FC5
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: myInternetGateway
+    DependsOn:
+      - myVpcGatewayAttachment
+  myVpcPublicSubnet1EIPF5A3DBC1:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PublicSubnet1
+  myVpcPublicSubnet1NATGatewayD6B589D4:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: myVpcPublicSubnet1Subnet0D439C92
+      AllocationId:
+        Fn::GetAtt:
+          - myVpcPublicSubnet1EIPF5A3DBC1
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PublicSubnet1
+    DependsOn:
+      - myVpcPublicSubnet1DefaultRoute8F50EF0F
+      - myVpcPublicSubnet1RouteTableAssociationE92D83F6
+  myVpcPublicSubnet2Subnet7365A870:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVpc
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.64.0/18
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PublicSubnet2
+  myVpcPublicSubnet2RouteTableC3F77243:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: myVpc
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PublicSubnet2
+  myVpcPublicSubnet2RouteTableAssociationB93D1C85:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: myVpcPublicSubnet2RouteTableC3F77243
+      SubnetId:
+        Ref: myVpcPublicSubnet2Subnet7365A870
+  myVpcPublicSubnet2DefaultRoute2F7BD8CA:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: myVpcPublicSubnet2RouteTableC3F77243
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: myInternetGateway
+    DependsOn:
+      - myVpcGatewayAttachment
+  myVpcPublicSubnet2EIPFE257873:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PublicSubnet2
+  myVpcPublicSubnet2NATGateway832BC676:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: myVpcPublicSubnet2Subnet7365A870
+      AllocationId:
+        Fn::GetAtt:
+          - myVpcPublicSubnet2EIPFE257873
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PublicSubnet2
+    DependsOn:
+      - myVpcPublicSubnet2DefaultRoute2F7BD8CA
+      - myVpcPublicSubnet2RouteTableAssociationB93D1C85
+  myVpcPrivateSubnet1SubnetDE1978C0:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVpc
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.128.0/18
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PrivateSubnet1
+  myVpcPrivateSubnet1RouteTableD8D3BB9F:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: myVpc
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PrivateSubnet1
+  myVpcPrivateSubnet1RouteTableAssociationE1CC0616:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: myVpcPrivateSubnet1RouteTableD8D3BB9F
+      SubnetId:
+        Ref: myVpcPrivateSubnet1SubnetDE1978C0
+  myVpcPrivateSubnet1DefaultRouteFB1EB490:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: myVpcPrivateSubnet1RouteTableD8D3BB9F
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: myVpcPublicSubnet1NATGatewayD6B589D4
+  myVpcPrivateSubnet2SubnetB7D01881:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVpc
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.192.0/18
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PrivateSubnet2
+  myVpcPrivateSubnet2RouteTableDCCC902F:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: myVpc
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc/PrivateSubnet2
+  myVpcPrivateSubnet2RouteTableAssociation5EC5F34F:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: myVpcPrivateSubnet2RouteTableDCCC902F
+      SubnetId:
+        Ref: myVpcPrivateSubnet2SubnetB7D01881
+  myVpcPrivateSubnet2DefaultRouteD306D63E:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: myVpcPrivateSubnet2RouteTableDCCC902F
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: myVpcPublicSubnet2NATGateway832BC676
+  myInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/myVpc
+  myVpcGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: myVpc
+      InternetGatewayId:
+        Ref: myInternetGateway
+  SecurityGroupDD263621:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: AutoscalingStackStack/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId:
+        Ref: myVpc
+  ASGInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - ec2.
+                    - Ref: AWS::URLSuffix
+        Version: "2012-10-17"
+      Tags:
+        - Key: Name
+          Value: AutoscalingStackStack/ASG
+  ASGInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: ASGInstanceRole
+  ASGLaunchConfigC00AF12B:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId:
+        Ref: SsmParameterValueawsserviceecsoptimizedamiamazonlinuxrecommendedimageidC96584B6F00A464EAD1953AFF4B05118Parameter
+      LaunchConfigurationName: !Ref LaunchConfigurationName
+      InstanceType: t2.nano
+      IamInstanceProfile:
+        Ref: ASGInstanceProfile
+      InstanceMonitoring: false
+      SecurityGroups:
+        - Fn::GetAtt:
+            - SecurityGroupDD263621
+            - GroupId
+      UserData:
+        Fn::Base64: "#!/bin/bash"
+    DependsOn:
+      - ASGInstanceRole
+  ASG46ED3070:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      MaxSize: "3"
+      MinSize: "1"
+      AutoScalingGroupName: !Ref AutoscalingGroupName
+      LaunchConfigurationName:
+        Ref: ASGLaunchConfigC00AF12B
+      Tags:
+        - Key: Name
+          PropagateAtLaunch: true
+          Value: AutoscalingStackStack/ASG
+      VPCZoneIdentifier:
+        - Ref: myVpcPublicSubnet1Subnet0D439C92
+        - Ref: myVpcPublicSubnet2Subnet7365A870
+      Cooldown: "300"
+      MetricsCollection:
+        - Granularity: "1Minute"
+      DesiredCapacity: !Ref DesiredCapacity
+    UpdatePolicy:
+      AutoScalingScheduledAction:
+        IgnoreUnmodifiedGroupSizeProperties: true

@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  GroupName:
+    Type: String
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: "10.0.0.0/20"
+
+  SgA:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Ref GroupName
+      GroupDescription: sg description
+      VpcId: !Ref VPC
+
+  SgAIngressRule:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref SgA
+      IpProtocol: '-1'
+      CidrIp: 10.70.0.0/20

@@ -1,0 +1,546 @@
+{
+  "tests/aws/services/apigateway/test_http_apis.py::TestHttpApis::test_apigw_v2_lambda_request_authorizer[1.0]": {
+    "recorded-date": "23-05-2024, 16:52:00",
+    "recorded-content": {
+      "create-api": {
+        "ApiEndpoint": "https://<api-id:1>.execute-api.<region>.amazonaws.com",
+        "ApiId": "<api-id:1>",
+        "ApiKeySelectionExpression": "$request.header.x-api-key",
+        "CreatedDate": "datetime",
+        "DisableExecuteApiEndpoint": false,
+        "Name": "<name:1>",
+        "ProtocolType": "HTTP",
+        "RouteSelectionExpression": "$request.method $request.path",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "lambda_request_authorizer": {
+        "body": null,
+        "headers": {
+          "Content-Length": "0",
+          "Host": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "User-Agent": "urllib3-test",
+          "X-Amzn-Trace-Id": "<trace-id:1>",
+          "X-Forwarded-For": "<source-ip:1>",
+          "X-Forwarded-Port": "443",
+          "X-Forwarded-Proto": "https",
+          "X-User": "valid-token",
+          "accept-encoding": "identity"
+        },
+        "httpMethod": "GET",
+        "isBase64Encoded": false,
+        "multiValueHeaders": {
+          "Content-Length": [
+            "0"
+          ],
+          "Host": [
+            "<api-id:1>.execute-api.<region>.amazonaws.com"
+          ],
+          "User-Agent": [
+            "urllib3-test"
+          ],
+          "X-Amzn-Trace-Id": [
+            "<trace-id:1>"
+          ],
+          "X-Forwarded-For": [
+            "<source-ip:1>"
+          ],
+          "X-Forwarded-Port": [
+            "443"
+          ],
+          "X-Forwarded-Proto": [
+            "https"
+          ],
+          "X-User": [
+            "valid-token"
+          ],
+          "accept-encoding": [
+            "identity"
+          ]
+        },
+        "multiValueQueryStringParameters": null,
+        "path": "/test",
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "requestContext": {
+          "accountId": "111111111111",
+          "apiId": "<api-id:1>",
+          "authorizer": {
+            "claims": null,
+            "identitySource": "valid-token",
+            "scopes": null
+          },
+          "domainName": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "domainPrefix": "<api-id:1>",
+          "extendedRequestId": "<extended-request-id:1>",
+          "httpMethod": "GET",
+          "identity": {
+            "accessKey": null,
+            "accountId": null,
+            "caller": null,
+            "cognitoAmr": null,
+            "cognitoAuthenticationProvider": null,
+            "cognitoAuthenticationType": null,
+            "cognitoIdentityId": null,
+            "cognitoIdentityPoolId": null,
+            "principalOrgId": null,
+            "sourceIp": "<source-ip:1>",
+            "user": null,
+            "userAgent": "urllib3-test",
+            "userArn": null
+          },
+          "path": "/test",
+          "protocol": "HTTP/1.1",
+          "requestId": "<extended-request-id:1>",
+          "requestTime": "<request-time>",
+          "requestTimeEpoch": "<request-time-epoch>",
+          "resourceId": "<resource-id:1>",
+          "resourcePath": "/test",
+          "stage": "$default"
+        },
+        "resource": "/test",
+        "stageVariables": null,
+        "version": "1.0"
+      },
+      "lambda_request_authorizer_double_slash": {
+        "body": null,
+        "headers": {
+          "Content-Length": "0",
+          "Host": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "User-Agent": "urllib3-test",
+          "X-Amzn-Trace-Id": "<trace-id:2>",
+          "X-Forwarded-For": "<source-ip:1>",
+          "X-Forwarded-Port": "443",
+          "X-Forwarded-Proto": "https",
+          "X-User": "valid-token",
+          "accept-encoding": "identity"
+        },
+        "httpMethod": "GET",
+        "isBase64Encoded": false,
+        "multiValueHeaders": {
+          "Content-Length": [
+            "0"
+          ],
+          "Host": [
+            "<api-id:1>.execute-api.<region>.amazonaws.com"
+          ],
+          "User-Agent": [
+            "urllib3-test"
+          ],
+          "X-Amzn-Trace-Id": [
+            "<trace-id:2>"
+          ],
+          "X-Forwarded-For": [
+            "<source-ip:1>"
+          ],
+          "X-Forwarded-Port": [
+            "443"
+          ],
+          "X-Forwarded-Proto": [
+            "https"
+          ],
+          "X-User": [
+            "valid-token"
+          ],
+          "accept-encoding": [
+            "identity"
+          ]
+        },
+        "multiValueQueryStringParameters": null,
+        "path": "//test",
+        "pathParameters": null,
+        "queryStringParameters": null,
+        "requestContext": {
+          "accountId": "111111111111",
+          "apiId": "<api-id:1>",
+          "authorizer": {
+            "claims": null,
+            "identitySource": "valid-token",
+            "scopes": null
+          },
+          "domainName": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "domainPrefix": "<api-id:1>",
+          "extendedRequestId": "<extended-request-id:2>",
+          "httpMethod": "GET",
+          "identity": {
+            "accessKey": null,
+            "accountId": null,
+            "caller": null,
+            "cognitoAmr": null,
+            "cognitoAuthenticationProvider": null,
+            "cognitoAuthenticationType": null,
+            "cognitoIdentityId": null,
+            "cognitoIdentityPoolId": null,
+            "principalOrgId": null,
+            "sourceIp": "<source-ip:1>",
+            "user": null,
+            "userAgent": "urllib3-test",
+            "userArn": null
+          },
+          "path": "/test",
+          "protocol": "HTTP/1.1",
+          "requestId": "<extended-request-id:2>",
+          "requestTime": "<request-time>",
+          "requestTimeEpoch": "<request-time-epoch>",
+          "resourceId": "<resource-id:1>",
+          "resourcePath": "/test",
+          "stage": "$default"
+        },
+        "resource": "/test",
+        "stageVariables": null,
+        "version": "1.0"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_http_apis.py::TestHttpApis::test_apigw_v2_lambda_request_authorizer[2.0]": {
+    "recorded-date": "23-05-2024, 16:52:12",
+    "recorded-content": {
+      "create-api": {
+        "ApiEndpoint": "https://<api-id:1>.execute-api.<region>.amazonaws.com",
+        "ApiId": "<api-id:1>",
+        "ApiKeySelectionExpression": "$request.header.x-api-key",
+        "CreatedDate": "datetime",
+        "DisableExecuteApiEndpoint": false,
+        "Name": "<name:1>",
+        "ProtocolType": "HTTP",
+        "RouteSelectionExpression": "$request.method $request.path",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "lambda_request_authorizer": {
+        "headers": {
+          "accept-encoding": "identity",
+          "content-length": "0",
+          "host": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "user-agent": "urllib3-test",
+          "x-amzn-trace-id": "Root=1-664f743b-2f56ca6d5f06ba016fa84588",
+          "x-forwarded-for": "<source-ip:1>",
+          "x-forwarded-port": "443",
+          "x-forwarded-proto": "https",
+          "x-user": "valid-token"
+        },
+        "isBase64Encoded": false,
+        "rawPath": "/test",
+        "rawQueryString": "",
+        "requestContext": {
+          "accountId": "111111111111",
+          "apiId": "<api-id:1>",
+          "authorizer": {
+            "lambda": {
+              "identitySource": [
+                "valid-token"
+              ]
+            }
+          },
+          "domainName": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "domainPrefix": "<api-id:1>",
+          "http": {
+            "method": "GET",
+            "path": "/test",
+            "protocol": "HTTP/1.1",
+            "sourceIp": "<source-ip:1>",
+            "userAgent": "urllib3-test"
+          },
+          "requestId": "YO8ZXiwZoAMEJ5g=",
+          "routeKey": "GET /test",
+          "stage": "$default",
+          "time": "23/May/2024:16:52:11 +0000",
+          "timeEpoch": 1716483131610
+        },
+        "routeKey": "GET /test",
+        "version": "2.0"
+      },
+      "lambda_request_authorizer_double_slash": {
+        "headers": {
+          "accept-encoding": "identity",
+          "content-length": "0",
+          "host": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "user-agent": "urllib3-test",
+          "x-amzn-trace-id": "Root=1-664f743c-00b48a0a03638d883b5735e9",
+          "x-forwarded-for": "<source-ip:1>",
+          "x-forwarded-port": "443",
+          "x-forwarded-proto": "https",
+          "x-user": "valid-token"
+        },
+        "isBase64Encoded": false,
+        "rawPath": "/test",
+        "rawQueryString": "",
+        "requestContext": {
+          "accountId": "111111111111",
+          "apiId": "<api-id:1>",
+          "authorizer": {
+            "lambda": {
+              "identitySource": [
+                "valid-token"
+              ]
+            }
+          },
+          "domainName": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "domainPrefix": "<api-id:1>",
+          "http": {
+            "method": "GET",
+            "path": "/test",
+            "protocol": "HTTP/1.1",
+            "sourceIp": "<source-ip:1>",
+            "userAgent": "urllib3-test"
+          },
+          "requestId": "YO8ZejYIIAMEcJQ=",
+          "routeKey": "GET /test",
+          "stage": "$default",
+          "time": "23/May/2024:16:52:12 +0000",
+          "timeEpoch": 1716483132395
+        },
+        "routeKey": "GET /test",
+        "version": "2.0"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_http_apis.py::TestHttpApis::test_lambda_events[1.0]": {
+    "recorded-date": "30-10-2023, 11:07:38",
+    "recorded-content": {
+      "auth-request-ctx": {
+        "claims": null,
+        "ctx.foo": "bar",
+        "scopes": null
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_http_apis.py::TestHttpApis::test_lambda_events[2.0]": {
+    "recorded-date": "30-10-2023, 11:07:58",
+    "recorded-content": {
+      "auth-request-ctx": {
+        "lambda": {
+          "ctx.foo": "bar"
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_http_apis.py::TestHttpApis::test_http_proxy_integration": {
+    "recorded-date": "18-03-2024, 16:22:51",
+    "recorded-content": {
+      "invalid-integration-req": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "PayloadFormatVersion is a required parameter for integration"
+        },
+        "Message": "PayloadFormatVersion is a required parameter for integration",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "invoke-/api": {
+        "args": {
+          "queryStringParam": "test"
+        },
+        "data": "\"{\\\"foo\\\": \\\"bar\\\"}\"",
+        "files": {},
+        "form": {},
+        "headers": {
+          "Accept": "*/*",
+          "Accept-Encoding": "gzip, deflate",
+          "Content-Length": "20",
+          "Content-Type": "application/json",
+          "Forwarded": "forwarded",
+          "Host": "<host:1>",
+          "User-Agent": "<user-agent>",
+          "X-Amzn-Trace-Id": "<trace-id:1>",
+          "X-Test": "test"
+        },
+        "json": {
+          "foo": "bar"
+        },
+        "origin": "<origin:1>",
+        "url": "http://<host:1>/post?queryStringParam=test"
+      },
+      "invoke-/api/anything": {
+        "args": {
+          "queryStringParam": "test"
+        },
+        "data": "\"{\\\"foo\\\": \\\"bar\\\"}\"",
+        "files": {},
+        "form": {},
+        "headers": {
+          "Accept": "*/*",
+          "Accept-Encoding": "gzip, deflate",
+          "Content-Length": "20",
+          "Content-Type": "application/json",
+          "Forwarded": "forwarded",
+          "Host": "<host:1>",
+          "User-Agent": "<user-agent>",
+          "X-Amzn-Trace-Id": "<trace-id:2>",
+          "X-Test": "test"
+        },
+        "json": {
+          "foo": "bar"
+        },
+        "origin": "<origin:2>",
+        "url": "http://<host:1>/post?queryStringParam=test"
+      },
+      "invoke-qs-non-encoded-with-url": {
+        "args": {
+          "a": "b",
+          "redirect_uri": "http://localhost:3001/example-client/success"
+        },
+        "data": "\"{\\\"foo\\\": \\\"bar\\\"}\"",
+        "files": {},
+        "form": {},
+        "headers": {
+          "Accept": "*/*",
+          "Accept-Encoding": "gzip, deflate",
+          "Content-Length": "20",
+          "Content-Type": "application/json",
+          "Forwarded": "forwarded",
+          "Host": "<host:1>",
+          "User-Agent": "<user-agent>",
+          "X-Amzn-Trace-Id": "<trace-id:3>"
+        },
+        "json": {
+          "foo": "bar"
+        },
+        "origin": "<origin:3>",
+        "url": "http://<host:1>/post?a=b&redirect_uri=http:%2F%2Flocalhost:3001%2Fexample-client%2Fsuccess"
+      },
+      "invoke-qs-encoded-with-url": {
+        "args": {
+          "a": "b",
+          "redirect_uri": "http://localhost:3001/example-client/success"
+        },
+        "data": "\"{\\\"foo\\\": \\\"bar\\\"}\"",
+        "files": {},
+        "form": {},
+        "headers": {
+          "Accept": "*/*",
+          "Accept-Encoding": "gzip, deflate",
+          "Content-Length": "20",
+          "Content-Type": "application/json",
+          "Forwarded": "forwarded",
+          "Host": "<host:1>",
+          "User-Agent": "<user-agent>",
+          "X-Amzn-Trace-Id": "<trace-id:4>"
+        },
+        "json": {
+          "foo": "bar"
+        },
+        "origin": "<origin:4>",
+        "url": "http://<host:1>/post?a=b&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fexample-client%2Fsuccess"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_http_apis.py::TestHttpApis::test_http_integration_invalid_use_cases": {
+    "recorded-date": "09-07-2023, 19:40:33",
+    "recorded-content": {
+      "invalid-integration-type": {
+        "Code": "BadRequestException",
+        "Message": "Currently, an API with a protocol type of HTTP may only be associated with proxy integrations (AWS_PROXY, HTTP_PROXY)"
+      },
+      "invalid-payload-format-version": {
+        "Code": "BadRequestException",
+        "Message": "PayloadFormatVersion 2.0 is not supported for integration of type HTTP_PROXY"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_http_apis.py::TestHttpApis::test_import_and_invoke_http_api": {
+    "recorded-date": "10-07-2023, 17:23:11",
+    "recorded-content": {
+      "http-proxy-request-header-parameters": {
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate",
+        "Content-Length": "0",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Forwarded": "forwarded",
+        "Header1": "<request-id:1>",
+        "Header2": "test",
+        "Host": "<host:1>",
+        "User-Agent": "<user-agent>",
+        "X-Amzn-Trace-Id": "<trace-id:1>"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_http_apis.py::TestHttpApis::test_apigw_v2_http_kinesis_integration": {
+    "recorded-date": "21-02-2024, 22:13:32",
+    "recorded-content": {
+      "kinesis_integration": {
+        "SequenceNumber": "<sequence-number:1>",
+        "ShardId": "<shard-id:1>"
+      },
+      "kinesis_integration_no_content_type": {
+        "SequenceNumber": "<sequence-number:2>",
+        "ShardId": "<shard-id:1>"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_http_apis.py::TestHttpApis::test_http_integration_keeps_body_intact": {
+    "recorded-date": "13-06-2024, 20:53:58",
+    "recorded-content": {
+      "create-integration": {
+        "ConnectionType": "INTERNET",
+        "IntegrationId": "<integration-id:1>",
+        "IntegrationMethod": "ANY",
+        "IntegrationType": "HTTP_PROXY",
+        "IntegrationUri": "<integration-uri:1>",
+        "PayloadFormatVersion": "1.0",
+        "TimeoutInMillis": 30000,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-route": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "RouteId": "<route-id:1>",
+        "RouteKey": "ANY /api/{proxy+}",
+        "Target": "integrations/<integration-id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-stage": {
+        "AutoDeploy": true,
+        "CreatedDate": "datetime",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "LastUpdatedDate": "datetime",
+        "RouteSettings": {},
+        "StageName": "dev",
+        "StageVariables": {},
+        "Tags": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "invoke-api": {
+        "args": {},
+        "data": "DQotLTRlZmQxNTllYWUwYzRmNGUxMjVhNWE1MDllMDczZDg1DQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9ImZvcm1maWVsZCINCg0Kbm90IGEgZmlsZSwganVzdCBhIGZpZWxkDQotLTRlZmQxNTllYWUwYzRmNGUxMjVhNWE1MDllMDczZDg1DQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9ImZvbyI7IGZpbGVuYW1lPSJmb28iDQpDb250ZW50LVR5cGU6IHRleHQvcGxhaW47DQoNCmJhcg0KDQotLTRlZmQxNTllYWUwYzRmNGUxMjVhNWE1MDllMDczZDg1LS0NCg==",
+        "domain": "<domain:1>",
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip, deflate",
+          "content-length": "286",
+          "content-type": "multipart/form-data; boundary=4efd159eae0c4f4e125a5a509e073d85",
+          "forwarded": "<forwarded:1>",
+          "host": "<domain:1>",
+          "user-agent": "python/test-request",
+          "via": "HTTP/1.1 AmazonAPIGateway",
+          "x-amzn-tls-cipher-suite": "TLS_AES_128_GCM_SHA256",
+          "x-amzn-tls-version": "TLSv1.3",
+          "x-amzn-trace-id": "<x-amzn-trace-id:4>",
+          "x-forwarded-for": "<origin:1>",
+          "x-forwarded-port": "<x-forwarded-port:1>",
+          "x-forwarded-proto": "https"
+        },
+        "method": "POST",
+        "origin": "<origin:1>",
+        "path": "/"
+      }
+    }
+  }
+}

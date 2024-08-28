@@ -1,0 +1,935 @@
+{
+  "tests/aws/services/stepfunctions/test_stepfunctions.py::TestBaseScenarios::test_glue_start_job[GLUE_START_JOB_RUN__BASE_COMMAND]": {
+    "recorded-date": "15-05-2024, 14:56:44",
+    "recorded-content": {
+      "get_execution_history": {
+        "events": [
+          {
+            "executionStartedEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "roleArn": "snf_role_arn"
+            },
+            "id": 1,
+            "previousEventId": 0,
+            "timestamp": "<datetime>",
+            "type": "ExecutionStarted"
+          },
+          {
+            "id": 2,
+            "previousEventId": 0,
+            "stateEnteredEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "name": "GlueTask"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateEntered"
+          },
+          {
+            "id": 3,
+            "previousEventId": 2,
+            "taskScheduledEventDetails": {
+              "parameters": {
+                "JobName": "<job-name:1>"
+              },
+              "region": "<region>",
+              "resource": "startJobRun",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskScheduled"
+          },
+          {
+            "id": 4,
+            "previousEventId": 3,
+            "taskStartedEventDetails": {
+              "resource": "startJobRun",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStarted"
+          },
+          {
+            "id": 5,
+            "previousEventId": 4,
+            "taskSucceededEventDetails": {
+              "output": {
+                "JobRunId": "<job-run-id:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:1>"
+                    ],
+                    "Content-Length": [
+                      "82"
+                    ],
+                    "Date": "date",
+                    "Content-Type": [
+                      "application/x-amz-json-1.1"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Connection": "keep-alive",
+                    "Content-Length": "82",
+                    "Content-Type": "application/x-amz-json-1.1",
+                    "Date": "date",
+                    "x-amzn-RequestId": "<uuid:1>"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:1>"
+                },
+                "JobName": "<job-name:1>"
+              },
+              "outputDetails": {
+                "truncated": false
+              },
+              "resource": "startJobRun",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskSucceeded"
+          },
+          {
+            "id": 6,
+            "previousEventId": 5,
+            "stateExitedEventDetails": {
+              "name": "GlueTask",
+              "output": {
+                "JobRunId": "<job-run-id:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:1>"
+                    ],
+                    "Content-Length": [
+                      "82"
+                    ],
+                    "Date": "date",
+                    "Content-Type": [
+                      "application/x-amz-json-1.1"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Connection": "keep-alive",
+                    "Content-Length": "82",
+                    "Content-Type": "application/x-amz-json-1.1",
+                    "Date": "date",
+                    "x-amzn-RequestId": "<uuid:1>"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:1>"
+                },
+                "JobName": "<job-name:1>"
+              },
+              "outputDetails": {
+                "truncated": false
+              }
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateExited"
+          },
+          {
+            "executionSucceededEventDetails": {
+              "output": {
+                "JobRunId": "<job-run-id:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:1>"
+                    ],
+                    "Content-Length": [
+                      "82"
+                    ],
+                    "Date": "date",
+                    "Content-Type": [
+                      "application/x-amz-json-1.1"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Connection": "keep-alive",
+                    "Content-Length": "82",
+                    "Content-Type": "application/x-amz-json-1.1",
+                    "Date": "date",
+                    "x-amzn-RequestId": "<uuid:1>"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:1>"
+                },
+                "JobName": "<job-name:1>"
+              },
+              "outputDetails": {
+                "truncated": false
+              }
+            },
+            "id": 7,
+            "previousEventId": 6,
+            "timestamp": "<datetime>",
+            "type": "ExecutionSucceeded"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/stepfunctions/test_stepfunctions.py::TestBaseScenarios::test_glue_start_job[GLUE_START_JOB_RUN_SYNC__BASE_COMMAND]": {
+    "recorded-date": "15-05-2024, 14:58:16",
+    "recorded-content": {
+      "get_execution_history": {
+        "events": [
+          {
+            "executionStartedEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "roleArn": "snf_role_arn"
+            },
+            "id": 1,
+            "previousEventId": 0,
+            "timestamp": "<datetime>",
+            "type": "ExecutionStarted"
+          },
+          {
+            "id": 2,
+            "previousEventId": 0,
+            "stateEnteredEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "name": "GlueTask"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateEntered"
+          },
+          {
+            "id": 3,
+            "previousEventId": 2,
+            "taskScheduledEventDetails": {
+              "parameters": {
+                "JobName": "<job-name:1>"
+              },
+              "region": "<region>",
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskScheduled"
+          },
+          {
+            "id": 4,
+            "previousEventId": 3,
+            "taskStartedEventDetails": {
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStarted"
+          },
+          {
+            "id": 5,
+            "previousEventId": 4,
+            "taskSubmittedEventDetails": {
+              "output": {
+                "JobRunId": "<job-run-id:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:1>"
+                    ],
+                    "Content-Length": [
+                      "82"
+                    ],
+                    "Date": "date",
+                    "Content-Type": [
+                      "application/x-amz-json-1.1"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Connection": "keep-alive",
+                    "Content-Length": "82",
+                    "Content-Type": "application/x-amz-json-1.1",
+                    "Date": "date",
+                    "x-amzn-RequestId": "<uuid:1>"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:1>"
+                },
+                "JobName": "<job-name:1>"
+              },
+              "outputDetails": {
+                "truncated": false
+              },
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskSubmitted"
+          },
+          {
+            "id": 6,
+            "previousEventId": 5,
+            "taskSucceededEventDetails": {
+              "output": {
+                "AllocatedCapacity": "allocated_capacity",
+                "Attempt": 0,
+                "CompletedOn": "completed_on",
+                "ExecutionTime": "execution_time",
+                "Id": "<job-run-id:1>",
+                "JobName": "<job-name:1>",
+                "JobRunState": "SUCCEEDED",
+                "LastModifiedOn": "last_modified_on",
+                "LogGroupName": "/aws-glue/python-jobs",
+                "MaxCapacity": "max_capacity",
+                "PredecessorRuns": [],
+                "StartedOn": "started_on",
+                "Timeout": 2880
+              },
+              "outputDetails": {
+                "truncated": false
+              },
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskSucceeded"
+          },
+          {
+            "id": 7,
+            "previousEventId": 6,
+            "stateExitedEventDetails": {
+              "name": "GlueTask",
+              "output": {
+                "AllocatedCapacity": "allocated_capacity",
+                "Attempt": 0,
+                "CompletedOn": "completed_on",
+                "ExecutionTime": "execution_time",
+                "Id": "<job-run-id:1>",
+                "JobName": "<job-name:1>",
+                "JobRunState": "SUCCEEDED",
+                "LastModifiedOn": "last_modified_on",
+                "LogGroupName": "/aws-glue/python-jobs",
+                "MaxCapacity": "max_capacity",
+                "PredecessorRuns": [],
+                "StartedOn": "started_on",
+                "Timeout": 2880
+              },
+              "outputDetails": {
+                "truncated": false
+              }
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateExited"
+          },
+          {
+            "executionSucceededEventDetails": {
+              "output": {
+                "AllocatedCapacity": "allocated_capacity",
+                "Attempt": 0,
+                "CompletedOn": "completed_on",
+                "ExecutionTime": "execution_time",
+                "Id": "<job-run-id:1>",
+                "JobName": "<job-name:1>",
+                "JobRunState": "SUCCEEDED",
+                "LastModifiedOn": "last_modified_on",
+                "LogGroupName": "/aws-glue/python-jobs",
+                "MaxCapacity": "max_capacity",
+                "PredecessorRuns": [],
+                "StartedOn": "started_on",
+                "Timeout": 2880
+              },
+              "outputDetails": {
+                "truncated": false
+              }
+            },
+            "id": 8,
+            "previousEventId": 7,
+            "timestamp": "<datetime>",
+            "type": "ExecutionSucceeded"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/stepfunctions/test_stepfunctions.py::TestBaseScenarios::test_glue_start_job[GLUE_START_JOB_RUN__EXCEPTION_COMMAND]": {
+    "recorded-date": "15-05-2024, 14:58:46",
+    "recorded-content": {
+      "get_execution_history": {
+        "events": [
+          {
+            "executionStartedEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "roleArn": "snf_role_arn"
+            },
+            "id": 1,
+            "previousEventId": 0,
+            "timestamp": "<datetime>",
+            "type": "ExecutionStarted"
+          },
+          {
+            "id": 2,
+            "previousEventId": 0,
+            "stateEnteredEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "name": "GlueTask"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateEntered"
+          },
+          {
+            "id": 3,
+            "previousEventId": 2,
+            "taskScheduledEventDetails": {
+              "parameters": {
+                "JobName": "<job-name:1>"
+              },
+              "region": "<region>",
+              "resource": "startJobRun",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskScheduled"
+          },
+          {
+            "id": 4,
+            "previousEventId": 3,
+            "taskStartedEventDetails": {
+              "resource": "startJobRun",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStarted"
+          },
+          {
+            "id": 5,
+            "previousEventId": 4,
+            "taskSucceededEventDetails": {
+              "output": {
+                "JobRunId": "<job-run-id:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:1>"
+                    ],
+                    "Content-Length": [
+                      "82"
+                    ],
+                    "Date": "date",
+                    "Content-Type": [
+                      "application/x-amz-json-1.1"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Connection": "keep-alive",
+                    "Content-Length": "82",
+                    "Content-Type": "application/x-amz-json-1.1",
+                    "Date": "date",
+                    "x-amzn-RequestId": "<uuid:1>"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:1>"
+                },
+                "JobName": "<job-name:1>"
+              },
+              "outputDetails": {
+                "truncated": false
+              },
+              "resource": "startJobRun",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskSucceeded"
+          },
+          {
+            "id": 6,
+            "previousEventId": 5,
+            "stateExitedEventDetails": {
+              "name": "GlueTask",
+              "output": {
+                "JobRunId": "<job-run-id:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:1>"
+                    ],
+                    "Content-Length": [
+                      "82"
+                    ],
+                    "Date": "date",
+                    "Content-Type": [
+                      "application/x-amz-json-1.1"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Connection": "keep-alive",
+                    "Content-Length": "82",
+                    "Content-Type": "application/x-amz-json-1.1",
+                    "Date": "date",
+                    "x-amzn-RequestId": "<uuid:1>"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:1>"
+                },
+                "JobName": "<job-name:1>"
+              },
+              "outputDetails": {
+                "truncated": false
+              }
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateExited"
+          },
+          {
+            "executionSucceededEventDetails": {
+              "output": {
+                "JobRunId": "<job-run-id:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:1>"
+                    ],
+                    "Content-Length": [
+                      "82"
+                    ],
+                    "Date": "date",
+                    "Content-Type": [
+                      "application/x-amz-json-1.1"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Connection": "keep-alive",
+                    "Content-Length": "82",
+                    "Content-Type": "application/x-amz-json-1.1",
+                    "Date": "date",
+                    "x-amzn-RequestId": "<uuid:1>"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:1>"
+                },
+                "JobName": "<job-name:1>"
+              },
+              "outputDetails": {
+                "truncated": false
+              }
+            },
+            "id": 7,
+            "previousEventId": 6,
+            "timestamp": "<datetime>",
+            "type": "ExecutionSucceeded"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/stepfunctions/test_stepfunctions.py::TestBaseScenarios::test_glue_start_job[GLUE_START_JOB_RUN_SYNC__EXCEPTION_COMMAND]": {
+    "recorded-date": "15-05-2024, 15:00:20",
+    "recorded-content": {
+      "get_execution_history": {
+        "events": [
+          {
+            "executionStartedEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "roleArn": "snf_role_arn"
+            },
+            "id": 1,
+            "previousEventId": 0,
+            "timestamp": "<datetime>",
+            "type": "ExecutionStarted"
+          },
+          {
+            "id": 2,
+            "previousEventId": 0,
+            "stateEnteredEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "name": "GlueTask"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateEntered"
+          },
+          {
+            "id": 3,
+            "previousEventId": 2,
+            "taskScheduledEventDetails": {
+              "parameters": {
+                "JobName": "<job-name:1>"
+              },
+              "region": "<region>",
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskScheduled"
+          },
+          {
+            "id": 4,
+            "previousEventId": 3,
+            "taskStartedEventDetails": {
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStarted"
+          },
+          {
+            "id": 5,
+            "previousEventId": 4,
+            "taskSubmittedEventDetails": {
+              "output": {
+                "JobRunId": "<job-run-id:1>",
+                "SdkHttpMetadata": {
+                  "AllHttpHeaders": {
+                    "Connection": [
+                      "keep-alive"
+                    ],
+                    "x-amzn-RequestId": [
+                      "<uuid:1>"
+                    ],
+                    "Content-Length": [
+                      "82"
+                    ],
+                    "Date": "date",
+                    "Content-Type": [
+                      "application/x-amz-json-1.1"
+                    ]
+                  },
+                  "HttpHeaders": {
+                    "Connection": "keep-alive",
+                    "Content-Length": "82",
+                    "Content-Type": "application/x-amz-json-1.1",
+                    "Date": "date",
+                    "x-amzn-RequestId": "<uuid:1>"
+                  },
+                  "HttpStatusCode": 200
+                },
+                "SdkResponseMetadata": {
+                  "RequestId": "<uuid:1>"
+                },
+                "JobName": "<job-name:1>"
+              },
+              "outputDetails": {
+                "truncated": false
+              },
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskSubmitted"
+          },
+          {
+            "id": 6,
+            "previousEventId": 5,
+            "taskFailedEventDetails": {
+              "cause": {
+                "AllocatedCapacity": "allocated_capacity",
+                "Attempt": 0,
+                "CompletedOn": "completed_on",
+                "ErrorMessage": "NameError: name 'RuntimeException' is not defined",
+                "ExecutionTime": "execution_time",
+                "Id": "<job-run-id:1>",
+                "JobName": "<job-name:1>",
+                "JobRunState": "FAILED",
+                "LastModifiedOn": "last_modified_on",
+                "LogGroupName": "/aws-glue/python-jobs",
+                "MaxCapacity": "max_capacity",
+                "PredecessorRuns": [],
+                "StartedOn": "started_on",
+                "Timeout": 2880
+              },
+              "error": "States.TaskFailed",
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskFailed"
+          },
+          {
+            "executionFailedEventDetails": {
+              "cause": {
+                "AllocatedCapacity": "allocated_capacity",
+                "Attempt": 0,
+                "CompletedOn": "completed_on",
+                "ErrorMessage": "NameError: name 'RuntimeException' is not defined",
+                "ExecutionTime": "execution_time",
+                "Id": "<job-run-id:1>",
+                "JobName": "<job-name:1>",
+                "JobRunState": "FAILED",
+                "LastModifiedOn": "last_modified_on",
+                "LogGroupName": "/aws-glue/python-jobs",
+                "MaxCapacity": "max_capacity",
+                "PredecessorRuns": [],
+                "StartedOn": "started_on",
+                "Timeout": 2880
+              },
+              "error": "States.TaskFailed"
+            },
+            "id": 7,
+            "previousEventId": 6,
+            "timestamp": "<datetime>",
+            "type": "ExecutionFailed"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/stepfunctions/test_stepfunctions.py::TestBaseScenarios::test_glue_start_job_no_such_job[GLUE_START_JOB_RUN]": {
+    "recorded-date": "15-05-2024, 15:00:45",
+    "recorded-content": {
+      "get_execution_history": {
+        "events": [
+          {
+            "executionStartedEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "roleArn": "snf_role_arn"
+            },
+            "id": 1,
+            "previousEventId": 0,
+            "timestamp": "<datetime>",
+            "type": "ExecutionStarted"
+          },
+          {
+            "id": 2,
+            "previousEventId": 0,
+            "stateEnteredEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "name": "GlueTask"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateEntered"
+          },
+          {
+            "id": 3,
+            "previousEventId": 2,
+            "taskScheduledEventDetails": {
+              "parameters": {
+                "JobName": "<job-name:1>"
+              },
+              "region": "<region>",
+              "resource": "startJobRun",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskScheduled"
+          },
+          {
+            "id": 4,
+            "previousEventId": 3,
+            "taskStartedEventDetails": {
+              "resource": "startJobRun",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStarted"
+          },
+          {
+            "id": 5,
+            "previousEventId": 4,
+            "taskFailedEventDetails": {
+              "cause": "Failed to start job run due to missing metadata (Service: AWSGlue; Status Code: 400; Error Code: EntityNotFoundException; Request ID: <request_id>; Proxy: null)",
+              "error": "Glue.EntityNotFoundException",
+              "resource": "startJobRun",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskFailed"
+          },
+          {
+            "executionFailedEventDetails": {
+              "cause": "Failed to start job run due to missing metadata (Service: AWSGlue; Status Code: 400; Error Code: EntityNotFoundException; Request ID: <request_id>; Proxy: null)",
+              "error": "Glue.EntityNotFoundException"
+            },
+            "id": 6,
+            "previousEventId": 5,
+            "timestamp": "<datetime>",
+            "type": "ExecutionFailed"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/stepfunctions/test_stepfunctions.py::TestBaseScenarios::test_glue_start_job_no_such_job[GLUE_START_JOB_RUN_SYNC]": {
+    "recorded-date": "15-05-2024, 15:01:15",
+    "recorded-content": {
+      "get_execution_history": {
+        "events": [
+          {
+            "executionStartedEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "roleArn": "snf_role_arn"
+            },
+            "id": 1,
+            "previousEventId": 0,
+            "timestamp": "<datetime>",
+            "type": "ExecutionStarted"
+          },
+          {
+            "id": 2,
+            "previousEventId": 0,
+            "stateEnteredEventDetails": {
+              "input": {
+                "JobName": "<job-name:1>"
+              },
+              "inputDetails": {
+                "truncated": false
+              },
+              "name": "GlueTask"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStateEntered"
+          },
+          {
+            "id": 3,
+            "previousEventId": 2,
+            "taskScheduledEventDetails": {
+              "parameters": {
+                "JobName": "<job-name:1>"
+              },
+              "region": "<region>",
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskScheduled"
+          },
+          {
+            "id": 4,
+            "previousEventId": 3,
+            "taskStartedEventDetails": {
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskStarted"
+          },
+          {
+            "id": 5,
+            "previousEventId": 4,
+            "taskFailedEventDetails": {
+              "cause": "Failed to start job run due to missing metadata (Service: AWSGlue; Status Code: 400; Error Code: EntityNotFoundException; Request ID: <request_id>; Proxy: null)",
+              "error": "Glue.EntityNotFoundException",
+              "resource": "startJobRun.sync",
+              "resourceType": "glue"
+            },
+            "timestamp": "<datetime>",
+            "type": "TaskFailed"
+          },
+          {
+            "executionFailedEventDetails": {
+              "cause": "Failed to start job run due to missing metadata (Service: AWSGlue; Status Code: 400; Error Code: EntityNotFoundException; Request ID: <request_id>; Proxy: null)",
+              "error": "Glue.EntityNotFoundException"
+            },
+            "id": 6,
+            "previousEventId": 5,
+            "timestamp": "<datetime>",
+            "type": "ExecutionFailed"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

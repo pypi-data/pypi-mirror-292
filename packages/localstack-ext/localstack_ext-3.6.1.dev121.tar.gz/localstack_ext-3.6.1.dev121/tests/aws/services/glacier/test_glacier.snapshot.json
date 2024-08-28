@@ -1,0 +1,23 @@
+{
+  "tests/aws/services/glacier/test_glacier.py::TestGlacier::test_select_query_archive": {
+    "recorded-date": "13-09-2023, 16:26:33",
+    "recorded-content": {
+      "create-vault": {
+        "location": "/111111111111/vaults/<vault-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "upload-archive": {
+        "archiveId": "<archive-id:1>",
+        "checksum": "<checksum:1>",
+        "location": "/111111111111/vaults/<vault-name>/archives/<archive-id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      }
+    }
+  }
+}

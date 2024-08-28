@@ -1,0 +1,707 @@
+{
+  "tests/aws/services/rds/test_rds_global.py::TestGlobalClusterCDK::test_validate_initial_setup": {
+    "recorded-date": "12-09-2023, 11:39:41",
+    "recorded-content": {
+      "primary_describe_ready": {
+        "DBClusters": [
+          {
+            "ActivityStreamStatus": "stopped",
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZones": "availability-zones",
+            "BackupRetentionPeriod": 1,
+            "ClusterCreateTime": "datetime",
+            "CopyTagsToSnapshot": true,
+            "CrossAccountClone": false,
+            "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBClusterMembers": [
+              {
+                "DBClusterParameterGroupStatus": "in-sync",
+                "DBInstanceIdentifier": "<db-instance-id:1>",
+                "IsClusterWriter": true,
+                "PromotionTier": 1
+              },
+              {
+                "DBClusterParameterGroupStatus": "in-sync",
+                "DBInstanceIdentifier": "<db-instance-id:2>",
+                "IsClusterWriter": false,
+                "PromotionTier": 2
+              },
+              {
+                "DBClusterParameterGroupStatus": "in-sync",
+                "DBInstanceIdentifier": "<db-instance-id:3>",
+                "IsClusterWriter": false,
+                "PromotionTier": 0
+              }
+            ],
+            "DBClusterParameterGroup": "default.aurora-postgresql15",
+            "DBSubnetGroup": "d-b-subnet-group",
+            "DatabaseName": "myfirstdb",
+            "DbClusterResourceId": "<db-cluster-resource-id:1>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "EarliestRestorableTime": "datetime",
+            "Endpoint": "endpoint",
+            "Engine": "aurora-postgresql",
+            "EngineMode": "provisioned",
+            "EngineVersion": "15.2",
+            "GlobalWriteForwardingRequested": false,
+            "HostedZoneId": "<hosted-zone-id:1>",
+            "HttpEndpointEnabled": false,
+            "IAMDatabaseAuthenticationEnabled": false,
+            "LatestRestorableTime": "datetime",
+            "MasterUsername": "test",
+            "MultiAZ": true,
+            "NetworkType": "IPV4",
+            "Port": "<port>",
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "ReadReplicaIdentifiers": [],
+            "ReaderEndpoint": "reader-endpoint",
+            "ServerlessV2ScalingConfiguration": {
+              "MaxCapacity": 1.0,
+              "MinCapacity": 0.5
+            },
+            "Status": "available",
+            "StorageEncrypted": false,
+            "TagList": [
+              {
+                "Key": "aws:cloudformation:stack-id",
+                "Value": "<tag-value-replaced>"
+              },
+              {
+                "Key": "aws:cloudformation:stack-name",
+                "Value": "<tag-value-replaced>"
+              },
+              {
+                "Key": "aws:cloudformation:logical-id",
+                "Value": "<tag-value-replaced>"
+              }
+            ],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_global_cluster_primary": {
+        "GlobalClusters": [
+          {
+            "DatabaseName": "myfirstdb",
+            "DeletionProtection": false,
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "15.2",
+            "GlobalClusterArn": "arn:<partition>:rds::111111111111:global-cluster:<global-cluster-identifier:1>",
+            "GlobalClusterIdentifier": "<global-cluster-identifier:1>",
+            "GlobalClusterMembers": [
+              {
+                "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+                "IsWriter": true,
+                "Readers": [],
+                "SynchronizationStatus": "connected"
+              }
+            ],
+            "GlobalClusterResourceId": "<global-cluster-resource-id:1>",
+            "Status": "available",
+            "StorageEncrypted": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_endpoints": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "available"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "available"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_global.py::TestGlobalClusterCDK::test_invalid_secondary_cluster": {
+    "recorded-date": "13-09-2023, 11:40:06",
+    "recorded-content": {
+      "error-specify-replica-db-name": {
+        "Error": {
+          "Code": "InvalidParameterCombination",
+          "Message": "Cannot specify database name for cross region replication cluster",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-global-write-forwarding": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "Global write forwarding is not supported for engine aurora-postgresql",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-invalid-masterusername": {
+        "Error": {
+          "Code": "InvalidParameterCombination",
+          "Message": "Cannot specify user name for cross region replication cluster",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-invalid-masterpassword": {
+        "Error": {
+          "Code": "InvalidParameterCombination",
+          "Message": "Cannot specify password for cross region replication cluster",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_global.py::TestGlobalClusterCDK::test_promote_secondary_headless": {
+    "recorded-date": "13-09-2023, 11:54:20",
+    "recorded-content": {
+      "describe_db_cluster_endpoint_default_region": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "available"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "available"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_endpoint_region_secondary": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:2>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "inactive"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:2>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "creating"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_global_clusters": {
+        "GlobalClusters": [
+          {
+            "DatabaseName": "myfirstdb",
+            "DeletionProtection": false,
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "15.2",
+            "GlobalClusterArn": "arn:<partition>:rds::111111111111:global-cluster:<global-cluster-identifier:1>",
+            "GlobalClusterIdentifier": "<global-cluster-identifier:1>",
+            "GlobalClusterMembers": [
+              {
+                "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+                "IsWriter": true,
+                "Readers": [
+                  "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:2>"
+                ],
+                "SynchronizationStatus": "connected"
+              },
+              {
+                "DBClusterArn": "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:2>",
+                "GlobalWriteForwardingStatus": "disabled",
+                "IsWriter": false,
+                "Readers": [],
+                "SynchronizationStatus": "connected"
+              }
+            ],
+            "GlobalClusterResourceId": "<global-cluster-resource-id:1>",
+            "Status": "available",
+            "StorageEncrypted": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_clusters_secondary_headless": {
+        "DBClusters": [
+          {
+            "ActivityStreamStatus": "stopped",
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZones": "availability-zones",
+            "BackupRetentionPeriod": 1,
+            "ClusterCreateTime": "datetime",
+            "CopyTagsToSnapshot": false,
+            "CrossAccountClone": false,
+            "DBClusterArn": "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:2>",
+            "DBClusterIdentifier": "<db-cluster-id:2>",
+            "DBClusterMembers": [],
+            "DBClusterParameterGroup": "default.aurora-postgresql15",
+            "DBSubnetGroup": "default",
+            "DatabaseName": "myfirstdb",
+            "DbClusterResourceId": "<db-cluster-resource-id:1>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "EarliestRestorableTime": "datetime",
+            "Endpoint": "endpoint",
+            "Engine": "aurora-postgresql",
+            "EngineMode": "provisioned",
+            "EngineVersion": "15.2",
+            "GlobalWriteForwardingRequested": false,
+            "GlobalWriteForwardingStatus": "disabled",
+            "HostedZoneId": "<hosted-zone-id:1>",
+            "HttpEndpointEnabled": false,
+            "IAMDatabaseAuthenticationEnabled": false,
+            "LatestRestorableTime": "datetime",
+            "MasterUsername": "test",
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "Port": "<port>",
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "ReadReplicaIdentifiers": [],
+            "ReaderEndpoint": "reader-endpoint",
+            "ReplicationSourceIdentifier": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+            "Status": "available",
+            "StorageEncrypted": false,
+            "TagList": [],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid_state": {
+        "Error": {
+          "Code": "InvalidDBClusterStateFault",
+          "Message": "At least one active instance is required in the specified target DB cluster.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_global.py::TestGlobalClusterCDK::test_failover": {
+    "recorded-date": "13-09-2023, 19:12:44",
+    "recorded-content": {
+      "describe_secondary_cluster_ready": {
+        "DBClusters": [
+          {
+            "ActivityStreamStatus": "stopped",
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZones": "availability-zones",
+            "BackupRetentionPeriod": 1,
+            "ClusterCreateTime": "datetime",
+            "CopyTagsToSnapshot": false,
+            "CrossAccountClone": false,
+            "DBClusterArn": "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:1>",
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBClusterMembers": [
+              {
+                "DBClusterParameterGroupStatus": "in-sync",
+                "DBInstanceIdentifier": "<db-instance-id:1>",
+                "IsClusterWriter": false,
+                "PromotionTier": 1
+              }
+            ],
+            "DBClusterParameterGroup": "default.aurora-postgresql15",
+            "DBSubnetGroup": "d-b-subnet-group",
+            "DatabaseName": "myfirstdb",
+            "DbClusterResourceId": "<db-cluster-resource-id:1>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "EarliestRestorableTime": "datetime",
+            "Endpoint": "endpoint",
+            "Engine": "aurora-postgresql",
+            "EngineMode": "provisioned",
+            "EngineVersion": "15.2",
+            "GlobalWriteForwardingRequested": false,
+            "GlobalWriteForwardingStatus": "disabled",
+            "HostedZoneId": "<hosted-zone-id:1>",
+            "HttpEndpointEnabled": false,
+            "IAMDatabaseAuthenticationEnabled": false,
+            "LatestRestorableTime": "datetime",
+            "MasterUsername": "test",
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "Port": "<port>",
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "ReadReplicaIdentifiers": [],
+            "ReaderEndpoint": "reader-endpoint",
+            "ReplicationSourceIdentifier": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:2>",
+            "Status": "available",
+            "StorageEncrypted": false,
+            "TagList": [],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "global_cluster_with_members": {
+        "GlobalClusters": [
+          {
+            "DatabaseName": "myfirstdb",
+            "DeletionProtection": false,
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "15.2",
+            "GlobalClusterArn": "arn:<partition>:rds::111111111111:global-cluster:<global-cluster-identifier:1>",
+            "GlobalClusterIdentifier": "<global-cluster-identifier:1>",
+            "GlobalClusterMembers": [
+              {
+                "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:2>",
+                "IsWriter": true,
+                "Readers": [
+                  "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:1>"
+                ],
+                "SynchronizationStatus": "connected"
+              },
+              {
+                "DBClusterArn": "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:1>",
+                "GlobalWriteForwardingStatus": "disabled",
+                "IsWriter": false,
+                "Readers": [],
+                "SynchronizationStatus": "connected"
+              }
+            ],
+            "GlobalClusterResourceId": "<global-cluster-resource-id:1>",
+            "Status": "available",
+            "StorageEncrypted": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_endpoint_region_2": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:2>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "available"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:2>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "available"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_endpoint_region_secondary_2": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "inactive"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "available"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "failover-global-cluster": {
+        "GlobalCluster": {
+          "DatabaseName": "myfirstdb",
+          "DeletionProtection": false,
+          "Engine": "aurora-postgresql",
+          "EngineVersion": "15.2",
+          "FailoverState": {
+            "FromDbClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:2>",
+            "IsDataLossAllowed": false,
+            "Status": "pending",
+            "ToDbClusterArn": "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:1>"
+          },
+          "GlobalClusterArn": "arn:<partition>:rds::111111111111:global-cluster:<global-cluster-identifier:1>",
+          "GlobalClusterIdentifier": "<global-cluster-identifier:1>",
+          "GlobalClusterMembers": [
+            {
+              "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:2>",
+              "IsWriter": true,
+              "Readers": [
+                "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:1>"
+              ],
+              "SynchronizationStatus": "connected"
+            },
+            {
+              "DBClusterArn": "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:1>",
+              "GlobalWriteForwardingStatus": "disabled",
+              "IsWriter": false,
+              "Readers": [],
+              "SynchronizationStatus": "connected"
+            }
+          ],
+          "GlobalClusterResourceId": "<global-cluster-resource-id:1>",
+          "Status": "switching-over",
+          "StorageEncrypted": false
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_global_cluster_after_failover": {
+        "GlobalClusters": [
+          {
+            "DatabaseName": "myfirstdb",
+            "DeletionProtection": false,
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "15.2",
+            "GlobalClusterArn": "arn:<partition>:rds::111111111111:global-cluster:<global-cluster-identifier:1>",
+            "GlobalClusterIdentifier": "<global-cluster-identifier:1>",
+            "GlobalClusterMembers": [
+              {
+                "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:2>",
+                "GlobalWriteForwardingStatus": "disabled",
+                "IsWriter": false,
+                "Readers": [],
+                "SynchronizationStatus": "connected"
+              },
+              {
+                "DBClusterArn": "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:1>",
+                "IsWriter": true,
+                "Readers": [
+                  "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:2>"
+                ],
+                "SynchronizationStatus": "connected"
+              }
+            ],
+            "GlobalClusterResourceId": "<global-cluster-resource-id:1>",
+            "Status": "available",
+            "StorageEncrypted": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_endpoint_region_2_after": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:2>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "inactive"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:2>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "available"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_endpoint_region_secondary_2_after": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "available"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "available"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_global_cluster_after_second_failover": {
+        "GlobalClusters": [
+          {
+            "DatabaseName": "myfirstdb",
+            "DeletionProtection": false,
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "15.2",
+            "GlobalClusterArn": "arn:<partition>:rds::111111111111:global-cluster:<global-cluster-identifier:1>",
+            "GlobalClusterIdentifier": "<global-cluster-identifier:1>",
+            "GlobalClusterMembers": [
+              {
+                "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:2>",
+                "IsWriter": true,
+                "Readers": [
+                  "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:1>"
+                ],
+                "SynchronizationStatus": "connected"
+              },
+              {
+                "DBClusterArn": "arn:<partition>:rds:eu-west-1:111111111111:cluster:<db-cluster-id:1>",
+                "GlobalWriteForwardingStatus": "disabled",
+                "IsWriter": false,
+                "Readers": [],
+                "SynchronizationStatus": "connected"
+              }
+            ],
+            "GlobalClusterResourceId": "<global-cluster-resource-id:1>",
+            "Status": "available",
+            "StorageEncrypted": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_global_after_removing": {
+        "GlobalClusters": [
+          {
+            "DatabaseName": "myfirstdb",
+            "DeletionProtection": false,
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "15.2",
+            "GlobalClusterArn": "arn:<partition>:rds::111111111111:global-cluster:<global-cluster-identifier:1>",
+            "GlobalClusterIdentifier": "<global-cluster-identifier:1>",
+            "GlobalClusterMembers": [
+              {
+                "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:2>",
+                "IsWriter": true,
+                "Readers": [],
+                "SynchronizationStatus": "connected"
+              }
+            ],
+            "GlobalClusterResourceId": "<global-cluster-resource-id:1>",
+            "Status": "available",
+            "StorageEncrypted": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_endpoint_removal_secondary": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:2>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "available"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:2>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "available"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_endpoint_region_secondary_removal_secondary": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "available"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "available"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,540 @@
+{
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_lambda_token_authorizer": {
+    "recorded-date": "16-04-2024, 21:12:32",
+    "recorded-content": {
+      "create_authorizer_token_based": {
+        "authType": "custom",
+        "authorizerCredentials": "arn:<partition>:iam::<account_id>:<apigw-role-name>",
+        "authorizerResultTtlInSeconds": 0,
+        "authorizerUri": "arn:<partition>:apigateway:<region>:lambda:path/2015-03-31/functions/arn:<partition>:lambda:<region>:<account_id>:function:<auth-function-name>/invocations",
+        "id": "<authorizer-id>",
+        "identitySource": "method.request.header.Authorization",
+        "name": "test_authorizer",
+        "type": "TOKEN",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "put_method_with_custom_authorizer": {
+        "apiKeyRequired": false,
+        "authorizationType": "CUSTOM",
+        "authorizerId": "<authorizer-id>",
+        "httpMethod": "POST",
+        "requestParameters": {
+          "method.request.header.Authorization": true
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "put_integration": {
+        "cacheKeyParameters": [],
+        "cacheNamespace": "<<cache-namespace>:1>",
+        "connectionType": "INTERNET",
+        "credentials": "arn:<partition>:iam::<account_id>:<apigw-role-name>",
+        "httpMethod": "POST",
+        "passthroughBehavior": "WHEN_NO_MATCH",
+        "timeoutInMillis": 29000,
+        "type": "HTTP",
+        "uri": "<uri:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "token_authorizer_allow": {
+        "args": {},
+        "data": {
+          "mykey": "myvalue"
+        },
+        "domain": "<domain:1>",
+        "method": "POST",
+        "origin": "<ip>",
+        "path": "/"
+      },
+      "token_authorizer_deny": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "token_authorizer_unauthorized": {
+        "message": "Unauthorized"
+      },
+      "token_authorizer_fail": {
+        "message": null
+      },
+      "token_authorizer_missing": {
+        "message": "Unauthorized"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_lambda_token_authorizer_path_suffixes": {
+    "recorded-date": "15-04-2024, 22:24:20",
+    "recorded-content": {
+      "create_authorizer_token_based": {
+        "authType": "custom",
+        "authorizerCredentials": "arn:<partition>:iam::<account_id>:<apigw-role-name>",
+        "authorizerResultTtlInSeconds": 0,
+        "authorizerUri": "arn:<partition>:apigateway:<region>:lambda:path/2015-03-31/functions/arn:<partition>:lambda:<region>:<account_id>:function:<auth-function-name>/invocations",
+        "id": "<authorizer-id>",
+        "identitySource": "method.request.header.Authorization",
+        "name": "test_authorizer",
+        "type": "TOKEN",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "token_authorizer_allow": {
+        "booleanKey": true,
+        "methodArn": "arn:<partition>:execute-api:<region>:<account_id>:<rest-api-id>/test/GET/",
+        "numberKey": 123,
+        "stringKey": "stringval"
+      },
+      "token_authorizer_get_root_deny_content_type": "application/json",
+      "token_authorizer_get_root_deny": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "token_authorizer_get_root_allow_content_type": "application/json",
+      "token_authorizer_get_root_allow": {
+        "booleanKey": true,
+        "methodArn": "arn:<partition>:execute-api:<region>:<account_id>:<rest-api-id>/test/GET/",
+        "numberKey": 123,
+        "stringKey": "stringval"
+      },
+      "token_authorizer_get_demo_deny_content_type": "application/json",
+      "token_authorizer_get_demo_deny": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "token_authorizer_get_demo_allow_content_type": "application/json",
+      "token_authorizer_get_demo_allow": {
+        "booleanKey": true,
+        "methodArn": "arn:<partition>:execute-api:<region>:<account_id>:<rest-api-id>/test/GET/demo",
+        "numberKey": 123,
+        "stringKey": "stringval"
+      },
+      "token_authorizer_get_demo_single_slash_deny_content_type": "application/json",
+      "token_authorizer_get_demo_single_slash_deny": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "token_authorizer_get_demo_single_slash_allow_content_type": "application/json",
+      "token_authorizer_get_demo_single_slash_allow": {
+        "booleanKey": true,
+        "methodArn": "arn:<partition>:execute-api:<region>:<account_id>:<rest-api-id>/test/GET/demo/",
+        "numberKey": 123,
+        "stringKey": "stringval"
+      },
+      "token_authorizer_get_demo_double_slash_deny_content_type": "application/json",
+      "token_authorizer_get_demo_double_slash_deny": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "token_authorizer_get_demo_double_slash_allow_content_type": "application/json",
+      "token_authorizer_get_demo_double_slash_allow": {
+        "booleanKey": true,
+        "methodArn": "arn:<partition>:execute-api:<region>:<account_id>:<rest-api-id>/test/GET/demo//",
+        "numberKey": 123,
+        "stringKey": "stringval"
+      },
+      "token_authorizer_get_demo_triple_slash_deny_content_type": "application/json",
+      "token_authorizer_get_demo_triple_slash_deny": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "token_authorizer_get_demo_triple_slash_allow_content_type": "application/json",
+      "token_authorizer_get_demo_triple_slash_allow": {
+        "booleanKey": true,
+        "methodArn": "arn:<partition>:execute-api:<region>:<account_id>:<rest-api-id>/test/GET/demo///",
+        "numberKey": 123,
+        "stringKey": "stringval"
+      },
+      "token_authorizer_get_demo_hash_deny_content_type": "application/json",
+      "token_authorizer_get_demo_hash_deny": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "token_authorizer_get_demo_hash_allow_content_type": "application/json",
+      "token_authorizer_get_demo_hash_allow": {
+        "booleanKey": true,
+        "methodArn": "arn:<partition>:execute-api:<region>:<account_id>:<rest-api-id>/test/GET/demo",
+        "numberKey": 123,
+        "stringKey": "stringval"
+      },
+      "token_authorizer_get_demo_param_deny_content_type": "application/json",
+      "token_authorizer_get_demo_param_deny": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "token_authorizer_get_demo_param_allow_content_type": "application/json",
+      "token_authorizer_get_demo_param_allow": {
+        "booleanKey": true,
+        "methodArn": "arn:<partition>:execute-api:<region>:<account_id>:<rest-api-id>/test/GET/demo",
+        "numberKey": 123,
+        "stringKey": "stringval"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_cognito_authorizer_token_types[username]": {
+    "recorded-date": "13-08-2024, 21:20:56",
+    "recorded-content": {
+      "lambda-auth-info": {
+        "claims": {
+          "aud": "<aud:1>",
+          "auth_time": "<auth_time>",
+          "cognito:username": "test",
+          "event_id": "<uuid:1>",
+          "exp": "<exp>",
+          "iat": "<iat>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<region>_uhLUuBFZt",
+          "jti": "<jti:1>",
+          "origin_jti": "<origin_jti:1>",
+          "sub": "<sub:1>",
+          "token_use": "id"
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_cognito_authorizer_token_types[client_credentials]": {
+    "recorded-date": "13-08-2024, 21:20:42",
+    "recorded-content": {
+      "lambda-auth-info": {
+        "claims": {
+          "auth_time": "<auth_time>",
+          "client_id": "<client_id:1>",
+          "exp": "<exp>",
+          "iat": "<iat>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<region>_xmCNMjHe6",
+          "jti": "<jti:1>",
+          "scope": "resource-server/scope1",
+          "sub": "<client_id:1>",
+          "token_use": "access",
+          "version": "2"
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_rest_import_openapi_3_0": {
+    "recorded-date": "15-04-2024, 22:01:50",
+    "recorded-content": {
+      "import_openapi_3_0": {
+        "apiKeySource": "HEADER",
+        "createdDate": "datetime",
+        "disableExecuteApiEndpoint": false,
+        "endpointConfiguration": {
+          "types": [
+            "EDGE"
+          ]
+        },
+        "id": "<rest-api-id>",
+        "name": "APIs",
+        "rootResourceId": "<root-resource-id:1>",
+        "version": "v1",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_lambda_token_authorizer_event_payload": {
+    "recorded-date": "15-04-2024, 22:19:19",
+    "recorded-content": {
+      "create_authorizer_token_based": {
+        "authType": "custom",
+        "authorizerCredentials": "arn:<partition>:iam::<account_id>:<apigw-role-name>",
+        "authorizerResultTtlInSeconds": 0,
+        "authorizerUri": "arn:<partition>:apigateway:<region>:lambda:path/2015-03-31/functions/arn:<partition>:lambda:<region>:<account_id>:function:<auth-function-name>/invocations",
+        "id": "<authorizer-id>",
+        "identitySource": "method.request.header.Authorization",
+        "name": "test_authorizer",
+        "type": "TOKEN",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "response-authorizer-context": {
+        "booleanKey": "true",
+        "integrationLatency": 35,
+        "methodArn": "arn:<partition>:execute-api:<region>:<account_id>:<rest-api-id>/test/GET/",
+        "numberKey": "123",
+        "principalId": "user",
+        "stringKey": "stringval"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_lambda_request_authorizer_different_paths[UrlType.HOST_BASED-True]": {
+    "recorded-date": "17-04-2024, 01:38:20",
+    "recorded-content": {
+      "private_endpoint_authorized_result": "I am a private API!",
+      "private_endpoint_unauthorized_result": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "private_endpoint_id_authorized_result": "I am a private API!",
+      "private_endpoint_id_unauthorized_result": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "private_endpoint_missing_headers": {
+        "status": 401,
+        "text": {
+          "message": "Unauthorized"
+        }
+      },
+      "public_result": "I am a public API!"
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_lambda_request_authorizer_different_paths[UrlType.HOST_BASED-False]": {
+    "recorded-date": "17-04-2024, 01:38:38",
+    "recorded-content": {
+      "private_endpoint_authorized_result": "I am a private API!",
+      "private_endpoint_unauthorized_result": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "private_endpoint_id_authorized_result": "I am a private API!",
+      "private_endpoint_id_unauthorized_result": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "private_endpoint_missing_headers": {
+        "status": 200,
+        "text": "I am a private API!"
+      },
+      "public_result": "I am a public API!"
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_lambda_request_authorizer_different_paths[UrlType.PATH_BASED-True]": {
+    "recorded-date": "17-04-2024, 01:38:52",
+    "recorded-content": {
+      "private_endpoint_authorized_result": "I am a private API!",
+      "private_endpoint_unauthorized_result": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "private_endpoint_id_authorized_result": "I am a private API!",
+      "private_endpoint_id_unauthorized_result": {
+        "Message": "User is not authorized to access this resource with an explicit deny"
+      },
+      "private_endpoint_missing_headers": {
+        "status": 401,
+        "text": {
+          "message": "Unauthorized"
+        }
+      },
+      "public_result": "I am a public API!"
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_delete_domain_name_deletes_mapping": {
+    "recorded-date": "16-05-2024, 22:31:30",
+    "recorded-content": {
+      "api-mapping": {
+        "ApiId": "<apiId:1>",
+        "ApiMappingId": "<apiMappingId:1>",
+        "ApiMappingKey": "v1/orders",
+        "Stage": "test",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-mapping-error": "An error occurred (NotFoundException) when calling the GetApiMapping operation: Invalid domain name identifier specified"
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestIAMAuthorization::test_iam_authorization_missing_token": {
+    "recorded-date": "23-07-2024, 14:25:26",
+    "recorded-content": {
+      "no-token": {
+        "message": "Missing Authentication Token"
+      },
+      "wrong-token": {
+        "message": "'invalid-token' not a valid key=value pair (missing equal-sign) in Authorization header: 'Bearer invalid-token'."
+      },
+      "wrong-token-no-bearer": {
+        "message": "Authorization header requires 'Credential' parameter. Authorization header requires 'Signature' parameter. Authorization header requires 'SignedHeaders' parameter. Authorization header requires existence of either a 'X-Amz-Date' or a 'Date' header. Authorization=invalid-token bla=test"
+      },
+      "wrong-token-bearer-with-equal": {
+        "message": "Authorization header requires 'Credential' parameter. Authorization header requires 'Signature' parameter. Authorization header requires 'SignedHeaders' parameter. Authorization header requires existence of either a 'X-Amz-Date' or a 'Date' header. Authorization=Bearer invalid-token-bla=test"
+      },
+      "wrong-token-incomplete": {
+        "message": "Authorization header must begin with the algorithm name, which cannot include an equal-sign: 'Credential=AKIAIOSFODNN7EXAMPLE/20130524/<region>/s3/aws4_request'"
+      },
+      "wrong-token-incomplete-signature": {
+        "message": "Authorization header must begin with the algorithm name, which cannot include an equal-sign: 'Signature=random'"
+      },
+      "wrong-token-incomplete-signature-with-algo": {
+        "message": "Authorization header requires 'Signature' parameter. Authorization header requires 'SignedHeaders' parameter. Authorization header requires existence of either a 'X-Amz-Date' or a 'Date' header. Authorization=AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/20130524/<region>/s3/aws4_request"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_rest_apis.py::TestRestAPIs::test_update_base_path_mappings_apigw_v1": {
+    "recorded-date": "30-07-2024, 23:06:38",
+    "recorded-content": {
+      "nested-base-path": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "API Gateway V1 doesn't support the slash character (/) in base path mappings. To create a multi-level base path mapping, use API Gateway V2."
+        },
+        "message": "API Gateway V1 doesn't support the slash character (/) in base path mappings. To create a multi-level base path mapping, use API Gateway V2.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-base-path-mapping-api-1": {
+        "basePath": "ordersv1",
+        "restApiId": "<rest-api-id:1>",
+        "stage": "test",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-base-path-mapping-api-2-identical": {
+        "Error": {
+          "Code": "ConflictException",
+          "Message": "Base path already exists for this domain name"
+        },
+        "message": "Base path already exists for this domain name",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 409
+        }
+      },
+      "create-base-path-mapping-api-3": {
+        "basePath": "ordersv3",
+        "restApiId": "<rest-api-id:1>",
+        "stage": "test",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "get-mappings-before-update": {
+        "items": [
+          {
+            "basePath": "ordersv1",
+            "restApiId": "<rest-api-id:1>",
+            "stage": "test"
+          },
+          {
+            "basePath": "ordersv3",
+            "restApiId": "<rest-api-id:1>",
+            "stage": "test"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-api-id": {
+        "basePath": "ordersv1",
+        "restApiId": "<rest-api-id:2>",
+        "stage": "test",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-stage": {
+        "basePath": "ordersv1",
+        "restApiId": "<rest-api-id:2>",
+        "stage": "dev",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-base-path": {
+        "basePath": "ordersv2",
+        "restApiId": "<rest-api-id:2>",
+        "stage": "dev",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "overwrite-exists-base-path-mapping": {
+        "basePath": "ordersv3",
+        "restApiId": "<rest-api-id:2>",
+        "stage": "dev",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-mappings": {
+        "items": [
+          {
+            "basePath": "ordersv3",
+            "restApiId": "<rest-api-id:2>",
+            "stage": "dev"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "wrong-base-path": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Invalid base path mapping identifier specified"
+        },
+        "message": "Invalid base path mapping identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "wrong-operation": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Invalid patch path  '/basePath' specified for op 'add'. Please choose supported operations"
+        },
+        "message": "Invalid patch path  '/basePath' specified for op 'add'. Please choose supported operations",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "wrong-operation-remove": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Invalid patch path  '/basePath' specified for op 'remove'. Please choose supported operations"
+        },
+        "message": "Invalid patch path  '/basePath' specified for op 'remove'. Please choose supported operations",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "non-existent-api-replace": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Invalid REST API identifier specified"
+        },
+        "message": "Invalid REST API identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "non-existent-stage-replace": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Invalid stage identifier specified"
+        },
+        "message": "Invalid stage identifier specified",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "bad-path": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Invalid patch path  '/restapiid' specified for op 'replace'. Must be one of: [/basePath, /restapiId, /stage]"
+        },
+        "message": "Invalid patch path  '/restapiid' specified for op 'replace'. Must be one of: [/basePath, /restapiId, /stage]",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  }
+}

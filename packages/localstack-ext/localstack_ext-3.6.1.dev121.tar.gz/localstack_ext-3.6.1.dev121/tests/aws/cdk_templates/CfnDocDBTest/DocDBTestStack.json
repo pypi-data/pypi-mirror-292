@@ -1,0 +1,71 @@
+{
+  "Resources": {
+    "DBClusterParams": {
+      "Type": "AWS::DocDB::DBClusterParameterGroup",
+      "Properties": {
+        "Description": "test parameter group",
+        "Family": "docdb5.0",
+        "Parameters": {
+          "audit_logs": "disabled",
+          "profiler_sampling_rate": 0.5
+        }
+      }
+    },
+    "DBCluster": {
+      "Type": "AWS::DocDB::DBCluster",
+      "Properties": {
+        "DBClusterIdentifier": "DocDBTestStack-clusterid",
+        "DBClusterParameterGroupName": {
+          "Ref": "DBClusterParams"
+        },
+        "DeletionProtection": false,
+        "MasterUserPassword": "test123test123",
+        "MasterUsername": "test"
+      }
+    }
+  },
+  "Outputs": {
+    "DbClusterRef": {
+      "Value": {
+        "Ref": "DBCluster"
+      }
+    },
+    "DbClusterClusterResourceId": {
+      "Value": {
+        "Fn::GetAtt": [
+          "DBCluster",
+          "ClusterResourceId"
+        ]
+      }
+    },
+    "DbClusterPort": {
+      "Value": {
+        "Fn::GetAtt": [
+          "DBCluster",
+          "Port"
+        ]
+      }
+    },
+    "DbClusterEndpoint": {
+      "Value": {
+        "Fn::GetAtt": [
+          "DBCluster",
+          "Endpoint"
+        ]
+      }
+    },
+    "DbClusterReadEndpoint": {
+      "Value": {
+        "Fn::GetAtt": [
+          "DBCluster",
+          "ReadEndpoint"
+        ]
+      }
+    },
+    "DbParamGroupRef": {
+      "Value": {
+        "Ref": "DBClusterParams"
+      }
+    }
+  }
+}

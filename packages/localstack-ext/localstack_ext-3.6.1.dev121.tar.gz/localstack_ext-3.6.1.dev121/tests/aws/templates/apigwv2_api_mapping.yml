@@ -1,0 +1,42 @@
+Parameters:
+  ApiName:
+    Type: String
+  StageName:
+    Type: String
+Resources:
+  Api:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name:
+        Ref: ApiName
+      ProtocolType: HTTP
+  Domain:
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: mydomain.us-east-1.com
+      DomainNameConfigurations:
+        - EndpointType: REGIONAL
+          CertificateArn: >-
+            arn:aws:acm:us-east-1:123456789012:certificate/1a2b3c4d-aaaa-aaaa-aaaa-1a2b3c4d5e6f
+          CertificateName: testCertificate
+  Stage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId:
+        Ref: Api
+      StageName:
+        Ref: StageName
+  ApiMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    Properties:
+      ApiId:
+        Ref: Api
+      DomainName:
+        Ref: Domain
+      Stage:
+        Ref: Stage
+
+Outputs:
+  MappingRef:
+    Value:
+      Ref: ApiMapping

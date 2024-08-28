@@ -1,0 +1,690 @@
+{
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_describe": {
+    "recorded-date": "13-07-2024, 01:54:40",
+    "recorded-content": {
+      "describe_db_clusters": {
+        "DBClusters": [
+          {
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AvailabilityZones": "availability-zones",
+            "BackupRetentionPeriod": 1,
+            "ClusterCreateTime": "datetime",
+            "CopyTagsToSnapshot": false,
+            "CrossAccountClone": false,
+            "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBClusterMembers": [
+              {
+                "DBClusterParameterGroupStatus": "in-sync",
+                "DBInstanceIdentifier": "<db-instance-id:1>",
+                "IsClusterWriter": false,
+                "PromotionTier": 1
+              },
+              {
+                "DBClusterParameterGroupStatus": "in-sync",
+                "DBInstanceIdentifier": "<db-instance-id:2>",
+                "IsClusterWriter": true,
+                "PromotionTier": 1
+              }
+            ],
+            "DBClusterParameterGroup": "<d-b-cluster-parameter-group:1>",
+            "DBSubnetGroup": "<d-b-subnet-group-name:1>",
+            "DbClusterResourceId": "<db-cluster-resource-id:1>",
+            "DeletionProtection": false,
+            "EarliestRestorableTime": "datetime",
+            "Endpoint": "endpoint",
+            "Engine": "neptune",
+            "EngineVersion": "1.3.0.0",
+            "HostedZoneId": "<hosted-zone-id:1>",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "KmsKeyId": "<kms-key-id:1>",
+            "LatestRestorableTime": "datetime",
+            "MasterUsername": "admin",
+            "MultiAZ": true,
+            "Port": "port",
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "ReadReplicaIdentifiers": [],
+            "ReaderEndpoint": "reader-endpoint",
+            "Status": "available",
+            "StorageEncrypted": true,
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_instances_writer": {
+        "DBInstances": [
+          {
+            "AllocatedStorage": 1,
+            "AutoMinorVersionUpgrade": false,
+            "AvailabilityZone": "<subnet-name:2>",
+            "BackupRetentionPeriod": 1,
+            "CopyTagsToSnapshot": false,
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<db-instance-id:2>",
+            "DBInstanceClass": "db.t3.medium",
+            "DBInstanceIdentifier": "<db-instance-id:2>",
+            "DBInstanceStatus": "available",
+            "DBParameterGroups": [
+              {
+                "DBParameterGroupName": "<d-b-parameter-group-name:1>",
+                "ParameterApplyStatus": "in-sync"
+              }
+            ],
+            "DBSecurityGroups": [],
+            "DBSubnetGroup": {
+              "DBSubnetGroupDescription": "Subnets for NeptuneCluster database",
+              "DBSubnetGroupName": "<d-b-subnet-group-name:1>",
+              "SubnetGroupStatus": "Complete",
+              "Subnets": [
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:1>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:1>",
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:2>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:2>",
+                  "SubnetStatus": "Active"
+                }
+              ],
+              "VpcId": "<vpc-id:1>"
+            },
+            "DbInstancePort": 0,
+            "DbiResourceId": "<dbi-resource-id:1>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "Endpoint": "endpoint",
+            "Engine": "neptune",
+            "EngineVersion": "1.3.0.0",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "InstanceCreateTime": "datetime",
+            "KmsKeyId": "<kms-key-id:1>",
+            "LicenseModel": "amazon-license",
+            "MasterUsername": "admin",
+            "MonitoringInterval": 0,
+            "MultiAZ": false,
+            "OptionGroupMemberships": [
+              {
+                "OptionGroupName": "default:neptune-1-3",
+                "Status": "in-sync"
+              }
+            ],
+            "PendingModifiedValues": {},
+            "PerformanceInsightsEnabled": false,
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "PromotionTier": 1,
+            "PubliclyAccessible": false,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "StorageEncrypted": true,
+            "StorageType": "standard",
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_instances_reader": {
+        "DBInstances": [
+          {
+            "AllocatedStorage": 1,
+            "AutoMinorVersionUpgrade": false,
+            "AvailabilityZone": "<subnet-name:1>",
+            "BackupRetentionPeriod": 1,
+            "CopyTagsToSnapshot": false,
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<db-instance-id:1>",
+            "DBInstanceClass": "db.t3.medium",
+            "DBInstanceIdentifier": "<db-instance-id:1>",
+            "DBInstanceStatus": "available",
+            "DBParameterGroups": [
+              {
+                "DBParameterGroupName": "<d-b-parameter-group-name:1>",
+                "ParameterApplyStatus": "in-sync"
+              }
+            ],
+            "DBSecurityGroups": [],
+            "DBSubnetGroup": {
+              "DBSubnetGroupDescription": "Subnets for NeptuneCluster database",
+              "DBSubnetGroupName": "<d-b-subnet-group-name:1>",
+              "SubnetGroupStatus": "Complete",
+              "Subnets": [
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:1>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:1>",
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:2>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:2>",
+                  "SubnetStatus": "Active"
+                }
+              ],
+              "VpcId": "<vpc-id:1>"
+            },
+            "DbInstancePort": 0,
+            "DbiResourceId": "<dbi-resource-id:2>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "Endpoint": "endpoint",
+            "Engine": "neptune",
+            "EngineVersion": "1.3.0.0",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "InstanceCreateTime": "datetime",
+            "KmsKeyId": "<kms-key-id:1>",
+            "LicenseModel": "amazon-license",
+            "MasterUsername": "admin",
+            "MonitoringInterval": 0,
+            "MultiAZ": false,
+            "OptionGroupMemberships": [
+              {
+                "OptionGroupName": "default:neptune-1-3",
+                "Status": "in-sync"
+              }
+            ],
+            "PendingModifiedValues": {},
+            "PerformanceInsightsEnabled": false,
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "PromotionTier": 1,
+            "PubliclyAccessible": false,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "StorageEncrypted": true,
+            "StorageType": "standard",
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_parameter_group": {
+        "Parameters": [
+          {
+            "AllowedValues": "enabled,viaQueryHint",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "string",
+            "Description": "DFE engine settings",
+            "IsModifiable": true,
+            "ParameterName": "neptune_dfe_query_engine",
+            "ParameterValue": "viaQueryHint",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "10-2147483647",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "integer",
+            "Description": "Graph query timeout (ms).",
+            "IsModifiable": true,
+            "ParameterName": "neptune_query_timeout",
+            "ParameterValue": "120000",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "0,1",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "Enable or disable Result Cache feature",
+            "IsModifiable": true,
+            "ParameterName": "neptune_result_cache",
+            "ParameterValue": "0",
+            "Source": "engine-default"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_parameter_group": {
+        "Parameters": [
+          {
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "string",
+            "Description": "Reader Configs for Autoscaled Readers",
+            "IsModifiable": true,
+            "ParameterName": "neptune_autoscaling_config",
+            "ParameterValue": "",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "enabled,viaQueryHint",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "string",
+            "Description": "DFE engine settings",
+            "IsModifiable": true,
+            "ParameterName": "neptune_dfe_query_engine",
+            "ParameterValue": "viaQueryHint",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "0,1",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "Toggle audit logging for Neptune",
+            "IsModifiable": true,
+            "ParameterName": "neptune_enable_audit_log",
+            "ParameterValue": "1",
+            "Source": "user"
+          },
+          {
+            "AllowedValues": "disabled,info,debug",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "dynamic",
+            "DataType": "string",
+            "Description": "Enable Slow query logs for Neptune",
+            "IsModifiable": true,
+            "ParameterName": "neptune_enable_slow_query_log",
+            "ParameterValue": "disabled",
+            "Source": "engine-default"
+          },
+          {
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "string",
+            "Description": "Enables Neptune engine experimental features",
+            "IsModifiable": true,
+            "ParameterName": "neptune_lab_mode",
+            "ParameterValue": "",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "0,1",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "Enable the use of Lookup Cache",
+            "IsModifiable": true,
+            "ParameterName": "neptune_lookup_cache",
+            "ParameterValue": "1",
+            "Source": "engine-default"
+          },
+          {
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "string",
+            "Description": "Default SageMaker endpoint for Neptune ML feature",
+            "IsModifiable": true,
+            "ParameterName": "neptune_ml_endpoint",
+            "ParameterValue": "",
+            "Source": "engine-default"
+          },
+          {
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "string",
+            "Description": "Default IAM role ARN for the Neptune ML feature",
+            "IsModifiable": true,
+            "ParameterName": "neptune_ml_iam_role",
+            "ParameterValue": "",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "10-2147483647",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "integer",
+            "Description": "Graph query timeout (ms).",
+            "IsModifiable": true,
+            "ParameterName": "neptune_query_timeout",
+            "ParameterValue": "120000",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "0,1",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "Enable or disable Result Cache feature",
+            "IsModifiable": true,
+            "ParameterName": "neptune_result_cache",
+            "ParameterValue": "0",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "1-10000000",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "dynamic",
+            "DataType": "integer",
+            "Description": "Threshold of slow query log (ms)",
+            "IsModifiable": true,
+            "ParameterName": "neptune_slow_query_log_threshold",
+            "ParameterValue": "5000",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "0,1",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "Enable or disable Neptune Streams feature",
+            "IsModifiable": true,
+            "ParameterName": "neptune_streams",
+            "ParameterValue": "0",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "1-90",
+            "ApplyMethod": "pending-reboot",
+            "ApplyType": "static",
+            "DataType": "integer",
+            "Description": "Number of days before streams records get purged by the server",
+            "IsModifiable": true,
+            "ParameterName": "neptune_streams_expiry_days",
+            "ParameterValue": "7",
+            "Source": "engine-default"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_post_infra_setup[True]": {
+    "recorded-date": "13-07-2024, 01:54:35",
+    "recorded-content": {
+      "test-inject": 0
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_post_infra_setup[False]": {
+    "recorded-date": "13-07-2024, 01:54:38",
+    "recorded-content": {
+      "test-inject": 0
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_query[True]": {
+    "recorded-date": "13-07-2024, 01:54:46",
+    "recorded-content": {
+      "neptune_query_result": {
+        "marco_knows": [
+          "mia",
+          "stephen"
+        ],
+        "marco_knows_older_30": [
+          "stephen"
+        ],
+        "names": [
+          "marko",
+          "stephen",
+          "mia"
+        ]
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_query[False]": {
+    "recorded-date": "13-07-2024, 01:54:51",
+    "recorded-content": {
+      "neptune_query_result": {
+        "marco_knows": [
+          "mia",
+          "stephen"
+        ],
+        "marco_knows_older_30": [
+          "stephen"
+        ],
+        "names": [
+          "marko",
+          "stephen",
+          "mia"
+        ]
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_multi_label[True]": {
+    "recorded-date": "13-07-2024, 01:55:25",
+    "recorded-content": {
+      "neptune_query_result": {
+        "Label1": {
+          "id": "<vertex-id:1>",
+          "label": "Label1::Label2::Label3"
+        },
+        "Label1::Label2::Label3": [],
+        "Label2": {
+          "id": "<vertex-id:1>",
+          "label": "Label1::Label2::Label3"
+        },
+        "Label2, Label3, something": {
+          "id": "<vertex-id:1>",
+          "label": "Label1::Label2::Label3"
+        },
+        "Label3": {
+          "id": "<vertex-id:1>",
+          "label": "Label1::Label2::Label3"
+        },
+        "Label4, something": [],
+        "multi_label_inserted": {
+          "id": "<vertex-id:1>",
+          "label": "Label1::Label2::Label3"
+        }
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_multi_label[False]": {
+    "recorded-date": "13-07-2024, 01:55:30",
+    "recorded-content": {
+      "neptune_query_result": {
+        "Label1": {
+          "id": "<vertex-id:1>",
+          "label": "Label1::Label2::Label3"
+        },
+        "Label1::Label2::Label3": [],
+        "Label2": {
+          "id": "<vertex-id:1>",
+          "label": "Label1::Label2::Label3"
+        },
+        "Label2, Label3, something": {
+          "id": "<vertex-id:1>",
+          "label": "Label1::Label2::Label3"
+        },
+        "Label3": {
+          "id": "<vertex-id:1>",
+          "label": "Label1::Label2::Label3"
+        },
+        "Label4, something": [],
+        "multi_label_inserted": {
+          "id": "<vertex-id:1>",
+          "label": "Label1::Label2::Label3"
+        }
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_neptune_transaction_success": {
+    "recorded-date": "13-07-2024, 01:55:35",
+    "recorded-content": {
+      "success-tx-nodes": [
+        {
+          "name": [
+            "bar"
+          ],
+          "id": "<uuid:1>",
+          "label": "label1"
+        },
+        {
+          "name": [
+            "foo"
+          ],
+          "id": "<uuid:2>",
+          "label": "label1"
+        }
+      ],
+      "success-tx-edges": [
+        {
+          "id": "<uuid:3>",
+          "label": "edge"
+        }
+      ],
+      "updated-tx-node": [
+        {
+          "name": [
+            "foo"
+          ],
+          "last_name": [
+            "foo2"
+          ],
+          "id": "<uuid:2>",
+          "label": "label1"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_property_cardinality[True]": {
+    "recorded-date": "13-07-2024, 01:54:54",
+    "recorded-content": {
+      "set-property-default": {
+        "card": [
+          "ace",
+          "king"
+        ]
+      },
+      "set-property-single": {
+        "card": [
+          "queen"
+        ]
+      },
+      "set-property-add-to-single": {
+        "card": [
+          "king",
+          "queen"
+        ]
+      },
+      "set-property-add-repeat": {
+        "card": [
+          "king",
+          "queen"
+        ]
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_property_cardinality[False]": {
+    "recorded-date": "13-07-2024, 01:54:59",
+    "recorded-content": {
+      "set-property-default": {
+        "card": [
+          "ace",
+          "king"
+        ]
+      },
+      "set-property-single": {
+        "card": [
+          "queen"
+        ]
+      },
+      "set-property-add-to-single": {
+        "card": [
+          "king",
+          "queen"
+        ]
+      },
+      "set-property-add-repeat": {
+        "card": [
+          "king",
+          "queen"
+        ]
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_property_cardinality_merge[True-Cardinality.single]": {
+    "recorded-date": "13-07-2024, 01:55:02",
+    "recorded-content": {
+      "set-property-merge": {
+        "card": [
+          "king"
+        ]
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_property_cardinality_merge[True-Cardinality.set_]": {
+    "recorded-date": "13-07-2024, 01:55:06",
+    "recorded-content": {
+      "set-property-merge": {
+        "card": [
+          "ace",
+          "king"
+        ]
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_property_cardinality_merge[True-None]": {
+    "recorded-date": "13-07-2024, 01:55:09",
+    "recorded-content": {
+      "set-property-merge": {
+        "card": [
+          "ace",
+          "king"
+        ]
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_property_cardinality_merge[False-Cardinality.single]": {
+    "recorded-date": "13-07-2024, 01:55:12",
+    "recorded-content": {
+      "set-property-merge": {
+        "card": [
+          "king"
+        ]
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_property_cardinality_merge[False-Cardinality.set_]": {
+    "recorded-date": "13-07-2024, 01:55:16",
+    "recorded-content": {
+      "set-property-merge": {
+        "card": [
+          "ace",
+          "king"
+        ]
+      }
+    }
+  },
+  "tests/aws/services/neptune/test_neptune_cfn.py::TestNeptuneCfn::test_property_cardinality_merge[False-None]": {
+    "recorded-date": "13-07-2024, 01:55:19",
+    "recorded-content": {
+      "set-property-merge": {
+        "card": [
+          "ace",
+          "king"
+        ]
+      }
+    }
+  }
+}

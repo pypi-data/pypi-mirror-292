@@ -1,0 +1,74 @@
+{
+  "tests/aws/services/sagemaker/test_sagemaker.py::TestSagemaker::test_custom_model_deployment": {
+    "recorded-date": "14-05-2024, 15:20:54",
+    "recorded-content": {
+      "endpoint_after_creation": {
+        "CreationTime": "<datetime>",
+        "EndpointArn": "arn:<partition>:sagemaker:<region>:111111111111:endpoint/<endpoint-name:1>",
+        "EndpointConfigName": "<endpoint-config-name:1>",
+        "EndpointName": "<endpoint-name:1>",
+        "EndpointStatus": "Creating",
+        "LastModifiedTime": "<datetime>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "endpoint_in_service": {
+        "CreationTime": "<datetime>",
+        "EndpointArn": "arn:<partition>:sagemaker:<region>:111111111111:endpoint/<endpoint-name:1>",
+        "EndpointConfigName": "<endpoint-config-name:1>",
+        "EndpointName": "<endpoint-name:1>",
+        "EndpointStatus": "InService",
+        "LastModifiedTime": "<datetime>",
+        "ProductionVariants": [
+          {
+            "CurrentInstanceCount": 1,
+            "CurrentWeight": 1.0,
+            "DeployedImages": [
+              {
+                "ResolutionTime": "<datetime>",
+                "ResolvedImage": "<resolved-image:1>",
+                "SpecifiedImage": "<specified-image:1>"
+              }
+            ],
+            "DesiredInstanceCount": 1,
+            "DesiredWeight": 1.0,
+            "VariantName": "AllTraffic"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invocation_result": {
+        "Body": {
+          "predictions": {}
+        },
+        "ContentType": "application/json",
+        "InvokedProductionVariant": "AllTraffic",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/sagemaker/test_sagemaker.py::TestSagemaker::test_unknown_endpoint": {
+    "recorded-date": "17-06-2024, 06:59:17",
+    "recorded-content": {
+      "unknown_endpoint_response": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Endpoint unknown-endpoint of account 111111111111 not found."
+        },
+        "Message": "Endpoint unknown-endpoint of account 111111111111 not found.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  }
+}

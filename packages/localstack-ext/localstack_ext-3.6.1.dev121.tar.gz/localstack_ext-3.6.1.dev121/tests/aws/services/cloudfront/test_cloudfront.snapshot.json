@@ -1,0 +1,316 @@
+{
+  "tests/aws/services/cloudfront/test_cloudfront.py::TestCloudFront::test_origin_access_control": {
+    "recorded-date": "16-01-2023, 10:32:39",
+    "recorded-content": {
+      "create_response": {
+        "ETag": "<etag:1>",
+        "Location": "<location:1>",
+        "OriginAccessControl": {
+          "Id": "<id:1>",
+          "OriginAccessControlConfig": {
+            "Description": "description",
+            "Name": "<config-name:1>",
+            "OriginAccessControlOriginType": "s3",
+            "SigningBehavior": "always",
+            "SigningProtocol": "sigv4"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "get_response": {
+        "ETag": "<etag:1>",
+        "OriginAccessControl": {
+          "Id": "<id:1>",
+          "OriginAccessControlConfig": {
+            "Description": "description",
+            "Name": "<config-name:1>",
+            "OriginAccessControlOriginType": "s3",
+            "SigningBehavior": "always",
+            "SigningProtocol": "sigv4"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update_response": {
+        "ETag": "<etag:2>",
+        "OriginAccessControl": {
+          "Id": "<id:1>",
+          "OriginAccessControlConfig": {
+            "Description": "description",
+            "Name": "<config-name:1>",
+            "OriginAccessControlOriginType": "s3",
+            "SigningBehavior": "never",
+            "SigningProtocol": "sigv4"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_config_response": {
+        "ETag": "<etag:2>",
+        "OriginAccessControlConfig": {
+          "Description": "description",
+          "Name": "<config-name:1>",
+          "OriginAccessControlOriginType": "s3",
+          "SigningBehavior": "never",
+          "SigningProtocol": "sigv4"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_response": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 204
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudfront/test_cloudfront.py::TestCloudFront::test_create_response_headers_policy": {
+    "recorded-date": "06-07-2023, 20:15:55",
+    "recorded-content": {
+      "error-empty": {
+        "Error": {
+          "Code": "InvalidArgument",
+          "Message": "The parameter Response Headers Config  requires atleast one of CORS, Security Headers, Remove Headers, Server Timing Headers or Custom Headers.",
+          "Type": "Sender"
+        },
+        "Message": "The parameter Response Headers Config  requires atleast one of CORS, Security Headers, Remove Headers, Server Timing Headers or Custom Headers.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-policy-response": {
+        "ETag": "<etag:1>",
+        "Location": "<location:1>",
+        "ResponseHeadersPolicy": {
+          "Id": "<id:1>",
+          "LastModifiedTime": "datetime",
+          "ResponseHeadersPolicyConfig": {
+            "CustomHeadersConfig": {
+              "Items": [
+                {
+                  "Header": "test-header",
+                  "Override": true,
+                  "Value": "test 123 foobar"
+                }
+              ],
+              "Quantity": 1
+            },
+            "Name": "<config-name:1>"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "get-policy-response": {
+        "ETag": "<etag:1>",
+        "ResponseHeadersPolicy": {
+          "Id": "<id:1>",
+          "LastModifiedTime": "datetime",
+          "ResponseHeadersPolicyConfig": {
+            "CustomHeadersConfig": {
+              "Items": [
+                {
+                  "Header": "test-header",
+                  "Override": true,
+                  "Value": "test 123 foobar"
+                }
+              ],
+              "Quantity": 1
+            },
+            "Name": "<config-name:1>"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-policy-response": {
+        "ETag": "<etag:2>",
+        "ResponseHeadersPolicy": {
+          "Id": "<id:1>",
+          "LastModifiedTime": "datetime",
+          "ResponseHeadersPolicyConfig": {
+            "CustomHeadersConfig": {
+              "Items": [
+                {
+                  "Header": "test-header",
+                  "Override": true,
+                  "Value": "test 123 updated"
+                }
+              ],
+              "Quantity": 1
+            },
+            "Name": "<config-name:1>"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-policies-response": [
+        {
+          "Type": "custom",
+          "ResponseHeadersPolicy": {
+            "Id": "<id:1>",
+            "LastModifiedTime": "datetime",
+            "ResponseHeadersPolicyConfig": {
+              "Name": "<config-name:1>",
+              "CustomHeadersConfig": {
+                "Quantity": 1,
+                "Items": [
+                  {
+                    "Header": "test-header",
+                    "Value": "test 123 updated",
+                    "Override": true
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "delete-policy-response": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 204
+        }
+      },
+      "error-non-existing": {
+        "Error": {
+          "Code": "NoSuchResponseHeadersPolicy",
+          "Message": "The specified response headers policy does not exist.",
+          "Type": "Sender"
+        },
+        "Message": "The specified response headers policy does not exist.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudfront/test_cloudfront.py::TestCloudFront::test_cloudflare_cname_reuse": {
+    "recorded-date": "06-03-2024, 12:12:42",
+    "recorded-content": {
+      "duplicated-alias-exception": {
+        "Error": {
+          "Code": "CNAMEAlreadyExists",
+          "Message": "One or more of the CNAMEs you provided are already associated with a different resource.",
+          "Type": "Sender"
+        },
+        "Message": "One or more of the CNAMEs you provided are already associated with a different resource.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 409
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudfront/test_cloudfront.py::TestCloudFront::test_create_function": {
+    "recorded-date": "20-03-2024, 19:44:14",
+    "recorded-content": {
+      "already-exists-error": {
+        "Error": {
+          "Code": "FunctionAlreadyExists",
+          "Message": "",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 409
+        }
+      },
+      "get-function-response": {
+        "ContentType": "application/octet-stream",
+        "ETag": "<etag:1>",
+        "FunctionCode": "code123",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-functions-response": [
+        {
+          "Name": "<function-name:1>",
+          "FunctionConfig": {
+            "Runtime": "cloudfront-js-1.0"
+          },
+          "FunctionMetadata": {
+            "FunctionARN": "arn:<partition>:cloudfront::111111111111:function/<function-name:1>",
+            "Stage": "DEVELOPMENT",
+            "CreatedTime": "datetime",
+            "LastModifiedTime": "datetime"
+          }
+        }
+      ],
+      "update-function-response": {
+        "ETag": "<etag:2>",
+        "FunctionSummary": {
+          "FunctionConfig": {
+            "Comment": "comment456",
+            "Runtime": "cloudfront-js-1.0"
+          },
+          "FunctionMetadata": {
+            "CreatedTime": "datetime",
+            "FunctionARN": "arn:<partition>:cloudfront::111111111111:function/<function-name:1>",
+            "LastModifiedTime": "datetime",
+            "Stage": "DEVELOPMENT"
+          },
+          "Name": "<function-name:1>",
+          "Status": "UNPUBLISHED"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-function-not-found-error": {
+        "Error": {
+          "Code": "NoSuchFunctionExists",
+          "Message": "The specified function does not exist.",
+          "Type": "Sender"
+        },
+        "Message": "The specified function does not exist.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudfront/test_cloudfront.py::TestCloudFrontRestApiOrigin::test_auth_headers_and_non_title_case_of_headers": {
+    "recorded-date": "09-07-2024, 12:46:00",
+    "recorded-content": {
+      "headers": {
+        "Authorization": "Bearer ILoveLocalStack1!",
+        "foo": "bar",
+        "foo-bar": "baz"
+      }
+    }
+  },
+  "tests/aws/services/cloudfront/test_cloudfront.py::TestCloudFrontRestApiOrigin::test_query_string_parameters_forward": {
+    "recorded-date": "09-07-2024, 12:46:01",
+    "recorded-content": {
+      "query-string-parameters": {
+        "foo": "bar"
+      }
+    }
+  }
+}

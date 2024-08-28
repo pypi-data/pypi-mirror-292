@@ -1,0 +1,104 @@
+{
+  "tests/aws/services/cloudformation/resources/test_amplify.py::TestCfnAmplifyResources::test_amplify_resources": {
+    "recorded-date": "14-02-2024, 13:41:58",
+    "recorded-content": {
+      "outputs": {
+        "AppArn": "arn:<partition>:amplify:<region>:111111111111:apps/<app-id>",
+        "AppDefaultDomain": "<app-id>.<domain-suffix>",
+        "AppId": "<app-id>",
+        "AppName": "<app-name>",
+        "AppRef": "arn:<partition>:amplify:<region>:111111111111:apps/<app-id>",
+        "BranchArn": "arn:<partition>:amplify:<region>:111111111111:apps/<app-id>/branches/<branch-name>",
+        "BranchName": "<branch-name>",
+        "BranchRef": "arn:<partition>:amplify:<region>:111111111111:apps/<app-id>/branches/<branch-name>"
+      },
+      "branches": {
+        "branches": [
+          {
+            "backend": {},
+            "branchArn": "arn:<partition>:amplify:<region>:111111111111:apps/<app-id>/branches/<branch-name>",
+            "branchName": "<branch-name>",
+            "createTime": "datetime",
+            "displayName": "<branch-name>",
+            "enableAutoBuild": true,
+            "enableBasicAuth": false,
+            "enableNotification": false,
+            "enablePerformanceMode": false,
+            "enablePullRequestPreview": false,
+            "stage": "PRODUCTION",
+            "tags": {},
+            "totalNumberOfJobs": "0",
+            "ttl": "5",
+            "updateTime": "datetime"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "apps": {
+        "app": {
+          "appArn": "arn:<partition>:amplify:<region>:111111111111:apps/<app-id>",
+          "appId": "<app-id>",
+          "createTime": "datetime",
+          "customHeaders": "",
+          "customRules": [],
+          "defaultDomain": "<app-id>.<domain-suffix>",
+          "description": "My amplify app",
+          "enableAutoBranchCreation": false,
+          "enableBasicAuth": false,
+          "enableBranchAutoBuild": false,
+          "enableBranchAutoDeletion": false,
+          "name": "<app-name>",
+          "platform": "WEB",
+          "tags": {},
+          "updateTime": "datetime"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_amplify.py::test_amplify_env_variables": {
+    "recorded-date": "13-03-2024, 13:57:56",
+    "recorded-content": {
+      "app_description": {
+        "app": {
+          "appArn": "arn:<partition>:amplify:<region>:111111111111:apps/<app-id>",
+          "appId": "<app-id>",
+          "createTime": "datetime",
+          "customHeaders": "",
+          "customRules": [
+            {
+              "source": "</^[^.]+$|\\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json|webp)$)([^.]+$)/>",
+              "status": "200",
+              "target": "/index.html"
+            }
+          ],
+          "defaultDomain": "<app-id>.<domain-suffix>",
+          "enableAutoBranchCreation": false,
+          "enableBasicAuth": false,
+          "enableBranchAutoBuild": false,
+          "enableBranchAutoDeletion": false,
+          "environmentVariables": {
+            "ANOTHER_VAR": "SomeValue",
+            "API_URL": "https://yourapi.example.com",
+            "ARE_WE_COOL": "Yes we are",
+            "MEANING_OF_UNIVERSE": "42"
+          },
+          "name": "MyAmplifyApplication",
+          "platform": "WEB",
+          "tags": {},
+          "updateTime": "datetime"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

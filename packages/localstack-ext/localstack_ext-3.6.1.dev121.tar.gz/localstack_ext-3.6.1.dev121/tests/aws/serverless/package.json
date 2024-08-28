@@ -1,0 +1,14 @@
+{
+  "description": "Sample for LocalStack Pro",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/localstack/localstack-pro-samples",
+  "devDependencies": {
+    "serverless": "^2",
+    "serverless-deployment-bucket": "^1.5.2",
+    "serverless-localstack": "^0.4.35"
+  },
+  "scripts": {
+    "deploy": "sls deploy --stage local",
+    "destroy": "sls remove --stage local"
+  }
+}

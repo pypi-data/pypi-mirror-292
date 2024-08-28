@@ -1,0 +1,96 @@
+{
+  "tests/aws/services/elastictranscoder/test_elastictranscoder.py::TestElasticTranscoder::test_create_list_read_pipeline": {
+    "recorded-date": "23-01-2024, 07:22:44",
+    "recorded-content": {
+      "create_pipeline": {
+        "Pipeline": {
+          "Arn": "arn:<partition>:elastictranscoder:<region>:111111111111:pipeline/<pipeline-id>",
+          "ContentConfig": {
+            "Bucket": "<output-bucket>",
+            "Permissions": []
+          },
+          "Id": "<pipeline-id>",
+          "InputBucket": "<input-bucket>",
+          "Name": "<pipeline-name>",
+          "Notifications": {
+            "Completed": "",
+            "Error": "",
+            "Progressing": "",
+            "Warning": ""
+          },
+          "OutputBucket": "<output-bucket>",
+          "Role": "arn:<partition>:iam::111111111111:role/<role-name>",
+          "Status": "Active",
+          "ThumbnailConfig": {
+            "Bucket": "<output-bucket>",
+            "Permissions": []
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "list_pipelines": {
+        "Pipelines": [
+          {
+            "Arn": "arn:<partition>:elastictranscoder:<region>:111111111111:pipeline/<pipeline-id>",
+            "ContentConfig": {
+              "Bucket": "<output-bucket>",
+              "Permissions": []
+            },
+            "Id": "<pipeline-id>",
+            "InputBucket": "<input-bucket>",
+            "Name": "<pipeline-name>",
+            "Notifications": {
+              "Completed": "",
+              "Error": "",
+              "Progressing": "",
+              "Warning": ""
+            },
+            "OutputBucket": "<output-bucket>",
+            "Role": "arn:<partition>:iam::111111111111:role/<role-name>",
+            "Status": "Active",
+            "ThumbnailConfig": {
+              "Bucket": "<output-bucket>",
+              "Permissions": []
+            }
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "read_pipeline": {
+        "Pipeline": {
+          "Arn": "arn:<partition>:elastictranscoder:<region>:111111111111:pipeline/<pipeline-id>",
+          "ContentConfig": {
+            "Bucket": "<output-bucket>",
+            "Permissions": []
+          },
+          "Id": "<pipeline-id>",
+          "InputBucket": "<input-bucket>",
+          "Name": "<pipeline-name>",
+          "Notifications": {
+            "Completed": "",
+            "Error": "",
+            "Progressing": "",
+            "Warning": ""
+          },
+          "OutputBucket": "<output-bucket>",
+          "Role": "arn:<partition>:iam::111111111111:role/<role-name>",
+          "Status": "Active",
+          "ThumbnailConfig": {
+            "Bucket": "<output-bucket>",
+            "Permissions": []
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

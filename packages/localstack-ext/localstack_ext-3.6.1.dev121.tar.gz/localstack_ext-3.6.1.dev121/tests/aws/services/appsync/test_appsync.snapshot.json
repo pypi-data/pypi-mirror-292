@@ -1,0 +1,1960 @@
+{
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_cognito_authorization_group_enforcement": {
+    "recorded-date": "31-01-2023, 13:07:08",
+    "recorded-content": {
+      "query-admin-1": {
+        "data": {
+          "getTest": "[]"
+        }
+      },
+      "query-guest-1": {
+        "data": {
+          "getTest": "[]"
+        }
+      },
+      "query-admin-2": {
+        "data": {
+          "getAllTest": "[]"
+        }
+      },
+      "query-guest-2": {
+        "data": {
+          "getAllTest": null
+        },
+        "errors": [
+          {
+            "data": null,
+            "errorInfo": null,
+            "errorType": "Unauthorized",
+            "locations": [
+              {
+                "column": 9,
+                "line": 1,
+                "sourceName": null
+              }
+            ],
+            "message": "Not Authorized to access getAllTest on type Query",
+            "path": [
+              "getAllTest"
+            ]
+          }
+        ]
+      },
+      "query-admin-3": {
+        "data": {
+          "getAllTest": "[]",
+          "getTest": "[]"
+        }
+      },
+      "query-guest-3": {
+        "data": {
+          "getAllTest": null,
+          "getTest": "[]"
+        },
+        "errors": [
+          {
+            "data": null,
+            "errorInfo": null,
+            "errorType": "Unauthorized",
+            "locations": [
+              {
+                "column": 17,
+                "line": 1,
+                "sourceName": null
+              }
+            ],
+            "message": "Not Authorized to access getAllTest on type Query",
+            "path": [
+              "getAllTest"
+            ]
+          }
+        ]
+      },
+      "query-invalid-1": {
+        "errors": [
+          {
+            "errorType": "UnauthorizedException",
+            "message": "Unable to parse JWT token."
+          }
+        ]
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_cognito_authorization_auth_context_propagated": {
+    "recorded-date": "31-01-2023, 14:32:00",
+    "recorded-content": {
+      "id-token": {
+        "arguments": {},
+        "identity": {
+          "claims": {
+            "aud": "<aud:1>",
+            "auth_time": "auth_time",
+            "cognito:groups": [
+              "guests"
+            ],
+            "cognito:username": "<username:1>",
+            "event_id": "<uuid:1>",
+            "exp": "exp",
+            "iat": "iat",
+            "iss": "<iss:1>",
+            "jti": "2aa55ce9-d78c-46ee-a9a6-94867d2b11f6",
+            "origin_jti": "dbf04b95-8352-49f7-9811-6876c6607fc8",
+            "sub": "<sub:1>",
+            "token_use": "id"
+          },
+          "defaultAuthStrategy": "DENY",
+          "groups": [
+            "guests"
+          ],
+          "issuer": "<iss:1>",
+          "sourceIp": [
+            "80.189.216.182"
+          ],
+          "sub": "<sub:1>",
+          "username": "<username:1>"
+        },
+        "info": {
+          "fieldName": "event",
+          "parentTypeName": "Query",
+          "selectionSetGraphQL": "",
+          "selectionSetList": [],
+          "variables": {}
+        },
+        "prev": null,
+        "request": {
+          "domainName": null,
+          "headers": {
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate",
+            "authorization": "<authorization:1>",
+            "cloudfront-forwarded-proto": "https",
+            "cloudfront-is-desktop-viewer": "true",
+            "cloudfront-is-mobile-viewer": "false",
+            "cloudfront-is-smarttv-viewer": "false",
+            "cloudfront-is-tablet-viewer": "false",
+            "cloudfront-viewer-asn": "6871",
+            "cloudfront-viewer-country": "GB",
+            "content-length": "22",
+            "host": "lzgs6ikt5jaotgelxqzqwrcl4a.appsync-api.<region>.amazonaws.com",
+            "user-agent": "python-requests/2.28.2",
+            "via": "1.1 c4ff0051ca0c026ecfda9d67a3f79e8a.cloudfront.net (CloudFront)",
+            "x-amz-cf-id": "cUXnjxuRYokjbtwLdSsyT4JRkI39XhyaSg7HZq-Zg4qtI6SlIUXu6w==",
+            "x-amzn-requestid": "<uuid:2>",
+            "x-amzn-trace-id": "Root=1-63d92660-4926a21c1afdf26703770ecd",
+            "x-forwarded-for": "80.189.216.182, 130.176.9.161",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https"
+          }
+        },
+        "source": null,
+        "stash": {}
+      },
+      "access-token": {
+        "arguments": {},
+        "identity": {
+          "claims": {
+            "auth_time": "auth_time",
+            "client_id": "<aud:1>",
+            "cognito:groups": [
+              "guests"
+            ],
+            "event_id": "<uuid:1>",
+            "exp": "exp",
+            "iat": "iat",
+            "iss": "<iss:1>",
+            "jti": "c829a0f7-aa81-4ebd-9cb9-da6f99e6fb4b",
+            "origin_jti": "dbf04b95-8352-49f7-9811-6876c6607fc8",
+            "scope": "aws.cognito.signin.user.admin",
+            "sub": "<sub:1>",
+            "token_use": "access",
+            "username": "<username:1>"
+          },
+          "defaultAuthStrategy": "DENY",
+          "groups": [
+            "guests"
+          ],
+          "issuer": "<iss:1>",
+          "sourceIp": [
+            "80.189.216.182"
+          ],
+          "sub": "<sub:1>",
+          "username": "<username:1>"
+        },
+        "info": {
+          "fieldName": "event",
+          "parentTypeName": "Query",
+          "selectionSetGraphQL": "",
+          "selectionSetList": [],
+          "variables": {}
+        },
+        "prev": null,
+        "request": {
+          "domainName": null,
+          "headers": {
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate",
+            "authorization": "<authorization:2>",
+            "cloudfront-forwarded-proto": "https",
+            "cloudfront-is-desktop-viewer": "true",
+            "cloudfront-is-mobile-viewer": "false",
+            "cloudfront-is-smarttv-viewer": "false",
+            "cloudfront-is-tablet-viewer": "false",
+            "cloudfront-viewer-asn": "6871",
+            "cloudfront-viewer-country": "GB",
+            "content-length": "22",
+            "host": "lzgs6ikt5jaotgelxqzqwrcl4a.appsync-api.<region>.amazonaws.com",
+            "user-agent": "python-requests/2.28.2",
+            "via": "1.1 bed6fe20b9fca9f4014b1a1d2375d67e.cloudfront.net (CloudFront)",
+            "x-amz-cf-id": "E2Bk8JrBEi-VaTK3cau_co2A8fqug2C2Hfk0l0yQEPdsx6Odz5MDmw==",
+            "x-amzn-requestid": "<uuid:3>",
+            "x-amzn-trace-id": "Root=1-63d92660-3d0999eb534e022c50518b78",
+            "x-forwarded-for": "80.189.216.182, 130.176.9.161",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https"
+          }
+        },
+        "source": null,
+        "stash": {}
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_cognito_authorization_auth_context_propagated_without_groups": {
+    "recorded-date": "02-02-2023, 09:43:04",
+    "recorded-content": {
+      "id-token": {
+        "arguments": {},
+        "identity": {
+          "claims": {
+            "aud": "<aud:1>",
+            "auth_time": "auth_time",
+            "cognito:username": "<username:1>",
+            "event_id": "<uuid:1>",
+            "exp": "exp",
+            "iat": "iat",
+            "iss": "<iss:1>",
+            "jti": "c9d16c30-9c31-4296-96bf-3993e2dd8059",
+            "origin_jti": "113d6204-a1c5-4c17-85a5-c8ddaf93c648",
+            "sub": "<sub:1>",
+            "token_use": "id"
+          },
+          "defaultAuthStrategy": "ALLOW",
+          "groups": null,
+          "issuer": "<iss:1>",
+          "sourceIp": [
+            "80.189.216.182"
+          ],
+          "sub": "<sub:1>",
+          "username": "<username:1>"
+        },
+        "info": {
+          "fieldName": "event",
+          "parentTypeName": "Query",
+          "selectionSetGraphQL": "",
+          "selectionSetList": [],
+          "variables": {}
+        },
+        "prev": null,
+        "request": {
+          "domainName": null,
+          "headers": {
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate",
+            "authorization": "<authorization:1>",
+            "cloudfront-forwarded-proto": "https",
+            "cloudfront-is-desktop-viewer": "true",
+            "cloudfront-is-mobile-viewer": "false",
+            "cloudfront-is-smarttv-viewer": "false",
+            "cloudfront-is-tablet-viewer": "false",
+            "cloudfront-viewer-asn": "6871",
+            "cloudfront-viewer-country": "GB",
+            "content-length": "22",
+            "host": "ty46y6sapvfvlmuysoasxniqka.appsync-api.<region>.amazonaws.com",
+            "user-agent": "python-requests/2.28.2",
+            "via": "1.1 717666fbcd9eb8ed70d0f46dd99d0448.cloudfront.net (CloudFront)",
+            "x-amz-cf-id": "y3qhfRIN1xH9nk3y5Qf8hocsCMIWmkevPy_5JnGBQNaKBpCWX1Kpgw==",
+            "x-amzn-requestid": "<uuid:2>",
+            "x-amzn-trace-id": "Root=1-63db85a8-6b77702626d21bf3542680d1",
+            "x-forwarded-for": "80.189.216.182, 15.158.16.39",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https"
+          }
+        },
+        "source": null,
+        "stash": {}
+      },
+      "access-token": {
+        "arguments": {},
+        "identity": {
+          "claims": {
+            "auth_time": "auth_time",
+            "client_id": "<aud:1>",
+            "event_id": "<uuid:1>",
+            "exp": "exp",
+            "iat": "iat",
+            "iss": "<iss:1>",
+            "jti": "2d6ad780-fb6f-4135-8fa0-e19830b6b686",
+            "origin_jti": "113d6204-a1c5-4c17-85a5-c8ddaf93c648",
+            "scope": "aws.cognito.signin.user.admin",
+            "sub": "<sub:1>",
+            "token_use": "access",
+            "username": "<username:1>"
+          },
+          "defaultAuthStrategy": "ALLOW",
+          "groups": null,
+          "issuer": "<iss:1>",
+          "sourceIp": [
+            "80.189.216.182"
+          ],
+          "sub": "<sub:1>",
+          "username": "<username:1>"
+        },
+        "info": {
+          "fieldName": "event",
+          "parentTypeName": "Query",
+          "selectionSetGraphQL": "",
+          "selectionSetList": [],
+          "variables": {}
+        },
+        "prev": null,
+        "request": {
+          "domainName": null,
+          "headers": {
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate",
+            "authorization": "<authorization:2>",
+            "cloudfront-forwarded-proto": "https",
+            "cloudfront-is-desktop-viewer": "true",
+            "cloudfront-is-mobile-viewer": "false",
+            "cloudfront-is-smarttv-viewer": "false",
+            "cloudfront-is-tablet-viewer": "false",
+            "cloudfront-viewer-asn": "6871",
+            "cloudfront-viewer-country": "GB",
+            "content-length": "22",
+            "host": "ty46y6sapvfvlmuysoasxniqka.appsync-api.<region>.amazonaws.com",
+            "user-agent": "python-requests/2.28.2",
+            "via": "1.1 d6030d5ab753695c0198f874d4276eb2.cloudfront.net (CloudFront)",
+            "x-amz-cf-id": "nG58VrlsZdLzfwLxdlM2mZffYHcZxWsBB-yZe1WNfDoeNbUib9P1cg==",
+            "x-amzn-requestid": "<uuid:3>",
+            "x-amzn-trace-id": "Root=1-63db85a8-2f6aab6f7c6050524579621b",
+            "x-forwarded-for": "80.189.216.182, 15.158.16.36",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https"
+          }
+        },
+        "source": null,
+        "stash": {}
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_pipeline_resolver": {
+    "recorded-date": "14-02-2023, 15:55:03",
+    "recorded-content": {
+      "graphql_api": {
+        "apiId": "<api-id:1>",
+        "arn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id:1>",
+        "authenticationType": "API_KEY",
+        "name": "<name:1>",
+        "tags": {},
+        "uris": {
+          "GRAPHQL": "<graphql-endpoint:1>",
+          "REALTIME": "<websocket-endpoint:1>"
+        },
+        "xrayEnabled": false
+      },
+      "validate_email_function_configuration": {
+        "dataSourceName": "NONE",
+        "functionArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id:1>/functions/<function-id:1>",
+        "functionId": "<function-id:1>",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0,
+        "name": "<name:2>",
+        "requestMappingTemplate": "#set($valid = $util.matches(\"^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\\.)?[a-zA-Z]+\\.)?(local)\\.stack\", $ctx.stash.email))\n            #if (!$valid)\n                $util.error(\"$ctx.stash.email is not a valid email.\")\n            #end\n            {\n                \"payload\": { \"email\": $util.toJson(${ctx.stash.email}) }\n            }",
+        "responseMappingTemplate": "$util.toJson($ctx.result)"
+      },
+      "save_user_function_configuration": {
+        "dataSourceName": "NONE",
+        "functionArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id:1>/functions/<function-id:2>",
+        "functionId": "<function-id:2>",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0,
+        "name": "<name:3>",
+        "requestMappingTemplate": "## $ctx.prev.result contains the signup input values. We could have also\n            ## used $ctx.args.input.\n            {\n                \"payload\": $util.toJson($ctx.prev.result)\n            }",
+        "responseMappingTemplate": "## an id is required so let's add a unique random identifier to the output\n            $util.qr($ctx.result.put(\"userId\", $util.autoId()))\n            $util.toJson($ctx.result)"
+      },
+      "pipeline_resolver": {
+        "resolver": {
+          "fieldName": "signUp",
+          "kind": "PIPELINE",
+          "maxBatchSize": 0,
+          "pipelineConfig": {
+            "functions": [
+              "<function-id:1>",
+              "<function-id:2>"
+            ]
+          },
+          "requestMappingTemplate": "$util.qr($ctx.stash.put(\"email\", $ctx.args.input.email))\n{}",
+          "resolverArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id:1>/types/Mutation/resolvers/signUp",
+          "responseMappingTemplate": "$util.toJson($ctx.result)",
+          "typeName": "Mutation"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "valid_mutation_result_code": 200,
+      "valid_mutation_result_content": {
+        "data": {
+          "signUp": {
+            "userId": "<user-id:1>"
+          }
+        }
+      },
+      "invalid_mutation_result_code": 200,
+      "invalid_mutation_result_content": {
+        "data": {
+          "signUp": null
+        },
+        "errors": [
+          {
+            "data": null,
+            "errorInfo": null,
+            "errorType": null,
+            "locations": [
+              {
+                "column": 11,
+                "line": 2,
+                "sourceName": null
+              }
+            ],
+            "message": "bob@non-local.stack is not a valid email.",
+            "path": [
+              "signUp"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_pipeline_js_resolver": {
+    "recorded-date": "29-02-2024, 12:34:49",
+    "recorded-content": {
+      "function_config": {
+        "code": "import { util } from '@aws-appsync/utils';\nexport function request(ctx) {\n  return {\"payload\": ctx.args.id}\n}\nexport function response(ctx) {\n  return \"response-payload: \" + ctx.result;\n}",
+        "dataSourceName": "NONE",
+        "functionArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/functions/<func-id>",
+        "functionId": "<func-id>",
+        "maxBatchSize": 0,
+        "name": "getItem",
+        "runtime": {
+          "name": "APPSYNC_JS",
+          "runtimeVersion": "1.0.0"
+        }
+      },
+      "pipeline-resolver": {
+        "resolver": {
+          "code": "export function request(ctx) {\n  // not relevant for NONE data source\n}\nexport function response(ctx) {\n  // the `Item` type\n  return {\n      name: ctx.prev.result,\n  };\n}",
+          "fieldName": "getItem",
+          "kind": "PIPELINE",
+          "maxBatchSize": 0,
+          "pipelineConfig": {
+            "functions": [
+              "<func-id>"
+            ]
+          },
+          "resolverArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/types/Query/resolvers/getItem",
+          "runtime": {
+            "name": "APPSYNC_JS",
+            "runtimeVersion": "1.0.0"
+          },
+          "typeName": "Query"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "response-code": 200,
+      "response-content": {
+        "data": {
+          "getItem": {
+            "name": "response-payload: <item-id>"
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_http_data_source_return_object": {
+    "recorded-date": "05-07-2023, 15:24:26",
+    "recorded-content": {
+      "function": {
+        "code": "\n    import { util } from '@aws-appsync/utils';\n    \n\n        function assertEqual(value, expected, message) {\n          if (value !== expected) {\n              util.error(\"Assertion failed\", \"AssertionError\", null, { value, expected, message });\n          }\n        }\n\n        \n\n    function assertTypeOf(value, expectedType, message) {\n        assertEqual(typeof(value), expectedType, message);\n    }\n    \nexport function request(ctx) {\n  assertTypeOf(ctx, \"object\", \"function.request.ctx\");\n  assertTypeOf(ctx.prev, \"object\", \"function.request.ctx.prev\");\n  // ctx.prev.result is \"ctx\" from the pipeline resolver\n  assertTypeOf(ctx.prev.result, \"object\", \"function.request.ctx.prev.result\");\n\n  return {\n    method: 'POST',\n    params: {\n      headers: {\n        'Content-Type': 'application/json',\n        'Authorization': 'auth 123'\n      },\n      body: '{\"name\":\"my-name\"}',\n    },\n    resourcePath: '/request/my/path'\n  };\n}\nexport function response(ctx) {\n  assertTypeOf(ctx, \"object\", \"function.response.ctx\");\n  assertTypeOf(ctx.result, \"object\", \"function.response.ctx.result\");\n  assertTypeOf(ctx.result.statusCode, \"number\", \"function.response.result.statusCode\");\n  assertTypeOf(ctx.result.body, \"string\", \"function.response.ctx.result.body\");\n\n  return ctx.result.body;\n}",
+        "dataSourceName": "http_ds1",
+        "functionArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/functions/<func-id>",
+        "functionId": "<func-id>",
+        "maxBatchSize": 0,
+        "name": "getItem",
+        "runtime": {
+          "name": "APPSYNC_JS",
+          "runtimeVersion": "1.0.0"
+        }
+      },
+      "resolver": {
+        "resolver": {
+          "code": "\n    import { util } from '@aws-appsync/utils';\n    \n\n        function assertEqual(value, expected, message) {\n          if (value !== expected) {\n              util.error(\"Assertion failed\", \"AssertionError\", null, { value, expected, message });\n          }\n        }\n\n        \n\n    function assertTypeOf(value, expectedType, message) {\n        assertEqual(typeof(value), expectedType, message);\n    }\n    \nexport function request(ctx) {\n  assertTypeOf(ctx, \"object\", \"pipeline.request.ctx\");\n  return ctx;\n}\nexport function response(ctx) {\n  assertTypeOf(ctx, \"object\", \"pipeline.response.ctx\");\n  assertTypeOf(ctx.prev, \"object\", \"pipeline.response.ctx.prev\");\n  assertTypeOf(ctx.prev.result, \"string\", \"pipeline.response.ctx.prev.result\");\n\n  const response = JSON.parse(ctx.prev.result);\n  if (response.postData) {\n      // from mockbin\n      return JSON.parse(response.postData.text);\n  } else {\n      return JSON.parse(response.data);\n  }\n}",
+          "fieldName": "getItem",
+          "kind": "PIPELINE",
+          "maxBatchSize": 0,
+          "pipelineConfig": {
+            "functions": [
+              "<func-id>"
+            ]
+          },
+          "resolverArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/types/Query/resolvers/getItem",
+          "runtime": {
+            "name": "APPSYNC_JS",
+            "runtimeVersion": "1.0.0"
+          },
+          "typeName": "Query"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "response-code": 200,
+      "content": {
+        "data": {
+          "getItem": {
+            "name": "my-name"
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_http_data_source_return_simple": {
+    "recorded-date": "05-07-2023, 15:24:30",
+    "recorded-content": {
+      "function": {
+        "code": "\n    import { util } from '@aws-appsync/utils';\n    \n\n        function assertEqual(value, expected, message) {\n          if (value !== expected) {\n              util.error(\"Assertion failed\", \"AssertionError\", null, { value, expected, message });\n          }\n        }\n\n        \n\n    function assertTypeOf(value, expectedType, message) {\n        assertEqual(typeof(value), expectedType, message);\n    }\n    \nexport function request(ctx) {\n  assertTypeOf(ctx, \"object\", \"function.request.ctx\");\n  assertTypeOf(ctx.prev, \"object\", \"function.request.ctx.prev\");\n  // ctx.prev.result is \"ctx\" from the pipeline resolver\n  assertTypeOf(ctx.prev.result, \"object\", \"function.request.ctx.prev.result\");\n\n  return {\n    method: 'POST',\n    params: {\n      headers: {\n        'Content-Type': 'application/json',\n        'Authorization': 'auth 123'\n      },\n      body: 'hello world',\n    },\n    resourcePath: '/request/my/path'\n  };\n}\nexport function response(ctx) {\n  assertTypeOf(ctx, \"object\", \"function.response.ctx\");\n  assertTypeOf(ctx.result, \"object\", \"function.response.ctx.result\");\n  assertTypeOf(ctx.result.statusCode, \"number\", \"function.response.result.statusCode\");\n  assertTypeOf(ctx.result.body, \"string\", \"function.response.ctx.result.body\");\n\n  return ctx.result.body;\n}",
+        "dataSourceName": "http_ds1",
+        "functionArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/functions/<func-id>",
+        "functionId": "<func-id>",
+        "maxBatchSize": 0,
+        "name": "getItem",
+        "runtime": {
+          "name": "APPSYNC_JS",
+          "runtimeVersion": "1.0.0"
+        }
+      },
+      "resolver": {
+        "resolver": {
+          "code": "\n    import { util } from '@aws-appsync/utils';\n    \n\n        function assertEqual(value, expected, message) {\n          if (value !== expected) {\n              util.error(\"Assertion failed\", \"AssertionError\", null, { value, expected, message });\n          }\n        }\n\n        \n\n    function assertTypeOf(value, expectedType, message) {\n        assertEqual(typeof(value), expectedType, message);\n    }\n    \nexport function request(ctx) {\n  assertTypeOf(ctx, \"object\", \"pipeline.request.ctx\");\n  return ctx;\n}\nexport function response(ctx) {\n  assertTypeOf(ctx, \"object\", \"pipeline.response.ctx\");\n  assertTypeOf(ctx.prev, \"object\", \"pipeline.response.ctx.prev\");\n  assertTypeOf(ctx.prev.result, \"string\", \"pipeline.response.ctx.prev.result\");\n\n  const response = JSON.parse(ctx.prev.result);\n  if (response.postData) {\n      // from mockbin\n      return response.postData.text;\n  } else {\n      return response.data;\n  }\n}",
+          "fieldName": "getItem",
+          "kind": "PIPELINE",
+          "maxBatchSize": 0,
+          "pipelineConfig": {
+            "functions": [
+              "<func-id>"
+            ]
+          },
+          "resolverArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/types/Query/resolvers/getItem",
+          "runtime": {
+            "name": "APPSYNC_JS",
+            "runtimeVersion": "1.0.0"
+          },
+          "typeName": "Query"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "response-code": 200,
+      "content": {
+        "data": {
+          "getItem": "hello world"
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_http_data_source_detailed": {
+    "recorded-date": "05-07-2023, 15:24:19",
+    "recorded-content": {
+      "function": {
+        "code": "\n    import { util } from '@aws-appsync/utils';\n    \n\n        function assertEqual(value, expected, message) {\n          if (value !== expected) {\n              util.error(\"Assertion failed\", \"AssertionError\", null, { value, expected, message });\n          }\n        }\n\n        \n\n    function assertTypeOf(value, expectedType, message) {\n        assertEqual(typeof(value), expectedType, message);\n    }\n    \nexport function request(ctx) {\n  assertTypeOf(ctx, \"object\", \"function.request.ctx\");\n  assertTypeOf(ctx.prev, \"object\", \"function.request.ctx.prev\");\n  // ctx.prev.result is \"ctx\" from the pipeline resolver\n  assertTypeOf(ctx.prev.result, \"object\", \"function.request.ctx.prev.result\");\n\n  return {\n    method: 'POST',\n    params: {\n      headers: {\n        'Content-Type': 'application/json',\n        'Authorization': 'auth 123'\n      },\n      body: 'test body 123',\n    },\n    resourcePath: '/request/my/path'\n  };\n}\nexport function response(ctx) {\n  assertTypeOf(ctx, \"object\", \"function.response.ctx\");\n  assertTypeOf(ctx.result, \"object\", \"function.response.ctx.result\");\n  assertTypeOf(ctx.result.statusCode, \"number\", \"function.response.result.statusCode\");\n  assertTypeOf(ctx.result.body, \"string\", \"function.response.ctx.result.body\");\n\n  return ctx.result.body;\n}",
+        "dataSourceName": "http_ds1",
+        "functionArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/functions/<func-id>",
+        "functionId": "<func-id>",
+        "maxBatchSize": 0,
+        "name": "getItem",
+        "runtime": {
+          "name": "APPSYNC_JS",
+          "runtimeVersion": "1.0.0"
+        }
+      },
+      "resolver": {
+        "resolver": {
+          "code": "\n    import { util } from '@aws-appsync/utils';\n    \n\n        function assertEqual(value, expected, message) {\n          if (value !== expected) {\n              util.error(\"Assertion failed\", \"AssertionError\", null, { value, expected, message });\n          }\n        }\n\n        \n\n    function assertTypeOf(value, expectedType, message) {\n        assertEqual(typeof(value), expectedType, message);\n    }\n    \nexport function request(ctx) {\n  assertTypeOf(ctx, \"object\", \"pipeline.request.ctx\");\n  return ctx;\n}\nexport function response(ctx) {\n  assertTypeOf(ctx, \"object\", \"pipeline.response.ctx\");\n  assertTypeOf(ctx.prev, \"object\", \"pipeline.response.ctx.prev\");\n  assertTypeOf(ctx.prev.result, \"string\", \"pipeline.response.ctx.prev.result\");\n\n  return ctx.prev.result;\n}",
+          "fieldName": "getItem",
+          "kind": "PIPELINE",
+          "maxBatchSize": 0,
+          "pipelineConfig": {
+            "functions": [
+              "<func-id>"
+            ]
+          },
+          "resolverArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/types/Query/resolvers/getItem",
+          "runtime": {
+            "name": "APPSYNC_JS",
+            "runtimeVersion": "1.0.0"
+          },
+          "typeName": "Query"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "response-code": 200,
+      "response-content": {
+        "body": "test body 123",
+        "headers": {
+          "authorization": "auth 123",
+          "content-type": "application/json"
+        },
+        "method": "POST",
+        "path": "/request/my/path",
+        "response_code": 200
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_lambda_authorization_cross_region": {
+    "recorded-date": "14-07-2023, 09:43:52",
+    "recorded-content": {
+      "unauthorized_error": {
+        "errors": [
+          {
+            "errorType": "UnauthorizedException",
+            "message": "You are not authorized to make this call."
+          }
+        ]
+      },
+      "valid_response": {
+        "data": {
+          "test": {}
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_lambda_authorization_context": {
+    "recorded-date": "25-08-2023, 17:23:21",
+    "recorded-content": {
+      "result": {
+        "data": {
+          "test": {
+            "userId": "testUserId"
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_none_resolver": {
+    "recorded-date": "25-08-2023, 18:46:02",
+    "recorded-content": {
+      "result": {
+        "data": {
+          "test": {
+            "some": "value"
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_newlines": {
+    "recorded-date": "24-08-2023, 14:19:28",
+    "recorded-content": {
+      "resolved-template": {
+        "attributeValues": {
+          "domain": {
+            "S": "my-domain"
+          },
+          "id": {
+            "S": "my-id"
+          },
+          "userId": {
+            "S": "my-user-id"
+          }
+        },
+        "condition": null,
+        "key": {
+          "domain": {
+            "S": "my-domain"
+          },
+          "userId": {
+            "S": "my-user-id"
+          }
+        },
+        "operation": "PutItem",
+        "version": "2018-05-29"
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_nested_resolvers": {
+    "recorded-date": "25-08-2023, 11:27:19",
+    "recorded-content": {
+      "response-code": 200,
+      "response-content": {
+        "data": {
+          "listUsers": [
+            {
+              "id": "1",
+              "name": "U1",
+              "posts": [
+                {
+                  "id": "user_1_post_1",
+                  "title": "Post 1 for U1"
+                },
+                {
+                  "id": "user_1_post_1",
+                  "title": "Post 2 for U1"
+                }
+              ]
+            },
+            {
+              "id": "2",
+              "name": "U2",
+              "posts": [
+                {
+                  "id": "user_2_post_1",
+                  "title": "Post 1 for U2"
+                },
+                {
+                  "id": "user_2_post_1",
+                  "title": "Post 2 for U2"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_rds_data_source": {
+    "recorded-date": "08-08-2024, 13:32:19",
+    "recorded-content": {
+      "data-source-definition": {
+        "dataSourceArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/datasources/<data-source-name>",
+        "name": "<data-source-name>",
+        "relationalDatabaseConfig": {
+          "rdsHttpEndpointConfig": {
+            "awsRegion": "<secondary-region>",
+            "awsSecretStoreArn": "arn:<partition>:secretsmanager:<secondary-region>:111111111111:secret:<credentials-secret-id>",
+            "databaseName": "<db-name>",
+            "dbClusterIdentifier": "arn:<partition>:rds:<secondary-region>:111111111111:cluster:<db-id>"
+          },
+          "relationalDatabaseSourceType": "RDS_HTTP_ENDPOINT"
+        },
+        "serviceRoleArn": "arn:<partition>:iam::111111111111:role/<ds-service-role>",
+        "type": "RELATIONAL_DATABASE"
+      },
+      "response": {
+        "payload": {
+          "data": {
+            "getAllMessages": [
+              {
+                "id": "1",
+                "text": "hello world"
+              }
+            ]
+          }
+        },
+        "status-code": 200
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_js_utils": {
+    "recorded-date": "14-09-2023, 17:33:17",
+    "recorded-content": {
+      "response-code": 200,
+      "response-content": {
+        "data": {
+          "getValue": {
+            "S": "test"
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_iam_authorization": {
+    "recorded-date": "13-10-2023, 00:07:04",
+    "recorded-content": {
+      "invalid-credentials-query": {
+        "payload": {
+          "errors": [
+            {
+              "errorType": "IncompleteSignatureException",
+              "message": "Authorization header requires 'Credential' parameter. Authorization header requires 'Signature' parameter. Authorization header requires 'SignedHeaders' parameter. Authorization header requires existence of either a 'X-Amz-Date' or a 'Date' header. Authorization=invalidtoken123"
+            }
+          ]
+        },
+        "statusCode": 403
+      },
+      "invalid-credentials-mutation": {
+        "payload": {
+          "errors": [
+            {
+              "errorType": "IncompleteSignatureException",
+              "message": "Authorization header requires 'Credential' parameter. Authorization header requires 'Signature' parameter. Authorization header requires 'SignedHeaders' parameter. Authorization header requires existence of either a 'X-Amz-Date' or a 'Date' header. Authorization=invalidtoken123"
+            }
+          ]
+        },
+        "statusCode": 403
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_dynamodb_resolver_scan": {
+    "recorded-date": "10-11-2023, 22:20:48",
+    "recorded-content": {
+      "response": {
+        "body": [
+          {
+            "test": "c",
+            "value": "d"
+          },
+          {
+            "test": "e",
+            "value": "d"
+          }
+        ],
+        "status_code": 200
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_http_data_source_vtl_template": {
+    "recorded-date": "17-10-2023, 15:12:56",
+    "recorded-content": {
+      "response-code": 200,
+      "content": {
+        "body": {
+          "query": "query { listProjects { id name } }"
+        },
+        "headers": {
+          "accept-encoding": "gzip, br",
+          "cdn-loop": "cloudflare",
+          "cf-connecting-ip": "52.59.166.49",
+          "cf-ray": "817923a94dd71c0f-FRA",
+          "cf-visitor": {
+            "scheme": "https"
+          },
+          "connect-time": "0",
+          "connection": "close",
+          "content-length": "46",
+          "content-type": "application/json",
+          "date": "Tue, 17 Oct 2023 14:12:55 Z",
+          "host": "mockbin.org",
+          "total-route-time": "0",
+          "user-agent": "AWSAppSync-Http-Client",
+          "via": "1.1 vegur",
+          "x-forwarded-for": "52.59.166.49, 172.70.243.217",
+          "x-forwarded-port": "80",
+          "x-forwarded-proto": "http",
+          "x-request-id": "<uuid:1>",
+          "x-request-start": "1697551976042"
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSyncDynamoDB::test_filter_expressions": {
+    "recorded-date": "19-10-2023, 17:40:21",
+    "recorded-content": {
+      "pk-and-filter-response-code": 200,
+      "pk-and-filter-response-data": {
+        "getValue": [
+          {
+            "name": "query-match",
+            "shift": "shift1",
+            "sk": "sk1",
+            "value": "foo"
+          }
+        ]
+      },
+      "pk-only-response-code": 200,
+      "pk-only-response-data": {
+        "getValue": []
+      },
+      "filter-only-response-code": 200,
+      "filter-only-response-data": {
+        "getValue": []
+      },
+      "no-match-response-code": 200,
+      "no-match-response-data": {
+        "getValue": []
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_list_sort_list[[{\"userid\":\"user3\", \"age\":85}, {\"userid\":\"user1\", \"age\":5}, {\"userid\":\"user2\", \"age\":45}], true, \"userid\"]": {
+    "recorded-date": "23-11-2023, 18:30:14",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "userid": "user3",
+          "age": 85
+        },
+        {
+          "userid": "user2",
+          "age": 45
+        },
+        {
+          "userid": "user1",
+          "age": 5
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_list_sort_list[[{\"userid\":\"user3\", \"age\":85}, {\"userid\":\"user1\", \"age\":5}, {\"userid\":\"user2\", \"age\":45}], false, \"userid\"]": {
+    "recorded-date": "23-11-2023, 18:30:15",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "userid": "user1",
+          "age": 5
+        },
+        {
+          "userid": "user2",
+          "age": 45
+        },
+        {
+          "userid": "user3",
+          "age": 85
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_list_sort_list[[{\"userid\":\"user3\", \"age\":85}, {\"age\":5}, {\"userid\":\"user2\", \"age\":45}], false, \"userid\"]": {
+    "recorded-date": "23-11-2023, 18:30:16",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "userid": "user3",
+          "age": 85
+        },
+        {
+          "age": 5
+        },
+        {
+          "userid": "user2",
+          "age": 45
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_list_sort_list[[{\"userid\":\"user3\", \"age\":85}, {\"userid\":\"user1\", \"age\":5}, 1, \"1\", \"String\"], false, \"userid\"]": {
+    "recorded-date": "23-11-2023, 18:30:17",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "userid": "user3",
+          "age": 85
+        },
+        {
+          "userid": "user1",
+          "age": 5
+        },
+        1,
+        "1",
+        "String"
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_list_sort_list[[\"user3\", \"user1\", \"user2\"], false, \"random\"]": {
+    "recorded-date": "23-11-2023, 18:30:17",
+    "recorded-content": {
+      "resolved-template": [
+        "user1",
+        "user2",
+        "user3"
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_list_sort_list[[\"user3\", \"user1\", \"user2\"], true, \"random\"]": {
+    "recorded-date": "23-11-2023, 18:30:18",
+    "recorded-content": {
+      "resolved-template": [
+        "user3",
+        "user2",
+        "user1"
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_list_sort_list[[\"user3\", \"user1\", \"user2\", 1], true, \"random\"]": {
+    "recorded-date": "23-11-2023, 18:30:18",
+    "recorded-content": {
+      "resolved-template": [
+        "user3",
+        "user1",
+        "user2",
+        1
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_list_sort_list[[\"3\", \"1\", \"2\", 1], true, \"random\"]": {
+    "recorded-date": "23-11-2023, 18:30:19",
+    "recorded-content": {
+      "resolved-template": [
+        "3",
+        "1",
+        "2",
+        1
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_list_sort_list[[3, 1, 2], false, \"random\"]": {
+    "recorded-date": "23-11-2023, 18:30:20",
+    "recorded-content": {
+      "resolved-template": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_with_list_sort_list[[3, 1, 2], true, \"random\"]": {
+    "recorded-date": "23-11-2023, 18:30:21",
+    "recorded-content": {
+      "resolved-template": [
+        3,
+        2,
+        1
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_retain_all[list10-list20]": {
+    "recorded-date": "23-11-2023, 18:30:21",
+    "recorded-content": {
+      "resolved-template": [
+        2,
+        3
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_retain_all[list11-list21]": {
+    "recorded-date": "23-11-2023, 18:30:22",
+    "recorded-content": {
+      "resolved-template": []
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_retain_all[list12-list22]": {
+    "recorded-date": "23-11-2023, 18:30:23",
+    "recorded-content": {
+      "resolved-template": []
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_retain_all[list13-list23]": {
+    "recorded-date": "23-11-2023, 18:30:24",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "id": 2
+        },
+        {
+          "id": 3
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_retain_all[list14-list24]": {
+    "recorded-date": "23-11-2023, 18:30:25",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "userid": "user3",
+          "age": 85
+        },
+        {
+          "userid": "user2",
+          "age": 45
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_retain_all[list15-list25]": {
+    "recorded-date": "23-11-2023, 18:30:26",
+    "recorded-content": {
+      "resolved-template": []
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_retain_all[list16-list26]": {
+    "recorded-date": "23-11-2023, 18:30:26",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "userid": "user3",
+          "age": {
+            "years": 85,
+            "months": 2
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_retain_all[list17-list27]": {
+    "recorded-date": "23-11-2023, 18:30:27",
+    "recorded-content": {
+      "resolved-template": []
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_remove_all[list10-list20]": {
+    "recorded-date": "23-11-2023, 18:30:28",
+    "recorded-content": {
+      "resolved-template": [
+        1
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_remove_all[list11-list21]": {
+    "recorded-date": "23-11-2023, 18:30:29",
+    "recorded-content": {
+      "resolved-template": []
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_remove_all[list12-list22]": {
+    "recorded-date": "23-11-2023, 18:30:29",
+    "recorded-content": {
+      "resolved-template": []
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_remove_all[list13-list23]": {
+    "recorded-date": "23-11-2023, 18:30:29",
+    "recorded-content": {
+      "resolved-template": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_remove_all[list14-list24]": {
+    "recorded-date": "23-11-2023, 18:30:30",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "id": 1
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_remove_all[list15-list25]": {
+    "recorded-date": "23-11-2023, 18:30:31",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "userid": "user1",
+          "age": 5
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_remove_all[list16-list26]": {
+    "recorded-date": "23-11-2023, 18:30:32",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "userid": "user3",
+          "age": 85
+        },
+        {
+          "userid": "user1",
+          "age": 5
+        },
+        {
+          "userid": "user2",
+          "age": 45
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_remove_all[list17-list27]": {
+    "recorded-date": "23-11-2023, 18:30:32",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "userid": "user1",
+          "age": 5
+        },
+        {
+          "userid": "user2",
+          "age": 45
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_template_rendering_list_copy_and_remove_all[list18-list28]": {
+    "recorded-date": "23-11-2023, 18:30:32",
+    "recorded-content": {
+      "resolved-template": [
+        {
+          "userid": "user3",
+          "age": {
+            "years": 85,
+            "months": 2
+          }
+        },
+        {
+          "userid": "user1",
+          "age": 5
+        },
+        {
+          "userid": "user2",
+          "age": 45
+        }
+      ]
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_rds_data_source_rds_utils": {
+    "recorded-date": "14-11-2023, 16:29:18",
+    "recorded-content": {
+      "data-source-definition": {
+        "dataSourceArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/datasources/<data-source-name>",
+        "name": "<data-source-name>",
+        "relationalDatabaseConfig": {
+          "rdsHttpEndpointConfig": {
+            "awsRegion": "<region>",
+            "awsSecretStoreArn": "arn:<partition>:secretsmanager:<region>:111111111111:secret:<credentials-secret-id>",
+            "databaseName": "<db-name>",
+            "dbClusterIdentifier": "arn:<partition>:rds:<region>:111111111111:cluster:<db-id>"
+          },
+          "relationalDatabaseSourceType": "RDS_HTTP_ENDPOINT"
+        },
+        "serviceRoleArn": "arn:<partition>:iam::111111111111:role/<ds-service-role>",
+        "type": "RELATIONAL_DATABASE"
+      },
+      "response-with-item": {
+        "payload": {
+          "data": {
+            "getProperty": {
+              "createdat": "<created-at>",
+              "description": "my description",
+              "id": "<uuid:1>",
+              "ownerid": "<uuid:2>",
+              "price": 100.0,
+              "status": "NEW",
+              "title": "title",
+              "updatedat": "<updated-at>"
+            }
+          }
+        },
+        "status-code": 200
+      },
+      "response-without-item": {
+        "payload": {
+          "data": {
+            "getProperty": null
+          }
+        },
+        "status-code": 200
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_websocket_subscriptions": {
+    "recorded-date": "10-11-2023, 15:24:07",
+    "recorded-content": {
+      "response": {
+        "body": {
+          "data": {
+            "create": {
+              "id": "<test-id>"
+            }
+          }
+        },
+        "status_code": 200
+      },
+      "websocket-result": {
+        "id": "<uuid:1>",
+        "type": "data",
+        "payload": {
+          "data": {
+            "created": {
+              "id": "<test-id>"
+            }
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestTemplateRendering::test_null_rendering": {
+    "recorded-date": "07-12-2023, 22:25:34",
+    "recorded-content": {
+      "resolved-template": {
+        "myKey": null,
+        "myOtherKey": 10
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_lambda_data_source[VTL]": {
+    "recorded-date": "29-02-2024, 16:32:40",
+    "recorded-content": {
+      "response": {
+        "body": {
+          "data": {
+            "create": {
+              "context": {
+                "arguments": {},
+                "identity": null,
+                "source": null,
+                "result": null,
+                "request": {
+                  "headers": {
+                    "x-amzn-appsync-is-vpce-request": "false",
+                    "x-forwarded-for": "195.99.236.165, 15.158.16.142",
+                    "accept-encoding": "gzip, deflate",
+                    "cloudfront-is-tablet-viewer": "false",
+                    "cloudfront-viewer-country": "GB",
+                    "x-amzn-requestid": "<uuid:1>",
+                    "x-amzn-remote-ip": "195.99.236.165",
+                    "via": "1.1 5059e7bd12388ef6673ed156d17eb756.cloudfront.net (CloudFront)",
+                    "x-api-key": "da2-pv6ylebacbbsdgiasndbxowjc4",
+                    "cloudfront-forwarded-proto": "https",
+                    "content-type": "application/json",
+                    "x-amzn-trace-id": "Root=1-65e0b1a8-15b28355296e2fd246ae3a68",
+                    "x-amz-cf-id": "GtrVTk1UnVEz4O49nSjTzmSmsSSsnDInw4RejL5zyaY6lUTkpYVIsw==",
+                    "content-length": "42",
+                    "x-forwarded-proto": "https",
+                    "host": "g3xkwuhe2ndvticq2noxx7ibua.appsync-api.<region>.amazonaws.com",
+                    "user-agent": "python-requests/2.31.0",
+                    "cloudfront-is-desktop-viewer": "true",
+                    "accept": "*/*",
+                    "cloudfront-is-mobile-viewer": "false",
+                    "x-forwarded-port": "443",
+                    "cloudfront-is-smarttv-viewer": "false",
+                    "cloudfront-viewer-asn": "6871"
+                  },
+                  "domainName": null
+                },
+                "info": {
+                  "fieldName": "create",
+                  "parentTypeName": "Mutation",
+                  "variables": {}
+                },
+                "error": null,
+                "prev": null,
+                "stash": {},
+                "outErrors": []
+              },
+              "ctx": {
+                "arguments": {},
+                "identity": null,
+                "source": null,
+                "result": null,
+                "request": {
+                  "headers": {
+                    "x-amzn-appsync-is-vpce-request": "false",
+                    "x-forwarded-for": "195.99.236.165, 15.158.16.142",
+                    "accept-encoding": "gzip, deflate",
+                    "cloudfront-is-tablet-viewer": "false",
+                    "cloudfront-viewer-country": "GB",
+                    "x-amzn-requestid": "<uuid:1>",
+                    "x-amzn-remote-ip": "195.99.236.165",
+                    "via": "1.1 5059e7bd12388ef6673ed156d17eb756.cloudfront.net (CloudFront)",
+                    "x-api-key": "da2-pv6ylebacbbsdgiasndbxowjc4",
+                    "cloudfront-forwarded-proto": "https",
+                    "content-type": "application/json",
+                    "x-amzn-trace-id": "Root=1-65e0b1a8-15b28355296e2fd246ae3a68",
+                    "x-amz-cf-id": "GtrVTk1UnVEz4O49nSjTzmSmsSSsnDInw4RejL5zyaY6lUTkpYVIsw==",
+                    "content-length": "42",
+                    "x-forwarded-proto": "https",
+                    "host": "g3xkwuhe2ndvticq2noxx7ibua.appsync-api.<region>.amazonaws.com",
+                    "user-agent": "python-requests/2.31.0",
+                    "cloudfront-is-desktop-viewer": "true",
+                    "accept": "*/*",
+                    "cloudfront-is-mobile-viewer": "false",
+                    "x-forwarded-port": "443",
+                    "cloudfront-is-smarttv-viewer": "false",
+                    "cloudfront-viewer-asn": "6871"
+                  },
+                  "domainName": null
+                },
+                "info": {
+                  "fieldName": "create",
+                  "parentTypeName": "Mutation",
+                  "variables": {}
+                },
+                "error": null,
+                "prev": null,
+                "stash": {},
+                "outErrors": []
+              }
+            }
+          }
+        },
+        "status_code": 200
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_lambda_data_source[JS]": {
+    "recorded-date": "29-02-2024, 16:33:00",
+    "recorded-content": {
+      "response": {
+        "body": {
+          "data": {
+            "create": {
+              "ctx": {
+                "arguments": {},
+                "identity": null,
+                "source": null,
+                "result": null,
+                "request": {
+                  "headers": {
+                    "x-amzn-appsync-is-vpce-request": "false",
+                    "x-forwarded-for": "195.99.236.165, 3.172.3.87",
+                    "accept-encoding": "gzip, deflate",
+                    "cloudfront-is-tablet-viewer": "false",
+                    "cloudfront-viewer-country": "GB",
+                    "x-amzn-requestid": "<uuid:1>",
+                    "x-amzn-remote-ip": "195.99.236.165",
+                    "via": "1.1 568c42efdde2fe2144b713a4d9e485d2.cloudfront.net (CloudFront)",
+                    "x-api-key": "da2-telz2cnlaba7fon4c5zdnq3h4u",
+                    "cloudfront-forwarded-proto": "https",
+                    "content-type": "application/json",
+                    "x-amzn-trace-id": "Root=1-65e0b1bb-30f0bbb16158ce544219dd8e",
+                    "x-amz-cf-id": "rsdp7eVxnr62r66Ow0LbTroXb3c2ZhkYMrTlGKIN3LfL3EfvzCw8HA==",
+                    "content-length": "42",
+                    "x-forwarded-proto": "https",
+                    "host": "a6ugyrch5jawdfagputpdrkmce.appsync-api.<region>.amazonaws.com",
+                    "user-agent": "python-requests/2.31.0",
+                    "cloudfront-is-desktop-viewer": "true",
+                    "accept": "*/*",
+                    "cloudfront-is-mobile-viewer": "false",
+                    "x-forwarded-port": "443",
+                    "cloudfront-is-smarttv-viewer": "false",
+                    "cloudfront-viewer-asn": "6871"
+                  },
+                  "domainName": null
+                },
+                "info": {
+                  "fieldName": "create",
+                  "parentTypeName": "Mutation",
+                  "variables": {}
+                },
+                "error": null,
+                "prev": null,
+                "stash": {},
+                "outErrors": []
+              }
+            }
+          }
+        },
+        "status_code": 200
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_js_code_evaluation": {
+    "recorded-date": "13-03-2024, 14:24:24",
+    "recorded-content": {
+      "result": {
+        "evaluationResult": "\"ok\"",
+        "logs": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_js_code_evaluation[return-string]": {
+    "recorded-date": "13-03-2024, 14:37:01",
+    "recorded-content": {
+      "result": {
+        "evaluationResult": "\"ok\"",
+        "logs": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_js_code_evaluation[return-dictionary]": {
+    "recorded-date": "13-03-2024, 14:37:01",
+    "recorded-content": {
+      "result": {
+        "evaluationResult": {
+          "a": 10
+        },
+        "logs": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_js_code_evaluation[log]": {
+    "recorded-date": "13-03-2024, 14:37:02",
+    "recorded-content": {
+      "result": {
+        "evaluationResult": "10",
+        "logs": [
+          "INFO - code.js:4:9: \"Something\""
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_vtl_code_evaluation[constant]": {
+    "recorded-date": "13-03-2024, 14:52:17",
+    "recorded-content": {
+      "result": {
+        "evaluationResult": "10",
+        "logs": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_vtl_code_evaluation[argument]": {
+    "recorded-date": "13-03-2024, 14:52:18",
+    "recorded-content": {
+      "result": {
+        "evaluationResult": "10",
+        "logs": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_supported_js_runtimes[APPSYNC_JS-1.0.0]": {
+    "recorded-date": "04-04-2024, 10:19:30",
+    "recorded-content": {
+      "result": {
+        "evaluationResult": "null",
+        "logs": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_supported_js_runtimes[APPSYNC_JS2-1.0.0]": {
+    "recorded-date": "04-04-2024, 10:19:30",
+    "recorded-content": {
+      "client-error": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "1 validation error detected: Value 'APPSYNC_JS2' at 'runtime.name' failed to satisfy constraint: Member must satisfy enum value set: [APPSYNC_JS]"
+        },
+        "message": "1 validation error detected: Value 'APPSYNC_JS2' at 'runtime.name' failed to satisfy constraint: Member must satisfy enum value set: [APPSYNC_JS]",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_supported_js_runtimes[APPSYNC_JS-1.0.1]": {
+    "recorded-date": "04-04-2024, 10:19:30",
+    "recorded-content": {
+      "client-error": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Runtime version invalid."
+        },
+        "message": "Runtime version invalid.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_supported_js_runtimes[APPSYNC_JS-1.1.0]": {
+    "recorded-date": "04-04-2024, 10:19:30",
+    "recorded-content": {
+      "client-error": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Runtime version invalid."
+        },
+        "message": "Runtime version invalid.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestEvaluateCodeEndpoints::test_supported_js_runtimes[APPSYNC_JS2-1.1.0]": {
+    "recorded-date": "04-04-2024, 10:19:30",
+    "recorded-content": {
+      "client-error": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "1 validation error detected: Value 'APPSYNC_JS2' at 'runtime.name' failed to satisfy constraint: Member must satisfy enum value set: [APPSYNC_JS]"
+        },
+        "message": "1 validation error detected: Value 'APPSYNC_JS2' at 'runtime.name' failed to satisfy constraint: Member must satisfy enum value set: [APPSYNC_JS]",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_create_js_resolver_runtime_validation[APPSYNC_JS-1.0.0]": {
+    "recorded-date": "04-04-2024, 10:46:34",
+    "recorded-content": {
+      "result": {
+        "resolver": {
+          "code": "\n        export function request(ctx) {\n        }\n\n        export function response(ctx) {\n        }\n        ",
+          "dataSourceName": "<ds-name>",
+          "fieldName": "stub",
+          "kind": "UNIT",
+          "maxBatchSize": 0,
+          "resolverArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/types/Query/resolvers/stub",
+          "runtime": {
+            "name": "APPSYNC_JS",
+            "runtimeVersion": "1.0.0"
+          },
+          "typeName": "Query"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_create_js_resolver_runtime_validation[APPSYNC_JS2-1.0.0]": {
+    "recorded-date": "04-04-2024, 10:46:38",
+    "recorded-content": {
+      "client-error": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "The provided runtime is not supported."
+        },
+        "message": "The provided runtime is not supported.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_create_js_resolver_runtime_validation[APPSYNC_JS-1.0.1]": {
+    "recorded-date": "04-04-2024, 10:46:42",
+    "recorded-content": {
+      "client-error": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Runtime version invalid."
+        },
+        "message": "Runtime version invalid.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_create_js_resolver_runtime_validation[APPSYNC_JS-1.1.0]": {
+    "recorded-date": "04-04-2024, 10:46:46",
+    "recorded-content": {
+      "client-error": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Runtime version invalid."
+        },
+        "message": "Runtime version invalid.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_create_js_resolver_runtime_validation[APPSYNC_JS2-1.1.0]": {
+    "recorded-date": "04-04-2024, 10:46:48",
+    "recorded-content": {
+      "client-error": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "The provided runtime is not supported."
+        },
+        "message": "The provided runtime is not supported.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_lambda_payload": {
+    "recorded-date": "09-04-2024, 09:25:34",
+    "recorded-content": {
+      "result": {
+        "payload": {
+          "data": {
+            "getItem": {
+              "event": {
+                "field": {
+                  "arguments": {
+                    "id": "123"
+                  },
+                  "identity": null,
+                  "source": null,
+                  "request": {
+                    "headers": {
+                      "x-amzn-appsync-is-vpce-request": "false",
+                      "x-forwarded-for": "83.64.105.98, 130.176.219.109",
+                      "accept-encoding": "gzip, deflate",
+                      "cloudfront-is-tablet-viewer": "false",
+                      "cloudfront-viewer-country": "AT",
+                      "x-amzn-requestid": "<uuid:1>",
+                      "x-amzn-remote-ip": "83.64.105.98",
+                      "via": "1.1 c94a2497027b6029cd67213e98dc6618.cloudfront.net (CloudFront)",
+                      "x-api-key": "da2-5xohthr3fvbxrc2rk7gwsniwj4",
+                      "cloudfront-forwarded-proto": "https",
+                      "content-type": "application/json",
+                      "x-amzn-trace-id": "Root=1-6615098d-71ca1dfe79561b2f3b2ecffd",
+                      "x-amz-cf-id": "aYmcDs2Np6wu8HYePKqSj914LJNLb-TqMuZdVgTWx7HN4Oo904lDJQ==",
+                      "content-length": "161",
+                      "x-forwarded-proto": "https",
+                      "host": "iyx5vgjdvnainpxd2rcvrcypmm.appsync-api.<region>.amazonaws.com",
+                      "user-agent": "python-requests/2.31.0",
+                      "cloudfront-is-desktop-viewer": "true",
+                      "accept": "*/*",
+                      "cloudfront-is-mobile-viewer": "false",
+                      "x-forwarded-port": "443",
+                      "cloudfront-is-smarttv-viewer": "false",
+                      "cloudfront-viewer-asn": "8412"
+                    },
+                    "domainName": null
+                  },
+                  "prev": null,
+                  "info": {
+                    "fieldName": "getItem",
+                    "selectionSetList": [
+                      "event",
+                      "event/field"
+                    ],
+                    "selectionSetGraphQL": "{\n  event {\n    field\n  }\n}",
+                    "parentTypeName": "Query",
+                    "variables": {
+                      "id": "123"
+                    }
+                  },
+                  "stash": {}
+                }
+              }
+            },
+            "simple": {
+              "field": {
+                "arguments": {},
+                "identity": null,
+                "source": null,
+                "request": {
+                  "headers": {
+                    "x-amzn-appsync-is-vpce-request": "false",
+                    "x-forwarded-for": "83.64.105.98, 130.176.219.109",
+                    "accept-encoding": "gzip, deflate",
+                    "cloudfront-is-tablet-viewer": "false",
+                    "cloudfront-viewer-country": "AT",
+                    "x-amzn-requestid": "<uuid:1>",
+                    "x-amzn-remote-ip": "83.64.105.98",
+                    "via": "1.1 c94a2497027b6029cd67213e98dc6618.cloudfront.net (CloudFront)",
+                    "x-api-key": "da2-5xohthr3fvbxrc2rk7gwsniwj4",
+                    "cloudfront-forwarded-proto": "https",
+                    "content-type": "application/json",
+                    "x-amzn-trace-id": "Root=1-6615098d-71ca1dfe79561b2f3b2ecffd",
+                    "x-amz-cf-id": "aYmcDs2Np6wu8HYePKqSj914LJNLb-TqMuZdVgTWx7HN4Oo904lDJQ==",
+                    "content-length": "161",
+                    "x-forwarded-proto": "https",
+                    "host": "iyx5vgjdvnainpxd2rcvrcypmm.appsync-api.<region>.amazonaws.com",
+                    "user-agent": "python-requests/2.31.0",
+                    "cloudfront-is-desktop-viewer": "true",
+                    "accept": "*/*",
+                    "cloudfront-is-mobile-viewer": "false",
+                    "x-forwarded-port": "443",
+                    "cloudfront-is-smarttv-viewer": "false",
+                    "cloudfront-viewer-asn": "8412"
+                  },
+                  "domainName": null
+                },
+                "prev": null,
+                "info": {
+                  "fieldName": "simple",
+                  "selectionSetList": [
+                    "field"
+                  ],
+                  "selectionSetGraphQL": "{\n  field\n}",
+                  "parentTypeName": "Query",
+                  "variables": {
+                    "id": "123"
+                  }
+                },
+                "stash": {}
+              }
+            }
+          }
+        },
+        "status_code": 200
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSyncCrud::test_function": {
+    "recorded-date": "09-02-2024, 17:15:59",
+    "recorded-content": {
+      "create-function": {
+        "dataSourceName": "ds1",
+        "functionArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/functions/<function-id:1>",
+        "functionId": "<function-id:1>",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0,
+        "name": "<name:1>",
+        "requestMappingTemplate": "{\n                \"version\": \"2018-05-29\",\n                \"payload\": $utils.toJson({ \"some\": \"value\" })\n            }",
+        "responseMappingTemplate": "$utils.toJson($ctx.result)"
+      },
+      "list-functions": [
+        {
+          "functionId": "<function-id:1>",
+          "functionArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/functions/<function-id:1>",
+          "name": "<name:1>",
+          "dataSourceName": "ds1",
+          "requestMappingTemplate": "{\n                \"version\": \"2018-05-29\",\n                \"payload\": $utils.toJson({ \"some\": \"value\" })\n            }",
+          "responseMappingTemplate": "$utils.toJson($ctx.result)",
+          "functionVersion": "2018-05-29",
+          "maxBatchSize": 0
+        }
+      ],
+      "get-function": {
+        "dataSourceName": "ds1",
+        "functionArn": "arn:<partition>:appsync:<region>:111111111111:apis/<api-id>/functions/<function-id:1>",
+        "functionId": "<function-id:1>",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0,
+        "name": "<name:1>",
+        "requestMappingTemplate": "{\n                \"version\": \"2018-05-29\",\n                \"payload\": $utils.toJson({ \"some\": \"value\" })\n            }",
+        "responseMappingTemplate": "$utils.toJson($ctx.result)"
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_query_before_definition": {
+    "recorded-date": "26-06-2024, 19:09:44",
+    "recorded-content": {
+      "result": {
+        "data": {
+          "data": {
+            "a": 1,
+            "b": 2,
+            "c": 3
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_lambda_bool_types": {
+    "recorded-date": "05-08-2024, 20:52:16",
+    "recorded-content": {
+      "response": {
+        "body": {
+          "data": {
+            "listItems": [
+              {
+                "isFalse": false,
+                "isFalseAnyStrInt": false,
+                "isFalseAnyString": false,
+                "isFalseArray": null,
+                "isFalseAsInt": false,
+                "isFalseDict": null,
+                "isTrue": true,
+                "isTrueAsInt": true,
+                "isTrueCapitalized": true,
+                "stringFalse": "false",
+                "stringTrue": "true"
+              }
+            ]
+          },
+          "errors": [
+            {
+              "locations": null,
+              "message": "Can't serialize value (/listItems[0]/isFalseArray) : Expected type 'Boolean' but was 'ArrayList'.",
+              "path": [
+                "listItems",
+                0,
+                "isFalseArray"
+              ]
+            },
+            {
+              "locations": null,
+              "message": "Can't serialize value (/listItems[0]/isFalseDict) : Expected type 'Boolean' but was 'LinkedHashMap'.",
+              "path": [
+                "listItems",
+                0,
+                "isFalseDict"
+              ]
+            }
+          ]
+        },
+        "status_code": 200
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_aws_scalar_in_schema_declaration": {
+    "recorded-date": "08-08-2024, 18:46:19",
+    "recorded-content": {
+      "result": {
+        "data": {
+          "test": {
+            "awsDate": "2200-02-07"
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/appsync/test_appsync.py::TestAppSync::test_inline_fragment_union": {
+    "recorded-date": "08-08-2024, 23:11:17",
+    "recorded-content": {
+      "successful-query": {
+        "data": {
+          "getClients": [
+            {
+              "__typename": "MainClient",
+              "clientId": 1,
+              "main": "from main client",
+              "name": "main_client"
+            },
+            {
+              "__typename": "SecondaryClient",
+              "clientId": 1,
+              "name": "secondary_client",
+              "secondary": "from secondary client"
+            }
+          ]
+        }
+      },
+      "wrong-type": {
+        "data": {
+          "getClients": null
+        },
+        "errors": [
+          {
+            "locations": null,
+            "message": "Cannot return null for non-nullable type: 'String' within parent 'MainClient' (/getClients[0]/main)",
+            "path": [
+              "getClients",
+              0,
+              "main"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

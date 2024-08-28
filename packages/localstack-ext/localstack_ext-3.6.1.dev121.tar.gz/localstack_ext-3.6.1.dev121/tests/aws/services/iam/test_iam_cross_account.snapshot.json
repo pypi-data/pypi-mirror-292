@@ -1,0 +1,717 @@
+{
+  "tests/aws/services/iam/test_iam_cross_account.py::TestLambdaCrossAccount::test_lambda_cross_account_invoke": {
+    "recorded-date": "21-06-2024, 06:16:33",
+    "recorded-content": {
+      "create-function-response": {
+        "Architectures": [
+          "x86_64"
+        ],
+        "CodeSha256": "<code-sha256:1>",
+        "CodeSize": "<code-size>",
+        "Description": "",
+        "Environment": {
+          "Variables": {}
+        },
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+        "FunctionName": "<function-name:1>",
+        "Handler": "handler.handler",
+        "LastModified": "date",
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/<function-name:1>"
+        },
+        "MemorySize": 128,
+        "PackageType": "Zip",
+        "RevisionId": "<uuid:1>",
+        "Role": "arn:<partition>:iam::111111111111:role/<resource:1>",
+        "Runtime": "python3.12",
+        "RuntimeVersionConfig": {
+          "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:2>"
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "State": "Pending",
+        "StateReason": "The function is being created.",
+        "StateReasonCode": "Creating",
+        "Timeout": 30,
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "Version": "$LATEST",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "caller-identity-2": {
+        "Account": "<account:1>",
+        "Arn": "<arn:1>",
+        "UserId": "<user-id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "intra-account-invoke": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "test": "payload"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid-permissions-account-2-without-role": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": "User: <arn:1> is not authorized to perform: lambda:InvokeFunction on resource: arn:<partition>:lambda:<region>:111111111111:function:<function-name:1> because no resource-based policy allows the lambda:InvokeFunction action"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "valid-permissions-account-2-without-role": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "test": "payload"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-role-response": {
+        "Role": {
+          "Arn": "<arn:2>",
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": "<account:1>"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "CreateDate": "datetime",
+          "Path": "/",
+          "RoleId": "<role-id:1>",
+          "RoleName": "<role-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid-permissions-account-2-role": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": "User: arn:<partition>:sts::<account:1>:assumed-role/<role-name:1>/Account2Session is not authorized to perform: lambda:InvokeFunction on resource: arn:<partition>:lambda:<region>:111111111111:function:<function-name:1> because no identity-based policy allows the lambda:InvokeFunction action"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "valid-permissions-account-2-role": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "test": "payload"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_cross_account.py::TestLambdaCrossAccount::test_sqs_cross_account_receive": {
+    "recorded-date": "22-06-2023, 16:17:47",
+    "recorded-content": {
+      "queue_arn": "arn:<partition>:sqs:<region>:111111111111:<resource:1>",
+      "caller-identity-2": {
+        "Account": "<account:1>",
+        "Arn": "<arn:1>",
+        "UserId": "<user-id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "intra-account-receive-message": {
+        "Messages": [
+          {
+            "Body": "test1",
+            "MD5OfBody": "5a105e8b9d40e1329780d62ea2265d8a",
+            "MessageId": "<uuid:1>",
+            "ReceiptHandle": "<receipt-handle:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid-permissions-account-2-without-role": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Detail": null,
+          "Message": "User: <arn:1> is not authorized to perform: sqs:receivemessage on resource: arn:<partition>:sqs:<region>:111111111111:<resource:1> because no resource-based policy allows the sqs:receivemessage action",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "valid-permissions-account-2-without-role": {
+        "Messages": [
+          {
+            "Body": "test1",
+            "MD5OfBody": "5a105e8b9d40e1329780d62ea2265d8a",
+            "MessageId": "<uuid:1>",
+            "ReceiptHandle": "<receipt-handle:2>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-role-response": {
+        "Role": {
+          "Arn": "<arn:2>",
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": "<account:1>"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "CreateDate": "datetime",
+          "Path": "/",
+          "RoleId": "<role-id:1>",
+          "RoleName": "<role-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid-permissions-account-2-role": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Detail": null,
+          "Message": "User: arn:<partition>:sts::<account:1>:assumed-role/<role-name:1>/Account2Session is not authorized to perform: sqs:receivemessage on resource: arn:<partition>:sqs:<region>:111111111111:<resource:1> because no identity-based policy allows the sqs:receivemessage action",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "valid-permissions-account-2-role": {
+        "Messages": [
+          {
+            "Body": "test1",
+            "MD5OfBody": "5a105e8b9d40e1329780d62ea2265d8a",
+            "MessageId": "<uuid:1>",
+            "ReceiptHandle": "<receipt-handle:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_cross_account.py::TestLambdaCrossAccount::test_sns_cross_account_publish": {
+    "recorded-date": "22-06-2023, 16:18:09",
+    "recorded-content": {
+      "create-topic-response": {
+        "TopicArn": "arn:<partition>:sns:<region>:111111111111:<resource:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "caller-identity-2": {
+        "Account": "<account:1>",
+        "Arn": "<arn:1>",
+        "UserId": "<user-id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "intra-account-operation": {
+        "MessageId": "<uuid:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid-permissions-account-2-without-role": {
+        "Error": {
+          "Code": "AuthorizationError",
+          "Message": "User: <arn:1> is not authorized to perform: SNS:Publish on resource: arn:<partition>:sns:<region>:111111111111:<resource:1> because no resource-based policy allows the SNS:Publish action",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "valid-permissions-account-2-without-role": {
+        "MessageId": "<uuid:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-role-response": {
+        "Role": {
+          "Arn": "<arn:2>",
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": "<account:1>"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "CreateDate": "datetime",
+          "Path": "/",
+          "RoleId": "<role-id:1>",
+          "RoleName": "<role-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid-permissions-account-2-role": {
+        "Error": {
+          "Code": "AuthorizationError",
+          "Message": "User: arn:<partition>:sts::<account:1>:assumed-role/<role-name:1>/Account2Session is not authorized to perform: SNS:Publish on resource: arn:<partition>:sns:<region>:111111111111:<resource:1> because no identity-based policy allows the SNS:Publish action",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "valid-permissions-account-2-role": {
+        "MessageId": "<uuid:3>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_cross_account.py::TestLambdaCrossAccount::test_kms_cross_account_encrypt": {
+    "recorded-date": "22-06-2023, 17:49:19",
+    "recorded-content": {
+      "create-key-response": {
+        "AWSAccountId": "111111111111",
+        "Arn": "<arn:1>",
+        "CreationDate": "datetime",
+        "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+        "Description": "test",
+        "Enabled": true,
+        "EncryptionAlgorithms": [
+          "SYMMETRIC_DEFAULT"
+        ],
+        "KeyId": "<key-id:1>",
+        "KeyManager": "CUSTOMER",
+        "KeySpec": "SYMMETRIC_DEFAULT",
+        "KeyState": "Enabled",
+        "KeyUsage": "ENCRYPT_DECRYPT",
+        "MultiRegion": false,
+        "Origin": "AWS_KMS"
+      },
+      "caller-identity-2": {
+        "Account": "<account:1>",
+        "Arn": "<arn:2>",
+        "UserId": "<user-id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "intra-account-operation": {
+        "CiphertextBlob": "ciphertext-blob",
+        "EncryptionAlgorithm": "SYMMETRIC_DEFAULT",
+        "KeyId": "<arn:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid-permissions-account-2-without-role": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": ""
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "valid-permissions-account-2-without-role": {
+        "CiphertextBlob": "ciphertext-blob",
+        "EncryptionAlgorithm": "SYMMETRIC_DEFAULT",
+        "KeyId": "<arn:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-role-response": {
+        "Role": {
+          "Arn": "<arn:3>",
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": "<account:1>"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "CreateDate": "datetime",
+          "Path": "/",
+          "RoleId": "<role-id:1>",
+          "RoleName": "<role-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid-permissions-account-2-role": {
+        "Error": {
+          "Code": "AccessDeniedException",
+          "Message": ""
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "valid-permissions-account-2-role": {
+        "CiphertextBlob": "ciphertext-blob",
+        "EncryptionAlgorithm": "SYMMETRIC_DEFAULT",
+        "KeyId": "<arn:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_cross_account.py::TestLambdaCrossAccount::test_s3_cross_account_get_object": {
+    "recorded-date": "22-06-2023, 16:19:32",
+    "recorded-content": {
+      "caller-identity-2": {
+        "Account": "<account:1>",
+        "Arn": "<arn:1>",
+        "UserId": "<user-id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "intra-account-operation": {
+        "ETag": "\"098f6bcd4621d373cade4e832627b4f6\"",
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid-permissions-account-2-without-role": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "valid-permissions-account-2-without-role": {
+        "ETag": "\"098f6bcd4621d373cade4e832627b4f6\"",
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-role-response": {
+        "Role": {
+          "Arn": "<arn:2>",
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": "<account:1>"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "CreateDate": "datetime",
+          "Path": "/",
+          "RoleId": "<role-id:1>",
+          "RoleName": "<role-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid-permissions-account-2-role": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "valid-permissions-account-2-role": {
+        "ETag": "\"098f6bcd4621d373cade4e832627b4f6\"",
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_cross_account.py::TestLambdaCrossAccount::test_cross_account_assume_role": {
+    "recorded-date": "04-03-2024, 17:07:28",
+    "recorded-content": {
+      "create-role-1-response": {
+        "Role": {
+          "Arn": "<arn:1>",
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": "<a-w-s:1>"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "CreateDate": "datetime",
+          "Path": "/",
+          "RoleId": "<role-id:1>",
+          "RoleName": "<role-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-role-2-response": {
+        "Role": {
+          "Arn": "<arn:2>",
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": "<a-w-s:1>"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "CreateDate": "datetime",
+          "Path": "/",
+          "RoleId": "<role-id:2>",
+          "RoleName": "<role-name:2>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "denied-assume-role-call": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "User: arn:<partition>:sts::<a-w-s:1>:assumed-role/<role-name:2>/Account2Session is not authorized to perform: sts:AssumeRole on resource: <arn:1>",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_cross_account.py::TestLambdaCrossAccount::test_lambda_sqs_cross_account_event_source_mapping": {
+    "recorded-date": "03-06-2024, 10:24:41",
+    "recorded-content": {
+      "create-function-response": {
+        "Architectures": [
+          "x86_64"
+        ],
+        "CodeSha256": "<code-sha256:1>",
+        "CodeSize": "<code-size>",
+        "Description": "",
+        "Environment": {
+          "Variables": {}
+        },
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+        "FunctionName": "<function-name:1>",
+        "Handler": "handler.handler",
+        "LastModified": "date",
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/<function-name:1>"
+        },
+        "MemorySize": 128,
+        "PackageType": "Zip",
+        "RevisionId": "<uuid:1>",
+        "Role": "arn:<partition>:iam::111111111111:role/<resource:1>",
+        "Runtime": "python3.12",
+        "RuntimeVersionConfig": {
+          "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:2>"
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "State": "Pending",
+        "StateReason": "The function is being created.",
+        "StateReasonCode": "Creating",
+        "Timeout": 30,
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "Version": "$LATEST",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-event-source-mapping-response": {
+        "BatchSize": 10,
+        "EventSourceArn": "arn:<partition>:sqs:<region>:222222222222:<resource:3>",
+        "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+        "FunctionResponseTypes": [],
+        "LastModified": "datetime",
+        "MaximumBatchingWindowInSeconds": 1,
+        "State": "Creating",
+        "StateTransitionReason": "USER_INITIATED",
+        "UUID": "<uuid:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 202
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_iam_cross_account.py::TestLambdaCrossAccount::test_s3_cross_account_get_object_with_role_arn_in_bucket_policy": {
+    "recorded-date": "20-06-2024, 13:25:57",
+    "recorded-content": {
+      "caller-identity-2": {
+        "Account": "<account:1>",
+        "Arn": "<arn:1>",
+        "UserId": "<user-id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-role-response": {
+        "Role": {
+          "Arn": "<arn:2>",
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {
+                  "AWS": "<account:1>"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "CreateDate": "datetime",
+          "Path": "/",
+          "RoleId": "<role-id:1>",
+          "RoleName": "<role-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "put-bucket-policy-response": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 204
+        }
+      },
+      "invalid-permissions-account-2-role": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "Access Denied"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 403
+        }
+      },
+      "valid-permissions-account-2-role": {
+        "ETag": "\"098f6bcd4621d373cade4e832627b4f6\"",
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

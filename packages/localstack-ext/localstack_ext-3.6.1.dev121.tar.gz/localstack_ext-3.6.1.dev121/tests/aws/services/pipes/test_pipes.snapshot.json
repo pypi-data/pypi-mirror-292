@@ -1,0 +1,2094 @@
+{
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_pipe": {
+    "recorded-date": "11-07-2024, 07:53:23",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "RUNNING",
+        "DesiredState": "RUNNING",
+        "EnrichmentParameters": {},
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name>",
+        "SourceParameters": {
+          "SqsQueueParameters": {
+            "BatchSize": 10
+          }
+        },
+        "StateReason": "USER_INITIATED",
+        "Tags": {},
+        "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name>",
+        "TargetParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "pipe_target_message": {
+        "Body": {
+          "messageId": "<uuid:1>",
+          "receiptHandle": "<receipt-handle:1>",
+          "body": "message-1",
+          "attributes": {
+            "ApproximateReceiveCount": "1",
+            "SentTimestamp": "sent-timestamp",
+            "SenderId": "sender-id",
+            "ApproximateFirstReceiveTimestamp": "approximate-first-receive-timestamp"
+          },
+          "messageAttributes": {},
+          "md5OfBody": "3d6b824fd8c1520e9a047d21fee6fb1f",
+          "eventSource": "aws:sqs",
+          "eventSourceARN": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name>",
+          "awsRegion": "<region>"
+        },
+        "MD5OfBody": "<m-d5-of-body:1>",
+        "MessageId": "<uuid:2>",
+        "ReceiptHandle": "<receipt-handle:2>"
+      },
+      "delete_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "DELETING",
+        "DesiredState": "STOPPED",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_pipe_response_postdelete": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "DELETING",
+        "DesiredState": "STOPPED",
+        "EnrichmentParameters": {},
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name>",
+        "SourceParameters": {
+          "SqsQueueParameters": {
+            "BatchSize": 10
+          }
+        },
+        "StateReason": "USER_INITIATED",
+        "Tags": {},
+        "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name>",
+        "TargetParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_pipe_filter": {
+    "recorded-date": "11-01-2024, 12:40:09",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "datetime",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "datetime",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "datetime",
+        "CurrentState": "RUNNING",
+        "DesiredState": "RUNNING",
+        "EnrichmentParameters": {},
+        "LastModifiedTime": "datetime",
+        "Name": "<pipe-name>",
+        "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name>",
+        "SourceParameters": {
+          "FilterCriteria": {
+            "Filters": [
+              {
+                "Pattern": {
+                  "body": [
+                    "message-1",
+                    "message-3"
+                  ]
+                }
+              }
+            ]
+          },
+          "SqsQueueParameters": {
+            "BatchSize": 10
+          }
+        },
+        "StateReason": "USER_INITIATED",
+        "Tags": {},
+        "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name>",
+        "TargetParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_pipe_filter_enrichment": {
+    "recorded-date": "06-02-2024, 18:09:31",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "RUNNING",
+        "DesiredState": "RUNNING",
+        "Enrichment": "arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name>",
+        "EnrichmentParameters": {},
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name>",
+        "SourceParameters": {
+          "FilterCriteria": {
+            "Filters": [
+              {
+                "Pattern": {
+                  "body": [
+                    "message-1"
+                  ]
+                }
+              },
+              {
+                "Pattern": {
+                  "body": [
+                    "message-3"
+                  ]
+                }
+              }
+            ]
+          },
+          "SqsQueueParameters": {
+            "BatchSize": 10
+          }
+        },
+        "StateReason": "USER_INITIATED",
+        "Tags": {},
+        "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name>",
+        "TargetParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_kinesis_pipe": {
+    "recorded-date": "05-02-2024, 16:52:22",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "RUNNING",
+        "DesiredState": "RUNNING",
+        "EnrichmentParameters": {},
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Source": "arn:<partition>:kinesis:<region>:111111111111:stream/<source-stream-name>",
+        "SourceParameters": {
+          "KinesisStreamParameters": {
+            "BatchSize": 100,
+            "StartingPosition": "TRIM_HORIZON"
+          }
+        },
+        "StateReason": "No records processed",
+        "Tags": {},
+        "Target": "arn:<partition>:kinesis:<region>:111111111111:stream/<target-stream-name>",
+        "TargetParameters": {
+          "KinesisStreamParameters": {
+            "PartitionKey": "target-partition-key-0"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "pipe_target_stream_record_data": {
+        "approximateArrivalTimestamp": "approximate-arrival-timestamp",
+        "awsRegion": "<region>",
+        "data": "ZGF0YS0x",
+        "eventID": "shardId-000000000002:<sequence-number:1>",
+        "eventName": "aws:kinesis:record",
+        "eventSource": "aws:kinesis",
+        "eventSourceARN": "arn:<partition>:kinesis:<region>:111111111111:stream/<source-stream-name>",
+        "eventVersion": "1.0",
+        "invokeIdentityArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "kinesisSchemaVersion": "1.0",
+        "partitionKey": "source-partition-key-0",
+        "sequenceNumber": "<sequence-number:1>"
+      }
+    }
+  },
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_kinesis_dlq_pipe": {
+    "recorded-date": "05-02-2024, 16:55:44",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "RUNNING",
+        "DesiredState": "RUNNING",
+        "EnrichmentParameters": {},
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Source": "arn:<partition>:kinesis:<region>:111111111111:stream/<source-stream-name>",
+        "SourceParameters": {
+          "KinesisStreamParameters": {
+            "BatchSize": 100,
+            "DeadLetterConfig": {
+              "Arn": "arn:<partition>:sqs:<region>:111111111111:<dlq-name>"
+            },
+            "MaximumRetryAttempts": 1,
+            "StartingPosition": "TRIM_HORIZON"
+          }
+        },
+        "StateReason": "No records processed",
+        "Tags": {},
+        "Target": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>",
+        "TargetParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "pipe_dlq_first_event": {
+        "KinesisBatchInfo": {
+          "approximateArrivalOfFirstRecord": "<timestamp:2022-07-13T13:48:01.000Z>",
+          "approximateArrivalOfLastRecord": "<timestamp:2022-07-13T13:48:01.000Z>",
+          "batchSize": 3,
+          "endSequenceNumber": "<end-sequence-number:1>",
+          "shardId": "shardId-000000000000",
+          "startSequenceNumber": "<start-sequence-number:1>",
+          "streamArn": "arn:<partition>:kinesis:<region>:111111111111:stream/<source-stream-name>"
+        },
+        "context": {
+          "condition": "RetryAttemptsExhausted",
+          "partnerResourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>"
+        },
+        "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+        "version": "1.0"
+      }
+    }
+  },
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_pipe_logging": {
+    "recorded-date": "07-02-2024, 15:57:20",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "RUNNING",
+        "DesiredState": "RUNNING",
+        "Enrichment": "arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name>",
+        "EnrichmentParameters": {},
+        "LastModifiedTime": "<datetime>",
+        "LogConfiguration": {
+          "CloudwatchLogsLogDestination": {
+            "LogGroupArn": "arn:<partition>:logs:<region>:111111111111:log-group:<log-group-name>:*"
+          },
+          "IncludeExecutionData": [
+            "ALL"
+          ],
+          "Level": "TRACE"
+        },
+        "Name": "<pipe-name>",
+        "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Source": "arn:<partition>:kinesis:<region>:111111111111:stream/<source-stream-name>",
+        "SourceParameters": {
+          "KinesisStreamParameters": {
+            "BatchSize": 1,
+            "DeadLetterConfig": {
+              "Arn": "arn:<partition>:sqs:<region>:111111111111:<dlq-name>"
+            },
+            "MaximumRetryAttempts": 1,
+            "StartingPosition": "TRIM_HORIZON"
+          }
+        },
+        "StateReason": "No records processed",
+        "Tags": {},
+        "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name>",
+        "TargetParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "pipe-logs-cloudwatch": [
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "ExecutionStarted",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "PollingStageSucceeded",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "EnrichmentStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "EnrichmentTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "EnrichmentTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "EnrichmentInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "EnrichmentInvocationSucceeded",
+            "logLevel": "TRACE",
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "EnrichmentStageSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetInvocationSucceeded",
+            "logLevel": "TRACE",
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetStageSucceeded",
+            "logLevel": "INFO",
+            "payload": ""
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "ExecutionSucceeded",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        }
+      ],
+      "pipe-logs-cloudwatch-fail": [
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "ExecutionStarted",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "PollingStageSucceeded",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "EnrichmentStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "EnrichmentTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "EnrichmentTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "EnrichmentInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "EnrichmentInvocationFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Enrichment arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name> encountered an error while processing event(s).",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:3>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name>"
+            },
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "EnrichmentStageFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Enrichment arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name> encountered an error while processing event(s).",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:3>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "ExecutionFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Enrichment arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name> encountered an error while processing event(s).",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:3>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "ExecutionStarted",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "PollingStageSucceeded",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "EnrichmentStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "EnrichmentTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "EnrichmentTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "EnrichmentInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "EnrichmentInvocationFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Enrichment arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name> encountered an error while processing event(s).",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:5>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name>"
+            },
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "EnrichmentStageFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Enrichment arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name> encountered an error while processing event(s).",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:5>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "ExecutionFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Enrichment arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name> encountered an error while processing event(s).",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:5>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<enrichment-lambda-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_sqs_fifo_dlq_partial_batch_failures": {
+    "recorded-date": "04-07-2024, 07:53:11",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "pipe_dlq_first_event": {
+        "counter": 4,
+        "fail": true
+      },
+      "pipe-logs-cloudwatch-fail-partial": [
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "ExecutionStarted",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "PollingStageSucceeded",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetInvocationSucceeded",
+            "logLevel": "TRACE",
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetStageSucceeded",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "ExecutionSucceeded",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "ExecutionStarted",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "PollingStageSucceeded",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "TargetStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "TargetTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "TargetTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "TargetInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "TargetInvocationPartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:3>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            },
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "TargetStagePartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:3>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:2>",
+            "messageType": "ExecutionFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:3>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "ExecutionStarted",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "PollingStageSucceeded",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "TargetStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "TargetTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "TargetTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "TargetInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "TargetInvocationPartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:5>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            },
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "TargetStagePartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:5>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:4>",
+            "messageType": "ExecutionFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:5>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:6>",
+            "messageType": "ExecutionStarted",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:6>",
+            "messageType": "PollingStageSucceeded",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:6>",
+            "messageType": "TargetStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:6>",
+            "messageType": "TargetTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:6>",
+            "messageType": "TargetTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:6>",
+            "messageType": "TargetInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:6>",
+            "messageType": "TargetInvocationPartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:7>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            },
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:6>",
+            "messageType": "TargetStagePartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:7>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:6>",
+            "messageType": "ExecutionFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:7>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:8>",
+            "messageType": "ExecutionStarted",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:8>",
+            "messageType": "PollingStageSucceeded",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:8>",
+            "messageType": "TargetStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:8>",
+            "messageType": "TargetTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:8>",
+            "messageType": "TargetTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:8>",
+            "messageType": "TargetInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:8>",
+            "messageType": "TargetInvocationPartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:9>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            },
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:8>",
+            "messageType": "TargetStagePartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:9>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:8>",
+            "messageType": "ExecutionFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:9>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_dynamodb_pipe": {
+    "recorded-date": "16-02-2024, 16:17:46",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "RUNNING",
+        "DesiredState": "RUNNING",
+        "EnrichmentParameters": {},
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Source": "arn:<partition>:dynamodb:<region>:111111111111:table/<source-table-name>/stream/<source-stream-date>",
+        "SourceParameters": {
+          "DynamoDBStreamParameters": {
+            "BatchSize": 10,
+            "StartingPosition": "TRIM_HORIZON"
+          }
+        },
+        "StateReason": "No records processed",
+        "Tags": {},
+        "Target": "arn:<partition>:sns:<region>:111111111111:<target-topic-name>",
+        "TargetParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "received_messages": [
+        {
+          "Type": "Notification",
+          "MessageId": "<uuid:1>",
+          "TopicArn": "arn:<partition>:sns:<region>:111111111111:<target-topic-name>",
+          "Message": {
+            "eventID": "event-i-d",
+            "eventName": "INSERT",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "<region>",
+            "dynamodb": {
+              "ApproximateCreationDateTime": "approximate-creation-date-time",
+              "Keys": {
+                "id": {
+                  "S": "id-1"
+                }
+              },
+              "NewImage": {
+                "counter": {
+                  "N": "1"
+                },
+                "id": {
+                  "S": "id-1"
+                }
+              },
+              "SequenceNumber": "sequence-number",
+              "SizeBytes": 21,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "eventSourceARN": "arn:<partition>:dynamodb:<region>:111111111111:table/<source-table-name>/stream/<source-stream-date>"
+          },
+          "Timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+          "SignatureVersion": "1",
+          "Signature": "signature",
+          "SigningCertURL": "signing-cert-u-r-l",
+          "UnsubscribeURL": "unsubscribe-u-r-l"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_sqs_fifo_dlq_partial_batch_failures_delete": {
+    "recorded-date": "04-07-2024, 11:23:24",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "target-invokes-events": {
+        "<uuid:4>": [
+          "{\"counter\": 1, \"fail\": true}"
+        ],
+        "<uuid:2>": [
+          "{\"counter\": 1, \"fail\": true}",
+          "{\"counter\": 2, \"fail\": false}"
+        ]
+      },
+      "pipe_dlq_first_event": {
+        "counter": 1,
+        "fail": true
+      },
+      "pipe-logs-cloudwatch-fail-partial": [
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "ExecutionStarted",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "PollingStageSucceeded",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetInvocationPartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:2>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            },
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "TargetStagePartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:2>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:1>",
+            "messageType": "ExecutionFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:2>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:3>",
+            "messageType": "ExecutionStarted",
+            "logLevel": "INFO",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:3>",
+            "messageType": "PollingStageSucceeded",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:3>",
+            "messageType": "TargetStageEntered",
+            "logLevel": "INFO"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:3>",
+            "messageType": "TargetTransformationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:3>",
+            "messageType": "TargetTransformationSucceeded",
+            "logLevel": "TRACE",
+            "payload": "payload"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:3>",
+            "messageType": "TargetInvocationStarted",
+            "logLevel": "TRACE"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:3>",
+            "messageType": "TargetInvocationPartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:4>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            },
+            "awsRequest": "aws-request",
+            "awsResponse": "aws-response"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:3>",
+            "messageType": "TargetStagePartiallyFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:4>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "<pipe-name>",
+          "timestamp": "timestamp",
+          "message": {
+            "resourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+            "timestamp": "timestamp",
+            "executionId": "<uuid:3>",
+            "messageType": "ExecutionFailed",
+            "logLevel": "ERROR",
+            "error": {
+              "message": "Target invocation failed partially.",
+              "httpStatusCode": 200,
+              "awsService": "lambda",
+              "requestId": "<uuid:4>",
+              "exceptionType": "BadRequest",
+              "resourceArn": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>"
+            }
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_pipe_filter_on_error": {
+    "recorded-date": "15-07-2024, 20:40:01",
+    "recorded-content": {
+      "create_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "CREATING",
+        "DesiredState": "RUNNING",
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "RUNNING",
+        "DesiredState": "RUNNING",
+        "EnrichmentParameters": {},
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name>",
+        "SourceParameters": {
+          "FilterCriteria": {
+            "Filters": [
+              {
+                "Pattern": {
+                  "body": [
+                    "message-3"
+                  ]
+                }
+              }
+            ]
+          },
+          "SqsQueueParameters": {
+            "BatchSize": 10
+          }
+        },
+        "StateReason": "USER_INITIATED",
+        "Tags": {},
+        "Target": "arn:<partition>:lambda:<region>:111111111111:function:<target-function-name>",
+        "TargetParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/pipes/test_pipes.py::TestPipes::test_pipe_tags": {
+    "recorded-date": "13-08-2024, 06:33:07",
+    "recorded-content": {
+      "list_tags_response": {
+        "tags": {
+          "tagName1": "tagValue1",
+          "tagName2": "tagValue2"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list_tags_response_after_untag": {
+        "tags": {
+          "tagName2": "tagValue2"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,292 @@
+{
+  "Resources": {
+    "servicetwotaskdefTaskRole4ED3E4F3": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "servicetwotaskdef5B2E1964": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "Essential": true,
+            "Image": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ".dkr.ecr.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/sample-service-two-repository:latest"
+                ]
+              ]
+            },
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options": {
+                "awslogs-group": {
+                  "Ref": "servicetwotaskdefwebLogGroupD2A6AABA"
+                },
+                "awslogs-stream-prefix": "service-two",
+                "awslogs-region": {
+                  "Ref": "AWS::Region"
+                },
+                "mode": "non-blocking",
+                "max-buffer-size": "26214400b"
+              }
+            },
+            "Memory": 256,
+            "Name": "web",
+            "PortMappings": [
+              {
+                "ContainerPort": 8080,
+                "Protocol": "tcp"
+              }
+            ]
+          }
+        ],
+        "Cpu": "256",
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "servicetwotaskdefExecutionRole1B141931",
+            "Arn"
+          ]
+        },
+        "Family": "servicetwoservicetwotaskdef6B582D66",
+        "Memory": "512",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": [
+          "FARGATE"
+        ],
+        "TaskRoleArn": {
+          "Fn::GetAtt": [
+            "servicetwotaskdefTaskRole4ED3E4F3",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "servicetwotaskdefwebLogGroupD2A6AABA": {
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "servicetwotaskdefExecutionRole1B141931": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "servicetwotaskdefExecutionRoleDefaultPolicy46CBFE1A": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":ecr:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":repository/sample-service-two-repository"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "servicetwotaskdefwebLogGroupD2A6AABA",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "servicetwotaskdefExecutionRoleDefaultPolicy46CBFE1A",
+        "Roles": [
+          {
+            "Ref": "servicetwotaskdefExecutionRole1B141931"
+          }
+        ]
+      }
+    },
+    "servicetwoserviceServiceEED0AC5C": {
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": {
+          "Fn::ImportValue": "SharedResources:ExportsOutputRefEcsCluster97242B84553A5D8F"
+        },
+        "DeploymentConfiguration": {
+          "Alarms": {
+            "AlarmNames": [],
+            "Enable": false,
+            "Rollback": false
+          },
+          "MaximumPercent": 200,
+          "MinimumHealthyPercent": 50
+        },
+        "EnableECSManagedTags": false,
+        "HealthCheckGracePeriodSeconds": 60,
+        "LaunchType": "FARGATE",
+        "LoadBalancers": [
+          {
+            "ContainerName": "web",
+            "ContainerPort": 8080,
+            "TargetGroupArn": {
+              "Fn::ImportValue": "SharedResources:ExportsOutputReflblistenerservicetwotargetGroupF701353406D4F214"
+            }
+          }
+        ],
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups": [
+              {
+                "Fn::GetAtt": [
+                  "servicetwoserviceSecurityGroup0B322E48",
+                  "GroupId"
+                ]
+              }
+            ],
+            "Subnets": [
+              {
+                "Fn::ImportValue": "SharedResources:ExportsOutputRefVpcPrivateSubnet1Subnet536B997AFD4CC940"
+              },
+              {
+                "Fn::ImportValue": "SharedResources:ExportsOutputRefVpcPrivateSubnet2Subnet3788AAA1380949A3"
+              }
+            ]
+          }
+        },
+        "TaskDefinition": {
+          "Ref": "servicetwotaskdef5B2E1964"
+        }
+      },
+      "DependsOn": [
+        "servicetwotaskdefTaskRole4ED3E4F3"
+      ]
+    },
+    "servicetwoserviceSecurityGroup0B322E48": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "service-two/service-two-service/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Fn::ImportValue": "SharedResources:ExportsOutputRefVpc8378EB38272D6E3A"
+        }
+      },
+      "DependsOn": [
+        "servicetwotaskdefTaskRole4ED3E4F3"
+      ]
+    },
+    "servicetwoserviceSecurityGroupfromSharedResourceslbSecurityGroup2786919E808019F208E4": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 8080,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "servicetwoserviceSecurityGroup0B322E48",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::ImportValue": "SharedResources:ExportsOutputFnGetAttlbSecurityGroup47B6F855GroupId5E00FB59"
+        },
+        "ToPort": 8080
+      },
+      "DependsOn": [
+        "servicetwotaskdefTaskRole4ED3E4F3"
+      ]
+    },
+    "servicetwoserviceSecurityGroupSharedResourceslbSecurityGroup2786919E8080from1477A148": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "servicetwoserviceSecurityGroup0B322E48",
+            "GroupId"
+          ]
+        },
+        "FromPort": 8080,
+        "GroupId": {
+          "Fn::ImportValue": "SharedResources:ExportsOutputFnGetAttlbSecurityGroup47B6F855GroupId5E00FB59"
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 8080
+      },
+      "DependsOn": [
+        "servicetwotaskdefTaskRole4ED3E4F3"
+      ]
+    }
+  }
+}

@@ -1,0 +1,1190 @@
+{
+  "tests/aws/services/apigateway/test_authorizers.py::test_api_key_authorizer": {
+    "recorded-date": "28-08-2023, 12:45:32",
+    "recorded-content": {
+      "create_api_key_response": {
+        "createdDate": "datetime",
+        "enabled": true,
+        "id": "<id:1>",
+        "lastUpdatedDate": "datetime",
+        "name": "test_api_key",
+        "stageKeys": [
+          "<stageKey:1>"
+        ],
+        "value": "<authorizer_key:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "valid_api_key": {
+        "authorizerKey": "<authorizer_key:1>",
+        "identityApiKey": "<authorizer_key:1>"
+      },
+      "invalid_api_key": {
+        "message": "Forbidden"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_authorizers.py::TestRestApiAuthorizers::test_authorizer_event_lambda_request": {
+    "recorded-date": "05-08-2024, 18:08:52",
+    "recorded-content": {
+      "authorizer": {
+        "authorizerArn": "<authorizer-arn:1>"
+      },
+      "create-authorizer-request": {
+        "authType": "custom",
+        "authorizerCredentials": "<lambda-role>",
+        "authorizerResultTtlInSeconds": 0,
+        "authorizerUri": "arn:<partition>:apigateway:<region>:lambda:path/2015-03-31/functions/<authorizer-arn:1>/invocations",
+        "id": "<authorizer-id>",
+        "identitySource": "method.request.header.Authorization",
+        "name": "test_authorizer_forward",
+        "type": "REQUEST",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "auth-request-/test": {
+        "event": {
+          "headers": {
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate",
+            "Authorization": "test",
+            "CloudFront-Forwarded-Proto": "<cf-forward-proto:1>",
+            "CloudFront-Is-Desktop-Viewer": "<cf-desktop-viewer:1>",
+            "CloudFront-Is-Mobile-Viewer": "<cf-mobile-viewer:1>",
+            "CloudFront-Is-SmartTV-Viewer": "<cf-mobile-viewer:1>",
+            "CloudFront-Is-Tablet-Viewer": "<cf-mobile-viewer:1>",
+            "CloudFront-Viewer-ASN": "<cf-viewer-asn:1>",
+            "CloudFront-Viewer-Country": "<cf-viewer-countrer:1>",
+            "Host": "<rest-api-id>.execute-api.<region>.amazonaws.com",
+            "User-Agent": "<user-agent:1>",
+            "Via": "<cf-via:1>",
+            "X-Amz-Cf-Id": "<cf-amz-cf-id:1>",
+            "X-Amzn-Trace-Id": "<x-amz-trace-id:1>",
+            "X-Forwarded-For": "<x-forwarded-for>",
+            "X-Forwarded-Port": "x-forwarded-port",
+            "X-Forwarded-Proto": "<cf-forward-proto:1>"
+          },
+          "httpMethod": "GET",
+          "methodArn": "arn:<partition>:execute-api:<region>:111111111111:<rest-api-id>/dev/GET/test",
+          "multiValueHeaders": {
+            "Accept": [
+              "*/*"
+            ],
+            "Accept-Encoding": [
+              "gzip, deflate"
+            ],
+            "Authorization": [
+              "test"
+            ],
+            "CloudFront-Forwarded-Proto": [
+              "<cf-forward-proto:1>"
+            ],
+            "CloudFront-Is-Desktop-Viewer": [
+              "<cf-desktop-viewer:1>"
+            ],
+            "CloudFront-Is-Mobile-Viewer": [
+              "<cf-mobile-viewer:1>"
+            ],
+            "CloudFront-Is-SmartTV-Viewer": [
+              "<cf-mobile-viewer:1>"
+            ],
+            "CloudFront-Is-Tablet-Viewer": [
+              "<cf-mobile-viewer:1>"
+            ],
+            "CloudFront-Viewer-ASN": [
+              "<cf-viewer-asn:1>"
+            ],
+            "CloudFront-Viewer-Country": [
+              "<cf-viewer-countrer:1>"
+            ],
+            "Host": [
+              "<rest-api-id>.execute-api.<region>.amazonaws.com"
+            ],
+            "User-Agent": [
+              "<user-agent:1>"
+            ],
+            "Via": [
+              "<cf-via:1>"
+            ],
+            "X-Amz-Cf-Id": [
+              "<cf-amz-cf-id:1>"
+            ],
+            "X-Amzn-Trace-Id": [
+              "<x-amz-trace-id:1>"
+            ],
+            "X-Forwarded-For": "<x-forwarded-for>",
+            "X-Forwarded-Port": [
+              "443"
+            ],
+            "X-Forwarded-Proto": [
+              "<cf-forward-proto:1>"
+            ]
+          },
+          "multiValueQueryStringParameters": {},
+          "path": "/test",
+          "pathParameters": {},
+          "queryStringParameters": {},
+          "requestContext": {
+            "accountId": "111111111111",
+            "apiId": "<rest-api-id>",
+            "deploymentId": "<deployment-id:1>",
+            "domainName": "<rest-api-id>.execute-api.<region>.amazonaws.com",
+            "domainPrefix": "<rest-api-id>",
+            "extendedRequestId": "<extended-request-id:1>",
+            "httpMethod": "GET",
+            "identity": {
+              "accessKey": null,
+              "accountId": null,
+              "caller": null,
+              "cognitoAuthenticationProvider": null,
+              "cognitoAuthenticationType": null,
+              "cognitoIdentityId": null,
+              "cognitoIdentityPoolId": null,
+              "principalOrgId": null,
+              "sourceIp": "<source-ip:1>",
+              "user": null,
+              "userAgent": "<user-agent:1>",
+              "userArn": null
+            },
+            "path": "/dev/test",
+            "protocol": "HTTP/1.1",
+            "requestId": "<uuid:1>",
+            "requestTime": "<request-time:1>",
+            "requestTimeEpoch": "request-time-epoch",
+            "resourceId": "<resource-id:1>",
+            "resourcePath": "/test",
+            "stage": "dev"
+          },
+          "resource": "/test",
+          "stageVariables": {},
+          "type": "REQUEST"
+        }
+      },
+      "auth-request-/test/paramtest": {
+        "event": {
+          "headers": {
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate",
+            "Authorization": "test",
+            "CloudFront-Forwarded-Proto": "<cf-forward-proto:1>",
+            "CloudFront-Is-Desktop-Viewer": "<cf-desktop-viewer:1>",
+            "CloudFront-Is-Mobile-Viewer": "<cf-mobile-viewer:1>",
+            "CloudFront-Is-SmartTV-Viewer": "<cf-mobile-viewer:1>",
+            "CloudFront-Is-Tablet-Viewer": "<cf-mobile-viewer:1>",
+            "CloudFront-Viewer-ASN": "<cf-viewer-asn:1>",
+            "CloudFront-Viewer-Country": "<cf-viewer-countrer:1>",
+            "Host": "<rest-api-id>.execute-api.<region>.amazonaws.com",
+            "User-Agent": "<user-agent:1>",
+            "Via": "<cf-via:2>",
+            "X-Amz-Cf-Id": "<cf-amz-cf-id:2>",
+            "X-Amzn-Trace-Id": "<x-amz-trace-id:2>",
+            "X-Forwarded-For": "<x-forwarded-for>",
+            "X-Forwarded-Port": "x-forwarded-port",
+            "X-Forwarded-Proto": "<cf-forward-proto:1>"
+          },
+          "httpMethod": "GET",
+          "methodArn": "arn:<partition>:execute-api:<region>:111111111111:<rest-api-id>/dev/GET/test/paramtest",
+          "multiValueHeaders": {
+            "Accept": [
+              "*/*"
+            ],
+            "Accept-Encoding": [
+              "gzip, deflate"
+            ],
+            "Authorization": [
+              "test"
+            ],
+            "CloudFront-Forwarded-Proto": [
+              "<cf-forward-proto:1>"
+            ],
+            "CloudFront-Is-Desktop-Viewer": [
+              "<cf-desktop-viewer:1>"
+            ],
+            "CloudFront-Is-Mobile-Viewer": [
+              "<cf-mobile-viewer:1>"
+            ],
+            "CloudFront-Is-SmartTV-Viewer": [
+              "<cf-mobile-viewer:1>"
+            ],
+            "CloudFront-Is-Tablet-Viewer": [
+              "<cf-mobile-viewer:1>"
+            ],
+            "CloudFront-Viewer-ASN": [
+              "<cf-viewer-asn:1>"
+            ],
+            "CloudFront-Viewer-Country": [
+              "<cf-viewer-countrer:1>"
+            ],
+            "Host": [
+              "<rest-api-id>.execute-api.<region>.amazonaws.com"
+            ],
+            "User-Agent": [
+              "<user-agent:1>"
+            ],
+            "Via": [
+              "<cf-via:2>"
+            ],
+            "X-Amz-Cf-Id": [
+              "<cf-amz-cf-id:2>"
+            ],
+            "X-Amzn-Trace-Id": [
+              "<x-amz-trace-id:2>"
+            ],
+            "X-Forwarded-For": "<x-forwarded-for>",
+            "X-Forwarded-Port": [
+              "443"
+            ],
+            "X-Forwarded-Proto": [
+              "<cf-forward-proto:1>"
+            ]
+          },
+          "multiValueQueryStringParameters": {},
+          "path": "/test/paramtest",
+          "pathParameters": {
+            "param": "paramtest"
+          },
+          "queryStringParameters": {},
+          "requestContext": {
+            "accountId": "111111111111",
+            "apiId": "<rest-api-id>",
+            "deploymentId": "<deployment-id:1>",
+            "domainName": "<rest-api-id>.execute-api.<region>.amazonaws.com",
+            "domainPrefix": "<rest-api-id>",
+            "extendedRequestId": "<extended-request-id:2>",
+            "httpMethod": "GET",
+            "identity": {
+              "accessKey": null,
+              "accountId": null,
+              "caller": null,
+              "cognitoAuthenticationProvider": null,
+              "cognitoAuthenticationType": null,
+              "cognitoIdentityId": null,
+              "cognitoIdentityPoolId": null,
+              "principalOrgId": null,
+              "sourceIp": "<source-ip:1>",
+              "user": null,
+              "userAgent": "<user-agent:1>",
+              "userArn": null
+            },
+            "path": "/dev/test/paramtest",
+            "protocol": "HTTP/1.1",
+            "requestId": "<uuid:2>",
+            "requestTime": "<request-time:2>",
+            "requestTimeEpoch": "request-time-epoch",
+            "resourceId": "<resource-id:2>",
+            "resourcePath": "/test/{param}",
+            "stage": "dev"
+          },
+          "resource": "/test/{param}",
+          "stageVariables": {},
+          "type": "REQUEST"
+        }
+      },
+      "auth-request-/randomproxied/test/proxy": {
+        "event": {
+          "headers": {
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate",
+            "Authorization": "test",
+            "CloudFront-Forwarded-Proto": "<cf-forward-proto:1>",
+            "CloudFront-Is-Desktop-Viewer": "<cf-desktop-viewer:1>",
+            "CloudFront-Is-Mobile-Viewer": "<cf-mobile-viewer:1>",
+            "CloudFront-Is-SmartTV-Viewer": "<cf-mobile-viewer:1>",
+            "CloudFront-Is-Tablet-Viewer": "<cf-mobile-viewer:1>",
+            "CloudFront-Viewer-ASN": "<cf-viewer-asn:1>",
+            "CloudFront-Viewer-Country": "<cf-viewer-countrer:1>",
+            "Host": "<rest-api-id>.execute-api.<region>.amazonaws.com",
+            "User-Agent": "<user-agent:1>",
+            "Via": "<cf-via:3>",
+            "X-Amz-Cf-Id": "<cf-amz-cf-id:3>",
+            "X-Amzn-Trace-Id": "<x-amz-trace-id:3>",
+            "X-Forwarded-For": "<x-forwarded-for>",
+            "X-Forwarded-Port": "x-forwarded-port",
+            "X-Forwarded-Proto": "<cf-forward-proto:1>"
+          },
+          "httpMethod": "GET",
+          "methodArn": "arn:<partition>:execute-api:<region>:111111111111:<rest-api-id>/dev/GET/randomproxied/test/proxy",
+          "multiValueHeaders": {
+            "Accept": [
+              "*/*"
+            ],
+            "Accept-Encoding": [
+              "gzip, deflate"
+            ],
+            "Authorization": [
+              "test"
+            ],
+            "CloudFront-Forwarded-Proto": [
+              "<cf-forward-proto:1>"
+            ],
+            "CloudFront-Is-Desktop-Viewer": [
+              "<cf-desktop-viewer:1>"
+            ],
+            "CloudFront-Is-Mobile-Viewer": [
+              "<cf-mobile-viewer:1>"
+            ],
+            "CloudFront-Is-SmartTV-Viewer": [
+              "<cf-mobile-viewer:1>"
+            ],
+            "CloudFront-Is-Tablet-Viewer": [
+              "<cf-mobile-viewer:1>"
+            ],
+            "CloudFront-Viewer-ASN": [
+              "<cf-viewer-asn:1>"
+            ],
+            "CloudFront-Viewer-Country": [
+              "<cf-viewer-countrer:1>"
+            ],
+            "Host": [
+              "<rest-api-id>.execute-api.<region>.amazonaws.com"
+            ],
+            "User-Agent": [
+              "<user-agent:1>"
+            ],
+            "Via": [
+              "<cf-via:3>"
+            ],
+            "X-Amz-Cf-Id": [
+              "<cf-amz-cf-id:3>"
+            ],
+            "X-Amzn-Trace-Id": [
+              "<x-amz-trace-id:3>"
+            ],
+            "X-Forwarded-For": "<x-forwarded-for>",
+            "X-Forwarded-Port": [
+              "443"
+            ],
+            "X-Forwarded-Proto": [
+              "<cf-forward-proto:1>"
+            ]
+          },
+          "multiValueQueryStringParameters": {},
+          "path": "/randomproxied/test/proxy",
+          "pathParameters": {
+            "proxy": "randomproxied/test/proxy"
+          },
+          "queryStringParameters": {},
+          "requestContext": {
+            "accountId": "111111111111",
+            "apiId": "<rest-api-id>",
+            "deploymentId": "<deployment-id:1>",
+            "domainName": "<rest-api-id>.execute-api.<region>.amazonaws.com",
+            "domainPrefix": "<rest-api-id>",
+            "extendedRequestId": "<extended-request-id:3>",
+            "httpMethod": "GET",
+            "identity": {
+              "accessKey": null,
+              "accountId": null,
+              "caller": null,
+              "cognitoAuthenticationProvider": null,
+              "cognitoAuthenticationType": null,
+              "cognitoIdentityId": null,
+              "cognitoIdentityPoolId": null,
+              "principalOrgId": null,
+              "sourceIp": "<source-ip:1>",
+              "user": null,
+              "userAgent": "<user-agent:1>",
+              "userArn": null
+            },
+            "path": "/dev/randomproxied/test/proxy",
+            "protocol": "HTTP/1.1",
+            "requestId": "<uuid:3>",
+            "requestTime": "<request-time:3>",
+            "requestTimeEpoch": "request-time-epoch",
+            "resourceId": "<resource-id:3>",
+            "resourcePath": "/{proxy+}",
+            "stage": "dev"
+          },
+          "resource": "/{proxy+}",
+          "stageVariables": {},
+          "type": "REQUEST"
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_authorizers.py::TestRestApiAuthorizers::test_authorizer_event_lambda_request_from_context": {
+    "recorded-date": "05-08-2024, 17:59:42",
+    "recorded-content": {
+      "authorizer": {
+        "authorizerArn": "arn:<partition>:lambda:<region>:111111111111:function:<lambda-name:1>",
+        "lambdaName": "<lambda-name:1>"
+      },
+      "create-authorizer-request": {
+        "authType": "custom",
+        "authorizerCredentials": "<lambda-role>",
+        "authorizerResultTtlInSeconds": 0,
+        "authorizerUri": "arn:<partition>:apigateway:<region>:lambda:path/2015-03-31/functions/arn:<partition>:lambda:<region>:111111111111:function:<lambda-name:1>/invocations",
+        "id": "<authorizer-id>",
+        "identitySource": "method.request.header.Authorization",
+        "name": "test_authorizer_forward",
+        "type": "REQUEST",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "hardcoded-path": {
+        "authorizer_keys": {
+          "integrationLatency": "<integration-latency>",
+          "payload": {
+            "type": "REQUEST",
+            "methodArn": "arn:<partition>:execute-api:<region>:111111111111:<rest-api-id>/dev/GET/test",
+            "resource": "/test",
+            "path": "/test",
+            "httpMethod": "GET",
+            "headers": {
+              "Accept": "*/*",
+              "Accept-Encoding": "gzip, deflate",
+              "Authorization": "test",
+              "CloudFront-Forwarded-Proto": "<cf-forward-proto:1>",
+              "CloudFront-Is-Desktop-Viewer": "<cf-desktop-viewer:1>",
+              "CloudFront-Is-Mobile-Viewer": "<cf-mobile-viewer:1>",
+              "CloudFront-Is-SmartTV-Viewer": "<cf-mobile-viewer:1>",
+              "CloudFront-Is-Tablet-Viewer": "<cf-mobile-viewer:1>",
+              "CloudFront-Viewer-ASN": "<cf-viewer-asn:1>",
+              "CloudFront-Viewer-Country": "<cf-viewer-countrer:1>",
+              "Host": "<domain-name:1>",
+              "User-Agent": "<user-agent:1>",
+              "Via": "<cf-via:1>",
+              "X-Amz-Cf-Id": "<cf-amz-cf-id:1>",
+              "X-Amzn-Trace-Id": "<x-amz-trace-id:1>",
+              "X-Forwarded-For": "<x-forwarded-for>",
+              "X-Forwarded-Port": "x-forwarded-port",
+              "X-Forwarded-Proto": "proto"
+            },
+            "multiValueHeaders": {
+              "Accept": [
+                "*/*"
+              ],
+              "Accept-Encoding": [
+                "gzip, deflate"
+              ],
+              "Authorization": [
+                "test"
+              ],
+              "CloudFront-Forwarded-Proto": [
+                "<cf-forward-proto:1>"
+              ],
+              "CloudFront-Is-Desktop-Viewer": [
+                "<cf-desktop-viewer:1>"
+              ],
+              "CloudFront-Is-Mobile-Viewer": [
+                "<cf-mobile-viewer:1>"
+              ],
+              "CloudFront-Is-SmartTV-Viewer": [
+                "<cf-mobile-viewer:1>"
+              ],
+              "CloudFront-Is-Tablet-Viewer": [
+                "<cf-mobile-viewer:1>"
+              ],
+              "CloudFront-Viewer-ASN": [
+                "<cf-viewer-asn:1>"
+              ],
+              "CloudFront-Viewer-Country": [
+                "<cf-viewer-countrer:1>"
+              ],
+              "Host": [
+                "<domain-name:1>"
+              ],
+              "User-Agent": [
+                "<user-agent:1>"
+              ],
+              "Via": [
+                "<cf-via:1>"
+              ],
+              "X-Amz-Cf-Id": [
+                "<cf-amz-cf-id:1>"
+              ],
+              "X-Amzn-Trace-Id": [
+                "<x-amz-trace-id:1>"
+              ],
+              "X-Forwarded-For": "<x-forwarded-for>",
+              "X-Forwarded-Port": "port",
+              "X-Forwarded-Proto": "proto"
+            },
+            "queryStringParameters": {},
+            "multiValueQueryStringParameters": {},
+            "pathParameters": {},
+            "stageVariables": {},
+            "requestContext": {
+              "resourceId": "<resource-id:1>",
+              "resourcePath": "/test",
+              "httpMethod": "GET",
+              "extendedRequestId": "<extended-request-id:1>",
+              "requestTime": "request-time",
+              "path": "/dev/test",
+              "accountId": "111111111111",
+              "protocol": "HTTP/1.1",
+              "stage": "dev",
+              "domainPrefix": "<rest-api-id>",
+              "requestTimeEpoch": "time-epoch",
+              "requestId": "<uuid:1>",
+              "identity": {
+                "cognitoIdentityPoolId": null,
+                "accountId": null,
+                "cognitoIdentityId": null,
+                "caller": null,
+                "sourceIp": "<source-ip:1>",
+                "principalOrgId": null,
+                "accessKey": null,
+                "cognitoAuthenticationType": null,
+                "cognitoAuthenticationProvider": null,
+                "userArn": null,
+                "userAgent": "<user-agent:1>",
+                "user": null
+              },
+              "domainName": "<domain-name:1>",
+              "deploymentId": "<deployment-id:1>",
+              "apiId": "<rest-api-id>"
+            }
+          },
+          "principalId": "principal123"
+        },
+        "identity_keys": {
+          "accessKey": "",
+          "accountId": "",
+          "caller": "",
+          "cognitoAuthenticationProvider": "",
+          "cognitoAuthenticationType": "",
+          "cognitoIdentityId": "",
+          "cognitoIdentityPoolId": "",
+          "principalOrgId": "",
+          "sourceIp": "<source-ip:1>",
+          "user": "",
+          "userAgent": "<user-agent:1>",
+          "userArn": ""
+        }
+      },
+      "param-path": {
+        "authorizer_keys": {
+          "integrationLatency": "<integration-latency>",
+          "payload": {
+            "type": "REQUEST",
+            "methodArn": "arn:<partition>:execute-api:<region>:111111111111:<rest-api-id>/dev/GET/test/paramtest",
+            "resource": "/test/{param}",
+            "path": "/test/paramtest",
+            "httpMethod": "GET",
+            "headers": {
+              "Accept": "*/*",
+              "Accept-Encoding": "gzip, deflate",
+              "Authorization": "test",
+              "CloudFront-Forwarded-Proto": "<cf-forward-proto:1>",
+              "CloudFront-Is-Desktop-Viewer": "<cf-desktop-viewer:1>",
+              "CloudFront-Is-Mobile-Viewer": "<cf-mobile-viewer:1>",
+              "CloudFront-Is-SmartTV-Viewer": "<cf-mobile-viewer:1>",
+              "CloudFront-Is-Tablet-Viewer": "<cf-mobile-viewer:1>",
+              "CloudFront-Viewer-ASN": "<cf-viewer-asn:1>",
+              "CloudFront-Viewer-Country": "<cf-viewer-countrer:1>",
+              "Host": "<domain-name:1>",
+              "User-Agent": "<user-agent:1>",
+              "Via": "<cf-via:2>",
+              "X-Amz-Cf-Id": "<cf-amz-cf-id:2>",
+              "X-Amzn-Trace-Id": "<x-amz-trace-id:2>",
+              "X-Forwarded-For": "<x-forwarded-for>",
+              "X-Forwarded-Port": "x-forwarded-port",
+              "X-Forwarded-Proto": "proto"
+            },
+            "multiValueHeaders": {
+              "Accept": [
+                "*/*"
+              ],
+              "Accept-Encoding": [
+                "gzip, deflate"
+              ],
+              "Authorization": [
+                "test"
+              ],
+              "CloudFront-Forwarded-Proto": [
+                "<cf-forward-proto:1>"
+              ],
+              "CloudFront-Is-Desktop-Viewer": [
+                "<cf-desktop-viewer:1>"
+              ],
+              "CloudFront-Is-Mobile-Viewer": [
+                "<cf-mobile-viewer:1>"
+              ],
+              "CloudFront-Is-SmartTV-Viewer": [
+                "<cf-mobile-viewer:1>"
+              ],
+              "CloudFront-Is-Tablet-Viewer": [
+                "<cf-mobile-viewer:1>"
+              ],
+              "CloudFront-Viewer-ASN": [
+                "<cf-viewer-asn:1>"
+              ],
+              "CloudFront-Viewer-Country": [
+                "<cf-viewer-countrer:1>"
+              ],
+              "Host": [
+                "<domain-name:1>"
+              ],
+              "User-Agent": [
+                "<user-agent:1>"
+              ],
+              "Via": [
+                "<cf-via:2>"
+              ],
+              "X-Amz-Cf-Id": [
+                "<cf-amz-cf-id:2>"
+              ],
+              "X-Amzn-Trace-Id": [
+                "<x-amz-trace-id:2>"
+              ],
+              "X-Forwarded-For": "<x-forwarded-for>",
+              "X-Forwarded-Port": "port",
+              "X-Forwarded-Proto": "proto"
+            },
+            "queryStringParameters": {},
+            "multiValueQueryStringParameters": {},
+            "pathParameters": {
+              "param": "paramtest"
+            },
+            "stageVariables": {},
+            "requestContext": {
+              "resourceId": "<resource-id:2>",
+              "resourcePath": "/test/{param}",
+              "httpMethod": "GET",
+              "extendedRequestId": "<extended-request-id:2>",
+              "requestTime": "request-time",
+              "path": "/dev/test/paramtest",
+              "accountId": "111111111111",
+              "protocol": "HTTP/1.1",
+              "stage": "dev",
+              "domainPrefix": "<rest-api-id>",
+              "requestTimeEpoch": "time-epoch",
+              "requestId": "<uuid:2>",
+              "identity": {
+                "cognitoIdentityPoolId": null,
+                "accountId": null,
+                "cognitoIdentityId": null,
+                "caller": null,
+                "sourceIp": "<source-ip:1>",
+                "principalOrgId": null,
+                "accessKey": null,
+                "cognitoAuthenticationType": null,
+                "cognitoAuthenticationProvider": null,
+                "userArn": null,
+                "userAgent": "<user-agent:1>",
+                "user": null
+              },
+              "domainName": "<domain-name:1>",
+              "deploymentId": "<deployment-id:1>",
+              "apiId": "<rest-api-id>"
+            }
+          },
+          "principalId": "principal123"
+        },
+        "identity_keys": {
+          "accessKey": "",
+          "accountId": "",
+          "caller": "",
+          "cognitoAuthenticationProvider": "",
+          "cognitoAuthenticationType": "",
+          "cognitoIdentityId": "",
+          "cognitoIdentityPoolId": "",
+          "principalOrgId": "",
+          "sourceIp": "<source-ip:1>",
+          "user": "",
+          "userAgent": "<user-agent:1>",
+          "userArn": ""
+        }
+      },
+      "proxy-path": {
+        "authorizer_keys": {
+          "integrationLatency": "<integration-latency>",
+          "payload": {
+            "type": "REQUEST",
+            "methodArn": "arn:<partition>:execute-api:<region>:111111111111:<rest-api-id>/dev/GET/randomproxied/test/proxy//double",
+            "resource": "/{proxy+}",
+            "path": "/randomproxied/test/proxy//double",
+            "httpMethod": "GET",
+            "headers": {
+              "Accept": "*/*",
+              "Accept-Encoding": "gzip, deflate",
+              "Authorization": "test",
+              "CloudFront-Forwarded-Proto": "<cf-forward-proto:1>",
+              "CloudFront-Is-Desktop-Viewer": "<cf-desktop-viewer:1>",
+              "CloudFront-Is-Mobile-Viewer": "<cf-mobile-viewer:1>",
+              "CloudFront-Is-SmartTV-Viewer": "<cf-mobile-viewer:1>",
+              "CloudFront-Is-Tablet-Viewer": "<cf-mobile-viewer:1>",
+              "CloudFront-Viewer-ASN": "<cf-viewer-asn:1>",
+              "CloudFront-Viewer-Country": "<cf-viewer-countrer:1>",
+              "Host": "<domain-name:1>",
+              "User-Agent": "<user-agent:1>",
+              "Via": "<cf-via:3>",
+              "X-Amz-Cf-Id": "<cf-amz-cf-id:3>",
+              "X-Amzn-Trace-Id": "<x-amz-trace-id:3>",
+              "X-Forwarded-For": "<x-forwarded-for>",
+              "X-Forwarded-Port": "x-forwarded-port",
+              "X-Forwarded-Proto": "proto"
+            },
+            "multiValueHeaders": {
+              "Accept": [
+                "*/*"
+              ],
+              "Accept-Encoding": [
+                "gzip, deflate"
+              ],
+              "Authorization": [
+                "test"
+              ],
+              "CloudFront-Forwarded-Proto": [
+                "<cf-forward-proto:1>"
+              ],
+              "CloudFront-Is-Desktop-Viewer": [
+                "<cf-desktop-viewer:1>"
+              ],
+              "CloudFront-Is-Mobile-Viewer": [
+                "<cf-mobile-viewer:1>"
+              ],
+              "CloudFront-Is-SmartTV-Viewer": [
+                "<cf-mobile-viewer:1>"
+              ],
+              "CloudFront-Is-Tablet-Viewer": [
+                "<cf-mobile-viewer:1>"
+              ],
+              "CloudFront-Viewer-ASN": [
+                "<cf-viewer-asn:1>"
+              ],
+              "CloudFront-Viewer-Country": [
+                "<cf-viewer-countrer:1>"
+              ],
+              "Host": [
+                "<domain-name:1>"
+              ],
+              "User-Agent": [
+                "<user-agent:1>"
+              ],
+              "Via": [
+                "<cf-via:3>"
+              ],
+              "X-Amz-Cf-Id": [
+                "<cf-amz-cf-id:3>"
+              ],
+              "X-Amzn-Trace-Id": [
+                "<x-amz-trace-id:3>"
+              ],
+              "X-Forwarded-For": "<x-forwarded-for>",
+              "X-Forwarded-Port": "port",
+              "X-Forwarded-Proto": "proto"
+            },
+            "queryStringParameters": {},
+            "multiValueQueryStringParameters": {},
+            "pathParameters": {
+              "proxy": "randomproxied/test/proxy//double"
+            },
+            "stageVariables": {},
+            "requestContext": {
+              "resourceId": "<resource-id:3>",
+              "resourcePath": "/{proxy+}",
+              "httpMethod": "GET",
+              "extendedRequestId": "<extended-request-id:3>",
+              "requestTime": "request-time",
+              "path": "/dev/randomproxied/test/proxy//double",
+              "accountId": "111111111111",
+              "protocol": "HTTP/1.1",
+              "stage": "dev",
+              "domainPrefix": "<rest-api-id>",
+              "requestTimeEpoch": "time-epoch",
+              "requestId": "<uuid:3>",
+              "identity": {
+                "cognitoIdentityPoolId": null,
+                "accountId": null,
+                "cognitoIdentityId": null,
+                "caller": null,
+                "sourceIp": "<source-ip:1>",
+                "principalOrgId": null,
+                "accessKey": null,
+                "cognitoAuthenticationType": null,
+                "cognitoAuthenticationProvider": null,
+                "userArn": null,
+                "userAgent": "<user-agent:1>",
+                "user": null
+              },
+              "domainName": "<domain-name:1>",
+              "deploymentId": "<deployment-id:1>",
+              "apiId": "<rest-api-id>"
+            }
+          },
+          "principalId": "principal123"
+        },
+        "identity_keys": {
+          "accessKey": "",
+          "accountId": "",
+          "caller": "",
+          "cognitoAuthenticationProvider": "",
+          "cognitoAuthenticationType": "",
+          "cognitoIdentityId": "",
+          "cognitoIdentityPoolId": "",
+          "principalOrgId": "",
+          "sourceIp": "<source-ip:1>",
+          "user": "",
+          "userAgent": "<user-agent:1>",
+          "userArn": ""
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_authorizers.py::TestRestApiAuthorizers::test_authorizer_lambda_request_identity_source": {
+    "recorded-date": "06-08-2024, 10:00:16",
+    "recorded-content": {
+      "authorizer": {
+        "authorizerArn": "arn:<partition>:lambda:<region>:111111111111:function:<resource:1>"
+      },
+      "create-authorizer-request-no-cache": {
+        "authType": "custom",
+        "authorizerCredentials": "<lambda-role>",
+        "authorizerResultTtlInSeconds": 0,
+        "authorizerUri": "arn:<partition>:apigateway:<region>:lambda:path/2015-03-31/functions/arn:<partition>:lambda:<region>:111111111111:function:<resource:1>/invocations",
+        "id": "<id:1>",
+        "name": "test_authorizer_no_cache",
+        "type": "REQUEST",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-authorizer-request-with-cache": {
+        "authType": "custom",
+        "authorizerCredentials": "<lambda-role>",
+        "authorizerResultTtlInSeconds": 10,
+        "authorizerUri": "arn:<partition>:apigateway:<region>:lambda:path/2015-03-31/functions/arn:<partition>:lambda:<region>:111111111111:function:<resource:1>/invocations",
+        "id": "<id:2>",
+        "identitySource": "method.request.header.TestHeader, method.request.header.AuthHeader",
+        "name": "test_authorizer_with_cache",
+        "type": "REQUEST",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-auth-with-cache-and-no-identity-source": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Invalid request input"
+        },
+        "message": "Invalid request input",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "no-cache-with-identity-source": {
+        "message": "Authorized"
+      },
+      "no-cache-without-identity-source": {
+        "message": "Authorized"
+      },
+      "with-cache-with-identity-source": {
+        "message": "Authorized"
+      },
+      "with-cache-without-identity-source": {
+        "message": "Unauthorized"
+      },
+      "with-cache-with-partial-identity-source": {
+        "message": "Unauthorized"
+      },
+      "with-cache-with-bad-casing-identity-source": {
+        "message": "Authorized"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_authorizers.py::TestRestApiAuthorizers::test_authorizer_event_lambda_token_from_context": {
+    "recorded-date": "06-08-2024, 12:42:03",
+    "recorded-content": {
+      "authorizer": {
+        "authorizerArn": "arn:<partition>:lambda:<region>:111111111111:function:<lambda-name:1>",
+        "lambdaName": "<lambda-name:1>"
+      },
+      "create-authorizer-request": {
+        "authType": "custom",
+        "authorizerCredentials": "<lambda-role>",
+        "authorizerResultTtlInSeconds": 0,
+        "authorizerUri": "arn:<partition>:apigateway:<region>:lambda:path/2015-03-31/functions/arn:<partition>:lambda:<region>:111111111111:function:<lambda-name:1>/invocations",
+        "id": "<authorizer-id>",
+        "identitySource": "method.request.header.Authorization",
+        "name": "test_authorizer_forward",
+        "type": "TOKEN",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "test-invoke-payload": {
+        "authorizer_keys": {
+          "integrationLatency": "<integration-latency>",
+          "payload": {
+            "type": "TOKEN",
+            "methodArn": "arn:<partition>:execute-api:<region>:111111111111:<rest-api-id>/dev/GET/test",
+            "authorizationToken": "my-complicated-token"
+          },
+          "principalId": "principal123"
+        },
+        "identity_keys": {
+          "accessKey": "",
+          "accountId": "",
+          "caller": "",
+          "cognitoAuthenticationProvider": "",
+          "cognitoAuthenticationType": "",
+          "cognitoIdentityId": "",
+          "cognitoIdentityPoolId": "",
+          "principalOrgId": "",
+          "sourceIp": "<source-ip:1>",
+          "user": "",
+          "userAgent": "<user-agent:1>",
+          "userArn": ""
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_authorizers.py::TestRestApiAuthorizers::test_authorizer_lambda_token_identity_source": {
+    "recorded-date": "06-08-2024, 12:56:01",
+    "recorded-content": {
+      "authorizer": {
+        "authorizerArn": "arn:<partition>:lambda:<region>:111111111111:function:<resource:1>"
+      },
+      "create-authorizer-request": {
+        "authType": "custom",
+        "authorizerCredentials": "<lambda-role>",
+        "authorizerResultTtlInSeconds": 0,
+        "authorizerUri": "arn:<partition>:apigateway:<region>:lambda:path/2015-03-31/functions/arn:<partition>:lambda:<region>:111111111111:function:<resource:1>/invocations",
+        "id": "<id:1>",
+        "identitySource": "method.request.header.TestHeader",
+        "name": "test_authorizer",
+        "type": "TOKEN",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-auth-no-identity-source": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Invalid request input"
+        },
+        "message": "Invalid request input",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-auth-wrong-identity-source-location": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Invalid token source expression: method.request.querystring.TestQS. The source must be a method request header, matching 'method.request.header.[a-zA-Z0-9._-]+'"
+        },
+        "message": "Invalid token source expression: method.request.querystring.TestQS. The source must be a method request header, matching 'method.request.header.[a-zA-Z0-9._-]+'",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-auth-wrong-identity-source-composite": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Invalid token source expression: method.request.header.TestHeader, method.request.header.TestHeaderTwo. The source must be a method request header, matching 'method.request.header.[a-zA-Z0-9._-]+'"
+        },
+        "message": "Invalid token source expression: method.request.header.TestHeader, method.request.header.TestHeaderTwo. The source must be a method request header, matching 'method.request.header.[a-zA-Z0-9._-]+'",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "with-identity-source": {
+        "message": "Authorized"
+      },
+      "without-identity-source": {
+        "message": "Unauthorized"
+      },
+      "with-cache-with-bad-casing-identity-source": {
+        "message": "Authorized"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_authorizers.py::TestRestApiAuthorizers::test_authorizer_cognito_scopes": {
+    "recorded-date": "13-08-2024, 20:51:14",
+    "recorded-content": {
+      "cognito_pool_id": "<cognito_pool_id:1>",
+      "missing-auth-token": {
+        "message": "Unauthorized"
+      },
+      "access_token-scope1-Bearer": {
+        "claims": {
+          "auth_time": "<auth_time:1>",
+          "client_id": "<client_id>",
+          "event_id": "<uuid:1>",
+          "exp": "<exp:1>",
+          "iat": "<iat:1>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<cognito_pool_id:1>",
+          "jti": "<jti:1>",
+          "scope": "openid email http://example.com/scope1",
+          "sub": "<sub:1>",
+          "token_use": "access",
+          "username": "user@domain.com",
+          "version": "2"
+        }
+      },
+      "id_token-no-scope-Bearer": {
+        "claims": {
+          "at_hash": "<at_hash:1>",
+          "aud": "<client_id>",
+          "auth_time": "<auth_time:1>",
+          "cognito:username": "user@domain.com",
+          "event_id": "<uuid:1>",
+          "exp": "<exp:1>",
+          "iat": "<iat:1>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<cognito_pool_id:1>",
+          "jti": "<jti:2>",
+          "sub": "<sub:1>",
+          "token_use": "id"
+        }
+      },
+      "id_token-no-scope": {
+        "claims": {
+          "at_hash": "<at_hash:1>",
+          "aud": "<client_id>",
+          "auth_time": "<auth_time:1>",
+          "cognito:username": "user@domain.com",
+          "event_id": "<uuid:1>",
+          "exp": "<exp:1>",
+          "iat": "<iat:1>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<cognito_pool_id:1>",
+          "jti": "<jti:2>",
+          "sub": "<sub:1>",
+          "token_use": "id"
+        }
+      },
+      "id_token-multi-scope": {
+        "message": "Unauthorized"
+      },
+      "id_token-invalid-scope": {
+        "message": "Unauthorized"
+      },
+      "id_token-scope1-scope": {
+        "message": "Unauthorized"
+      },
+      "id_token-email-scope": {
+        "message": "Unauthorized"
+      },
+      "access_token-no-scope": {
+        "message": "Unauthorized"
+      },
+      "access_token-multi-scope": {
+        "claims": {
+          "auth_time": "<auth_time:1>",
+          "client_id": "<client_id>",
+          "event_id": "<uuid:1>",
+          "exp": "<exp:1>",
+          "iat": "<iat:1>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<cognito_pool_id:1>",
+          "jti": "<jti:1>",
+          "scope": "openid email http://example.com/scope1",
+          "sub": "<sub:1>",
+          "token_use": "access",
+          "username": "user@domain.com",
+          "version": "2"
+        }
+      },
+      "access_token-invalid-scope": {
+        "message": "Unauthorized"
+      },
+      "access_token-scope1-scope": {
+        "claims": {
+          "auth_time": "<auth_time:1>",
+          "client_id": "<client_id>",
+          "event_id": "<uuid:1>",
+          "exp": "<exp:1>",
+          "iat": "<iat:1>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<cognito_pool_id:1>",
+          "jti": "<jti:1>",
+          "scope": "openid email http://example.com/scope1",
+          "sub": "<sub:1>",
+          "token_use": "access",
+          "username": "user@domain.com",
+          "version": "2"
+        }
+      },
+      "access_token-email-scope": {
+        "claims": {
+          "auth_time": "<auth_time:1>",
+          "client_id": "<client_id>",
+          "event_id": "<uuid:1>",
+          "exp": "<exp:1>",
+          "iat": "<iat:1>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<cognito_pool_id:1>",
+          "jti": "<jti:1>",
+          "scope": "openid email http://example.com/scope1",
+          "sub": "<sub:1>",
+          "token_use": "access",
+          "username": "user@domain.com",
+          "version": "2"
+        }
+      },
+      "access_token_openid-no-scope": {
+        "message": "Unauthorized"
+      },
+      "access_token_openid-multi-scope": {
+        "claims": {
+          "auth_time": "<auth_time:2>",
+          "client_id": "<client_id>",
+          "event_id": "<uuid:2>",
+          "exp": "<exp:2>",
+          "iat": "<iat:2>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<cognito_pool_id:1>",
+          "jti": "<jti:3>",
+          "scope": "openid http://example.com/scope1",
+          "sub": "<sub:1>",
+          "token_use": "access",
+          "username": "user@domain.com",
+          "version": "2"
+        }
+      },
+      "access_token_openid-invalid-scope": {
+        "message": "Unauthorized"
+      },
+      "access_token_openid-scope1-scope": {
+        "claims": {
+          "auth_time": "<auth_time:2>",
+          "client_id": "<client_id>",
+          "event_id": "<uuid:2>",
+          "exp": "<exp:2>",
+          "iat": "<iat:2>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<cognito_pool_id:1>",
+          "jti": "<jti:3>",
+          "scope": "openid http://example.com/scope1",
+          "sub": "<sub:1>",
+          "token_use": "access",
+          "username": "user@domain.com",
+          "version": "2"
+        }
+      },
+      "access_token_openid-email-scope": {
+        "message": "Unauthorized"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_authorizers.py::TestRestApiAuthorizers::test_authorizer_cognito_client_credentials": {
+    "recorded-date": "13-08-2024, 20:50:09",
+    "recorded-content": {
+      "cognito_pool_id": "<cognito_pool_id:1>",
+      "invoke-response": {
+        "claims": {
+          "auth_time": "<auth_time:1>",
+          "client_id": "<sub:1>",
+          "exp": "<exp:1>",
+          "iat": "<iat:1>",
+          "iss": "https://cognito-idp.<region>.amazonaws.com/<cognito_pool_id:1>",
+          "jti": "<jti:1>",
+          "scope": "resource-server/scope1",
+          "sub": "<sub:1>",
+          "token_use": "access",
+          "version": "2"
+        }
+      }
+    }
+  }
+}

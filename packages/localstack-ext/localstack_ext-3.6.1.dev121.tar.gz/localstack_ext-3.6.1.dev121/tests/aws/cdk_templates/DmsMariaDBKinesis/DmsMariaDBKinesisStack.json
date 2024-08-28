@@ -1,0 +1,926 @@
+{
+  "Resources": {
+    "SuperRoleC6342196": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "dms.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "SuperRoleDefaultPolicy6696F084": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kinesis:DescribeStreamSummary",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard",
+                "kinesis:DescribeStream",
+                "kinesis:ListStreams",
+                "kinesis:DescribeStreamConsumer",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "TargetStream3B4B2880",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SuperRoleDefaultPolicy6696F084",
+        "Roles": [
+          {
+            "Ref": "SuperRoleC6342196"
+          }
+        ]
+      }
+    },
+    "vpcA2121C38": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "vpc"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet1Subnet2E65531E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.0.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "DmsMariaDBKinesisStack/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTable48A2DF9B": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "DmsMariaDBKinesisStack/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTableAssociation5D3F4579": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        }
+      }
+    },
+    "vpcPublicSubnet1DefaultRoute10708846": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcPublicSubnet2Subnet009B674F": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.64.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "DmsMariaDBKinesisStack/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableEB40D4CB": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "DmsMariaDBKinesisStack/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableAssociation21F81B59": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet2Subnet009B674F"
+        }
+      }
+    },
+    "vpcPublicSubnet2DefaultRouteA1EC0F60": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcIsolatedSubnet1Subnet8B28CEB3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.128.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "DmsMariaDBKinesisStack/vpc/IsolatedSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcIsolatedSubnet1RouteTable0D6B2D3D": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "DmsMariaDBKinesisStack/vpc/IsolatedSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcIsolatedSubnet1RouteTableAssociation172210D4": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcIsolatedSubnet1RouteTable0D6B2D3D"
+        },
+        "SubnetId": {
+          "Ref": "vpcIsolatedSubnet1Subnet8B28CEB3"
+        }
+      }
+    },
+    "vpcIsolatedSubnet2Subnet2C6B375C": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.192.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "DmsMariaDBKinesisStack/vpc/IsolatedSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcIsolatedSubnet2RouteTable3455CBFC": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "DmsMariaDBKinesisStack/vpc/IsolatedSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcIsolatedSubnet2RouteTableAssociation8A8FAF70": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcIsolatedSubnet2RouteTable3455CBFC"
+        },
+        "SubnetId": {
+          "Ref": "vpcIsolatedSubnet2Subnet2C6B375C"
+        }
+      }
+    },
+    "vpcIGWE57CBDCA": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "vpc"
+          }
+        ]
+      }
+    },
+    "vpcVPCGW7984C166": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "sg29196201": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for DMS sample",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "sgfrom00000IndirectPortIndirectPort67EAAE94": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "Description": "from 0.0.0.0/0:{IndirectPort}-{IndirectPort}",
+        "FromPort": {
+          "Fn::GetAtt": [
+            "dbinstancemariadbC7FF5D6F",
+            "Endpoint.Port"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "sg29196201",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "ToPort": {
+          "Fn::GetAtt": [
+            "dbinstance764242C7",
+            "Endpoint.Port"
+          ]
+        }
+      }
+    },
+    "dbinstanceSubnetGroupC617F36B": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for dbinstance database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPublicSubnet1Subnet2E65531E"
+          },
+          {
+            "Ref": "vpcPublicSubnet2Subnet009B674F"
+          }
+        ]
+      }
+    },
+    "dbinstanceParameterGroup79573EBD": {
+      "Type": "AWS::RDS::DBParameterGroup",
+      "Properties": {
+        "Description": "Parameter group for mysql8.0",
+        "Family": "mysql8.0",
+        "Parameters": {
+          "binlog_checksum": "NONE",
+          "binlog_row_image": "Full",
+          "binlog_format": "ROW"
+        }
+      }
+    },
+    "dbinstance764242C7": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "100",
+        "CopyTagsToSnapshot": true,
+        "DBInstanceClass": "db.t3.micro",
+        "DBName": "testdb",
+        "DBParameterGroupName": {
+          "Ref": "dbinstanceParameterGroup79573EBD"
+        },
+        "DBSubnetGroupName": {
+          "Ref": "dbinstanceSubnetGroupC617F36B"
+        },
+        "Engine": "mysql",
+        "EngineVersion": "8.0",
+        "MasterUserPassword": "1Wp2Aide=z=,eLX3RrD4gJ4o54puex",
+        "MasterUsername": "admin",
+        "PubliclyAccessible": true,
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "sg29196201",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "dbinstancemariadbSubnetGroupB3F7B7CA": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for dbinstance-mariadb database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPublicSubnet1Subnet2E65531E"
+          },
+          {
+            "Ref": "vpcPublicSubnet2Subnet009B674F"
+          }
+        ]
+      }
+    },
+    "dbinstancemariadbParameterGroup3048F9A9": {
+      "Type": "AWS::RDS::DBParameterGroup",
+      "Properties": {
+        "Description": "Parameter group for mariadb10.11",
+        "Family": "mariadb10.11",
+        "Parameters": {
+          "binlog_checksum": "NONE",
+          "binlog_row_image": "Full",
+          "binlog_format": "ROW"
+        }
+      }
+    },
+    "dbinstancemariadbC7FF5D6F": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "100",
+        "CopyTagsToSnapshot": true,
+        "DBInstanceClass": "db.t3.micro",
+        "DBName": "testdb",
+        "DBParameterGroupName": {
+          "Ref": "dbinstancemariadbParameterGroup3048F9A9"
+        },
+        "DBSubnetGroupName": {
+          "Ref": "dbinstancemariadbSubnetGroupB3F7B7CA"
+        },
+        "Engine": "mariadb",
+        "EngineVersion": "10.11",
+        "MasterUserPassword": "1Wp2Aide=z=,eLX3RrD4gJ4o54puex",
+        "MasterUsername": "admin",
+        "PubliclyAccessible": true,
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "sg29196201",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "mysqlsecret": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "SecretString": {
+          "Fn::Join": [
+            "",
+            [
+              "{\"username\": \"admin\", \"password\": \"1Wp2Aide=z=,eLX3RrD4gJ4o54puex\", \"host\": \"",
+              {
+                "Fn::GetAtt": [
+                  "dbinstance764242C7",
+                  "Endpoint.Address"
+                ]
+              },
+              "\", \"port\": ",
+              {
+                "Fn::GetAtt": [
+                  "dbinstance764242C7",
+                  "Endpoint.Port"
+                ]
+              },
+              "}"
+            ]
+          ]
+        }
+      }
+    },
+    "mysqlaccessroleBFB17369": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "dms.",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ".amazonaws.com"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "secretsmanager:GetSecretValue",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Ref": "mysqlsecret"
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "AllowSecrets"
+          }
+        ]
+      }
+    },
+    "TargetStream3B4B2880": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "RetentionPeriodHours": 24,
+        "ShardCount": 1,
+        "StreamEncryption": {
+          "Fn::If": [
+            "AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
+            {
+              "Ref": "AWS::NoValue"
+            },
+            {
+              "EncryptionType": "KMS",
+              "KeyId": "alias/aws/kinesis"
+            }
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "ReplSubnetGroup": {
+      "Type": "AWS::DMS::ReplicationSubnetGroup",
+      "Properties": {
+        "ReplicationSubnetGroupDescription": "Replication Subnet Group for DMS test",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPublicSubnet1Subnet2E65531E"
+          },
+          {
+            "Ref": "vpcPublicSubnet2Subnet009B674F"
+          }
+        ]
+      }
+    },
+    "instance": {
+      "Type": "AWS::DMS::ReplicationInstance",
+      "Properties": {
+        "AllocatedStorage": 5,
+        "AllowMajorVersionUpgrade": false,
+        "AutoMinorVersionUpgrade": false,
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MultiAZ": false,
+        "PubliclyAccessible": true,
+        "ReplicationInstanceClass": "dms.t2.micro",
+        "ReplicationSubnetGroupIdentifier": {
+          "Ref": "ReplSubnetGroup"
+        },
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "sg29196201",
+              "GroupId"
+            ]
+          }
+        ]
+      }
+    },
+    "source": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "DatabaseName": "testdb",
+        "EndpointType": "source",
+        "EngineName": "mysql",
+        "MySqlSettings": {
+          "SecretsManagerAccessRoleArn": {
+            "Fn::GetAtt": [
+              "mysqlaccessroleBFB17369",
+              "Arn"
+            ]
+          },
+          "SecretsManagerSecretId": {
+            "Ref": "mysqlsecret"
+          }
+        }
+      }
+    },
+    "sourcemariadb": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "DatabaseName": "testdb",
+        "EndpointType": "source",
+        "EngineName": "mariadb",
+        "Password": "1Wp2Aide=z=,eLX3RrD4gJ4o54puex",
+        "Port": {
+          "Fn::GetAtt": [
+            "dbinstancemariadbC7FF5D6F",
+            "Endpoint.Port"
+          ]
+        },
+        "ServerName": {
+          "Fn::GetAtt": [
+            "dbinstancemariadbC7FF5D6F",
+            "Endpoint.Address"
+          ]
+        },
+        "Username": "admin"
+      }
+    },
+    "target": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "target",
+        "EngineName": "kinesis",
+        "KinesisSettings": {
+          "MessageFormat": "json",
+          "ServiceAccessRoleArn": {
+            "Fn::GetAtt": [
+              "SuperRoleC6342196",
+              "Arn"
+            ]
+          },
+          "StreamArn": {
+            "Fn::GetAtt": [
+              "TargetStream3B4B2880",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "targetjsonunformatted": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "target",
+        "EngineName": "kinesis",
+        "KinesisSettings": {
+          "MessageFormat": "json-unformatted",
+          "ServiceAccessRoleArn": {
+            "Fn::GetAtt": [
+              "SuperRoleC6342196",
+              "Arn"
+            ]
+          },
+          "StreamArn": {
+            "Fn::GetAtt": [
+              "TargetStream3B4B2880",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "targetnondefaultsettings": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "target",
+        "EngineName": "kinesis",
+        "KinesisSettings": {
+          "IncludeControlDetails": true,
+          "IncludeNullAndEmpty": true,
+          "IncludePartitionValue": true,
+          "IncludeTableAlterOperations": true,
+          "IncludeTransactionDetails": true,
+          "MessageFormat": "json",
+          "PartitionIncludeSchemaTable": true,
+          "ServiceAccessRoleArn": {
+            "Fn::GetAtt": [
+              "SuperRoleC6342196",
+              "Arn"
+            ]
+          },
+          "StreamArn": {
+            "Fn::GetAtt": [
+              "TargetStream3B4B2880",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "MyCfnReplicationTask": {
+      "Type": "AWS::DMS::ReplicationTask",
+      "Properties": {
+        "MigrationType": "full-load",
+        "ReplicationInstanceArn": {
+          "Ref": "instance"
+        },
+        "ReplicationTaskIdentifier": "replicationTaskIdentifier",
+        "ResourceIdentifier": "resourceIdentifier",
+        "SourceEndpointArn": {
+          "Ref": "source"
+        },
+        "TableMappings": "{\"rules\": [{\"rule-type\": \"selection\", \"rule-id\": \"1\", \"rule-name\": \"rule1\", \"object-locator\": {\"schema-name\": \"something\", \"table-name\": \"NotExistingTable\"}, \"rule-action\": \"include\"}]}",
+        "TargetEndpointArn": {
+          "Ref": "target"
+        }
+      }
+    }
+  },
+  "Conditions": {
+    "AwsCdkKinesisEncryptedStreamsUnsupportedRegions": {
+      "Fn::Or": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "AWS::Region"
+            },
+            "cn-north-1"
+          ]
+        },
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "AWS::Region"
+            },
+            "cn-northwest-1"
+          ]
+        }
+      ]
+    }
+  },
+  "Outputs": {
+    "KinesisStreamArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "TargetStream3B4B2880",
+          "Arn"
+        ]
+      }
+    },
+    "DbInstanceMySQLArn": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              "Ref": "AWS::Partition"
+            },
+            ":rds:",
+            {
+              "Ref": "AWS::Region"
+            },
+            ":",
+            {
+              "Ref": "AWS::AccountId"
+            },
+            ":db:",
+            {
+              "Ref": "dbinstance764242C7"
+            }
+          ]
+        ]
+      }
+    },
+    "DbEndpointMySQL": {
+      "Value": {
+        "Fn::GetAtt": [
+          "dbinstance764242C7",
+          "Endpoint.Address"
+        ]
+      }
+    },
+    "DbPortMySQL": {
+      "Value": {
+        "Fn::GetAtt": [
+          "dbinstance764242C7",
+          "Endpoint.Port"
+        ]
+      }
+    },
+    "DbInstanceMariadbArn": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              "Ref": "AWS::Partition"
+            },
+            ":rds:",
+            {
+              "Ref": "AWS::Region"
+            },
+            ":",
+            {
+              "Ref": "AWS::AccountId"
+            },
+            ":db:",
+            {
+              "Ref": "dbinstancemariadbC7FF5D6F"
+            }
+          ]
+        ]
+      }
+    },
+    "DbEndpointMariadb": {
+      "Value": {
+        "Fn::GetAtt": [
+          "dbinstancemariadbC7FF5D6F",
+          "Endpoint.Address"
+        ]
+      }
+    },
+    "DbPortMariadb": {
+      "Value": {
+        "Fn::GetAtt": [
+          "dbinstancemariadbC7FF5D6F",
+          "Endpoint.Port"
+        ]
+      }
+    },
+    "ReplicationInstanceArn": {
+      "Value": {
+        "Ref": "instance"
+      }
+    },
+    "SourceEndpointMySQLArn": {
+      "Value": {
+        "Ref": "source"
+      }
+    },
+    "SourceEndpointMariadbArn": {
+      "Value": {
+        "Ref": "sourcemariadb"
+      }
+    },
+    "TargetEndpointDefaultArn": {
+      "Value": {
+        "Ref": "target"
+      }
+    },
+    "TargetEndpointNonDefaultArn": {
+      "Value": {
+        "Ref": "targetnondefaultsettings"
+      }
+    },
+    "TargetEndpointUnformattedJsonArn": {
+      "Value": {
+        "Ref": "targetjsonunformatted"
+      }
+    },
+    "TestReplicationTask": {
+      "Value": {
+        "Ref": "MyCfnReplicationTask"
+      }
+    }
+  }
+}

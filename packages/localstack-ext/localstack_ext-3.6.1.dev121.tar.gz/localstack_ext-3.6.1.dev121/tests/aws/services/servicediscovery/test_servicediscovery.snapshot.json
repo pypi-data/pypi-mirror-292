@@ -1,0 +1,634 @@
+{
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_create_service": {
+    "recorded-date": "02-01-2024, 18:24:40",
+    "recorded-content": {}
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_dns_namespace_with_and_without_dot[private-test-domain-<rnd>]": {
+    "recorded-date": "02-01-2024, 18:25:57",
+    "recorded-content": {
+      "namespace": {
+        "Arn": "arn:<partition>:servicediscovery:<region>:111111111111:namespace/<id:1>",
+        "CreateDate": "create-date",
+        "Description": "test 123",
+        "Id": "<id:1>",
+        "Name": "<name:1>",
+        "Properties": {
+          "DnsProperties": {
+            "HostedZoneId": "hosted-zone-id",
+            "SOA": {
+              "TTL": 15
+            }
+          },
+          "HttpProperties": {
+            "HttpName": "<name:1>"
+          }
+        },
+        "Type": "DNS_PRIVATE"
+      }
+    }
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_dns_namespace_with_and_without_dot[private-test-<rnd>.com]": {
+    "recorded-date": "02-01-2024, 18:26:35",
+    "recorded-content": {
+      "namespace": {
+        "Arn": "arn:<partition>:servicediscovery:<region>:111111111111:namespace/<id:1>",
+        "CreateDate": "create-date",
+        "Description": "test 123",
+        "Id": "<id:1>",
+        "Name": "<name:1>",
+        "Properties": {
+          "DnsProperties": {
+            "HostedZoneId": "hosted-zone-id",
+            "SOA": {
+              "TTL": 15
+            }
+          },
+          "HttpProperties": {
+            "HttpName": "<name:1>"
+          }
+        },
+        "Type": "DNS_PRIVATE"
+      }
+    }
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_dns_namespace_with_and_without_dot[private-invalid name]": {
+    "recorded-date": "02-01-2024, 18:26:36",
+    "recorded-content": {
+      "error": {
+        "Error": {
+          "Code": "InvalidInput",
+          "Message": "1 validation error detected: Value 'namespace' at 'name' failed to satisfy constraint: Member must satisfy regular expression pattern: ^[!-~]{1,253}$"
+        },
+        "Message": "1 validation error detected: Value 'namespace' at 'name' failed to satisfy constraint: Member must satisfy regular expression pattern: ^[!-~]{1,253}$",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_dns_namespace_with_and_without_dot[public-test-domain-<rnd>]": {
+    "recorded-date": "02-01-2024, 18:26:36",
+    "recorded-content": {
+      "error": {
+        "Error": {
+          "Code": "InvalidInput",
+          "Message": "1 validation error detected: Value 'namespace' at 'name' failed to satisfy constraint: Member must satisfy regular expression pattern: ^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?$"
+        },
+        "Message": "1 validation error detected: Value 'namespace' at 'name' failed to satisfy constraint: Member must satisfy regular expression pattern: ^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?$",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_dns_namespace_with_and_without_dot[public-test-<rnd>.com]": {
+    "recorded-date": "02-01-2024, 18:27:14",
+    "recorded-content": {
+      "namespace": {
+        "Arn": "arn:<partition>:servicediscovery:<region>:111111111111:namespace/<id:1>",
+        "CreateDate": "create-date",
+        "Description": "test 123",
+        "Id": "<id:1>",
+        "Name": "<name:1>",
+        "Properties": {
+          "DnsProperties": {
+            "HostedZoneId": "hosted-zone-id",
+            "SOA": {
+              "TTL": 60
+            }
+          },
+          "HttpProperties": {
+            "HttpName": "<name:1>"
+          }
+        },
+        "Type": "DNS_PUBLIC"
+      }
+    }
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_dns_namespace_with_and_without_dot[public-invalid name]": {
+    "recorded-date": "02-01-2024, 18:27:14",
+    "recorded-content": {
+      "error": {
+        "Error": {
+          "Code": "InvalidInput",
+          "Message": "1 validation error detected: Value 'namespace' at 'name' failed to satisfy constraint: Member must satisfy regular expression pattern: ^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?$"
+        },
+        "Message": "1 validation error detected: Value 'namespace' at 'name' failed to satisfy constraint: Member must satisfy regular expression pattern: ^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?$",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_create_service_exceptions": {
+    "recorded-date": "02-01-2024, 18:29:47",
+    "recorded-content": {
+      "create-service": {
+        "Service": {
+          "Arn": "arn:<partition>:servicediscovery:<region>:111111111111:service/<id:1>",
+          "CreateDate": "create-date",
+          "CreatorRequestId": "<uuid:1>",
+          "DnsConfig": {
+            "DnsRecords": [
+              {
+                "TTL": 300,
+                "Type": "CNAME"
+              }
+            ],
+            "NamespaceId": "<namespace-id:1>",
+            "RoutingPolicy": "WEIGHTED"
+          },
+          "Id": "<id:1>",
+          "Name": "<name:1>",
+          "NamespaceId": "<namespace-id:1>",
+          "Type": "DNS_HTTP"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-service-with-same-name": {
+        "CreatorRequestId": "<uuid:1>",
+        "Error": {
+          "Code": "ServiceAlreadyExists",
+          "Message": "Service already exists."
+        },
+        "Message": "Service already exists.",
+        "ServiceId": "<id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-service-with-same-name-dns-namespace": {
+        "CreatorRequestId": "<uuid:1>",
+        "Error": {
+          "Code": "ServiceAlreadyExists",
+          "Message": "Service already exists."
+        },
+        "Message": "Service already exists.",
+        "ServiceId": "<id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "get-service-doesnotexist": {
+        "Error": {
+          "Code": "ServiceNotFound",
+          "Message": ""
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "get-namespace-doesnotexist": {
+        "Error": {
+          "Code": "NamespaceNotFound",
+          "Message": ""
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_register_instance": {
+    "recorded-date": "02-01-2024, 18:32:40",
+    "recorded-content": {
+      "create-service-with-dns-config": {
+        "Service": {
+          "Arn": "arn:<partition>:servicediscovery:<region>:111111111111:service/<id:1>",
+          "CreateDate": "create-date",
+          "CreatorRequestId": "<uuid:1>",
+          "DnsConfig": {
+            "DnsRecords": [
+              {
+                "TTL": 100,
+                "Type": "A"
+              }
+            ],
+            "NamespaceId": "<namespace-id>",
+            "RoutingPolicy": "WEIGHTED"
+          },
+          "Id": "<id:1>",
+          "Name": "<name:1>",
+          "NamespaceId": "<namespace-id>",
+          "Type": "DNS_HTTP"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-service-result": {
+        "OperationId": "<operation-id:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "register-instance-result": {
+        "OperationId": "<operation-id:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-instance": {
+        "Instance": {
+          "Attributes": {
+            "AWS_INSTANCE_IPV4": "172.0.0.1",
+            "AWS_INSTANCE_PORT": "8080"
+          },
+          "Id": "<id:2>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "register-instance-result-v2": {
+        "OperationId": "<operation-id:3>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-instance-v2": {
+        "Instance": {
+          "Attributes": {
+            "AWS_INSTANCE_IPV4": "172.1.1.1",
+            "AWS_INSTANCE_PORT": "8080"
+          },
+          "Id": "<id:2>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-instances-matching-id": [
+        {
+          "Id": "<id:2>",
+          "Attributes": {
+            "AWS_INSTANCE_IPV4": "172.1.1.1",
+            "AWS_INSTANCE_PORT": "8080"
+          }
+        }
+      ],
+      "discover-instances-result": {
+        "Instances": [
+          {
+            "Attributes": {
+              "AWS_INSTANCE_IPV4": "172.1.1.1",
+              "AWS_INSTANCE_PORT": "8080"
+            },
+            "HealthStatus": "UNKNOWN",
+            "InstanceId": "<id:2>",
+            "NamespaceName": "<namespace>",
+            "ServiceName": "<name:1>"
+          }
+        ],
+        "InstancesRevision": "instances-revision",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "deregister-instance-result": {
+        "OperationId": "<operation-id:4>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_register_instance_exceptions": {
+    "recorded-date": "02-01-2024, 18:35:08",
+    "recorded-content": {
+      "register-instance-doesnotexist": {
+        "Error": {
+          "Code": "ServiceNotFound",
+          "Message": "arn:<partition>:servicediscovery:<region>:111111111111:service/doesnotexist-service-id"
+        },
+        "Message": "arn:<partition>:servicediscovery:<region>:111111111111:service/doesnotexist-service-id",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "get-instance-doesnotexist": {
+        "Error": {
+          "Code": "InstanceNotFound",
+          "Message": "doesnotexist"
+        },
+        "Message": "doesnotexist",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "discover-instance-namespace-doesnotexist": {
+        "Error": {
+          "Code": "NamespaceNotFound",
+          "Message": "Namespace not found"
+        },
+        "Message": "Namespace not found",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "discover-instances-result-doesnotexist": {
+        "Instances": [],
+        "InstancesRevision": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "deregister-instance-service-doesnotexist": {
+        "Error": {
+          "Code": "ServiceNotFound",
+          "Message": "arn:<partition>:servicediscovery:<region>:111111111111:service/doesnotexist-service-id"
+        },
+        "Message": "arn:<partition>:servicediscovery:<region>:111111111111:service/doesnotexist-service-id",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "deregister-instance-instance-doesnotexist": {
+        "Error": {
+          "Code": "InstanceNotFound",
+          "Message": "instanceId doesnotexist doesn't exists for service arn:<partition>:servicediscovery:<region>:111111111111:service/<service-id>"
+        },
+        "Message": "instanceId doesnotexist doesn't exists for service arn:<partition>:servicediscovery:<region>:111111111111:service/<service-id>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_dns_namespace_private_hosted_zone": {
+    "recorded-date": "02-01-2024, 18:41:28",
+    "recorded-content": {
+      "private_dns": {
+        "OperationId": "khdhhbs3tcyhlnpwzwliecjo5uauscjm-5q06drn7",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "namespace": {
+        "Arn": "arn:<partition>:servicediscovery:<region>:111111111111:namespace/<id:1>",
+        "CreateDate": "create-date",
+        "Id": "<id:1>",
+        "Name": "<name:1>",
+        "Properties": {
+          "DnsProperties": {
+            "HostedZoneId": "hosted-zone-id",
+            "SOA": {
+              "TTL": 15
+            }
+          },
+          "HttpProperties": {
+            "HttpName": "<name:1>"
+          }
+        },
+        "Type": "DNS_PRIVATE"
+      }
+    }
+  },
+  "tests/aws/services/servicediscovery/test_servicediscovery.py::TestServicediscovery::test_filtering_http_namespace": {
+    "recorded-date": "14-03-2024, 13:13:49",
+    "recorded-content": {
+      "list-namespaces-filter-exist": {
+        "Namespaces": [
+          {
+            "Arn": "arn:<partition>:servicediscovery:<region>:111111111111:namespace/<id:1>",
+            "CreateDate": "create-date",
+            "Id": "<id:1>",
+            "Name": "<name:1>",
+            "Properties": {
+              "DnsProperties": {
+                "SOA": {}
+              },
+              "HttpProperties": {
+                "HttpName": "<name:1>"
+              }
+            },
+            "Type": "HTTP"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-namespaces-filter-exist-complex": {
+        "Namespaces": [
+          {
+            "Arn": "arn:<partition>:servicediscovery:<region>:111111111111:namespace/<id:1>",
+            "CreateDate": "create-date",
+            "Id": "<id:1>",
+            "Name": "<name:1>",
+            "Properties": {
+              "DnsProperties": {
+                "SOA": {}
+              },
+              "HttpProperties": {
+                "HttpName": "<name:1>"
+              }
+            },
+            "Type": "HTTP"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-namespaces-filter-doesnotexist": {
+        "Namespaces": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-namespaces-filter-doesnotexist-complex": {
+        "Namespaces": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-services-filter-exist": {
+        "Services": [
+          {
+            "Arn": "arn:<partition>:servicediscovery:<region>:111111111111:service/<id:2>",
+            "CreateDate": "create-date",
+            "Description": "service description",
+            "DnsConfig": {},
+            "Id": "<id:2>",
+            "Name": "<name:2>",
+            "Type": "HTTP"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-service-filter-exist-complex": {
+        "Services": [
+          {
+            "Arn": "arn:<partition>:servicediscovery:<region>:111111111111:service/<id:2>",
+            "CreateDate": "create-date",
+            "Description": "service description",
+            "DnsConfig": {},
+            "Id": "<id:2>",
+            "Name": "<name:2>",
+            "Type": "HTTP"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-services-filter-doesnotexist": {
+        "Services": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-services-filter-doesnotexist-complex": {
+        "Services": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "discover-instances-result-parameter-exist": {
+        "Instances": [
+          {
+            "Attributes": {
+              "AWS_INSTANCE_IPV4": "172.0.0.1",
+              "AWS_INSTANCE_PORT": "8080",
+              "testkey_instance": "testvalue_instance"
+            },
+            "HealthStatus": "<health-status:1>",
+            "InstanceId": "<instance-id>",
+            "NamespaceName": "<name:1>",
+            "ServiceName": "<name:2>"
+          },
+          {
+            "Attributes": {
+              "AWS_INSTANCE_IPV4": "172.0.0.1",
+              "AWS_INSTANCE_PORT": "8080",
+              "optionalkey_instance": "optionalvalue_instance",
+              "testkey_instance": "testvalue_instance"
+            },
+            "HealthStatus": "<health-status:1>",
+            "InstanceId": "<instance-id>",
+            "NamespaceName": "<name:1>",
+            "ServiceName": "<name:2>"
+          }
+        ],
+        "InstancesRevision": "instances-revision",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "discover-instances-result-parameter-doesnotexist": {
+        "Instances": [],
+        "InstancesRevision": "instances-revision",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "discover-instances-result-parameter-doesnotexist-wrong-key": {
+        "Instances": [],
+        "InstancesRevision": "instances-revision",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "discover-instances-result-parameter-doesnotexist-wrong-value": {
+        "Instances": [],
+        "InstancesRevision": "instances-revision",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "discover-instances-result-parameter-exist-optionalparameter-exists": {
+        "Instances": [
+          {
+            "Attributes": {
+              "AWS_INSTANCE_IPV4": "172.0.0.1",
+              "AWS_INSTANCE_PORT": "8080",
+              "optionalkey_instance": "optionalvalue_instance",
+              "testkey_instance": "testvalue_instance"
+            },
+            "HealthStatus": "<health-status:1>",
+            "InstanceId": "<instance-id>",
+            "NamespaceName": "<name:1>",
+            "ServiceName": "<name:2>"
+          }
+        ],
+        "InstancesRevision": "instances-revision",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "discover-instances-result-parameter-exist-optionalparameter-doesnotexist": {
+        "Instances": [
+          {
+            "Attributes": {
+              "AWS_INSTANCE_IPV4": "172.0.0.1",
+              "AWS_INSTANCE_PORT": "8080",
+              "testkey_instance": "testvalue_instance"
+            },
+            "HealthStatus": "<health-status:1>",
+            "InstanceId": "<instance-id>",
+            "NamespaceName": "<name:1>",
+            "ServiceName": "<name:2>"
+          },
+          {
+            "Attributes": {
+              "AWS_INSTANCE_IPV4": "172.0.0.1",
+              "AWS_INSTANCE_PORT": "8080",
+              "optionalkey_instance": "optionalvalue_instance",
+              "testkey_instance": "testvalue_instance"
+            },
+            "HealthStatus": "<health-status:1>",
+            "InstanceId": "<instance-id>",
+            "NamespaceName": "<name:1>",
+            "ServiceName": "<name:2>"
+          }
+        ],
+        "InstancesRevision": "instances-revision",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

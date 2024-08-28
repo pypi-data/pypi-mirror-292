@@ -1,0 +1,596 @@
+{
+  "Resources": {
+    "KinesisStream46752A3E": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "Name": "kinesis-stream",
+        "RetentionPeriodHours": 24,
+        "ShardCount": 1,
+        "StreamEncryption": {
+          "Fn::If": [
+            "AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
+            {
+              "Ref": "AWS::NoValue"
+            },
+            {
+              "EncryptionType": "KMS",
+              "KeyId": "alias/aws/kinesis"
+            }
+          ]
+        },
+        "StreamModeDetails": {
+          "StreamMode": "PROVISIONED"
+        }
+      }
+    },
+    "S3Bucket07682993": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "firehose-raw-data"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "RedshiftClusterRoleBF0B4D0C": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "redshift.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "RoleName": "redshift-cluster-role"
+      }
+    },
+    "RedshiftPolicyA8B8C3C7": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "S3Bucket07682993",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "S3Bucket07682993",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "redshift-policy",
+        "Roles": [
+          {
+            "Ref": "RedshiftClusterRoleBF0B4D0C"
+          }
+        ]
+      }
+    },
+    "RedshiftVpc02FF1F5A": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.10.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "redshift-vpc"
+          }
+        ]
+      }
+    },
+    "RedshiftVpcpublicSubnet1Subnet637EDD9F": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.10.0.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "KinesisFirehoseRedshiftStack/RedshiftVpc/publicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "RedshiftVpc02FF1F5A"
+        }
+      }
+    },
+    "RedshiftVpcpublicSubnet1RouteTable26B7DECF": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "KinesisFirehoseRedshiftStack/RedshiftVpc/publicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "RedshiftVpc02FF1F5A"
+        }
+      }
+    },
+    "RedshiftVpcpublicSubnet1RouteTableAssociation4D915E87": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "RedshiftVpcpublicSubnet1RouteTable26B7DECF"
+        },
+        "SubnetId": {
+          "Ref": "RedshiftVpcpublicSubnet1Subnet637EDD9F"
+        }
+      }
+    },
+    "RedshiftVpcpublicSubnet1DefaultRoute776292AE": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "RedshiftVpcIGW0AEA27F2"
+        },
+        "RouteTableId": {
+          "Ref": "RedshiftVpcpublicSubnet1RouteTable26B7DECF"
+        }
+      },
+      "DependsOn": [
+        "RedshiftVpcVPCGW71AD6B94"
+      ]
+    },
+    "RedshiftVpcpublicSubnet1EIP7130C997": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "KinesisFirehoseRedshiftStack/RedshiftVpc/publicSubnet1"
+          }
+        ]
+      }
+    },
+    "RedshiftVpcpublicSubnet1NATGateway88187DFD": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "RedshiftVpcpublicSubnet1EIP7130C997",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "RedshiftVpcpublicSubnet1Subnet637EDD9F"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "KinesisFirehoseRedshiftStack/RedshiftVpc/publicSubnet1"
+          }
+        ]
+      },
+      "DependsOn": [
+        "RedshiftVpcpublicSubnet1DefaultRoute776292AE",
+        "RedshiftVpcpublicSubnet1RouteTableAssociation4D915E87"
+      ]
+    },
+    "RedshiftVpcIGW0AEA27F2": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "redshift-vpc"
+          }
+        ]
+      }
+    },
+    "RedshiftVpcVPCGW71AD6B94": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "RedshiftVpcIGW0AEA27F2"
+        },
+        "VpcId": {
+          "Ref": "RedshiftVpc02FF1F5A"
+        }
+      }
+    },
+    "RedshiftClusterSubnetGroup": {
+      "Type": "AWS::Redshift::ClusterSubnetGroup",
+      "Properties": {
+        "Description": "Redshift Cluster Subnet Group",
+        "SubnetIds": [
+          {
+            "Ref": "RedshiftVpcpublicSubnet1Subnet637EDD9F"
+          }
+        ]
+      }
+    },
+    "RedshiftSecurityGroupCD386564": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for redshift cluster",
+        "GroupName": "redshift-security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:5439",
+            "FromPort": 5439,
+            "IpProtocol": "tcp",
+            "ToPort": 5439
+          },
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:22",
+            "FromPort": 22,
+            "IpProtocol": "tcp",
+            "ToPort": 22
+          }
+        ],
+        "VpcId": {
+          "Ref": "RedshiftVpc02FF1F5A"
+        }
+      }
+    },
+    "RedshiftCluster": {
+      "Type": "AWS::Redshift::Cluster",
+      "Properties": {
+        "ClusterIdentifier": "redshift-cluster",
+        "ClusterSubnetGroupName": {
+          "Ref": "RedshiftClusterSubnetGroup"
+        },
+        "ClusterType": "single-node",
+        "DBName": "streaming_db",
+        "IamRoles": [
+          {
+            "Fn::GetAtt": [
+              "RedshiftClusterRoleBF0B4D0C",
+              "Arn"
+            ]
+          }
+        ],
+        "MasterUserPassword": "123456789Test",
+        "MasterUsername": "dwh_user",
+        "NodeType": "dc2.large",
+        "NumberOfNodes": 1,
+        "PubliclyAccessible": true,
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "RedshiftSecurityGroupCD386564",
+              "GroupId"
+            ]
+          }
+        ]
+      }
+    },
+    "FirehoseKinesisRole0AD86762": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "firehose.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "RoleName": "firehose-kinesis-role"
+      }
+    },
+    "FirehoseKinesisPolicy67670C20": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kinesis:DescribeStream",
+                "kinesis:GetShardIterator",
+                "kinesis:GetRecords",
+                "kinesis:ListShards"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisStream46752A3E",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "firehose-kinesis-policy",
+        "Roles": [
+          {
+            "Ref": "FirehoseKinesisRole0AD86762"
+          }
+        ]
+      }
+    },
+    "FirehoseLogGroup1B45149B": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "firehose-s3-log-group",
+        "RetentionInDays": 731
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "FirehoseLogGroupFirehoseLogStreamB25B6E82": {
+      "Type": "AWS::Logs::LogStream",
+      "Properties": {
+        "LogGroupName": {
+          "Ref": "FirehoseLogGroup1B45149B"
+        },
+        "LogStreamName": "firehose-s3-log-stream"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "FirehoseS3Role226C92CC": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "firehose.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "RoleName": "firehose-s3-role"
+      }
+    },
+    "FirehoseS3Policy3A414B80": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads",
+                "s3:PutObject"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "S3Bucket07682993",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "S3Bucket07682993",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "logs:PutLogEvents",
+                "logs:CreateLogStream"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FirehoseLogGroup1B45149B",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "firehose-s3-policy",
+        "Roles": [
+          {
+            "Ref": "FirehoseS3Role226C92CC"
+          }
+        ]
+      }
+    },
+    "FirehoseDeliveryStream": {
+      "Type": "AWS::KinesisFirehose::DeliveryStream",
+      "Properties": {
+        "DeliveryStreamName": "firehose-deliverystream",
+        "DeliveryStreamType": "KinesisStreamAsSource",
+        "KinesisStreamSourceConfiguration": {
+          "KinesisStreamARN": {
+            "Fn::GetAtt": [
+              "KinesisStream46752A3E",
+              "Arn"
+            ]
+          },
+          "RoleARN": {
+            "Fn::GetAtt": [
+              "FirehoseKinesisRole0AD86762",
+              "Arn"
+            ]
+          }
+        },
+        "RedshiftDestinationConfiguration": {
+          "CloudWatchLoggingOptions": {
+            "Enabled": true,
+            "LogGroupName": "firehose-s3-log-group",
+            "LogStreamName": "firehose-s3-log-stream"
+          },
+          "ClusterJDBCURL": {
+            "Fn::Join": [
+              "",
+              [
+                "jdbc:redshift://",
+                {
+                  "Fn::GetAtt": [
+                    "RedshiftCluster",
+                    "Endpoint.Address"
+                  ]
+                },
+                ":5439/streaming_db"
+              ]
+            ]
+          },
+          "CopyCommand": {
+            "DataTableName": "user_health_data"
+          },
+          "Password": "123456789Test",
+          "RoleARN": {
+            "Fn::GetAtt": [
+              "FirehoseS3Role226C92CC",
+              "Arn"
+            ]
+          },
+          "S3Configuration": {
+            "BucketARN": {
+              "Fn::GetAtt": [
+                "S3Bucket07682993",
+                "Arn"
+              ]
+            },
+            "CompressionFormat": "UNCOMPRESSED",
+            "Prefix": "redshift-raw-data/",
+            "RoleARN": {
+              "Fn::GetAtt": [
+                "FirehoseS3Role226C92CC",
+                "Arn"
+              ]
+            }
+          },
+          "Username": "dwh_user"
+        }
+      }
+    }
+  },
+  "Conditions": {
+    "AwsCdkKinesisEncryptedStreamsUnsupportedRegions": {
+      "Fn::Or": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "AWS::Region"
+            },
+            "cn-north-1"
+          ]
+        },
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "AWS::Region"
+            },
+            "cn-northwest-1"
+          ]
+        }
+      ]
+    }
+  },
+  "Outputs": {
+    "KinesisStreamName": {
+      "Value": {
+        "Ref": "KinesisStream46752A3E"
+      }
+    },
+    "BucketName": {
+      "Value": {
+        "Ref": "S3Bucket07682993"
+      }
+    },
+    "RedshiftClusterName": {
+      "Value": "redshift-cluster"
+    },
+    "RedshiftClusterAddress": {
+      "Value": {
+        "Fn::GetAtt": [
+          "RedshiftCluster",
+          "Endpoint.Address"
+        ]
+      }
+    },
+    "RedshiftClusterPort": {
+      "Value": {
+        "Fn::GetAtt": [
+          "RedshiftCluster",
+          "Endpoint.Port"
+        ]
+      }
+    },
+    "FirehoseDeliveryStreamName": {
+      "Value": "firehose-deliverystream"
+    }
+  }
+}

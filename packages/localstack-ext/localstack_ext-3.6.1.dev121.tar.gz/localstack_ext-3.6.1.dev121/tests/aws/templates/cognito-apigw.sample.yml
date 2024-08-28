@@ -1,0 +1,246 @@
+# Test template based on https://gist.github.com/singledigit/2c4d7232fa96d9e98a3de89cf6ebe7a5
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Cognito Stack
+Parameters:
+  AuthName:
+    Type: String
+    Description: Unique Auth Name for Cognito Resources
+  CrLambdaArn:
+    Type: String
+    Description: Function Arn for the custom resource
+Resources:
+  # Creates a role that allows Cognito to send SNS messages
+  SNSRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "cognito-idp.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        - PolicyName: "CognitoSNSPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: "sns:publish"
+                Resource: "*"
+
+  # Creates a user pool in cognito for your app to auth against
+  # This example requires MFA and validates the phone number to use as MFA
+  UserPool:
+    Type: "AWS::Cognito::UserPool"
+    Properties:
+      UserPoolName: !Sub ${AuthName}-user-pool
+      AutoVerifiedAttributes:
+        - phone_number
+      MfaConfiguration: "ON"
+      SmsConfiguration:
+        ExternalId: !Sub ${AuthName}-external
+        SnsCallerArn: !GetAtt SNSRole.Arn
+      Schema:
+        - Name: name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: email
+          AttributeDataType: String
+          Mutable: false
+          Required: true
+        - Name: phone_number
+          AttributeDataType: String
+          Mutable: false
+          Required: true
+        - Name: slackId
+          AttributeDataType: String
+          Mutable: true
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub ${AuthName}-client
+      GenerateSecret: false
+      UserPoolId: !Ref UserPool
+
+  IdentityPool:
+    Type: AWS::Cognito::IdentityPool
+    Properties:
+      IdentityPoolName: !Sub ${AuthName}Identity
+      AllowUnauthenticatedIdentities: true
+      CognitoIdentityProviders:
+        - ClientId: !Ref UserPoolClient
+          ProviderName: !GetAtt UserPool.ProviderName
+
+  IdentityProvider:
+    Type: AWS::Cognito::UserPoolIdentityProvider
+    Properties:
+      UserPoolId: !Ref UserPool
+      ProviderDetails:
+        client_id: TestGoogleAppId
+      ProviderName: test-prov-9123
+      ProviderType: Google
+      AttributeMapping:
+        email: email
+
+  CognitoUnAuthorizedRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action:
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                "cognito-identity.amazonaws.com:aud": !Ref IdentityPool
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": unauthenticated
+      Policies:
+        - PolicyName: "CognitoUnauthorizedPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "mobileanalytics:PutEvents"
+                  - "cognito-sync:*"
+                Resource: "*"
+
+  # Only allows users in the previously created Identity Pool
+  CognitoAuthorizedRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action:
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                "cognito-identity.amazonaws.com:aud": !Ref IdentityPool
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": authenticated
+      Policies:
+        - PolicyName: "CognitoAuthorizedPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "mobileanalytics:PutEvents"
+                  - "cognito-sync:*"
+                  - "cognito-identity:*"
+                Resource: "*"
+              - Effect: "Allow"
+                Action:
+                  - "lambda:InvokeFunction"
+                Resource: "*"
+
+  # Assigns the roles to the Identity Pool
+  IdentityPoolRoleMapping:
+    Type: "AWS::Cognito::IdentityPoolRoleAttachment"
+    Properties:
+      IdentityPoolId: !Ref IdentityPool
+      Roles:
+        authenticated: !GetAtt CognitoAuthorizedRole.Arn
+        unauthenticated: !GetAtt CognitoUnAuthorizedRole.Arn
+
+  # Custom resource 1
+  CustomResource1:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken:
+        Ref: CrLambdaArn
+  # Custom resource 2
+  CustomResource2:
+    Type: Custom::MyCustomResource
+    Properties:
+      ServiceToken:
+        Ref: CrLambdaArn
+
+  # Amplify resources
+  AmplifyApp:
+    Type: AWS::Amplify::App
+    Properties:
+      Name: app123
+      AccessToken: token123
+      Description: test app 123
+      OauthToken: token234
+      Repository: repo123
+  AmplifyBranch:
+    Type: AWS::Amplify::Branch
+    Properties:
+      AppId: !Ref AmplifyApp
+      BasicAuthConfig: {}
+      BranchName: branch-123
+      BuildSpec: test
+      Description: test branch 123
+      EnableAutoBuild: true
+
+  # API Gateway resources
+  ApiGatewayRestApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      ProtocolType: HTTP
+      Name: cf-apigwv2-lambda-api
+  ApiGatewayIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref ApiGatewayRestApi
+      IntegrationUri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+      IntegrationMethod: POST
+      IntegrationType: AWS_PROXY
+  ApiGatewayDeployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    DependsOn: ApiGatewayIntegration
+    Properties:
+      ApiId: !Ref ApiGatewayRestApi
+  ApiGatewayStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      DeploymentId: !Ref ApiGatewayDeployment
+      ApiId: !Ref ApiGatewayRestApi
+      StageName: v0
+  ApiGatewayRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ApiGatewayRestApi
+      RouteKey: test-route
+      Target: !Sub "integrations/${ApiGatewayIntegration}"
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          def handler(event, context):
+            return {}
+      FunctionName: cf-apigwv2-lambda
+      Handler: index.handler
+      Role: !GetAtt CognitoAuthorizedRole.Arn
+      Runtime: python3.7
+
+Outputs:
+  UserPoolId:
+    Value: !Ref UserPool
+    Export:
+      Name: "UserPool::Id"
+  UserPoolClientId:
+    Value: !Ref UserPoolClient
+    Export:
+      Name: "UserPoolClient::Id"
+  IdentityPoolId:
+    Value: !Ref IdentityPool
+    Export:
+      Name: "IdentityPool::Id"

@@ -1,0 +1,152 @@
+Parameters:
+  tableNameParam:
+    Type: String
+    Default: my-custom-table
+Resources:
+  dynamoDbCustomFnServiceRole9D16DEA1:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  dynamoDbCustomFnServiceRoleDefaultPolicy63687A6E:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: "*"
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: dynamoDbCustomFnServiceRoleDefaultPolicy63687A6E
+      Roles:
+        - Ref: dynamoDbCustomFnServiceRole9D16DEA1
+  dynamoDbCustomFn2149D9F4:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+
+          import boto3
+          import json
+          import urllib3
+          import json
+          import os
+
+          if "AWS_ENDPOINT_URL" in os.environ:
+            dyn_db = boto3.client("dynamodb", endpoint_url=os.environ["AWS_ENDPOINT_URL"])
+          else:
+            dyn_db = boto3.client("dynamodb")
+
+          SUCCESS = "SUCCESS"
+          FAILED = "FAILED"
+
+          http = urllib3.PoolManager()
+
+          def send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False, reason=None):
+              responseUrl = event['ResponseURL']
+              print(responseUrl)
+              responseBody = {
+                  'Status' : responseStatus,
+                  'Reason' : reason or "See the details in CloudWatch Log Stream: {}".format(context.log_stream_name),
+                  'PhysicalResourceId' : physicalResourceId or context.log_stream_name,
+                  'StackId' : event['StackId'],
+                  'RequestId' : event['RequestId'],
+                  'LogicalResourceId' : event['LogicalResourceId'],
+                  'NoEcho' : noEcho,
+                  'Data' : responseData
+              }
+
+              json_responseBody = json.dumps(responseBody)
+
+              print("Response body:")
+              print(json_responseBody)
+
+              headers = {
+                  'content-type' : '',
+                  'content-length' : str(len(json_responseBody))
+              }
+
+              try:
+                  response = http.request('PUT', responseUrl, headers=headers, body=json_responseBody)
+                  print("Status code:", response.status)
+              except Exception as e:
+                  print("send(..) failed executing http.request(..):", e)
+
+
+          def handler(event, context):
+              print(event)
+              try:
+                  # also testing here if the string conversion of boolean properties work correctly
+                  if event["RequestType"] == "Create" and event["ResourceProperties"]["ShouldCreate"] == "true":
+                      table = dyn_db.create_table(
+                          AttributeDefinitions=[{"AttributeName": "id", "AttributeType": "S"}],
+                          TableName=event["ResourceProperties"]["TableName"],
+                          KeySchema=[{"AttributeName": "id", "KeyType": "HASH"}],
+                          BillingMode="PAY_PER_REQUEST"
+                      )
+                      response_data = {}
+                      physical_resource_id = table["TableDescription"]["TableArn"]
+                      response_data["Custom"] = "custom-data"
+                      dyn_db.get_waiter("table_exists").wait(TableName=event["ResourceProperties"]["TableName"])
+                      send(event, context, SUCCESS, response_data, physical_resource_id)
+                  elif event["RequestType"] == "Delete":
+                      dyn_db.get_waiter("table_exists").wait(TableName=event["ResourceProperties"]["TableName"])
+                      dyn_db.delete_table(TableName=event["ResourceProperties"]["TableName"])
+                      send(event, context, SUCCESS, {})
+                  else:
+                      send(event, context, FAILED, {}, reason="Unsupported operation")
+              except Exception as e:
+                  print(e)
+                  send(event, context, FAILED, {}, reason=str(e))
+      Role:
+        Fn::GetAtt:
+          - dynamoDbCustomFnServiceRole9D16DEA1
+          - Arn
+      Handler: index.handler
+      Runtime: python3.9
+      Timeout: 60
+    DependsOn:
+      - dynamoDbCustomFnServiceRoleDefaultPolicy63687A6E
+      - dynamoDbCustomFnServiceRole9D16DEA1
+  dynamoDbCustomFnEventInvokeConfig77E3FC0B:
+    Type: AWS::Lambda::EventInvokeConfig
+    Properties:
+      FunctionName:
+        Ref: dynamoDbCustomFn2149D9F4
+      Qualifier: $LATEST
+      MaximumRetryAttempts: 0
+  MasterTable:
+    Type: Custom::DynamoDB
+    Properties:
+      ServiceToken:
+        Fn::GetAtt:
+          - dynamoDbCustomFn2149D9F4
+          - Arn
+      TableName:
+        Ref: tableNameParam
+      ShouldCreate: True
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+Outputs:
+  dynamoDbCustomFnOutput:
+    Value:
+      Ref: dynamoDbCustomFn2149D9F4
+  CustomOutput:
+    Value:
+      Fn::GetAtt:
+        - MasterTable
+        - Custom
+  masterTableArn:
+    Value:
+      Ref: MasterTable

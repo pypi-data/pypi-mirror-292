@@ -1,0 +1,19 @@
+Description: "AWS Glue Database Test"
+
+Parameters:
+  ClassifierName:
+    Type: String
+    Default: cfn-classifier-grok-one-column-1
+
+Resources:
+  Classifier:
+    Type: AWS::Glue::Classifier
+    Properties:
+      GrokClassifier:
+        Name: !Ref ClassifierName
+        Classification: greedy
+        GrokPattern: "%{GREEDYDATA:message}"
+
+Outputs:
+  ClasifierRef:
+    Value: !Ref Classifier

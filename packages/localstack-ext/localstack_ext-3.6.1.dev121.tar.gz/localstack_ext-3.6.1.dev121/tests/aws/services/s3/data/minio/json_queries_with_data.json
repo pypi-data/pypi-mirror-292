@@ -1,0 +1,98 @@
+[
+  {
+    "id": "compare-mixed",
+    "query": "SELECT s.\"id\" from s3object s WHERE s.\"value\" = true",
+    "expected": "{\"id\":1}",
+    "data": "{\"id\":0, \"value\": false}\n{\"id\":1, \"value\": true}\n{\"id\":2, \"value\": 42}\n{\"id\":3, \"value\": \"true\"}\n"
+  },
+  {
+    "id": "compare-mixed-not",
+    "query": "SELECT COUNT(s.\"id\") as n from s3object s WHERE s.\"value\" != true",
+    "expected": "{\"n\":3}",
+    "data": "{\"id\":0, \"value\": false}\n{\"id\":1, \"value\": true}\n{\"id\":2, \"value\": 42}\n{\"id\":3, \"value\": \"true\"}\n"
+  },
+  {
+    "id": "document",
+    "query": "",
+    "expected": "{\"element_type\":\"__elem__merfu\",\"element_id\":\"d868aefe-ef9a-4be2-b9b2-c9fd89cc43eb\",\"attributes\":{\"__attr__image_dpi\":300,\"__attr__image_size\":[2550,3299],\"__attr__image_index\":2,\"__attr__image_format\":\"JPEG\",\"__attr__file_extension\":\"jpg\",\"__attr__data\":null}}",
+    "data": "\n{\n  \"name\": \"small_pdf1.pdf\",\n  \"lume_id\": \"9507193e-572d-4f95-bcf1-e9226d96be65\",\n  \"elements\": [\n    {\n      \"element_type\": \"__elem__image\",\n      \"element_id\": \"859d09c4-7cf1-4a37-9674-3a7de8b56abc\",\n      \"attributes\": {\n        \"__attr__image_dpi\": 300,\n        \"__attr__image_size\": [\n          2550,\n          3299\n        ],\n        \"__attr__image_index\": 1,\n        \"__attr__image_format\": \"JPEG\",\n        \"__attr__file_extension\": \"jpg\",\n        \"__attr__data\": null\n      }\n    },\n    {\n      \"element_type\": \"__elem__merfu\",\n      \"element_id\": \"d868aefe-ef9a-4be2-b9b2-c9fd89cc43eb\",\n      \"attributes\": {\n        \"__attr__image_dpi\": 300,\n        \"__attr__image_size\": [\n          2550,\n          3299\n        ],\n        \"__attr__image_index\": 2,\n        \"__attr__image_format\": \"JPEG\",\n        \"__attr__file_extension\": \"jpg\",\n        \"__attr__data\": null\n      }\n    }\n  ],\n  \"data\": \"asdascasdc1234e123erdasdas\"\n}"
+  },
+  {
+    "id": "limit-2",
+    "query": "select * from s3object[*].person[*] limit 1",
+    "expected": "{\"Id\":1,\"Name\":\"Anshu\",\"Address\":\"Templestowe\",\"Car\":\"Jeep\"}",
+    "data": "{ \"person\": [ { \"Id\": 1, \"Name\": \"Anshu\", \"Address\": \"Templestowe\", \"Car\": \"Jeep\" }, { \"Id\": 2, \"Name\": \"Ben Mostafa\", \"Address\": \"Las Vegas\", \"Car\": \"Mustang\" }, { \"Id\": 3, \"Name\": \"Rohan Wood\", \"Address\": \"Wooddon\", \"Car\": \"VW\" } ] }"
+  },
+  {
+    "id": "lower-case-is",
+    "query": "select * from s3object[*] as s where s.request.header['User-Agent'] is not null",
+    "expected": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}"
+  },
+  {
+    "id": "is-not-missing",
+    "query": "select * from s3object[*] as s where s.request.header['User-Agent'] is not missing",
+    "expected": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}"
+  },
+  {
+    "id": "is-not-missing-2",
+    "query": "select * from s3object[*] as s where s.request.header is not missing",
+    "expected": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}"
+  },
+  {
+    "id": "is-not-missing-null",
+    "query": "select * from s3object[*] as s where s.request.header is not missing",
+    "expected": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":null}}",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":null}}"
+  },
+  {
+    "id": "is-not-missing",
+    "query": "select * from s3object[*] as s where s.request.header['User-Agent'] is not missing",
+    "expected": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}"
+  },
+  {
+    "id": "is-not-missing-2",
+    "query": "select * from s3object[*] as s where s.request.header is not missing",
+    "expected": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}"
+  },
+  {
+    "id": "is-not-missing-null",
+    "query": "select * from s3object[*] as s where s.request.header is not missing",
+    "expected": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":null}}",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":null}}"
+  },
+  {
+    "id": "is-missing",
+    "query": "select * from s3object[*] as s where s.request.header['User-Agent'] is missing",
+    "expected": "{\"request\":{\"uri\":\"/2\",\"header\":{}}}",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}"
+  },
+  {
+    "id": "is-missing-2",
+    "query": "select * from s3object[*] as s where s.request.header is missing",
+    "expected": "",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}"
+  },
+  {
+    "id": "is-missing",
+    "query": "select * from s3object[*] as s where s.request.header['User-Agent'] IS MISSING",
+    "expected": "{\"request\":{\"uri\":\"/2\",\"header\":{}}}",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}"
+  },
+  {
+    "id": "is-missing-null",
+    "query": "select * from s3object[*] as s where s.request.header is missing",
+    "expected": "",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":null}}"
+  },
+  {
+    "id": "is-missing-select",
+    "query": "select s.request.header['User-Agent'] as h from s3object[*] as s",
+    "expected": "{\"h\":\"test\"}\n{}",
+    "data": "{\"request\":{\"uri\":\"/1\",\"header\":{\"User-Agent\":\"test\"}}}\n{\"request\":{\"uri\":\"/2\",\"header\":{}}}"
+  }
+]

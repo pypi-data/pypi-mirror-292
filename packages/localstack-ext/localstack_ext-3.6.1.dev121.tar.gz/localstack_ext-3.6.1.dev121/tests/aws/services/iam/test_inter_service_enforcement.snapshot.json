@@ -1,0 +1,445 @@
+{
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestS3BucketNotifications::test_s3_bucket_notification_sqs": {
+    "recorded-date": "05-05-2023, 13:31:25",
+    "recorded-content": {
+      "invalid-permission": {
+        "Error": {
+          "ArgumentName1": "arn:<partition>:sqs:<region>:111111111111:<resource:1>",
+          "ArgumentValue1": "Permissions on the destination queue do not allow S3 to publish notifications from this bucket",
+          "Code": "InvalidArgument",
+          "Message": "Unable to validate the following destination configurations"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "initial-messages": [
+        {
+          "MessageId": "<uuid:1>",
+          "ReceiptHandle": "<receipt-handle:1>",
+          "MD5OfBody": "<m-d5-of-body:1>",
+          "Body": {
+            "Service": "Amazon S3",
+            "Event": "s3:TestEvent",
+            "Time": "date",
+            "Bucket": "<bucket:1>",
+            "RequestId": "<request-id:2>",
+            "HostId": "<host-id:2>"
+          }
+        }
+      ],
+      "notification-messages": [
+        {
+          "MessageId": "<uuid:2>",
+          "ReceiptHandle": "<receipt-handle:2>",
+          "MD5OfBody": "<m-d5-of-body:2>",
+          "Body": {
+            "Records": [
+              {
+                "eventVersion": "2.1",
+                "eventSource": "aws:s3",
+                "awsRegion": "<region>",
+                "eventTime": "date",
+                "eventName": "ObjectCreated:Put",
+                "userIdentity": {
+                  "principalId": "<principal-id:2>"
+                },
+                "requestParameters": {
+                  "sourceIPAddress": "<ip-address:1>"
+                },
+                "responseElements": {
+                  "x-amz-request-id": "amz-request-id",
+                  "x-amz-id-2": "amz-id"
+                },
+                "s3": {
+                  "s3SchemaVersion": "1.0",
+                  "configurationId": "<config-id:1>",
+                  "bucket": {
+                    "name": "<bucket:1>",
+                    "ownerIdentity": {
+                      "principalId": "<principal-id:1>"
+                    },
+                    "arn": "arn:<partition>:s3:::<bucket:1>"
+                  },
+                  "object": {
+                    "key": "some-key",
+                    "size": 7,
+                    "eTag": "<e-tag:1>",
+                    "sequencer": "sequencer"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestS3BucketNotifications::test_s3_bucket_notification_sns": {
+    "recorded-date": "05-05-2023, 13:31:30",
+    "recorded-content": {
+      "invalid-permission": {
+        "Error": {
+          "ArgumentName1": "arn:<partition>:sns:<region>:111111111111:<resource:1>",
+          "ArgumentValue1": "Permissions on the destination topic do not allow S3 to publish notifications from this bucket",
+          "Code": "InvalidArgument",
+          "Message": "Unable to validate the following destination configurations"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "initial-messages": [
+        {
+          "Type": "Notification",
+          "MessageId": "<uuid:1>",
+          "TopicArn": "arn:<partition>:sns:<region>:111111111111:<resource:1>",
+          "Subject": "Amazon S3 Notification",
+          "Message": {
+            "Service": "Amazon S3",
+            "Event": "s3:TestEvent",
+            "Time": "date",
+            "Bucket": "<bucket:1>",
+            "RequestId": "<request-id:2>",
+            "HostId": "<host-id:2>"
+          },
+          "Timestamp": "date",
+          "SignatureVersion": "1",
+          "Signature": "<signature:1>",
+          "SigningCertURL": "<signing-cert-u-r-l:1>",
+          "UnsubscribeURL": "<unsubscribe-u-r-l:1>"
+        }
+      ],
+      "notification-messages": [
+        {
+          "Type": "Notification",
+          "MessageId": "<uuid:2>",
+          "TopicArn": "arn:<partition>:sns:<region>:111111111111:<resource:1>",
+          "Subject": "Amazon S3 Notification",
+          "Message": {
+            "Records": [
+              {
+                "eventVersion": "2.1",
+                "eventSource": "aws:s3",
+                "awsRegion": "<region>",
+                "eventTime": "date",
+                "eventName": "ObjectCreated:Put",
+                "userIdentity": {
+                  "principalId": "<principal-id:2>"
+                },
+                "requestParameters": {
+                  "sourceIPAddress": "<ip-address:1>"
+                },
+                "responseElements": {
+                  "x-amz-request-id": "amz-request-id",
+                  "x-amz-id-2": "amz-id"
+                },
+                "s3": {
+                  "s3SchemaVersion": "1.0",
+                  "configurationId": "<config-id:1>",
+                  "bucket": {
+                    "name": "<bucket:1>",
+                    "ownerIdentity": {
+                      "principalId": "<principal-id:1>"
+                    },
+                    "arn": "arn:<partition>:s3:::<bucket:1>"
+                  },
+                  "object": {
+                    "key": "some-key",
+                    "size": 7,
+                    "eTag": "<e-tag:1>",
+                    "sequencer": "sequencer"
+                  }
+                }
+              }
+            ]
+          },
+          "Timestamp": "date",
+          "SignatureVersion": "1",
+          "Signature": "<signature:2>",
+          "SigningCertURL": "<signing-cert-u-r-l:1>",
+          "UnsubscribeURL": "<unsubscribe-u-r-l:1>"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestS3BucketNotifications::test_s3_bucket_notification_lambda": {
+    "recorded-date": "01-07-2024, 19:03:00",
+    "recorded-content": {
+      "create-function-result": {
+        "Architectures": [
+          "x86_64"
+        ],
+        "CodeSha256": "<code-sha256:1>",
+        "CodeSize": "<code-size>",
+        "Description": "",
+        "Environment": {
+          "Variables": {}
+        },
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<resource:1>",
+        "FunctionName": "<resource:1>",
+        "Handler": "handler.handler",
+        "LastModified": "date",
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/<resource:1>"
+        },
+        "MemorySize": 128,
+        "PackageType": "Zip",
+        "RevisionId": "<uuid:1>",
+        "Role": "arn:<partition>:iam::111111111111:role/<resource:2>",
+        "Runtime": "python3.12",
+        "RuntimeVersionConfig": {
+          "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:3>"
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "State": "Pending",
+        "StateReason": "The function is being created.",
+        "StateReasonCode": "Creating",
+        "Timeout": 30,
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "Version": "$LATEST",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "invalid-permission": {
+        "Error": {
+          "ArgumentName1": "arn:<partition>:lambda:<region>:111111111111:function:<resource:1>, null",
+          "ArgumentValue1": "Not authorized to invoke function [arn:<partition>:lambda:<region>:111111111111:function:<resource:1>]",
+          "Code": "InvalidArgument",
+          "Message": "Unable to validate the following destination configurations"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "notification-messages": {
+        "Records": [
+          {
+            "awsRegion": "<region>",
+            "eventName": "ObjectCreated:Put",
+            "eventSource": "aws:s3",
+            "eventTime": "date",
+            "eventVersion": "2.1",
+            "requestParameters": {
+              "sourceIPAddress": "<ip-address:1>"
+            },
+            "responseElements": {
+              "x-amz-id-2": "amz-id",
+              "x-amz-request-id": "amz-request-id"
+            },
+            "s3": {
+              "bucket": {
+                "arn": "arn:<partition>:s3:::<resource:5>",
+                "name": "<resource:5>",
+                "ownerIdentity": {
+                  "principalId": "<principal-id:1>"
+                }
+              },
+              "configurationId": "<config-id:1>",
+              "object": {
+                "eTag": "<e-tag:1>",
+                "key": "some-key",
+                "sequencer": "sequencer",
+                "size": 7
+              },
+              "s3SchemaVersion": "1.0"
+            },
+            "userIdentity": {
+              "principalId": "<principal-id:2>"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayIntegrations::test_lambda_integration[AWS]": {
+    "recorded-date": "14-06-2023, 11:38:20",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 500,
+      "insufficient-permissions-response-body": {
+        "message": "Internal server error"
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayIntegrations::test_lambda_integration[AWS_PROXY]": {
+    "recorded-date": "14-06-2023, 11:38:54",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 500,
+      "insufficient-permissions-response-body": {
+        "message": "Internal server error"
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayIntegrations::test_lambda_integration_resource_based_policy[AWS]": {
+    "recorded-date": "14-06-2023, 11:44:46",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 500,
+      "insufficient-permissions-response-body": {
+        "message": "Internal server error"
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayIntegrations::test_lambda_integration_resource_based_policy[AWS_PROXY]": {
+    "recorded-date": "14-06-2023, 11:49:01",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 500,
+      "insufficient-permissions-response-body": {
+        "message": "Internal server error"
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayIntegrations::test_kinesis_integration": {
+    "recorded-date": "15-06-2023, 17:07:54",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 400,
+      "insufficient-permissions-response-body": {
+        "__type": "AccessDeniedException",
+        "Message": "User: arn:<partition>:sts::111111111111:assumed-role/<role_name>/BackplaneAssumeRoleSession is not authorized to perform: kinesis:PutRecord on resource: arn:<partition>:kinesis:<region>:111111111111:stream/<stream_name> because no identity-based policy allows the kinesis:PutRecord action"
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayIntegrations::test_dynamodb_integration": {
+    "recorded-date": "15-06-2023, 17:06:04",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 400,
+      "insufficient-permissions-response-body": {
+        "__type": "com.amazon.coral.service#AccessDeniedException",
+        "Message": "User: arn:<partition>:sts::111111111111:assumed-role/<role_name>/BackplaneAssumeRoleSession is not authorized to perform: dynamodb:PutItem on resource: arn:<partition>:dynamodb:<region>:111111111111:table/<table_name> because no identity-based policy allows the dynamodb:PutItem action"
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayIntegrations::test_sqs_integration": {
+    "recorded-date": "15-06-2023, 17:53:01",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 400,
+      "insufficient-permissions-response-body": {
+        "Error": {
+          "Code": "AccessDenied",
+          "Message": "User: arn:<partition>:sts::111111111111:assumed-role/<role_name>/BackplaneAssumeRoleSession is not authorized to perform: sqs:sendmessage on resource: arn:<partition>:sqs:<region>:111111111111:<queue_name> because no identity-based policy allows the sqs:sendmessage action",
+          "Type": "Sender"
+        },
+        "RequestId": "<uuid:1>"
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayIntegrations::test_sns_integration": {
+    "recorded-date": "15-06-2023, 18:06:27",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 400,
+      "insufficient-permissions-response-body": {
+        "Error": {
+          "Code": "AuthorizationError",
+          "Message": "User: arn:<partition>:sts::111111111111:assumed-role/<role_name>/BackplaneAssumeRoleSession is not authorized to perform: SNS:Publish on resource: arn:<partition>:sns:<region>:111111111111:<topic_name> because no identity-based policy allows the SNS:Publish action",
+          "Type": "Sender"
+        },
+        "RequestId": "<uuid:1>"
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayLambdaAuthorizers::test_apigateway_authorizer_with_credentials[TOKEN]": {
+    "recorded-date": "22-04-2024, 13:19:49",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 500,
+      "insufficient-permissions-response-body": {
+        "message": null
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayLambdaAuthorizers::test_apigateway_authorizer_with_credentials[REQUEST]": {
+    "recorded-date": "22-04-2024, 13:20:09",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 500,
+      "insufficient-permissions-response-body": {
+        "message": null
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayLambdaAuthorizers::test_apigateway_authorizer_resource_based[TOKEN]": {
+    "recorded-date": "22-04-2024, 13:20:45",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 500,
+      "insufficient-permissions-response-body": {
+        "message": null
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestApiGatewayLambdaAuthorizers::test_apigateway_authorizer_resource_based[REQUEST]": {
+    "recorded-date": "22-04-2024, 13:20:52",
+    "recorded-content": {
+      "insufficient-permissions-response-status-code": 500,
+      "insufficient-permissions-response-body": {
+        "message": null
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestInterServiceCommunicationEnforcement::test_lambda_iam[/]": {
+    "recorded-date": "21-06-2024, 12:04:12",
+    "recorded-content": {
+      "create-function-assume-denied": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The role defined for the function cannot be assumed by Lambda."
+        },
+        "Type": "User",
+        "message": "The role defined for the function cannot be assumed by Lambda.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "invoke-result": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "key": "value"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iam/test_inter_service_enforcement.py::TestInterServiceCommunicationEnforcement::test_lambda_iam[/testpath/]": {
+    "recorded-date": "21-06-2024, 12:04:25",
+    "recorded-content": {
+      "create-function-assume-denied": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The role defined for the function cannot be assumed by Lambda."
+        },
+        "Type": "User",
+        "message": "The role defined for the function cannot be assumed by Lambda.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "invoke-result": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "key": "value"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

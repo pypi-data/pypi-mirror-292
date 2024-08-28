@@ -1,0 +1,42 @@
+{
+  "tests/aws/services/cloudformation/resources/test_athena.py::test_athena": {
+    "recorded-date": "02-08-2022, 14:55:00",
+    "recorded-content": {
+      "get_data_catalog": {
+        "Name": "TestDataCatalog",
+        "Description": "TestDescription",
+        "Type": "GLUE",
+        "Parameters": {
+          "catalog-id": "111111111111"
+        }
+      },
+      "get_named_query": {
+        "Name": "TestNamedQuery",
+        "Description": "TestDescription",
+        "Database": "TestDatabase",
+        "QueryString": "SELECT * FROM table WHERE x = 1 AND y = 2",
+        "NamedQueryId": "<uuid:1>",
+        "WorkGroup": "TestWorkGroup"
+      },
+      "get_work_group": {
+        "Name": "TestWorkGroup",
+        "State": "ENABLED",
+        "Configuration": {
+          "ResultConfiguration": {
+            "OutputLocation": "s3://testbucket/path/within/bucket"
+          },
+          "EnforceWorkGroupConfiguration": true,
+          "PublishCloudWatchMetricsEnabled": false,
+          "BytesScannedCutoffPerQuery": 1000000000,
+          "RequesterPaysEnabled": false,
+          "EngineVersion": {
+            "SelectedEngineVersion": "AUTO",
+            "EffectiveEngineVersion": "Athena engine version 2"
+          }
+        },
+        "Description": "TestDescription",
+        "CreationTime": "datetime"
+      }
+    }
+  }
+}

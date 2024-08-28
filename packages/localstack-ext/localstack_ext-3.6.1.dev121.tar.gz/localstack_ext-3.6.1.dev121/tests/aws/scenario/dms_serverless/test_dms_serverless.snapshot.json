@@ -1,0 +1,2209 @@
+{
+  "tests/aws/scenario/dms_serverless/test_dms_serverless.py::TestDmsScenario::test_create_describe_replication_config": {
+    "recorded-date": "23-08-2024, 05:39:33",
+    "recorded-content": {
+      "create-config-invalid-computeconfig": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "MaxCapacityUnits is required as part of compute-config"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-config-invalid-replicationtype": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "ReplicationType full is invalid."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-config-invalid-computeconfig-2": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "MinCapacityUnits cannot be greater than MaxCapacityUnits"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_replication_config_valid_source": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "Endpoint ARN:arn:<partition>:dms:<region>:111111111111:endpoint:identifier does not exist"
+        },
+        "message": "Endpoint ARN:arn:<partition>:dms:<region>:111111111111:endpoint:identifier does not exist",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_replication_config_invalid_target": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "Endpoint ARN:arn:<partition>:dms:<region>:111111111111:endpoint:identifier does not exist"
+        },
+        "message": "Endpoint ARN:arn:<partition>:dms:<region>:111111111111:endpoint:identifier does not exist",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_replication_task_invalid_2": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Invalid table mappings document."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-replication-config": {
+        "ReplicationConfig": {
+          "ComputeConfig": {
+            "MaxCapacityUnits": 1,
+            "MinCapacityUnits": 1
+          },
+          "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+          "ReplicationConfigCreateTime": "<datetime>",
+          "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+          "ReplicationConfigUpdateTime": "<datetime>",
+          "ReplicationSettings": {
+            "Logging": {
+              "EnableLogging": false,
+              "EnableLogContext": false,
+              "LogComponents": [
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "DATA_STRUCTURE"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "COMMUNICATION"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "IO"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "COMMON"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "FILE_FACTORY"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "FILE_TRANSFER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "REST_SERVER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "ADDONS"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "TARGET_LOAD"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "TARGET_APPLY"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "SOURCE_UNLOAD"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "SOURCE_CAPTURE"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "TRANSFORMATION"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "SORTER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "TASK_MANAGER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "TABLES_MANAGER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "METADATA_MANAGER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "PERFORMANCE"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "VALIDATOR_EXT"
+                }
+              ],
+              "LogConfiguration": {
+                "TraceOnErrorMb": 10,
+                "EnableTraceOnError": false
+              },
+              "CloudWatchLogGroup": null,
+              "CloudWatchLogStream": null
+            },
+            "StreamBufferSettings": {
+              "StreamBufferCount": 3,
+              "CtrlStreamBufferSizeInMB": 5,
+              "StreamBufferSizeInMB": 8
+            },
+            "ErrorBehavior": {
+              "FailOnNoTablesCaptured": true,
+              "ApplyErrorUpdatePolicy": "LOG_ERROR",
+              "FailOnTransactionConsistencyBreached": false,
+              "RecoverableErrorThrottlingMax": 1800,
+              "DataErrorEscalationPolicy": "SUSPEND_TABLE",
+              "ApplyErrorEscalationCount": 0,
+              "RecoverableErrorStopRetryAfterThrottlingMax": true,
+              "RecoverableErrorThrottling": true,
+              "ApplyErrorFailOnTruncationDdl": false,
+              "DataMaskingErrorPolicy": "STOP_TASK",
+              "DataTruncationErrorPolicy": "LOG_ERROR",
+              "ApplyErrorInsertPolicy": "LOG_ERROR",
+              "EventErrorPolicy": "IGNORE",
+              "ApplyErrorEscalationPolicy": "LOG_ERROR",
+              "RecoverableErrorCount": -1,
+              "DataErrorEscalationCount": 0,
+              "TableErrorEscalationPolicy": "STOP_TASK",
+              "RecoverableErrorInterval": 5,
+              "ApplyErrorDeletePolicy": "IGNORE_RECORD",
+              "TableErrorEscalationCount": 0,
+              "FullLoadIgnoreConflicts": true,
+              "DataErrorPolicy": "LOG_ERROR",
+              "TableErrorPolicy": "SUSPEND_TABLE"
+            },
+            "TTSettings": null,
+            "FullLoadSettings": {
+              "CommitRate": 10000,
+              "StopTaskCachedChangesApplied": false,
+              "StopTaskCachedChangesNotApplied": false,
+              "MaxFullLoadSubTasks": 8,
+              "TransactionConsistencyTimeout": 600,
+              "CreatePkAfterFullLoad": false,
+              "TargetTablePrepMode": "DROP_AND_CREATE"
+            },
+            "TargetMetadata": {
+              "ParallelApplyBufferSize": 0,
+              "ParallelApplyQueuesPerThread": 0,
+              "ParallelApplyThreads": 0,
+              "TargetSchema": "",
+              "InlineLobMaxSize": 0,
+              "ParallelLoadQueuesPerThread": 0,
+              "SupportLobs": true,
+              "LobChunkSize": 64,
+              "TaskRecoveryTableEnabled": false,
+              "ParallelLoadThreads": 0,
+              "LobMaxSize": 32,
+              "BatchApplyEnabled": false,
+              "FullLobMode": false,
+              "LimitedSizeLobMode": true,
+              "LoadMaxFileSize": 0,
+              "ParallelLoadBufferSize": 0
+            },
+            "BeforeImageSettings": null,
+            "ControlTablesSettings": {
+              "historyTimeslotInMinutes": 5,
+              "CommitPositionTableEnabled": false,
+              "HistoryTimeslotInMinutes": 5,
+              "StatusTableEnabled": false,
+              "SuspendedTablesTableEnabled": false,
+              "HistoryTableEnabled": false,
+              "ControlSchema": "",
+              "FullLoadExceptionTableEnabled": false
+            },
+            "LoopbackPreventionSettings": null,
+            "CharacterSetSettings": null,
+            "FailTaskWhenCleanTaskResourceFailed": false,
+            "ChangeProcessingTuning": {
+              "StatementCacheSize": 50,
+              "CommitTimeout": 1,
+              "RecoveryTimeout": -1,
+              "BatchApplyPreserveTransaction": true,
+              "BatchApplyTimeoutMin": 1,
+              "BatchSplitSize": 0,
+              "BatchApplyTimeoutMax": 30,
+              "MinTransactionSize": 1000,
+              "MemoryKeepTime": 60,
+              "BatchApplyMemoryLimit": 500,
+              "MemoryLimitTotal": 1024
+            },
+            "ChangeProcessingDdlHandlingPolicy": {
+              "HandleSourceTableDropped": true,
+              "HandleSourceTableTruncated": true,
+              "HandleSourceTableAltered": true
+            },
+            "PostProcessingRules": null
+          },
+          "ReplicationType": "full-load",
+          "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+          "TableMappings": {
+            "rules": [
+              {
+                "rule-type": "selection",
+                "rule-id": 2,
+                "rule-name": "r1",
+                "object-locator": {
+                  "schema-name": "data",
+                  "table-name": "%"
+                },
+                "rule-action": "include"
+              }
+            ]
+          },
+          "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_replication_config_unknown_arn": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "No replication configs found matching provided filters"
+        },
+        "message": "No replication configs found matching provided filters",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe_replication_invalid_filter": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Unrecognized filter name: migration-type"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe_replication_config": {
+        "ReplicationConfigs": [
+          {
+            "ComputeConfig": {
+              "MaxCapacityUnits": 1,
+              "MinCapacityUnits": 1
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigCreateTime": "<datetime>",
+            "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+            "ReplicationSettings": {
+              "Logging": {
+                "EnableLogging": false,
+                "EnableLogContext": false,
+                "LogComponents": [
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "DATA_STRUCTURE"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "COMMUNICATION"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "IO"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "COMMON"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "FILE_FACTORY"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "FILE_TRANSFER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "REST_SERVER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "ADDONS"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "TARGET_LOAD"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "TARGET_APPLY"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "SOURCE_UNLOAD"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "SOURCE_CAPTURE"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "TRANSFORMATION"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "SORTER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "TASK_MANAGER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "TABLES_MANAGER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "METADATA_MANAGER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "PERFORMANCE"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "VALIDATOR_EXT"
+                  }
+                ],
+                "LogConfiguration": {
+                  "TraceOnErrorMb": 10,
+                  "EnableTraceOnError": false
+                },
+                "CloudWatchLogGroup": null,
+                "CloudWatchLogStream": null
+              },
+              "StreamBufferSettings": {
+                "StreamBufferCount": 3,
+                "CtrlStreamBufferSizeInMB": 5,
+                "StreamBufferSizeInMB": 8
+              },
+              "ErrorBehavior": {
+                "FailOnNoTablesCaptured": true,
+                "ApplyErrorUpdatePolicy": "LOG_ERROR",
+                "FailOnTransactionConsistencyBreached": false,
+                "RecoverableErrorThrottlingMax": 1800,
+                "DataErrorEscalationPolicy": "SUSPEND_TABLE",
+                "ApplyErrorEscalationCount": 0,
+                "RecoverableErrorStopRetryAfterThrottlingMax": true,
+                "RecoverableErrorThrottling": true,
+                "ApplyErrorFailOnTruncationDdl": false,
+                "DataMaskingErrorPolicy": "STOP_TASK",
+                "DataTruncationErrorPolicy": "LOG_ERROR",
+                "ApplyErrorInsertPolicy": "LOG_ERROR",
+                "EventErrorPolicy": "IGNORE",
+                "ApplyErrorEscalationPolicy": "LOG_ERROR",
+                "RecoverableErrorCount": -1,
+                "DataErrorEscalationCount": 0,
+                "TableErrorEscalationPolicy": "STOP_TASK",
+                "RecoverableErrorInterval": 5,
+                "ApplyErrorDeletePolicy": "IGNORE_RECORD",
+                "TableErrorEscalationCount": 0,
+                "FullLoadIgnoreConflicts": true,
+                "DataErrorPolicy": "LOG_ERROR",
+                "TableErrorPolicy": "SUSPEND_TABLE"
+              },
+              "TTSettings": null,
+              "FullLoadSettings": {
+                "CommitRate": 10000,
+                "StopTaskCachedChangesApplied": false,
+                "StopTaskCachedChangesNotApplied": false,
+                "MaxFullLoadSubTasks": 8,
+                "TransactionConsistencyTimeout": 600,
+                "CreatePkAfterFullLoad": false,
+                "TargetTablePrepMode": "DROP_AND_CREATE"
+              },
+              "TargetMetadata": {
+                "ParallelApplyBufferSize": 0,
+                "ParallelApplyQueuesPerThread": 0,
+                "ParallelApplyThreads": 0,
+                "TargetSchema": "",
+                "InlineLobMaxSize": 0,
+                "ParallelLoadQueuesPerThread": 0,
+                "SupportLobs": true,
+                "LobChunkSize": 64,
+                "TaskRecoveryTableEnabled": false,
+                "ParallelLoadThreads": 0,
+                "LobMaxSize": 32,
+                "BatchApplyEnabled": false,
+                "FullLobMode": false,
+                "LimitedSizeLobMode": true,
+                "LoadMaxFileSize": 0,
+                "ParallelLoadBufferSize": 0
+              },
+              "BeforeImageSettings": null,
+              "ControlTablesSettings": {
+                "historyTimeslotInMinutes": 5,
+                "CommitPositionTableEnabled": false,
+                "HistoryTimeslotInMinutes": 5,
+                "StatusTableEnabled": false,
+                "SuspendedTablesTableEnabled": false,
+                "HistoryTableEnabled": false,
+                "ControlSchema": "",
+                "FullLoadExceptionTableEnabled": false
+              },
+              "LoopbackPreventionSettings": null,
+              "CharacterSetSettings": null,
+              "FailTaskWhenCleanTaskResourceFailed": false,
+              "ChangeProcessingTuning": {
+                "StatementCacheSize": 50,
+                "CommitTimeout": 1,
+                "RecoveryTimeout": -1,
+                "BatchApplyPreserveTransaction": true,
+                "BatchApplyTimeoutMin": 1,
+                "BatchSplitSize": 0,
+                "BatchApplyTimeoutMax": 30,
+                "MinTransactionSize": 1000,
+                "MemoryKeepTime": 60,
+                "BatchApplyMemoryLimit": 500,
+                "MemoryLimitTotal": 1024
+              },
+              "ChangeProcessingDdlHandlingPolicy": {
+                "HandleSourceTableDropped": true,
+                "HandleSourceTableTruncated": true,
+                "HandleSourceTableAltered": true
+              },
+              "PostProcessingRules": null
+            },
+            "ReplicationType": "full-load",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "TableMappings": {
+              "rules": [
+                {
+                  "rule-type": "selection",
+                  "rule-id": 2,
+                  "rule-name": "r1",
+                  "object-locator": {
+                    "schema-name": "data",
+                    "table-name": "%"
+                  },
+                  "rule-action": "include"
+                }
+              ]
+            },
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_replications": {
+        "Replications": [
+          {
+            "FailureMessages": [],
+            "ProvisionData": {
+              "IsNewProvisioningAvailable": false,
+              "ProvisionedCapacityUnits": 0
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+            "ReplicationCreateTime": "<datetime>",
+            "ReplicationStats": {
+              "ElapsedTimeMillis": "elapsed-time-millis",
+              "FullLoadProgressPercent": 0,
+              "TablesErrored": 0,
+              "TablesLoaded": 0,
+              "TablesLoading": 0,
+              "TablesQueued": 0
+            },
+            "ReplicationType": "full-load",
+            "ReplicationUpdateTime": "<datetime>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "Status": "created",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_replication_config_unknown": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "Replication Config with ARN 'arn:<partition>:dms:<region>:111111111111:replication-config:does-not-exist' does not exist"
+        },
+        "message": "Replication Config with ARN 'arn:<partition>:dms:<region>:111111111111:replication-config:does-not-exist' does not exist",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "delete_replication_config": {
+        "ReplicationConfig": {
+          "ComputeConfig": {
+            "MaxCapacityUnits": 1,
+            "MinCapacityUnits": 1
+          },
+          "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+          "ReplicationConfigCreateTime": "<datetime>",
+          "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+          "ReplicationConfigUpdateTime": "<datetime>",
+          "ReplicationSettings": {
+            "Logging": {
+              "EnableLogging": false,
+              "EnableLogContext": false,
+              "LogComponents": [
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "DATA_STRUCTURE"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "COMMUNICATION"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "IO"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "COMMON"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "FILE_FACTORY"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "FILE_TRANSFER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "REST_SERVER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "ADDONS"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "TARGET_LOAD"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "TARGET_APPLY"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "SOURCE_UNLOAD"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "SOURCE_CAPTURE"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "TRANSFORMATION"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "SORTER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "TASK_MANAGER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "TABLES_MANAGER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "METADATA_MANAGER"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "PERFORMANCE"
+                },
+                {
+                  "Severity": "LOGGER_SEVERITY_DEFAULT",
+                  "Id": "VALIDATOR_EXT"
+                }
+              ],
+              "LogConfiguration": {
+                "TraceOnErrorMb": 10,
+                "EnableTraceOnError": false
+              },
+              "CloudWatchLogGroup": null,
+              "CloudWatchLogStream": null
+            },
+            "StreamBufferSettings": {
+              "StreamBufferCount": 3,
+              "CtrlStreamBufferSizeInMB": 5,
+              "StreamBufferSizeInMB": 8
+            },
+            "ErrorBehavior": {
+              "FailOnNoTablesCaptured": true,
+              "ApplyErrorUpdatePolicy": "LOG_ERROR",
+              "FailOnTransactionConsistencyBreached": false,
+              "RecoverableErrorThrottlingMax": 1800,
+              "DataErrorEscalationPolicy": "SUSPEND_TABLE",
+              "ApplyErrorEscalationCount": 0,
+              "RecoverableErrorStopRetryAfterThrottlingMax": true,
+              "RecoverableErrorThrottling": true,
+              "ApplyErrorFailOnTruncationDdl": false,
+              "DataMaskingErrorPolicy": "STOP_TASK",
+              "DataTruncationErrorPolicy": "LOG_ERROR",
+              "ApplyErrorInsertPolicy": "LOG_ERROR",
+              "EventErrorPolicy": "IGNORE",
+              "ApplyErrorEscalationPolicy": "LOG_ERROR",
+              "RecoverableErrorCount": -1,
+              "DataErrorEscalationCount": 0,
+              "TableErrorEscalationPolicy": "STOP_TASK",
+              "RecoverableErrorInterval": 5,
+              "ApplyErrorDeletePolicy": "IGNORE_RECORD",
+              "TableErrorEscalationCount": 0,
+              "FullLoadIgnoreConflicts": true,
+              "DataErrorPolicy": "LOG_ERROR",
+              "TableErrorPolicy": "SUSPEND_TABLE"
+            },
+            "TTSettings": null,
+            "FullLoadSettings": {
+              "CommitRate": 10000,
+              "StopTaskCachedChangesApplied": false,
+              "StopTaskCachedChangesNotApplied": false,
+              "MaxFullLoadSubTasks": 8,
+              "TransactionConsistencyTimeout": 600,
+              "CreatePkAfterFullLoad": false,
+              "TargetTablePrepMode": "DROP_AND_CREATE"
+            },
+            "TargetMetadata": {
+              "ParallelApplyBufferSize": 0,
+              "ParallelApplyQueuesPerThread": 0,
+              "ParallelApplyThreads": 0,
+              "TargetSchema": "",
+              "InlineLobMaxSize": 0,
+              "ParallelLoadQueuesPerThread": 0,
+              "SupportLobs": true,
+              "LobChunkSize": 64,
+              "TaskRecoveryTableEnabled": false,
+              "ParallelLoadThreads": 0,
+              "LobMaxSize": 32,
+              "BatchApplyEnabled": false,
+              "FullLobMode": false,
+              "LimitedSizeLobMode": true,
+              "LoadMaxFileSize": 0,
+              "ParallelLoadBufferSize": 0
+            },
+            "BeforeImageSettings": null,
+            "ControlTablesSettings": {
+              "historyTimeslotInMinutes": 5,
+              "CommitPositionTableEnabled": false,
+              "HistoryTimeslotInMinutes": 5,
+              "StatusTableEnabled": false,
+              "SuspendedTablesTableEnabled": false,
+              "HistoryTableEnabled": false,
+              "ControlSchema": "",
+              "FullLoadExceptionTableEnabled": false
+            },
+            "LoopbackPreventionSettings": null,
+            "CharacterSetSettings": null,
+            "FailTaskWhenCleanTaskResourceFailed": false,
+            "ChangeProcessingTuning": {
+              "StatementCacheSize": 50,
+              "CommitTimeout": 1,
+              "RecoveryTimeout": -1,
+              "BatchApplyPreserveTransaction": true,
+              "BatchApplyTimeoutMin": 1,
+              "BatchSplitSize": 0,
+              "BatchApplyTimeoutMax": 30,
+              "MinTransactionSize": 1000,
+              "MemoryKeepTime": 60,
+              "BatchApplyMemoryLimit": 500,
+              "MemoryLimitTotal": 1024
+            },
+            "ChangeProcessingDdlHandlingPolicy": {
+              "HandleSourceTableDropped": true,
+              "HandleSourceTableTruncated": true,
+              "HandleSourceTableAltered": true
+            },
+            "PostProcessingRules": null
+          },
+          "ReplicationType": "full-load",
+          "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+          "TableMappings": {
+            "rules": [
+              {
+                "rule-type": "selection",
+                "rule-id": 2,
+                "rule-name": "r1",
+                "object-locator": {
+                  "schema-name": "data",
+                  "table-name": "%"
+                },
+                "rule-action": "include"
+              }
+            ]
+          },
+          "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_replications_unknown": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "No replication configs found matching provided filters for a given replication"
+        },
+        "message": "No replication configs found matching provided filters for a given replication",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe_replications_already_deleted": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "No replication configs found matching provided filters for a given replication"
+        },
+        "message": "No replication configs found matching provided filters for a given replication",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/scenario/dms_serverless/test_dms_serverless.py::TestDmsScenario::test_resource_replication_config": {
+    "recorded-date": "23-08-2024, 05:39:23",
+    "recorded-content": {
+      "describe_replication_config": {
+        "ReplicationConfigs": [
+          {
+            "ComputeConfig": {
+              "MaxCapacityUnits": 1,
+              "MinCapacityUnits": 1
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigCreateTime": "<datetime>",
+            "ReplicationConfigIdentifier": "test-replication-config",
+            "ReplicationSettings": {
+              "Logging": {
+                "EnableLogging": false,
+                "EnableLogContext": false,
+                "LogComponents": [
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "DATA_STRUCTURE"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "COMMUNICATION"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "IO"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "COMMON"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "FILE_FACTORY"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "FILE_TRANSFER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "REST_SERVER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "ADDONS"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "TARGET_LOAD"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "TARGET_APPLY"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "SOURCE_UNLOAD"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "SOURCE_CAPTURE"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "TRANSFORMATION"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "SORTER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "TASK_MANAGER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "TABLES_MANAGER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "METADATA_MANAGER"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "PERFORMANCE"
+                  },
+                  {
+                    "Severity": "LOGGER_SEVERITY_DEFAULT",
+                    "Id": "VALIDATOR_EXT"
+                  }
+                ],
+                "LogConfiguration": {
+                  "TraceOnErrorMb": 10,
+                  "EnableTraceOnError": false
+                },
+                "CloudWatchLogGroup": null,
+                "CloudWatchLogStream": null
+              },
+              "StreamBufferSettings": {
+                "StreamBufferCount": 3,
+                "CtrlStreamBufferSizeInMB": 5,
+                "StreamBufferSizeInMB": 8
+              },
+              "ErrorBehavior": {
+                "FailOnNoTablesCaptured": true,
+                "ApplyErrorUpdatePolicy": "LOG_ERROR",
+                "FailOnTransactionConsistencyBreached": false,
+                "RecoverableErrorThrottlingMax": 1800,
+                "DataErrorEscalationPolicy": "SUSPEND_TABLE",
+                "ApplyErrorEscalationCount": 0,
+                "RecoverableErrorStopRetryAfterThrottlingMax": true,
+                "RecoverableErrorThrottling": true,
+                "ApplyErrorFailOnTruncationDdl": false,
+                "DataMaskingErrorPolicy": "STOP_TASK",
+                "DataTruncationErrorPolicy": "LOG_ERROR",
+                "ApplyErrorInsertPolicy": "LOG_ERROR",
+                "EventErrorPolicy": "IGNORE",
+                "ApplyErrorEscalationPolicy": "LOG_ERROR",
+                "RecoverableErrorCount": -1,
+                "DataErrorEscalationCount": 0,
+                "TableErrorEscalationPolicy": "STOP_TASK",
+                "RecoverableErrorInterval": 5,
+                "ApplyErrorDeletePolicy": "IGNORE_RECORD",
+                "TableErrorEscalationCount": 0,
+                "FullLoadIgnoreConflicts": true,
+                "DataErrorPolicy": "LOG_ERROR",
+                "TableErrorPolicy": "SUSPEND_TABLE"
+              },
+              "TTSettings": null,
+              "FullLoadSettings": {
+                "CommitRate": 10000,
+                "StopTaskCachedChangesApplied": false,
+                "StopTaskCachedChangesNotApplied": false,
+                "MaxFullLoadSubTasks": 8,
+                "TransactionConsistencyTimeout": 600,
+                "CreatePkAfterFullLoad": false,
+                "TargetTablePrepMode": "DROP_AND_CREATE"
+              },
+              "TargetMetadata": {
+                "ParallelApplyBufferSize": 0,
+                "ParallelApplyQueuesPerThread": 0,
+                "ParallelApplyThreads": 0,
+                "TargetSchema": "",
+                "InlineLobMaxSize": 0,
+                "ParallelLoadQueuesPerThread": 0,
+                "SupportLobs": true,
+                "LobChunkSize": 64,
+                "TaskRecoveryTableEnabled": false,
+                "ParallelLoadThreads": 0,
+                "LobMaxSize": 32,
+                "BatchApplyEnabled": false,
+                "FullLobMode": false,
+                "LimitedSizeLobMode": true,
+                "LoadMaxFileSize": 0,
+                "ParallelLoadBufferSize": 0
+              },
+              "BeforeImageSettings": null,
+              "ControlTablesSettings": {
+                "historyTimeslotInMinutes": 5,
+                "CommitPositionTableEnabled": false,
+                "HistoryTimeslotInMinutes": 5,
+                "StatusTableEnabled": false,
+                "SuspendedTablesTableEnabled": false,
+                "HistoryTableEnabled": false,
+                "ControlSchema": "",
+                "FullLoadExceptionTableEnabled": false
+              },
+              "LoopbackPreventionSettings": null,
+              "CharacterSetSettings": null,
+              "FailTaskWhenCleanTaskResourceFailed": false,
+              "ChangeProcessingTuning": {
+                "StatementCacheSize": 50,
+                "CommitTimeout": 1,
+                "RecoveryTimeout": -1,
+                "BatchApplyPreserveTransaction": true,
+                "BatchApplyTimeoutMin": 1,
+                "BatchSplitSize": 0,
+                "BatchApplyTimeoutMax": 30,
+                "MinTransactionSize": 1000,
+                "MemoryKeepTime": 60,
+                "BatchApplyMemoryLimit": 500,
+                "MemoryLimitTotal": 1024
+              },
+              "ChangeProcessingDdlHandlingPolicy": {
+                "HandleSourceTableDropped": true,
+                "HandleSourceTableTruncated": true,
+                "HandleSourceTableAltered": true
+              },
+              "PostProcessingRules": null
+            },
+            "ReplicationType": "full-load",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "TableMappings": {
+              "rules": [
+                {
+                  "rule-id": "1",
+                  "rule-action": "include",
+                  "rule-type": "selection",
+                  "rule-name": "rule1",
+                  "object-locator": {
+                    "schema-name": "production",
+                    "table-name": "%"
+                  }
+                }
+              ]
+            },
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_replications": {
+        "Replications": [
+          {
+            "FailureMessages": [],
+            "ProvisionData": {
+              "IsNewProvisioningAvailable": false,
+              "ProvisionedCapacityUnits": 0
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigIdentifier": "test-replication-config",
+            "ReplicationCreateTime": "<datetime>",
+            "ReplicationStats": {
+              "ElapsedTimeMillis": "elapsed-time-millis",
+              "FullLoadProgressPercent": 0,
+              "TablesErrored": 0,
+              "TablesLoaded": 0,
+              "TablesLoading": 0,
+              "TablesQueued": 0
+            },
+            "ReplicationType": "full-load",
+            "ReplicationUpdateTime": "<datetime>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "Status": "created",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/scenario/dms_serverless/test_dms_serverless.py::TestDmsScenario::test_full_load_replication": {
+    "recorded-date": "23-08-2024, 06:18:46",
+    "recorded-content": {
+      "start_replication": {
+        "Replication": {
+          "FailureMessages": [],
+          "ProvisionData": {
+            "IsNewProvisioningAvailable": false,
+            "ProvisionedCapacityUnits": 0
+          },
+          "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+          "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+          "ReplicationCreateTime": "<datetime>",
+          "ReplicationStats": {
+            "ElapsedTimeMillis": "elapsed-time-millis",
+            "FullLoadProgressPercent": 0,
+            "TablesErrored": 0,
+            "TablesLoaded": 0,
+            "TablesLoading": 0,
+            "TablesQueued": 0
+          },
+          "ReplicationType": "full-load",
+          "ReplicationUpdateTime": "<datetime>",
+          "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+          "StartReplicationType": "start-replication",
+          "Status": "initializing",
+          "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-replication-config-preparing": {
+        "Replications": [
+          {
+            "FailureMessages": [],
+            "ProvisionData": {
+              "IsNewProvisioningAvailable": false,
+              "ProvisionedCapacityUnits": 0
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+            "ReplicationCreateTime": "<datetime>",
+            "ReplicationStats": {
+              "ElapsedTimeMillis": "elapsed-time-millis",
+              "FullLoadProgressPercent": 0,
+              "TablesErrored": 0,
+              "TablesLoaded": 0,
+              "TablesLoading": 0,
+              "TablesQueued": 0
+            },
+            "ReplicationType": "full-load",
+            "ReplicationUpdateTime": "<datetime>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "StartReplicationType": "start-replication",
+            "Status": "preparing_metadata_resources",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-replication-provisioning": {
+        "Replications": [
+          {
+            "FailureMessages": [],
+            "ProvisionData": {
+              "IsNewProvisioningAvailable": false,
+              "ProvisionState": "provisioning",
+              "ProvisionedCapacityUnits": 0
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+            "ReplicationCreateTime": "<datetime>",
+            "ReplicationStats": {
+              "ElapsedTimeMillis": "elapsed-time-millis",
+              "FullLoadProgressPercent": 0,
+              "TablesErrored": 0,
+              "TablesLoaded": 0,
+              "TablesLoading": 0,
+              "TablesQueued": 0
+            },
+            "ReplicationType": "full-load",
+            "ReplicationUpdateTime": "<datetime>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "StartReplicationType": "start-replication",
+            "Status": "provisioning_capacity",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-replication-starting": {
+        "Replications": [
+          {
+            "FailureMessages": [],
+            "ProvisionData": {
+              "IsNewProvisioningAvailable": false,
+              "ProvisionState": "provisioned",
+              "ProvisionedCapacityUnits": 1
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+            "ReplicationCreateTime": "<datetime>",
+            "ReplicationStats": {
+              "ElapsedTimeMillis": "elapsed-time-millis",
+              "FullLoadProgressPercent": 0,
+              "TablesErrored": 0,
+              "TablesLoaded": 0,
+              "TablesLoading": 0,
+              "TablesQueued": 0
+            },
+            "ReplicationType": "full-load",
+            "ReplicationUpdateTime": "<datetime>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "StartReplicationType": "start-replication",
+            "Status": "replication_starting",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-replication-config-fails": {
+        "Error": {
+          "Code": "InvalidResourceStateFault",
+          "Message": "Replication for Replication Config: <resource:1> is in REPLICATION_STARTING state and cannot delete"
+        },
+        "message": "Replication for Replication Config: <resource:1> is in REPLICATION_STARTING state and cannot delete",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe-replication-stopped": {
+        "Replications": [
+          {
+            "FailureMessages": [],
+            "ProvisionData": {
+              "IsNewProvisioningAvailable": false,
+              "ProvisionState": "provisioned",
+              "ProvisionedCapacityUnits": 1
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+            "ReplicationCreateTime": "<datetime>",
+            "ReplicationDeprovisionTime": "<datetime>",
+            "ReplicationLastStopTime": "<datetime>",
+            "ReplicationStats": {
+              "ElapsedTimeMillis": "elapsed-time-millis",
+              "FreshStartDate": "<datetime>",
+              "FullLoadFinishDate": "<datetime>",
+              "FullLoadProgressPercent": 100,
+              "FullLoadStartDate": "<datetime>",
+              "StartDate": "<datetime>",
+              "StopDate": "<datetime>",
+              "TablesErrored": 0,
+              "TablesLoaded": 3,
+              "TablesLoading": 0,
+              "TablesQueued": 0
+            },
+            "ReplicationType": "full-load",
+            "ReplicationUpdateTime": "<datetime>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "StartReplicationType": "start-replication",
+            "Status": "stopped",
+            "StopReason": "Stop Reason FULL_LOAD_ONLY_FINISHED",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-replication-table-statistics": {
+        "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+        "ReplicationTableStatistics": [
+          {
+            "AppliedDdls": 0,
+            "AppliedDeletes": 0,
+            "AppliedInserts": 0,
+            "AppliedUpdates": 0,
+            "Ddls": 0,
+            "Deletes": 0,
+            "FullLoadCondtnlChkFailedRows": 0,
+            "FullLoadEndTime": "<datetime>",
+            "FullLoadErrorRows": 0,
+            "FullLoadReloaded": false,
+            "FullLoadRows": 4,
+            "FullLoadStartTime": "<datetime>",
+            "Inserts": 0,
+            "LastUpdateTime": "<datetime>",
+            "SchemaName": "production",
+            "TableName": "AGENTS",
+            "TableState": "Table completed",
+            "Updates": 0,
+            "ValidationFailedRecords": 0,
+            "ValidationPendingRecords": 0,
+            "ValidationState": "Not enabled",
+            "ValidationSuspendedRecords": 0
+          },
+          {
+            "AppliedDdls": 0,
+            "AppliedDeletes": 0,
+            "AppliedInserts": 0,
+            "AppliedUpdates": 0,
+            "Ddls": 0,
+            "Deletes": 0,
+            "FullLoadCondtnlChkFailedRows": 0,
+            "FullLoadEndTime": "<datetime>",
+            "FullLoadErrorRows": 0,
+            "FullLoadReloaded": false,
+            "FullLoadRows": 3,
+            "FullLoadStartTime": "<datetime>",
+            "Inserts": 0,
+            "LastUpdateTime": "<datetime>",
+            "SchemaName": "production",
+            "TableName": "CUSTOMER",
+            "TableState": "Table completed",
+            "Updates": 0,
+            "ValidationFailedRecords": 0,
+            "ValidationPendingRecords": 0,
+            "ValidationState": "Not enabled",
+            "ValidationSuspendedRecords": 0
+          },
+          {
+            "AppliedDdls": 0,
+            "AppliedDeletes": 0,
+            "AppliedInserts": 0,
+            "AppliedUpdates": 0,
+            "Ddls": 0,
+            "Deletes": 0,
+            "FullLoadCondtnlChkFailedRows": 0,
+            "FullLoadEndTime": "<datetime>",
+            "FullLoadErrorRows": 0,
+            "FullLoadReloaded": false,
+            "FullLoadRows": 3,
+            "FullLoadStartTime": "<datetime>",
+            "Inserts": 0,
+            "LastUpdateTime": "<datetime>",
+            "SchemaName": "production",
+            "TableName": "ORDERS",
+            "TableState": "Table completed",
+            "Updates": 0,
+            "ValidationFailedRecords": 0,
+            "ValidationPendingRecords": 0,
+            "ValidationState": "Not enabled",
+            "ValidationSuspendedRecords": 0
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "kinesis-records": [
+        {
+          "SequenceNumber": "<sequence_number:1>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "AGENT_CODE": "A001",
+              "AGENT_NAME": "Alex",
+              "WORKING_AREA": "London",
+              "COMMISSION": 13,
+              "PHONE_NO": "075-12458969",
+              "COUNTRY": "UK"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "load",
+              "partition-key-type": "primary-key",
+              "schema-name": "production",
+              "table-name": "AGENTS"
+            }
+          },
+          "PartitionKey": "A001",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:2>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "AGENT_CODE": "A002",
+              "AGENT_NAME": "Alford",
+              "WORKING_AREA": "New York",
+              "COMMISSION": 12,
+              "PHONE_NO": "044-25874365",
+              "COUNTRY": "USA"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "load",
+              "partition-key-type": "primary-key",
+              "schema-name": "production",
+              "table-name": "AGENTS"
+            }
+          },
+          "PartitionKey": "A002",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:3>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "AGENT_CODE": "A003",
+              "AGENT_NAME": "Ivan",
+              "WORKING_AREA": "Toronto",
+              "COMMISSION": 15,
+              "PHONE_NO": "008-22544166",
+              "COUNTRY": "Canada"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "load",
+              "partition-key-type": "primary-key",
+              "schema-name": "production",
+              "table-name": "AGENTS"
+            }
+          },
+          "PartitionKey": "A003",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:4>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "AGENT_CODE": "A004",
+              "AGENT_NAME": "Anderson",
+              "WORKING_AREA": "Mumbai",
+              "COMMISSION": 14,
+              "PHONE_NO": "077-12346674",
+              "COUNTRY": "India"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "load",
+              "partition-key-type": "primary-key",
+              "schema-name": "production",
+              "table-name": "AGENTS"
+            }
+          },
+          "PartitionKey": "A004",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:5>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "CUST_CODE": "C00002",
+              "CUST_NAME": "Micheal",
+              "CUST_CITY": "New York",
+              "WORKING_AREA": "New York",
+              "CUST_COUNTRY": "USA",
+              "GRADE": 2,
+              "OPENING_AMT": 3000,
+              "RECEIVE_AMT": 5000,
+              "PAYMENT_AMT": 2000,
+              "OUTSTANDING_AMT": 6000,
+              "PHONE_NO": "CCCCCCC",
+              "AGENT_CODE": "A002"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "load",
+              "partition-key-type": "primary-key",
+              "schema-name": "production",
+              "table-name": "CUSTOMER"
+            }
+          },
+          "PartitionKey": "C00002",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:6>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "CUST_CODE": "C00003",
+              "CUST_NAME": "Albert",
+              "CUST_CITY": "New York",
+              "WORKING_AREA": "New York",
+              "CUST_COUNTRY": "USA",
+              "GRADE": 3,
+              "OPENING_AMT": 5000,
+              "RECEIVE_AMT": 7000,
+              "PAYMENT_AMT": 6000,
+              "OUTSTANDING_AMT": 6000,
+              "PHONE_NO": "BBBBSBB",
+              "AGENT_CODE": "A002"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "load",
+              "partition-key-type": "primary-key",
+              "schema-name": "production",
+              "table-name": "CUSTOMER"
+            }
+          },
+          "PartitionKey": "C00003",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:7>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "CUST_CODE": "C0001",
+              "CUST_NAME": "Holmes",
+              "CUST_CITY": "London",
+              "WORKING_AREA": "London",
+              "CUST_COUNTRY": "UK",
+              "GRADE": 2,
+              "OPENING_AMT": 6000,
+              "RECEIVE_AMT": 5000,
+              "PAYMENT_AMT": 7000,
+              "OUTSTANDING_AMT": 4000,
+              "PHONE_NO": "BBBBBBB",
+              "AGENT_CODE": "A001"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "load",
+              "partition-key-type": "primary-key",
+              "schema-name": "production",
+              "table-name": "CUSTOMER"
+            }
+          },
+          "PartitionKey": "C0001",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:8>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "ORD_NUM": "O200100",
+              "ORD_AMOUNT": 1000,
+              "ADVANCE_AMOUNT": 600,
+              "ORD_DATE": "2024-03-08",
+              "CUST_CODE": "C00002",
+              "AGENT_CODE": "A002",
+              "ORD_DESCRIPTION": "SOD"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "load",
+              "partition-key-type": "primary-key",
+              "schema-name": "production",
+              "table-name": "ORDERS"
+            }
+          },
+          "PartitionKey": "O200100",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:9>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "ORD_NUM": "O200101",
+              "ORD_AMOUNT": 3000,
+              "ADVANCE_AMOUNT": 500,
+              "ORD_DATE": "2024-07-03",
+              "CUST_CODE": "C00003",
+              "AGENT_CODE": "A002",
+              "ORD_DESCRIPTION": "SOD"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "load",
+              "partition-key-type": "primary-key",
+              "schema-name": "production",
+              "table-name": "ORDERS"
+            }
+          },
+          "PartitionKey": "O200101",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:10>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "ORD_NUM": "O200102",
+              "ORD_AMOUNT": 4500,
+              "ADVANCE_AMOUNT": 900,
+              "ORD_DATE": "2024-07-05",
+              "CUST_CODE": "C00001",
+              "AGENT_CODE": "A001",
+              "ORD_DESCRIPTION": "SOD"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "load",
+              "partition-key-type": "primary-key",
+              "schema-name": "production",
+              "table-name": "ORDERS"
+            }
+          },
+          "PartitionKey": "O200102",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:11>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "control",
+              "operation": "drop-table",
+              "partition-key-type": "task-id",
+              "schema-name": "production",
+              "table-name": "AGENTS"
+            }
+          },
+          "PartitionKey": "<server-id>.production.AGENTS",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:12>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "control",
+              "operation": "create-table",
+              "partition-key-type": "task-id",
+              "schema-name": "production",
+              "table-name": "AGENTS"
+            }
+          },
+          "PartitionKey": "<server-id>.production.AGENTS",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:13>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "control",
+              "operation": "drop-table",
+              "partition-key-type": "task-id",
+              "schema-name": "production",
+              "table-name": "CUSTOMER"
+            }
+          },
+          "PartitionKey": "<server-id>.production.CUSTOMER",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:14>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "control",
+              "operation": "create-table",
+              "partition-key-type": "task-id",
+              "schema-name": "production",
+              "table-name": "CUSTOMER"
+            }
+          },
+          "PartitionKey": "<server-id>.production.CUSTOMER",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:15>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "control",
+              "operation": "drop-table",
+              "partition-key-type": "task-id",
+              "schema-name": "production",
+              "table-name": "ORDERS"
+            }
+          },
+          "PartitionKey": "<server-id>.production.ORDERS",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:16>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "control",
+              "operation": "create-table",
+              "partition-key-type": "task-id",
+              "schema-name": "production",
+              "table-name": "ORDERS"
+            }
+          },
+          "PartitionKey": "<server-id>.production.ORDERS",
+          "EncryptionType": "KMS"
+        }
+      ],
+      "describe-replication-config-deprovisioned": {
+        "Replications": [
+          {
+            "FailureMessages": [],
+            "ProvisionData": {
+              "IsNewProvisioningAvailable": false,
+              "ProvisionState": "deprovisioned",
+              "ProvisionedCapacityUnits": 0
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+            "ReplicationCreateTime": "<datetime>",
+            "ReplicationLastStopTime": "<datetime>",
+            "ReplicationStats": {
+              "ElapsedTimeMillis": "elapsed-time-millis",
+              "FullLoadProgressPercent": 0,
+              "TablesErrored": 0,
+              "TablesLoaded": 0,
+              "TablesLoading": 0,
+              "TablesQueued": 0
+            },
+            "ReplicationType": "full-load",
+            "ReplicationUpdateTime": "<datetime>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "StartReplicationType": "start-replication",
+            "Status": "stopped",
+            "StopReason": "Stop Reason FULL_LOAD_ONLY_FINISHED",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/scenario/dms_serverless/test_dms_serverless.py::TestDmsScenario::test_describe_replication_table_statistics": {
+    "recorded-date": "23-08-2024, 05:39:38",
+    "recorded-content": {
+      "describe_replication_table_non_existent_config": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "Replication Config with ARN 'arn:<partition>:dms:<region>:111111111111:replication-config:test-config' does not exist"
+        },
+        "message": "Replication Config with ARN 'arn:<partition>:dms:<region>:111111111111:replication-config:test-config' does not exist",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe_replication_table_statistics_invalid_arn": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Invalid value invalid-regexp-arn for ReplicationConfigArn"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe_replication_table_statistics": {
+        "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+        "ReplicationTableStatistics": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_replication_table_statistics_empty_filters": {
+        "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+        "ReplicationTableStatistics": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/scenario/dms_serverless/test_dms_serverless.py::TestDmsScenario::test_cdc_replication_data_queries": {
+    "recorded-date": "23-08-2024, 06:54:11",
+    "recorded-content": {
+      "start_replication": {
+        "Replication": {
+          "FailureMessages": [],
+          "ProvisionData": {
+            "IsNewProvisioningAvailable": false,
+            "ProvisionedCapacityUnits": 0
+          },
+          "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+          "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+          "ReplicationCreateTime": "<datetime>",
+          "ReplicationStats": {
+            "ElapsedTimeMillis": "elapsed-time-millis",
+            "FullLoadProgressPercent": 0,
+            "TablesErrored": 0,
+            "TablesLoaded": 0,
+            "TablesLoading": 0,
+            "TablesQueued": 0
+          },
+          "ReplicationType": "cdc",
+          "ReplicationUpdateTime": "<datetime>",
+          "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+          "StartReplicationType": "start-replication",
+          "Status": "initializing",
+          "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-replication-running": {
+        "Replications": [
+          {
+            "FailureMessages": [],
+            "ProvisionData": {
+              "IsNewProvisioningAvailable": false,
+              "ProvisionState": "provisioned",
+              "ProvisionedCapacityUnits": 1
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+            "ReplicationCreateTime": "<datetime>",
+            "ReplicationStats": {
+              "ElapsedTimeMillis": "elapsed-time-millis",
+              "FreshStartDate": "<datetime>",
+              "FullLoadFinishDate": "<datetime>",
+              "FullLoadProgressPercent": 100,
+              "FullLoadStartDate": "<datetime>",
+              "StartDate": "<datetime>",
+              "TablesErrored": 0,
+              "TablesLoaded": 3,
+              "TablesLoading": 0,
+              "TablesQueued": 0
+            },
+            "ReplicationType": "cdc",
+            "ReplicationUpdateTime": "<datetime>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "StartReplicationType": "start-replication",
+            "Status": "running",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-replication-table-statistics": [
+        {
+          "SchemaName": "production",
+          "TableName": "AGENTS",
+          "Inserts": 0,
+          "Deletes": 0,
+          "Updates": 1,
+          "Ddls": 0,
+          "AppliedInserts": 0,
+          "AppliedDeletes": 0,
+          "AppliedUpdates": 1,
+          "AppliedDdls": 0,
+          "FullLoadRows": 0,
+          "FullLoadCondtnlChkFailedRows": 0,
+          "FullLoadErrorRows": 0,
+          "FullLoadStartTime": "<datetime>",
+          "FullLoadEndTime": "<datetime>",
+          "FullLoadReloaded": false,
+          "LastUpdateTime": "<datetime>",
+          "TableState": "Table completed",
+          "ValidationPendingRecords": 0,
+          "ValidationFailedRecords": 0,
+          "ValidationSuspendedRecords": 0,
+          "ValidationState": "Not enabled"
+        },
+        {
+          "SchemaName": "production",
+          "TableName": "CUSTOMER",
+          "Inserts": 0,
+          "Deletes": 0,
+          "Updates": 1,
+          "Ddls": 0,
+          "AppliedInserts": 0,
+          "AppliedDeletes": 0,
+          "AppliedUpdates": 1,
+          "AppliedDdls": 0,
+          "FullLoadRows": 0,
+          "FullLoadCondtnlChkFailedRows": 0,
+          "FullLoadErrorRows": 0,
+          "FullLoadStartTime": "<datetime>",
+          "FullLoadEndTime": "<datetime>",
+          "FullLoadReloaded": false,
+          "LastUpdateTime": "<datetime>",
+          "TableState": "Table completed",
+          "ValidationPendingRecords": 0,
+          "ValidationFailedRecords": 0,
+          "ValidationSuspendedRecords": 0,
+          "ValidationState": "Not enabled"
+        },
+        {
+          "SchemaName": "production",
+          "TableName": "ORDERS",
+          "Inserts": 1,
+          "Deletes": 1,
+          "Updates": 1,
+          "Ddls": 0,
+          "AppliedInserts": 1,
+          "AppliedDeletes": 1,
+          "AppliedUpdates": 1,
+          "AppliedDdls": 0,
+          "FullLoadRows": 0,
+          "FullLoadCondtnlChkFailedRows": 0,
+          "FullLoadErrorRows": 0,
+          "FullLoadStartTime": "<datetime>",
+          "FullLoadEndTime": "<datetime>",
+          "FullLoadReloaded": false,
+          "LastUpdateTime": "<datetime>",
+          "TableState": "Table completed",
+          "ValidationPendingRecords": 0,
+          "ValidationFailedRecords": 0,
+          "ValidationSuspendedRecords": 0,
+          "ValidationState": "Not enabled"
+        }
+      ],
+      "kinesis-records": [
+        {
+          "SequenceNumber": "<sequence_number:1>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "control",
+              "operation": "create-table",
+              "partition-key-type": "task-id",
+              "schema-name": "",
+              "table-name": "awsdms_apply_exceptions"
+            }
+          },
+          "PartitionKey": "<server-id>..awsdms_apply_exceptions",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:2>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "control",
+              "operation": "create-table",
+              "partition-key-type": "task-id",
+              "schema-name": "production",
+              "table-name": "AGENTS"
+            }
+          },
+          "PartitionKey": "<server-id>.production.AGENTS",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:3>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "control",
+              "operation": "create-table",
+              "partition-key-type": "task-id",
+              "schema-name": "production",
+              "table-name": "CUSTOMER"
+            }
+          },
+          "PartitionKey": "<server-id>.production.CUSTOMER",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:4>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "control",
+              "operation": "create-table",
+              "partition-key-type": "task-id",
+              "schema-name": "production",
+              "table-name": "ORDERS"
+            }
+          },
+          "PartitionKey": "<server-id>.production.ORDERS",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:5>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "AGENT_CODE": "A001",
+              "AGENT_NAME": "Alex",
+              "WORKING_AREA": "London",
+              "COMMISSION": 13,
+              "PHONE_NO": "075-12458970",
+              "COUNTRY": "UK"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "update",
+              "partition-key-type": "schema-table",
+              "schema-name": "production",
+              "table-name": "AGENTS",
+              "transaction-id": "12345678901"
+            }
+          },
+          "PartitionKey": "production.AGENTS",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:6>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "CUST_CODE": "C0001",
+              "CUST_NAME": "Holmes",
+              "CUST_CITY": "London",
+              "WORKING_AREA": "London",
+              "CUST_COUNTRY": "UK",
+              "GRADE": 2,
+              "OPENING_AMT": 6000,
+              "RECEIVE_AMT": 5000,
+              "PAYMENT_AMT": 7000,
+              "OUTSTANDING_AMT": 5000,
+              "PHONE_NO": "BBBBBBB",
+              "AGENT_CODE": "A001"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "update",
+              "partition-key-type": "schema-table",
+              "schema-name": "production",
+              "table-name": "CUSTOMER",
+              "transaction-id": "12345678901"
+            }
+          },
+          "PartitionKey": "production.CUSTOMER",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:7>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "ORD_NUM": "O200102",
+              "ORD_AMOUNT": 4500,
+              "ADVANCE_AMOUNT": 900,
+              "ORD_DATE": "2024-07-05",
+              "CUST_CODE": "C00001",
+              "AGENT_CODE": "A001",
+              "ORD_DESCRIPTION": "SOD"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "delete",
+              "partition-key-type": "schema-table",
+              "schema-name": "production",
+              "table-name": "ORDERS",
+              "transaction-id": "12345678901"
+            }
+          },
+          "PartitionKey": "production.ORDERS",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:8>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "ORD_NUM": "O200103",
+              "ORD_AMOUNT": 4500,
+              "ADVANCE_AMOUNT": 900,
+              "ORD_DATE": "2024-07-05",
+              "CUST_CODE": "C00001",
+              "AGENT_CODE": "A001",
+              "ORD_DESCRIPTION": "SOD"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "insert",
+              "partition-key-type": "schema-table",
+              "schema-name": "production",
+              "table-name": "ORDERS",
+              "transaction-id": "12345678901"
+            }
+          },
+          "PartitionKey": "production.ORDERS",
+          "EncryptionType": "KMS"
+        },
+        {
+          "SequenceNumber": "<sequence_number:9>",
+          "ApproximateArrivalTimestamp": "<datetime>",
+          "Data": {
+            "data": {
+              "ORD_NUM": "O200103",
+              "ORD_AMOUNT": 5000,
+              "ADVANCE_AMOUNT": 900,
+              "ORD_DATE": "2024-07-05",
+              "CUST_CODE": "C00001",
+              "AGENT_CODE": "A001",
+              "ORD_DESCRIPTION": "SOD"
+            },
+            "metadata": {
+              "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+              "record-type": "data",
+              "operation": "update",
+              "partition-key-type": "schema-table",
+              "schema-name": "production",
+              "table-name": "ORDERS",
+              "transaction-id": "12345678901"
+            }
+          },
+          "PartitionKey": "production.ORDERS",
+          "EncryptionType": "KMS"
+        }
+      ],
+      "stop_replication": {
+        "Replication": {
+          "FailureMessages": [],
+          "ProvisionData": {
+            "IsNewProvisioningAvailable": false,
+            "ProvisionState": "provisioned",
+            "ProvisionedCapacityUnits": 1
+          },
+          "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+          "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+          "ReplicationCreateTime": "<datetime>",
+          "ReplicationStats": {
+            "ElapsedTimeMillis": "elapsed-time-millis",
+            "FreshStartDate": "<datetime>",
+            "FullLoadFinishDate": "<datetime>",
+            "FullLoadProgressPercent": 100,
+            "FullLoadStartDate": "<datetime>",
+            "StartDate": "<datetime>",
+            "TablesErrored": 0,
+            "TablesLoaded": 3,
+            "TablesLoading": 0,
+            "TablesQueued": 0
+          },
+          "ReplicationType": "cdc",
+          "ReplicationUpdateTime": "<datetime>",
+          "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+          "StartReplicationType": "start-replication",
+          "Status": "stopping",
+          "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/scenario/dms_serverless/test_dms_serverless.py::TestDmsScenario::test_vpc_endpoints[without-secret-manager]": {
+    "recorded-date": "23-08-2024, 07:09:45",
+    "recorded-content": {
+      "replication-failed-testing-connections": {
+        "Replications": [
+          {
+            "FailureMessages": [
+              "Test connection failed for endpoint '<source-endpoint>' and replication config '<replication-config-identifier:1>'. Failure Message: 'Test Endpoint failed: Application-Status: 1020912, Application-Message: Failed to retrieve secret. Unable to find Secrets Manager secret, Application-Detailed-Message: Unable to find AWS Secrets Manager secret Arn '<secret-arn>' The secrets_manager get secret value failed: curlCode: 28, Timeout was reached Too many retries: curlCode: 28, Timeout was reached'"
+            ],
+            "ProvisionData": {
+              "IsNewProvisioningAvailable": false,
+              "ProvisionedCapacityUnits": 0
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+            "ReplicationCreateTime": "<datetime>",
+            "ReplicationStats": {
+              "ElapsedTimeMillis": "elapsed-time-millis",
+              "FullLoadProgressPercent": 0,
+              "TablesErrored": 0,
+              "TablesLoaded": 0,
+              "TablesLoading": 0,
+              "TablesQueued": 0
+            },
+            "ReplicationType": "full-load",
+            "ReplicationUpdateTime": "<datetime>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "StartReplicationType": "start-replication",
+            "Status": "failed",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/scenario/dms_serverless/test_dms_serverless.py::TestDmsScenario::test_vpc_endpoints[without-kinesis-streams]": {
+    "recorded-date": "23-08-2024, 07:24:16",
+    "recorded-content": {
+      "replication-failed-testing-connections": {
+        "Replications": [
+          {
+            "FailureMessages": [
+              "Test connection failed for endpoint '<target-endpoint>' and replication config '<replication-config-identifier:1>'. Failure Message: 'Test Endpoint failed: Application-Status: 1020912, Application-Message: Failed to connect to database.'"
+            ],
+            "ProvisionData": {
+              "IsNewProvisioningAvailable": false,
+              "ProvisionedCapacityUnits": 0
+            },
+            "ReplicationConfigArn": "arn:<partition>:dms:<region>:111111111111:replication-config:<resource:1>",
+            "ReplicationConfigIdentifier": "<replication-config-identifier:1>",
+            "ReplicationCreateTime": "<datetime>",
+            "ReplicationStats": {
+              "ElapsedTimeMillis": "elapsed-time-millis",
+              "FullLoadProgressPercent": 0,
+              "TablesErrored": 0,
+              "TablesLoaded": 0,
+              "TablesLoading": 0,
+              "TablesQueued": 0
+            },
+            "ReplicationType": "full-load",
+            "ReplicationUpdateTime": "<datetime>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:2>",
+            "StartReplicationType": "start-replication",
+            "Status": "failed",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+Resources:
+  DataCatalog:
+    Type: AWS::Athena::DataCatalog
+    Properties:
+      Name: TestDataCatalog
+      Type: GLUE
+      Description: TestDescription
+      Parameters:
+        catalog-id: !Ref "AWS::AccountId"
+      Tags:
+        - Key: Test-Tag-Key
+          Value: Test-Tag-Value
+
+  NamedQuery:
+    Type: AWS::Athena::NamedQuery
+    Properties:
+      Database: TestDatabase
+      Description: TestDescription
+      Name: TestNamedQuery
+      QueryString: "SELECT * FROM table WHERE x = 1 AND y = 2"
+      WorkGroup: !Ref WorkGroup
+
+  WorkGroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Description: TestDescription
+      Name: TestWorkGroup
+      RecursiveDeleteOption: true
+      State: ENABLED
+      Tags:
+        - Key: Test-Tag-Key
+          Value: Test-Tag-Value
+      WorkGroupConfiguration:
+        BytesScannedCutoffPerQuery: 1000000000
+        EnforceWorkGroupConfiguration: true
+        PublishCloudWatchMetricsEnabled: false
+        RequesterPaysEnabled: false
+        ResultConfiguration:
+          OutputLocation:
+            s3://testbucket/path/within/bucket
+
+Outputs:
+  WorkGroupNameOutput:
+    Value: !Ref WorkGroup
+  NamedQueryIdOutput:
+    Value: !Ref NamedQuery
+  DataCatalogNameOutput:
+    Value: !Ref DataCatalog

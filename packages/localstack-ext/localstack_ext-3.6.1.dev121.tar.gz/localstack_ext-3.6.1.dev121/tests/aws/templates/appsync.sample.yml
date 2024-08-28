@@ -1,0 +1,153 @@
+# Based on https://github.com/aws-samples/aws-appsync-relay/blob/master/backend/template.yml
+
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Metadata:
+  ResolverTemplates:
+    - &EmptyRequest |
+        {
+          "version": "2017-02-28",
+          "payload": {}
+        }
+    - &CreateRequest |
+        # set($input = $context.args.input)
+        # set($input.userId = "$context.identity.sub")
+        {
+          "version": "2017-02-28",
+          "operation": "PutItem",
+          "key": {
+              "id": $util.dynamodb.toDynamoDBJson({{req_key_id}})
+          },
+          "attributeValues": $util.dynamodb.toMapValuesJson($input)
+        }
+    - &CreateResponse |
+        $util.toJson($context.result)
+    - &SubscriptionResponse |
+        #if($context.identity.sub != $context.arguments.userId)
+            $utils.unauthorized()
+        #else
+        ##User is authorized, but we return null to continue
+            null
+        #end
+Resources:
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AutoVerifiedAttributes:
+        - email
+      UserPoolName: !Sub ${AWS::StackName}_user_pool
+  Client:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+  GraphQLApi:
+    Type: AWS::AppSync::GraphQLApi
+    Properties:
+      Name: !Sub ${AWS::StackName}_api
+      AuthenticationType: API_KEY
+      UserPoolConfig:
+        UserPoolId: !Ref UserPool
+        AwsRegion: !Ref AWS::Region
+        DefaultAction: ALLOW
+  GraphQLSchema:
+    Type: AWS::AppSync::GraphQLSchema
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      Definition: |
+        # Loosely based on https://github.com/aws-samples/aws-appsync-relay/blob/master/backend/schema.graphql
+        input CreateTodoInput {
+          id: String!
+        }
+        type CreateTodoPayload {
+          id: String!
+        }
+        type Mutation {
+          createTodo(input: CreateTodoInput!): CreateTodoPayload!
+        }
+        type Subscription {
+          createdTodo: CreateTodoPayload
+          @aws_subscribe(mutations: ["createTodo"])
+        }
+        type Query {
+          dummy: String
+        }
+        schema {
+          query: Query
+          mutation: Mutation
+          subscription: Subscription
+        }
+  AppSyncApiKey:
+    Type: AWS::AppSync::ApiKey
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      Expires: {{api_key_expiry}}
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}_table
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  DynamoSource:
+    Type: AWS::AppSync::DataSource
+    Properties:
+      Name: !Sub ${AWS::StackName}_dynamo_datasource
+      Type: AMAZON_DYNAMODB
+      ServiceRoleArn: !GetAtt DynamoDBRole.Arn
+      ApiId: !GetAtt GraphQLApi.ApiId
+      DynamoDBConfig:
+        TableName: !Ref Table
+        AwsRegion: !Ref AWS::Region
+        UseCallerCredentials: false
+  DynamoDBRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: ["dynamodb.amazonaws.com"]
+            Action: ["*"]
+  CreateTodoResolver:
+    Type: AWS::AppSync::Resolver
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      TypeName: Mutation
+      FieldName: createTodo
+      DataSourceName: !GetAtt DynamoSource.Name
+      RequestMappingTemplate: *CreateRequest
+      ResponseMappingTemplate: *CreateResponse
+  CreatedResolver:
+    Type: AWS::AppSync::Resolver
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      TypeName: Subscription
+      FieldName: createdTodo
+      DataSourceName: !GetAtt DynamoSource.Name
+      RequestMappingTemplate: *EmptyRequest
+      ResponseMappingTemplate: *SubscriptionResponse
+  FunctionConf:
+    Type: AWS::AppSync::FunctionConfiguration
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      Name: func1
+      DataSourceName: !GetAtt DynamoSource.Name
+      FunctionVersion: "2018-05-29"
+Outputs:
+  AppSyncEndpoint:
+    Value: !GetAtt GraphQLApi.GraphQLUrl
+  AppSyncRegion:
+    Value: !Ref AWS::Region
+  AppSyncApiKey:
+    Value: !GetAtt AppSyncApiKey.ApiKey
+  UserPool:
+    Value: !Ref UserPool
+  ClientId:
+    Value: !Ref Client

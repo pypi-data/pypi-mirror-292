@@ -1,0 +1,73 @@
+{
+  "tests/aws/services/pipes/test_pipes_kinesis.py::TestPipesKinesis::test_kinesis_dlq_behavior": {
+    "recorded-date": "05-02-2024, 17:03:10",
+    "recorded-content": {
+      "describe_pipe_response": {
+        "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>",
+        "CreationTime": "<datetime>",
+        "CurrentState": "RUNNING",
+        "DesiredState": "RUNNING",
+        "Enrichment": "arn:<partition>:lambda:<region>:111111111111:function:<enrichment-function-name>",
+        "EnrichmentParameters": {},
+        "LastModifiedTime": "<datetime>",
+        "Name": "<pipe-name>",
+        "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Source": "arn:<partition>:kinesis:<region>:111111111111:stream/<source-stream-name>",
+        "SourceParameters": {
+          "KinesisStreamParameters": {
+            "BatchSize": 2,
+            "DeadLetterConfig": {
+              "Arn": "arn:<partition>:sqs:<region>:111111111111:<dlq-name>"
+            },
+            "MaximumRetryAttempts": 1,
+            "StartingPosition": "TRIM_HORIZON"
+          }
+        },
+        "StateReason": "No records processed",
+        "Tags": {},
+        "Target": "arn:<partition>:kinesis:<region>:111111111111:stream/<target-stream-name>",
+        "TargetParameters": {
+          "KinesisStreamParameters": {
+            "PartitionKey": "target-partition-key-0"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "pipe_target_stream_record_data": {
+        "approximateArrivalTimestamp": "approximate-arrival-timestamp",
+        "awsRegion": "<region>",
+        "data": "eyJjb3VudGVyIjogMSwgImZhaWwiOiBmYWxzZX0=",
+        "enrichment": "Hello from Lambda",
+        "eventID": "shardId-000000000002:<sequence-number:1>",
+        "eventName": "aws:kinesis:record",
+        "eventSource": "aws:kinesis",
+        "eventSourceARN": "arn:<partition>:kinesis:<region>:111111111111:stream/<source-stream-name>",
+        "eventVersion": "1.0",
+        "invokeIdentityArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "kinesisSchemaVersion": "1.0",
+        "partitionKey": "source-partition-key-0",
+        "sequenceNumber": "<sequence-number:1>"
+      },
+      "pipe_dlq_first_event": {
+        "KinesisBatchInfo": {
+          "approximateArrivalOfFirstRecord": "<timestamp:2022-07-13T13:48:01.000Z>",
+          "approximateArrivalOfLastRecord": "<timestamp:2022-07-13T13:48:01.000Z>",
+          "batchSize": 2,
+          "endSequenceNumber": "<end-sequence-number:1>",
+          "shardId": "shardId-000000000002",
+          "startSequenceNumber": "<start-sequence-number:1>",
+          "streamArn": "arn:<partition>:kinesis:<region>:111111111111:stream/<source-stream-name>"
+        },
+        "context": {
+          "condition": "RetryAttemptsExhausted",
+          "partnerResourceArn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name>"
+        },
+        "timestamp": "<timestamp:2022-07-13T13:48:01.000Z>",
+        "version": "1.0"
+      }
+    }
+  }
+}

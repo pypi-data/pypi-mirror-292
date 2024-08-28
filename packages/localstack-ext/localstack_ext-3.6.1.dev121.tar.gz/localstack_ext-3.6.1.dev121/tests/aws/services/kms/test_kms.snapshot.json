@@ -1,0 +1,60 @@
+{
+  "tests/aws/services/kms/test_kms.py::TestKMS::test_create_key": {
+    "recorded-date": "04-01-2024, 08:53:15",
+    "recorded-content": {
+      "create_key": {
+        "KeyMetadata": {
+          "AWSAccountId": "111111111111",
+          "Arn": "arn:<partition>:kms:<region>:111111111111:key/<uuid:1>",
+          "CreationDate": "datetime",
+          "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+          "Description": "test",
+          "Enabled": true,
+          "EncryptionAlgorithms": [
+            "SYMMETRIC_DEFAULT"
+          ],
+          "KeyId": "<uuid:1>",
+          "KeyManager": "CUSTOMER",
+          "KeySpec": "SYMMETRIC_DEFAULT",
+          "KeyState": "Enabled",
+          "KeyUsage": "ENCRYPT_DECRYPT",
+          "MultiRegion": false,
+          "Origin": "AWS_KMS"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/kms/test_kms.py::TestKMS::test_create_key_alias": {
+    "recorded-date": "04-01-2024, 08:53:16",
+    "recorded-content": {
+      "create_key_alias": {
+        "KeyMetadata": {
+          "AWSAccountId": "111111111111",
+          "Arn": "arn:<partition>:kms:<region>:111111111111:key/<uuid:1>",
+          "CreationDate": "datetime",
+          "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+          "Description": "test",
+          "Enabled": true,
+          "EncryptionAlgorithms": [
+            "SYMMETRIC_DEFAULT"
+          ],
+          "KeyId": "<uuid:1>",
+          "KeyManager": "CUSTOMER",
+          "KeySpec": "SYMMETRIC_DEFAULT",
+          "KeyState": "Enabled",
+          "KeyUsage": "ENCRYPT_DECRYPT",
+          "MultiRegion": false,
+          "Origin": "AWS_KMS"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

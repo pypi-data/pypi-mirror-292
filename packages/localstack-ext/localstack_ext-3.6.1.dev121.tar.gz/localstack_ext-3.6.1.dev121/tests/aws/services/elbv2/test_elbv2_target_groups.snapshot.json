@@ -1,0 +1,1165 @@
+{
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_crud": {
+    "recorded-date": "05-10-2023, 11:51:17",
+    "recorded-content": {
+      "create_target_group_err_1": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "A protocol must be specified",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_err_2": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "A port must be specified",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_err_3": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "A VPC ID must be specified",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_err_4": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "The VPC ID 'vpc-1234' is not found",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_1": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "Port": 80,
+            "Protocol": "HTTP",
+            "ProtocolVersion": "HTTP1",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_target_group_2": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": false,
+            "HealthCheckIntervalSeconds": 35,
+            "HealthCheckPath": "/",
+            "HealthCheckTimeoutSeconds": 30,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "TargetGroupArn": "<target-group-arn:2>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "lambda",
+            "UnhealthyThresholdCount": 2
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_target_group_err_5": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "A protocol must be specified",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_err_6": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "A port must be specified",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_err_7": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "A VPC ID must be specified",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_3": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "Port": 80,
+            "Protocol": "HTTP",
+            "ProtocolVersion": "HTTP1",
+            "TargetGroupArn": "<target-group-arn:3>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "ip",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_target_group_err_8": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Health check timeout '5' must be smaller than the interval '5'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_err_9": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Health check timeout '100' must be smaller than the interval '30'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_4": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 5,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckTimeoutSeconds": 3,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "Port": 8080,
+            "Protocol": "HTTP",
+            "ProtocolVersion": "HTTP1",
+            "TargetGroupArn": "<target-group-arn:4>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_target_health_1": {
+        "TargetHealthDescriptions": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_protocol_default_values[HTTP]": {
+    "recorded-date": "05-10-2023, 11:51:18",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "Port": 80,
+            "Protocol": "HTTP",
+            "ProtocolVersion": "HTTP1",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_protocol_default_values[HTTPS]": {
+    "recorded-date": "05-10-2023, 11:51:19",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTPS",
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "Port": 80,
+            "Protocol": "HTTPS",
+            "ProtocolVersion": "HTTP1",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_protocol_default_values[TCP]": {
+    "recorded-date": "05-10-2023, 11:51:21",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "TCP",
+            "HealthCheckTimeoutSeconds": 10,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Port": 80,
+            "Protocol": "TCP",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_protocol_default_values[TLS]": {
+    "recorded-date": "05-10-2023, 11:51:22",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "TCP",
+            "HealthCheckTimeoutSeconds": 10,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Port": 80,
+            "Protocol": "TLS",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_protocol_default_values[UDP]": {
+    "recorded-date": "05-10-2023, 11:51:23",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "TCP",
+            "HealthCheckTimeoutSeconds": 10,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Port": 80,
+            "Protocol": "UDP",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_protocol_default_values[TCP_UDP]": {
+    "recorded-date": "05-10-2023, 11:51:24",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "TCP",
+            "HealthCheckTimeoutSeconds": 10,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Port": 80,
+            "Protocol": "TCP_UDP",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_protocol_default_values[GENEVE]": {
+    "recorded-date": "05-10-2023, 11:51:25",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 10,
+            "HealthCheckPort": "80",
+            "HealthCheckProtocol": "TCP",
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "Port": 6081,
+            "Protocol": "GENEVE",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_target_type_default_values[instance]": {
+    "recorded-date": "05-10-2023, 11:51:26",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "Port": 80,
+            "Protocol": "HTTP",
+            "ProtocolVersion": "HTTP1",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_target_type_default_values[ip]": {
+    "recorded-date": "05-10-2023, 11:51:27",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "Port": 80,
+            "Protocol": "HTTP",
+            "ProtocolVersion": "HTTP1",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "ip",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_target_type_default_values[lambda]": {
+    "recorded-date": "05-10-2023, 11:51:28",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": false,
+            "HealthCheckIntervalSeconds": 35,
+            "HealthCheckPath": "/",
+            "HealthCheckTimeoutSeconds": 30,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "lambda",
+            "UnhealthyThresholdCount": 2
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_target_type_default_values[alb]": {
+    "recorded-date": "05-10-2023, 11:51:29",
+    "recorded-content": {
+      "create_target_group": {
+        "TargetGroups": [
+          {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckTimeoutSeconds": 6,
+            "HealthyThresholdCount": 5,
+            "IpAddressType": "ipv4",
+            "Matcher": {
+              "HttpCode": "200-399"
+            },
+            "Port": 80,
+            "Protocol": "TCP",
+            "TargetGroupArn": "<target-group-arn:1>",
+            "TargetGroupName": "<target-group-name:1>",
+            "TargetType": "alb",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_healthcheck_interval[HTTP-True]": {
+    "recorded-date": "05-10-2023, 11:51:30",
+    "recorded-content": {
+      "create_target_group_err_1": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Health check timeout '6' must be smaller than the interval '5'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_err_2": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Health check timeout '5' must be smaller than the interval '5'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_healthcheck_interval[HTTPS-True]": {
+    "recorded-date": "05-10-2023, 11:51:33",
+    "recorded-content": {
+      "create_target_group_err_1": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Health check timeout '6' must be smaller than the interval '5'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_err_2": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Health check timeout '5' must be smaller than the interval '5'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_healthcheck_interval[TCP-False]": {
+    "recorded-date": "05-10-2023, 11:51:34",
+    "recorded-content": {
+      "create_target_group_err_1": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Health check timeout '6' must be smaller than or equal to the interval '5'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_healthcheck_interval[TLS-False]": {
+    "recorded-date": "05-10-2023, 11:51:36",
+    "recorded-content": {
+      "create_target_group_err_1": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Health check timeout '6' must be smaller than or equal to the interval '5'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_healthcheck_interval[UDP-False]": {
+    "recorded-date": "05-10-2023, 11:51:37",
+    "recorded-content": {
+      "create_target_group_err_1": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Health check timeout '6' must be smaller than or equal to the interval '5'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_healthcheck_interval[TCP_UDP-False]": {
+    "recorded-date": "05-10-2023, 11:51:39",
+    "recorded-content": {
+      "create_target_group_err_1": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Health check timeout '6' must be smaller than or equal to the interval '5'",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[HTTP-True-source_ip]": {
+    "recorded-date": "05-10-2023, 22:40:59",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "Stickiness type 'source_ip' is not supported for target groups with the HTTP protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[HTTPS-True-source_ip]": {
+    "recorded-date": "05-10-2023, 22:41:01",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "Stickiness type 'source_ip' is not supported for target groups with the HTTPS protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TCP-False-source_ip]": {
+    "recorded-date": "05-10-2023, 22:41:03",
+    "recorded-content": {}
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TLS-False-source_ip]": {
+    "recorded-date": "05-10-2023, 22:38:51",
+    "recorded-content": {}
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[UDP-False-source_ip]": {
+    "recorded-date": "05-10-2023, 22:41:06",
+    "recorded-content": {}
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TCP_UDP-False-source_ip]": {
+    "recorded-date": "05-10-2023, 22:41:07",
+    "recorded-content": {}
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[GENEVE-True-source_ip]": {
+    "recorded-date": "05-10-2023, 22:41:09",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'source_ip' must be one of [source_ip_dest_ip_proto, source_ip_dest_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[HTTP-False-lb_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:11",
+    "recorded-content": {}
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[HTTPS-False-lb_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:12",
+    "recorded-content": {}
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TCP-True-lb_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:14",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "Stickiness type 'lb_cookie' is not supported for target groups with the TCP protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TLS-True-lb_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:16",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "Stickiness type 'lb_cookie' is not supported for target groups with the TLS protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[UDP-True-lb_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:18",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "Stickiness type 'lb_cookie' is not supported for target groups with the UDP protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TCP_UDP-True-lb_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:20",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "Stickiness type 'lb_cookie' is not supported for target groups with the TCP_UDP protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[GENEVE-True-lb_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:22",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'lb_cookie' must be one of [source_ip_dest_ip_proto, source_ip_dest_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[HTTP-False-app_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:23",
+    "recorded-content": {}
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[HTTPS-False-app_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:25",
+    "recorded-content": {}
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TCP-True-app_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:27",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "Stickiness type 'app_cookie' is not supported for target groups with the TCP protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TLS-True-app_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:29",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "Stickiness type 'app_cookie' is not supported for target groups with the TLS protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[UDP-True-app_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:31",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "Stickiness type 'app_cookie' is not supported for target groups with the UDP protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TCP_UDP-True-app_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:33",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "Stickiness type 'app_cookie' is not supported for target groups with the TCP_UDP protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[GENEVE-True-app_cookie]": {
+    "recorded-date": "05-10-2023, 22:41:35",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "Target group attribute key 'stickiness.app_cookie.cookie_name' is not recognized",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[HTTP-True-source_ip_dest_ip]": {
+    "recorded-date": "05-10-2023, 22:41:37",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[HTTPS-True-source_ip_dest_ip]": {
+    "recorded-date": "05-10-2023, 22:41:39",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TCP-True-source_ip_dest_ip]": {
+    "recorded-date": "05-10-2023, 22:41:41",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TLS-True-source_ip_dest_ip]": {
+    "recorded-date": "05-10-2023, 22:41:43",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[UDP-True-source_ip_dest_ip]": {
+    "recorded-date": "05-10-2023, 22:41:45",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TCP_UDP-True-source_ip_dest_ip]": {
+    "recorded-date": "05-10-2023, 22:41:47",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[GENEVE-False-source_ip_dest_ip]": {
+    "recorded-date": "05-10-2023, 22:41:48",
+    "recorded-content": {}
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[HTTP-True-source_ip_dest_ip_proto]": {
+    "recorded-date": "05-10-2023, 22:41:50",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[HTTPS-True-source_ip_dest_ip_proto]": {
+    "recorded-date": "05-10-2023, 22:41:52",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TCP-True-source_ip_dest_ip_proto]": {
+    "recorded-date": "05-10-2023, 22:41:54",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TLS-True-source_ip_dest_ip_proto]": {
+    "recorded-date": "05-10-2023, 22:41:56",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[UDP-True-source_ip_dest_ip_proto]": {
+    "recorded-date": "05-10-2023, 22:41:58",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TCP_UDP-True-source_ip_dest_ip_proto]": {
+    "recorded-date": "05-10-2023, 22:42:00",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'Stickiness type' must be one of [app_cookie, lb_cookie, source_ip]",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[GENEVE-False-source_ip_dest_ip_proto]": {
+    "recorded-date": "05-10-2023, 22:42:01",
+    "recorded-content": {}
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_stickiness[TLS-True-source_ip]": {
+    "recorded-date": "05-10-2023, 22:41:05",
+    "recorded-content": {
+      "create_target_group_err": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "You cannot enable stickiness on target groups with the TLS protocol",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elbv2/test_elbv2_target_groups.py::TestElbV2TargetGroups::test_target_group_attributes_deregistration": {
+    "recorded-date": "16-10-2023, 18:06:40",
+    "recorded-content": {
+      "create_target_group_err_1": {
+        "Error": {
+          "Code": "InvalidConfigurationRequest",
+          "Message": "A target group with target type 'lambda' does not support the attribute deregistration_delay.timeout_seconds",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_target_group_err_2": {
+        "Error": {
+          "Code": "ValidationError",
+          "Message": "'deregistration_delay.timeout_seconds' value '10000' must be between '0-3600' inclusive",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  }
+}

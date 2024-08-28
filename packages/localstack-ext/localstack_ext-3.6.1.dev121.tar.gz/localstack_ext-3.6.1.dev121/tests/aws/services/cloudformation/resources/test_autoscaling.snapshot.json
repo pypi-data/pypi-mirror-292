@@ -1,0 +1,194 @@
+{
+  "tests/aws/services/cloudformation/resources/test_autoscaling.py::test_autoscaling_group": {
+    "recorded-date": "30-05-2023, 10:42:33",
+    "recorded-content": {
+      "autoscaling-groups": {
+        "AutoScalingGroups": [
+          {
+            "AutoScalingGroupARN": "arn:<partition>:autoscaling:<region>:111111111111:autoScalingGroup:<autoscaling-group-uuid>:autoScalingGroupName/<auto-scaling-group-name:1>",
+            "AutoScalingGroupName": "<auto-scaling-group-name:1>",
+            "AvailabilityZones": [
+              "<region>a",
+              "<availability-zone:1>"
+            ],
+            "CreatedTime": "datetime",
+            "DefaultCooldown": 300,
+            "DesiredCapacity": 1,
+            "EnabledMetrics": [
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupInServiceInstances"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupTerminatingCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "WarmPoolWarmedCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupPendingInstances"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupDesiredCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupStandbyCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "WarmPoolTerminatingCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupAndWarmPoolTotalCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupTerminatingInstances"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "WarmPoolDesiredCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupInServiceCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupMinSize"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "WarmPoolTotalCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupTotalInstances"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupStandbyInstances"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupAndWarmPoolDesiredCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "WarmPoolPendingCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupMaxSize"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupPendingCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "GroupTotalCapacity"
+              },
+              {
+                "Granularity": "1Minute",
+                "Metric": "WarmPoolMinSize"
+              }
+            ],
+            "HealthCheckGracePeriod": 0,
+            "HealthCheckType": "EC2",
+            "Instances": [
+              {
+                "AvailabilityZone": "<availability-zone:1>",
+                "HealthStatus": "Healthy",
+                "InstanceId": "<instance-id:1>",
+                "InstanceType": "t2.nano",
+                "LaunchConfigurationName": "<launch-configuration-name:1>",
+                "LifecycleState": "InService",
+                "ProtectedFromScaleIn": false
+              }
+            ],
+            "LaunchConfigurationName": "<launch-configuration-name:1>",
+            "LoadBalancerNames": [],
+            "MaxSize": 3,
+            "MinSize": 1,
+            "NewInstancesProtectedFromScaleIn": false,
+            "ServiceLinkedRoleARN": "arn:<partition>:iam::111111111111:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling",
+            "SuspendedProcesses": [],
+            "Tags": [
+              {
+                "Key": "Name",
+                "PropagateAtLaunch": true,
+                "ResourceId": "<auto-scaling-group-name:1>",
+                "ResourceType": "auto-scaling-group",
+                "Value": "AutoscalingStackStack/ASG"
+              },
+              {
+                "Key": "aws:cloudformation:logical-id",
+                "PropagateAtLaunch": true,
+                "ResourceId": "<auto-scaling-group-name:1>",
+                "ResourceType": "auto-scaling-group",
+                "Value": "ASG46ED3070"
+              },
+              {
+                "Key": "aws:cloudformation:stack-id",
+                "PropagateAtLaunch": true,
+                "ResourceId": "<auto-scaling-group-name:1>",
+                "ResourceType": "auto-scaling-group",
+                "Value": "cfn-stack-id"
+              },
+              {
+                "Key": "aws:cloudformation:stack-name",
+                "PropagateAtLaunch": true,
+                "ResourceId": "<auto-scaling-group-name:1>",
+                "ResourceType": "auto-scaling-group",
+                "Value": "cfn-stack-name"
+              }
+            ],
+            "TargetGroupARNs": [],
+            "TerminationPolicies": [
+              "Default"
+            ],
+            "TrafficSources": [],
+            "VPCZoneIdentifier": "<v-p-c-zone-identifier:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "stack-resources-autoscaling": [
+        {
+          "StackName": "cfn-stack-name",
+          "StackId": "cfn-stack-id",
+          "LogicalResourceId": "ASG46ED3070",
+          "PhysicalResourceId": "<auto-scaling-group-name:1>",
+          "ResourceType": "AWS::AutoScaling::AutoScalingGroup",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "StackName": "cfn-stack-name",
+          "StackId": "cfn-stack-id",
+          "LogicalResourceId": "ASGLaunchConfigC00AF12B",
+          "PhysicalResourceId": "<launch-configuration-name:1>",
+          "ResourceType": "AWS::AutoScaling::LaunchConfiguration",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ]
+    }
+  }
+}

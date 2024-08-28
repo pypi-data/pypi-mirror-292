@@ -1,0 +1,462 @@
+{
+  "tests/aws/services/serverlessrepo/test_serverlessrepo.py::TestServerlessRepoParity::test_template_validation": {
+    "recorded-date": "22-08-2023, 11:37:26",
+    "recorded-content": {
+      "create_application": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "Author": "LocalStack",
+        "CreationTime": "date",
+        "Description": "Testing",
+        "IsVerifiedAuthor": false,
+        "Labels": [],
+        "Name": "<app-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "version_template_validation_exc_nodict": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Resource with name [template] is invalid. Expected input as dictionary, instead got <class 'str'>"
+        },
+        "ErrorCode": "InvalidRequestException",
+        "Message": "Resource with name [template] is invalid. Expected input as dictionary, instead got <class 'str'>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "version_template_validation_exc_nores": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Resource with name [template] is invalid. Resource must have Resources field: OrderedDict([('Transform', 'something')])"
+        },
+        "ErrorCode": "InvalidRequestException",
+        "Message": "Resource with name [template] is invalid. Resource must have Resources field: OrderedDict([('Transform', 'something')])",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "version_template_validation_exc_notransform": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Resource with name [template] is invalid. Resource must have Transform field: OrderedDict([('Resources', OrderedDict([('MyTopic', OrderedDict([('Type', 'AWS::SNS::Topic')]))]))])"
+        },
+        "ErrorCode": "InvalidRequestException",
+        "Message": "Resource with name [template] is invalid. Resource must have Transform field: OrderedDict([('Resources', OrderedDict([('MyTopic', OrderedDict([('Type', 'AWS::SNS::Topic')]))]))])",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "version_template_validation_exc_invalidtransform": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Resource with name [Transform] is invalid. Provided Transform something is unsupported, use one of the following ['AWS::Serverless-2016-10-31']"
+        },
+        "ErrorCode": "InvalidRequestException",
+        "Message": "Resource with name [Transform] is invalid. Provided Transform something is unsupported, use one of the following ['AWS::Serverless-2016-10-31']",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_application_version": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "CreationTime": "date",
+        "ParameterDefinitions": [],
+        "RequiredCapabilities": [],
+        "ResourcesSupported": true,
+        "SemanticVersion": "0.0.1",
+        "TemplateUrl": "<template-url>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      }
+    }
+  },
+  "tests/aws/services/serverlessrepo/test_serverlessrepo.py::TestServerlessRepoParity::test_minimal_app_with_version": {
+    "recorded-date": "22-08-2023, 11:37:23",
+    "recorded-content": {
+      "create_application": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "Author": "LocalStack",
+        "CreationTime": "date",
+        "Description": "Testing",
+        "IsVerifiedAuthor": false,
+        "Labels": [],
+        "Name": "<app-name>",
+        "Version": {
+          "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+          "CreationTime": "date",
+          "ParameterDefinitions": [],
+          "RequiredCapabilities": [],
+          "ResourcesSupported": true,
+          "SemanticVersion": "0.0.1",
+          "TemplateUrl": "<template-url>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "get_application": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "Author": "LocalStack",
+        "CreationTime": "date",
+        "Description": "Testing",
+        "IsVerifiedAuthor": false,
+        "Labels": [],
+        "Name": "<app-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_application_version": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "Author": "LocalStack",
+        "CreationTime": "date",
+        "Description": "Testing",
+        "IsVerifiedAuthor": false,
+        "Labels": [],
+        "Name": "<app-name>",
+        "Version": {
+          "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+          "CreationTime": "date",
+          "ParameterDefinitions": [],
+          "RequiredCapabilities": [],
+          "ResourcesSupported": true,
+          "SemanticVersion": "0.0.1",
+          "TemplateUrl": "<template-url>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/serverlessrepo/test_serverlessrepo.py::TestServerlessRepoParity::test_minimal_app_without_version": {
+    "recorded-date": "22-08-2023, 11:37:21",
+    "recorded-content": {
+      "create_application": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "Author": "LocalStack",
+        "CreationTime": "date",
+        "Description": "Testing",
+        "IsVerifiedAuthor": false,
+        "Labels": [],
+        "Name": "<app-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      }
+    }
+  },
+  "tests/aws/services/serverlessrepo/test_serverlessrepo.py::TestServerlessRepoParity::test_serverlessrepo_lifecycle": {
+    "recorded-date": "22-08-2023, 11:37:37",
+    "recorded-content": {
+      "create_application": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "Author": "LocalStack",
+        "CreationTime": "date",
+        "Description": "Testing",
+        "HomePageUrl": "<homepage-url>",
+        "IsVerifiedAuthor": false,
+        "Labels": [
+          "label1",
+          "label2"
+        ],
+        "LicenseUrl": "<license-url>",
+        "Name": "<app-name>",
+        "ReadmeUrl": "<readme-url>",
+        "Version": {
+          "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+          "CreationTime": "date",
+          "ParameterDefinitions": [],
+          "RequiredCapabilities": [],
+          "ResourcesSupported": true,
+          "SemanticVersion": "0.0.1",
+          "SourceCodeUrl": "https://localstack.cloud/codeurl",
+          "TemplateUrl": "<template-url>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create_application_version": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "CreationTime": "date",
+        "ParameterDefinitions": [],
+        "RequiredCapabilities": [],
+        "ResourcesSupported": true,
+        "SemanticVersion": "0.0.2",
+        "SourceCodeUrl": "https://localstack.cloud/codeurl",
+        "TemplateUrl": "<template-url>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "v001_get_application": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "Author": "LocalStack",
+        "CreationTime": "date",
+        "Description": "Testing",
+        "HomePageUrl": "<homepage-url>",
+        "IsVerifiedAuthor": false,
+        "Labels": [
+          "label1",
+          "label2"
+        ],
+        "LicenseUrl": "<license-url>",
+        "Name": "<app-name>",
+        "ReadmeUrl": "<readme-url>",
+        "Version": {
+          "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+          "CreationTime": "date",
+          "ParameterDefinitions": [],
+          "RequiredCapabilities": [],
+          "ResourcesSupported": true,
+          "SemanticVersion": "0.0.1",
+          "SourceCodeUrl": "https://localstack.cloud/codeurl",
+          "TemplateUrl": "<template-url>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "v002_get_application": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "Author": "LocalStack",
+        "CreationTime": "date",
+        "Description": "Testing",
+        "HomePageUrl": "<homepage-url>",
+        "IsVerifiedAuthor": false,
+        "Labels": [
+          "label1",
+          "label2"
+        ],
+        "LicenseUrl": "<license-url>",
+        "Name": "<app-name>",
+        "ReadmeUrl": "<readme-url>",
+        "Version": {
+          "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+          "CreationTime": "date",
+          "ParameterDefinitions": [],
+          "RequiredCapabilities": [],
+          "ResourcesSupported": true,
+          "SemanticVersion": "0.0.2",
+          "SourceCodeUrl": "https://localstack.cloud/codeurl",
+          "TemplateUrl": "<template-url>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list_application_versions": {
+        "Versions": [
+          {
+            "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+            "CreationTime": "date",
+            "SemanticVersion": "0.0.1",
+            "SourceCodeUrl": "https://localstack.cloud/codeurl"
+          },
+          {
+            "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+            "CreationTime": "date",
+            "SemanticVersion": "0.0.2",
+            "SourceCodeUrl": "https://localstack.cloud/codeurl"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list_applications": {
+        "Applications": [
+          {
+            "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+            "Author": "LocalStack",
+            "CreationTime": "date",
+            "Description": "Testing",
+            "HomePageUrl": "<homepage-url>",
+            "Labels": [
+              "label1",
+              "label2"
+            ],
+            "Name": "<app-name>"
+          }
+        ]
+      },
+      "app_dependencies": {
+        "Dependencies": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "app_policy_empty": {
+        "Statements": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "put_policy_public": {
+        "Statements": [
+          {
+            "Actions": [
+              "Deploy"
+            ],
+            "PrincipalOrgIDs": [],
+            "Principals": [
+              "*"
+            ],
+            "StatementId": "<uuid:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "put_application_policy": {
+        "Statements": [
+          {
+            "Actions": [
+              "Deploy"
+            ],
+            "PrincipalOrgIDs": [],
+            "Principals": [
+              "000000000000"
+            ],
+            "StatementId": "<uuid:2>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "app_policy_nonempty": {
+        "Statements": [
+          {
+            "Actions": [
+              "Deploy"
+            ],
+            "PrincipalOrgIDs": [],
+            "Principals": [
+              "000000000000"
+            ],
+            "StatementId": "<uuid:2>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "put_application_policy_private": {
+        "Statements": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "app_policy_private": {
+        "Statements": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_cloud_formation_template": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "CreationTime": "date",
+        "ExpirationTime": "date",
+        "SemanticVersion": "0.0.2",
+        "Status": "ACTIVE",
+        "TemplateId": "<uuid:3>",
+        "TemplateUrl": "<template-url>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_cloud_formation_change_set": {
+        "ApplicationId": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>",
+        "ChangeSetId": "arn:<partition>:cloudformation:<region>:111111111111:changeSet/<changeset-name>/<change_set_id_uuid>",
+        "SemanticVersion": "0.0.2",
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/serverlessrepo-<stack-name>/<stack_id_uuid>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "list_application_versions_none_exc": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Application with id arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name> could not be found."
+        },
+        "ErrorCode": "ApplicationNotFoundException",
+        "Message": "Application with id arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name> could not be found.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "get_application_none_exc": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Application with id arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name> could not be found."
+        },
+        "ErrorCode": "ApplicationNotFoundException",
+        "Message": "Application with id arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name> could not be found.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "describe_change_set": {
+        "Capabilities": [
+          "CAPABILITY_IAM"
+        ],
+        "ChangeSetId": "arn:<partition>:cloudformation:<region>:111111111111:changeSet/<changeset-name>/<change_set_id_uuid>",
+        "ChangeSetName": "<changeset-name>",
+        "Changes": [],
+        "CreationTime": "datetime",
+        "ExecutionStatus": "UNAVAILABLE",
+        "IncludeNestedStacks": false,
+        "NotificationARNs": [],
+        "RollbackConfiguration": {},
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/serverlessrepo-<stack-name>/<stack_id_uuid>",
+        "StackName": "serverlessrepo-<stack-name>",
+        "Status": "CREATE_IN_PROGRESS",
+        "Tags": [
+          {
+            "Key": "serverlessrepo:semanticVersion",
+            "Value": "0.0.2"
+          },
+          {
+            "Key": "serverlessrepo:applicationId",
+            "Value": "arn:<partition>:serverlessrepo:<region>:111111111111:applications/<app-name>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

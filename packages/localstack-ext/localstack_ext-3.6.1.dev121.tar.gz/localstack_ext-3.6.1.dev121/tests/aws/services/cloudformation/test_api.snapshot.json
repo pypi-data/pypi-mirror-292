@@ -1,0 +1,89 @@
+{
+  "tests/aws/services/cloudformation/test_api.py::TestAPI::test_create_misc_resources": {
+    "recorded-date": "26-09-2023, 17:58:21",
+    "recorded-content": {
+      "trail_details": [
+        {
+          "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail_name",
+          "Name": "trail_name",
+          "HomeRegion": "<region>"
+        }
+      ],
+      "list_aliases": [
+        {
+          "AliasArn": "arn:<partition>:lambda:<region>:111111111111:function:func_name:alias_name",
+          "Name": "alias_name",
+          "FunctionVersion": "$LATEST",
+          "Description": "Test Lambda function alias",
+          "RevisionId": "<uuid:1>"
+        }
+      ],
+      "describe_db_clusters": {
+        "DBClusters": [
+          {
+            "ActivityStreamStatus": "stopped",
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZones": "availability-zones",
+            "BackupRetentionPeriod": 1,
+            "ClusterCreateTime": "datetime",
+            "CopyTagsToSnapshot": false,
+            "CrossAccountClone": false,
+            "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBClusterMembers": [],
+            "DBClusterParameterGroup": "default.aurora-postgresql14",
+            "DBSubnetGroup": "default",
+            "DbClusterResourceId": "<db-cluster-resource-id:1>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "EarliestRestorableTime": "datetime",
+            "Endpoint": "endpoint",
+            "Engine": "aurora-postgresql",
+            "EngineMode": "provisioned",
+            "EngineVersion": "14.6",
+            "HostedZoneId": "<hosted-zone-id:1>",
+            "HttpEndpointEnabled": false,
+            "IAMDatabaseAuthenticationEnabled": false,
+            "LatestRestorableTime": "datetime",
+            "MasterUsername": "test",
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "Port": "port",
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "ReadReplicaIdentifiers": [],
+            "ReaderEndpoint": "reader-endpoint",
+            "Status": "available",
+            "StorageEncrypted": false,
+            "TagList": [
+              {
+                "Key": "aws:cloudformation:stack-id",
+                "Value": "<tag-value-replaced>"
+              },
+              {
+                "Key": "aws:cloudformation:stack-name",
+                "Value": "<tag-value-replaced>"
+              },
+              {
+                "Key": "aws:cloudformation:logical-id",
+                "Value": "<tag-value-replaced>"
+              }
+            ],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

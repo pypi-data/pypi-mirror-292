@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Template to exercise create and delete operations for AWS::QLDB::Ledger
+Parameters:
+  PermissionsMode:
+    Type: String
+    AllowedValues:
+      - ALLOW_ALL
+      - STANDARD
+Resources:
+  MyResource:
+    Type: AWS::QLDB::Ledger
+    Properties:
+      DeletionProtection: false
+      PermissionsMode: !Ref PermissionsMode
+Outputs:
+  LedgerRef:
+    Value:
+      Ref: MyResource

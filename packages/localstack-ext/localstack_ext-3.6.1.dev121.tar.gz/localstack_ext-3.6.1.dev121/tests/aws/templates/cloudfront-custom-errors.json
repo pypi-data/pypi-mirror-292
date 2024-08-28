@@ -1,0 +1,348 @@
+{
+  "Aliases": {
+    "Quantity": 1,
+    "Items": [
+      "dpl.localhost.localstack.cloud"
+    ]
+  },
+  "Origins": {
+    "Quantity": 3,
+    "Items": [
+      {
+        "Id": "fos-data-portal-s3Origin-local",
+        "DomainName": "{{local_domain}}",
+        "OriginPath": "/frontend",
+        "CustomHeaders": {
+          "Quantity": 0,
+          "Items": []
+        },
+        "S3OriginConfig": {
+          "OriginAccessIdentity": "origin-access-identity/cloudfront/47401ac8"
+        },
+        "ConnectionAttempts": 3,
+        "ConnectionTimeout": 10,
+        "OriginShield": {
+          "Enabled": true,
+          "OriginShieldRegion": "us-west-2"
+        }
+      },
+      {
+        "Id": "fos-data-portal-apiGwChatOrigin-local",
+        "DomainName": "b173502d.execute-api.us-west-2.amazonaws.com",
+        "OriginPath": "",
+        "CustomHeaders": {
+          "Quantity": 1,
+          "Items": [
+            {
+              "HeaderName": "X-API-Key",
+              "HeaderValue": "jTpt3XS02ZIBuQrGRfiePVn94KMdLF5HDC6AsNqx"
+            }
+          ]
+        },
+        "CustomOriginConfig": {
+          "HTTPPort": 80,
+          "HTTPSPort": 443,
+          "OriginProtocolPolicy": "https-only",
+          "OriginSslProtocols": {
+            "Quantity": 1,
+            "Items": [
+              "TLSv1.2"
+            ]
+          },
+          "OriginReadTimeout": 30,
+          "OriginKeepaliveTimeout": 5
+        },
+        "ConnectionAttempts": 3,
+        "ConnectionTimeout": 10
+      },
+      {
+        "Id": "fos-data-portal-apiGwOrigin-local",
+        "DomainName": "ep73pfrhgm.execute-api.us-west-2.amazonaws.com",
+        "OriginPath": "",
+        "CustomHeaders": {
+          "Quantity": 1,
+          "Items": [
+            {
+              "HeaderName": "X-API-Key",
+              "HeaderValue": "YkhIS68XVriTFDqwRNod9A1j4GMeJE3agBpbQmKc"
+            }
+          ]
+        },
+        "CustomOriginConfig": {
+          "HTTPPort": 80,
+          "HTTPSPort": 443,
+          "OriginProtocolPolicy": "https-only",
+          "OriginSslProtocols": {
+            "Quantity": 1,
+            "Items": [
+              "TLSv1.2"
+            ]
+          },
+          "OriginReadTimeout": 30,
+          "OriginKeepaliveTimeout": 5
+        },
+        "ConnectionAttempts": 3,
+        "ConnectionTimeout": 10,
+        "OriginShield": {
+          "Enabled": true,
+          "OriginShieldRegion": "us-west-2"
+        }
+      }
+    ]
+  },
+  "OriginGroups": {
+    "Quantity": 0,
+    "Items": []
+  },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "fos-data-portal-s3Origin-local",
+    "TrustedSigners": {
+      "Enabled": false,
+      "Quantity": 0
+    },
+    "TrustedKeyGroups": {
+      "Enabled": false,
+      "Quantity": 0
+    },
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "AllowedMethods": {
+      "Quantity": 3,
+      "Items": [
+        "GET",
+        "HEAD",
+        "OPTIONS"
+      ],
+      "CachedMethods": {
+        "Quantity": 2,
+        "Items": [
+          "GET",
+          "HEAD"
+        ]
+      }
+    },
+    "SmoothStreaming": false,
+    "Compress": true,
+    "LambdaFunctionAssociations": {
+      "Quantity": 0,
+      "Items": []
+    },
+    "FunctionAssociations": {
+      "Quantity": 0,
+      "Items": []
+    },
+    "FieldLevelEncryptionId": "",
+    "CachePolicyId": "",
+    "OriginRequestPolicyId": "",
+    "ResponseHeadersPolicyId": "",
+    "ForwardedValues": {
+      "QueryString": false,
+      "Cookies": {
+        "Forward": "none",
+        "WhitelistedNames": {
+          "Quantity": 0,
+          "Items": []
+        }
+      },
+      "Headers": {
+        "Quantity": 0,
+        "Items": []
+      },
+      "QueryStringCacheKeys": {
+        "Quantity": 0,
+        "Items": []
+      }
+    },
+    "MinTTL": 1,
+    "DefaultTTL": 86400,
+    "MaxTTL": 31536000
+  },
+  "CacheBehaviors": {
+    "Quantity": 2,
+    "Items": [
+      {
+        "PathPattern": "/ws/*",
+        "TargetOriginId": "fos-data-portal-apiGwChatOrigin-local",
+        "TrustedSigners": {
+          "Enabled": false,
+          "Quantity": 0
+        },
+        "TrustedKeyGroups": {
+          "Enabled": false,
+          "Quantity": 0
+        },
+        "ViewerProtocolPolicy": "https-only",
+        "AllowedMethods": {
+          "Quantity": 7,
+          "Items": [
+            "POST",
+            "GET",
+            "HEAD",
+            "PATCH",
+            "DELETE",
+            "OPTIONS",
+            "PUT"
+          ],
+          "CachedMethods": {
+            "Quantity": 2,
+            "Items": [
+              "GET",
+              "HEAD"
+            ]
+          }
+        },
+        "SmoothStreaming": false,
+        "Compress": false,
+        "LambdaFunctionAssociations": {
+          "Quantity": 0,
+          "Items": []
+        },
+        "FunctionAssociations": {
+          "Quantity": 0,
+          "Items": []
+        },
+        "FieldLevelEncryptionId": "",
+        "CachePolicyId": "",
+        "OriginRequestPolicyId": "",
+        "ResponseHeadersPolicyId": "",
+        "ForwardedValues": {
+          "QueryString": true,
+          "Cookies": {
+            "Forward": "none",
+            "WhitelistedNames": {
+              "Quantity": 0,
+              "Items": []
+            }
+          },
+          "Headers": {
+            "Quantity": 6,
+            "Items": [
+              "Sec-WebSocket-Version",
+              "Sec-WebSocket-Extensions",
+              "Sec-WebSocket-Key",
+              "Sec-WebSocket-Accept",
+              "Authorization",
+              "Sec-WebSocket-Protocol"
+            ]
+          },
+          "QueryStringCacheKeys": {
+            "Quantity": 0,
+            "Items": []
+          }
+        },
+        "MinTTL": 0,
+        "DefaultTTL": 0,
+        "MaxTTL": 0
+      },
+      {
+        "PathPattern": "/api/*",
+        "TargetOriginId": "fos-data-portal-apiGwOrigin-local",
+        "TrustedSigners": {
+          "Enabled": false,
+          "Quantity": 0
+        },
+        "TrustedKeyGroups": {
+          "Enabled": false,
+          "Quantity": 0
+        },
+        "ViewerProtocolPolicy": "https-only",
+        "AllowedMethods": {
+          "Quantity": 7,
+          "Items": [
+            "POST",
+            "GET",
+            "HEAD",
+            "PATCH",
+            "DELETE",
+            "OPTIONS",
+            "PUT"
+          ],
+          "CachedMethods": {
+            "Quantity": 2,
+            "Items": [
+              "GET",
+              "HEAD"
+            ]
+          }
+        },
+        "SmoothStreaming": false,
+        "Compress": true,
+        "LambdaFunctionAssociations": {
+          "Quantity": 0,
+          "Items": []
+        },
+        "FunctionAssociations": {
+          "Quantity": 0,
+          "Items": []
+        },
+        "FieldLevelEncryptionId": "",
+        "CachePolicyId": "",
+        "OriginRequestPolicyId": "",
+        "ResponseHeadersPolicyId": "",
+        "ForwardedValues": {
+          "QueryString": true,
+          "Cookies": {
+            "Forward": "none",
+            "WhitelistedNames": {
+              "Quantity": 0,
+              "Items": []
+            }
+          },
+          "Headers": {
+            "Quantity": 1,
+            "Items": [
+              "Authorization"
+            ]
+          },
+          "QueryStringCacheKeys": {
+            "Quantity": 0,
+            "Items": []
+          }
+        },
+        "MinTTL": 0,
+        "DefaultTTL": 0,
+        "MaxTTL": 0
+      }
+    ]
+  },
+  "CustomErrorResponses": {
+    "Quantity": 2,
+    "Items": [
+      {
+        "ErrorCode": 403,
+        "ResponsePagePath": "/index.html",
+        "ResponseCode": "200",
+        "ErrorCachingMinTTL": 10
+      },
+      {
+        "ErrorCode": 404,
+        "ResponsePagePath": "/index.html",
+        "ResponseCode": "200",
+        "ErrorCachingMinTTL": 10
+      }
+    ]
+  },
+  "Comment": "Self serve data portal",
+  "PriceClass": "PriceClass_100",
+  "Enabled": true,
+  "ViewerCertificate": {
+    "ACMCertificateArn": "arn:aws:acm:us-west-2:000000000000:certificate/b9102f57-bea2-4888-9f0a-4920378c5df9",
+    "SSLSupportMethod": "sni-only",
+    "MinimumProtocolVersion": "TLSv1.2_2021"
+  },
+  "Restrictions": {
+    "GeoRestriction": {
+      "RestrictionType": "whitelist",
+      "Quantity": 4,
+      "Items": [
+        "US",
+        "CA",
+        "MT",
+        "GB"
+      ]
+    }
+  },
+  "WebACLId": "",
+  "HttpVersion": "http2",
+  "IsIPV6Enabled": true,
+  "CallerReference": "test"
+}

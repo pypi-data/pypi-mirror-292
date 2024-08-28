@@ -1,0 +1,160 @@
+{
+  "tests/aws/services/cloudformation/resources/test_sagemaker.py::TestSageMakerEndpointStack::test_stack_resources_are_deployed": {
+    "recorded-date": "23-05-2024, 21:23:51",
+    "recorded-content": {
+      "stack-resources": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "Endpoint",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::SageMaker::Endpoint",
+            "StackId": "<stack-id:1>",
+            "StackName": "SageMakerEndpointStack",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "EndpointConfig",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::SageMaker::EndpointConfig",
+            "StackId": "<stack-id:1>",
+            "StackName": "SageMakerEndpointStack",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "Model",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::SageMaker::Model",
+            "StackId": "<stack-id:1>",
+            "StackName": "SageMakerEndpointStack",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "SageMakerExecutionRole7843F3B8",
+            "PhysicalResourceId": "physical-resource-id",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IAM::Role",
+            "StackId": "<stack-id:1>",
+            "StackName": "SageMakerEndpointStack",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_sagemaker.py::TestSageMakerEndpointStack::test_model_description": {
+    "recorded-date": "23-05-2024, 21:23:52",
+    "recorded-content": {
+      "model-description": {
+        "CreationTime": "datetime",
+        "DeploymentRecommendation": {
+          "RealTimeInferenceRecommendations": [
+            {
+              "Environment": {},
+              "InstanceType": "ml.c6i.large",
+              "RecommendationId": "<model-name:1>/fPYhiGCU"
+            },
+            {
+              "Environment": {},
+              "InstanceType": "ml.c5.large",
+              "RecommendationId": "<model-name:1>/BYgRaU0l"
+            },
+            {
+              "Environment": {},
+              "InstanceType": "ml.c5.2xlarge",
+              "RecommendationId": "<model-name:1>/qrYmi1S7"
+            }
+          ],
+          "RecommendationStatus": "COMPLETED"
+        },
+        "EnableNetworkIsolation": false,
+        "ExecutionRoleArn": "<execution-role-arn:1>",
+        "ModelArn": "<model-arn:1>",
+        "ModelName": "<model-name:1>",
+        "PrimaryContainer": {
+          "Image": "<image:1>",
+          "Mode": "SingleModel"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_sagemaker.py::TestSageMakerEndpointStack::test_endpoint_description": {
+    "recorded-date": "23-05-2024, 21:23:52",
+    "recorded-content": {
+      "endpoint-description": {
+        "CreationTime": "datetime",
+        "EndpointArn": "<endpoint-arn:1>",
+        "EndpointConfigName": "<endpoint-config-name:1>",
+        "EndpointName": "<endpoint-name:1>",
+        "EndpointStatus": "InService",
+        "LastModifiedTime": "datetime",
+        "ProductionVariants": [
+          {
+            "CurrentInstanceCount": 1,
+            "CurrentWeight": 1.0,
+            "DeployedImages": [
+              {
+                "ResolutionTime": "datetime",
+                "ResolvedImage": "111111111111.dkr.ecr.<region>.amazonaws.com/dummy-repository@sha256:de5a1e2607c964c84cf9b95f6bae8de4d5a3d5a6f6a1bc0982045da070ef7595",
+                "SpecifiedImage": "111111111111.dkr.ecr.<region>.amazonaws.com/dummy-repository:latest"
+              }
+            ],
+            "DesiredInstanceCount": 1,
+            "DesiredWeight": 1.0,
+            "VariantName": "Model-M528u9uaL3r2"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_sagemaker.py::TestSageMakerEndpointStack::test_endpoint_config_description": {
+    "recorded-date": "23-05-2024, 21:23:52",
+    "recorded-content": {
+      "endpoint-config-description": {
+        "CreationTime": "datetime",
+        "EnableNetworkIsolation": false,
+        "EndpointConfigArn": "<endpoint-config-arn:1>",
+        "EndpointConfigName": "<endpoint-config-name:1>",
+        "ProductionVariants": [
+          {
+            "InitialInstanceCount": 1,
+            "InitialVariantWeight": 1.0,
+            "InstanceType": "ml.t2.medium",
+            "ModelName": "<model-name:1>",
+            "VariantName": "<model-name:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

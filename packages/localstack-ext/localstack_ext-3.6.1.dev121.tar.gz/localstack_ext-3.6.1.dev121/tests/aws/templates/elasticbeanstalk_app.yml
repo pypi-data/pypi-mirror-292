@@ -1,0 +1,190 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Elasticbeanstalk test template
+Resources:
+  Application:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      Description: AWS Elastic Beanstalk Python Sample Application
+  AppVersion:
+    Type: AWS::ElasticBeanstalk::ApplicationVersion
+    Properties:
+      ApplicationName: !Ref Application
+      Description: Version 1.0
+      SourceBundle:
+        S3Bucket: 
+          Fn::Join:
+            - '-'
+            -
+              - 'elasticbeanstalk-samples'
+              - !Ref 'AWS::Region'
+        S3Key: python-sample-20150402.zip
+  Environment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      ApplicationName: !Ref Application
+      Description: AWS Elastic Beanstalk Environment running Python Sample Application
+      VersionLabel: !Ref AppVersion
+      SolutionStackName: 64bit Amazon Linux 2023 v4.0.4 running Python 3.11
+
+      OptionSettings:
+        - Namespace: 'aws:autoscaling:launchconfiguration'
+          OptionName: IamInstanceProfile
+          Value: !Ref InstanceProfile
+        - Namespace: 'aws:elasticbeanstalk:environment'
+          OptionName: ServiceRole
+          Value: !Ref ServiceRole
+  ConfigurationTemplate:
+    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
+    Properties: 
+      ApplicationName: !Ref Application
+      Description: "Example configuration"
+      SolutionStackName: 64bit Amazon Linux 2023 v4.0.4 running Python 3.11
+  ServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service: "elasticbeanstalk.amazonaws.com"
+            Action: 'sts:AssumeRole'
+            Condition:
+              StringEquals:
+                'sts:ExternalId': elasticbeanstalk
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'elasticloadbalancing:DescribeInstanceHealth'
+                  - 'ec2:DescribeInstances'
+                  - 'ec2:DescribeInstanceStatus'
+                  - 'ec2:GetConsoleOutput'
+                  - 'ec2:AssociateAddress'
+                  - 'ec2:DescribeAddresses'
+                  - 'ec2:DescribeSecurityGroups'
+                  - 'sqs:GetQueueAttributes'
+                  - 'sqs:GetQueueUrl'
+                  - 'autoscaling:DescribeAutoScalingGroups'
+                  - 'autoscaling:DescribeAutoScalingInstances'
+                  - 'autoscaling:DescribeScalingActivities'
+                  - 'autoscaling:DescribeNotificationConfigurations'
+                Resource:
+                  - '*'
+      Path: /
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref InstanceProfileRole
+  InstanceProfileRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: BucketAccess
+                Action:
+                  - 's3:Get*'
+                  - 's3:List*'
+                  - 's3:PutObject'
+                Effect: Allow
+                Resource:
+                  - !Join
+                    - ''
+                    - - 'arn:'
+                      - !Ref AWS::Partition
+                      - ':s3:::elasticbeanstalk-*-'
+                      - !Ref 'AWS::AccountId'
+                  - !Join
+                    - ''
+                    - - 'arn:'
+                      - !Ref AWS::Partition
+                      - ':s3:::elasticbeanstalk-*-'
+                      - !Ref 'AWS::AccountId'
+                      - /*
+                  - !Join
+                    - ''
+                    - - 'arn:'
+                      - !Ref AWS::Partition
+                      - ':s3:::elasticbeanstalk-*-'
+                      - !Ref 'AWS::AccountId'
+                      - '-*'
+                  - !Join
+                    - ''
+                    - - 'arn:'
+                      - !Ref AWS::Partition
+                      - ':s3:::elasticbeanstalk-*-'
+                      - !Ref 'AWS::AccountId'
+                      - '-*/*'
+              - Sid: ECSAccess
+                Effect: Allow
+                Action:
+                  - 'ecs:StartTask'
+                  - 'ecs:StopTask'
+                  - 'ecs:RegisterContainerInstance'
+                  - 'ecs:DeregisterContainerInstance'
+                  - 'ecs:DescribeContainerInstances'
+                  - 'ecs:DiscoverPollEndpoint'
+                  - 'ecs:Submit*'
+                  - 'ecs:Poll'
+                Resource: '*'
+              - Sid: QueueAccess
+                Action:
+                  - 'sqs:ChangeMessageVisibility'
+                  - 'sqs:DeleteMessage'
+                  - 'sqs:ReceiveMessage'
+                  - 'sqs:SendMessage'
+                Effect: Allow
+                Resource: '*'
+              - Sid: DynamoPeriodicTasks
+                Action:
+                  - 'dynamodb:BatchGetItem'
+                  - 'dynamodb:BatchWriteItem'
+                  - 'dynamodb:DeleteItem'
+                  - 'dynamodb:GetItem'
+                  - 'dynamodb:PutItem'
+                  - 'dynamodb:Query'
+                  - 'dynamodb:Scan'
+                  - 'dynamodb:UpdateItem'
+                Effect: Allow
+                Resource:
+                  - !Join
+                    - ''
+                    - - 'arn:'
+                      - !Ref AWS::Partition
+                      - ':dynamodb:*:'
+                      - !Ref 'AWS::AccountId'
+                      - ':table/*-stack-AWSEBWorkerCronLeaderRegistry*'
+              - Sid: MetricsAccess
+                Action:
+                  - 'cloudwatch:PutMetricData'
+                Effect: Allow
+                Resource: '*'
+      Path: /
+
+Outputs:
+  ApplicationName:
+    Value: !Ref Application
+  AppVersion:
+    Value: !Ref AppVersion
+  AppEnvironment:
+    Value: !Ref Environment
+  AppConfig:
+    Value: !Ref ConfigurationTemplate

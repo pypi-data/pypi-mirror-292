@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  MyApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: {{ apiName }}
+      Description: Test REST API
+      Mode: overwrite
+  MyAuthorizer:
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      Name: TestAuthorizer
+      RestApiId: !Ref MyApi
+      Type: REQUEST
+      IdentitySource: method.request.header.test

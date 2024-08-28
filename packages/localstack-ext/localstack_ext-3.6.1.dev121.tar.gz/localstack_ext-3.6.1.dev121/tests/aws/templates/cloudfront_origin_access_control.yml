@@ -1,0 +1,26 @@
+Parameters:
+  ConfigName:
+    Type: String
+
+Resources:
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name:
+          Ref: ConfigName
+        Description: description
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+Outputs:
+  OACRef:
+    Value:
+      Ref:
+        OriginAccessControl
+  OACId:
+    Value:
+      Fn::GetAtt:
+        - OriginAccessControl
+        - Id

@@ -1,0 +1,1291 @@
+{
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_regex[%}$%-messages3]": {
+    "recorded-date": "22-02-2024, 09:22:56",
+    "recorded-content": {
+      "regex-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "{\"Message\": Success}",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_regex[%[mM]essage%-messages2]": {
+    "recorded-date": "22-02-2024, 09:22:58",
+    "recorded-content": {
+      "regex-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "Successful message",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "{\"Message\": Success}",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_regex[%Message%-messages1]": {
+    "recorded-date": "22-02-2024, 09:23:00",
+    "recorded-content": {
+      "regex-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "{\"Message\": Success}",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_regex[%Success%-messages0]": {
+    "recorded-date": "22-02-2024, 09:23:02",
+    "recorded-content": {
+      "regex-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "Successful message",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "{\"Message\": Success}",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_unstructured_pattern[cat-messages0]": {
+    "recorded-date": "22-02-2024, 08:14:59",
+    "recorded-content": {
+      "unstructured-filter-cat": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "cat",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "cats",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "caterpillar",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "baby-cat",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "communicate",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1=ERROR OR w1=WARNING, w2]-messages14]": {
+    "recorded-date": "26-02-2024, 15:39:46",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1!=ERROR AND w1!=WARNING, w2]-messages13]": {
+    "recorded-date": "26-02-2024, 15:39:50",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1!=ERROR && w1!=WARNING, w2]-messages12]": {
+    "recorded-date": "26-02-2024, 15:39:54",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "FOO date look_at-the=Time FOOBAR /INFO/WARNING/ERROR/00010203 over nine thousand What can we break with this message? %%[]!\u00a7$%&/()=?\u00e4\u00f6\u00dc`+*~''_-.:,;",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1=ERROR || w1=WARNING, w2]-messages11]": {
+    "recorded-date": "26-02-2024, 15:39:56",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level, date, time = %02%, method, url]-messages10]": {
+    "recorded-date": "26-02-2024, 15:39:58",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[logLevel, date, time, method, url=%/service/resource/[0-9]+/part/[0-9]+$%, response_time]-messages9]": {
+    "recorded-date": "26-02-2024, 15:40:00",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[logLevel, date, time, method, url=%/service/resource/[0-9]+$%, response_time]-messages8]": {
+    "recorded-date": "26-02-2024, 15:40:03",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level = %IN.*%, w2]-messages7]": {
+    "recorded-date": "26-02-2024, 16:24:19",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level = %IN*%, w2]-messages6]": {
+    "recorded-date": "26-02-2024, 16:24:22",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level = IN*, rest]-messages5]": {
+    "recorded-date": "26-02-2024, 16:24:25",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level = IN*]-messages4]": {
+    "recorded-date": "26-02-2024, 16:24:27",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level = INFO]-messages3]": {
+    "recorded-date": "26-02-2024, 16:24:30",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [],
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level = INFO, rest]-messages2]": {
+    "recorded-date": "26-02-2024, 16:24:33",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level, rest]-messages1]": {
+    "recorded-date": "26-02-2024, 16:24:36",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "FOO date look_at-the=Time FOOBAR /INFO/WARNING/ERROR/00010203 over nine thousand What can we break with this message? %%[]!\u00a7$%&/()=?\u00e4\u00f6\u00dc`+*~''_-.:,;",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[LogLevel, Date, Time, Method, Url, ResponseTime]-messages0]": {
+    "recorded-date": "26-02-2024, 16:24:40",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "FOO date look_at-the=Time FOOBAR /INFO/WARNING/ERROR/00010203 over nine thousand What can we break with this message? %%[]!\u00a7$%&/()=?\u00e4\u00f6\u00dc`+*~''_-.:,;",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1===ERROR || w1!==WARNING, w2]-messages21]": {
+    "recorded-date": "26-02-2024, 15:49:24",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1==ERROR  || w1!=WARNING, w2]-messages20]": {
+    "recorded-date": "26-02-2024, 15:49:28",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1=ERROR !=== w1=WARNING, w2]-messages19]": {
+    "recorded-date": "26-02-2024, 15:49:31",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1=ERROR && || w1=WARNING, w2]-messages18]": {
+    "recorded-date": "26-02-2024, 15:49:35",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1=ERROR OR w1=WARNING, w2]-messages17]": {
+    "recorded-date": "26-02-2024, 15:49:39",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1!=ERROR AND w1!=WARNING, w2]-messages16]": {
+    "recorded-date": "26-02-2024, 15:49:43",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1!=ERROR&&w1!=WARNING, w2]-messages15]": {
+    "recorded-date": "26-02-2024, 15:49:46",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "FOO date look_at-the=Time FOOBAR /INFO/WARNING/ERROR/00010203 over nine thousand What can we break with this message? %%[]!\u00a7$%&/()=?\u00e4\u00f6\u00dc`+*~''_-.:,;",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1!=ERROR && w1!=WARNING, w2]-messages14]": {
+    "recorded-date": "26-02-2024, 16:24:00",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "FOO date look_at-the=Time FOOBAR /INFO/WARNING/ERROR/00010203 over nine thousand What can we break with this message? %%[]!\u00a7$%&/()=?\u00e4\u00f6\u00dc`+*~''_-.:,;",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1 = ERROR||w1 = WARNING, w2]-messages13]": {
+    "recorded-date": "26-02-2024, 15:49:52",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1=ERROR || w1=WARNING, w2]-messages12]": {
+    "recorded-date": "26-02-2024, 15:49:55",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level, date, time = %02%, method, url]-messages11]": {
+    "recorded-date": "26-02-2024, 15:49:58",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[logLevel, date, time, method, url=%/service/resource/[0-9]+/part/[0-9]+$%, response_time]-messages10]": {
+    "recorded-date": "26-02-2024, 15:50:02",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[logLevel, date, time, method, url=%/service/resource/[0-9]+$%, response_time]-messages9]": {
+    "recorded-date": "26-02-2024, 15:50:04",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level = %^IN.*%]-messages8]": {
+    "recorded-date": "26-02-2024, 16:24:17",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1===ERROR || w1!==WARNING, w2]-messages24]": {
+    "recorded-date": "26-02-2024, 16:23:30",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1==ERROR  || w1!=WARNING, w2]-messages23]": {
+    "recorded-date": "26-02-2024, 16:23:33",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1=ERROR !=== w1=WARNING, w2]-messages22]": {
+    "recorded-date": "26-02-2024, 16:23:37",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1=ERROR && || w1=WARNING, w2]-messages21]": {
+    "recorded-date": "26-02-2024, 16:23:41",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1=ERROR OR w1=WARNING, w2]-messages20]": {
+    "recorded-date": "26-02-2024, 16:23:45",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1!=ERROR AND w1!=WARNING, w2]-messages19]": {
+    "recorded-date": "26-02-2024, 16:23:48",
+    "recorded-content": {
+      "whitespace-delimited-filter-exception": "An error occurred (InvalidParameterException) when calling the FilterLogEvents operation: Invalid filter pattern"
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1 = ERROR && (w1 != FOO || w1 = WARNING), w2]-messages18]": {
+    "recorded-date": "26-02-2024, 16:23:52",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1 = ERROR && w1 != FOO || w1 = WARNING, w2]-messages17]": {
+    "recorded-date": "26-02-2024, 16:23:54",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1!=ERROR&&w1!=WARNING, w2]-messages16]": {
+    "recorded-date": "26-02-2024, 16:23:56",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "FOO date look_at-the=Time FOOBAR /INFO/WARNING/ERROR/00010203 over nine thousand What can we break with this message? %%[]!\u00a7$%&/()=?\u00e4\u00f6\u00dc`+*~''_-.:,;",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1 = ERROR||w1 = WARNING, w2]-messages15]": {
+    "recorded-date": "26-02-2024, 16:23:58",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[w1=ERROR || w1=WARNING, w2]-messages13]": {
+    "recorded-date": "26-02-2024, 16:24:02",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level, date, time = %02%, method, url]-messages12]": {
+    "recorded-date": "26-02-2024, 16:24:05",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "WARNING 09/25/2014 12:00:02 Invalid user request",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "ERROR 09/25/2014 12:00:02 Failed to process request",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[logLevel, date, time, method, url=%/service/resource/[0-9]+/part/[0-9]+$%, response_time]-messages11]": {
+    "recorded-date": "26-02-2024, 16:24:08",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[logLevel, date, time, method, url=%/service/resource/[0-9]+$%, response_time]-messages10]": {
+    "recorded-date": "26-02-2024, 16:24:11",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_whitespace_delimited_list[[log_level = %^IN[fF][oO]%]-messages9]": {
+    "recorded-date": "26-02-2024, 16:24:14",
+    "recorded-content": {
+      "whitespace-delimited-filter": {
+        "events": [
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:00 GET /service/resource/67 1200",
+            "timestamp": "timestamp"
+          },
+          {
+            "eventId": "event-id",
+            "ingestionTime": "ingestion-time",
+            "logStreamName": "log-stream-name",
+            "message": "INFO 09/25/2014 12:00:01 POST /service/resource/67/part/111 1310",
+            "timestamp": "timestamp"
+          }
+        ],
+        "nextToken": "next-token",
+        "searchedLogStreams": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_json_property": {
+    "recorded-date": "28-05-2024, 06:24:22",
+    "recorded-content": {
+      "filtered_events": [
+        {
+          "logStreamName": "log-stream-name",
+          "timestamp": "timestamp",
+          "message": {
+            "isCool": false,
+            "ShouldBeHidden": false,
+            "_typeTag": "ImportantMessage"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_filter_log_events_with_non_json_messages": {
+    "recorded-date": "29-05-2024, 11:53:15",
+    "recorded-content": {
+      "filtered_events": [
+        {
+          "logStreamName": "log-stream-name",
+          "timestamp": "timestamp",
+          "message": {
+            "somekey": "value1",
+            "foo": "bar"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/logs/test_logs.py::TestCloudWatchLogsPro::test_put_subscription_filter_kinesis_with_filter_pattern": {
+    "recorded-date": "30-05-2024, 13:18:02",
+    "recorded-content": {
+      "data_messages": [
+        {
+          "messageType": "DATA_MESSAGE",
+          "owner": "111111111111",
+          "logGroup": "log-group",
+          "logStream": "log-stream",
+          "subscriptionFilters": [
+            "<subscription-name>"
+          ],
+          "logEvents": [
+            {
+              "id": "<id:1>",
+              "timestamp": "timestamp",
+              "message": {
+                "first": "ok",
+                "second": "success"
+              }
+            },
+            {
+              "id": "<id:2>",
+              "timestamp": "timestamp",
+              "message": {
+                "first": "nice",
+                "second": "success",
+                "additional": "is fine"
+              }
+            },
+            {
+              "id": "<id:3>",
+              "timestamp": "timestamp",
+              "message": {
+                "second": "variation",
+                "first": "should be fine"
+              }
+            }
+          ]
+        }
+      ],
+      "log_events": [
+        {
+          "id": "<id:1>",
+          "timestamp": "timestamp",
+          "message": {
+            "first": "ok",
+            "second": "success"
+          }
+        },
+        {
+          "id": "<id:2>",
+          "timestamp": "timestamp",
+          "message": {
+            "first": "nice",
+            "second": "success",
+            "additional": "is fine"
+          }
+        },
+        {
+          "id": "<id:3>",
+          "timestamp": "timestamp",
+          "message": {
+            "second": "variation",
+            "first": "should be fine"
+          }
+        }
+      ],
+      "unfiltered_events": [
+        {
+          "logStreamName": "log-stream-name",
+          "timestamp": "timestamp",
+          "message": "first",
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "log-stream-name",
+          "timestamp": "timestamp",
+          "message": {
+            "first": "ok",
+            "second": "success"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "log-stream-name",
+          "timestamp": "timestamp",
+          "message": {
+            "first": "hello"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "log-stream-name",
+          "timestamp": "timestamp",
+          "message": {
+            "first": "not enough",
+            "info": "should not work"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "log-stream-name",
+          "timestamp": "timestamp",
+          "message": {
+            "first": "nice",
+            "second": "success",
+            "additional": "is fine"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        },
+        {
+          "logStreamName": "log-stream-name",
+          "timestamp": "timestamp",
+          "message": {
+            "second": "variation",
+            "first": "should be fine"
+          },
+          "ingestionTime": "ingestion-time",
+          "eventId": "event-id"
+        }
+      ]
+    }
+  }
+}

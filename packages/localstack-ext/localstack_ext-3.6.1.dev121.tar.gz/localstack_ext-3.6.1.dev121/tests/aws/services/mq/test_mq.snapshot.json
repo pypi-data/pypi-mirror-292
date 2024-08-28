@@ -1,0 +1,420 @@
+{
+  "tests/aws/services/mq/test_mq.py::TestMQ::test_create_tags": {
+    "recorded-date": "14-09-2022, 15:19:58",
+    "recorded-content": {
+      "CreateTagsInvalidResource": "An error occurred (BadRequestException) when calling the CreateTags operation: Invalid request input, expected non-empty tags map",
+      "CreateTagsMissing": "An error occurred (BadRequestException) when calling the CreateTags operation: Invalid request input, expected non-empty tags map",
+      "CreateTagsEmpty": "An error occurred (BadRequestException) when calling the CreateTags operation: Invalid request input, expected non-empty tags map",
+      "CreateTagsValid": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        },
+        "Tags": {
+          "foo": "bar",
+          "foo1": "bar1"
+        }
+      },
+      "CreateTagsValidOverride": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        },
+        "Tags": {
+          "foo": "bar1",
+          "foo1": "bar1"
+        }
+      }
+    }
+  },
+  "tests/aws/services/mq/test_mq.py::TestMQ::test_delete_tags": {
+    "recorded-date": "14-09-2022, 15:20:13",
+    "recorded-content": {
+      "DeleteTagsBefore": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        },
+        "Tags": {
+          "foo": "bar",
+          "foo1": "bar1"
+        }
+      },
+      "DeleteTagsAfter": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        },
+        "Tags": {
+          "foo1": "bar1"
+        }
+      }
+    }
+  },
+  "tests/aws/services/mq/test_mq.py::TestMQ::test_create_broker": {
+    "recorded-date": "14-09-2022, 15:01:43",
+    "recorded-content": {
+      "CreateBrokerResponse": {
+        "BrokerArn": "arn:<partition>:mq:<region>:111111111111:broker:<broker-name>:<id>",
+        "BrokerId": "<id>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/mq/test_mq.py::TestMQ::test_list_brokers": {
+    "recorded-date": "14-09-2022, 15:19:46",
+    "recorded-content": {
+      "ListBrokers": [
+        {
+          "BrokerArn": "arn:<partition>:mq:<region>:111111111111:broker:<broker-name>:<id>",
+          "BrokerId": "<id>",
+          "BrokerName": "<broker-name>",
+          "BrokerState": "CREATION_IN_PROGRESS",
+          "Created": "datetime",
+          "DeploymentMode": "SINGLE_INSTANCE",
+          "EngineType": "ActiveMQ",
+          "HostInstanceType": "mq.t2.micro"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/mq/test_mq.py::TestMQ::test_describe_configuration": {
+    "recorded-date": "14-09-2022, 15:20:21",
+    "recorded-content": {
+      "NotFoundConfiguration": "An error occurred (NotFoundException) when calling the DescribeConfiguration operation: Configuration ID [foo] can't be found. Make sure it exists.",
+      "DescribeConfiguration": {
+        "Arn": "arn:<partition>:mq:<region>:111111111111:configuration:<id>",
+        "AuthenticationStrategy": "simple",
+        "Created": "datetime",
+        "EngineType": "ActiveMQ",
+        "EngineVersion": "5.16.5",
+        "Id": "<id>",
+        "LatestRevision": {
+          "Created": "datetime",
+          "Description": "Auto-generated default for <configuration-name> on ActiveMQ 5.16.5",
+          "Revision": 1
+        },
+        "Name": "<configuration-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        },
+        "Tags": {}
+      }
+    }
+  },
+  "tests/aws/services/mq/test_mq.py::TestMQ::test_describe_broker": {
+    "recorded-date": "14-09-2022, 15:04:52",
+    "recorded-content": {
+      "DescribeBroker": {
+        "AuthenticationStrategy": "simple",
+        "AutoMinorVersionUpgrade": true,
+        "BrokerArn": "arn:<partition>:mq:<region>:111111111111:broker:<broker-name>:<id>",
+        "BrokerId": "<id>",
+        "BrokerInstances": [
+          {
+            "ConsoleURL": "https://<id>-1.mq.<region>.<url_port>",
+            "Endpoints": [
+              "ssl://<id>-1.mq.<region>.<url_port>",
+              "amqp+ssl://<id>-1.mq.<region>.<url_port>",
+              "stomp+ssl://<id>-1.mq.<region>.<url_port>",
+              "mqtt+ssl://<id>-1.mq.<region>.<url_port>",
+              "wss://<id>-1.mq.<region>.<url_port>"
+            ],
+            "IpAddress": "<ip_address>"
+          }
+        ],
+        "BrokerName": "<broker-name>",
+        "BrokerState": "RUNNING",
+        "Configurations": {
+          "Current": {
+            "Id": "<id>",
+            "Revision": 1
+          },
+          "History": []
+        },
+        "Created": "datetime",
+        "DeploymentMode": "SINGLE_INSTANCE",
+        "EncryptionOptions": {
+          "UseAwsOwnedKey": true
+        },
+        "EngineType": "ACTIVEMQ",
+        "EngineVersion": "5.16.5",
+        "HostInstanceType": "mq.t2.micro",
+        "Logs": {
+          "Audit": false,
+          "AuditLogGroup": "/aws/amazonmq/broker/<id>/audit",
+          "General": false,
+          "GeneralLogGroup": "/aws/amazonmq/broker/<id>/general"
+        },
+        "MaintenanceWindowStartTime": {
+          "DayOfWeek": "WEDNESDAY",
+          "TimeOfDay": "18:00",
+          "TimeZone": "UTC"
+        },
+        "PubliclyAccessible": true,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        },
+        "SecurityGroups": [
+          "sg-0e25349a7663b297e"
+        ],
+        "StorageType": "efs",
+        "SubnetIds": [
+          "subnet-0349f016849071465"
+        ],
+        "Tags": {},
+        "Users": [
+          {
+            "Username": "admin"
+          }
+        ]
+      }
+    }
+  },
+  "tests/aws/services/mq/test_mq.py::TestMQ::test_describe_broker_engine_types": {
+    "recorded-date": "14-09-2022, 15:19:52",
+    "recorded-content": {
+      "BrokerEngineTypesAll": {
+        "BrokerEngineTypes": [
+          {
+            "EngineType": "ACTIVEMQ",
+            "EngineVersions": [
+              {
+                "Name": "5.17.1"
+              },
+              {
+                "Name": "5.16.5"
+              },
+              {
+                "Name": "5.16.4"
+              },
+              {
+                "Name": "5.16.3"
+              },
+              {
+                "Name": "5.16.2"
+              },
+              {
+                "Name": "5.15.15"
+              },
+              {
+                "Name": "5.15.14"
+              },
+              {
+                "Name": "5.15.13"
+              },
+              {
+                "Name": "5.15.12"
+              },
+              {
+                "Name": "5.15.10"
+              },
+              {
+                "Name": "5.15.9"
+              },
+              {
+                "Name": "5.15.8"
+              },
+              {
+                "Name": "5.15.6"
+              },
+              {
+                "Name": "5.15.0"
+              }
+            ]
+          },
+          {
+            "EngineType": "RABBITMQ",
+            "EngineVersions": [
+              {
+                "Name": "3.9.16"
+              },
+              {
+                "Name": "3.9.13"
+              },
+              {
+                "Name": "3.8.30"
+              },
+              {
+                "Name": "3.8.27"
+              },
+              {
+                "Name": "3.8.26"
+              },
+              {
+                "Name": "3.8.23"
+              },
+              {
+                "Name": "3.8.22"
+              },
+              {
+                "Name": "3.8.11"
+              },
+              {
+                "Name": "3.8.6"
+              }
+            ]
+          }
+        ],
+        "MaxResults": 20,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "BrokerEngineTypesActiveMQ": {
+        "BrokerEngineTypes": [
+          {
+            "EngineType": "ACTIVEMQ",
+            "EngineVersions": [
+              {
+                "Name": "5.17.1"
+              },
+              {
+                "Name": "5.16.5"
+              },
+              {
+                "Name": "5.16.4"
+              },
+              {
+                "Name": "5.16.3"
+              },
+              {
+                "Name": "5.16.2"
+              },
+              {
+                "Name": "5.15.15"
+              },
+              {
+                "Name": "5.15.14"
+              },
+              {
+                "Name": "5.15.13"
+              },
+              {
+                "Name": "5.15.12"
+              },
+              {
+                "Name": "5.15.10"
+              },
+              {
+                "Name": "5.15.9"
+              },
+              {
+                "Name": "5.15.8"
+              },
+              {
+                "Name": "5.15.6"
+              },
+              {
+                "Name": "5.15.0"
+              }
+            ]
+          }
+        ],
+        "MaxResults": 20,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "BrokerEngineTypesRabbitMQ": {
+        "BrokerEngineTypes": [
+          {
+            "EngineType": "RABBITMQ",
+            "EngineVersions": [
+              {
+                "Name": "3.9.16"
+              },
+              {
+                "Name": "3.9.13"
+              },
+              {
+                "Name": "3.8.30"
+              },
+              {
+                "Name": "3.8.27"
+              },
+              {
+                "Name": "3.8.26"
+              },
+              {
+                "Name": "3.8.23"
+              },
+              {
+                "Name": "3.8.22"
+              },
+              {
+                "Name": "3.8.11"
+              },
+              {
+                "Name": "3.8.6"
+              }
+            ]
+          }
+        ],
+        "MaxResults": 20,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "BrokerEngineTypesInvalid": "An error occurred (BadRequestException) when calling the DescribeBrokerEngineTypes operation: Broker engine [foo] is invalid."
+    }
+  },
+  "tests/aws/services/mq/test_mq.py::TestMQ::test_create_configuration": {
+    "recorded-date": "20-09-2022, 17:04:51",
+    "recorded-content": {
+      "ValidConfigCreated": {
+        "Arn": "arn:<partition>:mq:<region>:111111111111:configuration:<id>",
+        "AuthenticationStrategy": "simple",
+        "Created": "datetime",
+        "Id": "<id>",
+        "LatestRevision": {
+          "Created": "datetime",
+          "Description": "Auto-generated default for <configuration-name> on ActiveMQ 5.16.5",
+          "Revision": 1
+        },
+        "Name": "<configuration-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "ValidConfigWithTagsCreated": {
+        "Arn": "arn:<partition>:mq:<region>:111111111111:configuration:<id>",
+        "AuthenticationStrategy": "simple",
+        "Created": "datetime",
+        "Id": "<id>",
+        "LatestRevision": {
+          "Created": "datetime",
+          "Description": "Auto-generated default for <configuration-name> on ActiveMQ 5.16.5",
+          "Revision": 1
+        },
+        "Name": "<configuration-name>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/mq/test_mq.py::TestMQ::test_delete_broker": {
+    "recorded-date": "14-09-2022, 15:01:44",
+    "recorded-content": {
+      "DeleteBrokerResponse": {
+        "BrokerId": "<id>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "FailingDeleteBrokerResponse": "An error occurred (NotFoundException) when calling the DeleteBroker operation: Broker [foo] doesn't exist."
+    }
+  }
+}

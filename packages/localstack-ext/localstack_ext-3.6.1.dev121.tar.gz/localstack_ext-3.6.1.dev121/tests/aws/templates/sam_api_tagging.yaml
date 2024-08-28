@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  ApiGwCustomId:
+    Type: String
+
+Resources:
+  MyApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      Name: MySmtQueuingApi
+      Description: V2 API for SMT queueing
+      Tags:
+        _custom_id_: !Ref ApiGwCustomId
+
+Outputs:
+  MyApiId:
+    Value: !Ref MyApi

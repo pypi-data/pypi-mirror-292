@@ -1,0 +1,27 @@
+Parameters:
+  DatabaseName:
+    Type: String
+    Default: MyDatabase
+Resources:
+  MyDBCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      DBClusterIdentifier: !Sub ${AWS::StackName}
+      MasterUsername: dummyuser
+      MasterUserPassword: dummypassword
+      Engine: aurora-postgresql
+      EngineMode: provisioned
+      DatabaseName: !Ref DatabaseName
+      ServerlessV2ScalingConfiguration:
+        MaxCapacity: 16
+        MinCapacity: 0.5
+
+Outputs:
+  DBClusterIdentifier:
+    Value: !Ref MyDBCluster
+  EndpointAddress:
+    Value: !GetAtt MyDBCluster.Endpoint.Address
+  EndpointPort:
+    Value: !GetAtt MyDBCluster.Endpoint.Port
+  ReadEndpointAddress:
+    Value: !GetAtt MyDBCluster.ReadEndpoint.Address

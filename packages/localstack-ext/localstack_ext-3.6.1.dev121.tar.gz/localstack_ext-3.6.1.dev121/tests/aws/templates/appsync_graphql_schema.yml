@@ -1,0 +1,51 @@
+Parameters:
+  ApiName:
+    Type: String
+
+Resources:
+  GraphQLApi:
+    Type: AWS::AppSync::GraphQLApi
+    Properties:
+      Name: !Ref ApiName
+      AuthenticationType: AWS_IAM
+
+  GraphQLSchema:
+    DependsOn: GraphQLApi
+    Type: AWS::AppSync::GraphQLSchema
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      Definition: " \n
+enum Priority { \n
+  LOW \n
+  MEDIUM \n
+  HIGH \n
+}\n
+
+type Todo {\n
+  id: ID!\n
+  name: String!\n
+  description: String\n
+  priority: Priority!\n
+}\n
+
+type Query {\n
+  todo(id: ID!): Todo\n
+  allTodos: [Todo!]!\n
+}
+
+type Mutation {\n
+  addTodo(name: String!, priority: Priority = LOW): Todo!\n
+  removeTodo(id: ID!): Todo!\n
+}
+
+schema {\n
+  query: Query\n
+  mutation: Mutation\n
+}\n
+"
+
+Outputs:
+  SchemaRef:
+    Value: !Ref GraphQLSchema
+  ApiId:
+    Value: !GetAtt GraphQLApi.ApiId

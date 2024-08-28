@@ -1,0 +1,277 @@
+{
+  "tests/aws/services/ecr/test_ecr.py::TestECR::test_auth_token_in_different_regions": {
+    "recorded-date": "08-08-2022, 15:17:04",
+    "recorded-content": {
+      "amount-tokens-region-1": 1,
+      "amount-tokens-region-2": 1
+    }
+  },
+  "tests/aws/services/ecr/test_ecr.py::TestECREndpoints::test_ecr_default_endpoint": {
+    "recorded-date": "04-10-2023, 17:42:36",
+    "recorded-content": {
+      "repo-details": {
+        "createdAt": "datetime",
+        "encryptionConfiguration": {
+          "encryptionType": "AES256"
+        },
+        "imageScanningConfiguration": {
+          "scanOnPush": false
+        },
+        "imageTagMutability": "MUTABLE",
+        "registryId": "111111111111",
+        "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repo-name>",
+        "repositoryName": "<repo-name>",
+        "repositoryUri": "111111111111.dkr.ecr.<region>.<domain_suffix_and_port>/<repo-name>"
+      }
+    }
+  },
+  "tests/aws/services/ecr/test_ecr.py::TestECREndpoints::test_ecr_custom_localstack_host_endpoint": {
+    "recorded-date": "22-11-2023, 13:59:48",
+    "recorded-content": {
+      "repo-details": {
+        "createdAt": "datetime",
+        "encryptionConfiguration": {
+          "encryptionType": "AES256"
+        },
+        "imageScanningConfiguration": {
+          "scanOnPush": false
+        },
+        "imageTagMutability": "MUTABLE",
+        "registryId": "111111111111",
+        "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repo-name>",
+        "repositoryName": "<repo-name>",
+        "repositoryUri": "111111111111.dkr.ecr.<region>.<domain_suffix_and_port>/<repo-name>"
+      }
+    }
+  },
+  "tests/aws/services/ecr/test_ecr.py::TestECR::test_registry_scanning_configuration": {
+    "recorded-date": "28-02-2024, 13:11:25",
+    "recorded-content": {
+      "get-registry-scanning-configuration-default": {
+        "registryId": "111111111111",
+        "scanningConfiguration": {
+          "rules": [],
+          "scanType": "BASIC"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "repository1-details": {
+        "repository": {
+          "createdAt": "datetime",
+          "encryptionConfiguration": {
+            "encryptionType": "AES256"
+          },
+          "imageScanningConfiguration": {
+            "scanOnPush": false
+          },
+          "imageTagMutability": "MUTABLE",
+          "registryId": "111111111111",
+          "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repository-name:1>",
+          "repositoryName": "<repository-name:1>",
+          "repositoryUri": "111111111111.dkr.ecr.<region>.amazonaws.com/<repository-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "batch-repo-scanning-configuration-default": {
+        "failures": [],
+        "scanningConfigurations": [
+          {
+            "appliedScanFilters": [],
+            "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repository-name:1>",
+            "repositoryName": "<repository-name:1>",
+            "scanFrequency": "MANUAL",
+            "scanOnPush": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "put-registry-scanning-configuration-basic": {
+        "registryScanningConfiguration": {
+          "rules": [
+            {
+              "repositoryFilters": [
+                {
+                  "filter": "test-repository-*",
+                  "filterType": "WILDCARD"
+                }
+              ],
+              "scanFrequency": "SCAN_ON_PUSH"
+            }
+          ],
+          "scanType": "BASIC"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "batch-repo-scanning-configuration-after-put": {
+        "failures": [],
+        "scanningConfigurations": [
+          {
+            "appliedScanFilters": [
+              {
+                "filter": "test-repository-*",
+                "filterType": "WILDCARD"
+              }
+            ],
+            "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repository-name:1>",
+            "repositoryName": "<repository-name:1>",
+            "scanFrequency": "SCAN_ON_PUSH",
+            "scanOnPush": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-registry-scanning-configuration-after-put": {
+        "registryId": "111111111111",
+        "scanningConfiguration": {
+          "rules": [
+            {
+              "repositoryFilters": [
+                {
+                  "filter": "test-repository-*",
+                  "filterType": "WILDCARD"
+                }
+              ],
+              "scanFrequency": "SCAN_ON_PUSH"
+            }
+          ],
+          "scanType": "BASIC"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "repository2-details": {
+        "repository": {
+          "createdAt": "datetime",
+          "encryptionConfiguration": {
+            "encryptionType": "AES256"
+          },
+          "imageScanningConfiguration": {
+            "scanOnPush": false
+          },
+          "imageTagMutability": "MUTABLE",
+          "registryId": "111111111111",
+          "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repository-name:2>",
+          "repositoryName": "<repository-name:2>",
+          "repositoryUri": "111111111111.dkr.ecr.<region>.amazonaws.com/<repository-name:2>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "batch-repo-scanning-configuration-after-put-second-repo": {
+        "failures": [],
+        "scanningConfigurations": [
+          {
+            "appliedScanFilters": [
+              {
+                "filter": "test-repository-*",
+                "filterType": "WILDCARD"
+              }
+            ],
+            "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repository-name:1>",
+            "repositoryName": "<repository-name:1>",
+            "scanFrequency": "SCAN_ON_PUSH",
+            "scanOnPush": false
+          },
+          {
+            "appliedScanFilters": [
+              {
+                "filter": "test-repository-*",
+                "filterType": "WILDCARD"
+              }
+            ],
+            "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repository-name:2>",
+            "repositoryName": "<repository-name:2>",
+            "scanFrequency": "SCAN_ON_PUSH",
+            "scanOnPush": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "put-registry-scanning-configuration-reset": {
+        "registryScanningConfiguration": {
+          "rules": [],
+          "scanType": "BASIC"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "batch-repo-scanning-configuration-after-reset": {
+        "failures": [],
+        "scanningConfigurations": [
+          {
+            "appliedScanFilters": [],
+            "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repository-name:1>",
+            "repositoryName": "<repository-name:1>",
+            "scanFrequency": "MANUAL",
+            "scanOnPush": false
+          },
+          {
+            "appliedScanFilters": [],
+            "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repository-name:2>",
+            "repositoryName": "<repository-name:2>",
+            "scanFrequency": "MANUAL",
+            "scanOnPush": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-registry-scanning-configuration-after-reset": {
+        "registryId": "111111111111",
+        "scanningConfiguration": {
+          "rules": [],
+          "scanType": "BASIC"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecr/test_ecr.py::TestECR::test_put_image": {
+    "recorded-date": "26-04-2024, 15:21:36",
+    "recorded-content": {
+      "repo-details": {
+        "createdAt": "datetime",
+        "encryptionConfiguration": {
+          "encryptionType": "AES256"
+        },
+        "imageScanningConfiguration": {
+          "scanOnPush": false
+        },
+        "imageTagMutability": "MUTABLE",
+        "registryId": "111111111111",
+        "repositoryArn": "arn:<partition>:ecr:<region>:111111111111:repository/<repo-name>",
+        "repositoryName": "<repo-name>",
+        "repositoryUri": "111111111111.dkr.ecr.<region>.amazonaws.com/<repo-name>"
+      }
+    }
+  }
+}

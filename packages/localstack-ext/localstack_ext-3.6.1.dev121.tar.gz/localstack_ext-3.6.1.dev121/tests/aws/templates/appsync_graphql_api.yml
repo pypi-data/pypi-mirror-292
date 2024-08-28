@@ -1,0 +1,23 @@
+Parameters:
+  ApiName:
+    Type: String
+
+Resources:
+  GraphQLApi:
+    Type: AWS::AppSync::GraphQLApi
+    Properties:
+      Name: !Ref ApiName
+      AuthenticationType: AWS_IAM
+      Tags:
+        - Key: foo
+          Value: bar
+
+Outputs:
+  GraphRef:
+    Value: !Ref GraphQLApi
+  GraphArn:
+    Value: !GetAtt GraphQLApi.Arn
+  GraphApiId:
+    Value: !GetAtt GraphQLApi.ApiId
+  GraphUrl:
+    Value: !GetAtt GraphQLApi.GraphQLUrl

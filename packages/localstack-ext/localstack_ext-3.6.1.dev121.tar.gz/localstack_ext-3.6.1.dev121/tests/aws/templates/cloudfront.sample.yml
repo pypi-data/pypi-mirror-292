@@ -1,0 +1,301 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Content, Upload Storage and Global CDN Configuration"
+
+Parameters:
+  EnvironmentType:
+    Description: "Server environment to be deployed, default is development"
+    Type: "String"
+    Default: "dev"
+    AllowedValues:
+      - "local"
+      - "dev"
+      - "qa"
+      - "stage"
+      - "live"
+    ConstraintDescription: "must be a valid Environment."
+  ContentBucketName:
+    Type: "String"
+  UploadBucketName:
+    Type: "String"
+
+Resources:
+  ContentBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain # 스택 삭제와 함께 버킷 삭제를 원할 경우 Delete로 설정
+    Properties:
+      BucketName: !Join
+        - ''
+        - - !Ref ContentBucketName
+          - !Ref EnvironmentType
+      AccessControl: BucketOwnerFullControl
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true # 새 ACL(액세스 제어 목록)을 통해 부여된 버킷 및 객체에 대한 퍼블릭 액세스 차단
+        IgnorePublicAcls: true # 임의의 ACL(액세스 제어 목록)을 통해 부여된 버킷 및 객체에 대한 퍼블릭 액세스 차단
+        BlockPublicPolicy: false # 새 퍼블릭 버킷 또는 액세스 지점 정책을 통해 부여된 버킷 및 객체에 대한 퍼블릭 액세스 차단
+        RestrictPublicBuckets: false # 임의의 퍼블릭 버킷 또는 액세스 지점 정책을 통해 부여된 버킷 및 객체에 대한 퍼블릭 및 교차 계정 액세스 차단
+      Tags:
+        - Key: "Name"
+          Value: !Join
+            - ''
+            - - 'xxxx-'
+              - !Ref EnvironmentType
+              - 'xxxx-ane2-s3-content-storage'
+        - Key: "Environment"
+          Value: !Ref EnvironmentType
+        - Key: "Resource"
+          Value: "S3"
+  UploadBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain # 스택 삭제와 함께 버킷 삭제를 원할 경우 Delete로 설정
+    Properties:
+      BucketName: !Join
+        - ''
+        - - !Ref UploadBucketName
+          - !Ref EnvironmentType
+      AccessControl: BucketOwnerFullControl
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true # 새 ACL(액세스 제어 목록)을 통해 부여된 버킷 및 객체에 대한 퍼블릭 액세스 차단
+        IgnorePublicAcls: true # 임의의 ACL(액세스 제어 목록)을 통해 부여된 버킷 및 객체에 대한 퍼블릭 액세스 차단
+        BlockPublicPolicy: false # 새 퍼블릭 버킷 또는 액세스 지점 정책을 통해 부여된 버킷 및 객체에 대한 퍼블릭 액세스 차단
+        RestrictPublicBuckets: false # 임의의 퍼블릭 버킷 또는 액세스 지점 정책을 통해 부여된 버킷 및 객체에 대한 퍼블릭 및 교차 계정 액세스 차단
+      Tags:
+        - Key: "Name"
+          Value: !Join
+            - ''
+            - - 'xxxx-'
+              - !Ref EnvironmentType
+              - 'xxxx-ane2-s3-upload-storage'
+        - Key: "Environment"
+          Value: !Ref EnvironmentType
+        - Key: "Resource"
+          Value: "S3"
+
+  ContentBucketAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'access-identity-s3-content-storage'
+  ContentBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ContentBucket
+      PolicyDocument:
+        Id: ContentBucketPolicy1
+        Version: 2012-10-17
+        Statement:
+          - Sid: CloudFrontOriginAccessIdentity
+            Effect: Allow
+            Principal:
+              AWS: !Join
+                - ''
+                - - 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity '
+                  - !Ref ContentBucketAccessIdentity
+            Action: 's3:GetObject'
+            Resource: !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref ContentBucket
+                - /*
+
+  UploadBucketAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'access-identity-s3-upload-storage'
+  UploadBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref UploadBucket
+      PolicyDocument:
+        Id: UploadBucketPolicy1
+        Version: 2012-10-17
+        Statement:
+          - Sid: CloudFrontOriginAccessIdentity
+            Effect: Allow
+            Principal:
+              AWS: !Join
+                - ''
+                - - 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity '
+                  - !Ref UploadBucketAccessIdentity
+            Action: 's3:GetObject'
+            Resource: !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref UploadBucket
+                - /*
+
+  CdnDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Comment: 'Global CDN'
+        Origins:
+          - DomainName: !GetAtt ContentBucket.DomainName
+            Id: !Join
+              - ''
+              - - 'xxxx-'
+                - !Ref EnvironmentType
+                - 'xxxx-ane2-cloudfront-origin-content-storage'
+            S3OriginConfig:
+              OriginAccessIdentity: !Join
+                - ''
+                - - 'origin-access-identity/cloudfront/'
+                  - !Ref ContentBucketAccessIdentity
+          - DomainName: !GetAtt UploadBucket.DomainName
+            Id: !Join
+              - ''
+              - - 'xxxx-'
+                - !Ref EnvironmentType
+                - 'xxxx-ane2-cloudfront-origin-upload-storage'
+            S3OriginConfig:
+              OriginAccessIdentity: !Join
+                - ''
+                - - 'origin-access-identity/cloudfront/'
+                  - !Ref UploadBucketAccessIdentity
+        Enabled: 'true'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
+          CachePolicyId: '658327ea-f89d-4fab-a63d-7e88639e58f6' # Managed-CachingOptimized
+          TargetOriginId: !Join
+            - ''
+            - - 'xxxx-'
+              - !Ref EnvironmentType
+              - 'xxxx-ane2-cloudfront-origin-content-storage'
+          ViewerProtocolPolicy: https-only
+        CacheBehaviors:
+          - AllowedMethods:
+              - GET
+              - HEAD
+            CachedMethods:
+              - GET
+              - HEAD
+            CachePolicyId: '658327ea-f89d-4fab-a63d-7e88639e58f6' # Managed-CachingOptimized
+            PathPattern: 'uploads/*'
+            TargetOriginId: !Join
+              - ''
+              - - 'xxxx-'
+                - !Ref EnvironmentType
+                - 'xxxx-ane2-cloudfront-origin-upload-storage'
+            ViewerProtocolPolicy: https-only
+        PriceClass: PriceClass_All
+        Restrictions:
+          GeoRestriction:
+            RestrictionType: none
+      Tags:
+        - Key: "Name"
+          Value: !Join
+            - ''
+            - - 'xxxx-'
+              - !Ref EnvironmentType
+              - 'xxxx-ane2-cloudfront-global-cdn'
+        - Key: "Environment"
+          Value: !Ref EnvironmentType
+        - Key: "Resource"
+          Value: "CloudFront"
+
+  TestApp:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: req-test-123
+      FunctionCode: test123
+      FunctionConfig:
+        Comment: test comment 123
+        Runtime: cloudfront-js-1.0
+
+  TestReqPolicy:
+    Type: AWS::CloudFront::OriginRequestPolicy
+    Properties:
+      OriginRequestPolicyConfig:
+        Comment: test comment 123
+        Name: req-test-123
+        CookiesConfig:
+          CookieBehavior: all
+        HeadersConfig:
+          HeaderBehavior: allViewer
+        QueryStringsConfig:
+          QueryStringBehavior: all
+
+  MyResponseHeadersPolicy:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: "canary-response-header-policy"
+        Comment: "Sample Comment"
+        CorsConfig:
+          AccessControlAllowCredentials: true
+          AccessControlAllowHeaders:
+            Items:
+              - "Header1"
+          AccessControlAllowMethods:
+            Items:
+              - "GET"
+              - "POST"
+          AccessControlAllowOrigins:
+            Items:
+              - "example1.com"
+              - "example2.com"
+              - "example3.com"
+          AccessControlExposeHeaders:
+            Items:
+              - "ExposeHeader1"
+              - "ExposeHeader2"
+              - "ExposeHeader3"
+              - "ExposeHeader4"
+          AccessControlMaxAgeSec: 1200
+          OriginOverride: true
+        CustomHeadersConfig:
+          Items:
+            - Header: "HeaderX"
+              Override: true
+              Value: "ValueX"
+            - Header: "HeaderY"
+              Override: true
+              Value: "ValueY"
+        RemoveHeadersConfig:
+          Items:
+            - Header: "RemoveHeaderX"
+            - Header: "RemoveHeaderY"
+        SecurityHeadersConfig:
+          ContentSecurityPolicy:
+            ContentSecurityPolicy: "MyPolicy"
+            Override: true
+          ContentTypeOptions:
+            Override: true
+          FrameOptions:
+            FrameOption: "SAMEORIGIN"
+            Override: true
+          ReferrerPolicy:
+            ReferrerPolicy: "origin-when-cross-origin"
+            Override: true
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 2400
+            IncludeSubdomains: true
+            Override: true
+            Preload: true
+          XSSProtection:
+            ModeBlock: true
+            Override: true
+            Protection: true
+
+Outputs:
+  CdnDistribution:
+    Value: !Ref CdnDistribution
+  Function:
+    Value: !Ref TestApp

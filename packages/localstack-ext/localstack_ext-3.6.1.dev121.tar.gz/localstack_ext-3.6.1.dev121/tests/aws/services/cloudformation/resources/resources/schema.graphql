@@ -1,0 +1,16 @@
+schema {
+  query: Query
+}
+
+type Query {
+  js: JSResolverResults!
+  vtl: VTLResolverResults!
+}
+
+type JSResolverResults {
+  result: String!
+}
+
+type VTLResolverResults {
+  dynamoResult: String!
+}

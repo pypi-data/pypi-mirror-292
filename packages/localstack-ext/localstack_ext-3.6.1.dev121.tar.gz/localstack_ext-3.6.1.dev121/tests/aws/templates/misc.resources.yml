@@ -1,0 +1,145 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  TrailName:
+    Type: String
+  FunctionName:
+    Type: String
+  AliasName:
+    Type: String
+  FnRole:
+    Type: String
+  BucketName:
+    Type: String
+
+Resources:
+  CloudTrailS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${BucketName}
+    DeletionPolicy: Delete
+
+  CloudTrailBucketPolicy:
+    DependsOn:
+      - CloudTrailS3Bucket
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref CloudTrailS3Bucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "AWSCloudTrailAclCheck"
+            Effect: Allow
+            Principal:
+              Service: 'cloudtrail.amazonaws.com'
+            Action: "s3:GetBucketAcl"
+            Resource: !Sub arn:aws:s3:::${BucketName}
+          - Sid: "AWSCloudTrailWrite"
+            Effect: Allow
+            Principal:
+              Service: 'cloudtrail.amazonaws.com'
+            Action: "s3:PutObject"
+            Resource: !Sub arn:aws:s3:::${BucketName}/*
+            Condition:
+              StringEquals:
+                s3:x-amz-acl: 'bucket-owner-full-control'
+  CloudTrail:
+    DependsOn:
+      - CloudTrailS3Bucket
+      - CloudTrailBucketPolicy
+    Type: AWS::CloudTrail::Trail
+    Properties:
+      TrailName:
+        Ref: TrailName
+      S3BucketName: !Ref CloudTrailS3Bucket
+      S3KeyPrefix: trails
+      IsLogging: False
+      EventSelectors:
+        - ReadWriteType: All
+          IncludeManagementEvents: false
+          DataResources:
+            - Type: AWS::S3::Object
+              Values:
+                - arn:aws:s3:::test20210205043639953300000001/
+            - Type: AWS::Lambda::Function
+              Values:
+                - !Sub arn:aws:lambda:us-east-1:${AWS::AccountId}:function:test_lambda_op
+                - !Sub arn:aws:lambda:us-east-1:${AWS::AccountId}:function:test_lambda_lp
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      CidrBlock: 10.0.0.0/16
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+         Fn::Select:
+         - 0
+         - Fn::GetAZs: {Ref: 'AWS::Region'}
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.0/24
+      MapPublicIpOnLaunch: true
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: {Ref: 'AWS::Region'}
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: true
+
+  RdsSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Test Group 1
+      DBSubnetGroupName: group-1
+      SubnetIds:
+        - !Ref PublicSubnet
+        - !Ref PublicSubnet2
+      Tags:
+        - Key: t1
+          Value: v1
+  RdsCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-postgresql
+      MasterUsername: test
+      MasterUserPassword: Test123!
+    DeletionPolicy: Delete
+
+  MyFunc1:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          def handler(event, context):
+            return {}
+      FunctionName:
+        Ref: FunctionName
+      Handler: index.handler
+      Role: !Ref FnRole
+      Runtime: python3.8
+
+  MyAlias1:
+    Type: AWS::Lambda::Alias
+    Properties:
+      Name:
+        Ref: AliasName
+      FunctionName: !Ref MyFunc1
+      FunctionVersion: '$LATEST'
+      Description: Test Lambda function alias
+
+Outputs:
+  ClusterEndpoint:
+    Value:
+      'Fn::Join': ['', [{'Fn::GetAtt': ['RdsCluster', 'Endpoint.Address']},
+                        ':', {'Fn::GetAtt': ['RdsCluster', 'Endpoint.Port']}]]
+  RDSClusterId:
+    Value:
+      Ref: RdsCluster

@@ -1,0 +1,174 @@
+{
+  "tests/aws/services/cloudformation/resources/test_route53.py::test_hostedzone_with_comment": {
+    "recorded-date": "11-04-2024, 20:38:06",
+    "recorded-content": {
+      "zone-details": {
+        "DelegationSet": {
+          "NameServers": "name-servers"
+        },
+        "HostedZone": {
+          "CallerReference": "caller-reference",
+          "Config": {
+            "Comment": "Test comment",
+            "PrivateZone": false
+          },
+          "Id": "/hostedzone/<zone-id:1>",
+          "Name": "<zone_name:1>",
+          "ResourceRecordSetCount": 2
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_route53.py::test_record_set_with_alias_record": {
+    "recorded-date": "01-12-2023, 13:31:02",
+    "recorded-content": {
+      "describe_resource_record_resource": {
+        "StackResourceDetail": {
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          },
+          "LastUpdatedTimestamp": "timestamp",
+          "LogicalResourceId": "CustomResourceRecord",
+          "Metadata": {},
+          "PhysicalResourceId": "<resource-record-id>",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "ResourceType": "AWS::Route53::RecordSet",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "StackName": "<stack-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "resource_record_sets": {
+        "IsTruncated": false,
+        "MaxItems": "100",
+        "ResourceRecordSets": [
+          {
+            "Name": "fake.localstack.cloud.",
+            "ResourceRecords": [
+              {
+                "Value": "<value:1>"
+              },
+              {
+                "Value": "<value:2>"
+              },
+              {
+                "Value": "<value:3>"
+              },
+              {
+                "Value": "<value:4>"
+              }
+            ],
+            "TTL": 172800,
+            "Type": "NS"
+          },
+          {
+            "Name": "fake.localstack.cloud.",
+            "ResourceRecords": [
+              {
+                "Value": "<value:1> awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"
+              }
+            ],
+            "TTL": 900,
+            "Type": "SOA"
+          },
+          {
+            "AliasTarget": {
+              "DNSName": "dualstack.<alb-dns-name-lowercase>.",
+              "EvaluateTargetHealth": false,
+              "HostedZoneId": "<alb-zone-id>"
+            },
+            "Name": "<resource-record-id>.",
+            "Type": "A"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_route53.py::test_hostedzone_without_comment": {
+    "recorded-date": "11-04-2024, 20:32:51",
+    "recorded-content": {
+      "zone-details": {
+        "DelegationSet": {
+          "NameServers": "<name-server>"
+        },
+        "HostedZone": {
+          "CallerReference": "<caller-reference:1>",
+          "Config": {
+            "PrivateZone": false
+          },
+          "Id": "/hostedzone/<zone-id:1>",
+          "Name": "<zone_name:1>",
+          "ResourceRecordSetCount": 2
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_route53.py::test_private_hostedzone": {
+    "recorded-date": "11-04-2024, 20:26:30",
+    "recorded-content": {
+      "zone-details": {
+        "HostedZone": {
+          "CallerReference": "<caller-reference:1>",
+          "Config": {
+            "PrivateZone": true
+          },
+          "Id": "/hostedzone/<zone-id:1>",
+          "Name": "<zone_name:1>",
+          "ResourceRecordSetCount": 2
+        },
+        "VPCs": [
+          {
+            "VPCId": "<vpc-id>",
+            "VPCRegion": "<region>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list_hosted_zones_by_vpc": {
+        "HostedZoneSummaries": [
+          {
+            "HostedZoneId": "<zone-id:1>",
+            "Name": "<zone_name:1>",
+            "Owner": {
+              "OwningAccount": "111111111111"
+            }
+          }
+        ],
+        "MaxItems": "100",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list_hosted_zones": [
+        {
+          "Id": "/hostedzone/<zone-id:1>",
+          "Name": "<zone_name:1>",
+          "CallerReference": "<caller-reference:1>",
+          "Config": {
+            "PrivateZone": true
+          },
+          "ResourceRecordSetCount": 2
+        }
+      ]
+    }
+  }
+}

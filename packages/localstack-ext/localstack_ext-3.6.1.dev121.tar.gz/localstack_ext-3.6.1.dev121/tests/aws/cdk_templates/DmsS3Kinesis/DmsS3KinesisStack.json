@@ -1,0 +1,710 @@
+{
+  "Resources": {
+    "SuperRoleC6342196": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "dms.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "SuperRoleDefaultPolicy6696F084": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "S3Bucket07682993",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "S3Bucket07682993",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "kinesis:DescribeStreamSummary",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard",
+                "kinesis:DescribeStream",
+                "kinesis:ListStreams",
+                "kinesis:DescribeStreamConsumer",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "TargetStream3B4B2880",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SuperRoleDefaultPolicy6696F084",
+        "Roles": [
+          {
+            "Ref": "SuperRoleC6342196"
+          }
+        ]
+      }
+    },
+    "vpcA2121C38": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "vpc"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet1Subnet2E65531E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.0.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "DmsS3KinesisStack/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTable48A2DF9B": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "DmsS3KinesisStack/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTableAssociation5D3F4579": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        }
+      }
+    },
+    "vpcPublicSubnet1DefaultRoute10708846": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcPublicSubnet2Subnet009B674F": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.64.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "DmsS3KinesisStack/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableEB40D4CB": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "DmsS3KinesisStack/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableAssociation21F81B59": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet2Subnet009B674F"
+        }
+      }
+    },
+    "vpcPublicSubnet2DefaultRouteA1EC0F60": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcIsolatedSubnet1Subnet8B28CEB3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.128.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "DmsS3KinesisStack/vpc/IsolatedSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcIsolatedSubnet1RouteTable0D6B2D3D": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "DmsS3KinesisStack/vpc/IsolatedSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcIsolatedSubnet1RouteTableAssociation172210D4": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcIsolatedSubnet1RouteTable0D6B2D3D"
+        },
+        "SubnetId": {
+          "Ref": "vpcIsolatedSubnet1Subnet8B28CEB3"
+        }
+      }
+    },
+    "vpcIsolatedSubnet2Subnet2C6B375C": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.192.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "DmsS3KinesisStack/vpc/IsolatedSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcIsolatedSubnet2RouteTable3455CBFC": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "DmsS3KinesisStack/vpc/IsolatedSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcIsolatedSubnet2RouteTableAssociation8A8FAF70": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcIsolatedSubnet2RouteTable3455CBFC"
+        },
+        "SubnetId": {
+          "Ref": "vpcIsolatedSubnet2Subnet2C6B375C"
+        }
+      }
+    },
+    "vpcIGWE57CBDCA": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "vpc"
+          }
+        ]
+      }
+    },
+    "vpcVPCGW7984C166": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "sg29196201": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for DMS sample",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "S3Bucket07682993": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "source-bucket-s3-kinesis-dms"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "TargetStream3B4B2880": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "RetentionPeriodHours": 24,
+        "ShardCount": 1,
+        "StreamEncryption": {
+          "Fn::If": [
+            "AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
+            {
+              "Ref": "AWS::NoValue"
+            },
+            {
+              "EncryptionType": "KMS",
+              "KeyId": "alias/aws/kinesis"
+            }
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "ReplSubnetGroup": {
+      "Type": "AWS::DMS::ReplicationSubnetGroup",
+      "Properties": {
+        "ReplicationSubnetGroupDescription": "Replication Subnet Group for DMS test",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPublicSubnet1Subnet2E65531E"
+          },
+          {
+            "Ref": "vpcPublicSubnet2Subnet009B674F"
+          }
+        ]
+      }
+    },
+    "instance": {
+      "Type": "AWS::DMS::ReplicationInstance",
+      "Properties": {
+        "AllocatedStorage": 5,
+        "AllowMajorVersionUpgrade": false,
+        "AutoMinorVersionUpgrade": false,
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MultiAZ": false,
+        "PubliclyAccessible": true,
+        "ReplicationInstanceClass": "dms.t2.micro",
+        "ReplicationSubnetGroupIdentifier": {
+          "Ref": "ReplSubnetGroup"
+        },
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "sg29196201",
+              "GroupId"
+            ]
+          }
+        ]
+      }
+    },
+    "sources3": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "source",
+        "EngineName": "s3",
+        "S3Settings": {
+          "BucketFolder": "sourceData",
+          "BucketName": {
+            "Ref": "S3Bucket07682993"
+          },
+          "CdcPath": "changedata",
+          "ExternalTableDefinition": "{\"TableCount\": \"1\", \"Tables\": [{\"TableName\": \"employee\", \"TablePath\": \"hr/employee/\", \"TableOwner\": \"hr\", \"TableColumns\": [{\"ColumnName\": \"Id\", \"ColumnType\": \"INT8\", \"ColumnNullable\": \"false\", \"ColumnIsPk\": \"true\"}, {\"ColumnName\": \"LastName\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"20\"}, {\"ColumnName\": \"FirstName\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"30\"}, {\"ColumnName\": \"HireDate\", \"ColumnType\": \"DATETIME\"}, {\"ColumnName\": \"OfficeLocation\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"20\"}], \"TableColumnsTotal\": \"5\"}]}",
+          "ServiceAccessRoleArn": {
+            "Fn::GetAtt": [
+              "SuperRoleC6342196",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "sources3multipletables": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "source",
+        "EngineName": "s3",
+        "S3Settings": {
+          "BucketFolder": "sourceData",
+          "BucketName": {
+            "Ref": "S3Bucket07682993"
+          },
+          "CdcPath": "changedata",
+          "ExternalTableDefinition": "{\"TableCount\": \"3\", \"Tables\": [{\"TableName\": \"employee\", \"TablePath\": \"hr/employee/\", \"TableOwner\": \"hr\", \"TableColumns\": [{\"ColumnName\": \"Id\", \"ColumnType\": \"INT8\", \"ColumnNullable\": \"false\", \"ColumnIsPk\": \"true\"}, {\"ColumnName\": \"LastName\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"20\"}, {\"ColumnName\": \"FirstName\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"30\"}, {\"ColumnName\": \"HireDate\", \"ColumnType\": \"DATETIME\"}, {\"ColumnName\": \"OfficeLocation\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"20\"}], \"TableColumnsTotal\": \"5\"}, {\"TableName\": \"department\", \"TablePath\": \"hr/department/\", \"TableOwner\": \"hr\", \"TableColumns\": [{\"ColumnName\": \"Id\", \"ColumnType\": \"INT8\", \"ColumnNullable\": \"false\", \"ColumnIsPk\": \"true\"}, {\"ColumnName\": \"Name\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"50\"}], \"TableColumnsTotal\": \"2\"}, {\"TableName\": \"project\", \"TablePath\": \"hr/project/\", \"TableOwner\": \"hr\", \"TableColumns\": [{\"ColumnName\": \"Id\", \"ColumnType\": \"INT8\", \"ColumnNullable\": \"false\", \"ColumnIsPk\": \"true\"}, {\"ColumnName\": \"Name\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"50\"}, {\"ColumnName\": \"Description\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"100\"}], \"TableColumnsTotal\": \"3\"}]}",
+          "ServiceAccessRoleArn": {
+            "Fn::GetAtt": [
+              "SuperRoleC6342196",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "sources3withouttotalcount": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "source",
+        "EngineName": "s3",
+        "S3Settings": {
+          "BucketFolder": "sourceData",
+          "BucketName": {
+            "Ref": "S3Bucket07682993"
+          },
+          "CdcPath": "changedata",
+          "ExternalTableDefinition": "{\"TableCount\": \"1\", \"Tables\": [{\"TableName\": \"employee\", \"TablePath\": \"hr/employee/\", \"TableOwner\": \"hr\", \"TableColumns\": [{\"ColumnName\": \"Id\", \"ColumnType\": \"INT8\", \"ColumnNullable\": \"false\", \"ColumnIsPk\": \"true\"}, {\"ColumnName\": \"LastName\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"20\"}, {\"ColumnName\": \"FirstName\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"30\"}, {\"ColumnName\": \"HireDate\", \"ColumnType\": \"DATETIME\"}, {\"ColumnName\": \"OfficeLocation\", \"ColumnType\": \"STRING\", \"ColumnLength\": \"20\"}]}]}",
+          "ServiceAccessRoleArn": {
+            "Fn::GetAtt": [
+              "SuperRoleC6342196",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "target": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "target",
+        "EngineName": "kinesis",
+        "KinesisSettings": {
+          "MessageFormat": "json",
+          "ServiceAccessRoleArn": {
+            "Fn::GetAtt": [
+              "SuperRoleC6342196",
+              "Arn"
+            ]
+          },
+          "StreamArn": {
+            "Fn::GetAtt": [
+              "TargetStream3B4B2880",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "targetjsonunformatted": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "target",
+        "EngineName": "kinesis",
+        "KinesisSettings": {
+          "MessageFormat": "json-unformatted",
+          "ServiceAccessRoleArn": {
+            "Fn::GetAtt": [
+              "SuperRoleC6342196",
+              "Arn"
+            ]
+          },
+          "StreamArn": {
+            "Fn::GetAtt": [
+              "TargetStream3B4B2880",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "targetnondefaultsettings": {
+      "Type": "AWS::DMS::Endpoint",
+      "Properties": {
+        "EndpointType": "target",
+        "EngineName": "kinesis",
+        "KinesisSettings": {
+          "IncludeControlDetails": true,
+          "IncludeNullAndEmpty": true,
+          "IncludePartitionValue": true,
+          "IncludeTableAlterOperations": true,
+          "IncludeTransactionDetails": true,
+          "MessageFormat": "json",
+          "PartitionIncludeSchemaTable": true,
+          "ServiceAccessRoleArn": {
+            "Fn::GetAtt": [
+              "SuperRoleC6342196",
+              "Arn"
+            ]
+          },
+          "StreamArn": {
+            "Fn::GetAtt": [
+              "TargetStream3B4B2880",
+              "Arn"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "Conditions": {
+    "AwsCdkKinesisEncryptedStreamsUnsupportedRegions": {
+      "Fn::Or": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "AWS::Region"
+            },
+            "cn-north-1"
+          ]
+        },
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "AWS::Region"
+            },
+            "cn-northwest-1"
+          ]
+        }
+      ]
+    }
+  },
+  "Outputs": {
+    "KinesisStreamArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "TargetStream3B4B2880",
+          "Arn"
+        ]
+      }
+    },
+    "S3BucketArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "S3Bucket07682993",
+          "Arn"
+        ]
+      }
+    },
+    "S3BucketName": {
+      "Value": {
+        "Ref": "S3Bucket07682993"
+      }
+    },
+    "S3BucketDomain": {
+      "Value": {
+        "Fn::GetAtt": [
+          "S3Bucket07682993",
+          "DomainName"
+        ]
+      }
+    },
+    "ReplicationInstanceArn": {
+      "Value": {
+        "Ref": "instance"
+      }
+    },
+    "SourceEndpointS3Arn": {
+      "Value": {
+        "Ref": "sources3"
+      }
+    },
+    "SourceEndpointS3MultipleTablesArn": {
+      "Value": {
+        "Ref": "sources3multipletables"
+      }
+    },
+    "SourceEndpointWithoutCountS3Arn": {
+      "Value": {
+        "Ref": "sources3withouttotalcount"
+      }
+    },
+    "TargetEndpointDefaultArn": {
+      "Value": {
+        "Ref": "target"
+      }
+    },
+    "TargetEndpointNonDefaultArn": {
+      "Value": {
+        "Ref": "targetnondefaultsettings"
+      }
+    },
+    "TargetEndpointUnformattedJsonArn": {
+      "Value": {
+        "Ref": "targetjsonunformatted"
+      }
+    },
+    "SuperRoleArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "SuperRoleC6342196",
+          "Arn"
+        ]
+      }
+    }
+  }
+}

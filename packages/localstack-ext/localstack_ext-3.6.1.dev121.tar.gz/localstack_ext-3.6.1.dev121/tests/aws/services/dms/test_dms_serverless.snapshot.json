@@ -1,0 +1,98 @@
+{
+  "tests/aws/services/dms/test_dms_serverless.py::TestDms::test_invalid_source_s3": {
+    "recorded-date": "02-08-2024, 13:24:38",
+    "recorded-content": {
+      "create-s3-source-endpoint": {
+        "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+        "EndpointIdentifier": "<endpoint-identifier:1>",
+        "EndpointType": "SOURCE",
+        "EngineDisplayName": "Amazon S3",
+        "EngineName": "s3",
+        "ExternalTableDefinition": {
+          "TableCount": "1",
+          "Tables": [
+            {
+              "TableName": "employee",
+              "TablePath": "hr/employee/",
+              "TableOwner": "hr",
+              "TableColumns": [
+                {
+                  "ColumnName": "Id",
+                  "ColumnType": "INT8",
+                  "ColumnNullable": "false",
+                  "ColumnIsPk": "true"
+                },
+                {
+                  "ColumnName": "Name",
+                  "ColumnType": "STRING",
+                  "ColumnLength": "50"
+                }
+              ],
+              "TableColumnsTotal": "2"
+            }
+          ]
+        },
+        "ExtraConnectionAttributes": "bucketName=<bucket-name>;csvDelimiter=,;csvRowDelimiter=\\n;",
+        "S3Settings": {
+          "BucketName": "<bucket-name>",
+          "CsvDelimiter": ",",
+          "CsvRowDelimiter": "\\n",
+          "EnableStatistics": true,
+          "ExternalTableDefinition": {
+            "TableCount": "1",
+            "Tables": [
+              {
+                "TableName": "employee",
+                "TablePath": "hr/employee/",
+                "TableOwner": "hr",
+                "TableColumns": [
+                  {
+                    "ColumnName": "Id",
+                    "ColumnType": "INT8",
+                    "ColumnNullable": "false",
+                    "ColumnIsPk": "true"
+                  },
+                  {
+                    "ColumnName": "Name",
+                    "ColumnType": "STRING",
+                    "ColumnLength": "50"
+                  }
+                ],
+                "TableColumnsTotal": "2"
+              }
+            ]
+          },
+          "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>"
+        },
+        "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>",
+        "SslMode": "none",
+        "Status": "active"
+      },
+      "create-kinesis-endpoint": {
+        "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:2>",
+        "EndpointIdentifier": "<endpoint-identifier:2>",
+        "EndpointType": "TARGET",
+        "EngineDisplayName": "Amazon Kinesis",
+        "EngineName": "kinesis",
+        "KinesisSettings": {
+          "MessageFormat": "json",
+          "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>",
+          "StreamArn": "arn:<partition>:kinesis:<region>:111111111111:stream/<resource:2>"
+        },
+        "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>",
+        "SslMode": "none",
+        "Status": "active"
+      },
+      "invalid-replication-config": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Source endpoint of engine type Amazon S3 is not supported"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  }
+}

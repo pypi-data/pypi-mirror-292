@@ -1,0 +1,3531 @@
+{
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[oracle]": {
+    "recorded-date": "15-02-2024, 14:37:44",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "AccessAlternateDirectly",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "AddSupplementalLogging",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "AdditionalArchivedLogDestId",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "AllowSelectNestedTables",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMax": 1000000,
+            "IntValueMin": 0,
+            "Name": "ArchivedLogDestId",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ArchivedLogsOnly",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "AsmPassword",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "AsmServer",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "AsmUser",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "default",
+              "char",
+              "byte"
+            ],
+            "Name": "CharLengthSemantics",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ConvertTimestampWithZoneToUTC",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "DirectPathNoLog",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "DirectPathParallelLoad",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "EnableHomogenousTablespace",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ExtraArchivedLogDestIds",
+            "Sensitive": false
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "FailTasksOnLobTruncation",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "NumberDatatypeScale",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMax": 240,
+            "IntValueMin": 0,
+            "Name": "OpenTransactionWindow",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "OraclePathPrefix",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMax": 8,
+            "IntValueMin": 1,
+            "Name": "ParallelAsmReadThreads",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ReadAheadBlocks",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ReadTableSpaceName",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ReplacePathPrefix",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMax": 10000,
+            "IntValueMin": 1,
+            "Name": "RetryInterval",
+            "Sensitive": false,
+            "Type": "integer",
+            "Units": "sec"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerOracleAsmAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerOracleAsmSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "SecurityDbEncryption",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "SecurityDbEncryptionName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SpatialDataOptionToGeoJsonFunctionName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "StandbyDelayTime",
+            "Sensitive": false,
+            "Type": "integer",
+            "Units": "min"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "TrimSpaceInChar",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "UseAlternateFolderForOnline",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "UseBFile",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "UseDirectPathFullLoad",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "UseLogminerReader",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "UsePathPrefix",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[mysql]": {
+    "recorded-date": "15-02-2024, 14:37:44",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "CleanSourceMetadataOnMismatch",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMax": 60,
+            "IntValueMin": 1,
+            "Name": "EventsPollInterval",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ExecuteTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "IntValueMax": 100000000,
+            "IntValueMin": 1,
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "DefaultValue": "1",
+            "IntValueMax": 5,
+            "IntValueMin": 1,
+            "Name": "ParallelLoadThreads",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ServerTimezone",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "specific-database",
+              "multiple-databases"
+            ],
+            "Name": "TargetDbType",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[opensearch]": {
+    "recorded-date": "15-02-2024, 14:37:45",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "EndpointUri",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ErrorRetryDuration",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "FullLoadErrorPercentage",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ServiceAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "UseNewMappingType",
+            "Sensitive": false,
+            "Type": "boolean"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[db2-zos]": {
+    "recorded-date": "15-02-2024, 14:37:45",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "CurrentLsn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "KeepCsvFiles",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "LoadTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "IntValueMin": 8,
+            "Name": "MaxKBytesPerRead",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SetDataCaptureChanges",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "WriteBufferSize",
+            "Sensitive": false,
+            "Type": "integer"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[azure-sql-managed-instance]": {
+    "recorded-date": "15-02-2024, 14:37:45",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Applicability": "TARGET_ONLY",
+            "IntValueMax": 100000,
+            "IntValueMin": 1,
+            "Name": "BcpPacketSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ControlTablesFileGroup",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ForceLobLookup",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "QuerySingleAlwaysOnNode",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ReadBackupOnly",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "rely-on-sql-server-replication-agent",
+              "exclusive-automatic-truncation",
+              "shared-automatic-truncation"
+            ],
+            "Name": "SafeguardPolicy",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "BackupOnly",
+              "PreferBackup",
+              "PreferTlog",
+              "TlogOnly"
+            ],
+            "Name": "TlogAccessMode",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "TrimSpaceInChar",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "UseBcpFullLoad",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "UseThirdPartyBackupDevice",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[gcp-mysql]": {
+    "recorded-date": "15-02-2024, 14:37:45",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "CleanSourceMetadataOnMismatch",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMax": 60,
+            "IntValueMin": 1,
+            "Name": "EventsPollInterval",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "IntValueMax": 100000000,
+            "IntValueMin": 1,
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "DefaultValue": "1",
+            "IntValueMax": 5,
+            "IntValueMin": 1,
+            "Name": "ParallelLoadThreads",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ServerTimezone",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "specific-database",
+              "multiple-databases"
+            ],
+            "Name": "TargetDbType",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[sybase]": {
+    "recorded-date": "15-02-2024, 14:37:45",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[aurora-postgresql]": {
+    "recorded-date": "15-02-2024, 14:37:45",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "BabelfishDatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "CaptureDdls",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "EnumValues": [
+              "default",
+              "babelfish"
+            ],
+            "Name": "DatabaseMode",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "DdlArtifactsSchema",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ExecuteTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "FailTasksOnLobTruncation",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "HeartbeatEnable",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMin": 1,
+            "Name": "HeartbeatFrequency",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "HeartbeatSchema",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "MapBooleanAsBoolean",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "MapJsonbAsClob",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "wstring",
+              "clob",
+              "nclob"
+            ],
+            "Name": "MapLongVarcharAs",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "no-preference",
+              "test-decoding",
+              "pglogical"
+            ],
+            "Name": "PluginName",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "SlotName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "TrimSpaceInChar",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[s3]": {
+    "recorded-date": "15-02-2024, 14:37:45",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "AddColumnName",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "AddTrailingPaddingCharacter",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "BucketFolder",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "BucketName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "none",
+              "private",
+              "public-read",
+              "public-read-write",
+              "authenticated-read",
+              "aws-exec-read",
+              "bucket-owner-read",
+              "bucket-owner-full-control"
+            ],
+            "Name": "CannedAclForObjects",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "CdcInsertsAndUpdates",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "CdcInsertsOnly",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "CdcMaxBatchInterval",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "CdcMinFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "CdcPath",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "DefaultValue": "NONE",
+            "EnumValues": [
+              "none",
+              "gzip"
+            ],
+            "Name": "CompressionType",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "DefaultValue": ",",
+            "Name": "CsvDelimiter",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "CsvNoSupValue",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "CsvNullValue",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "DefaultValue": "\\n",
+            "Name": "CsvRowDelimiter",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "csv",
+              "parquet"
+            ],
+            "Name": "DataFormat",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "DataPageSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "SLASH",
+              "UNDERSCORE",
+              "DASH",
+              "NONE"
+            ],
+            "Name": "DatePartitionDelimiter",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "DefaultValue": "false",
+            "Name": "DatePartitionEnabled",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "YYYYMMDD",
+              "YYYYMMDDHH",
+              "YYYYMM",
+              "MMYYYYDD",
+              "DDMMYYYY"
+            ],
+            "Name": "DatePartitionSequence",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "DatePartitionTimezone",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "DictPageSizeLimit",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "DefaultValue": "true",
+            "Name": "EnableStatistics",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "plain",
+              "plain-dictionary",
+              "rle-dictionary"
+            ],
+            "Name": "EncodingType",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "EnumValues": [
+              "sse-s3",
+              "sse-kms"
+            ],
+            "Name": "EncryptionMode",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "ExpectedBucketOwner",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ExternalTableDefinition",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "GlueCatalogGeneration",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "IgnoreHeaderRows",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "IncludeOpForFullLoad",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "ParquetTimestampInMillisecond",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "parquet-1-0",
+              "parquet-2-0"
+            ],
+            "Name": "ParquetVersion",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "PreserveTransactions",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Rfc4180",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "RowGroupLength",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ServerSideEncryptionKmsKeyId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServiceAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "TimestampColumnName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "UseCsvNoSupValue",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "UseTaskStartTimeForFullLoadTimestamp",
+            "Sensitive": false,
+            "Type": "boolean"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[neptune]": {
+    "recorded-date": "15-02-2024, 14:37:46",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "ErrorRetryDuration",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "IamAuthEnabled",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "MaxRetryCount",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "S3BucketFolder",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "S3BucketName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServiceAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[elasticsearch]": {
+    "recorded-date": "15-02-2024, 14:37:46",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "EndpointUri",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ErrorRetryDuration",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "FullLoadErrorPercentage",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ServiceAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "UseNewMappingType",
+            "Sensitive": false,
+            "Type": "boolean"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[aurora]": {
+    "recorded-date": "15-02-2024, 14:37:46",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "CleanSourceMetadataOnMismatch",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMax": 60,
+            "IntValueMin": 1,
+            "Name": "EventsPollInterval",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ExecuteTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "IntValueMax": 100000000,
+            "IntValueMin": 1,
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "DefaultValue": "1",
+            "IntValueMax": 5,
+            "IntValueMin": 1,
+            "Name": "ParallelLoadThreads",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ServerTimezone",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "specific-database",
+              "multiple-databases"
+            ],
+            "Name": "TargetDbType",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[aurora-serverless]": {
+    "recorded-date": "15-02-2024, 14:37:46",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "CleanSourceMetadataOnMismatch",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMax": 60,
+            "IntValueMin": 1,
+            "Name": "EventsPollInterval",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ExecuteTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "IntValueMax": 100000000,
+            "IntValueMin": 1,
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "DefaultValue": "1",
+            "IntValueMax": 5,
+            "IntValueMin": 1,
+            "Name": "ParallelLoadThreads",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ServerTimezone",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "specific-database",
+              "multiple-databases"
+            ],
+            "Name": "TargetDbType",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[docdb]": {
+    "recorded-date": "15-02-2024, 14:37:46",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "DocsToInvestigate",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ExtractDocId",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "KmsKeyId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "EnumValues": [
+              "none",
+              "one"
+            ],
+            "Name": "NestingLevel",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "ReplicateShardCollections",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "UseUpdateLookUp",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[azuredb]": {
+    "recorded-date": "15-02-2024, 14:37:46",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Applicability": "TARGET_ONLY",
+            "IntValueMax": 100000,
+            "IntValueMin": 1,
+            "Name": "BcpPacketSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ControlTablesFileGroup",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ForceLobLookup",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "QuerySingleAlwaysOnNode",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ReadBackupOnly",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "rely-on-sql-server-replication-agent",
+              "exclusive-automatic-truncation",
+              "shared-automatic-truncation"
+            ],
+            "Name": "SafeguardPolicy",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "BackupOnly",
+              "PreferBackup",
+              "PreferTlog",
+              "TlogOnly"
+            ],
+            "Name": "TlogAccessMode",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "TrimSpaceInChar",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "UseBcpFullLoad",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "UseThirdPartyBackupDevice",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[dynamodb]": {
+    "recorded-date": "15-02-2024, 14:37:47",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "ServiceAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[redshift-serverless]": {
+    "recorded-date": "15-02-2024, 14:37:47",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AcceptAnyDate",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "BucketFolder",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "BucketName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "CaseSensitiveNames",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "CompUpdate",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "ConnectionTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "DateFormat",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "EmptyAsNull",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "EnumValues": [
+              "sse-s3",
+              "sse-kms"
+            ],
+            "Name": "EncryptionMode",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "ExplicitIds",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "IntValueMax": 64,
+            "IntValueMin": 1,
+            "Name": "FileTransferUploadStreams",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "LoadTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "MapBooleanAsBoolean",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "RemoveQuotes",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "ReplaceChars",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ReplaceInvalidChars",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerSideEncryptionKmsKeyId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServiceAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "TimeFormat",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "TrimBlanks",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "TruncateColumns",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "WriteBufferSize",
+            "Sensitive": false,
+            "Type": "integer"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[redshift]": {
+    "recorded-date": "15-02-2024, 14:37:47",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AcceptAnyDate",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "BucketFolder",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "BucketName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "CaseSensitiveNames",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "CompUpdate",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "ConnectionTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "DateFormat",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "EmptyAsNull",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "EnumValues": [
+              "sse-s3",
+              "sse-kms"
+            ],
+            "Name": "EncryptionMode",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "ExplicitIds",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "IntValueMax": 64,
+            "IntValueMin": 1,
+            "Name": "FileTransferUploadStreams",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "LoadTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "MapBooleanAsBoolean",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "RemoveQuotes",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "ReplaceChars",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ReplaceInvalidChars",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerSideEncryptionKmsKeyId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServiceAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "TimeFormat",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "TrimBlanks",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "TruncateColumns",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "WriteBufferSize",
+            "Sensitive": false,
+            "Type": "integer"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[sqlserver]": {
+    "recorded-date": "15-02-2024, 14:37:47",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Applicability": "TARGET_ONLY",
+            "IntValueMax": 100000,
+            "IntValueMin": 1,
+            "Name": "BcpPacketSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ControlTablesFileGroup",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ForceLobLookup",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "QuerySingleAlwaysOnNode",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ReadBackupOnly",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "rely-on-sql-server-replication-agent",
+              "exclusive-automatic-truncation",
+              "shared-automatic-truncation"
+            ],
+            "Name": "SafeguardPolicy",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "BackupOnly",
+              "PreferBackup",
+              "PreferTlog",
+              "TlogOnly"
+            ],
+            "Name": "TlogAccessMode",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "TrimSpaceInChar",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "UseBcpFullLoad",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "UseThirdPartyBackupDevice",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[dms-transfer]": {
+    "recorded-date": "15-02-2024, 14:37:47",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "BucketName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServiceAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[mariadb]": {
+    "recorded-date": "15-02-2024, 14:37:47",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "CleanSourceMetadataOnMismatch",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMax": 60,
+            "IntValueMin": 1,
+            "Name": "EventsPollInterval",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ExecuteTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "IntValueMax": 100000000,
+            "IntValueMin": 1,
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "DefaultValue": "1",
+            "IntValueMax": 5,
+            "IntValueMin": 1,
+            "Name": "ParallelLoadThreads",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ServerTimezone",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "specific-database",
+              "multiple-databases"
+            ],
+            "Name": "TargetDbType",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[timestream]": {
+    "recorded-date": "15-02-2024, 14:37:47",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "CdcInsertsAndUpdates",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "EnableMagneticStoreWrites",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "MagneticDuration",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "MemoryDuration",
+            "Sensitive": false,
+            "Type": "integer"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[babelfish]": {
+    "recorded-date": "15-02-2024, 14:37:48",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Applicability": "TARGET_ONLY",
+            "IntValueMax": 100000,
+            "IntValueMin": 1,
+            "Name": "BcpPacketSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "ControlTablesFileGroup",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ForceLobLookup",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "QuerySingleAlwaysOnNode",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ReadBackupOnly",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "rely-on-sql-server-replication-agent",
+              "exclusive-automatic-truncation",
+              "shared-automatic-truncation"
+            ],
+            "Name": "SafeguardPolicy",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "BackupOnly",
+              "PreferBackup",
+              "PreferTlog",
+              "TlogOnly"
+            ],
+            "Name": "TlogAccessMode",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "TrimSpaceInChar",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "UseBcpFullLoad",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "UseThirdPartyBackupDevice",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[redis]": {
+    "recorded-date": "15-02-2024, 14:37:48",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AuthPassword",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "DefaultValue": "auth-role",
+            "EnumValues": [
+              "none",
+              "auth-role",
+              "auth-token"
+            ],
+            "Name": "AuthType",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "AuthUserName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SslCaCertificateArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "DefaultValue": "ssl-encryption",
+            "EnumValues": [
+              "plaintext",
+              "ssl-encryption"
+            ],
+            "Name": "SslSecurityProtocol",
+            "Sensitive": false,
+            "Type": "enum"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[aurora-postgresql-serverless]": {
+    "recorded-date": "15-02-2024, 14:37:48",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "BabelfishDatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "CaptureDdls",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "EnumValues": [
+              "default",
+              "babelfish"
+            ],
+            "Name": "DatabaseMode",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "DdlArtifactsSchema",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ExecuteTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "FailTasksOnLobTruncation",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "HeartbeatEnable",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMin": 1,
+            "Name": "HeartbeatFrequency",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "HeartbeatSchema",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "MapBooleanAsBoolean",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "MapJsonbAsClob",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "wstring",
+              "clob",
+              "nclob"
+            ],
+            "Name": "MapLongVarcharAs",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "no-preference",
+              "test-decoding",
+              "pglogical"
+            ],
+            "Name": "PluginName",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "SlotName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "TrimSpaceInChar",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[mongodb]": {
+    "recorded-date": "15-02-2024, 14:37:48",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "DefaultValue": "default",
+            "EnumValues": [
+              "default",
+              "mongodb_cr",
+              "scram_sha_1"
+            ],
+            "Name": "AuthMechanism",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "AuthSource",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "DefaultValue": "password",
+            "EnumValues": [
+              "no",
+              "password"
+            ],
+            "Name": "AuthType",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "DocsToInvestigate",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ExtractDocId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "KmsKeyId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "EnumValues": [
+              "none",
+              "one"
+            ],
+            "Name": "NestingLevel",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "ReplicateShardCollections",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "UseUpdateLookUp",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[postgres]": {
+    "recorded-date": "15-02-2024, 14:37:48",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "BabelfishDatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "CaptureDdls",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "EnumValues": [
+              "default",
+              "babelfish"
+            ],
+            "Name": "DatabaseMode",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "DdlArtifactsSchema",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ExecuteTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "FailTasksOnLobTruncation",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "HeartbeatEnable",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMin": 1,
+            "Name": "HeartbeatFrequency",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "HeartbeatSchema",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "MapBooleanAsBoolean",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "MapJsonbAsClob",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "wstring",
+              "clob",
+              "nclob"
+            ],
+            "Name": "MapLongVarcharAs",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "EnumValues": [
+              "no-preference",
+              "test-decoding",
+              "pglogical"
+            ],
+            "Name": "PluginName",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "SlotName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "TrimSpaceInChar",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[kinesis]": {
+    "recorded-date": "15-02-2024, 14:37:48",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "IncludeControlDetails",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludeNullAndEmpty",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludePartitionValue",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludeTableAlterOperations",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludeTransactionDetails",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "EnumValues": [
+              "json",
+              "json-unformatted"
+            ],
+            "Name": "MessageFormat",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "NoHexPrefix",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "PartitionIncludeSchemaTable",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "ServiceAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "StreamArn",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[kafka]": {
+    "recorded-date": "15-02-2024, 14:37:49",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "Broker",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "IncludeControlDetails",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludeNullAndEmpty",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludePartitionValue",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludeTableAlterOperations",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludeTransactionDetails",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "EnumValues": [
+              "json",
+              "json-unformatted"
+            ],
+            "Name": "MessageFormat",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "MessageMaxBytes",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "NoHexPrefix",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "PartitionIncludeSchemaTable",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "EnumValues": [
+              "scram-sha-512",
+              "plain"
+            ],
+            "Name": "SaslMechanism",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "SaslPassword",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "SaslUsername",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "EnumValues": [
+              "plaintext",
+              "ssl-authentication",
+              "ssl-encryption",
+              "sasl-ssl"
+            ],
+            "Name": "SecurityProtocol",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "SslCaCertificateArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SslClientCertificateArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SslClientKeyArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SslClientKeyPassword",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "EnumValues": [
+              "none",
+              "https"
+            ],
+            "Name": "SslEndpointIdentificationAlgorithm",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Topic",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_settings[db2]": {
+    "recorded-date": "15-02-2024, 14:37:49",
+    "recorded-content": {
+      "describe_endpoint_settings-kinesis": {
+        "EndpointSettings": [
+          {
+            "Name": "CurrentLsn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "KeepCsvFiles",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "LoadTimeout",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "IntValueMin": 8,
+            "Name": "MaxKBytesPerRead",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SetDataCaptureChanges",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "WriteBufferSize",
+            "Sensitive": false,
+            "Type": "integer"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms_static_responses.py::TestDmsStaticResponses::test_describe_endpoint_types": {
+    "recorded-date": "15-02-2024, 14:37:49",
+    "recorded-content": {
+      "describe-endpoint-response": {
+        "SupportedEndpointTypes": [
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "Amazon Aurora MySQL",
+            "EngineName": "aurora",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon Aurora MySQL",
+            "EngineName": "aurora",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon Aurora MySQL Serverless",
+            "EngineName": "aurora-serverless",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "Amazon Aurora PostgreSQL",
+            "EngineName": "aurora-postgresql",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon Aurora PostgreSQL",
+            "EngineName": "aurora-postgresql",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon Aurora PostgreSQL Serverless",
+            "EngineName": "aurora-postgresql-serverless",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "Amazon DocumentDB (with MongoDB compatibility)",
+            "EngineName": "docdb",
+            "ReplicationInstanceEngineMinimumVersion": "3.1.1",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon DocumentDB (with MongoDB compatibility)",
+            "EngineName": "docdb",
+            "ReplicationInstanceEngineMinimumVersion": "3.1.1",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon DynamoDB",
+            "EngineName": "dynamodb",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon Elasticsearch Service (Deprecated. Please use Amazon OpenSearch Service)",
+            "EngineName": "elasticsearch",
+            "ReplicationInstanceEngineMinimumVersion": "3.1.1",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon Kinesis",
+            "EngineName": "kinesis",
+            "ReplicationInstanceEngineMinimumVersion": "3.1.3",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon Neptune",
+            "EngineName": "neptune",
+            "ReplicationInstanceEngineMinimumVersion": "3.3.2",
+            "SupportsCDC": false
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon OpenSearch Service (successor to Amazon Elasticsearch Service)",
+            "EngineName": "opensearch",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon Redshift",
+            "EngineName": "redshift",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon Redshift Serverless",
+            "EngineName": "redshift-serverless",
+            "ReplicationInstanceEngineMinimumVersion": "3.5.1",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "Amazon S3",
+            "EngineName": "s3",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon S3",
+            "EngineName": "s3",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Amazon Timestream",
+            "EngineName": "timestream",
+            "ReplicationInstanceEngineMinimumVersion": "3.5.1",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "AWS DMS Transfer",
+            "EngineName": "dms-transfer",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Babelfish",
+            "EngineName": "babelfish",
+            "ReplicationInstanceEngineMinimumVersion": "3.4.7",
+            "SupportsCDC": false
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "Google Cloud SQL for MySQL",
+            "EngineName": "gcp-mysql",
+            "ReplicationInstanceEngineMinimumVersion": "3.4.6",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "IBM Db2 for z/OS",
+            "EngineName": "db2-zos",
+            "ReplicationInstanceEngineMinimumVersion": "3.4.7",
+            "SupportsCDC": false
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "IBM Db2 LUW",
+            "EngineName": "db2",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "IBM Db2 LUW",
+            "EngineName": "db2",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Kafka",
+            "EngineName": "kafka",
+            "ReplicationInstanceEngineMinimumVersion": "3.3.1",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "MariaDB",
+            "EngineName": "mariadb",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "MariaDB",
+            "EngineName": "mariadb",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "Microsoft Azure SQL Database",
+            "EngineName": "azuredb",
+            "SupportsCDC": false
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "Microsoft Azure SQL Managed Instance",
+            "EngineName": "azure-sql-managed-instance",
+            "ReplicationInstanceEngineMinimumVersion": "3.4.5",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "Microsoft SQL Server",
+            "EngineName": "sqlserver",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Microsoft SQL Server",
+            "EngineName": "sqlserver",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "MongoDB",
+            "EngineName": "mongodb",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "MySQL",
+            "EngineName": "mysql",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "MySQL",
+            "EngineName": "mysql",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "Oracle",
+            "EngineName": "oracle",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Oracle",
+            "EngineName": "oracle",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "PostgreSQL",
+            "EngineName": "postgres",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "PostgreSQL",
+            "EngineName": "postgres",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "Redis",
+            "EngineName": "redis",
+            "ReplicationInstanceEngineMinimumVersion": "3.4.4",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "source",
+            "EngineDisplayName": "SAP Sybase ASE",
+            "EngineName": "sybase",
+            "SupportsCDC": true
+          },
+          {
+            "EndpointType": "target",
+            "EngineDisplayName": "SAP Sybase ASE",
+            "EngineName": "sybase",
+            "SupportsCDC": true
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

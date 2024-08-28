@@ -1,0 +1,121 @@
+{
+  "tests/aws/services/appconfig/test_appconfig.py::TestAppConfig::test_specify_resources_by_name": {
+    "recorded-date": "21-04-2023, 19:00:10",
+    "recorded-content": {
+      "config-profile": {
+        "ApplicationId": "<application-id:1>",
+        "Id": "<config-id:1>",
+        "LocationUri": "ssm-parameter://<param-name>",
+        "Name": "<config-name:1>",
+        "RetrievalRoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+        "Type": "AWS.Freeform",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "environment": {
+        "ApplicationId": "<application-id:1>",
+        "Id": "<env-id:1>",
+        "Name": "<env-name:1>",
+        "State": "ReadyForDeployment",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "hosted-config-version": {
+        "ApplicationId": "<application-id:1>",
+        "ConfigurationProfileId": "<config-id:1>",
+        "Content": {},
+        "ContentType": "application/json",
+        "VersionNumber": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "start-deployment": {
+        "ApplicationId": "<application-id:1>",
+        "AppliedExtensions": [],
+        "ConfigurationLocationUri": "ssm-parameter://<param-name>",
+        "ConfigurationName": "<config-name:1>",
+        "ConfigurationProfileId": "<config-id:1>",
+        "ConfigurationVersion": "1",
+        "DeploymentDurationInMinutes": 0,
+        "DeploymentNumber": 1,
+        "DeploymentStrategyId": "AppConfig.AllAtOnce",
+        "EnvironmentId": "<env-id:1>",
+        "EventLog": [
+          {
+            "Description": "Deployment started",
+            "EventType": "DEPLOYMENT_STARTED",
+            "OccurredAt": "datetime",
+            "TriggeredBy": "USER"
+          }
+        ],
+        "FinalBakeTimeInMinutes": 10,
+        "GrowthFactor": 100.0,
+        "GrowthType": "LINEAR",
+        "PercentageComplete": 0.0,
+        "StartedAt": "datetime",
+        "State": "DEPLOYING",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "deployment-details": {
+        "ApplicationId": "<application-id:1>",
+        "AppliedExtensions": [],
+        "ConfigurationLocationUri": "ssm-parameter://<param-name>",
+        "ConfigurationName": "<config-name:1>",
+        "ConfigurationProfileId": "<config-id:1>",
+        "ConfigurationVersion": "1",
+        "DeploymentDurationInMinutes": 0,
+        "DeploymentNumber": 1,
+        "DeploymentStrategyId": "AppConfig.AllAtOnce",
+        "EnvironmentId": "<env-id:1>",
+        "EventLog": [
+          {
+            "Description": "Deployment bake time started",
+            "EventType": "BAKE_TIME_STARTED",
+            "OccurredAt": "datetime",
+            "TriggeredBy": "APPCONFIG"
+          },
+          {
+            "Description": "Configuration available to 100.00% of clients",
+            "EventType": "PERCENTAGE_UPDATED",
+            "OccurredAt": "datetime",
+            "TriggeredBy": "APPCONFIG"
+          },
+          {
+            "Description": "Deployment started",
+            "EventType": "DEPLOYMENT_STARTED",
+            "OccurredAt": "datetime",
+            "TriggeredBy": "USER"
+          }
+        ],
+        "FinalBakeTimeInMinutes": 10,
+        "GrowthFactor": 100.0,
+        "GrowthType": "LINEAR",
+        "PercentageComplete": 100.0,
+        "StartedAt": "datetime",
+        "State": "BAKING",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "configuration": {
+        "ConfigurationVersion": "1",
+        "Content": {},
+        "ContentType": "application/octet-stream",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

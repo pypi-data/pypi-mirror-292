@@ -1,0 +1,74 @@
+Description: "AWS Glue Schema Test"
+
+Parameters:
+  RegistryName:
+    Type: String
+  SchemaName:
+    Type: String
+
+Resources:
+  MyRegistry:
+    Type: AWS::Glue::Registry
+    Properties:
+      Description: "My Glue Registry"
+      Name: !Ref RegistryName
+      Tags:
+        - Key: foo
+          Value: bar
+        - Key: baz
+          Value: qux
+  MySchema:
+    Type: AWS::Glue::Schema
+    Properties:
+      Name: !Ref SchemaName
+      Registry:
+        Arn: !GetAtt MyRegistry.Arn
+      Compatibility: BACKWARD
+      DataFormat: AVRO
+      Description: "My Glue Schema"
+      SchemaDefinition: >
+        {
+          "type": "record",
+          "name": "Person",
+          "fields": [
+            {"name": "firstName", "type": "string"},
+            {"name": "lastName", "type": "string"},
+            {"name": "age", "type": "int"}
+          ]
+        }
+      Tags:
+        - Key: foo
+          Value: bar
+        - Key: baz
+          Value: qux
+  MySchemaVersion:
+    Type: AWS::Glue::SchemaVersion
+    Properties:
+      Schema:
+        SchemaArn: !GetAtt MySchema.Arn
+      SchemaDefinition: >
+        {
+          "type": "record",
+          "name": "Person",
+          "namespace": "com.amazonaws.glue",
+          "fields": [
+            {"name": "firstName", "type": "string"},
+            {"name": "lastName", "type": "string"},
+            {"name": "age", "type": "int"},
+            {"name": "middleName", "type": "string", "default": "N/A"}
+          ]
+        }
+  MySchemaVersionMetadata:
+    Type: AWS::Glue::SchemaVersionMetadata
+    Properties:
+      Key: "foo"
+      SchemaVersionId: !Ref MySchemaVersion
+      Value: "bar"
+
+Outputs:
+  RegistryRef:
+      Value: !Ref MyRegistry
+  SchemaRef:
+      Value: !Ref MySchema
+  SchemaVersionRef:
+    Value: !Ref MySchemaVersion

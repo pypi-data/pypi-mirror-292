@@ -1,0 +1,21 @@
+Description: "AWS Glue Registry Test"
+
+Parameters:
+  RegistryName:
+    Type: String
+
+Resources:
+  MyRegistry:
+    Type: AWS::Glue::Registry
+    Properties:
+      Description: "My Glue Registry"
+      Name: !Ref RegistryName
+      Tags:
+        - Key: foo
+          Value: bar
+        - Key: baz
+          Value: qux
+
+Outputs:
+    RegistryRef:
+        Value: !Ref MyRegistry

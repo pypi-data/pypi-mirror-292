@@ -1,0 +1,807 @@
+{
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_filter_lookup_attributes_invalid": {
+    "recorded-date": "25-09-2023, 10:34:51",
+    "recorded-content": {
+      "expected_error": {
+        "Error": {
+          "Code": "InvalidLookupAttributesException",
+          "Message": "Lookup attribute key cannot be null or empty."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_filter_lookup_attributes": {
+    "recorded-date": "25-09-2023, 11:14:24",
+    "recorded-content": {
+      "lookup_attributes_1": {
+        "AccessKeyId": "<access-key-id:1>",
+        "CloudTrailEvent": {
+          "eventVersion": "1.09",
+          "userIdentity": {
+            "type": "IAMUser",
+            "principalId": "<principal-id:1>",
+            "arn": "arn:<partition>:iam::<recipient-account-id:1>:user/<username:1>",
+            "accountId": "<recipient-account-id:1>",
+            "accessKeyId": "<access-key-id:1>",
+            "userName": "<username:1>"
+          },
+          "eventTime": "date",
+          "eventSource": "logs.amazonaws.com",
+          "eventName": "DeleteLogGroup",
+          "awsRegion": "<region>",
+          "sourceIPAddress": "source-i-p-address",
+          "userAgent": "user-agent",
+          "requestParameters": {
+            "logGroupName": "<log-group:1>"
+          },
+          "responseElements": null,
+          "requestID": "<uuid:1>",
+          "eventID": "<event-id:1>",
+          "readOnly": false,
+          "eventType": "AwsApiCall",
+          "apiVersion": "20140328",
+          "managementEvent": true,
+          "recipientAccountId": "<recipient-account-id:1>",
+          "eventCategory": "Management",
+          "tlsDetails": {
+            "tlsVersion": "TLSv1.2",
+            "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+            "clientProvidedHostHeader": "logs.<region>.amazonaws.com"
+          }
+        },
+        "EventId": "<event-id:1>",
+        "EventName": "DeleteLogGroup",
+        "EventSource": "logs.amazonaws.com",
+        "EventTime": "datetime",
+        "ReadOnly": "false",
+        "Resources": [],
+        "Username": "<username:1>"
+      },
+      "lookup_attributes_2": {
+        "AccessKeyId": "<access-key-id:1>",
+        "CloudTrailEvent": {
+          "eventVersion": "1.09",
+          "userIdentity": {
+            "type": "IAMUser",
+            "principalId": "<principal-id:1>",
+            "arn": "arn:<partition>:iam::<recipient-account-id:1>:user/<username:1>",
+            "accountId": "<recipient-account-id:1>",
+            "accessKeyId": "<access-key-id:1>",
+            "userName": "<username:1>"
+          },
+          "eventTime": "date",
+          "eventSource": "logs.amazonaws.com",
+          "eventName": "CreateLogGroup",
+          "awsRegion": "<region>",
+          "sourceIPAddress": "source-i-p-address",
+          "userAgent": "user-agent",
+          "requestParameters": {
+            "logGroupName": "<log-group:1>"
+          },
+          "responseElements": null,
+          "requestID": "<uuid:2>",
+          "eventID": "<event-id:2>",
+          "readOnly": false,
+          "eventType": "AwsApiCall",
+          "apiVersion": "20140328",
+          "managementEvent": true,
+          "recipientAccountId": "<recipient-account-id:1>",
+          "eventCategory": "Management",
+          "tlsDetails": {
+            "tlsVersion": "TLSv1.2",
+            "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+            "clientProvidedHostHeader": "logs.<region>.amazonaws.com"
+          }
+        },
+        "EventId": "<event-id:2>",
+        "EventName": "CreateLogGroup",
+        "EventSource": "logs.amazonaws.com",
+        "EventTime": "datetime",
+        "ReadOnly": "false",
+        "Resources": [],
+        "Username": "<username:1>"
+      }
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_s3_trails": {
+    "recorded-date": "25-09-2023, 10:53:01",
+    "recorded-content": {
+      "s3_cloud_trail_events": [
+        {
+          "EventId": "<event-id:1>",
+          "EventName": "CreateBucket",
+          "ReadOnly": "false",
+          "AccessKeyId": "<access-key-id:1>",
+          "EventTime": "datetime",
+          "EventSource": "s3.amazonaws.com",
+          "Username": "<username:1>",
+          "Resources": [
+            {
+              "ResourceType": "AWS::S3::Bucket",
+              "ResourceName": "<bucket-name>"
+            }
+          ],
+          "CloudTrailEvent": {
+            "eventVersion": "1.09",
+            "userIdentity": {
+              "type": "IAMUser",
+              "principalId": "<principal-id:1>",
+              "arn": "arn:<partition>:iam::<recipient-account-id:1>:user/<username:1>",
+              "accountId": "<recipient-account-id:1>",
+              "accessKeyId": "<access-key-id:1>",
+              "userName": "<username:1>"
+            },
+            "eventTime": "date",
+            "eventSource": "s3.amazonaws.com",
+            "eventName": "CreateBucket",
+            "awsRegion": "<region>",
+            "sourceIPAddress": "source-i-p-address",
+            "userAgent": "user-agent",
+            "requestParameters": {
+              "bucketName": "<bucket-name>",
+              "Host": "<bucket-name>.s3.amazonaws.com"
+            },
+            "responseElements": null,
+            "additionalEventData": {
+              "SignatureVersion": "SigV4",
+              "CipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+              "bytesTransferredIn": 0,
+              "AuthenticationMethod": "AuthHeader",
+              "x-amz-id-2": "x-amz-id-2",
+              "bytesTransferredOut": 0
+            },
+            "requestID": "<request-i-d:1>",
+            "eventID": "<event-id:1>",
+            "readOnly": false,
+            "eventType": "AwsApiCall",
+            "managementEvent": true,
+            "recipientAccountId": "<recipient-account-id:1>",
+            "eventCategory": "Management",
+            "tlsDetails": {
+              "tlsVersion": "TLSv1.2",
+              "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+              "clientProvidedHostHeader": "<bucket-name>.s3.amazonaws.com"
+            }
+          }
+        },
+        {
+          "EventId": "<event-id:2>",
+          "EventName": "DeleteBucket",
+          "ReadOnly": "false",
+          "AccessKeyId": "<access-key-id:1>",
+          "EventTime": "datetime",
+          "EventSource": "s3.amazonaws.com",
+          "Username": "<username:1>",
+          "Resources": [
+            {
+              "ResourceType": "AWS::S3::Bucket",
+              "ResourceName": "<bucket-name>"
+            }
+          ],
+          "CloudTrailEvent": {
+            "eventVersion": "1.09",
+            "userIdentity": {
+              "type": "IAMUser",
+              "principalId": "<principal-id:1>",
+              "arn": "arn:<partition>:iam::<recipient-account-id:1>:user/<username:1>",
+              "accountId": "<recipient-account-id:1>",
+              "accessKeyId": "<access-key-id:1>",
+              "userName": "<username:1>"
+            },
+            "eventTime": "date",
+            "eventSource": "s3.amazonaws.com",
+            "eventName": "DeleteBucket",
+            "awsRegion": "<region>",
+            "sourceIPAddress": "source-i-p-address",
+            "userAgent": "user-agent",
+            "requestParameters": {
+              "bucketName": "<bucket-name>",
+              "Host": "<bucket-name>.s3.amazonaws.com"
+            },
+            "responseElements": null,
+            "additionalEventData": {
+              "SignatureVersion": "SigV4",
+              "CipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+              "bytesTransferredIn": 0,
+              "AuthenticationMethod": "AuthHeader",
+              "x-amz-id-2": "x-amz-id-2",
+              "bytesTransferredOut": 0
+            },
+            "requestID": "<request-i-d:2>",
+            "eventID": "<event-id:2>",
+            "readOnly": false,
+            "resources": [
+              {
+                "accountId": "<recipient-account-id:1>",
+                "type": "AWS::S3::Bucket",
+                "ARN": "arn:<partition>:s3:::<bucket-name>"
+              }
+            ],
+            "eventType": "AwsApiCall",
+            "managementEvent": true,
+            "recipientAccountId": "<recipient-account-id:1>",
+            "eventCategory": "Management",
+            "tlsDetails": {
+              "tlsVersion": "TLSv1.2",
+              "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+              "clientProvidedHostHeader": "<bucket-name>.s3.amazonaws.com"
+            }
+          }
+        }
+      ],
+      "s3_cloud_trail_list": {
+        "Events": [
+          {
+            "AccessKeyId": "<access-key-id:1>",
+            "CloudTrailEvent": {
+              "eventVersion": "1.09",
+              "userIdentity": {
+                "type": "IAMUser",
+                "principalId": "<principal-id:1>",
+                "arn": "arn:<partition>:iam::<recipient-account-id:1>:user/<username:1>",
+                "accountId": "<recipient-account-id:1>",
+                "accessKeyId": "<access-key-id:1>",
+                "userName": "<username:1>"
+              },
+              "eventTime": "date",
+              "eventSource": "s3.amazonaws.com",
+              "eventName": "ListBuckets",
+              "awsRegion": "<region>",
+              "sourceIPAddress": "source-i-p-address",
+              "userAgent": "user-agent",
+              "requestParameters": {
+                "Host": "s3.amazonaws.com"
+              },
+              "responseElements": null,
+              "additionalEventData": {
+                "SignatureVersion": "SigV4",
+                "CipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+                "bytesTransferredIn": 0,
+                "AuthenticationMethod": "AuthHeader",
+                "x-amz-id-2": "x-amz-id-2",
+                "bytesTransferredOut": 393
+              },
+              "requestID": "<request-i-d:3>",
+              "eventID": "<event-id:3>",
+              "readOnly": true,
+              "eventType": "AwsApiCall",
+              "managementEvent": true,
+              "recipientAccountId": "<recipient-account-id:1>",
+              "eventCategory": "Management",
+              "tlsDetails": {
+                "tlsVersion": "TLSv1.2",
+                "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+                "clientProvidedHostHeader": "s3.amazonaws.com"
+              }
+            },
+            "EventId": "<event-id:3>",
+            "EventName": "ListBuckets",
+            "EventSource": "s3.amazonaws.com",
+            "EventTime": "datetime",
+            "ReadOnly": "true",
+            "Resources": [],
+            "Username": "<username:1>"
+          }
+        ],
+        "NextToken": "next-token",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_record_events": {
+    "recorded-date": "25-09-2023, 11:21:53",
+    "recorded-content": {
+      "s3_create_bucket_event": [
+        {
+          "EventId": "<event-id:1>",
+          "EventName": "CreateBucket",
+          "ReadOnly": "false",
+          "AccessKeyId": "<access-key-id:1>",
+          "EventTime": "datetime",
+          "EventSource": "s3.amazonaws.com",
+          "Username": "<username:1>",
+          "Resources": [
+            {
+              "ResourceType": "AWS::S3::Bucket",
+              "ResourceName": "<bucket-name>"
+            }
+          ],
+          "CloudTrailEvent": {
+            "eventVersion": "1.09",
+            "userIdentity": {
+              "type": "IAMUser",
+              "principalId": "<principal-id:1>",
+              "arn": "arn:<partition>:iam::<recipient-account-id:1>:user/<username:1>",
+              "accountId": "<recipient-account-id:1>",
+              "accessKeyId": "<access-key-id:1>",
+              "userName": "<username:1>"
+            },
+            "eventTime": "date",
+            "eventSource": "s3.amazonaws.com",
+            "eventName": "CreateBucket",
+            "awsRegion": "<region>",
+            "sourceIPAddress": "source-i-p-address",
+            "userAgent": "user-agent",
+            "requestParameters": {
+              "bucketName": "<bucket-name>",
+              "Host": "<bucket-name>.s3.amazonaws.com"
+            },
+            "responseElements": null,
+            "additionalEventData": {
+              "SignatureVersion": "SigV4",
+              "CipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+              "bytesTransferredIn": 0,
+              "AuthenticationMethod": "AuthHeader",
+              "x-amz-id-2": "x-amz-id-2",
+              "bytesTransferredOut": 0
+            },
+            "requestID": "<request-i-d:1>",
+            "eventID": "<event-id:1>",
+            "readOnly": false,
+            "eventType": "AwsApiCall",
+            "managementEvent": true,
+            "recipientAccountId": "<recipient-account-id:1>",
+            "eventCategory": "Management",
+            "tlsDetails": {
+              "tlsVersion": "TLSv1.2",
+              "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+              "clientProvidedHostHeader": "<bucket-name>.s3.amazonaws.com"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_invalid_config": {
+    "recorded-date": "25-09-2023, 16:06:02",
+    "recorded-content": {
+      "invalid_name": {
+        "Error": {
+          "Code": "InvalidTrailNameException",
+          "Message": "Trail name too short. Minimum allowed length: 3 characters. Specified name length: 2 characters."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "bucket_not_exists": {
+        "Error": {
+          "Code": "S3BucketDoesNotExistException",
+          "Message": "S3 bucket trail-bucket-not-exists does not exist!"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_get_trail_status_of_not_started": {
+    "recorded-date": "25-09-2023, 16:56:28",
+    "recorded-content": {
+      "trail_status": {
+        "IsLogging": false,
+        "LatestDeliveryAttemptSucceeded": "",
+        "LatestDeliveryAttemptTime": "",
+        "LatestNotificationAttemptSucceeded": "",
+        "LatestNotificationAttemptTime": "",
+        "TimeLoggingStarted": "",
+        "TimeLoggingStopped": "",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_trail": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_get_trail_status_of_started": {
+    "recorded-date": "25-09-2023, 16:59:50",
+    "recorded-content": {
+      "start_logging": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "trail_status": {
+        "IsLogging": true,
+        "LatestDeliveryAttemptSucceeded": "",
+        "LatestDeliveryAttemptTime": "",
+        "LatestNotificationAttemptSucceeded": "",
+        "LatestNotificationAttemptTime": "",
+        "StartLoggingTime": "datetime",
+        "TimeLoggingStarted": "date",
+        "TimeLoggingStopped": "",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_trail": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_get_trail_status_of_started_and_stopped": {
+    "recorded-date": "25-09-2023, 17:03:29",
+    "recorded-content": {
+      "start_logging": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_status": {
+        "IsLogging": true,
+        "LatestDeliveryAttemptSucceeded": "",
+        "LatestDeliveryAttemptTime": "",
+        "LatestNotificationAttemptSucceeded": "",
+        "LatestNotificationAttemptTime": "",
+        "StartLoggingTime": "datetime",
+        "TimeLoggingStarted": "date",
+        "TimeLoggingStopped": "",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "stop_logging": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "trail_status_2": {
+        "IsLogging": false,
+        "LatestDeliveryAttemptSucceeded": "",
+        "LatestDeliveryAttemptTime": "",
+        "LatestNotificationAttemptSucceeded": "",
+        "LatestNotificationAttemptTime": "",
+        "StartLoggingTime": "datetime",
+        "StopLoggingTime": "datetime",
+        "TimeLoggingStarted": "date",
+        "TimeLoggingStopped": "date",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_trail": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_create_trail": {
+    "recorded-date": "19-03-2024, 23:57:21",
+    "recorded-content": {
+      "create-trail": {
+        "IncludeGlobalServiceEvents": true,
+        "IsMultiRegionTrail": false,
+        "IsOrganizationTrail": false,
+        "LogFileValidationEnabled": false,
+        "Name": "trail1",
+        "S3BucketName": "<s3-bucket-name:1>",
+        "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-trails": {
+        "trailList": [
+          {
+            "HasCustomEventSelectors": false,
+            "HasInsightSelectors": false,
+            "HomeRegion": "<region>",
+            "IncludeGlobalServiceEvents": true,
+            "IsMultiRegionTrail": false,
+            "IsOrganizationTrail": false,
+            "LogFileValidationEnabled": false,
+            "Name": "trail1",
+            "S3BucketName": "<s3-bucket-name:1>",
+            "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-trails": {
+        "Trails": [
+          {
+            "HomeRegion": "<region>",
+            "Name": "trail1",
+            "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-objects": {
+        "Contents": [
+          {
+            "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+            "Key": "AWSLogs/111111111111/CloudTrail/",
+            "LastModified": "datetime",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+          }
+        ],
+        "EncodingType": "url",
+        "IsTruncated": false,
+        "KeyCount": 1,
+        "MaxKeys": 1000,
+        "Name": "<s3-bucket-name:1>",
+        "Prefix": "",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "start-trail-with-name": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-trail": {
+        "IncludeGlobalServiceEvents": true,
+        "IsMultiRegionTrail": false,
+        "IsOrganizationTrail": false,
+        "LogFileValidationEnabled": false,
+        "Name": "trail1",
+        "S3BucketName": "<s3-bucket-name:2>",
+        "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-trail": {
+        "Trail": {
+          "HasCustomEventSelectors": false,
+          "HasInsightSelectors": false,
+          "HomeRegion": "<region>",
+          "IncludeGlobalServiceEvents": true,
+          "IsMultiRegionTrail": false,
+          "IsOrganizationTrail": false,
+          "LogFileValidationEnabled": false,
+          "Name": "trail1",
+          "S3BucketName": "<s3-bucket-name:2>",
+          "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "stop-logging-with-name": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "re-start-logging-with-name": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-trail": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-trails-after-delete": {
+        "trailList": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "error-delete-trail": {
+        "Error": {
+          "Code": "TrailNotFoundException",
+          "Message": "Unknown trail: arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1 for the user: 111111111111"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_trail_operations_with_arn": {
+    "recorded-date": "19-03-2024, 22:10:12",
+    "recorded-content": {
+      "create-trail": {
+        "IncludeGlobalServiceEvents": true,
+        "IsMultiRegionTrail": false,
+        "IsOrganizationTrail": false,
+        "LogFileValidationEnabled": false,
+        "Name": "trail1",
+        "S3BucketName": "<s3-bucket-name:1>",
+        "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "start-trail-with-arn": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-trail-status-with-arn": {
+        "IsLogging": true,
+        "LatestDeliveryAttemptSucceeded": "",
+        "LatestDeliveryAttemptTime": "",
+        "LatestNotificationAttemptSucceeded": "",
+        "LatestNotificationAttemptTime": "",
+        "StartLoggingTime": "datetime",
+        "TimeLoggingStarted": "date",
+        "TimeLoggingStopped": "",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-trail-with-arn": {
+        "IncludeGlobalServiceEvents": true,
+        "IsMultiRegionTrail": false,
+        "IsOrganizationTrail": false,
+        "LogFileValidationEnabled": false,
+        "Name": "trail1",
+        "S3BucketName": "<s3-bucket-name:2>",
+        "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-trail-with-arn": {
+        "Trail": {
+          "HasCustomEventSelectors": false,
+          "HasInsightSelectors": false,
+          "HomeRegion": "<region>",
+          "IncludeGlobalServiceEvents": true,
+          "IsMultiRegionTrail": false,
+          "IsOrganizationTrail": false,
+          "LogFileValidationEnabled": false,
+          "Name": "trail1",
+          "S3BucketName": "<s3-bucket-name:2>",
+          "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "stop-logging-with-arn": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-trail-with-arn": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_wrong_arn_for_trail_ops": {
+    "recorded-date": "19-03-2024, 22:20:58",
+    "recorded-content": {
+      "create-trail": {
+        "IncludeGlobalServiceEvents": true,
+        "IsMultiRegionTrail": false,
+        "IsOrganizationTrail": false,
+        "LogFileValidationEnabled": false,
+        "Name": "trail1",
+        "S3BucketName": "<s3-bucket-name:1>",
+        "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-trail-status-from-another-region": {
+        "Error": {
+          "Code": "TrailNotFoundException",
+          "Message": "Unknown trail: arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1 for the user: 111111111111"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "get-trail-status-bad-arn-1": {
+        "Error": {
+          "Code": "CloudTrailARNInvalidException",
+          "Message": "The ARN arn:<partition>:cloudtrail:<region>:111111111111:badtrail/trail1 is invalid."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "get-trail-status-malformed-arn-1": {
+        "Error": {
+          "Code": "InvalidTrailNameException",
+          "Message": "Trail name or ARN can only contain uppercase letters, lowercase letters, numbers, periods (.), hyphens (-), and underscores (_)."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudtrail/test_cloudtrail.py::TestCloudTrail::test_trail_s3_key_prefix": {
+    "recorded-date": "20-03-2024, 12:01:57",
+    "recorded-content": {
+      "create-trail": {
+        "IncludeGlobalServiceEvents": true,
+        "IsMultiRegionTrail": false,
+        "IsOrganizationTrail": false,
+        "LogFileValidationEnabled": false,
+        "Name": "trail1",
+        "S3BucketName": "<s3-bucket-name:1>",
+        "S3KeyPrefix": "my-prefix",
+        "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/trail1",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-objects": {
+        "Contents": [
+          {
+            "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+            "Key": "my-prefix/AWSLogs/111111111111/CloudTrail/",
+            "LastModified": "datetime",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+          }
+        ],
+        "EncodingType": "url",
+        "IsTruncated": false,
+        "KeyCount": 1,
+        "MaxKeys": 1000,
+        "Name": "<s3-bucket-name:1>",
+        "Prefix": "",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

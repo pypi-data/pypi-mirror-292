@@ -1,0 +1,1051 @@
+{
+  "tests/aws/services/dms/test_dms.py::TestDms::test_create_source_endpoint_postgres_ignores_foreign_settings": {
+    "recorded-date": "16-04-2024, 12:08:42",
+    "recorded-content": {
+      "endpoint": {
+        "DatabaseName": "my_db",
+        "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+        "EndpointIdentifier": "<endpoint-identifier:1>",
+        "EndpointType": "SOURCE",
+        "EngineDisplayName": "PostgreSQL",
+        "EngineName": "postgres",
+        "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:1>",
+        "Port": 5432,
+        "PostgreSQLSettings": {
+          "DatabaseName": "my_db",
+          "Port": 5432,
+          "ServerName": "server-name",
+          "Username": "admin"
+        },
+        "ServerName": "server-name",
+        "SslMode": "none",
+        "Status": "active",
+        "Username": "admin"
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_create_source_endpoint_mysql_with_tags": {
+    "recorded-date": "16-04-2024, 11:38:07",
+    "recorded-content": {
+      "endpoint": {
+        "DatabaseName": "my_db",
+        "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+        "EndpointIdentifier": "<endpoint-identifier:1>",
+        "EndpointType": "SOURCE",
+        "EngineDisplayName": "MySQL",
+        "EngineName": "mysql",
+        "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:1>",
+        "MySQLSettings": {
+          "DatabaseName": "my_db",
+          "Port": 5432,
+          "ServerName": "server-name",
+          "Username": "admin"
+        },
+        "Port": 5432,
+        "ServerName": "server-name",
+        "SslMode": "none",
+        "Status": "active",
+        "Username": "admin"
+      },
+      "describe-endpoint-filter-endpoint-arn": {
+        "Endpoints": [
+          {
+            "DatabaseName": "my_db",
+            "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+            "EndpointIdentifier": "<endpoint-identifier:1>",
+            "EndpointType": "SOURCE",
+            "EngineDisplayName": "MySQL",
+            "EngineName": "mysql",
+            "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:1>",
+            "MySQLSettings": {
+              "DatabaseName": "my_db",
+              "Port": "<port>",
+              "ServerName": "server-name",
+              "Username": "admin"
+            },
+            "Port": "<port>",
+            "ServerName": "server-name",
+            "SslMode": "none",
+            "Status": "active",
+            "Username": "admin"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "endpoint-tags": {
+        "TagList": [
+          {
+            "Key": "endpoint_test",
+            "Value": "my_mysql_tags"
+          },
+          {
+            "Key": "test_aws",
+            "Value": "validated"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "endpoint-tags-resource-list": {
+        "TagList": [
+          {
+            "Key": "endpoint_test",
+            "ResourceArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+            "Value": "my_mysql_tags"
+          },
+          {
+            "Key": "test_aws",
+            "ResourceArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+            "Value": "validated"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "endpoint-tags-2": {
+        "TagList": [
+          {
+            "Key": "endpoint_test",
+            "Value": "my_mysql_tags"
+          },
+          {
+            "Key": "hello",
+            "Value": "world"
+          },
+          {
+            "Key": "test_aws",
+            "Value": "validated"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "endpoint-tags-3": {
+        "TagList": [
+          {
+            "Key": "endpoint_test",
+            "Value": "my_mysql_tags"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-endpoint": {
+        "Endpoint": {
+          "DatabaseName": "my_db",
+          "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+          "EndpointIdentifier": "<endpoint-identifier:1>",
+          "EndpointType": "SOURCE",
+          "EngineDisplayName": "MySQL",
+          "EngineName": "mysql",
+          "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:1>",
+          "MySQLSettings": {
+            "DatabaseName": "my_db",
+            "Port": 5432,
+            "ServerName": "server-name",
+            "Username": "admin"
+          },
+          "Port": 5432,
+          "ServerName": "server-name",
+          "SslMode": "none",
+          "Status": "deleting",
+          "Username": "admin"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-endpoint-filter-does-not-exist": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "No Endpoints found matching provided filters"
+        },
+        "message": "No Endpoints found matching provided filters",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "delete-endpoint-does-not-exist": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "Endpoint for arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1> not found."
+        },
+        "message": "Endpoint for arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1> not found.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_create_endpoint_invalid": {
+    "recorded-date": "08-05-2024, 19:01:29",
+    "recorded-content": {
+      "create-endpoint-invalid-identifier": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter EndpointIdentifier is not a valid identifier. Identifiers must begin with a letter; must contain only ASCII letters, digits, and hyphens; and must not end with a hyphen or contain two consecutive hyphens."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-invalid-type": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "EndpointType nope is invalid."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-invalid-type-2": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "EndpointType SOURCE is invalid."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-invalid-engine": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Invalid engine name: foobared"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-missing-password": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter Password must be provided and must not be blank."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-missing-username": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter username must be provided and must not be blank."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-missing-serverName": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter serverName must be provided and must not be blank."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-missing-port": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter Port must not be null."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-port-out-of-range": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter Port must be between 1 and 65535."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-invalid-combination": {
+        "Error": {
+          "Code": "InvalidParameterCombinationException",
+          "Message": "Either provide Username, Password, ServerName and Port, or SecretsManagerSecretId and SecretsManagerAccessRoleArn"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-missing-secret": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter SecretsManagerSecretId must be provided and must not be blank."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-missing-role": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter SecretsManagerAccessRoleArn must be provided and must not be blank."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-invalid-role": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Role arn:<partition>:iam::111111111111:role/fictitiousRole does not exist."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-invalid-secret": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "SecretsManagerSecretId arn:<partition>:secretsmanager:<region>:111111111111:secret:invalid-secret is invalid."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_create_source_endpoint_s3_with_invalid_settings": {
+    "recorded-date": "03-06-2024, 16:34:11",
+    "recorded-content": {
+      "create-endpoint-error": {
+        "Error": {
+          "Code": "InvalidParameterCombinationException",
+          "Message": "Username, Password, ServerName, Port, KmsKeyId, DatabaseName and MongoDBEndpointSettings are not allowed for s3 endpoints"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-error-2": {
+        "Error": {
+          "Code": "InvalidParameterCombinationException",
+          "Message": "Either endpoint settings or extra-connection-attributes must be present for S3 endpoints."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-error-3": {
+        "Error": {
+          "Code": "InvalidParameterCombinationException",
+          "Message": "Either endpoint settings or extra-connection-attributes must be present for S3 endpoints."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-error-4": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter BucketName must be provided and must not be blank."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-error-5": {
+        "Error": {
+          "Code": "InvalidParameterCombinationException",
+          "Message": "S3 source endpoint requires external table definition."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-error-6": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter ServiceAccessRoleArn must be provided and must not be blank."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_create_source_endpoint_postgres_overwrites_extra_settings": {
+    "recorded-date": "16-04-2024, 12:08:43",
+    "recorded-content": {
+      "endpoint": {
+        "DatabaseName": "my_db",
+        "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+        "EndpointIdentifier": "<endpoint-identifier:1>",
+        "EndpointType": "SOURCE",
+        "EngineDisplayName": "PostgreSQL",
+        "EngineName": "postgres",
+        "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:1>",
+        "Port": 5432,
+        "PostgreSQLSettings": {
+          "DatabaseName": "my_db",
+          "HeartbeatEnable": true,
+          "MaxFileSize": 1000,
+          "Port": 5432,
+          "ServerName": "server-name",
+          "Username": "admin"
+        },
+        "ServerName": "server-name",
+        "SslMode": "none",
+        "Status": "active",
+        "Username": "admin"
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_create_target_endpoint_kinesis": {
+    "recorded-date": "16-04-2024, 11:38:20",
+    "recorded-content": {
+      "create-endpoint-missing-settings": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter KinesisSettings must not be null."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-invalid-password": {
+        "Error": {
+          "Code": "InvalidParameterCombinationException",
+          "Message": "Username, Password, ServerName, Port, KmsKeyId, DatabaseName and MongoDBEndpointSettings are not allowed for kinesis endpoints"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-missing-kinesis-arn": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter StreamArn must be provided and must not be blank."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-missing-message-format": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "The parameter MessageFormat must not be null."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-invalid-message-format": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Invalid value provided for KinesisSettings source field messageFormat"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "endpoint": {
+        "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+        "EndpointIdentifier": "<endpoint-identifier:1>",
+        "EndpointType": "TARGET",
+        "EngineDisplayName": "Amazon Kinesis",
+        "EngineName": "kinesis",
+        "KinesisSettings": {
+          "MessageFormat": "json",
+          "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>",
+          "StreamArn": "arn:<partition>:kinesis:<region>:111111111111:stream/<resource:2>"
+        },
+        "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>",
+        "SslMode": "none",
+        "Status": "active"
+      },
+      "describe-endpoint": {
+        "Endpoints": [
+          {
+            "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+            "EndpointIdentifier": "<endpoint-identifier:1>",
+            "EndpointType": "TARGET",
+            "EngineDisplayName": "Amazon Kinesis",
+            "EngineName": "kinesis",
+            "KinesisSettings": {
+              "MessageFormat": "json",
+              "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>",
+              "StreamArn": "arn:<partition>:kinesis:<region>:111111111111:stream/<resource:2>"
+            },
+            "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>",
+            "SslMode": "none",
+            "Status": "active"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_connection_kinesis": {
+    "recorded-date": "16-04-2024, 11:54:54",
+    "recorded-content": {
+      "create-replication-instance": {
+        "ReplicationInstance": {
+          "AllocatedStorage": 5,
+          "AutoMinorVersionUpgrade": true,
+          "AvailabilityZone": "availability-zone",
+          "EngineVersion": "3.5.1",
+          "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:1>",
+          "MultiAZ": false,
+          "NetworkType": "IPV4",
+          "PendingModifiedValues": {},
+          "PreferredMaintenanceWindow": "<preferred-maintenance-window:1>",
+          "PubliclyAccessible": false,
+          "ReplicationInstanceArn": "arn:<partition>:dms:<region>:111111111111:rep:<identifier:1>",
+          "ReplicationInstanceClass": "dms.t2.micro",
+          "ReplicationInstanceIdentifier": "<replication-instance-identifier:1>",
+          "ReplicationInstanceStatus": "creating",
+          "ReplicationSubnetGroup": {
+            "ReplicationSubnetGroupDescription": "default",
+            "ReplicationSubnetGroupIdentifier": "default",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "subnet-name"
+                },
+                "SubnetIdentifier": "subnet-identifier",
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "subnet-name"
+                },
+                "SubnetIdentifier": "subnet-identifier",
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "subnet-name"
+                },
+                "SubnetIdentifier": "subnet-identifier",
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "subnet-name"
+                },
+                "SubnetIdentifier": "subnet-identifier",
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "subnet-name"
+                },
+                "SubnetIdentifier": "subnet-identifier",
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "subnet-name"
+                },
+                "SubnetIdentifier": "subnet-identifier",
+                "SubnetStatus": "Active"
+              }
+            ],
+            "VpcId": "<vpc-id:1>"
+          },
+          "VpcSecurityGroups": [
+            {
+              "Status": "active",
+              "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+            }
+          ]
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-replication-instances": {
+        "ReplicationInstances": [
+          {
+            "AllocatedStorage": 5,
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZone": "availability-zone",
+            "EngineVersion": "3.5.1",
+            "InstanceCreateTime": "<datetime>",
+            "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:1>",
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "PendingModifiedValues": {},
+            "PreferredMaintenanceWindow": "<preferred-maintenance-window:1>",
+            "PubliclyAccessible": false,
+            "ReplicationInstanceArn": "arn:<partition>:dms:<region>:111111111111:rep:<identifier:1>",
+            "ReplicationInstanceClass": "dms.t2.micro",
+            "ReplicationInstanceIdentifier": "<replication-instance-identifier:1>",
+            "ReplicationInstanceIpv6Addresses": [],
+            "ReplicationInstancePrivateIpAddress": "<replication-instance-private-ip-address:1>",
+            "ReplicationInstancePrivateIpAddresses": [
+              "<replication-instance-private-ip-address:1>"
+            ],
+            "ReplicationInstancePublicIpAddresses": [],
+            "ReplicationInstanceStatus": "available",
+            "ReplicationSubnetGroup": {
+              "ReplicationSubnetGroupDescription": "default",
+              "ReplicationSubnetGroupIdentifier": "default",
+              "SubnetGroupStatus": "Complete",
+              "Subnets": [
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "subnet-name"
+                  },
+                  "SubnetIdentifier": "subnet-identifier",
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "subnet-name"
+                  },
+                  "SubnetIdentifier": "subnet-identifier",
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "subnet-name"
+                  },
+                  "SubnetIdentifier": "subnet-identifier",
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "subnet-name"
+                  },
+                  "SubnetIdentifier": "subnet-identifier",
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "subnet-name"
+                  },
+                  "SubnetIdentifier": "subnet-identifier",
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "subnet-name"
+                  },
+                  "SubnetIdentifier": "subnet-identifier",
+                  "SubnetStatus": "Active"
+                }
+              ],
+              "VpcId": "<vpc-id:1>"
+            },
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "endpoint": {
+        "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:2>",
+        "EndpointIdentifier": "<endpoint-identifier:1>",
+        "EndpointType": "TARGET",
+        "EngineDisplayName": "Amazon Kinesis",
+        "EngineName": "kinesis",
+        "KinesisSettings": {
+          "MessageFormat": "json-unformatted",
+          "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:2>",
+          "StreamArn": "arn:<partition>:kinesis:<region>:111111111111:stream/<resource:3>"
+        },
+        "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:2>",
+        "SslMode": "none",
+        "Status": "active"
+      },
+      "delete-connection-error": {
+        "Error": {
+          "Code": "InvalidResourceStateFault",
+          "Message": "Cannot not find association between replication instance arn:<partition>:dms:<region>:111111111111:rep:<identifier:1> and endpoint arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:2>"
+        },
+        "message": "Cannot not find association between replication instance arn:<partition>:dms:<region>:111111111111:rep:<identifier:1> and endpoint arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "test-connection": {
+        "Connection": {
+          "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:2>",
+          "EndpointIdentifier": "<endpoint-identifier:1>",
+          "ReplicationInstanceArn": "arn:<partition>:dms:<region>:111111111111:rep:<identifier:1>",
+          "ReplicationInstanceIdentifier": "<replication-instance-identifier:1>",
+          "Status": "testing"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-connection-failed": {
+        "Connections": [
+          {
+            "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:2>",
+            "EndpointIdentifier": "<endpoint-identifier:1>",
+            "LastFailureMessage": "Test Endpoint failed: Application-Status: 1020912, Application-Message: Failed to connect to database.",
+            "ReplicationInstanceArn": "arn:<partition>:dms:<region>:111111111111:rep:<identifier:1>",
+            "ReplicationInstanceIdentifier": "<replication-instance-identifier:1>",
+            "Status": "failed"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-connection-error": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "No Endpoints found using provided filter."
+        },
+        "message": "No Endpoints found using provided filter.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_invalid_test_connection_settings": {
+    "recorded-date": "16-04-2024, 12:08:39",
+    "recorded-content": {
+      "test-connection-error": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "Can't find replication instance."
+        },
+        "message": "Can't find replication instance.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "test-connection-error-instance-not-ready": {
+        "Error": {
+          "Code": "InvalidResourceStateFault",
+          "Message": "The replication instance <instance-id> is not active."
+        },
+        "message": "The replication instance <instance-id> is not active.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "test-connection-error-endpoint": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "The specified endpoint: arn:<partition>:dms:<region>:111111111111:endpoint:identifier does not exist"
+        },
+        "message": "The specified endpoint: arn:<partition>:dms:<region>:111111111111:endpoint:identifier does not exist",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_describe_filter": {
+    "recorded-date": "16-04-2024, 11:38:22",
+    "recorded-content": {
+      "describe-connection-invalid-filter-name": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Unrecognized filter name: replication-instance-arn"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe-connection-values-empty": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Filter values may not be empty."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "describe-connection-no-match": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "No Endpoints found matching provided filters"
+        },
+        "message": "No Endpoints found matching provided filters",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_replication_task": {
+    "recorded-date": "16-04-2024, 12:08:41",
+    "recorded-content": {
+      "delete-replication-task-error": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "Replication Task for arn:<partition>:dms:<region>:111111111111:task:test-task not found."
+        },
+        "message": "Replication Task for arn:<partition>:dms:<region>:111111111111:task:test-task not found.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "delete-replication-invalid-filter": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Unrecognized filter name: engine-version"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "delete-replication-no-filter-match": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "No tasks found using provided filter."
+        },
+        "message": "No tasks found using provided filter.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_delete_replication_instance_error": {
+    "recorded-date": "16-04-2024, 12:08:40",
+    "recorded-content": {
+      "delete-replication-instance-error": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "Replication instance for arn:<partition>:dms:<region>:111111111111:rep:test-instance not found."
+        },
+        "message": "Replication instance for arn:<partition>:dms:<region>:111111111111:rep:test-instance not found.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_replication_subnet_groups": {
+    "recorded-date": "16-04-2024, 12:08:41",
+    "recorded-content": {
+      "describe-replication-subnet-groups": {
+        "ReplicationSubnetGroups": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-replication-subnet-group-error": {
+        "Error": {
+          "Code": "ResourceNotFoundFault",
+          "Message": "Replication Subnet Group 'my-custom-nonexistent-sub-id' does not exist."
+        },
+        "message": "Replication Subnet Group 'my-custom-nonexistent-sub-id' does not exist.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_create_mysql_endpoint_with_settings": {
+    "recorded-date": "07-05-2024, 21:48:17",
+    "recorded-content": {
+      "endpoint-with-settings": {
+        "DatabaseName": "DbName",
+        "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+        "EndpointIdentifier": "<endpoint-identifier:1>",
+        "EndpointType": "SOURCE",
+        "EngineDisplayName": "MySQL",
+        "EngineName": "mysql",
+        "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:1>",
+        "MySQLSettings": {
+          "DatabaseName": "DbName",
+          "SecretsManagerAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:2>",
+          "SecretsManagerSecretId": "arn:<partition>:secretsmanager:<region>:111111111111:secret:<resource:3>"
+        },
+        "SslMode": "none",
+        "Status": "active"
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_create_basic_s3_source": {
+    "recorded-date": "05-06-2024, 11:55:36",
+    "recorded-content": {
+      "create-s3-source-endpoint": {
+        "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:1>",
+        "EndpointIdentifier": "<endpoint-identifier:1>",
+        "EndpointType": "SOURCE",
+        "EngineDisplayName": "Amazon S3",
+        "EngineName": "s3",
+        "ExternalTableDefinition": {
+          "TableCount": "1",
+          "Tables": [
+            {
+              "TableName": "employee",
+              "TablePath": "hr/employee/",
+              "TableOwner": "hr",
+              "TableColumns": [
+                {
+                  "ColumnName": "Id",
+                  "ColumnType": "INT8",
+                  "ColumnNullable": "false",
+                  "ColumnIsPk": "true"
+                },
+                {
+                  "ColumnName": "Name",
+                  "ColumnType": "STRING",
+                  "ColumnLength": "50"
+                }
+              ],
+              "TableColumnsTotal": "2"
+            }
+          ]
+        },
+        "ExtraConnectionAttributes": "bucketName=<bucket-name>;csvDelimiter=,;csvRowDelimiter=\\n;",
+        "S3Settings": {
+          "BucketName": "<bucket-name>",
+          "CsvDelimiter": ",",
+          "CsvRowDelimiter": "\\n",
+          "EnableStatistics": true,
+          "ExternalTableDefinition": {
+            "TableCount": "1",
+            "Tables": [
+              {
+                "TableName": "employee",
+                "TablePath": "hr/employee/",
+                "TableOwner": "hr",
+                "TableColumns": [
+                  {
+                    "ColumnName": "Id",
+                    "ColumnType": "INT8",
+                    "ColumnNullable": "false",
+                    "ColumnIsPk": "true"
+                  },
+                  {
+                    "ColumnName": "Name",
+                    "ColumnType": "STRING",
+                    "ColumnLength": "50"
+                  }
+                ],
+                "TableColumnsTotal": "2"
+              }
+            ]
+          },
+          "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>"
+        },
+        "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>",
+        "SslMode": "none",
+        "Status": "active"
+      },
+      "create-endpoint-invalid-json": {
+        "Error": {
+          "Code": "InvalidParameterCombinationException",
+          "Message": "Endpoint with s3 engine as source needs a well formed JSON for externalTableDefinition"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-endpoint-invalid-table-definition": {
+        "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<identifier:2>",
+        "EndpointIdentifier": "<endpoint-identifier:2>",
+        "EndpointType": "SOURCE",
+        "EngineDisplayName": "Amazon S3",
+        "EngineName": "s3",
+        "ExternalTableDefinition": {
+          "json": "test"
+        },
+        "ExtraConnectionAttributes": "bucketName=<bucket-name>;csvDelimiter=,;csvRowDelimiter=\\n;",
+        "S3Settings": {
+          "BucketName": "<bucket-name>",
+          "CsvDelimiter": ",",
+          "CsvRowDelimiter": "\\n",
+          "EnableStatistics": true,
+          "ExternalTableDefinition": {
+            "json": "test"
+          },
+          "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>"
+        },
+        "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<resource:1>",
+        "SslMode": "none",
+        "Status": "active"
+      }
+    }
+  },
+  "tests/aws/services/dms/test_dms.py::TestDms::test_s3_cdc_without_path": {
+    "recorded-date": "01-07-2024, 07:24:17",
+    "recorded-content": {
+      "create-replication-task-error": {
+        "Error": {
+          "Code": "InvalidParameterValueException",
+          "Message": "Parameter cdcPath is required when task is configured for ongoing replication with Amazon S3 as a source."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  }
+}

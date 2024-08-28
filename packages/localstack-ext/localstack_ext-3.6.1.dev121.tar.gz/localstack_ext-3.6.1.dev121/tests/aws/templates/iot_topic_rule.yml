@@ -1,0 +1,19 @@
+Resources:
+  MyTopicRule:
+    Type: AWS::IoT::TopicRule
+    Properties:
+      RuleName: MyTopicRuleName
+      TopicRulePayload:
+        RuleDisabled: true
+        Sql: "SELECT * FROM 'iot/topic'"
+        Actions: []  # TODO: Test adding actions
+      Tags:
+        - Key: key
+          Value: value
+Outputs:
+  TopicRuleArn:
+    Description: "The ARN of the IoT Topic Rule"
+    Value: !GetAtt MyTopicRule.Arn
+  TopicRuleRef:
+    Description: "The physical Ref of the IoT Topic Rule"
+    Value: !Ref MyTopicRule

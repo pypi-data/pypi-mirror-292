@@ -1,0 +1,22 @@
+Parameters:
+  DatabaseName:
+    Type: String
+    Default: MyDatabase
+Resources:
+  MyDBCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-mysql
+      MasterUsername: admin
+      MasterUserPassword: MySecretPassword
+      DatabaseName: !Ref DatabaseName
+
+Outputs:
+  DBClusterIdentifier:
+    Value: !Ref MyDBCluster
+  EndpointAddress:
+    Value: !GetAtt MyDBCluster.Endpoint.Address
+  EndpointPort:
+    Value: !GetAtt MyDBCluster.Endpoint.Port
+  ReadEndpointAddress:
+    Value: !GetAtt MyDBCluster.ReadEndpoint.Address

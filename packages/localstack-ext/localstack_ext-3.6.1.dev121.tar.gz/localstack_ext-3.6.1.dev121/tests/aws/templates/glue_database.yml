@@ -1,0 +1,20 @@
+Description: "AWS Glue Database Test"
+
+Parameters:
+  DatabaseName:
+    Type: String
+    Default: cfn-mysampledatabse
+
+Resources:
+  GlueDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Ref DatabaseName
+        Description: Database to hold tables for flights data
+        LocationUri: s3://crawler-public-us-east-1/flight/2016/csv/
+
+Outputs:
+  DatabaseRef:
+    Value: !Ref GlueDatabase

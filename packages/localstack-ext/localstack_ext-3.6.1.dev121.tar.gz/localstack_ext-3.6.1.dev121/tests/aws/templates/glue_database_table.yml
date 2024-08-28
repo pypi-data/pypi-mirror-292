@@ -1,0 +1,37 @@
+Description: "AWS Glue Database-Table Test"
+
+Parameters:
+  DatabaseName:
+    Type: String
+    Default: cfn-mysampledatabse
+
+  TableName:
+    Type: String
+    Default: cfn-sampleTable
+
+Resources:
+  GlueDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Ref DatabaseName
+        Description: Database to hold tables for flights data
+        LocationUri: s3://crawler-public-us-east-1/flight/2016/csv/
+  GlueTable:
+    DependsOn: GlueDatabase
+    Type: AWS::Glue::Table
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseName: !Ref DatabaseName
+      TableInput:
+        Name: !Ref TableName
+        TableType: "EXTERNAL_TABLE"
+
+
+
+Outputs:
+  TableRef:
+    Value: !Ref GlueTable
+  CatalogId:
+    Value: !Ref AWS::AccountId

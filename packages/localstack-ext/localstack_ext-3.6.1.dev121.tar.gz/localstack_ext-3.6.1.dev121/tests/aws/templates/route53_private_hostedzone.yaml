@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  ZoneName:
+    Type: String
+
+  Region:
+    Type: String
+
+Resources:
+  Zone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: !Ref ZoneName
+      VPCs:
+        - VPCId: !Ref Vpc
+          VPCRegion: !Ref Region
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.1.0.0/16
+
+Outputs:
+  HostedZoneId:
+    Value: !Ref Zone
+
+  VpcId:
+    Value: !Ref Vpc

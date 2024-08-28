@@ -1,0 +1,972 @@
+{
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_ago_function": {
+    "recorded-date": "11-04-2023, 17:54:41",
+    "recorded-content": {
+      "ago_func": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "ScalarType": "TIMESTAMP"
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "ScalarValue": "2023-04-04 15:54:41.443000000"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_bin_function[3d]": {
+    "recorded-date": "11-04-2023, 11:42:25",
+    "recorded-content": {
+      "bin_3d": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "ScalarType": "TIMESTAMP"
+            }
+          },
+          {
+            "Name": "_col1",
+            "Type": {
+              "ScalarType": "INTEGER"
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "ScalarValue": "2021-11-14 00:00:00.000000000"
+              },
+              {
+                "ScalarValue": "1"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_parse_duration_func": {
+    "recorded-date": "11-04-2023, 17:38:03",
+    "recorded-content": {
+      "ThreeHoursDuration": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "ScalarType": "INTERVAL_DAY_TO_SECOND"
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "ScalarValue": "0 03:00:00.000000000"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_from_iso8601_timestamp[2021-11-15T11:18:42.573Z]": {
+    "recorded-date": "11-04-2023, 14:02:22",
+    "recorded-content": {
+      "FromIso8601Value": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "ScalarType": "TIMESTAMP"
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "ScalarValue": "2021-11-15 11:18:42.573000000"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_from_iso8601_timestamp[2021-11-15T11:18:42]": {
+    "recorded-date": "11-04-2023, 14:02:22",
+    "recorded-content": {
+      "FromIso8601Value": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "ScalarType": "TIMESTAMP"
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "ScalarValue": "2021-11-15 11:18:42.000000000"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_from_milliseconds_func": {
+    "recorded-date": "21-08-2023, 10:06:52",
+    "recorded-content": {
+      "from-milliseconds-one": [
+        {
+          "ScalarValue": "1970-01-01 00:00:00.001000000"
+        }
+      ],
+      "from-milliseconds-real": [
+        {
+          "ScalarValue": "2023-07-27 23:48:06.000000000"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_to_milliseconds_func": {
+    "recorded-date": "11-04-2023, 17:06:15",
+    "recorded-content": {
+      "ToMilliseconds": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "ScalarType": "BIGINT"
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "ScalarValue": "1305628828876"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamBasic::test_describe_endpoints": {
+    "recorded-date": "11-04-2023, 14:17:27",
+    "recorded-content": {
+      "endpoints": [
+        {
+          "Address": "ingest-cell1.timestream.<region>.amazonaws.com",
+          "CachePeriodInMinutes": 1440
+        }
+      ]
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_from_iso8601_timestamp": {
+    "recorded-date": "11-04-2023, 17:19:58",
+    "recorded-content": {
+      "FromIso8601Date": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "ScalarType": "DATE"
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "ScalarValue": "2021-11-23"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_from_iso8601_date": {
+    "recorded-date": "11-04-2023, 17:21:24",
+    "recorded-content": {
+      "FromIso8601Date": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "ScalarType": "DATE"
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "ScalarValue": "2021-11-23"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_sequence_time_func": {
+    "recorded-date": "19-04-2023, 17:50:45",
+    "recorded-content": {
+      "SequenceTime2hSteps": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "ArrayColumnInfo": {
+                "Type": {
+                  "ScalarType": "TIMESTAMP"
+                }
+              }
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "ArrayValue": [
+                  {
+                    "ScalarValue": "2023-04-02 19:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-02 21:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-02 23:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-03 01:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-03 03:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-03 05:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-03 07:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-03 09:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-03 11:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-03 13:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-03 15:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-03 17:26:12.941000000"
+                  },
+                  {
+                    "ScalarValue": "2023-04-03 19:26:12.941000000"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_unnest_function": {
+    "recorded-date": "08-07-2023, 15:13:30",
+    "recorded-content": {
+      "unnest": {
+        "ColumnInfo": [
+          {
+            "Name": "region",
+            "Type": {
+              "ScalarType": "VARCHAR"
+            }
+          },
+          {
+            "Name": "measure_name",
+            "Type": {
+              "ScalarType": "VARCHAR"
+            }
+          },
+          {
+            "Name": "_col2",
+            "Type": {
+              "ScalarType": "DOUBLE"
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "ScalarValue": "<region>"
+              },
+              {
+                "ScalarValue": "cpu"
+              },
+              {
+                "ScalarValue": "3.0555555556"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_interpolation_function[True]": {
+    "recorded-date": "10-07-2023, 12:39:15",
+    "recorded-content": {
+      "select-time-series": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "TimeSeriesMeasureValueColumnInfo": {
+                "Type": {
+                  "ScalarType": "DOUBLE"
+                }
+              }
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "TimeSeriesValue": [
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "1.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "3.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "2.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "5.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "4.0"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-interpolate-linear-timestamp": "timestamp",
+      "select-interpolate-fill-timestamp": "timestamp",
+      "select-interpolate-fill-sequence": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "TimeSeriesMeasureValueColumnInfo": {
+                "Type": {
+                  "ScalarType": "DOUBLE"
+                }
+              }
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "TimeSeriesValue": [
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "1.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "0.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "3.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "0.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "2.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "0.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "5.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "0.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "4.0"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_interpolation_function[False]": {
+    "recorded-date": "10-07-2023, 12:39:18",
+    "recorded-content": {
+      "select-time-series": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "TimeSeriesMeasureValueColumnInfo": {
+                "Type": {
+                  "ScalarType": "DOUBLE"
+                }
+              }
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "TimeSeriesValue": [
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "1.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "3.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "2.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "5.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "4.0"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-interpolate-linear-timestamp": "timestamp",
+      "select-interpolate-fill-timestamp": "timestamp",
+      "select-interpolate-fill-sequence": {
+        "ColumnInfo": [
+          {
+            "Name": "_col0",
+            "Type": {
+              "TimeSeriesMeasureValueColumnInfo": {
+                "Type": {
+                  "ScalarType": "DOUBLE"
+                }
+              }
+            }
+          }
+        ],
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "Data": [
+              {
+                "TimeSeriesValue": [
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "1.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "0.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "3.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "0.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "2.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "0.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "5.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "0.0"
+                    }
+                  },
+                  {
+                    "Time": "<time>",
+                    "Value": {
+                      "ScalarValue": "4.0"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamBasic::test_list_tags_for_resource": {
+    "recorded-date": "24-07-2023, 18:32:12",
+    "recorded-content": {
+      "database_with_tags": {
+        "Tags": [
+          {
+            "Key": "k1",
+            "Value": "v1"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "database_without_tags": {
+        "Tags": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "database_added_tags": {
+        "Tags": [
+          {
+            "Key": "k1",
+            "Value": "v1"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "database_removed_tags": {
+        "Tags": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_multi_records": {
+    "recorded-date": "12-08-2023, 13:49:06",
+    "recorded-content": {
+      "select-all-multi-measure": {
+        "ColumnInfo": {
+          "key_name": {
+            "ScalarType": "VARCHAR"
+          },
+          "measure_name": {
+            "ScalarType": "VARCHAR"
+          },
+          "test_type0": {
+            "ScalarType": "BIGINT"
+          },
+          "test_type1": {
+            "ScalarType": "BIGINT"
+          },
+          "test_type2": {
+            "ScalarType": "BIGINT"
+          },
+          "test_type3": {
+            "ScalarType": "BIGINT"
+          },
+          "test_type4": {
+            "ScalarType": "BIGINT"
+          },
+          "test_type5": {
+            "ScalarType": "BIGINT"
+          },
+          "time": {
+            "ScalarType": "TIMESTAMP"
+          }
+        },
+        "QueryId": "<query_id>",
+        "QueryStatus": {
+          "CumulativeBytesMetered": "<bytes_metered>",
+          "CumulativeBytesScanned": "<bytes_scanned>",
+          "ProgressPercentage": 100.0
+        },
+        "Rows": [
+          {
+            "key_name": {
+              "ScalarValue": "test_key"
+            },
+            "measure_name": {
+              "ScalarValue": "test_measure"
+            },
+            "test_type0": {
+              "ScalarValue": "0"
+            },
+            "test_type1": {
+              "ScalarValue": "0"
+            },
+            "test_type2": {
+              "NullValue": true
+            },
+            "test_type3": {
+              "NullValue": true
+            },
+            "test_type4": {
+              "NullValue": true
+            },
+            "test_type5": {
+              "NullValue": true
+            },
+            "time": {
+              "ScalarValue": "timestamp"
+            }
+          },
+          {
+            "key_name": {
+              "ScalarValue": "test_key"
+            },
+            "measure_name": {
+              "ScalarValue": "test_measure"
+            },
+            "test_type0": {
+              "NullValue": true
+            },
+            "test_type1": {
+              "NullValue": true
+            },
+            "test_type2": {
+              "ScalarValue": "10"
+            },
+            "test_type3": {
+              "ScalarValue": "20"
+            },
+            "test_type4": {
+              "NullValue": true
+            },
+            "test_type5": {
+              "NullValue": true
+            },
+            "time": {
+              "ScalarValue": "timestamp"
+            }
+          },
+          {
+            "key_name": {
+              "ScalarValue": "test_key"
+            },
+            "measure_name": {
+              "ScalarValue": "test_measure"
+            },
+            "test_type0": {
+              "NullValue": true
+            },
+            "test_type1": {
+              "NullValue": true
+            },
+            "test_type2": {
+              "NullValue": true
+            },
+            "test_type3": {
+              "NullValue": true
+            },
+            "test_type4": {
+              "ScalarValue": "20"
+            },
+            "test_type5": {
+              "ScalarValue": "40"
+            },
+            "time": {
+              "ScalarValue": "timestamp"
+            }
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_sum_by_reference": {
+    "recorded-date": "18-08-2023, 18:24:08",
+    "recorded-content": {
+      "sum-column-reference-double-result": [
+        {
+          "ScalarValue": "21.0"
+        }
+      ]
+    }
+  },
+  "tests/aws/test_timestream.py::TestTimestreamQueries::test_output_precision[DOUBLE]": {
+    "recorded-date": "21-08-2023, 10:50:49",
+    "recorded-content": {
+      "sum-result-DOUBLE": [
+        {
+          "ScalarValue": "15.0"
+        }
+      ]
+    }
+  },
+  "tests/aws/test_timestream.py::TestTimestreamQueries::test_output_precision[BIGINT]": {
+    "recorded-date": "21-08-2023, 10:50:50",
+    "recorded-content": {
+      "sum-result-BIGINT": [
+        {
+          "ScalarValue": "15"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/timestream/test_timestream.py::TestTimestreamQueries::test_query_pagination": {
+    "recorded-date": "25-08-2023, 13:16:53",
+    "recorded-content": {
+      "num-records-1": 50,
+      "num-records-2": 50
+    }
+  }
+}

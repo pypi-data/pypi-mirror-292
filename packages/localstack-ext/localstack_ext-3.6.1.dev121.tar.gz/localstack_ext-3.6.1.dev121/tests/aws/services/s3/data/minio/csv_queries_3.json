@@ -1,0 +1,62 @@
+[
+  {
+    "id": "Select a column containing dot",
+    "query": "select \"na.me\" from S3Object s",
+    "expected": "apple\nmango"
+  },
+  {
+    "id": "Select column containing dot with table name prefix",
+    "query": "select count(S3Object.\"na.me\") from S3Object",
+    "expected": "2"
+  },
+  {
+    "id": "Select column containing dot with table alias prefix",
+    "query": "select s.\"na.me\" from S3Object as s",
+    "expected": "apple\nmango"
+  },
+  {
+    "id": "Select column simplest",
+    "query": "select qty from S3Object",
+    "expected": "1\n3"
+  },
+  {
+    "id": "Select column with table name prefix",
+    "query": "select S3Object.qty from S3Object",
+    "expected": "1\n3"
+  },
+  {
+    "id": "Select column without table alias",
+    "query": "select qty from S3Object s",
+    "expected": "1\n3"
+  },
+  {
+    "id": "Select column with table alias",
+    "query": "select s.qty from S3Object s",
+    "expected": "1\n3"
+  },
+  {
+    "id": "Select reserved word column",
+    "query": "select \"CAST\"  from s3object",
+    "expected": "true\nfalse"
+  },
+  {
+    "id": "Select reserved word column with table alias",
+    "query": "select S3Object.\"CAST\" from s3object",
+    "expected": "true\nfalse"
+  },
+  {
+    "id": "Select reserved word column with unused table alias",
+    "query": "select \"CAST\"  from s3object s",
+    "expected": "true\nfalse"
+  },
+  {
+    "id": "Select reserved word column with table alias",
+    "query": "select s.\"CAST\"  from s3object s",
+    "expected": "true\nfalse"
+  },
+  {
+    "id": "Select reserved word column with table alias",
+    "query": "select NOT CAST(s.\"CAST\" AS Bool)  from s3object s",
+    "expected": "false\ntrue"
+  }
+]

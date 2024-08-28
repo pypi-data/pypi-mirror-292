@@ -1,0 +1,21 @@
+Description: "AWS Glue Trigger"
+
+Parameters:
+  TriggerName:
+    Type: String
+    Default: trigger-name
+
+Resources:
+  Trigger:
+    Type: AWS::Glue::Trigger
+    Properties:
+      Name: !Ref TriggerName
+      Type: ON_DEMAND
+      Actions:
+      - JobName: prod-job2
+        Arguments:
+          '--job-bookmark-option': job-bookmark-enable
+
+Outputs:
+  TriggerRef:
+    Value: !Ref Trigger

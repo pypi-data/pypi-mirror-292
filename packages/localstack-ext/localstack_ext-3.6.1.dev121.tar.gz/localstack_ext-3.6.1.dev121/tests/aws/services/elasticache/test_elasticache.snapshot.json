@@ -1,0 +1,511 @@
+{
+  "tests/aws/services/elasticache/test_elasticache.py::TestElastiCache::test_cluster_no_cache_type": {
+    "recorded-date": "13-04-2023, 18:02:01",
+    "recorded-content": {
+      "cluster-null-cache-node-type": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "The parameter CacheNodeType must be provided and must not be null.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elasticache/test_elasticache.py::TestElastiCache::test_cluster_no_engine": {
+    "recorded-date": "11-04-2023, 16:37:23",
+    "recorded-content": {
+      "cluster-null-engine": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "The parameter Engine must be provided and must not be null.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elasticache/test_elasticache.py::TestElastiCache::test_cluster_redis_num_nodes_greater_than_one": {
+    "recorded-date": "11-04-2023, 16:43:00",
+    "recorded-content": {
+      "cluster-redis-too-large": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "Cannot create a Redis cluster with a NumCacheNodes parameter greater than 1.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elasticache/test_elasticache.py::TestElastiCache::test_replication_group_no_engine": {
+    "recorded-date": "11-04-2023, 16:51:51",
+    "recorded-content": {
+      "replication-null-engine": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "The parameter Engine must be provided and must not be null.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elasticache/test_elasticache.py::TestElastiCache::test_replication_group_no_cache_type": {
+    "recorded-date": "11-04-2023, 16:52:39",
+    "recorded-content": {
+      "replication-group-null-cache-node-type": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "Invalid Cache Node Type: null.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/elasticache/test_elasticache.py::TestElastiCache::test_replication_group_primary_cluster_non_existing": {
+    "recorded-date": "07-10-2023, 22:06:32",
+    "recorded-content": {
+      "replication-no-primary-cluster": {
+        "Error": {
+          "Code": "CacheClusterNotFound",
+          "Message": "Specified primary cluster does not exist.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/elasticache/test_elasticache.py::TestElastiCache::test_cache_cluster_default_crud": {
+    "recorded-date": "10-10-2023, 03:13:50",
+    "recorded-content": {
+      "create-cache-cluster": {
+        "CacheCluster": {
+          "ARN": "arn:<partition>:elasticache:<region>:111111111111:cluster:<cache-cluster-id:1>",
+          "AtRestEncryptionEnabled": false,
+          "AutoMinorVersionUpgrade": true,
+          "CacheClusterId": "<cache-cluster-id:1>",
+          "CacheClusterStatus": "creating",
+          "CacheNodeType": "cache.t2.micro",
+          "CacheParameterGroup": {
+            "CacheNodeIdsToReboot": [],
+            "CacheParameterGroupName": "default.redis7",
+            "ParameterApplyStatus": "in-sync"
+          },
+          "CacheSecurityGroups": [],
+          "CacheSubnetGroupName": "default",
+          "ClientDownloadLandingPage": "https://console.aws.amazon.com/elasticache/home#client-download:",
+          "Engine": "redis",
+          "EngineVersion": "7.0.7",
+          "IpDiscovery": "ipv4",
+          "LogDeliveryConfigurations": [],
+          "NetworkType": "ipv4",
+          "NumCacheNodes": 1,
+          "PendingModifiedValues": {},
+          "PreferredMaintenanceWindow": "thu:05:30-thu:06:30",
+          "ReplicationGroupLogDeliveryEnabled": false,
+          "SnapshotRetentionLimit": 0,
+          "SnapshotWindow": "04:00-05:00",
+          "TransitEncryptionEnabled": false
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-cache-clusters": {
+        "CacheClusters": [
+          {
+            "ARN": "arn:<partition>:elasticache:<region>:111111111111:cluster:<cache-cluster-id:1>",
+            "AtRestEncryptionEnabled": false,
+            "AuthTokenEnabled": false,
+            "AutoMinorVersionUpgrade": true,
+            "CacheClusterCreateTime": "datetime",
+            "CacheClusterId": "<cache-cluster-id:1>",
+            "CacheClusterStatus": "available",
+            "CacheNodeType": "cache.t2.micro",
+            "CacheParameterGroup": {
+              "CacheNodeIdsToReboot": [],
+              "CacheParameterGroupName": "default.redis7",
+              "ParameterApplyStatus": "in-sync"
+            },
+            "CacheSecurityGroups": [],
+            "CacheSubnetGroupName": "default",
+            "ClientDownloadLandingPage": "https://console.aws.amazon.com/elasticache/home#client-download:",
+            "Engine": "redis",
+            "EngineVersion": "7.0.7",
+            "IpDiscovery": "ipv4",
+            "LogDeliveryConfigurations": [],
+            "NetworkType": "ipv4",
+            "NumCacheNodes": 1,
+            "PendingModifiedValues": {},
+            "PreferredAvailabilityZone": "<region>f",
+            "PreferredMaintenanceWindow": "thu:05:30-thu:06:30",
+            "ReplicationGroupLogDeliveryEnabled": false,
+            "SnapshotRetentionLimit": 0,
+            "SnapshotWindow": "04:00-05:00",
+            "TransitEncryptionEnabled": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-cache-clusters-with-info": {
+        "CacheClusters": [
+          {
+            "ARN": "arn:<partition>:elasticache:<region>:111111111111:cluster:<cache-cluster-id:1>",
+            "AtRestEncryptionEnabled": false,
+            "AuthTokenEnabled": false,
+            "AutoMinorVersionUpgrade": true,
+            "CacheClusterCreateTime": "datetime",
+            "CacheClusterId": "<cache-cluster-id:1>",
+            "CacheClusterStatus": "available",
+            "CacheNodeType": "cache.t2.micro",
+            "CacheNodes": [
+              {
+                "CacheNodeCreateTime": "datetime",
+                "CacheNodeId": "0001",
+                "CacheNodeStatus": "available",
+                "CustomerAvailabilityZone": "<region>f",
+                "Endpoint": {
+                  "Address": "<cache-cluster-id:1>.u49ttt.0001.use1.cache.amazonaws.com",
+                  "Port": 6379
+                },
+                "ParameterGroupStatus": "in-sync"
+              }
+            ],
+            "CacheParameterGroup": {
+              "CacheNodeIdsToReboot": [],
+              "CacheParameterGroupName": "default.redis7",
+              "ParameterApplyStatus": "in-sync"
+            },
+            "CacheSecurityGroups": [],
+            "CacheSubnetGroupName": "default",
+            "ClientDownloadLandingPage": "https://console.aws.amazon.com/elasticache/home#client-download:",
+            "Engine": "redis",
+            "EngineVersion": "7.0.7",
+            "IpDiscovery": "ipv4",
+            "LogDeliveryConfigurations": [],
+            "NetworkType": "ipv4",
+            "NumCacheNodes": 1,
+            "PendingModifiedValues": {},
+            "PreferredAvailabilityZone": "<region>f",
+            "PreferredMaintenanceWindow": "thu:05:30-thu:06:30",
+            "ReplicationGroupLogDeliveryEnabled": false,
+            "SnapshotRetentionLimit": 0,
+            "SnapshotWindow": "04:00-05:00",
+            "TransitEncryptionEnabled": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-cache-cluster": {
+        "CacheCluster": {
+          "ARN": "arn:<partition>:elasticache:<region>:111111111111:cluster:<cache-cluster-id:1>",
+          "AtRestEncryptionEnabled": false,
+          "AutoMinorVersionUpgrade": true,
+          "CacheClusterCreateTime": "datetime",
+          "CacheClusterId": "<cache-cluster-id:1>",
+          "CacheClusterStatus": "deleting",
+          "CacheNodeType": "cache.t2.micro",
+          "CacheParameterGroup": {
+            "CacheNodeIdsToReboot": [],
+            "CacheParameterGroupName": "default.redis7",
+            "ParameterApplyStatus": "in-sync"
+          },
+          "CacheSecurityGroups": [],
+          "CacheSubnetGroupName": "default",
+          "ClientDownloadLandingPage": "https://console.aws.amazon.com/elasticache/home#client-download:",
+          "Engine": "redis",
+          "EngineVersion": "7.0.7",
+          "IpDiscovery": "ipv4",
+          "LogDeliveryConfigurations": [],
+          "NetworkType": "ipv4",
+          "NumCacheNodes": 1,
+          "PendingModifiedValues": {},
+          "PreferredAvailabilityZone": "<region>f",
+          "PreferredMaintenanceWindow": "thu:05:30-thu:06:30",
+          "ReplicationGroupLogDeliveryEnabled": false,
+          "SnapshotRetentionLimit": 0,
+          "SnapshotWindow": "04:00-05:00",
+          "TransitEncryptionEnabled": false
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/elasticache/test_elasticache.py::TestElastiCache::test_basic_crud_replication_group_non_cluster": {
+    "recorded-date": "10-10-2023, 03:45:06",
+    "recorded-content": {
+      "create-replication-group": {
+        "ReplicationGroup": {
+          "ARN": "arn:<partition>:elasticache:<region>:111111111111:replicationgroup:<replication-group-id:1>",
+          "AtRestEncryptionEnabled": false,
+          "AutoMinorVersionUpgrade": true,
+          "AutomaticFailover": "disabled",
+          "CacheNodeType": "cache.t2.micro",
+          "ClusterEnabled": false,
+          "ClusterMode": "disabled",
+          "DataTiering": "disabled",
+          "Description": "my test replication group",
+          "GlobalReplicationGroupInfo": {},
+          "IpDiscovery": "ipv4",
+          "LogDeliveryConfigurations": [],
+          "MemberClusters": [
+            "<cache-cluster-id:1>",
+            "<cache-cluster-id:2>",
+            "<cache-cluster-id:3>"
+          ],
+          "MultiAZ": "disabled",
+          "NetworkType": "ipv4",
+          "PendingModifiedValues": {},
+          "ReplicationGroupCreateTime": "datetime",
+          "ReplicationGroupId": "<replication-group-id:1>",
+          "SnapshotRetentionLimit": 0,
+          "SnapshotWindow": "03:30-04:30",
+          "Status": "creating",
+          "TransitEncryptionEnabled": false
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-replication-group": {
+        "ReplicationGroups": [
+          {
+            "ARN": "arn:<partition>:elasticache:<region>:111111111111:replicationgroup:<replication-group-id:1>",
+            "AtRestEncryptionEnabled": false,
+            "AuthTokenEnabled": false,
+            "AutoMinorVersionUpgrade": true,
+            "AutomaticFailover": "disabled",
+            "CacheNodeType": "cache.t2.micro",
+            "ClusterEnabled": false,
+            "ClusterMode": "disabled",
+            "DataTiering": "disabled",
+            "Description": "my test replication group",
+            "GlobalReplicationGroupInfo": {},
+            "IpDiscovery": "ipv4",
+            "LogDeliveryConfigurations": [],
+            "MemberClusters": [
+              "<cache-cluster-id:1>",
+              "<cache-cluster-id:2>",
+              "<cache-cluster-id:3>"
+            ],
+            "MultiAZ": "disabled",
+            "NetworkType": "ipv4",
+            "NodeGroups": [
+              {
+                "NodeGroupId": "0001",
+                "NodeGroupMembers": [
+                  {
+                    "CacheClusterId": "<cache-cluster-id:1>",
+                    "CacheNodeId": "0001",
+                    "CurrentRole": "primary",
+                    "PreferredAvailabilityZone": "<region>e",
+                    "ReadEndpoint": {
+                      "Address": "<cache-cluster-id:1>.u49ttt.0001.use1.cache.amazonaws.com",
+                      "Port": 6379
+                    }
+                  },
+                  {
+                    "CacheClusterId": "<cache-cluster-id:2>",
+                    "CacheNodeId": "0001",
+                    "CurrentRole": "replica",
+                    "PreferredAvailabilityZone": "<region>f",
+                    "ReadEndpoint": {
+                      "Address": "<cache-cluster-id:2>.u49ttt.0001.use1.cache.amazonaws.com",
+                      "Port": 6379
+                    }
+                  },
+                  {
+                    "CacheClusterId": "<cache-cluster-id:3>",
+                    "CacheNodeId": "0001",
+                    "CurrentRole": "replica",
+                    "PreferredAvailabilityZone": "<region>d",
+                    "ReadEndpoint": {
+                      "Address": "<cache-cluster-id:3>.u49ttt.0001.use1.cache.amazonaws.com",
+                      "Port": 6379
+                    }
+                  }
+                ],
+                "PrimaryEndpoint": {
+                  "Address": "<replication-group-id:1>.u49ttt.ng.0001.use1.cache.amazonaws.com",
+                  "Port": 6379
+                },
+                "ReaderEndpoint": {
+                  "Address": "<replication-group-id:1>-ro.u49ttt.ng.0001.use1.cache.amazonaws.com",
+                  "Port": 6379
+                },
+                "Status": "available"
+              }
+            ],
+            "PendingModifiedValues": {},
+            "ReplicationGroupCreateTime": "datetime",
+            "ReplicationGroupId": "<replication-group-id:1>",
+            "SnapshotRetentionLimit": 0,
+            "SnapshotWindow": "03:30-04:30",
+            "Status": "available",
+            "TransitEncryptionEnabled": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "clusters": [
+        {
+          "CacheClusterId": "<cache-cluster-id:1>",
+          "ClientDownloadLandingPage": "https://console.aws.amazon.com/elasticache/home#client-download:",
+          "CacheNodeType": "cache.t2.micro",
+          "Engine": "redis",
+          "EngineVersion": "7.0.7",
+          "CacheClusterStatus": "available",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "<region>e",
+          "CacheClusterCreateTime": "datetime",
+          "PreferredMaintenanceWindow": "sun:07:00-sun:08:00",
+          "PendingModifiedValues": {},
+          "CacheSecurityGroups": [],
+          "CacheParameterGroup": {
+            "CacheParameterGroupName": "default.redis7",
+            "ParameterApplyStatus": "in-sync",
+            "CacheNodeIdsToReboot": []
+          },
+          "CacheSubnetGroupName": "default",
+          "AutoMinorVersionUpgrade": true,
+          "ReplicationGroupId": "<replication-group-id:1>",
+          "SnapshotRetentionLimit": 0,
+          "SnapshotWindow": "03:30-04:30",
+          "AuthTokenEnabled": false,
+          "TransitEncryptionEnabled": false,
+          "AtRestEncryptionEnabled": false,
+          "ARN": "arn:<partition>:elasticache:<region>:111111111111:cluster:<cache-cluster-id:1>",
+          "ReplicationGroupLogDeliveryEnabled": false,
+          "LogDeliveryConfigurations": [],
+          "NetworkType": "ipv4",
+          "IpDiscovery": "ipv4"
+        },
+        {
+          "CacheClusterId": "<cache-cluster-id:2>",
+          "ClientDownloadLandingPage": "https://console.aws.amazon.com/elasticache/home#client-download:",
+          "CacheNodeType": "cache.t2.micro",
+          "Engine": "redis",
+          "EngineVersion": "7.0.7",
+          "CacheClusterStatus": "available",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "<region>f",
+          "CacheClusterCreateTime": "datetime",
+          "PreferredMaintenanceWindow": "sun:07:00-sun:08:00",
+          "PendingModifiedValues": {},
+          "CacheSecurityGroups": [],
+          "CacheParameterGroup": {
+            "CacheParameterGroupName": "default.redis7",
+            "ParameterApplyStatus": "in-sync",
+            "CacheNodeIdsToReboot": []
+          },
+          "CacheSubnetGroupName": "default",
+          "AutoMinorVersionUpgrade": true,
+          "ReplicationGroupId": "<replication-group-id:1>",
+          "SnapshotRetentionLimit": 0,
+          "SnapshotWindow": "03:30-04:30",
+          "AuthTokenEnabled": false,
+          "TransitEncryptionEnabled": false,
+          "AtRestEncryptionEnabled": false,
+          "ARN": "arn:<partition>:elasticache:<region>:111111111111:cluster:<cache-cluster-id:2>",
+          "ReplicationGroupLogDeliveryEnabled": false,
+          "LogDeliveryConfigurations": [],
+          "NetworkType": "ipv4",
+          "IpDiscovery": "ipv4"
+        },
+        {
+          "CacheClusterId": "<cache-cluster-id:3>",
+          "ClientDownloadLandingPage": "https://console.aws.amazon.com/elasticache/home#client-download:",
+          "CacheNodeType": "cache.t2.micro",
+          "Engine": "redis",
+          "EngineVersion": "7.0.7",
+          "CacheClusterStatus": "available",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "<region>d",
+          "CacheClusterCreateTime": "datetime",
+          "PreferredMaintenanceWindow": "sun:07:00-sun:08:00",
+          "PendingModifiedValues": {},
+          "CacheSecurityGroups": [],
+          "CacheParameterGroup": {
+            "CacheParameterGroupName": "default.redis7",
+            "ParameterApplyStatus": "in-sync",
+            "CacheNodeIdsToReboot": []
+          },
+          "CacheSubnetGroupName": "default",
+          "AutoMinorVersionUpgrade": true,
+          "ReplicationGroupId": "<replication-group-id:1>",
+          "SnapshotRetentionLimit": 0,
+          "SnapshotWindow": "03:30-04:30",
+          "AuthTokenEnabled": false,
+          "TransitEncryptionEnabled": false,
+          "AtRestEncryptionEnabled": false,
+          "ARN": "arn:<partition>:elasticache:<region>:111111111111:cluster:<cache-cluster-id:3>",
+          "ReplicationGroupLogDeliveryEnabled": false,
+          "LogDeliveryConfigurations": [],
+          "NetworkType": "ipv4",
+          "IpDiscovery": "ipv4"
+        }
+      ],
+      "delete-replication-group": {
+        "ReplicationGroup": {
+          "ARN": "arn:<partition>:elasticache:<region>:111111111111:replicationgroup:<replication-group-id:1>",
+          "AtRestEncryptionEnabled": false,
+          "AutoMinorVersionUpgrade": true,
+          "AutomaticFailover": "disabled",
+          "ClusterMode": "disabled",
+          "DataTiering": "disabled",
+          "Description": "my test replication group",
+          "GlobalReplicationGroupInfo": {},
+          "IpDiscovery": "ipv4",
+          "LogDeliveryConfigurations": [],
+          "MultiAZ": "disabled",
+          "NetworkType": "ipv4",
+          "PendingModifiedValues": {},
+          "ReplicationGroupCreateTime": "datetime",
+          "ReplicationGroupId": "<replication-group-id:1>",
+          "SnapshotRetentionLimit": 0,
+          "SnapshotWindow": "03:30-04:30",
+          "Status": "deleting",
+          "TransitEncryptionEnabled": false
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

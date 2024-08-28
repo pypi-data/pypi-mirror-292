@@ -1,0 +1,48 @@
+Parameters:
+  ThingName:
+    Type: String
+  RuleName:
+    Type: String
+
+Resources:
+  MyThing:
+    Type: AWS::IoT::Thing
+    Properties:
+      ThingName:
+        Ref: ThingName
+  MyTopicRule:
+    Type: AWS::IoT::TopicRule
+    Properties:
+       RuleName:
+         Ref: RuleName
+       TopicRulePayload:
+          RuleDisabled: "true"
+          Sql: >-
+             Select temp FROM 'SomeTopic' WHERE temp > 60
+          Actions: []
+       Tags:
+          - Key: foo
+            Value: bar
+
+  # FIXME: Certificate throws error
+  # MyCertificate:
+  #   Type: AWS::IoT::Certificate
+  #   Properties:
+  #     CertificateSigningRequest: test
+  #     Status: test
+  MyPolicy:
+    Type: AWS::IoT::Policy
+    Properties:
+      PolicyName:
+        Ref: ThingName
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: ["iot:Connect"]
+            Resource: "*"
+
+Outputs:
+  MyTopicRuleoutput:
+    Description: Topic Rule AArn
+    Value: !GetAtt MyTopicRule.Arn

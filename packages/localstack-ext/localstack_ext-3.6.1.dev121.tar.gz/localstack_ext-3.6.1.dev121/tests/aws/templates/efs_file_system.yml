@@ -1,0 +1,87 @@
+Resources:
+
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+
+  MySubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.0.0/16
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH and HTTP traffic
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  MyFileSystem:
+    Type: AWS::EFS::FileSystem
+    Properties:
+      BypassPolicyLockoutSafetyCheck: false
+      Encrypted: false
+      FileSystemTags:
+        - Key: test-key
+          Value: test123
+      PerformanceMode: generalPurpose
+      ProvisionedThroughputInMibps: 1
+      ThroughputMode: provisioned
+      BackupPolicy:
+        Status: DISABLED
+
+  MountTarget:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: MyFileSystem
+      SubnetId:
+        Ref: MySubnet
+      SecurityGroups:
+        - Ref: MySecurityGroup
+
+  AccessPoint:
+    Type: AWS::EFS::AccessPoint
+    Properties:
+      FileSystemId: !Ref MyFileSystem
+      PosixUser:
+        Uid: "13234"
+        Gid: "1322"
+        SecondaryGids:
+          - "1344"
+          - "1452"
+      RootDirectory:
+        CreationInfo:
+          OwnerGid: "708798"
+          OwnerUid: "7987987"
+          Permissions: "0755"
+        Path: "/testcfn/abc"
+
+
+Outputs:
+  FileSystemRef:
+    Value: !Ref MyFileSystem
+  MyFileSystemAttArn:
+    Value: !GetAtt MyFileSystem.Arn
+  MyFileSystemAttFileSystemId:
+    Value: !GetAtt MyFileSystem.FileSystemId
+  MountTargetId:
+    Value: !Ref MountTarget
+  MountTargetIp:
+    Value: !GetAtt MountTarget.IpAddress
+  AccessPointRef:
+    Value: !Ref AccessPoint
+  AccessPointId:
+    Value: !GetAtt AccessPoint.AccessPointId
+  AccessPointArn:
+    Value: !GetAtt AccessPoint.Arn

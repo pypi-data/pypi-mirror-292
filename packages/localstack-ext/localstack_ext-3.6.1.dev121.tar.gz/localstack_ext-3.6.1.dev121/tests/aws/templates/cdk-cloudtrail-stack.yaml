@@ -1,0 +1,247 @@
+Parameters:
+  HandlerBucket:
+    Type: String
+  AssetParameters11d371859e49f3b1a49896583254890801a40beada56e4c84409a179a221e2e2S3VersionKeyC247374B:
+    Type: String
+    Description: >-
+      S3 key for asset version
+      "11d371859e49f3b1a49896583254890801a40beada56e4c84409a179a221e2e2"
+    Default: '||handler.zip'
+  TrailBucket:
+    Type: String
+  UserBucket:
+    Type: String
+  TrailName:
+    Type: String
+Resources:
+  CloudTrailS310CD22F2:
+    Type: 'AWS::S3::Bucket'
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref TrailBucket
+  CloudTrailS3PolicyEA49A03E:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref CloudTrailS310CD22F2
+      PolicyDocument:
+        Statement:
+          - Action: 's3:GetBucketAcl'
+            Effect: Allow
+            Principal:
+              Service: cloudtrail.amazonaws.com
+            Resource: !GetAtt
+              - CloudTrailS310CD22F2
+              - Arn
+          - Action: 's3:PutObject'
+            Condition:
+              StringEquals:
+                's3:x-amz-acl': bucket-owner-full-control
+            Effect: Allow
+            Principal:
+              Service: cloudtrail.amazonaws.com
+            Resource: !Join
+              - ''
+              - - !GetAtt
+                  - CloudTrailS310CD22F2
+                  - Arn
+                - /AWSLogs/
+                - !Ref 'AWS::AccountId'
+                - /*
+        Version: 2012-10-17
+  CloudTrailLogGroup2F0A1829:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      RetentionInDays: 365
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+  CloudTrailLogsRole9F6E6663:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: cloudtrail.amazonaws.com
+        Version: 2012-10-17
+  CloudTrailLogsRoleDefaultPolicyD9019B15:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'logs:PutLogEvents'
+              - 'logs:CreateLogStream'
+            Effect: Allow
+            Resource: !GetAtt
+              - CloudTrailLogGroup2F0A1829
+              - Arn
+        Version: 2012-10-17
+      PolicyName: CloudTrailLogsRoleDefaultPolicyD9019B15
+      Roles:
+        - !Ref CloudTrailLogsRole9F6E6663
+  CloudTrailA62D711D:
+    Type: 'AWS::CloudTrail::Trail'
+    Properties:
+      IsLogging: true
+      S3BucketName: !Ref CloudTrailS310CD22F2
+      CloudWatchLogsLogGroupArn: !GetAtt
+        - CloudTrailLogGroup2F0A1829
+        - Arn
+      CloudWatchLogsRoleArn: !GetAtt
+        - CloudTrailLogsRole9F6E6663
+        - Arn
+      EnableLogFileValidation: true
+      EventSelectors:
+        - DataResources:
+            - Type: 'AWS::S3::Object'
+              Values:
+                - arn:aws:s3
+          ReadWriteType: WriteOnly
+      IncludeGlobalServiceEvents: true
+      IsMultiRegionTrail: true
+      TrailName: !Ref TrailName
+      Tags:
+        - Key: tag1
+          Value: value1
+        - Key: tag2
+          Value: value2
+    DependsOn:
+      - CloudTrailLogsRoleDefaultPolicyD9019B15
+      - CloudTrailLogsRole9F6E6663
+      - CloudTrailS3PolicyEA49A03E
+  MyLogGroup5C0DAD85:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      RetentionInDays: 731
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+  UnvalidatedFilesRuleD43C9CB4:
+    Type: 'AWS::Events::Rule'
+    Properties:
+      EventPattern:
+        detail-type:
+          - AWS API Call via CloudTrail
+        source:
+          - aws.s3
+        detail:
+          eventName:
+            - PutObject
+          requestParameters:
+            bucketName:
+              - !Ref UserBucket
+      State: ENABLED
+      Targets:
+        - Arn: !Join
+            - ''
+            - - 'arn:'
+              - !Ref 'AWS::Partition'
+              - ':logs:'
+              - !Ref 'AWS::Region'
+              - ':'
+              - !Ref 'AWS::AccountId'
+              - ':log-group:'
+              - !Ref MyLogGroup5C0DAD85
+          Id: Target0
+  EventsLogGroupPolicyTestStackUnvalidatedFilesRule47E5CB5FCustomResourcePolicyA7D95DE7:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: 'logs:PutResourcePolicy'
+            Effect: Allow
+            Resource: '*'
+          - Action: 'logs:DeleteResourcePolicy'
+            Effect: Allow
+            Resource: '*'
+        Version: 2012-10-17
+      PolicyName: >-
+        EventsLogGroupPolicyTestStackUnvalidatedFilesRule47E5CB5FCustomResourcePolicyA7D95DE7
+      Roles:
+        - !Ref AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2
+    Metadata:
+      'aws:cdk:path': >-
+        TestStack/EventsLogGroupPolicyTestStackUnvalidatedFilesRule47E5CB5F/CustomResourcePolicy/Resource
+  EventsLogGroupPolicyTestStackUnvalidatedFilesRule47E5CB5F8E3F12DF:
+    Type: 'Custom::CloudwatchLogResourcePolicy'
+    Properties:
+      ServiceToken: !GetAtt
+        - AWS679f53fac002430cb0da5b7982bd22872D164C4C
+        - Arn
+      Create: !Join
+        - ''
+        - - >-
+            {"service":"CloudWatchLogs","action":"putResourcePolicy","parameters":{"policyName":"TestStackEventsLogGroupPolicyTestStackUnvalidatedFilesRule47E5CB5FE5D35413","policyDocument":"{\"Statement\":[{\"Action\":[\"logs:PutLogEvents\",\"logs:CreateLogStream\"],\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"events.amazonaws.com\"},\"Resource\":\"
+          - !GetAtt
+            - MyLogGroup5C0DAD85
+            - Arn
+          - >-
+            \"}],\"Version\":\"2012-10-17\"}"},"physicalResourceId":{"id":"EventsLogGroupPolicyTestStackUnvalidatedFilesRule47E5CB5F"}}
+      Update: !Join
+        - ''
+        - - >-
+            {"service":"CloudWatchLogs","action":"putResourcePolicy","parameters":{"policyName":"TestStackEventsLogGroupPolicyTestStackUnvalidatedFilesRule47E5CB5FE5D35413","policyDocument":"{\"Statement\":[{\"Action\":[\"logs:PutLogEvents\",\"logs:CreateLogStream\"],\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"events.amazonaws.com\"},\"Resource\":\"
+          - !GetAtt
+            - MyLogGroup5C0DAD85
+            - Arn
+          - >-
+            \"}],\"Version\":\"2012-10-17\"}"},"physicalResourceId":{"id":"EventsLogGroupPolicyTestStackUnvalidatedFilesRule47E5CB5F"}}
+      Delete: >-
+        {"service":"CloudWatchLogs","action":"deleteResourcePolicy","parameters":{"policyName":"TestStackEventsLogGroupPolicyTestStackUnvalidatedFilesRule47E5CB5FE5D35413"},"ignoreErrorCodesMatching":"400"}
+      InstallLatestAwsSdk: true
+    DependsOn:
+      - >-
+        EventsLogGroupPolicyTestStackUnvalidatedFilesRule47E5CB5FCustomResourcePolicyA7D95DE7
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+  AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - !Join
+          - ''
+          - - 'arn:'
+            - !Ref 'AWS::Partition'
+            - ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+    Metadata:
+      'aws:cdk:path': TestStack/AWS679f53fac002430cb0da5b7982bd2287/ServiceRole/Resource
+  AWS679f53fac002430cb0da5b7982bd22872D164C4C:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        S3Bucket: !Ref HandlerBucket
+        S3Key: !Join
+          - ''
+          - - !Select
+              - 0
+              - !Split
+                - '||'
+                - !Ref >-
+                  AssetParameters11d371859e49f3b1a49896583254890801a40beada56e4c84409a179a221e2e2S3VersionKeyC247374B
+            - !Select
+              - 1
+              - !Split
+                - '||'
+                - !Ref >-
+                  AssetParameters11d371859e49f3b1a49896583254890801a40beada56e4c84409a179a221e2e2S3VersionKeyC247374B
+      Role: !GetAtt
+        - AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2
+        - Arn
+      Handler: index.handler
+      Runtime: nodejs16.x
+      Timeout: 120
+    DependsOn:
+      - AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2
+Outputs:
+  LogGroupName:
+    Description: The log group name
+    Value:
+      Ref: MyLogGroup5C0DAD85

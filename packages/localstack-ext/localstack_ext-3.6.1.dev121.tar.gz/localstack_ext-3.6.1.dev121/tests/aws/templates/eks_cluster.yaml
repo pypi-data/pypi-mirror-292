@@ -1,0 +1,146 @@
+Resources:
+  roleC7B7E775:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS: "*"
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonEKSClusterPolicy
+  customVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.1.0.0/16
+  subnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Fn::GetAtt:
+          - customVpc
+          - VpcId
+      AvailabilityZone: us-east-1a
+      CidrBlock: 10.1.1.0/24
+  subnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Fn::GetAtt:
+          - customVpc
+          - VpcId
+      AvailabilityZone: us-east-1b
+      CidrBlock: 10.1.2.0/24
+  privateSubSubnet8F6AFA90:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Fn::GetAtt:
+          - customVpc
+          - VpcId
+      AvailabilityZone: us-east-1a
+      CidrBlock: 10.1.3.0/24
+      Tags:
+        - Key: Name
+          Value: EksTestStack/privateSub
+  privateSubRouteTable0402FA23:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Fn::GetAtt:
+          - customVpc
+          - VpcId
+      Tags:
+        - Key: Name
+          Value: EksTestStack/privateSub
+  privateSubRouteTableAssociationE3A1EB3B:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: privateSubRouteTable0402FA23
+      SubnetId:
+        Ref: privateSubSubnet8F6AFA90
+  cluster:
+    Type: AWS::EKS::Cluster
+    Properties:
+      ResourcesVpcConfig:
+        SubnetIds:
+          - Fn::GetAtt:
+              - subnet1
+              - SubnetId
+          - Fn::GetAtt:
+              - subnet2
+              - SubnetId
+      RoleArn:
+        Fn::GetAtt:
+          - roleC7B7E775
+          - Arn
+  podExecutionRoleD9758133:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS: "*"
+        Version: "2012-10-17"
+  fargateProfile:
+    Type: AWS::EKS::FargateProfile
+    Properties:
+      ClusterName:
+        Ref: cluster
+      PodExecutionRoleArn:
+        Fn::GetAtt:
+          - podExecutionRoleD9758133
+          - Arn
+      Selectors:
+        - Namespace: default
+      Subnets:
+        - Ref: privateSubSubnet8F6AFA90
+    DependsOn:
+      - cluster
+Outputs:
+  ClusterName:
+    Value:
+      Ref: cluster
+  ClusterArn:
+    Value:
+      Fn::GetAtt:
+        - cluster
+        - Arn
+  FargateProfilePhysicalId:
+    Value:
+      Ref: fargateProfile
+  FargateProfileArn:
+    Value:
+      Fn::GetAtt:
+        - fargateProfile
+        - Arn
+  PodExecutionRole:
+    Value:
+      Ref: podExecutionRoleD9758133
+  VpcId:
+    Value:
+      Fn::GetAtt:
+        - customVpc
+        - VpcId
+  Subnet1Id:
+    Value:
+      Fn::GetAtt:
+        - subnet1
+        - SubnetId
+  Subnet2Id:
+    Value:
+      Fn::GetAtt:
+        - subnet2
+        - SubnetId
+  PrivateSubnetId:
+    Value:
+      Ref: privateSubSubnet8F6AFA90

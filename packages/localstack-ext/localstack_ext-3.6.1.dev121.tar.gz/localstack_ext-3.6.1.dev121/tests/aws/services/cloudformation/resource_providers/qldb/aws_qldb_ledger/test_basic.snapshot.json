@@ -1,0 +1,22 @@
+{
+  "tests/aws/services/cloudformation/resource_providers/qldb/aws_qldb_ledger/test_basic.py::TestBasicCRD::test_black_box": {
+    "recorded-date": "23-02-2024, 17:06:53",
+    "recorded-content": {
+      "stack-outputs": {
+        "LedgerRef": "<ledger-name>"
+      },
+      "describe-resource": {
+        "Arn": "arn:<partition>:qldb:<region>:111111111111:ledger/<ledger-name>",
+        "CreationDateTime": "datetime",
+        "DeletionProtection": false,
+        "Name": "<ledger-name>",
+        "PermissionsMode": "ALLOW_ALL",
+        "State": "ACTIVE",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

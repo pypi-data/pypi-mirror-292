@@ -1,0 +1,20 @@
+Resources:
+  LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateData:
+        MetadataOptions:
+          HttpEndpoint: enabled
+          HttpTokens: required
+
+  Parameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Type: String
+      Value:
+        Ref: LaunchTemplate
+
+Outputs:
+  LaunchTemplateId:
+    Value:
+      Ref: LaunchTemplate

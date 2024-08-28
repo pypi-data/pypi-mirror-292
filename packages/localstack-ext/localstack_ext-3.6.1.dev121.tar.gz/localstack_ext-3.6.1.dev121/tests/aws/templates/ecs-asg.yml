@@ -1,0 +1,370 @@
+Resources:
+  myVpc3CC7CF9E:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/myVpc
+  myVpcPublicSubnet1Subnet0D439C92:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVpc3CC7CF9E
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.0.0/18
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: TestCdkStack/myVpc/PublicSubnet1
+  myVpcPublicSubnet1RouteTable347B4FC5:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: myVpc3CC7CF9E
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/myVpc/PublicSubnet1
+  myVpcPublicSubnet1RouteTableAssociationE92D83F6:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: myVpcPublicSubnet1RouteTable347B4FC5
+      SubnetId:
+        Ref: myVpcPublicSubnet1Subnet0D439C92
+  myVpcPublicSubnet1DefaultRoute8F50EF0F:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: myVpcPublicSubnet1RouteTable347B4FC5
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: myVpcIGW1F8FFE4F
+    DependsOn:
+      - myVpcVPCGWDA12C916
+  myVpcPublicSubnet1EIPF5A3DBC1:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/myVpc/PublicSubnet1
+  myVpcPublicSubnet1NATGatewayD6B589D4:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: myVpcPublicSubnet1Subnet0D439C92
+      AllocationId:
+        Fn::GetAtt:
+          - myVpcPublicSubnet1EIPF5A3DBC1
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/myVpc/PublicSubnet1
+    DependsOn:
+      - myVpcPublicSubnet1DefaultRoute8F50EF0F
+      - myVpcPublicSubnet1RouteTableAssociationE92D83F6
+  myVpcPublicSubnet2Subnet7365A870:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVpc3CC7CF9E
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.64.0/18
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: TestCdkStack/myVpc/PublicSubnet2
+  myVpcPublicSubnet2RouteTableC3F77243:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: myVpc3CC7CF9E
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/myVpc/PublicSubnet2
+  myVpcPublicSubnet2RouteTableAssociationB93D1C85:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: myVpcPublicSubnet2RouteTableC3F77243
+      SubnetId:
+        Ref: myVpcPublicSubnet2Subnet7365A870
+  myVpcPublicSubnet2DefaultRoute2F7BD8CA:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: myVpcPublicSubnet2RouteTableC3F77243
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: myVpcIGW1F8FFE4F
+    DependsOn:
+      - myVpcVPCGWDA12C916
+  myVpcPublicSubnet2EIPFE257873:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/myVpc/PublicSubnet2
+  myVpcPublicSubnet2NATGateway832BC676:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: myVpcPublicSubnet2Subnet7365A870
+      AllocationId:
+        Fn::GetAtt:
+          - myVpcPublicSubnet2EIPFE257873
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/myVpc/PublicSubnet2
+    DependsOn:
+      - myVpcPublicSubnet2DefaultRoute2F7BD8CA
+      - myVpcPublicSubnet2RouteTableAssociationB93D1C85
+  myVpcPrivateSubnet1SubnetDE1978C0:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVpc3CC7CF9E
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.128.0/18
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: TestCdkStack/myVpc/PrivateSubnet1
+  myVpcPrivateSubnet1RouteTableD8D3BB9F:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: myVpc3CC7CF9E
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/myVpc/PrivateSubnet1
+  myVpcPrivateSubnet1RouteTableAssociationE1CC0616:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: myVpcPrivateSubnet1RouteTableD8D3BB9F
+      SubnetId:
+        Ref: myVpcPrivateSubnet1SubnetDE1978C0
+  myVpcPrivateSubnet1DefaultRouteFB1EB490:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: myVpcPrivateSubnet1RouteTableD8D3BB9F
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: myVpcPublicSubnet1NATGatewayD6B589D4
+  myVpcPrivateSubnet2SubnetB7D01881:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVpc3CC7CF9E
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.192.0/18
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: TestCdkStack/myVpc/PrivateSubnet2
+  myVpcPrivateSubnet2RouteTableDCCC902F:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: myVpc3CC7CF9E
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/myVpc/PrivateSubnet2
+  myVpcPrivateSubnet2RouteTableAssociation5EC5F34F:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: myVpcPrivateSubnet2RouteTableDCCC902F
+      SubnetId:
+        Ref: myVpcPrivateSubnet2SubnetB7D01881
+  myVpcPrivateSubnet2DefaultRouteD306D63E:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: myVpcPrivateSubnet2RouteTableDCCC902F
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: myVpcPublicSubnet2NATGateway832BC676
+  myVpcIGW1F8FFE4F:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/myVpc
+  myVpcVPCGWDA12C916:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: myVpc3CC7CF9E
+      InternetGatewayId:
+        Ref: myVpcIGW1F8FFE4F
+  SecurityGroupDD263621:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: TestCdkStack/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId:
+        Ref: myVpc3CC7CF9E
+  myClusterF713C8C6:
+    Type: AWS::ECS::Cluster
+  myCluster01C69118:
+    Type: AWS::ECS::ClusterCapacityProviderAssociations
+    Properties:
+      CapacityProviders:
+        - Ref: myProvider01647325
+      Cluster:
+        Ref: myClusterF713C8C6
+      DefaultCapacityProviderStrategy: []
+  ASGInstanceRoleE263A41B:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+        Version: "2012-10-17"
+      Tags:
+        - Key: Name
+          Value: TestCdkStack/ASG
+  ASGInstanceRoleDefaultPolicy7636D8BF:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - ecs:DeregisterContainerInstance
+              - ecs:RegisterContainerInstance
+              - ecs:Submit*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - myClusterF713C8C6
+                - Arn
+          - Action:
+              - ecs:Poll
+              - ecs:StartTelemetrySession
+            Condition:
+              ArnEquals:
+                ecs:cluster:
+                  Fn::GetAtt:
+                    - myClusterF713C8C6
+                    - Arn
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - ecr:GetAuthorizationToken
+              - ecs:DiscoverPollEndpoint
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: ASGInstanceRoleDefaultPolicy7636D8BF
+      Roles:
+        - Ref: ASGInstanceRoleE263A41B
+  ASGInstanceProfile0A2834D7:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: ASGInstanceRoleE263A41B
+  ASGLaunchConfigC00AF12B:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: !Ref AmiId
+      InstanceType: m3.medium
+      IamInstanceProfile:
+        Ref: ASGInstanceProfile0A2834D7
+      SecurityGroups:
+        - Fn::GetAtt:
+            - SecurityGroupDD263621
+            - GroupId
+      UserData:
+        Fn::Base64:
+          Fn::Join:
+            - ""
+            - - |-
+                #!/bin/bash
+                echo ECS_CLUSTER=
+              - Ref: myClusterF713C8C6
+              - |-2
+                 >> /etc/ecs/ecs.config
+                sudo iptables --insert FORWARD 1 --in-interface docker+ --destination 169.254.169.254/32 --jump DROP
+                sudo service iptables save
+                echo ECS_AWSVPC_BLOCK_IMDS=true >> /etc/ecs/ecs.config
+    DependsOn:
+      - ASGInstanceRoleDefaultPolicy7636D8BF
+      - ASGInstanceRoleE263A41B
+  ASG46ED3070:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      MaxSize: "3"
+      MinSize: "1"
+      AutoScalingGroupName: test-ASG
+      LaunchConfigurationName:
+        Ref: ASGLaunchConfigC00AF12B
+      NewInstancesProtectedFromScaleIn: true
+      Tags:
+        - Key: Name
+          PropagateAtLaunch: true
+          Value: TestCdkStack/ASG
+      VPCZoneIdentifier:
+        - Ref: myVpcPublicSubnet1Subnet0D439C92
+        - Ref: myVpcPublicSubnet2Subnet7365A870
+    UpdatePolicy:
+      AutoScalingScheduledAction:
+        IgnoreUnmodifiedGroupSizeProperties: true
+  myProvider01647325:
+    Type: AWS::ECS::CapacityProvider
+    Properties:
+      AutoScalingGroupProvider:
+        AutoScalingGroupArn:
+          Ref: ASG46ED3070
+        ManagedScaling:
+          Status: ENABLED
+          TargetCapacity: 100
+        ManagedTerminationProtection: ENABLED
+Parameters:
+  AmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: '/aws/service/ami-amazon-linux-latest/amzn-ami-hvm-x86_64-s3'

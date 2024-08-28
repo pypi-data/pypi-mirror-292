@@ -1,0 +1,172 @@
+{
+  "tests/aws/services/lambda_/test_lambda_extensions_api.py::TestExtensionsApi::test_generic_extension_full_lifecycle": {
+    "recorded-date": "01-07-2024, 19:13:26",
+    "recorded-content": {
+      "get_function": {
+        "Code": {
+          "Location": "<location>",
+          "RepositoryType": "S3"
+        },
+        "Configuration": {
+          "Architectures": [
+            "x86_64"
+          ],
+          "CodeSha256": "<code-sha-256>",
+          "CodeSize": "<code-size>",
+          "Description": "",
+          "Environment": {
+            "Variables": {
+              "TEST_BUCKET": "<bucket>"
+            }
+          },
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+          "FunctionName": "<function-name:1>",
+          "Handler": "handler.handler",
+          "LastModified": "date",
+          "LastUpdateStatus": "Successful",
+          "Layers": [
+            {
+              "Arn": "arn:<partition>:lambda:<region>:111111111111:layer:<resource:1>:1",
+              "CodeSize": "<code-size>"
+            }
+          ],
+          "LoggingConfig": {
+            "LogFormat": "Text",
+            "LogGroup": "/aws/lambda/<function-name:1>"
+          },
+          "MemorySize": 128,
+          "PackageType": "Zip",
+          "RevisionId": "<uuid:1>",
+          "Role": "arn:<partition>:iam::111111111111:role/<resource:2>",
+          "Runtime": "python3.12",
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:3>"
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "State": "Active",
+          "Timeout": 30,
+          "TracingConfig": {
+            "Mode": "PassThrough"
+          },
+          "Version": "$LATEST"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "events": {
+        "env": [
+          "AWS_ACCESS_KEY_ID",
+          "AWS_DEFAULT_REGION",
+          "AWS_LAMBDA_FUNCTION_MEMORY_SIZE",
+          "AWS_LAMBDA_FUNCTION_NAME",
+          "AWS_LAMBDA_FUNCTION_VERSION",
+          "AWS_LAMBDA_INITIALIZATION_TYPE",
+          "AWS_LAMBDA_RUNTIME_API",
+          "AWS_REGION",
+          "AWS_SECRET_ACCESS_KEY",
+          "AWS_SESSION_TOKEN",
+          "LANG",
+          "LC_CTYPE",
+          "LD_LIBRARY_PATH",
+          "PATH",
+          "TEST_BUCKET",
+          "TZ"
+        ],
+        "extensions_api_call_1": {
+          "request": {
+            "body": {
+              "events": [
+                "INVOKE",
+                "SHUTDOWN"
+              ]
+            },
+            "headers": {
+              "Lambda-Extension-Name": "myext1"
+            },
+            "method": "POST",
+            "url": "http://127.0.0.1:9001/2020-01-01/extension/register"
+          },
+          "response": {
+            "body": {
+              "functionName": "<function-name:1>",
+              "functionVersion": "$LATEST",
+              "handler": "handler.handler"
+            },
+            "headers": {
+              "Content-Length": "<content-length>",
+              "Content-Type": "application/json",
+              "Date": "<date>",
+              "Lambda-Extension-Identifier": "<extension-id:1>"
+            },
+            "statuscode": 200
+          }
+        },
+        "extensions_api_call_2": {
+          "request": {
+            "headers": {
+              "Lambda-Extension-Identifier": "<extension-id:1>"
+            },
+            "method": "GET",
+            "url": "http://127.0.0.1:9001/2020-01-01/extension/event/next"
+          },
+          "response": {
+            "body": {
+              "eventType": "INVOKE",
+              "deadlineMs": "<deadline-ms>",
+              "requestId": "<uuid:2>",
+              "invokedFunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+              "tracing": {
+                "type": "X-Amzn-Trace-Id",
+                "value": "<trace-id>"
+              }
+            },
+            "headers": {
+              "Content-Length": "<content-length>",
+              "Content-Type": "application/json",
+              "Date": "<date>",
+              "Lambda-Extension-Event-Identifier": "<extension-event-id:1>"
+            },
+            "statuscode": 200
+          }
+        },
+        "extensions_api_call_3": {
+          "request": {
+            "headers": {
+              "Lambda-Extension-Identifier": "<extension-id:1>"
+            },
+            "method": "GET",
+            "url": "http://127.0.0.1:9001/2020-01-01/extension/event/next"
+          },
+          "response": {
+            "body": {
+              "eventType": "SHUTDOWN",
+              "deadlineMs": "<deadline-ms>",
+              "shutdownReason": "spindown"
+            },
+            "headers": {
+              "Content-Length": "<content-length>",
+              "Content-Type": "text/plain; charset=utf-8",
+              "Date": "<date>"
+            },
+            "statuscode": 200
+          }
+        },
+        "loop_exited": {}
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda_extensions_api.py::TestExternalExtensions::test_lambda_insights_extension": {
+    "recorded-date": "03-10-2023, 18:13:15",
+    "recorded-content": {
+      "extension-message": "EXTENSION\tName: cloudwatch_lambda_agent\tState: Ready\tEvents: [INVOKE, SHUTDOWN]\n"
+    }
+  }
+}

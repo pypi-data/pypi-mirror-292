@@ -1,0 +1,318 @@
+{
+  "Resources": {
+    "userpool38E431F2": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_phone_number",
+              "Priority": 1
+            },
+            {
+              "Name": "verified_email",
+              "Priority": 2
+            }
+          ]
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": false
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "userpoolResourceServer1874CF13": {
+      "Type": "AWS::Cognito::UserPoolResourceServer",
+      "Properties": {
+        "Identifier": "ls-resource-server",
+        "Name": "ls-resource-server",
+        "Scopes": [
+          {
+            "ScopeDescription": "A scope for testing the Cognito authorizer",
+            "ScopeName": "localstack.read"
+          },
+          {
+            "ScopeDescription": "A scope for testing the Cognito authorizer",
+            "ScopeName": "localstack.write"
+          }
+        ],
+        "UserPoolId": {
+          "Ref": "userpool38E431F2"
+        }
+      }
+    },
+    "userpooluserpoolclientCA1171AF": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "client_credentials"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "userpoolResourceServer1874CF13"
+                },
+                "/localstack.read"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "userpoolResourceServer1874CF13"
+                },
+                "/localstack.write"
+              ]
+            ]
+          }
+        ],
+        "ExplicitAuthFlows": [
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_USER_SRP_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH"
+        ],
+        "GenerateSecret": true,
+        "SupportedIdentityProviders": [
+          "COGNITO"
+        ],
+        "UserPoolId": {
+          "Ref": "userpool38E431F2"
+        }
+      }
+    },
+    "userpooluserpooldomainC7188833": {
+      "Type": "AWS::Cognito::UserPoolDomain",
+      "Properties": {
+        "Domain": "ls-domain",
+        "UserPoolId": {
+          "Ref": "userpool38E431F2"
+        }
+      }
+    },
+    "testapiD6451F70": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": "test-api"
+      }
+    },
+    "testapiCloudWatchRoleD7BD24A1": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+              ]
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testapiAccount9B907665": {
+      "Type": "AWS::ApiGateway::Account",
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "testapiCloudWatchRoleD7BD24A1",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "testapiD6451F70"
+      ],
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testapiDeployment356D2C35dd1ab29c015eb90b439272c5f51e809e": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": {
+          "Ref": "testapiD6451F70"
+        }
+      },
+      "DependsOn": [
+        "testapireadGETC74FA0DE",
+        "testapireadBD5FFC63"
+      ]
+    },
+    "testapiDeploymentStageprod5C9E92A4": {
+      "Type": "AWS::ApiGateway::Stage",
+      "Properties": {
+        "DeploymentId": {
+          "Ref": "testapiDeployment356D2C35dd1ab29c015eb90b439272c5f51e809e"
+        },
+        "RestApiId": {
+          "Ref": "testapiD6451F70"
+        },
+        "StageName": "prod"
+      },
+      "DependsOn": [
+        "testapiAccount9B907665"
+      ]
+    },
+    "testapireadBD5FFC63": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "testapiD6451F70",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "read",
+        "RestApiId": {
+          "Ref": "testapiD6451F70"
+        }
+      }
+    },
+    "testapireadGETC74FA0DE": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationScopes": [
+          "ls-resource-server/localstack.read"
+        ],
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "cognitoauthorizer78EFA1C4"
+        },
+        "HttpMethod": "GET",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Content-Type": "'application/json'"
+              },
+              "ResponseTemplates": {
+                "application/json": "{\"message\": \"LocalStack is awesome!\"}"
+              },
+              "StatusCode": "200"
+            }
+          ],
+          "RequestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "Type": "MOCK"
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Content-Type": true
+            },
+            "StatusCode": "200"
+          }
+        ],
+        "ResourceId": {
+          "Ref": "testapireadBD5FFC63"
+        },
+        "RestApiId": {
+          "Ref": "testapiD6451F70"
+        }
+      }
+    },
+    "cognitoauthorizer78EFA1C4": {
+      "Type": "AWS::ApiGateway::Authorizer",
+      "Properties": {
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "CognitoAuthScopeStackcognitoauthorizer6A76DA91",
+        "ProviderARNs": [
+          {
+            "Fn::GetAtt": [
+              "userpool38E431F2",
+              "Arn"
+            ]
+          }
+        ],
+        "RestApiId": {
+          "Ref": "testapiD6451F70"
+        },
+        "Type": "COGNITO_USER_POOLS"
+      }
+    }
+  },
+  "Outputs": {
+    "testapiEndpoint4AE34D29": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "testapiD6451F70"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/",
+            {
+              "Ref": "testapiDeploymentStageprod5C9E92A4"
+            },
+            "/"
+          ]
+        ]
+      }
+    },
+    "ClientId": {
+      "Value": {
+        "Ref": "userpooluserpoolclientCA1171AF"
+      }
+    },
+    "UserPoolId": {
+      "Value": {
+        "Ref": "userpool38E431F2"
+      }
+    },
+    "apiId": {
+      "Value": {
+        "Ref": "testapiD6451F70"
+      }
+    },
+    "Domain": {
+      "Value": {
+        "Ref": "userpooluserpooldomainC7188833"
+      }
+    }
+  }
+}

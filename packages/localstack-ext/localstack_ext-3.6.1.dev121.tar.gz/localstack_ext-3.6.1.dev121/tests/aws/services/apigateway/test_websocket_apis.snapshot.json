@@ -1,0 +1,517 @@
+{
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_ws_connection_with_invalid_auth": {
+    "recorded-date": "12-01-2024, 20:05:51",
+    "recorded-content": {
+      "authorizer_error1": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Invalid request identity source expression: $request.header.Authorization. The sources must be separated by comma, and each source must be either a request parameter, matching 'route.request.querystring|header.[a-zA-Z0-9._-]+', or a stage variable, matching 'stageVariables.[a-zA-Z0-9._-]+', or a context parameter, matching 'context.[a-zA-Z0-9._-]+'"
+        },
+        "Message": "Invalid request identity source expression: $request.header.Authorization. The sources must be separated by comma, and each source must be either a request parameter, matching 'route.request.querystring|header.[a-zA-Z0-9._-]+', or a stage variable, matching 'stageVariables.[a-zA-Z0-9._-]+', or a context parameter, matching 'context.[a-zA-Z0-9._-]+'",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "authorizer_error2": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "AuthorizerPayloadFormatVersion cannot be set for WEBSOCKET protocol Apis."
+        },
+        "Message": "AuthorizerPayloadFormatVersion cannot be set for WEBSOCKET protocol Apis.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "integration_error": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Unsupported PayloadFormatVersion: 2.0"
+        },
+        "Message": "Unsupported PayloadFormatVersion: 2.0",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "authorizer-only-on-connect": {
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Currently, authorization is restricted to the $connect route only"
+        },
+        "Message": "Currently, authorization is restricted to the $connect route only",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "authorizer_event": {
+        "headers": {
+          "Authorization": "token test123",
+          "Connection": "upgrade",
+          "HeaderAuth1": "headerValue1",
+          "Upgrade": "websocket",
+          "User-Agent": "<user-agent:1>"
+        },
+        "methodArn": "arn:<partition>:execute-api:<region>:111111111111:<api-id:1>/dev/$connect",
+        "multiValueHeaders": {
+          "Authorization": [
+            "token test123"
+          ],
+          "Connection": [
+            "upgrade"
+          ],
+          "HeaderAuth1": [
+            "headerValue1"
+          ],
+          "Upgrade": [
+            "websocket"
+          ],
+          "User-Agent": [
+            "<user-agent:1>"
+          ]
+        },
+        "multiValueQueryStringParameters": {
+          "QueryString1": [
+            "BOGUS"
+          ]
+        },
+        "queryStringParameters": {
+          "QueryString1": "BOGUS"
+        },
+        "requestContext": {
+          "apiId": "<api-id:1>",
+          "connectionId": "<connection-id:1>",
+          "eventType": "CONNECT",
+          "identity": {
+            "sourceIp": "<source-ip:1>",
+            "userAgent": "<user-agent:1>"
+          },
+          "messageDirection": "IN",
+          "requestId": "<request-id:1>",
+          "routeKey": "$connect",
+          "stage": "dev"
+        },
+        "stageVariables": {},
+        "type": "REQUEST"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_connect_disconnect_always_called": {
+    "recorded-date": "24-02-2024, 15:48:00",
+    "recorded-content": {
+      "ws-response": {
+        "+0000": "",
+        "accessKey": "null",
+        "accountId": "null",
+        "apiId": "<api-id:1>",
+        "apiKey": "test123",
+        "caller": "null",
+        "cognitoAuthenticationProvider": "null",
+        "cognitoAuthenticationType": "null",
+        "cognitoIdentityId": "null",
+        "connectedAt": "<connected-at:1>",
+        "connectionId": "<connection-id:1>",
+        "disconnectReason": "null",
+        "disconnectStatusCode": "null",
+        "domainName": "<api-id:1>.execute-api.<region>.amazonaws.com",
+        "eventType": "MESSAGE",
+        "extendedRequestId": "<request-id:1>",
+        "identity": "{cognitoIdentityPoolId=null",
+        "messageDirection": "IN",
+        "messageId": "TpdjEf8XoAMCFOA=",
+        "principalOrgId": "null",
+        "requestId": "<request-id:1>",
+        "requestTime": "<request-time:1>",
+        "requestTimeEpoch": "<request-time-epoch:1>",
+        "routeKey": "$default",
+        "sourceIp": "<source-ip:1>",
+        "stage": "dev",
+        "user": "null}",
+        "userAgent": "<user-agent:1>",
+        "userArn": "null",
+        "websockets/12.0": ""
+      },
+      "lambda-events": [
+        {
+          "routeKey": "$connect",
+          "disconnectStatusCode": "null",
+          "messageId": "null",
+          "eventType": "CONNECT",
+          "extendedRequestId": "<request-id:2>",
+          "requestTime": "<request-time:2>",
+          "+0000": "",
+          "messageDirection": "IN",
+          "disconnectReason": "null",
+          "stage": "dev",
+          "connectedAt": "<connected-at:1>",
+          "requestTimeEpoch": "<request-time-epoch:2>",
+          "identity": "{cognitoIdentityPoolId=null",
+          "cognitoIdentityId": "null",
+          "apiKey": "test123",
+          "principalOrgId": "null",
+          "cognitoAuthenticationType": "null",
+          "userArn": "null",
+          "userAgent": "<user-agent:1>",
+          "websockets/12.0": "",
+          "accountId": "null",
+          "caller": "null",
+          "sourceIp": "<source-ip:1>",
+          "accessKey": "null",
+          "cognitoAuthenticationProvider": "null",
+          "user": "null}",
+          "requestId": "<request-id:2>",
+          "domainName": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "connectionId": "<connection-id:1>",
+          "apiId": "<api-id:1>"
+        },
+        {
+          "routeKey": "$default",
+          "disconnectStatusCode": "null",
+          "messageId": "TpdjEf8XoAMCFOA=",
+          "eventType": "MESSAGE",
+          "extendedRequestId": "<request-id:1>",
+          "requestTime": "<request-time:1>",
+          "+0000": "",
+          "messageDirection": "IN",
+          "disconnectReason": "null",
+          "stage": "dev",
+          "connectedAt": "<connected-at:1>",
+          "requestTimeEpoch": "<request-time-epoch:1>",
+          "identity": "{cognitoIdentityPoolId=null",
+          "cognitoIdentityId": "null",
+          "apiKey": "test123",
+          "principalOrgId": "null",
+          "cognitoAuthenticationType": "null",
+          "userArn": "null",
+          "userAgent": "<user-agent:1>",
+          "websockets/12.0": "",
+          "accountId": "null",
+          "caller": "null",
+          "sourceIp": "<source-ip:1>",
+          "accessKey": "null",
+          "cognitoAuthenticationProvider": "null",
+          "user": "null}",
+          "requestId": "<request-id:1>",
+          "domainName": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "connectionId": "<connection-id:1>",
+          "apiId": "<api-id:1>"
+        },
+        {
+          "routeKey": "$disconnect",
+          "disconnectStatusCode": "1000",
+          "messageId": "null",
+          "eventType": "DISCONNECT",
+          "extendedRequestId": "<request-id:3>",
+          "requestTime": "<request-time:3>",
+          "+0000": "",
+          "messageDirection": "IN",
+          "disconnectReason": "",
+          "stage": "dev",
+          "connectedAt": "<connected-at:1>",
+          "requestTimeEpoch": "<request-time-epoch:3>",
+          "identity": "{cognitoIdentityPoolId=null",
+          "cognitoIdentityId": "null",
+          "apiKey": "test123",
+          "principalOrgId": "null",
+          "cognitoAuthenticationType": "null",
+          "userArn": "null",
+          "userAgent": "<user-agent:1>",
+          "websockets/12.0": "",
+          "accountId": "null",
+          "caller": "null",
+          "sourceIp": "<source-ip:1>",
+          "accessKey": "null",
+          "cognitoAuthenticationProvider": "null",
+          "user": "null}",
+          "requestId": "<request-id:3>",
+          "domainName": "<api-id:1>.execute-api.<region>.amazonaws.com",
+          "connectionId": "<connection-id:1>",
+          "apiId": "<api-id:1>"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_websocket_with_kinesis_integration": {
+    "recorded-date": "30-03-2023, 11:18:01",
+    "recorded-content": {
+      "kinesis-response-1": {
+        "SequenceNumber": "<sequence-number:1>",
+        "ShardId": "<shard-id:1>"
+      },
+      "kinesis-response-2": {
+        "SequenceNumber": "<sequence-number:2>",
+        "ShardId": "<shard-id:1>"
+      },
+      "kinesis-get-records": [
+        {
+          "SequenceNumber": "<sequence-number:1>",
+          "ApproximateArrivalTimestamp": "timestamp",
+          "Data": "b'{\"body\":{\"\"f\"\": 1}, \"connectionId\":\"Clw59dfjDoECEbA=\"}'",
+          "PartitionKey": "test-partition"
+        },
+        {
+          "SequenceNumber": "<sequence-number:2>",
+          "ApproximateArrivalTimestamp": "timestamp",
+          "Data": "b'{\"body\":$u{}\\\\1, \"connectionId\":\"Clw5_caFDoECJfg=\"}'",
+          "PartitionKey": "test-partition"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_websocket_apigwmgmtapi": {
+    "recorded-date": "07-06-2023, 08:42:40",
+    "recorded-content": {
+      "action_message": {
+        "statusCode": 200,
+        "connectionId": "<connection-id:1>"
+      },
+      "action_received": {
+        "action": "received"
+      },
+      "post_to_connection_default": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "post_to_connection_disconnect": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "action_disconnect": {
+        "action": "disconnect"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_websocket_response_templates": {
+    "recorded-date": "12-01-2024, 19:41:16",
+    "recorded-content": {
+      "action_message": {
+        "statusCode": 200,
+        "connectionId": "<connection-id:1>",
+        "principalId": "user"
+      },
+      "action_received": {
+        "action": "received"
+      },
+      "post_to_connection_default": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "post_to_connection_disconnect": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "action_disconnect": {
+        "action": "disconnect"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_apigatewaymanagementapi": {
+    "recorded-date": "09-06-2023, 20:15:18",
+    "recorded-content": {
+      "post_to_connection": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "sendmessage": {
+        "action": "sendmessage",
+        "data": "test1"
+      },
+      "get_connection": {
+        "ConnectedAt": "datetime",
+        "Identity": {
+          "SourceIp": "<source-ip:1>",
+          "UserAgent": "<user-agent:1>"
+        },
+        "LastActiveAt": "datetime",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_connection": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 204
+        }
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_websocket_with_http_proxy_integration[True]": {
+    "recorded-date": "08-09-2023, 03:24:14",
+    "recorded-content": {
+      "ws-http-proxy-response": {
+        "args": {},
+        "data": {
+          "foo": "bar"
+        },
+        "files": {},
+        "form": {},
+        "headers": {
+          "Content-Length": "13",
+          "Content-Type": "application/json; charset=UTF-8",
+          "Host": "httpbin.org",
+          "User-Agent": "AmazonAPIGateway_8m2i5sng05",
+          "X-Amzn-Apigateway-Api-Id": "8m2i5sng05",
+          "X-Amzn-Trace-Id": "Root=1-64fa77be-206429b33953d4670867cc90"
+        },
+        "json": {
+          "foo": "bar"
+        },
+        "origin": "44.212.176.140",
+        "url": "http://httpbin.org/post"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_websocket_with_http_proxy_integration[False]": {
+    "recorded-date": "08-09-2023, 03:24:18",
+    "recorded-content": {
+      "ws-http-proxy-response": {
+        "args": {},
+        "data": {
+          "foo": "bar"
+        },
+        "files": {},
+        "form": {},
+        "headers": {
+          "Content-Length": "13",
+          "Content-Type": "application/json; charset=UTF-8",
+          "Host": "httpbin.org",
+          "User-Agent": "AmazonAPIGateway_15e20i5xle",
+          "X-Amzn-Apigateway-Api-Id": "15e20i5xle",
+          "X-Amzn-Trace-Id": "Root=1-64fa77c2-6259b5c203a3db3f75902df3"
+        },
+        "json": {
+          "foo": "bar"
+        },
+        "origin": "3.238.214.192",
+        "url": "http://httpbin.org/post"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_websocket_with_lambda_integration": {
+    "recorded-date": "12-01-2024, 20:08:34",
+    "recorded-content": {
+      "authorizer_event": {
+        "booleanKey": "true",
+        "integrationLatency": 373,
+        "numberKey": "123",
+        "principalId": "user",
+        "stringKey": "stringval"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_websocket_with_http_proxy_integration_request_parameters": {
+    "recorded-date": "01-01-2024, 18:20:23",
+    "recorded-content": {
+      "ws-http-proxy-response": {
+        "args": {},
+        "data": {
+          "foo": "bar"
+        },
+        "files": {},
+        "form": {},
+        "headers": {
+          "Apiid": "<apiid:1>",
+          "Connectionid": "<connectionid:1>",
+          "Content-Length": "13",
+          "Content-Type": "application/json; charset=UTF-8",
+          "Host": "<host:1>",
+          "Stagename": "dev",
+          "User-Agent": "<user--agent:1>",
+          "X-Amzn-Apigateway-Api-Id": "<apiid:1>",
+          "X-Amzn-Trace-Id": "<x--amzn--trace--id:1>"
+        },
+        "json": {
+          "foo": "bar"
+        },
+        "origin": "<origin:1>",
+        "url": "http://<host:1>/post"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_websocket_with_sqs_integration": {
+    "recorded-date": "15-02-2024, 00:12:38",
+    "recorded-content": {
+      "sqs-response": {
+        "MD5OfMessageAttributes": null,
+        "MD5OfMessageBody": "<m-d5-of-message-body:1>",
+        "MD5OfMessageSystemAttributes": null,
+        "MessageId": "<message-id:1>",
+        "SequenceNumber": null
+      },
+      "sns-receive-message": {
+        "Body": "Client disconnected",
+        "MD5OfBody": "<m-d5-of-body:1>",
+        "MessageId": "<message-id:2>",
+        "ReceiptHandle": "<receipt-handle:1>"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_websocket_with_sns_integration": {
+    "recorded-date": "29-01-2024, 22:47:01",
+    "recorded-content": {
+      "sns-response": {
+        "message": "order created",
+        "statusCode": 200
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_websocket_non_proxy_response_integration": {
+    "recorded-date": "02-02-2024, 23:50:25",
+    "recorded-content": {
+      "int_response_error_message_A": {
+        "message": "default OK"
+      },
+      "int_response_error_message_B": {
+        "message": "default OK"
+      },
+      "int_response_header_A": {
+        "message": "Content-Type is application/json"
+      },
+      "int_response_header_B": {
+        "message": "Content-Type is application/json"
+      },
+      "int_response_key_A": {
+        "message": "200 OK"
+      },
+      "int_response_key_B": {
+        "message": "200 OK"
+      }
+    }
+  },
+  "tests/aws/services/apigateway/test_websocket_apis.py::TestWebSockets::test_create_domain_names": {
+    "recorded-date": "08-05-2024, 23:00:33",
+    "recorded-content": {
+      "create-domain-name": {
+        "ApiMappingSelectionExpression": "$request.basepath",
+        "DomainName": "<id>.localhost.localstack.cloud",
+        "DomainNameConfigurations": [
+          {
+            "ApiGatewayDomainName": "d-g14yor4c8c.execute-api.<region>.amazonaws.com",
+            "CertificateArn": "arn:<partition>:acm:<region>:111111111111:certificate/a8cc2a1d-a34b-4e78-97d2-9ab86d76ef2a",
+            "DomainNameStatus": "AVAILABLE",
+            "EndpointType": "REGIONAL",
+            "HostedZoneId": "Z1UJRXOUMOOFQ8",
+            "SecurityPolicy": "TLS_1_2"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      }
+    }
+  }
+}

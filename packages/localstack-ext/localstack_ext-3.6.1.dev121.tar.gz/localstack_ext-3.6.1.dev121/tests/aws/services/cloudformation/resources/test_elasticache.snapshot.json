@@ -1,0 +1,87 @@
+{
+  "tests/aws/services/cloudformation/resources/test_elasticache.py::test_cache_cluster[redis]": {
+    "recorded-date": "15-09-2022, 09:46:06",
+    "recorded-content": {
+      "stack_outputs": {},
+      "stack_resource_description": {
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        },
+        "LogicalResourceId": "myCacheCluster",
+        "PhysicalResourceId": "<resource:2>",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceType": "AWS::ElastiCache::CacheCluster",
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+        "StackName": "<stack-name:1>",
+        "Timestamp": "timestamp"
+      },
+      "cluster": {
+        "CacheClusters": [
+          {
+            "ARN": "arn:<partition>:elasticache:<region>:111111111111:cluster:<resource:2>",
+            "AtRestEncryptionEnabled": false,
+            "AuthTokenEnabled": false,
+            "AutoMinorVersionUpgrade": true,
+            "CacheClusterCreateTime": "datetime",
+            "CacheClusterId": "<resource:2>",
+            "CacheClusterStatus": "available",
+            "CacheNodeType": "cache.t2.micro",
+            "CacheParameterGroup": {
+              "CacheNodeIdsToReboot": [],
+              "CacheParameterGroupName": "default.redis6.x",
+              "ParameterApplyStatus": "in-sync"
+            },
+            "CacheSecurityGroups": [],
+            "CacheSubnetGroupName": "stack-cache-l5gncws72695",
+            "ClientDownloadLandingPage": "https://console.aws.amazon.com/elasticache/home#client-download:",
+            "Engine": "redis",
+            "EngineVersion": "6.2.6",
+            "LogDeliveryConfigurations": [],
+            "NumCacheNodes": 1,
+            "PendingModifiedValues": {},
+            "PreferredAvailabilityZone": "<region>a",
+            "PreferredMaintenanceWindow": "sat:03:30-sat:04:30",
+            "ReplicationGroupLogDeliveryEnabled": false,
+            "SecurityGroups": [
+              {
+                "SecurityGroupId": "sg-0b180335cb67b2f88",
+                "Status": "active"
+              }
+            ],
+            "SnapshotRetentionLimit": 0,
+            "SnapshotWindow": "06:00-07:00",
+            "TransitEncryptionEnabled": false
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_elasticache.py::test_cluster_with_replication": {
+    "recorded-date": "01-06-2023, 13:13:55",
+    "recorded-content": {
+      "elasticache-cluster": {
+        "ClusterAddress": "cluster-address",
+        "ClusterPort": "cluster-port",
+        "ReplicationGroupAddress": "replication-address",
+        "ReplicationGroupPort": "replication-port"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_elasticache.py::TestElasticacheResources::test_resource_deployment": {
+    "recorded-date": "21-02-2024, 21:56:11",
+    "recorded-content": {
+      "outputs": {
+        "CacheClusterAttRedisEndpointAddress": "<cache-cluster-att-redis-endpoint-address:1>",
+        "CacheClusterAttRedisEndpointPort": "<cache-cluster-att-redis-endpoint-port:1>",
+        "CacheClusterRef": "<cache-cluster-ref:1>",
+        "ParameterGroupRef": "<parameter-group-ref:1>",
+        "SecurityGroupRef": "<security-group-ref:1>",
+        "SubnetGroupRef": "<subnet-group-ref:1>"
+      }
+    }
+  }
+}

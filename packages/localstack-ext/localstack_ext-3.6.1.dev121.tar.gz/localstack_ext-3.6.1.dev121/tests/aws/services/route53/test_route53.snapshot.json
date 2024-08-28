@@ -1,0 +1,264 @@
+{
+  "tests/aws/services/route53/test_route53.py::TestRoute53::test_dns_failover_based_on_health_check": {
+    "recorded-date": "01-09-2023, 18:29:52",
+    "recorded-content": {
+      "hosted-zone": {
+        "CallerReference": "<caller-reference:1>",
+        "Config": {
+          "PrivateZone": false
+        },
+        "Id": "/hostedzone/<zone-id>",
+        "Name": "<zone-name>.",
+        "ResourceRecordSetCount": 2
+      },
+      "health-check": {
+        "CallerReference": "<caller-reference:2>",
+        "HealthCheckConfig": {
+          "Disabled": false,
+          "EnableSNI": true,
+          "FailureThreshold": 3,
+          "FullyQualifiedDomainName": "mockbin.org",
+          "Inverted": false,
+          "MeasureLatency": false,
+          "Port": 443,
+          "RequestInterval": 10,
+          "ResourcePath": "/request/health",
+          "Type": "HTTPS"
+        },
+        "HealthCheckVersion": 1,
+        "Id": "<uuid:1>"
+      },
+      "dns-resolved-1": [
+        {
+          "type": "CNAME",
+          "name": "target1.<zone-name>.",
+          "ttl": 60,
+          "target": "target1.example.com."
+        }
+      ],
+      "dns-resolved-2": [
+        {
+          "type": "CNAME",
+          "name": "test.<zone-name>.",
+          "ttl": 60,
+          "target": "target1.example.com."
+        }
+      ],
+      "dns-resolved-3": [
+        {
+          "type": "CNAME",
+          "name": "test.<zone-name>.",
+          "ttl": 60,
+          "target": "target2.example.com."
+        }
+      ]
+    }
+  },
+  "tests/aws/services/route53/test_route53.py::TestRoute53::test_resource_record_lifecycle": {
+    "recorded-date": "01-09-2023, 16:31:31",
+    "recorded-content": {
+      "get-hosted-zone-response": {
+        "DelegationSet": {
+          "NameServers": [
+            "<nameserver:1>",
+            "<nameserver:2>",
+            "<nameserver:3>",
+            "<nameserver:4>"
+          ]
+        },
+        "HostedZone": {
+          "CallerReference": "<caller-reference:1>",
+          "Config": {
+            "PrivateZone": false
+          },
+          "Id": "<hosted-zone-id:1>",
+          "Name": "<zone-name:1>",
+          "ResourceRecordSetCount": 2
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "change-resource-record-sets-response": {
+        "ChangeInfo": {
+          "Comment": "test 123",
+          "Id": "<change-id:1>",
+          "Status": "PENDING",
+          "SubmittedAt": "datetime"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-resource-record-sets-response": {
+        "IsTruncated": false,
+        "MaxItems": "100",
+        "ResourceRecordSets": [
+          {
+            "Name": "<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "<nameserver:1>."
+              },
+              {
+                "Value": "<nameserver:2>."
+              },
+              {
+                "Value": "<nameserver:3>."
+              },
+              {
+                "Value": "<nameserver:4>."
+              }
+            ],
+            "TTL": 172800,
+            "Type": "NS"
+          },
+          {
+            "Name": "<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "<nameserver:1>. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"
+              }
+            ],
+            "TTL": 900,
+            "Type": "SOA"
+          },
+          {
+            "Name": "cname.<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "target1.test."
+              }
+            ],
+            "TTL": 30,
+            "Type": "CNAME"
+          },
+          {
+            "Name": "\\052.cname.<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "target1.test."
+              }
+            ],
+            "TTL": 30,
+            "Type": "CNAME"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-resource-record-sets-response-after-update": {
+        "IsTruncated": false,
+        "MaxItems": "100",
+        "ResourceRecordSets": [
+          {
+            "Name": "<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "<nameserver:1>."
+              },
+              {
+                "Value": "<nameserver:2>."
+              },
+              {
+                "Value": "<nameserver:3>."
+              },
+              {
+                "Value": "<nameserver:4>."
+              }
+            ],
+            "TTL": 172800,
+            "Type": "NS"
+          },
+          {
+            "Name": "<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "<nameserver:1>. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"
+              }
+            ],
+            "TTL": 900,
+            "Type": "SOA"
+          },
+          {
+            "Name": "cname.<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "target1.test."
+              }
+            ],
+            "TTL": 30,
+            "Type": "CNAME"
+          },
+          {
+            "Name": "\\052.cname.<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "subdomain.target1.test."
+              }
+            ],
+            "TTL": 30,
+            "Type": "CNAME"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-resource-record-sets-response-after-delete": {
+        "IsTruncated": false,
+        "MaxItems": "100",
+        "ResourceRecordSets": [
+          {
+            "Name": "<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "<nameserver:1>."
+              },
+              {
+                "Value": "<nameserver:2>."
+              },
+              {
+                "Value": "<nameserver:3>."
+              },
+              {
+                "Value": "<nameserver:4>."
+              }
+            ],
+            "TTL": 172800,
+            "Type": "NS"
+          },
+          {
+            "Name": "<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "<nameserver:1>. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"
+              }
+            ],
+            "TTL": 900,
+            "Type": "SOA"
+          },
+          {
+            "Name": "\\052.cname.<zone-name:1>",
+            "ResourceRecords": [
+              {
+                "Value": "subdomain.target1.test."
+              }
+            ],
+            "TTL": 30,
+            "Type": "CNAME"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

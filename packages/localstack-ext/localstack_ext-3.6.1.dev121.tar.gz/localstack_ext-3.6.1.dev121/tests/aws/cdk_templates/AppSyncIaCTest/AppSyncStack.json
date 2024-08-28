@@ -1,0 +1,299 @@
+{
+  "Resources": {
+    "ApiF70053CD": {
+      "Type": "AWS::AppSync::GraphQLApi",
+      "Properties": {
+        "AuthenticationType": "API_KEY",
+        "Name": "graphql-api-ff74f35a"
+      }
+    },
+    "ApiSchema510EECD7": {
+      "Type": "AWS::AppSync::GraphQLSchema",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "ApiF70053CD",
+            "ApiId"
+          ]
+        },
+        "Definition": "schema {\n  query: Query\n}\n\ntype Query {\n  js: JSResolverResults!\n  vtl: VTLResolverResults!\n}\n\ntype JSResolverResults {\n  result: String!\n}\n\ntype VTLResolverResults {\n  dynamoResult: String!\n}\n"
+      }
+    },
+    "ApiDefaultApiKeyF991C37B": {
+      "Type": "AWS::AppSync::ApiKey",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "ApiF70053CD",
+            "ApiId"
+          ]
+        }
+      },
+      "DependsOn": [
+        "ApiSchema510EECD7"
+      ]
+    },
+    "ApiDynamoDBDataSourceServiceRole691B2DBF": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "ApiDynamoDBDataSourceServiceRoleDefaultPolicyB5264E4F": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "DynamoDBTable59784FC0",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Ref": "AWS::NoValue"
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "ApiDynamoDBDataSourceServiceRoleDefaultPolicyB5264E4F",
+        "Roles": [
+          {
+            "Ref": "ApiDynamoDBDataSourceServiceRole691B2DBF"
+          }
+        ]
+      }
+    },
+    "ApiDynamoDBDataSourceFD1CA488": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "ApiF70053CD",
+            "ApiId"
+          ]
+        },
+        "DynamoDBConfig": {
+          "AwsRegion": {
+            "Ref": "AWS::Region"
+          },
+          "TableName": {
+            "Ref": "DynamoDBTable59784FC0"
+          }
+        },
+        "Name": "DynamoDBDataSource",
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "ApiDynamoDBDataSourceServiceRole691B2DBF",
+            "Arn"
+          ]
+        },
+        "Type": "AMAZON_DYNAMODB"
+      }
+    },
+    "ApiNoneDataSource5946349B": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "ApiF70053CD",
+            "ApiId"
+          ]
+        },
+        "Name": "NoneDataSource",
+        "Type": "NONE"
+      }
+    },
+    "ApiRootVtlResolver723E53BB": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "ApiF70053CD",
+            "ApiId"
+          ]
+        },
+        "DataSourceName": "NoneDataSource",
+        "FieldName": "vtl",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "{ \"version\": \"2018-05-29\", \"payload\": {\"dynamoResult\": null} }",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)",
+        "TypeName": "Query"
+      },
+      "DependsOn": [
+        "ApiNoneDataSource5946349B",
+        "ApiSchema510EECD7"
+      ]
+    },
+    "ApiRootJSResolverFF8D7976": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "ApiF70053CD",
+            "ApiId"
+          ]
+        },
+        "DataSourceName": "NoneDataSource",
+        "FieldName": "js",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "{ \"version\": \"2018-05-29\", \"payload\": {\"dynamoResult\": null} }",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result)",
+        "TypeName": "Query"
+      },
+      "DependsOn": [
+        "ApiNoneDataSource5946349B",
+        "ApiSchema510EECD7"
+      ]
+    },
+    "ApiDDBDataSourceVtlResolverD317B57A": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "ApiF70053CD",
+            "ApiId"
+          ]
+        },
+        "DataSourceName": "DynamoDBDataSource",
+        "FieldName": "dynamoResult",
+        "Kind": "UNIT",
+        "RequestMappingTemplate": "\n                {\n                    \"version\" : \"2017-02-28\",\n                    \"operation\" : \"GetItem\",\n                    \"key\": {\n                        \"pk\": $util.dynamodb.toDynamoDBJson(\"abc123\")\n                    }\n                }\n                ",
+        "ResponseMappingTemplate": "$util.toJson($ctx.result.type)",
+        "TypeName": "VTLResolverResults"
+      },
+      "DependsOn": [
+        "ApiDynamoDBDataSourceFD1CA488",
+        "ApiSchema510EECD7"
+      ]
+    },
+    "ApiPipelineJSFunction7D012633": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "ApiF70053CD",
+            "ApiId"
+          ]
+        },
+        "Code": "\n                import { util } from '@aws-appsync/utils';\n                export function request(ctx) {\n                    return {\n                        \"version\": \"2018-05-29\",\n                        \"payload\": {\n                            \"value\": \"jsresult\"\n                        }\n                    };\n                }\n                export function response(ctx) {\n                    return ctx.result.value;\n                }\n                ",
+        "DataSourceName": "NoneDataSource",
+        "FunctionVersion": "2018-05-29",
+        "Name": "jsfunction",
+        "Runtime": {
+          "Name": "APPSYNC_JS",
+          "RuntimeVersion": "1.0.0"
+        }
+      },
+      "DependsOn": [
+        "ApiNoneDataSource5946349B",
+        "ApiSchema510EECD7"
+      ]
+    },
+    "DynamoDBTable59784FC0": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "pk",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "KeySchema": [
+          {
+            "AttributeName": "pk",
+            "KeyType": "HASH"
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "PipelineJSResolver3C865994": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "ApiF70053CD",
+            "ApiId"
+          ]
+        },
+        "Code": "\n                export function request(ctx) {\n                    return {};\n                }\n                export function response(ctx) {\n                    return ctx.prev.result;\n                }\n                ",
+        "FieldName": "result",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "ApiPipelineJSFunction7D012633",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "Runtime": {
+          "Name": "APPSYNC_JS",
+          "RuntimeVersion": "1.0.0"
+        },
+        "TypeName": "JSResolverResults"
+      },
+      "DependsOn": [
+        "ApiSchema510EECD7"
+      ]
+    }
+  },
+  "Outputs": {
+    "GraphQLUrl": {
+      "Value": {
+        "Fn::GetAtt": [
+          "ApiF70053CD",
+          "GraphQLUrl"
+        ]
+      }
+    },
+    "ApiKeyOutput": {
+      "Value": {
+        "Fn::GetAtt": [
+          "ApiDefaultApiKeyF991C37B",
+          "ApiKey"
+        ]
+      }
+    },
+    "DynamoDBTableName": {
+      "Value": {
+        "Ref": "DynamoDBTable59784FC0"
+      }
+    }
+  }
+}

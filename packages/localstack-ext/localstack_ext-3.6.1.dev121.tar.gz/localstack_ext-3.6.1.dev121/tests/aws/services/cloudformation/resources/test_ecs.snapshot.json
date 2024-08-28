@@ -1,0 +1,45 @@
+{
+  "tests/aws/services/cloudformation/resources/test_ecs.py::test_capacity_providers": {
+    "recorded-date": "18-05-2023, 09:39:33",
+    "recorded-content": {
+      "describe_capacity_provider": {
+        "StackResourceDetail": {
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          },
+          "LastUpdatedTimestamp": "timestamp",
+          "LogicalResourceId": "myProvider01647325",
+          "Metadata": {},
+          "PhysicalResourceId": "<stack-name:1>-myProvider01647325-chU13Ld4jyLF",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "ResourceType": "AWS::ECS::CapacityProvider",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "StackName": "<stack-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_capacity_cluster": {
+        "StackResourceDetail": {
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          },
+          "LastUpdatedTimestamp": "timestamp",
+          "LogicalResourceId": "myCluster01C69118",
+          "Metadata": {},
+          "PhysicalResourceId": "<stack-name:1>-myClusterF713C8C6-UCPwxnNk6NEL",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "ResourceType": "AWS::ECS::ClusterCapacityProviderAssociations",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "StackName": "<stack-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

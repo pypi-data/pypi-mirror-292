@@ -1,0 +1,70 @@
+Description: "Sample KinesisAnalytics via CloudFormation"
+Parameters:
+  AppName:
+    Type: String
+    Default: sampleApplication
+Resources:
+  BasicApplication:
+    Type: AWS::KinesisAnalytics::Application
+    Properties:
+      ApplicationName:  !Ref AppName
+      ApplicationDescription: "SampleApp"
+      Inputs:
+        - NamePrefix: "exampleNamePrefix"
+          InputSchema:
+            RecordColumns:
+             - Name: "example"
+               SqlType: "VARCHAR(16)"
+               Mapping: "$.example"
+            RecordFormat:
+              RecordFormatType: "JSON"
+              MappingParameters:
+                JSONMappingParameters:
+                  RecordRowPath: "$"
+          KinesisStreamsInput:
+            ResourceARN: !GetAtt InputKinesisStream.Arn
+            RoleARN: !GetAtt KinesisAnalyticsRole.Arn
+  InputKinesisStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      ShardCount: 1
+  KinesisAnalyticsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: kinesisanalytics.amazonaws.com
+            Action: "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: Open
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "*"
+                Resource: "*"
+  BasicApplicationOutputs:
+    Type: AWS::KinesisAnalytics::ApplicationOutput
+    DependsOn: BasicApplication
+    Properties:
+      ApplicationName: !Ref BasicApplication
+      Output:
+        Name: "exampleOutput"
+        DestinationSchema:
+          RecordFormatType: "CSV"
+        KinesisStreamsOutput:
+          ResourceARN: !GetAtt OutputKinesisStream.Arn
+          RoleARN: !GetAtt KinesisAnalyticsRole.Arn
+  OutputKinesisStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      ShardCount: 1
+Outputs:
+  ApplicationRef:
+    Value: !Ref BasicApplication
+  OutputRef:
+    Value: !Ref BasicApplicationOutputs

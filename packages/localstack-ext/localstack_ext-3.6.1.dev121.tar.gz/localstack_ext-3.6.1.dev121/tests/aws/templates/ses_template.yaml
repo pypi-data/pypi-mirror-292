@@ -1,0 +1,12 @@
+Parameters:
+  TemplateName:
+    Type: String
+Resources:
+  MyTemplate:
+    Type: AWS::SES::Template
+    Properties:
+      Template:
+        TemplateName: !Ref TemplateName
+        SubjectPart: 'Hello'
+        HtmlPart: 'World'
+        TextPart: 'Some Text'

@@ -1,0 +1,124 @@
+{
+  "tests/aws/services/cloudformation/resources/test_eks.py::test_eks_fargate_cluster": {
+    "recorded-date": "11-02-2023, 15:05:02",
+    "recorded-content": {
+      "stack_outputs": {
+        "ClusterArn": "arn:<partition>:eks:<region>:111111111111:cluster/<cluster-name>",
+        "ClusterName": "<cluster-name>",
+        "FargateProfileArn": "arn:<partition>:eks:<region>:111111111111:fargateprofile/<cluster-name>/<fargate-profile-name>/<fargate-profile-uuid>",
+        "FargateProfilePhysicalId": "<cluster-name>|<fargate-profile-name>",
+        "PodExecutionRole": "<pod-role-name>",
+        "PrivateSubnetId": "<private-subnet-id>",
+        "Subnet1Id": "<subnet1-id>",
+        "Subnet2Id": "<subnet2-id>",
+        "VpcId": "<vpc-id>"
+      },
+      "describe_cluster": {
+        "cluster": {
+          "arn": "arn:<partition>:eks:<region>:111111111111:cluster/<cluster-name>",
+          "certificateAuthority": "<cert-auth>",
+          "createdAt": "datetime",
+          "endpoint": "<endpoint>",
+          "identity": {
+            "oidc": {
+              "issuer": "<issuer>"
+            }
+          },
+          "kubernetesNetworkConfig": {
+            "ipFamily": "ipv4",
+            "serviceIpv4Cidr": "172.20.0.0/16"
+          },
+          "logging": {
+            "clusterLogging": [
+              {
+                "enabled": false,
+                "types": [
+                  "api",
+                  "audit",
+                  "authenticator",
+                  "controllerManager",
+                  "scheduler"
+                ]
+              }
+            ]
+          },
+          "name": "<cluster-name>",
+          "platformVersion": "<platform-version>",
+          "resourcesVpcConfig": {
+            "clusterSecurityGroupId": "<sec-group-id>",
+            "endpointPrivateAccess": false,
+            "endpointPublicAccess": true,
+            "publicAccessCidrs": [
+              "0.0.0.0/0"
+            ],
+            "securityGroupIds": [],
+            "subnetIds": [
+              "<subnet1-id>",
+              "<subnet2-id>"
+            ],
+            "vpcId": "<vpc-id>"
+          },
+          "roleArn": "role-arn",
+          "status": "ACTIVE",
+          "tags": {
+            "aws:cloudformation:logical-id": "cluster",
+            "aws:cloudformation:stack-id": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name>/<stack-uuid>",
+            "aws:cloudformation:stack-name": "<stack-name>"
+          },
+          "version": "1.23"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "fargate_profile": {
+        "fargateProfile": {
+          "clusterName": "<cluster-name>",
+          "createdAt": "datetime",
+          "fargateProfileArn": "arn:<partition>:eks:<region>:111111111111:fargateprofile/<cluster-name>/<fargate-profile-name>/<fargate-profile-uuid>",
+          "fargateProfileName": "<fargate-profile-name>",
+          "podExecutionRoleArn": "arn:<partition>:iam::111111111111:role/<pod-role-name>",
+          "selectors": [
+            {
+              "labels": {},
+              "namespace": "default"
+            }
+          ],
+          "status": "ACTIVE",
+          "subnets": [
+            "<private-subnet-id>"
+          ],
+          "tags": {}
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_eks.py::test_eksctl_stack": {
+    "recorded-date": "19-10-2023, 13:53:58",
+    "recorded-content": {
+      "outputs": {
+        "ARN": "<a-r-n:1>",
+        "CertificateAuthorityData": "<certificate-authority-data:1>",
+        "ClusterName": "<cluster-name:1>",
+        "ClusterSecurityGroupId": "<cluster-security-group-id:1>",
+        "ClusterStackName": "<cluster-stack-name:1>",
+        "Endpoint": "<endpoint:1>",
+        "FeatureNATMode": "Single",
+        "SecurityGroup": "<security-group:1>",
+        "ServiceRoleARN": "<service-role-a-r-n:1>",
+        "SharedNodeSecurityGroup": "<shared-node-security-group:1>",
+        "SubnetsPrivate": "<subnets-private:1>",
+        "SubnetsPublic": "<subnets-public:1>",
+        "VPC": "<v-p-c:1>"
+      },
+      "outputs2": {
+        "NodeGroupId": "<node-group-id:1>"
+      }
+    }
+  }
+}

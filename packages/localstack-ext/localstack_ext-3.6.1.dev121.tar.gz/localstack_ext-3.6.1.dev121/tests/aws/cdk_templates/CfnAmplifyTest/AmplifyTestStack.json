@@ -1,0 +1,84 @@
+{
+  "Resources": {
+    "app": {
+      "Type": "AWS::Amplify::App",
+      "Properties": {
+        "Description": "My amplify app",
+        "Name": "my-app-9450e22d"
+      }
+    },
+    "branch": {
+      "Type": "AWS::Amplify::Branch",
+      "Properties": {
+        "AppId": {
+          "Fn::GetAtt": [
+            "app",
+            "AppId"
+          ]
+        },
+        "BranchName": "master",
+        "Stage": "PRODUCTION"
+      }
+    }
+  },
+  "Outputs": {
+    "AppName": {
+      "Value": {
+        "Fn::GetAtt": [
+          "app",
+          "AppName"
+        ]
+      }
+    },
+    "AppId": {
+      "Value": {
+        "Fn::GetAtt": [
+          "app",
+          "AppId"
+        ]
+      }
+    },
+    "AppArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "app",
+          "Arn"
+        ]
+      }
+    },
+    "AppDefaultDomain": {
+      "Value": {
+        "Fn::GetAtt": [
+          "app",
+          "DefaultDomain"
+        ]
+      }
+    },
+    "AppRef": {
+      "Value": {
+        "Ref": "app"
+      }
+    },
+    "BranchName": {
+      "Value": {
+        "Fn::GetAtt": [
+          "branch",
+          "BranchName"
+        ]
+      }
+    },
+    "BranchArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "branch",
+          "Arn"
+        ]
+      }
+    },
+    "BranchRef": {
+      "Value": {
+        "Ref": "branch"
+      }
+    }
+  }
+}

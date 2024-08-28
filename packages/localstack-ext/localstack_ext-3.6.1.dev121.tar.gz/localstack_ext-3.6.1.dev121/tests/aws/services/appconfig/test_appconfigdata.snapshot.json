@@ -1,0 +1,238 @@
+{
+  "tests/aws/services/appconfig/test_appconfigdata.py::TestAppConfigData::test_invalid_token": {
+    "recorded-date": "30-10-2023, 13:23:21",
+    "recorded-content": {
+      "invalid-token": {
+        "Details": {
+          "InvalidParameters": {
+            "ConfigurationToken": {
+              "Problem": "Corrupted"
+            }
+          }
+        },
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Token not valid"
+        },
+        "Message": "Token not valid",
+        "Reason": "InvalidParameters",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/appconfig/test_appconfigdata.py::TestAppConfigData::test_get_latest_app_config": {
+    "recorded-date": "30-10-2023, 13:23:27",
+    "recorded-content": {
+      "create-env-response": {
+        "ApplicationId": "<application-id:1>",
+        "Description": "test env 1",
+        "Id": "<id:1>",
+        "Name": "<name:1>",
+        "State": "ReadyForDeployment",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-strategy-response": {
+        "DeploymentDurationInMinutes": 0,
+        "FinalBakeTimeInMinutes": 0,
+        "GrowthFactor": 100.0,
+        "GrowthType": "LINEAR",
+        "Id": "<id:2>",
+        "Name": "<name:2>",
+        "ReplicateTo": "NONE",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "invalid-env-app-id-response": {
+        "Error": {
+          "Code": "ResourceNotFoundException",
+          "Message": "Application not found"
+        },
+        "Message": "Application not found",
+        "ReferencedBy": {
+          "ApplicationIdentifier": "invalid"
+        },
+        "ResourceType": "Application",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "invalid-env-id-response": {
+        "Error": {
+          "Code": "ResourceNotFoundException",
+          "Message": "Environment not found"
+        },
+        "Message": "Environment not found",
+        "ReferencedBy": {
+          "EnvironmentIdentifier": "invalid"
+        },
+        "ResourceType": "Environment",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "invalid-profile-id-response": {
+        "Error": {
+          "Code": "ResourceNotFoundException",
+          "Message": "ConfigurationProfile not found"
+        },
+        "Message": "ConfigurationProfile not found",
+        "ReferencedBy": {
+          "ConfigurationProfileIdentifier": "invalid"
+        },
+        "ResourceType": "ConfigurationProfile",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "invalid-session-token": {
+        "Details": {
+          "InvalidParameters": {
+            "ConfigurationToken": {
+              "Problem": "Corrupted"
+            }
+          }
+        },
+        "Error": {
+          "Code": "BadRequestException",
+          "Message": "Token not valid"
+        },
+        "Message": "Token not valid",
+        "Reason": "InvalidParameters",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "latest-config": {
+        "Configuration": "test content",
+        "ContentType": "text/plain",
+        "NextPollConfigurationToken": "<next-poll-configuration-token:1>",
+        "NextPollIntervalInSeconds": 60,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/appconfig/test_appconfigdata.py::TestAppConfigData::test_get_app_config_by_name": {
+    "recorded-date": "30-10-2023, 13:23:40",
+    "recorded-content": {
+      "create-env-response": {
+        "ApplicationId": "<application-id:1>",
+        "Description": "test env 1",
+        "Id": "<id:1>",
+        "Name": "<name:1>",
+        "State": "ReadyForDeployment",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "create-strategy-response": {
+        "DeploymentDurationInMinutes": 0,
+        "FinalBakeTimeInMinutes": 0,
+        "GrowthFactor": 100.0,
+        "GrowthType": "LINEAR",
+        "Id": "<id:2>",
+        "Name": "<name:2>",
+        "ReplicateTo": "NONE",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "latest-config-0": {
+        "Configuration": "test content",
+        "ContentType": "text/plain",
+        "NextPollConfigurationToken": "<next-poll-configuration-token:1>",
+        "NextPollIntervalInSeconds": 60,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "latest-config-1": {
+        "Configuration": "test content",
+        "ContentType": "text/plain",
+        "NextPollConfigurationToken": "<next-poll-configuration-token:2>",
+        "NextPollIntervalInSeconds": 60,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "latest-config-2": {
+        "Configuration": "test content",
+        "ContentType": "text/plain",
+        "NextPollConfigurationToken": "<next-poll-configuration-token:3>",
+        "NextPollIntervalInSeconds": 60,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "latest-config-3": {
+        "Configuration": "test content",
+        "ContentType": "text/plain",
+        "NextPollConfigurationToken": "<next-poll-configuration-token:4>",
+        "NextPollIntervalInSeconds": 60,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "latest-config-4": {
+        "Configuration": "test content",
+        "ContentType": "text/plain",
+        "NextPollConfigurationToken": "<next-poll-configuration-token:5>",
+        "NextPollIntervalInSeconds": 60,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "latest-config-5": {
+        "Configuration": "test content",
+        "ContentType": "text/plain",
+        "NextPollConfigurationToken": "<next-poll-configuration-token:6>",
+        "NextPollIntervalInSeconds": 60,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "latest-config-6": {
+        "Configuration": "test content",
+        "ContentType": "text/plain",
+        "NextPollConfigurationToken": "<next-poll-configuration-token:7>",
+        "NextPollIntervalInSeconds": 60,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "latest-config-7": {
+        "Configuration": "test content",
+        "ContentType": "text/plain",
+        "NextPollConfigurationToken": "<next-poll-configuration-token:8>",
+        "NextPollIntervalInSeconds": 60,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "tests/aws/services/cloudformation/resources/test_batch.py::TestBatch::test_deployed_compute_environment": {
+    "recorded-date": "25-04-2024, 13:56:37",
+    "recorded-content": {
+      "compute-environment": {
+        "computeEnvironmentArn": "arn:<partition>:batch:<region>:111111111111:compute-environment/<compute-environment-name>",
+        "computeEnvironmentName": "<compute-environment-name>",
+        "computeResources": {
+          "ec2Configuration": [],
+          "instanceTypes": [],
+          "maxvCpus": 256,
+          "securityGroupIds": [
+            "sg-08d52cf1476c1fb02"
+          ],
+          "subnets": [
+            "subnet-0c99f3431173efcd6",
+            "subnet-0fb868925208ade52"
+          ],
+          "tags": {},
+          "type": "FARGATE_SPOT"
+        },
+        "containerOrchestrationType": "ECS",
+        "ecsClusterArn": "arn:<partition>:ecs:<region>:111111111111:cluster/AWSBatch-<compute-environment-name>-38eaacb4-5743-3a46-ac60-0a54a3ee7ebe",
+        "serviceRole": "arn:<partition>:iam::111111111111:role/aws-service-role/batch.amazonaws.com/AWSServiceRoleForBatch",
+        "state": "ENABLED",
+        "status": "VALID",
+        "statusReason": "ComputeEnvironment Healthy",
+        "tags": {},
+        "type": "MANAGED",
+        "uuid": "<uuid:1>"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_batch.py::TestBatch::test_deployed_job_queue": {
+    "recorded-date": "25-04-2024, 14:11:23",
+    "recorded-content": {
+      "job-queue": {
+        "computeEnvironmentOrder": [
+          {
+            "computeEnvironment": "<compute-environment-arn>",
+            "order": 0
+          }
+        ],
+        "jobQueueArn": "<queue-arn>",
+        "jobQueueName": "<job-queue-name>",
+        "jobStateTimeLimitActions": [],
+        "priority": 1,
+        "state": "ENABLED",
+        "status": "VALID",
+        "statusReason": "JobQueue Healthy",
+        "tags": {}
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_batch.py::TestBatch::test_deployed_job_definition": {
+    "recorded-date": "25-04-2024, 13:56:37",
+    "recorded-content": {
+      "job-definition": {
+        "containerOrchestrationType": "ECS",
+        "containerProperties": {
+          "command": [
+            "bash",
+            "-c",
+            "sleep 3 && echo Done"
+          ],
+          "environment": [],
+          "executionRoleArn": "<execution-role-arn:1>",
+          "fargatePlatformConfiguration": {
+            "platformVersion": "LATEST"
+          },
+          "image": "ubuntu",
+          "mountPoints": [],
+          "networkConfiguration": {
+            "assignPublicIp": "DISABLED"
+          },
+          "readonlyRootFilesystem": false,
+          "resourceRequirements": [
+            {
+              "type": "MEMORY",
+              "value": "1024"
+            },
+            {
+              "type": "VCPU",
+              "value": "0.5"
+            }
+          ],
+          "runtimePlatform": {
+            "cpuArchitecture": "X86_64",
+            "operatingSystemFamily": "LINUX"
+          },
+          "secrets": [],
+          "ulimits": [],
+          "volumes": []
+        },
+        "jobDefinitionArn": "<job-definition-arn>",
+        "jobDefinitionName": "<job-definition-name>",
+        "parameters": {},
+        "platformCapabilities": [
+          "FARGATE"
+        ],
+        "propagateTags": false,
+        "revision": 1,
+        "status": "ACTIVE",
+        "tags": {},
+        "timeout": {
+          "attemptDurationSeconds": 14400
+        },
+        "type": "container"
+      }
+    }
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "tests/aws/services/pipes/test_pipes_list.py::TestPipesList::test_list_pipes_empty": {
+    "recorded-date": "17-05-2024, 17:17:40",
+    "recorded-content": {
+      "no_pipes": {
+        "Pipes": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/pipes/test_pipes_list.py::TestPipesList::test_list_pipe_name_prefix": {
+    "recorded-date": "17-05-2024, 17:17:41",
+    "recorded-content": {
+      "full_name_pipe_response": {
+        "Pipes": [
+          {
+            "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name:1>",
+            "CreationTime": "<datetime>",
+            "CurrentState": "RUNNING",
+            "DesiredState": "RUNNING",
+            "LastModifiedTime": "<datetime>",
+            "Name": "<pipe-name:1>",
+            "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name:1>",
+            "StateReason": "USER_INITIATED",
+            "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "prefix_pipe_response": {
+        "Pipes": [
+          {
+            "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name:1>",
+            "CreationTime": "<datetime>",
+            "CurrentState": "RUNNING",
+            "DesiredState": "RUNNING",
+            "LastModifiedTime": "<datetime>",
+            "Name": "<pipe-name:1>",
+            "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name:1>",
+            "StateReason": "USER_INITIATED",
+            "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/pipes/test_pipes_list.py::TestPipesList::test_list_pipe_target_prefix": {
+    "recorded-date": "17-05-2024, 17:17:41",
+    "recorded-content": {
+      "full_target_arn_response": {
+        "Pipes": [
+          {
+            "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name:2>",
+            "CreationTime": "<datetime>",
+            "CurrentState": "RUNNING",
+            "DesiredState": "RUNNING",
+            "LastModifiedTime": "<datetime>",
+            "Name": "<pipe-name:2>",
+            "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name:1>",
+            "StateReason": "USER_INITIATED",
+            "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name:2>"
+          },
+          {
+            "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name:3>",
+            "CreationTime": "<datetime>",
+            "CurrentState": "RUNNING",
+            "DesiredState": "RUNNING",
+            "LastModifiedTime": "<datetime>",
+            "Name": "<pipe-name:3>",
+            "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name:2>",
+            "StateReason": "USER_INITIATED",
+            "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name:2>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "prefix_target_response": {
+        "Pipes": [
+          {
+            "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name:2>",
+            "CreationTime": "<datetime>",
+            "CurrentState": "RUNNING",
+            "DesiredState": "RUNNING",
+            "LastModifiedTime": "<datetime>",
+            "Name": "<pipe-name:2>",
+            "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name:1>",
+            "StateReason": "USER_INITIATED",
+            "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name:2>"
+          },
+          {
+            "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name:3>",
+            "CreationTime": "<datetime>",
+            "CurrentState": "RUNNING",
+            "DesiredState": "RUNNING",
+            "LastModifiedTime": "<datetime>",
+            "Name": "<pipe-name:3>",
+            "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name:2>",
+            "StateReason": "USER_INITIATED",
+            "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name:2>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/pipes/test_pipes_list.py::TestPipesList::test_list_pipe_source_prefix": {
+    "recorded-date": "17-05-2024, 17:17:42",
+    "recorded-content": {
+      "full_source_name_response": {
+        "Pipes": [
+          {
+            "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name:1>",
+            "CreationTime": "<datetime>",
+            "CurrentState": "RUNNING",
+            "DesiredState": "RUNNING",
+            "LastModifiedTime": "<datetime>",
+            "Name": "<pipe-name:1>",
+            "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name:1>",
+            "StateReason": "USER_INITIATED",
+            "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name:1>"
+          },
+          {
+            "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name:2>",
+            "CreationTime": "<datetime>",
+            "CurrentState": "RUNNING",
+            "DesiredState": "RUNNING",
+            "LastModifiedTime": "<datetime>",
+            "Name": "<pipe-name:2>",
+            "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name:1>",
+            "StateReason": "USER_INITIATED",
+            "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name:2>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "prefix_source_response": {
+        "Pipes": [
+          {
+            "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name:1>",
+            "CreationTime": "<datetime>",
+            "CurrentState": "RUNNING",
+            "DesiredState": "RUNNING",
+            "LastModifiedTime": "<datetime>",
+            "Name": "<pipe-name:1>",
+            "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name:1>",
+            "StateReason": "USER_INITIATED",
+            "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name:1>"
+          },
+          {
+            "Arn": "arn:<partition>:pipes:<region>:111111111111:pipe/<pipe-name:2>",
+            "CreationTime": "<datetime>",
+            "CurrentState": "RUNNING",
+            "DesiredState": "RUNNING",
+            "LastModifiedTime": "<datetime>",
+            "Name": "<pipe-name:2>",
+            "Source": "arn:<partition>:sqs:<region>:111111111111:<source-queue-name:1>",
+            "StateReason": "USER_INITIATED",
+            "Target": "arn:<partition>:sqs:<region>:111111111111:<target-queue-name:2>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

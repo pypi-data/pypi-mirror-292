@@ -1,0 +1,534 @@
+{
+  "tests/aws/services/dms/test_dms_terraform.py::test_dms_rds_kinesis": {
+    "recorded-date": "07-03-2023, 04:04:20",
+    "recorded-content": {
+      "target_describe_endpoints": {
+        "Endpoints": [
+          {
+            "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:1>",
+            "EndpointIdentifier": "<endpoint-identifier:1>",
+            "EndpointType": "TARGET",
+            "EngineDisplayName": "Amazon Kinesis",
+            "EngineName": "kinesis",
+            "KinesisSettings": {
+              "IncludeControlDetails": false,
+              "IncludeNullAndEmpty": false,
+              "IncludePartitionValue": false,
+              "IncludeTableAlterOperations": false,
+              "IncludeTransactionDetails": false,
+              "MessageFormat": "json",
+              "PartitionIncludeSchemaTable": false,
+              "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<replication-task-identifier:1>-kinesis-target-role",
+              "StreamArn": "arn:<partition>:kinesis:<region>:111111111111:stream/<replication-task-identifier:1>"
+            },
+            "ServiceAccessRoleArn": "arn:<partition>:iam::111111111111:role/<replication-task-identifier:1>-kinesis-target-role",
+            "SslMode": "none",
+            "Status": "active"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "source_describe_endpoints": {
+        "Endpoints": [
+          {
+            "DatabaseName": "test",
+            "EndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>",
+            "EndpointIdentifier": "<endpoint-identifier:2>",
+            "EndpointType": "SOURCE",
+            "EngineDisplayName": "MySQL",
+            "EngineName": "mysql",
+            "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:4>",
+            "MySQLSettings": {
+              "DatabaseName": "test",
+              "Port": 3306,
+              "ServerName": "server-name",
+              "Username": "admin"
+            },
+            "Port": 3306,
+            "ServerName": "server-name",
+            "SslMode": "none",
+            "Status": "active",
+            "Username": "admin"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_replication_instance": {
+        "ReplicationInstances": [
+          {
+            "AllocatedStorage": 20,
+            "AutoMinorVersionUpgrade": false,
+            "AvailabilityZone": "availability-zone",
+            "EngineVersion": "3.4.6",
+            "InstanceCreateTime": "datetime",
+            "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:4>",
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "PendingModifiedValues": {},
+            "PreferredMaintenanceWindow": "<preferred-maintenance-window:1>",
+            "PubliclyAccessible": true,
+            "ReplicationInstanceArn": "arn:<partition>:dms:<region>:111111111111:rep:<resource:5>",
+            "ReplicationInstanceClass": "dms.t3.micro",
+            "ReplicationInstanceIdentifier": "<replication-task-identifier:1>",
+            "ReplicationInstanceIpv6Addresses": [],
+            "ReplicationInstancePrivateIpAddress": "<replication-instance-private-ip-address:1>",
+            "ReplicationInstancePrivateIpAddresses": [
+              "<replication-instance-private-ip-address:1>"
+            ],
+            "ReplicationInstancePublicIpAddress": "<replication-instance-public-ip-address:1>",
+            "ReplicationInstancePublicIpAddresses": [
+              "<replication-instance-public-ip-address:1>"
+            ],
+            "ReplicationInstanceStatus": "available",
+            "ReplicationSubnetGroup": {
+              "ReplicationSubnetGroupDescription": "<replication-task-identifier:1>",
+              "ReplicationSubnetGroupIdentifier": "<replication-task-identifier:1>",
+              "SubnetGroupStatus": "Complete",
+              "Subnets": [
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "subnet-name"
+                  },
+                  "SubnetIdentifier": "<subnet-identifier:1>",
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "subnet-name"
+                  },
+                  "SubnetIdentifier": "<subnet-identifier:2>",
+                  "SubnetStatus": "Active"
+                }
+              ],
+              "VpcId": "<vpc-id:1>"
+            },
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "mysql_describe_endpoint_settings": {
+        "EndpointSettings": [
+          {
+            "Name": "AfterConnectScript",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "CleanSourceMetadataOnMismatch",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "DatabaseName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "IntValueMax": 60,
+            "IntValueMin": 1,
+            "Name": "EventsPollInterval",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "IntValueMax": 100000000,
+            "IntValueMin": 1,
+            "Name": "MaxFileSize",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "DefaultValue": "1",
+            "IntValueMax": 5,
+            "IntValueMin": 1,
+            "Name": "ParallelLoadThreads",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "Password",
+            "Sensitive": true,
+            "Type": "string"
+          },
+          {
+            "Name": "Port",
+            "Sensitive": false,
+            "Type": "integer"
+          },
+          {
+            "Name": "SecretsManagerAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "SecretsManagerSecretId",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "ServerName",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "SOURCE_ONLY",
+            "Name": "ServerTimezone",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Applicability": "TARGET_ONLY",
+            "EnumValues": [
+              "specific-database",
+              "multiple-databases"
+            ],
+            "Name": "TargetDbType",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "Username",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "kinesis_describe_endpoint_settings": {
+        "EndpointSettings": [
+          {
+            "Name": "IncludeControlDetails",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludeNullAndEmpty",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludePartitionValue",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludeTableAlterOperations",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "IncludeTransactionDetails",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "EnumValues": [
+              "json",
+              "json-unformatted"
+            ],
+            "Name": "MessageFormat",
+            "Sensitive": false,
+            "Type": "enum"
+          },
+          {
+            "Name": "NoHexPrefix",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "PartitionIncludeSchemaTable",
+            "Sensitive": false,
+            "Type": "boolean"
+          },
+          {
+            "Name": "ServiceAccessRoleArn",
+            "Sensitive": false,
+            "Type": "string"
+          },
+          {
+            "Name": "StreamArn",
+            "Sensitive": false,
+            "Type": "string"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_replication_tasks": {
+        "ReplicationTasks": [
+          {
+            "MigrationType": "full-load",
+            "ReplicationInstanceArn": "arn:<partition>:dms:<region>:111111111111:rep:<resource:5>",
+            "ReplicationTaskArn": "arn:<partition>:dms:<region>:111111111111:task:<resource:6>",
+            "ReplicationTaskCreationDate": "datetime",
+            "ReplicationTaskIdentifier": "<replication-task-identifier:1>",
+            "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>",
+            "Status": "ready",
+            "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "start_replication_task": {
+        "ReplicationTask": {
+          "MigrationType": "full-load",
+          "ReplicationInstanceArn": "arn:<partition>:dms:<region>:111111111111:rep:<resource:5>",
+          "ReplicationTaskArn": "arn:<partition>:dms:<region>:111111111111:task:<resource:6>",
+          "ReplicationTaskCreationDate": "datetime",
+          "ReplicationTaskIdentifier": "<replication-task-identifier:1>",
+          "ReplicationTaskSettings": {
+            "TargetMetadata": {
+              "TargetSchema": "",
+              "SupportLobs": true,
+              "FullLobMode": false,
+              "LobChunkSize": 64,
+              "LimitedSizeLobMode": true,
+              "LobMaxSize": 32,
+              "InlineLobMaxSize": 0,
+              "LoadMaxFileSize": 0,
+              "ParallelLoadThreads": 0,
+              "ParallelLoadBufferSize": 0,
+              "BatchApplyEnabled": false,
+              "TaskRecoveryTableEnabled": false,
+              "ParallelLoadQueuesPerThread": 0,
+              "ParallelApplyThreads": 0,
+              "ParallelApplyBufferSize": 0,
+              "ParallelApplyQueuesPerThread": 0
+            },
+            "FullLoadSettings": {
+              "TargetTablePrepMode": "DROP_AND_CREATE",
+              "CreatePkAfterFullLoad": false,
+              "StopTaskCachedChangesApplied": false,
+              "StopTaskCachedChangesNotApplied": false,
+              "MaxFullLoadSubTasks": 8,
+              "TransactionConsistencyTimeout": 600,
+              "CommitRate": 10000
+            },
+            "Logging": {
+              "EnableLogging": false,
+              "EnableLogContext": false,
+              "LogComponents": [
+                {
+                  "Id": "DATA_STRUCTURE",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "COMMUNICATION",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "IO",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "COMMON",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "FILE_FACTORY",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "FILE_TRANSFER",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "REST_SERVER",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "ADDONS",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "TARGET_LOAD",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "TARGET_APPLY",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "SOURCE_UNLOAD",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "SOURCE_CAPTURE",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "TRANSFORMATION",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "SORTER",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "TASK_MANAGER",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "TABLES_MANAGER",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "METADATA_MANAGER",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "PERFORMANCE",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                },
+                {
+                  "Id": "VALIDATOR_EXT",
+                  "Severity": "LOGGER_SEVERITY_DEFAULT"
+                }
+              ],
+              "CloudWatchLogGroup": null,
+              "CloudWatchLogStream": null
+            },
+            "ControlTablesSettings": {
+              "historyTimeslotInMinutes": 5,
+              "ControlSchema": "",
+              "HistoryTimeslotInMinutes": 5,
+              "HistoryTableEnabled": false,
+              "SuspendedTablesTableEnabled": false,
+              "StatusTableEnabled": false,
+              "FullLoadExceptionTableEnabled": false
+            },
+            "StreamBufferSettings": {
+              "StreamBufferCount": 3,
+              "StreamBufferSizeInMB": 8,
+              "CtrlStreamBufferSizeInMB": 5
+            },
+            "ChangeProcessingDdlHandlingPolicy": {
+              "HandleSourceTableDropped": true,
+              "HandleSourceTableTruncated": true,
+              "HandleSourceTableAltered": true
+            },
+            "ErrorBehavior": {
+              "DataErrorPolicy": "LOG_ERROR",
+              "EventErrorPolicy": "IGNORE",
+              "DataTruncationErrorPolicy": "LOG_ERROR",
+              "DataErrorEscalationPolicy": "SUSPEND_TABLE",
+              "DataErrorEscalationCount": 0,
+              "TableErrorPolicy": "SUSPEND_TABLE",
+              "TableErrorEscalationPolicy": "STOP_TASK",
+              "TableErrorEscalationCount": 0,
+              "RecoverableErrorCount": -1,
+              "RecoverableErrorInterval": 5,
+              "RecoverableErrorThrottling": true,
+              "RecoverableErrorThrottlingMax": 1800,
+              "RecoverableErrorStopRetryAfterThrottlingMax": true,
+              "ApplyErrorDeletePolicy": "IGNORE_RECORD",
+              "ApplyErrorInsertPolicy": "LOG_ERROR",
+              "ApplyErrorUpdatePolicy": "LOG_ERROR",
+              "ApplyErrorEscalationPolicy": "LOG_ERROR",
+              "ApplyErrorEscalationCount": 0,
+              "ApplyErrorFailOnTruncationDdl": false,
+              "FullLoadIgnoreConflicts": true,
+              "FailOnTransactionConsistencyBreached": false,
+              "FailOnNoTablesCaptured": true
+            },
+            "ChangeProcessingTuning": {
+              "BatchApplyPreserveTransaction": true,
+              "BatchApplyTimeoutMin": 1,
+              "BatchApplyTimeoutMax": 30,
+              "BatchApplyMemoryLimit": 500,
+              "BatchSplitSize": 0,
+              "MinTransactionSize": 1000,
+              "CommitTimeout": 1,
+              "MemoryLimitTotal": 1024,
+              "MemoryKeepTime": 60,
+              "StatementCacheSize": 50
+            },
+            "PostProcessingRules": null,
+            "CharacterSetSettings": null,
+            "LoopbackPreventionSettings": null,
+            "BeforeImageSettings": null,
+            "FailTaskWhenCleanTaskResourceFailed": false,
+            "TTSettings": null
+          },
+          "ReplicationTaskStartDate": "datetime",
+          "SourceEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:3>",
+          "Status": "starting",
+          "TableMappings": {
+            "rules": [
+              {
+                "object-locator": {
+                  "schema-name": "test",
+                  "table-name": "test"
+                },
+                "rule-action": "include",
+                "rule-id": "1",
+                "rule-name": "1",
+                "rule-type": "selection"
+              }
+            ]
+          },
+          "TargetEndpointArn": "arn:<partition>:dms:<region>:111111111111:endpoint:<resource:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_table_statistics": {
+        "ReplicationTaskArn": "arn:<partition>:dms:<region>:111111111111:task:<resource:6>",
+        "TableStatistics": [
+          {
+            "Ddls": 0,
+            "Deletes": 0,
+            "FullLoadCondtnlChkFailedRows": 0,
+            "FullLoadEndTime": "datetime",
+            "FullLoadErrorRows": 0,
+            "FullLoadReloaded": false,
+            "FullLoadRows": 2,
+            "FullLoadStartTime": "datetime",
+            "Inserts": 0,
+            "LastUpdateTime": "datetime",
+            "SchemaName": "test",
+            "TableName": "test",
+            "TableState": "Table completed",
+            "Updates": 0,
+            "ValidationFailedRecords": 0,
+            "ValidationPendingRecords": 0,
+            "ValidationState": "Not enabled",
+            "ValidationSuspendedRecords": 0
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,920 @@
+{
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_crud_role_alias": {
+    "recorded-date": "03-01-2023, 10:38:26",
+    "recorded-content": {
+      "create_response": {
+        "roleAlias": "role-alias",
+        "roleAliasArn": "arn:<partition>:iot:<region>:111111111111:rolealias/role-alias",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_response": {
+        "roleAliasDescription": {
+          "creationDate": "datetime",
+          "credentialDurationSeconds": 3600,
+          "lastModifiedDate": "datetime",
+          "owner": "111111111111",
+          "roleAlias": "role-alias",
+          "roleAliasArn": "arn:<partition>:iot:<region>:111111111111:rolealias/role-alias",
+          "roleArn": "role-arn"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update_response": {
+        "roleAlias": "role-alias",
+        "roleAliasArn": "arn:<partition>:iot:<region>:111111111111:rolealias/role-alias",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_response": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTData::test_topic_rule_triggers_dynamodb_v2_put_item": {
+    "recorded-date": "19-04-2023, 23:29:20",
+    "recorded-content": {
+      "get-topic-rule": {
+        "rule": {
+          "actions": [
+            {
+              "dynamoDBv2": {
+                "putItem": {
+                  "tableName": "<table-name:1>"
+                },
+                "roleArn": "<role-arn:1>"
+              }
+            }
+          ],
+          "awsIotSqlVersion": "2015-10-08",
+          "createdAt": "datetime",
+          "ruleDisabled": false,
+          "ruleName": "<rule-name:1>",
+          "sql": "SELECT * FROM '<topic-name>' WHERE thingId = 'myid1'"
+        },
+        "ruleArn": "arn:<partition>:iot:<region>:111111111111:rule/<rule-name:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "dynamodb-result": {
+        "Count": 1,
+        "Items": [
+          {
+            "test-col1": {
+              "S": "mycol"
+            },
+            "thingId": {
+              "S": "myid1"
+            }
+          }
+        ],
+        "ScannedCount": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTData::test_registry_events_with_topic_rule_triggers_dynamodb_v2_put_item": {
+    "recorded-date": "20-04-2023, 03:23:06",
+    "recorded-content": {
+      "get-topic-rule": {
+        "rule": {
+          "actions": [
+            {
+              "dynamoDBv2": {
+                "putItem": {
+                  "tableName": "<table-name:1>"
+                },
+                "roleArn": "<role-arn:1>"
+              }
+            }
+          ],
+          "awsIotSqlVersion": "2015-10-08",
+          "createdAt": "datetime",
+          "ruleDisabled": false,
+          "ruleName": "<rule-name:1>",
+          "sql": "SELECT * FROM '$aws/events/thing/#'"
+        },
+        "ruleArn": "arn:<partition>:iot:<region>:111111111111:rule/<rule-name:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-event-config": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-thing": {
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-thing": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-thing": {
+        "attributes": {
+          "test": "attr1"
+        },
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 2,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-thing": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "dynamodb-result": {
+        "Count": 3,
+        "Items": [
+          {
+            "accountId": {
+              "S": "111111111111"
+            },
+            "attributes": {
+              "M": {}
+            },
+            "billinGroupName": {
+              "NULL": true
+            },
+            "eventId": {
+              "S": "<event-id:1>"
+            },
+            "eventType": {
+              "S": "THING_EVENT"
+            },
+            "operation": {
+              "S": "CREATED"
+            },
+            "thingId": {
+              "S": "<uuid:1>"
+            },
+            "thingName": {
+              "S": "<thing-name:1>"
+            },
+            "thingTypeName": {
+              "NULL": true
+            },
+            "timestamp": "timestamp",
+            "versionNumber": {
+              "N": "1"
+            }
+          },
+          {
+            "accountId": {
+              "S": "111111111111"
+            },
+            "attributes": {
+              "M": {
+                "test": {
+                  "S": "attr1"
+                }
+              }
+            },
+            "billinGroupName": {
+              "NULL": true
+            },
+            "eventId": {
+              "S": "<event-id:2>"
+            },
+            "eventType": {
+              "S": "THING_EVENT"
+            },
+            "operation": {
+              "S": "DELETED"
+            },
+            "thingId": {
+              "S": "<uuid:1>"
+            },
+            "thingName": {
+              "S": "<thing-name:1>"
+            },
+            "thingTypeName": {
+              "NULL": true
+            },
+            "timestamp": "timestamp",
+            "versionNumber": {
+              "N": "2"
+            }
+          },
+          {
+            "accountId": {
+              "S": "111111111111"
+            },
+            "attributes": {
+              "M": {
+                "test": {
+                  "S": "attr1"
+                }
+              }
+            },
+            "billinGroupName": {
+              "NULL": true
+            },
+            "eventId": {
+              "S": "<event-id:3>"
+            },
+            "eventType": {
+              "S": "THING_EVENT"
+            },
+            "operation": {
+              "S": "UPDATED"
+            },
+            "thingId": {
+              "S": "<uuid:1>"
+            },
+            "thingName": {
+              "S": "<thing-name:1>"
+            },
+            "thingTypeName": {
+              "NULL": true
+            },
+            "timestamp": "timestamp",
+            "versionNumber": {
+              "N": "2"
+            }
+          }
+        ],
+        "ScannedCount": 3,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[None-None]": {
+    "recorded-date": "29-08-2023, 13:48:05",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[None-SomeType]": {
+    "recorded-date": "29-08-2023, 13:48:06",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload1-None]": {
+    "recorded-date": "29-08-2023, 13:48:06",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload1-SomeType]": {
+    "recorded-date": "29-08-2023, 13:48:06",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload2-None]": {
+    "recorded-date": "29-08-2023, 13:48:07",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {
+          "AttributeName": "AttributeValue"
+        },
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload2-SomeType]": {
+    "recorded-date": "29-08-2023, 13:48:07",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {
+          "AttributeName": "AttributeValue"
+        },
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload3-None]": {
+    "recorded-date": "29-08-2023, 13:48:07",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {
+          "AttributeName": "AttributeValue"
+        },
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload3-SomeType]": {
+    "recorded-date": "29-08-2023, 13:48:08",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {
+          "AttributeName": "AttributeValue"
+        },
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload4-None]": {
+    "recorded-date": "29-08-2023, 13:48:08",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload4-SomeType]": {
+    "recorded-date": "29-08-2023, 13:48:08",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload5-None]": {
+    "recorded-date": "29-08-2023, 13:48:09",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload5-SomeType]": {
+    "recorded-date": "29-08-2023, 13:48:09",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency_failure": {
+    "recorded-date": "29-08-2023, 13:57:50",
+    "recorded-content": {}
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[None]": {
+    "recorded-date": "29-08-2023, 14:02:04",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload1]": {
+    "recorded-date": "29-08-2023, 14:02:05",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload2]": {
+    "recorded-date": "29-08-2023, 14:02:05",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {
+          "AttributeName": "AttributeValue"
+        },
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload3]": {
+    "recorded-date": "29-08-2023, 14:02:06",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {
+          "AttributeName": "AttributeValue"
+        },
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload4]": {
+    "recorded-date": "29-08-2023, 14:02:06",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_create_thing_idempotency[attribute_payload5]": {
+    "recorded-date": "29-08-2023, 14:02:06",
+    "recorded-content": {
+      "described_thing": {
+        "attributes": {},
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestIoTCrud::test_topic_lambda_rule": {
+    "recorded-date": "05-04-2024, 08:03:40",
+    "recorded-content": {
+      "create-topic-rule": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-topic-rule": {
+        "rule": {
+          "actions": [
+            {
+              "lambda": {
+                "functionArn": "function-arn"
+              }
+            }
+          ],
+          "awsIotSqlVersion": "2015-10-08",
+          "createdAt": "datetime",
+          "ruleDisabled": false,
+          "ruleName": "rule-name",
+          "sql": "SELECT * FROM 'some/topic'"
+        },
+        "ruleArn": "rule-arn",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-topic-rules": {
+        "rules": [
+          {
+            "createdAt": "datetime",
+            "ruleArn": "rule-arn",
+            "ruleDisabled": false,
+            "ruleName": "rule-name",
+            "topicPattern": "some/topic"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-topic-rule": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-topic-rule-2": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list-topic-rules-2": {
+        "rules": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-topic-rule-destination": {
+        "topicRuleDestination": {
+          "arn": "arn",
+          "httpUrlProperties": {
+            "confirmationUrl": "https://example.com"
+          },
+          "status": "IN_PROGRESS",
+          "statusReason": "Awaiting confirmation. Confirmation message sent on date; no response received from the endpoint."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-topic-rule-destination": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestTopicRules::test_topic_rule_triggers_dynamodb_v2_put_item": {
+    "recorded-date": "26-04-2024, 04:58:51",
+    "recorded-content": {
+      "get-topic-rule": {
+        "rule": {
+          "actions": [
+            {
+              "dynamoDBv2": {
+                "putItem": {
+                  "tableName": "<table-name:1>"
+                },
+                "roleArn": "<role-arn:1>"
+              }
+            }
+          ],
+          "awsIotSqlVersion": "2015-10-08",
+          "createdAt": "datetime",
+          "ruleDisabled": false,
+          "ruleName": "<rule-name:1>",
+          "sql": "SELECT * FROM '<topic-name>' WHERE thingId = 'myid1'"
+        },
+        "ruleArn": "arn:<partition>:iot:<region>:111111111111:rule/<rule-name:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "dynamodb-result": {
+        "Count": 1,
+        "Items": [
+          {
+            "test-col1": {
+              "S": "mycol"
+            },
+            "thingId": {
+              "S": "myid1"
+            }
+          }
+        ],
+        "ScannedCount": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/iot/test_iot.py::TestTopicRules::test_registry_events_with_topic_rule_triggers_dynamodb_v2_put_item": {
+    "recorded-date": "26-04-2024, 04:59:14",
+    "recorded-content": {
+      "get-topic-rule": {
+        "rule": {
+          "actions": [
+            {
+              "dynamoDBv2": {
+                "putItem": {
+                  "tableName": "<table-name:1>"
+                },
+                "roleArn": "<role-arn:1>"
+              }
+            }
+          ],
+          "awsIotSqlVersion": "2015-10-08",
+          "createdAt": "datetime",
+          "ruleDisabled": false,
+          "ruleName": "<rule-name:1>",
+          "sql": "SELECT * FROM '$aws/events/thing/#'"
+        },
+        "ruleArn": "arn:<partition>:iot:<region>:111111111111:rule/<rule-name:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-event-config": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create-thing": {
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-thing": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-thing": {
+        "attributes": {
+          "test": "attr1"
+        },
+        "defaultClientId": "<thing-name:1>",
+        "thingArn": "arn:<partition>:iot:<region>:111111111111:thing/<thing-name:1>",
+        "thingId": "<uuid:1>",
+        "thingName": "<thing-name:1>",
+        "version": 2,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-thing": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "dynamodb-result": {
+        "Count": 3,
+        "Items": [
+          {
+            "accountId": {
+              "S": "111111111111"
+            },
+            "attributes": {
+              "M": {}
+            },
+            "billinGroupName": {
+              "NULL": true
+            },
+            "eventId": {
+              "S": "<event-id:1>"
+            },
+            "eventType": {
+              "S": "THING_EVENT"
+            },
+            "operation": {
+              "S": "CREATED"
+            },
+            "thingId": {
+              "S": "<uuid:1>"
+            },
+            "thingName": {
+              "S": "<thing-name:1>"
+            },
+            "thingTypeName": {
+              "NULL": true
+            },
+            "timestamp": "timestamp",
+            "versionNumber": {
+              "N": "1"
+            }
+          },
+          {
+            "accountId": {
+              "S": "111111111111"
+            },
+            "attributes": {
+              "M": {
+                "test": {
+                  "S": "attr1"
+                }
+              }
+            },
+            "billinGroupName": {
+              "NULL": true
+            },
+            "eventId": {
+              "S": "<event-id:2>"
+            },
+            "eventType": {
+              "S": "THING_EVENT"
+            },
+            "operation": {
+              "S": "DELETED"
+            },
+            "thingId": {
+              "S": "<uuid:1>"
+            },
+            "thingName": {
+              "S": "<thing-name:1>"
+            },
+            "thingTypeName": {
+              "NULL": true
+            },
+            "timestamp": "timestamp",
+            "versionNumber": {
+              "N": "2"
+            }
+          },
+          {
+            "accountId": {
+              "S": "111111111111"
+            },
+            "attributes": {
+              "M": {
+                "test": {
+                  "S": "attr1"
+                }
+              }
+            },
+            "billinGroupName": {
+              "NULL": true
+            },
+            "eventId": {
+              "S": "<event-id:3>"
+            },
+            "eventType": {
+              "S": "THING_EVENT"
+            },
+            "operation": {
+              "S": "UPDATED"
+            },
+            "thingId": {
+              "S": "<uuid:1>"
+            },
+            "thingName": {
+              "S": "<thing-name:1>"
+            },
+            "thingTypeName": {
+              "NULL": true
+            },
+            "timestamp": "timestamp",
+            "versionNumber": {
+              "N": "2"
+            }
+          }
+        ],
+        "ScannedCount": 3,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

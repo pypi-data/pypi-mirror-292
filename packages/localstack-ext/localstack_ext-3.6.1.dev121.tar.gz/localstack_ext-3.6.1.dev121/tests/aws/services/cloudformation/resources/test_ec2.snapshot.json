@@ -1,0 +1,238 @@
+{
+  "tests/aws/services/cloudformation/resources/test_ec2.py::test_subnet": {
+    "recorded-date": "14-09-2022, 11:11:42",
+    "recorded-content": {
+      "stack_outputs": {
+        "AvailabilityZone": "<region>a",
+        "SubnetId": "<subnet-id:1>",
+        "SubnetRef": "<subnet-id:1>",
+        "VpcId": "<vpc-id:1>"
+      },
+      "stack_resource_description": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "Subnet",
+            "PhysicalResourceId": "<subnet-id:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::EC2::Subnet",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "myVpc",
+            "PhysicalResourceId": "<vpc-id:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::EC2::VPC",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "subnet": {
+        "Subnets": [
+          {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "<region>a",
+            "AvailabilityZoneId": "use1-az1",
+            "AvailableIpAddressCount": 251,
+            "CidrBlock": "10.0.0.0/24",
+            "DefaultForAz": false,
+            "EnableDns64": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "Ipv6Native": false,
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": false,
+            "OwnerId": "111111111111",
+            "PrivateDnsNameOptionsOnLaunch": {
+              "EnableResourceNameDnsAAAARecord": false,
+              "EnableResourceNameDnsARecord": false,
+              "HostnameType": "ip-name"
+            },
+            "State": "available",
+            "SubnetArn": "arn:<partition>:ec2:<region>:111111111111:subnet/<subnet-id:1>",
+            "SubnetId": "<subnet-id:1>",
+            "Tags": [
+              {
+                "Key": "aws:cloudformation:logical-id",
+                "Value": "Subnet"
+              },
+              {
+                "Key": "aws:cloudformation:stack-id",
+                "Value": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>"
+              },
+              {
+                "Key": "aws:cloudformation:stack-name",
+                "Value": "<stack-name:1>"
+              },
+              {
+                "Key": "stack",
+                "Value": "production"
+              }
+            ],
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_ec2.py::test_vpc": {
+    "recorded-date": "15-09-2022, 14:51:26",
+    "recorded-content": {
+      "stack_outputs": {
+        "CidrBlock": "10.0.0.0/16",
+        "VpcId": "<vpc-id:1>",
+        "VpcRef": "<vpc-id:1>"
+      },
+      "stack_resource_description": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "LogicalResourceId": "myVpc",
+          "PhysicalResourceId": "<vpc-id:1>",
+          "ResourceType": "AWS::EC2::VPC",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "vpc": {
+        "Vpcs": [
+          {
+            "CidrBlock": "10.0.0.0/16",
+            "CidrBlockAssociationSet": [
+              {
+                "AssociationId": "vpc-cidr-assoc-0cd8b083253a55a90",
+                "CidrBlock": "10.0.0.0/16",
+                "CidrBlockState": {
+                  "State": "associated"
+                }
+              }
+            ],
+            "DhcpOptionsId": "<dhp-options-id:1>",
+            "InstanceTenancy": "default",
+            "IsDefault": false,
+            "OwnerId": "111111111111",
+            "State": "available",
+            "Tags": [
+              {
+                "Key": "aws:cloudformation:stack-name",
+                "Value": "<stack-name:1>"
+              },
+              {
+                "Key": "stack",
+                "Value": "production"
+              },
+              {
+                "Key": "aws:cloudformation:stack-id",
+                "Value": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>"
+              },
+              {
+                "Key": "aws:cloudformation:logical-id",
+                "Value": "myVpc"
+              }
+            ],
+            "VpcId": "<vpc-id:1>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_ec2.py::test_ec2_launch_template": {
+    "recorded-date": "17-05-2023, 15:06:51",
+    "recorded-content": {
+      "launch_templates": [
+        {
+          "LaunchTemplateId": "lt-0b3e23eba4ca59f4e",
+          "LaunchTemplateName": "LaunchTemplate_YsbVRpL2i8o2",
+          "CreateTime": "datetime",
+          "CreatedBy": "arn:<partition>:iam::111111111111:user/localstack-testing",
+          "DefaultVersionNumber": 1,
+          "LatestVersionNumber": 1
+        }
+      ],
+      "describe_resource_result": {
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        },
+        "LogicalResourceId": "LaunchTemplate",
+        "PhysicalResourceId": "lt-0b3e23eba4ca59f4e",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceType": "AWS::EC2::LaunchTemplate",
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/stack-e1d83759/03e5bc50-f4bc-11ed-b8ba-0afaf4899a52",
+        "StackName": "stack-e1d83759",
+        "Timestamp": "timestamp"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_ec2.py::test_deploy_duplicate_security_group": {
+    "recorded-date": "18-07-2023, 10:33:59",
+    "recorded-content": {
+      "describe_resource_result": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "EC2AllEgress",
+            "PhysicalResourceId": "<physical-resource-id:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::EC2::SecurityGroupEgress",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "EC2SecurityGroup",
+            "PhysicalResourceId": "<physical-resource-id:2>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::EC2::SecurityGroup",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "Vpc",
+            "PhysicalResourceId": "<physical-resource-id:3>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::EC2::VPC",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

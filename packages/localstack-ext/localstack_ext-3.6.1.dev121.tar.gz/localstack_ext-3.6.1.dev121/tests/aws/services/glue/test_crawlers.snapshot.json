@@ -1,0 +1,247 @@
+{
+  "tests/aws/services/glue/test_crawlers.py::TestGlueCrawlerNonDefaultRegion::test_crawler_non_default_region": {
+    "recorded-date": "07-05-2024, 15:11:43",
+    "recorded-content": {
+      "crawler": {
+        "Crawler": {
+          "Classifiers": [],
+          "CrawlElapsedTime": 0,
+          "CreationTime": "<datetime>",
+          "DatabaseName": "<database-name:1>",
+          "LakeFormationConfiguration": {
+            "AccountId": "",
+            "UseLakeFormationCredentials": false
+          },
+          "LastUpdated": "<datetime>",
+          "LineageConfiguration": {
+            "CrawlerLineageSettings": "DISABLE"
+          },
+          "Name": "<crawler-name>",
+          "RecrawlPolicy": {
+            "RecrawlBehavior": "CRAWL_EVERYTHING"
+          },
+          "Role": "<role:1>",
+          "SchemaChangePolicy": {
+            "DeleteBehavior": "DEPRECATE_IN_DATABASE",
+            "UpdateBehavior": "UPDATE_IN_DATABASE"
+          },
+          "State": "READY",
+          "Targets": {
+            "CatalogTargets": [],
+            "DeltaTargets": [],
+            "DynamoDBTargets": [],
+            "HudiTargets": [],
+            "IcebergTargets": [],
+            "JdbcTargets": [],
+            "MongoDBTargets": [],
+            "S3Targets": [
+              {
+                "Exclusions": [],
+                "Path": "s3://<bucket-name>"
+              }
+            ]
+          },
+          "Version": 1
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "database": {
+        "Database": {
+          "CatalogId": "<catalog-id:1>",
+          "CreateTableDefaultPermissions": [
+            {
+              "Permissions": [
+                "ALL"
+              ],
+              "Principal": {
+                "DataLakePrincipalIdentifier": "IAM_ALLOWED_PRINCIPALS"
+              }
+            }
+          ],
+          "CreateTime": "<datetime>",
+          "Name": "<database-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "tables": {
+        "TableList": [
+          {
+            "CatalogId": "<catalog-id:1>",
+            "CreateTime": "<datetime>",
+            "CreatedBy": "arn:<partition>:sts::<catalog-id:1>:assumed-role/<role:1>/AWS-Crawler",
+            "DatabaseName": "<database-name:1>",
+            "IsMultiDialectView": false,
+            "IsRegisteredWithLakeFormation": false,
+            "LastAccessTime": "<datetime>",
+            "Name": "<table-name>",
+            "Owner": "owner",
+            "Parameters": {
+              "CrawlerSchemaDeserializerVersion": "1.0",
+              "CrawlerSchemaSerializerVersion": "1.0",
+              "UPDATED_BY_CRAWLER": "<crawler-name>",
+              "areColumnsQuoted": "false",
+              "averageRecordSize": "12",
+              "classification": "csv",
+              "columnsOrdered": "true",
+              "compressionType": "none",
+              "delimiter": ",",
+              "objectCount": "1",
+              "partition_filtering.enabled": "true",
+              "recordCount": "3",
+              "sizeKey": "44",
+              "skip.header.line.count": "1",
+              "typeOfData": "file"
+            },
+            "PartitionKeys": [
+              {
+                "Name": "foo",
+                "Type": "string"
+              }
+            ],
+            "Retention": 0,
+            "StorageDescriptor": {
+              "BucketColumns": [],
+              "Columns": [
+                {
+                  "Name": "id",
+                  "Type": "bigint"
+                },
+                {
+                  "Name": "name",
+                  "Type": "string"
+                }
+              ],
+              "Compressed": false,
+              "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+              "Location": "s3://<bucket-name>/",
+              "NumberOfBuckets": -1,
+              "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+              "Parameters": {
+                "CrawlerSchemaDeserializerVersion": "1.0",
+                "CrawlerSchemaSerializerVersion": "1.0",
+                "UPDATED_BY_CRAWLER": "<crawler-name>",
+                "areColumnsQuoted": "false",
+                "averageRecordSize": "12",
+                "classification": "csv",
+                "columnsOrdered": "true",
+                "compressionType": "none",
+                "delimiter": ",",
+                "objectCount": "1",
+                "partition_filtering.enabled": "true",
+                "recordCount": "3",
+                "sizeKey": "44",
+                "skip.header.line.count": "1",
+                "typeOfData": "file"
+              },
+              "SerdeInfo": {
+                "Parameters": {
+                  "field.delim": ","
+                },
+                "SerializationLibrary": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe"
+              },
+              "SortColumns": [],
+              "StoredAsSubDirectories": false
+            },
+            "TableType": "EXTERNAL_TABLE",
+            "UpdateTime": "<datetime>",
+            "VersionId": "1"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select": [
+        {
+          "UpdateCount": 0,
+          "ResultSet": {
+            "Rows": [
+              {
+                "Data": [
+                  {
+                    "VarCharValue": "id"
+                  },
+                  {
+                    "VarCharValue": "name"
+                  },
+                  {
+                    "VarCharValue": "foo"
+                  }
+                ]
+              },
+              {
+                "Data": [
+                  {},
+                  {
+                    "VarCharValue": " test 1"
+                  },
+                  {
+                    "VarCharValue": "123"
+                  }
+                ]
+              },
+              {
+                "Data": [
+                  {},
+                  {
+                    "VarCharValue": " test 2"
+                  },
+                  {
+                    "VarCharValue": "123"
+                  }
+                ]
+              }
+            ],
+            "ResultSetMetadata": {
+              "ColumnInfo": [
+                {
+                  "CatalogName": "hive",
+                  "SchemaName": "",
+                  "TableName": "",
+                  "Name": "id",
+                  "Label": "id",
+                  "Type": "bigint",
+                  "Precision": 19,
+                  "Scale": 0,
+                  "Nullable": "UNKNOWN",
+                  "CaseSensitive": false
+                },
+                {
+                  "CatalogName": "hive",
+                  "SchemaName": "",
+                  "TableName": "",
+                  "Name": "name",
+                  "Label": "name",
+                  "Type": "varchar",
+                  "Precision": 2147483647,
+                  "Scale": 0,
+                  "Nullable": "UNKNOWN",
+                  "CaseSensitive": true
+                },
+                {
+                  "CatalogName": "hive",
+                  "SchemaName": "",
+                  "TableName": "",
+                  "Name": "foo",
+                  "Label": "foo",
+                  "Type": "varchar",
+                  "Precision": 2147483647,
+                  "Scale": 0,
+                  "Nullable": "UNKNOWN",
+                  "CaseSensitive": true
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

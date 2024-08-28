@@ -1,0 +1,14 @@
+Parameters:
+  RepoUri:
+    Type: String
+
+Resources:
+  # we need a dummy resource to perform the ref with
+  Topic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: !Ref RepoUri
+
+Outputs:
+  TopicArn:
+    Value: !Ref Topic

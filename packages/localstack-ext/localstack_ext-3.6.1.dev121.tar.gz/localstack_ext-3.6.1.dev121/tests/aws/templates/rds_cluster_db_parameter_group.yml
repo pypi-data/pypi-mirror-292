@@ -1,0 +1,12 @@
+Resources:
+    H3ParameterGroup:
+      Type: AWS::RDS::DBClusterParameterGroup
+      Properties:
+          DBClusterParameterGroupName: 'testgroup'
+          Description: "Test cluster parameter group for RDS PostgreSQL instance"
+          Family: "postgres15"
+          Parameters:
+              temp_buffers: 8192 # in blocks (8k block size) 64M
+              shared_buffers: 16384 # in 8k blocks so 128M
+              work_mem: 8192  # in KiB so 8M
+              default_transaction_isolation: repeatable read

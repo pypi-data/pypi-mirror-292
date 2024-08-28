@@ -1,0 +1,1585 @@
+{
+  "tests/aws/services/lambda_/test_lambda_xray.py::TestLambdaXrayIntegration::test_basic_xray_integration": {
+    "recorded-date": "24-04-2024, 08:08:36",
+    "recorded-content": {
+      "get_function": {
+        "Code": {
+          "Location": "<location>",
+          "RepositoryType": "S3"
+        },
+        "Configuration": {
+          "Architectures": [
+            "x86_64"
+          ],
+          "CodeSha256": "code-sha256",
+          "CodeSize": "<code-size>",
+          "Description": "",
+          "Environment": {
+            "Variables": {}
+          },
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+          "FunctionName": "<function-name:1>",
+          "Handler": "handler.handler",
+          "LastModified": "date",
+          "LastUpdateStatus": "Successful",
+          "Layers": [
+            {
+              "Arn": "arn:<partition>:lambda:<region>:017000801446:layer:<resource:1>:69",
+              "CodeSize": "<code-size>"
+            }
+          ],
+          "LoggingConfig": {
+            "LogFormat": "Text",
+            "LogGroup": "/aws/lambda/<function-name:1>"
+          },
+          "MemorySize": 128,
+          "PackageType": "Zip",
+          "RevisionId": "<uuid:1>",
+          "Role": "arn:<partition>:iam::111111111111:role/<resource:2>",
+          "Runtime": "python3.12",
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:3>"
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "State": "Active",
+          "Timeout": 30,
+          "TracingConfig": {
+            "Mode": "Active"
+          },
+          "Version": "$LATEST"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invoke_result": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "message": {
+            "message": "hello user!"
+          },
+          "functions": [
+            {
+              "FunctionName": "<function-name:1>",
+              "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+              "Runtime": "python3.12",
+              "Role": "arn:<partition>:iam::111111111111:role/<resource:2>",
+              "Handler": "handler.handler",
+              "CodeSize": "<code-size>",
+              "Description": "",
+              "Timeout": 30,
+              "MemorySize": 128,
+              "LastModified": "date",
+              "CodeSha256": "code-sha256",
+              "Version": "$LATEST",
+              "Environment": {
+                "Variables": {}
+              },
+              "TracingConfig": {
+                "Mode": "Active"
+              },
+              "RevisionId": "<uuid:1>",
+              "Layers": [
+                {
+                  "Arn": "arn:<partition>:lambda:<region>:017000801446:layer:<resource:1>:69",
+                  "CodeSize": "<code-size>"
+                }
+              ],
+              "PackageType": "Zip",
+              "Architectures": [
+                "x86_64"
+              ],
+              "EphemeralStorage": {
+                "Size": 512
+              },
+              "SnapStart": {
+                "ApplyOn": "None",
+                "OptimizationStatus": "Off"
+              },
+              "LoggingConfig": {
+                "LogFormat": "Text",
+                "LogGroup": "/aws/lambda/<function-name:1>"
+              }
+            }
+          ],
+          "envs": {
+            "_X_AMZN_TRACE_ID": "Root=<trace-id:1>;Parent=<segment-id:2>;Sampled=1;<lineage>",
+            "_AWS_XRAY_DAEMON_PORT": "2000",
+            "_AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129",
+            "AWS_XRAY_CONTEXT_MISSING": "LOG_ERROR",
+            "AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129:2000"
+          }
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "trace_sums": {
+        "ApproximateTime": "datetime",
+        "TraceSummaries": [
+          {
+            "Annotations": {
+              "ColdStart": [
+                {
+                  "AnnotationValue": {
+                    "BooleanValue": true
+                  }
+                }
+              ],
+              "CustomAnnotation": [
+                {
+                  "AnnotationValue": {
+                    "StringValue": "CONFIRMED"
+                  }
+                }
+              ],
+              "Service": [
+                {
+                  "AnnotationValue": {
+                    "StringValue": "xray-testing"
+                  }
+                }
+              ]
+            },
+            "AvailabilityZones": [],
+            "Duration": "<duration>",
+            "EntryPoint": {
+              "Name": "<function-name:1>",
+              "Names": [
+                "<function-name:1>"
+              ],
+              "Type": "AWS::Lambda"
+            },
+            "ErrorRootCauses": [],
+            "FaultRootCauses": [],
+            "HasError": false,
+            "HasFault": false,
+            "HasThrottle": false,
+            "Http": {
+              "HttpStatus": 200
+            },
+            "Id": "<trace-id:1>",
+            "InstanceIds": [],
+            "IsPartial": true,
+            "ResourceARNs": [
+              {
+                "ARN": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+              }
+            ],
+            "ResponseTime": "<response-time>",
+            "ResponseTimeRootCauses": [
+              {
+                "ClientImpacting": true,
+                "Services": [
+                  {
+                    "EntityPath": [
+                      {
+                        "Coverage": "<coverage>",
+                        "Name": "<function-name:1>",
+                        "Remote": false
+                      }
+                    ],
+                    "Inferred": false,
+                    "Name": "<function-name:1>",
+                    "Names": [
+                      "<function-name:1>"
+                    ],
+                    "Type": "AWS::Lambda"
+                  },
+                  {
+                    "AccountId": "111111111111",
+                    "EntityPath": [
+                      {
+                        "Coverage": "<coverage>",
+                        "Name": "<function-name:1>",
+                        "Remote": false
+                      },
+                      {
+                        "Coverage": "<coverage>",
+                        "Name": "Invocation",
+                        "Remote": false
+                      },
+                      {
+                        "Coverage": "<coverage>",
+                        "Name": "## handler",
+                        "Remote": false
+                      }
+                    ],
+                    "Inferred": false,
+                    "Name": "<function-name:1>",
+                    "Names": [
+                      "<function-name:1>"
+                    ],
+                    "Type": "AWS::Lambda::Function"
+                  }
+                ]
+              }
+            ],
+            "Revision": "<revision>",
+            "ServiceIds": [
+              {
+                "AccountId": "111111111111",
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "AWS::Lambda::Function"
+              },
+              {
+                "Name": "Lambda",
+                "Names": [
+                  "Lambda"
+                ],
+                "Type": "AWS::Lambda"
+              },
+              {
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "AWS::Lambda"
+              },
+              {
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "client"
+              }
+            ],
+            "StartTime": "datetime",
+            "Users": []
+          }
+        ],
+        "TracesProcessedCount": "<traces-processed>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "traces": {
+        "Traces": [
+          {
+            "Duration": "<duration>",
+            "Id": "<trace-id:1>",
+            "LimitExceeded": false,
+            "Segments": [
+              {
+                "Document": {
+                  "id": "<trace-id:2>",
+                  "name": "<function-name:1>",
+                  "start_time": "<start_time>",
+                  "trace_id": "<trace-id:1>",
+                  "end_time": "<end_time>",
+                  "http": {
+                    "response": {
+                      "status": 200
+                    }
+                  },
+                  "aws": {
+                    "request_id": "<uuid:2>"
+                  },
+                  "origin": "AWS::Lambda",
+                  "resource_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                },
+                "Id": "<trace-id:2>"
+              },
+              {
+                "Document": {
+                  "id": "<trace-id:3>",
+                  "name": "<function-name:1>",
+                  "start_time": "<start_time>",
+                  "trace_id": "<trace-id:1>",
+                  "end_time": "<end_time>",
+                  "parent_id": "<trace-id:2>",
+                  "aws": {
+                    "account_id": "111111111111",
+                    "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+                    "cloudwatch_logs": [
+                      {
+                        "log_group": "/aws/lambda/<function-name:1>"
+                      }
+                    ],
+                    "resource_names": [
+                      "<function-name:1>"
+                    ]
+                  },
+                  "origin": "AWS::Lambda::Function",
+                  "subsegments": [
+                    {
+                      "id": "<segment-id:1>",
+                      "name": "Initialization",
+                      "start_time": "<start_time>",
+                      "end_time": "<end_time>",
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      }
+                    },
+                    {
+                      "id": "<segment-id:2>",
+                      "name": "Invocation",
+                      "start_time": "<start_time>",
+                      "end_time": "<end_time>",
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      },
+                      "subsegments": [
+                        {
+                          "id": "<segment-id:3>",
+                          "name": "## handler",
+                          "start_time": "<start_time>",
+                          "end_time": "<end_time>",
+                          "in_progress": false,
+                          "annotations": {
+                            "ColdStart": true,
+                            "Service": "xray-testing"
+                          },
+                          "metadata": {
+                            "xray-testing": {
+                              "handler response": {
+                                "functions": [
+                                  {
+                                    "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+                                    "MemorySize": 128,
+                                    "Description": "",
+                                    "TracingConfig": {
+                                      "Mode": "Active"
+                                    },
+                                    "Timeout": 30,
+                                    "Handler": "handler.handler",
+                                    "CodeSha256": "code-sha256",
+                                    "SnapStart": {
+                                      "OptimizationStatus": "Off",
+                                      "ApplyOn": "None"
+                                    },
+                                    "RevisionId": "<uuid:1>",
+                                    "Role": "arn:<partition>:iam::111111111111:role/<resource:2>",
+                                    "LastModified": "date",
+                                    "FunctionName": "<function-name:1>",
+                                    "Runtime": "python3.12",
+                                    "CodeSize": "<code-size>",
+                                    "Version": "$LATEST",
+                                    "PackageType": "Zip",
+                                    "LoggingConfig": {
+                                      "LogFormat": "Text",
+                                      "LogGroup": "/aws/lambda/<function-name:1>"
+                                    },
+                                    "Environment": {
+                                      "Variables": {}
+                                    },
+                                    "EphemeralStorage": {
+                                      "Size": 512
+                                    },
+                                    "Layers": [
+                                      {
+                                        "CodeSize": "<code-size>",
+                                        "Arn": "arn:<partition>:lambda:<region>:017000801446:layer:<resource:1>:69"
+                                      }
+                                    ],
+                                    "Architectures": [
+                                      "x86_64"
+                                    ]
+                                  }
+                                ],
+                                "envs": {
+                                  "_AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129",
+                                  "AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129:2000",
+                                  "_AWS_XRAY_DAEMON_PORT": "2000",
+                                  "_X_AMZN_TRACE_ID": "Root=<trace-id:1>;Parent=<segment-id:2>;Sampled=1;<lineage>",
+                                  "AWS_XRAY_CONTEXT_MISSING": "LOG_ERROR"
+                                },
+                                "message": {
+                                  "message": "hello user!"
+                                }
+                              }
+                            }
+                          },
+                          "namespace": "local",
+                          "subsegments": [
+                            {
+                              "id": "<segment-id:4>",
+                              "name": "Lambda",
+                              "start_time": "<start_time>",
+                              "end_time": "<end_time>",
+                              "in_progress": false,
+                              "http": {
+                                "response": {
+                                  "status": 200
+                                }
+                              },
+                              "aws": {
+                                "region": "<region>",
+                                "operation": "ListFunctions",
+                                "request_id": "<uuid:3>"
+                              },
+                              "namespace": "aws"
+                            },
+                            {
+                              "id": "<segment-id:5>",
+                              "name": "## handler.say_hello",
+                              "start_time": "<start_time>",
+                              "end_time": "<end_time>",
+                              "in_progress": false,
+                              "annotations": {
+                                "CustomAnnotation": "CONFIRMED"
+                              },
+                              "metadata": {
+                                "xray-testing": {
+                                  "handler.say_hello response": {
+                                    "message": "hello user!"
+                                  },
+                                  "metakey": "metavalue"
+                                }
+                              },
+                              "namespace": "local"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "<segment-id:6>",
+                      "name": "Overhead",
+                      "start_time": "<start_time>",
+                      "end_time": "<end_time>",
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      }
+                    }
+                  ]
+                },
+                "Id": "<trace-id:3>"
+              },
+              {
+                "Document": {
+                  "id": "<trace-id:4>",
+                  "name": "Lambda",
+                  "start_time": "<start_time>",
+                  "trace_id": "<trace-id:1>",
+                  "end_time": "<end_time>",
+                  "parent_id": "<segment-id:4>",
+                  "inferred": true,
+                  "http": {
+                    "response": {
+                      "status": 200
+                    }
+                  },
+                  "aws": {
+                    "region": "<region>",
+                    "operation": "ListFunctions",
+                    "request_id": "<uuid:3>"
+                  },
+                  "origin": "AWS::Lambda"
+                },
+                "Id": "<trace-id:4>"
+              }
+            ]
+          }
+        ],
+        "UnprocessedTraceIds": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda_xray.py::TestLambdaXrayIntegration::test_lambda_xray_active_tracing": {
+    "recorded-date": "24-04-2024, 08:12:11",
+    "recorded-content": {
+      "get_function": {
+        "Code": {
+          "Location": "<location>",
+          "RepositoryType": "S3"
+        },
+        "Configuration": {
+          "Architectures": [
+            "x86_64"
+          ],
+          "CodeSha256": "code-sha256",
+          "CodeSize": "<code-size>",
+          "Description": "",
+          "Environment": {
+            "Variables": {}
+          },
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+          "FunctionName": "<function-name:1>",
+          "Handler": "handler.handler",
+          "LastModified": "date",
+          "LastUpdateStatus": "Successful",
+          "LoggingConfig": {
+            "LogFormat": "Text",
+            "LogGroup": "/aws/lambda/<function-name:1>"
+          },
+          "MemorySize": 128,
+          "PackageType": "Zip",
+          "RevisionId": "<uuid:1>",
+          "Role": "arn:<partition>:iam::111111111111:role/<resource:1>",
+          "Runtime": "python3.12",
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:2>"
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "State": "Active",
+          "Timeout": 30,
+          "TracingConfig": {
+            "Mode": "Active"
+          },
+          "Version": "$LATEST"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invoke_result": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "message": "hello world from tracing lambda!",
+          "envs": {
+            "_X_AMZN_TRACE_ID": "Root=<trace-id:1>;Parent=<segment-id:2>;Sampled=1;<lineage>",
+            "_AWS_XRAY_DAEMON_PORT": "2000",
+            "_AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129",
+            "AWS_XRAY_CONTEXT_MISSING": "LOG_ERROR",
+            "AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129:2000"
+          }
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "trace_summaries": {
+        "ApproximateTime": "datetime",
+        "TraceSummaries": [
+          {
+            "Annotations": {},
+            "AvailabilityZones": [],
+            "Duration": "<duration>",
+            "EntryPoint": {
+              "Name": "<function-name:1>",
+              "Names": [
+                "<function-name:1>"
+              ],
+              "Type": "AWS::Lambda"
+            },
+            "ErrorRootCauses": [],
+            "FaultRootCauses": [],
+            "HasError": false,
+            "HasFault": false,
+            "HasThrottle": false,
+            "Http": {
+              "HttpStatus": 200
+            },
+            "Id": "<trace-id:1>",
+            "InstanceIds": [],
+            "IsPartial": false,
+            "ResourceARNs": [
+              {
+                "ARN": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+              }
+            ],
+            "ResponseTime": "<response-time>",
+            "ResponseTimeRootCauses": [],
+            "Revision": "<revision>",
+            "ServiceIds": [
+              {
+                "AccountId": "111111111111",
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "AWS::Lambda::Function"
+              },
+              {
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "AWS::Lambda"
+              },
+              {
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "client"
+              }
+            ],
+            "StartTime": "datetime",
+            "Users": []
+          }
+        ],
+        "TracesProcessedCount": "<traces-processed>"
+      },
+      "traces": {
+        "Traces": [
+          {
+            "Duration": "<duration>",
+            "Id": "<trace-id:1>",
+            "LimitExceeded": false,
+            "Segments": [
+              {
+                "Document": {
+                  "aws": {
+                    "request_id": "<uuid:2>"
+                  },
+                  "end_time": "<end_time>",
+                  "http": {
+                    "response": {
+                      "status": 200
+                    }
+                  },
+                  "id": "<trace-id:2>",
+                  "name": "<function-name:1>",
+                  "origin": "AWS::Lambda",
+                  "resource_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+                  "start_time": "<start_time>",
+                  "trace_id": "<trace-id:1>"
+                },
+                "Id": "<trace-id:2>"
+              },
+              {
+                "Document": {
+                  "aws": {
+                    "account_id": "111111111111",
+                    "cloudwatch_logs": [
+                      {
+                        "log_group": "/aws/lambda/<function-name:1>"
+                      }
+                    ],
+                    "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+                    "resource_names": [
+                      "<function-name:1>"
+                    ]
+                  },
+                  "end_time": "<end_time>",
+                  "id": "<trace-id:3>",
+                  "name": "<function-name:1>",
+                  "origin": "AWS::Lambda::Function",
+                  "parent_id": "<trace-id:2>",
+                  "start_time": "<start_time>",
+                  "subsegments": [
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:1>",
+                      "name": "Initialization",
+                      "start_time": "<start_time>"
+                    },
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:2>",
+                      "name": "Invocation",
+                      "start_time": "<start_time>"
+                    },
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:3>",
+                      "name": "Overhead",
+                      "start_time": "<start_time>"
+                    }
+                  ],
+                  "trace_id": "<trace-id:1>"
+                },
+                "Id": "<trace-id:3>"
+              }
+            ]
+          }
+        ],
+        "UnprocessedTraceIds": []
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda_xray.py::TestLambdaXrayIntegration::test_lambda_xray_passive_tracing": {
+    "recorded-date": "24-04-2024, 08:25:05",
+    "recorded-content": {
+      "create_topic": {
+        "TopicArn": "arn:<partition>:sns:<region>:111111111111:<resource:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "xray_put_policy": {
+        "ResourcePolicy": {
+          "LastUpdatedTime": "datetime",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "SNSAccess",
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "sns.amazonaws.com"
+                },
+                "Action": [
+                  "xray:PutTraceSegments",
+                  "xray:GetSamplingRules",
+                  "xray:GetSamplingTargets"
+                ],
+                "Resource": "<resource:2>",
+                "Condition": {
+                  "StringEquals": {
+                    "aws:SourceAccount": "111111111111"
+                  },
+                  "StringLike": {
+                    "aws:SourceArn": "arn:<partition>:sns:<region>:111111111111:<resource:2>"
+                  }
+                }
+              }
+            ]
+          },
+          "PolicyName": "<policy-name:1>",
+          "PolicyRevisionId": "1"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "add_permission": {
+        "Statement": {
+          "Sid": "allowsns",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "sns.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+          "Condition": {
+            "ArnLike": {
+              "AWS:SourceArn": "arn:<partition>:sns:<region>:111111111111:<resource:1>"
+            }
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 201
+        }
+      },
+      "get_function_passive": {
+        "Code": {
+          "Location": "<location>",
+          "RepositoryType": "S3"
+        },
+        "Configuration": {
+          "Architectures": [
+            "x86_64"
+          ],
+          "CodeSha256": "code-sha256",
+          "CodeSize": "<code-size>",
+          "Description": "",
+          "Environment": {
+            "Variables": {}
+          },
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+          "FunctionName": "<function-name:1>",
+          "Handler": "handler.handler",
+          "LastModified": "date",
+          "LastUpdateStatus": "Successful",
+          "LoggingConfig": {
+            "LogFormat": "Text",
+            "LogGroup": "/aws/lambda/<function-name:1>"
+          },
+          "MemorySize": 128,
+          "PackageType": "Zip",
+          "RevisionId": "<uuid:1>",
+          "Role": "arn:<partition>:iam::111111111111:role/<resource:3>",
+          "Runtime": "python3.12",
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:4>"
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "State": "Active",
+          "Timeout": 30,
+          "TracingConfig": {
+            "Mode": "PassThrough"
+          },
+          "Version": "$LATEST"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_function_active": {
+        "Code": {
+          "Location": "<location>",
+          "RepositoryType": "S3"
+        },
+        "Configuration": {
+          "Architectures": [
+            "x86_64"
+          ],
+          "CodeSha256": "code-sha256",
+          "CodeSize": "<code-size>",
+          "Description": "",
+          "Environment": {
+            "Variables": {
+              "SNS_TOPIC_ARN": "arn:<partition>:sns:<region>:111111111111:<resource:1>"
+            }
+          },
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:2>",
+          "FunctionName": "<function-name:2>",
+          "Handler": "handler.handler",
+          "LastModified": "date",
+          "LastUpdateStatus": "Successful",
+          "Layers": [
+            {
+              "Arn": "arn:<partition>:lambda:<region>:017000801446:layer:<resource:5>:69",
+              "CodeSize": "<code-size>"
+            }
+          ],
+          "LoggingConfig": {
+            "LogFormat": "Text",
+            "LogGroup": "/aws/lambda/<function-name:2>"
+          },
+          "MemorySize": 128,
+          "PackageType": "Zip",
+          "RevisionId": "<uuid:2>",
+          "Role": "arn:<partition>:iam::111111111111:role/<resource:3>",
+          "Runtime": "python3.12",
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:4>"
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "State": "Active",
+          "Timeout": 30,
+          "TracingConfig": {
+            "Mode": "Active"
+          },
+          "Version": "$LATEST"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "subscribe_response": {
+        "SubscriptionArn": "arn:<partition>:sns:<region>:111111111111:<resource:1>:<resource:6>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "active_invoke_result": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "message": "hello world from active tracing lambda!",
+          "envs": {
+            "_X_AMZN_TRACE_ID": "Root=<trace-id:1>;Parent=<segment-id:2>;Sampled=1;<lineage>",
+            "_AWS_XRAY_DAEMON_PORT": "2000",
+            "_AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129",
+            "AWS_XRAY_CONTEXT_MISSING": "LOG_ERROR",
+            "AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129:2000"
+          }
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "trace_summaries": {
+        "ApproximateTime": "datetime",
+        "TraceSummaries": [
+          {
+            "Annotations": {
+              "ColdStart": [
+                {
+                  "AnnotationValue": {
+                    "BooleanValue": true
+                  }
+                }
+              ],
+              "Service": [
+                {
+                  "AnnotationValue": {
+                    "StringValue": "ActivePassiveTest"
+                  }
+                }
+              ]
+            },
+            "AvailabilityZones": [],
+            "Duration": "<duration>",
+            "EntryPoint": {
+              "Name": "<function-name:2>",
+              "Names": [
+                "<function-name:2>"
+              ],
+              "Type": "AWS::Lambda"
+            },
+            "ErrorRootCauses": [],
+            "FaultRootCauses": [],
+            "HasError": false,
+            "HasFault": false,
+            "HasThrottle": false,
+            "Http": {
+              "HttpStatus": 200
+            },
+            "Id": "<trace-id:1>",
+            "InstanceIds": [],
+            "IsPartial": false,
+            "ResourceARNs": [
+              {
+                "ARN": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:2>"
+              },
+              {
+                "ARN": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+              }
+            ],
+            "ResponseTime": "<response-time>",
+            "ResponseTimeRootCauses": [],
+            "Revision": "<revision>",
+            "ServiceIds": [
+              {
+                "AccountId": "111111111111",
+                "Name": "<function-name:2>",
+                "Names": [
+                  "<function-name:2>"
+                ],
+                "Type": "AWS::Lambda::Function"
+              },
+              {
+                "AccountId": "111111111111",
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "AWS::Lambda::Function"
+              },
+              {
+                "Name": "<function-name:2>",
+                "Names": [
+                  "<function-name:2>"
+                ],
+                "Type": "AWS::Lambda"
+              },
+              {
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "AWS::Lambda"
+              },
+              {
+                "Name": "arn:<partition>:sns:<region>:111111111111:<resource:1>",
+                "Names": [
+                  "arn:<partition>:sns:<region>:111111111111:<resource:1>"
+                ],
+                "Type": "AWS::SNS"
+              },
+              {
+                "Name": "<function-name:2>",
+                "Names": [
+                  "<function-name:2>"
+                ],
+                "Type": "client"
+              }
+            ],
+            "StartTime": "datetime",
+            "Users": []
+          }
+        ],
+        "TracesProcessedCount": "<traces-processed>"
+      },
+      "traces": {
+        "Traces": [
+          {
+            "Duration": "<duration>",
+            "Id": "<trace-id:1>",
+            "LimitExceeded": false,
+            "Segments": [
+              {
+                "Document": {
+                  "aws": {
+                    "request_id": "<uuid:3>"
+                  },
+                  "end_time": "<end_time>",
+                  "http": {
+                    "response": {
+                      "status": 200
+                    }
+                  },
+                  "id": "<trace-id:2>",
+                  "name": "<function-name:2>",
+                  "origin": "AWS::Lambda",
+                  "resource_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:2>",
+                  "start_time": "<start_time>",
+                  "trace_id": "<trace-id:1>"
+                },
+                "Id": "<trace-id:2>"
+              },
+              {
+                "Document": {
+                  "aws": {
+                    "account_id": "111111111111",
+                    "cloudwatch_logs": [
+                      {
+                        "log_group": "/aws/lambda/<function-name:2>"
+                      }
+                    ],
+                    "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:2>",
+                    "resource_names": [
+                      "<function-name:2>"
+                    ]
+                  },
+                  "end_time": "<end_time>",
+                  "id": "<trace-id:3>",
+                  "name": "<function-name:2>",
+                  "origin": "AWS::Lambda::Function",
+                  "parent_id": "<trace-id:2>",
+                  "start_time": "<start_time>",
+                  "subsegments": [
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:2>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:1>",
+                      "name": "Initialization",
+                      "start_time": "<start_time>"
+                    },
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:2>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:2>",
+                      "name": "Invocation",
+                      "start_time": "<start_time>",
+                      "subsegments": [
+                        {
+                          "annotations": {
+                            "ColdStart": true,
+                            "Service": "ActivePassiveTest"
+                          },
+                          "end_time": "<end_time>",
+                          "id": "<segment-id:3>",
+                          "in_progress": false,
+                          "metadata": {
+                            "ActivePassiveTest": {
+                              "handler response": {
+                                "envs": {
+                                  "AWS_XRAY_CONTEXT_MISSING": "LOG_ERROR",
+                                  "AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129:2000",
+                                  "_AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129",
+                                  "_AWS_XRAY_DAEMON_PORT": "2000",
+                                  "_X_AMZN_TRACE_ID": "Root=<trace-id:1>;Parent=<segment-id:2>;Sampled=1;<lineage>"
+                                },
+                                "message": "hello world from active tracing lambda!"
+                              }
+                            }
+                          },
+                          "name": "## handler",
+                          "namespace": "local",
+                          "start_time": "<start_time>",
+                          "subsegments": [
+                            {
+                              "aws": {
+                                "operation": "Publish",
+                                "region": "<region>",
+                                "request_id": "<uuid:4>",
+                                "resource_names": [
+                                  "arn:<partition>:sns:<region>:111111111111:<resource:1>"
+                                ],
+                                "topic_arn": "arn:<partition>:sns:<region>:111111111111:<resource:1>"
+                              },
+                              "end_time": "<end_time>",
+                              "http": {
+                                "response": {
+                                  "status": 200
+                                }
+                              },
+                              "id": "<segment-id:4>",
+                              "in_progress": false,
+                              "name": "SNS",
+                              "namespace": "aws",
+                              "start_time": "<start_time>"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:2>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:5>",
+                      "name": "Overhead",
+                      "start_time": "<start_time>"
+                    }
+                  ],
+                  "trace_id": "<trace-id:1>"
+                },
+                "Id": "<trace-id:3>"
+              },
+              {
+                "Document": {
+                  "aws": {
+                    "operation": "Publish",
+                    "region": "<region>",
+                    "request_id": "<uuid:4>",
+                    "resource_names": [
+                      "arn:<partition>:sns:<region>:111111111111:<resource:1>"
+                    ],
+                    "topic_arn": "arn:<partition>:sns:<region>:111111111111:<resource:1>"
+                  },
+                  "end_time": "<end_time>",
+                  "http": {
+                    "response": {
+                      "status": 200
+                    }
+                  },
+                  "id": "<trace-id:4>",
+                  "inferred": true,
+                  "name": "SNS",
+                  "origin": "AWS::SNS",
+                  "parent_id": "<segment-id:4>",
+                  "start_time": "<start_time>",
+                  "trace_id": "<trace-id:1>"
+                },
+                "Id": "<trace-id:4>"
+              },
+              {
+                "Document": {
+                  "aws": {
+                    "request_id": "<uuid:5>"
+                  },
+                  "end_time": "<end_time>",
+                  "http": {
+                    "response": {
+                      "status": 202
+                    }
+                  },
+                  "id": "<trace-id:5>",
+                  "name": "<function-name:1>",
+                  "origin": "AWS::Lambda",
+                  "parent_id": "<trace-id:4>",
+                  "resource_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+                  "start_time": "<start_time>",
+                  "subsegments": [
+                    {
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:6>",
+                      "name": "Dwell Time",
+                      "start_time": "<start_time>"
+                    },
+                    {
+                      "end_time": "<end_time>",
+                      "http": {
+                        "response": {
+                          "status": 200
+                        }
+                      },
+                      "id": "<segment-id:7>",
+                      "name": "Attempt #1",
+                      "start_time": "<start_time>"
+                    }
+                  ],
+                  "trace_id": "<trace-id:1>"
+                },
+                "Id": "<trace-id:5>"
+              },
+              {
+                "Document": {
+                  "aws": {
+                    "account_id": "111111111111",
+                    "cloudwatch_logs": [
+                      {
+                        "log_group": "/aws/lambda/<function-name:1>"
+                      }
+                    ],
+                    "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+                    "resource_names": [
+                      "<function-name:1>"
+                    ]
+                  },
+                  "end_time": "<end_time>",
+                  "id": "<trace-id:6>",
+                  "name": "<function-name:1>",
+                  "origin": "AWS::Lambda::Function",
+                  "parent_id": "<segment-id:7>",
+                  "start_time": "<start_time>",
+                  "subsegments": [
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:8>",
+                      "name": "Initialization",
+                      "start_time": "<start_time>"
+                    },
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:9>",
+                      "name": "Invocation",
+                      "start_time": "<start_time>"
+                    },
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:10>",
+                      "name": "Overhead",
+                      "start_time": "<start_time>"
+                    }
+                  ],
+                  "trace_id": "<trace-id:1>"
+                },
+                "Id": "<trace-id:6>"
+              }
+            ]
+          }
+        ],
+        "UnprocessedTraceIds": []
+      }
+    }
+  },
+  "tests/aws/services/lambda_/test_lambda_xray.py::TestLambdaXrayIntegration::test_lambda_xray_manual_instrumentation": {
+    "recorded-date": "24-04-2024, 08:26:04",
+    "recorded-content": {
+      "get_function": {
+        "Code": {
+          "Location": "<location>",
+          "RepositoryType": "S3"
+        },
+        "Configuration": {
+          "Architectures": [
+            "x86_64"
+          ],
+          "CodeSha256": "code-sha256",
+          "CodeSize": "<code-size>",
+          "Description": "",
+          "Environment": {
+            "Variables": {}
+          },
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "FunctionArn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+          "FunctionName": "<function-name:1>",
+          "Handler": "handler.handler",
+          "LastModified": "date",
+          "LastUpdateStatus": "Successful",
+          "Layers": [
+            {
+              "Arn": "arn:<partition>:lambda:<region>:017000801446:layer:<resource:1>:69",
+              "CodeSize": "<code-size>"
+            }
+          ],
+          "LoggingConfig": {
+            "LogFormat": "Text",
+            "LogGroup": "/aws/lambda/<function-name:1>"
+          },
+          "MemorySize": 128,
+          "PackageType": "Zip",
+          "RevisionId": "<uuid:1>",
+          "Role": "arn:<partition>:iam::111111111111:role/<resource:2>",
+          "Runtime": "python3.12",
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:<partition>:lambda:<region>::runtime:<resource:3>"
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "State": "Active",
+          "Timeout": 30,
+          "TracingConfig": {
+            "Mode": "Active"
+          },
+          "Version": "$LATEST"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invoke_result": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "message": {
+            "message": "hello user!"
+          },
+          "envs": {
+            "_X_AMZN_TRACE_ID": "Root=<trace-id:1>;Parent=<segment-id:2>;Sampled=1;<lineage>",
+            "_AWS_XRAY_DAEMON_PORT": "2000",
+            "_AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129",
+            "AWS_XRAY_CONTEXT_MISSING": "LOG_ERROR",
+            "AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129:2000"
+          }
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "trace_summaries": {
+        "ApproximateTime": "datetime",
+        "TraceSummaries": [
+          {
+            "Annotations": {
+              "ColdStart": [
+                {
+                  "AnnotationValue": {
+                    "BooleanValue": true
+                  }
+                }
+              ],
+              "CustomAnnotation": [
+                {
+                  "AnnotationValue": {
+                    "StringValue": "CONFIRMED"
+                  }
+                }
+              ],
+              "Service": [
+                {
+                  "AnnotationValue": {
+                    "StringValue": "xray-testing"
+                  }
+                }
+              ]
+            },
+            "AvailabilityZones": [],
+            "Duration": "<duration>",
+            "EntryPoint": {
+              "Name": "<function-name:1>",
+              "Names": [
+                "<function-name:1>"
+              ],
+              "Type": "AWS::Lambda"
+            },
+            "ErrorRootCauses": [],
+            "FaultRootCauses": [],
+            "HasError": false,
+            "HasFault": false,
+            "HasThrottle": false,
+            "Http": {
+              "HttpStatus": 200
+            },
+            "Id": "<trace-id:1>",
+            "InstanceIds": [],
+            "IsPartial": false,
+            "ResourceARNs": [
+              {
+                "ARN": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+              }
+            ],
+            "ResponseTime": "<response-time>",
+            "ResponseTimeRootCauses": [],
+            "Revision": "<revision>",
+            "ServiceIds": [
+              {
+                "AccountId": "111111111111",
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "AWS::Lambda::Function"
+              },
+              {
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "AWS::Lambda"
+              },
+              {
+                "Name": "<function-name:1>",
+                "Names": [
+                  "<function-name:1>"
+                ],
+                "Type": "client"
+              }
+            ],
+            "StartTime": "datetime",
+            "Users": []
+          }
+        ],
+        "TracesProcessedCount": "<traces-processed>"
+      },
+      "traces": {
+        "Traces": [
+          {
+            "Duration": "<duration>",
+            "Id": "<trace-id:1>",
+            "LimitExceeded": false,
+            "Segments": [
+              {
+                "Document": {
+                  "aws": {
+                    "request_id": "<uuid:2>"
+                  },
+                  "end_time": "<end_time>",
+                  "http": {
+                    "response": {
+                      "status": 200
+                    }
+                  },
+                  "id": "<trace-id:2>",
+                  "name": "<function-name:1>",
+                  "origin": "AWS::Lambda",
+                  "resource_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+                  "start_time": "<start_time>",
+                  "trace_id": "<trace-id:1>"
+                },
+                "Id": "<trace-id:2>"
+              },
+              {
+                "Document": {
+                  "aws": {
+                    "account_id": "111111111111",
+                    "cloudwatch_logs": [
+                      {
+                        "log_group": "/aws/lambda/<function-name:1>"
+                      }
+                    ],
+                    "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>",
+                    "resource_names": [
+                      "<function-name:1>"
+                    ]
+                  },
+                  "end_time": "<end_time>",
+                  "id": "<trace-id:3>",
+                  "name": "<function-name:1>",
+                  "origin": "AWS::Lambda::Function",
+                  "parent_id": "<trace-id:2>",
+                  "start_time": "<start_time>",
+                  "subsegments": [
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:1>",
+                      "name": "Initialization",
+                      "start_time": "<start_time>"
+                    },
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:2>",
+                      "name": "Invocation",
+                      "start_time": "<start_time>",
+                      "subsegments": [
+                        {
+                          "annotations": {
+                            "ColdStart": true,
+                            "Service": "xray-testing"
+                          },
+                          "end_time": "<end_time>",
+                          "id": "<segment-id:3>",
+                          "in_progress": false,
+                          "metadata": {
+                            "xray-testing": {
+                              "handler response": {
+                                "envs": {
+                                  "AWS_XRAY_CONTEXT_MISSING": "LOG_ERROR",
+                                  "AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129:2000",
+                                  "_AWS_XRAY_DAEMON_ADDRESS": "169.254.79.129",
+                                  "_AWS_XRAY_DAEMON_PORT": "2000",
+                                  "_X_AMZN_TRACE_ID": "Root=<trace-id:1>;Parent=<segment-id:2>;Sampled=1;<lineage>"
+                                },
+                                "message": {
+                                  "message": "hello user!"
+                                }
+                              }
+                            }
+                          },
+                          "name": "## handler",
+                          "namespace": "local",
+                          "start_time": "<start_time>",
+                          "subsegments": [
+                            {
+                              "annotations": {
+                                "CustomAnnotation": "CONFIRMED"
+                              },
+                              "end_time": "<end_time>",
+                              "id": "<segment-id:4>",
+                              "in_progress": false,
+                              "metadata": {
+                                "xray-testing": {
+                                  "handler.say_hello response": {
+                                    "message": "hello user!"
+                                  },
+                                  "metakey": "metavalue"
+                                }
+                              },
+                              "name": "## handler.say_hello",
+                              "namespace": "local",
+                              "start_time": "<start_time>"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "aws": {
+                        "function_arn": "arn:<partition>:lambda:<region>:111111111111:function:<function-name:1>"
+                      },
+                      "end_time": "<end_time>",
+                      "id": "<segment-id:5>",
+                      "name": "Overhead",
+                      "start_time": "<start_time>"
+                    }
+                  ],
+                  "trace_id": "<trace-id:1>"
+                },
+                "Id": "<trace-id:3>"
+              }
+            ]
+          }
+        ],
+        "UnprocessedTraceIds": []
+      }
+    }
+  }
+}

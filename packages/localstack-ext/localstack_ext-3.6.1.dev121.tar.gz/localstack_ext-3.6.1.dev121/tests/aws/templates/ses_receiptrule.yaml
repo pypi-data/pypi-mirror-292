@@ -1,0 +1,54 @@
+Parameters:
+  RuleSetName:
+    Type: String
+  RuleName:
+    Type: String
+Resources:
+  bucket43879C71:
+    Type: AWS::S3::Bucket
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+  bucketPolicy638F945D:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: bucket43879C71
+      PolicyDocument:
+        Statement:
+          - Action: s3:PutObject
+            Condition:
+              StringEquals:
+                aws:Referer:
+                  Ref: AWS::AccountId
+            Effect: Allow
+            Principal:
+              Service: ses.amazonaws.com
+            Resource:
+              Fn::Join:
+                - ""
+                - - Fn::GetAtt:
+                      - bucket43879C71
+                      - Arn
+                  - /*
+        Version: "2012-10-17"
+  ruleset3A509FA6:
+    Type: AWS::SES::ReceiptRuleSet
+    Properties:
+      RuleSetName: !Ref RuleSetName
+  myrule48A3298E:
+    Type: AWS::SES::ReceiptRule
+    Properties:
+      Rule:
+        Name: !Ref RuleName
+        Actions:
+          - S3Action:
+              BucketName:
+                Ref: bucket43879C71
+        Enabled: true
+      RuleSetName:
+        Ref: ruleset3A509FA6
+    DependsOn:
+      - bucketPolicy638F945D
+Outputs:
+  BucketName:
+    Value: !Ref bucket43879C71

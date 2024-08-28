@@ -1,0 +1,84 @@
+Description: ""
+
+Parameters:
+  Engine:
+    Type: String
+    Default: memcached
+  ClusterName:
+    Type: String
+
+Resources:
+  myVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: '10.0.0.0/16'
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      Tags:
+        - Key: stack
+          Value: production
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security group for cache cluster "
+      VpcId: !GetAtt myVpc.VpcId
+      SecurityGroupIngress:
+        -
+          IpProtocol: tcp
+          FromPort: !If [ isRedis, 6379, 11211]
+          ToPort: !If [ isRedis, 6379, 11211]
+
+  Subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref myVpc
+      CidrBlock: 10.0.0.0/16
+      AvailabilityZone: "us-east-1a"
+      Tags:
+        - Key: stack
+          Value: production
+
+  CacheSubnetGroup:
+    Type: 'AWS::ElastiCache::SubnetGroup'
+    Properties:
+      Description: !Ref 'AWS::StackName'
+      SubnetIds:
+        - !Ref Subnet
+
+  myCacheCluster:
+    Type: 'AWS::ElastiCache::CacheCluster'
+    Properties:
+      ClusterName: !Ref ClusterName
+      CacheSubnetGroupName: !Ref CacheSubnetGroup
+      CacheNodeType: cache.t2.micro
+      Engine: !Ref Engine
+      NumCacheNodes: '1'
+      VpcSecurityGroupIds:
+        - !GetAtt SecurityGroup.GroupId
+
+Conditions:
+  isMemcached: !Equals
+    - !Ref Engine
+    - memcached
+
+  isRedis: !Equals
+    - !Ref Engine
+    - redis
+
+# TODO
+#Outputs:
+#  CacheRef:
+#    Value: !Ref myCacheCluster
+#  MemAddress:
+#    Value: !GetAtt myCacheCluster.ConfigurationEndpoint.Address
+#    Condition: isMemcached
+#  MemPort:
+#    Value: !GetAtt myCacheCluster.ConfigurationEndpoint.Port
+#    Condition: isMemcached
+#  RedisAddress:
+#    Value: !GetAtt myCacheCluster.RedisEndpoint.Address
+#    Condition: isRedis
+#  RedisPort:
+#    Value: !GetAtt myCacheCluster.RedisEndpoint.Port
+#    Condition: isRedis

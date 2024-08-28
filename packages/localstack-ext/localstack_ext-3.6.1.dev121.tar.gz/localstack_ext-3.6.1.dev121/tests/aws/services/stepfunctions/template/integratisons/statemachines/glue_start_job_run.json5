@@ -1,0 +1,14 @@
+{
+    "Comment": "GLUE_START_JOB_RUN",
+    "StartAt": "GlueTask",
+    "States": {
+        "GlueTask": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::glue:startJobRun",
+            "Parameters": {
+                "JobName.$": "$.JobName",
+            },
+            "End": true
+        }
+    }
+}

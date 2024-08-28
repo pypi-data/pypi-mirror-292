@@ -1,0 +1,277 @@
+{
+  "Resources": {
+    "SymmetricKeyC3B15300": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "EnableKeyRotation": false,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomEmailerLambdaServiceRole76AA7272",
+                    "Arn"
+                  ]
+                },
+                "Service": "cognito-idp.amazonaws.com"
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "KeySpec": "SYMMETRIC_DEFAULT"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "SymmetricKeyAlias95749C8A": {
+      "Type": "AWS::KMS::Alias",
+      "Properties": {
+        "AliasName": "alias/cognito-key-alias",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "SymmetricKeyC3B15300",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "CustomEmailerLambdaServiceRole76AA7272": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    "CustomEmailerLambdaServiceRoleDefaultPolicy31643D54": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "SymmetricKeyC3B15300",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "CustomEmailerLambdaServiceRoleDefaultPolicy31643D54",
+        "Roles": [
+          {
+            "Ref": "CustomEmailerLambdaServiceRole76AA7272"
+          }
+        ]
+      }
+    },
+    "CustomEmailerLambdaB6C685E3": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "def handler(event, *args): event['response'] = {'emailMessage': 'hello'}; print(event); return event"
+        },
+        "Environment": {
+          "Variables": {
+            "KEY_ID": {
+              "Fn::GetAtt": [
+                "SymmetricKeyC3B15300",
+                "Arn"
+              ]
+            },
+            "KEY_ALIAS": "cognito-key-alias"
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomEmailerLambdaServiceRole76AA7272",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.12"
+      },
+      "DependsOn": [
+        "CustomEmailerLambdaServiceRoleDefaultPolicy31643D54",
+        "CustomEmailerLambdaServiceRole76AA7272"
+      ]
+    },
+    "CustomEmailerLambdaCognitoEmailSenderInvokePermissionAEA912DD": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "CustomEmailerLambdaB6C685E3",
+            "Arn"
+          ]
+        },
+        "Principal": "cognito-idp.amazonaws.com"
+      }
+    },
+    "UserPool6BA7E5F2": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_phone_number",
+              "Priority": 1
+            },
+            {
+              "Name": "verified_email",
+              "Priority": 2
+            }
+          ]
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": false
+        },
+        "AutoVerifiedAttributes": [
+          "email"
+        ],
+        "EmailVerificationMessage": "Thanks for signing up to our awesome app! Your verification code is {####}",
+        "EmailVerificationSubject": "Verify your email for our awesome app!",
+        "LambdaConfig": {
+          "CustomEmailSender": {
+            "LambdaArn": {
+              "Fn::GetAtt": [
+                "CustomEmailerLambdaB6C685E3",
+                "Arn"
+              ]
+            },
+            "LambdaVersion": "V1_0"
+          },
+          "KMSKeyID": {
+            "Fn::GetAtt": [
+              "SymmetricKeyC3B15300",
+              "Arn"
+            ]
+          }
+        },
+        "SmsVerificationMessage": "Thanks for signing up to our awesome app! Your verification code is {####}",
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "Thanks for signing up to our awesome app! Your verification code is {####}",
+          "EmailSubject": "Verify your email for our awesome app!",
+          "SmsMessage": "Thanks for signing up to our awesome app! Your verification code is {####}"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "UserPooluserpoolclient3CEE0CDA": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "implicit",
+          "code"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin"
+        ],
+        "CallbackURLs": [
+          "https://example.com"
+        ],
+        "ExplicitAuthFlows": [
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_USER_SRP_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH"
+        ],
+        "GenerateSecret": false,
+        "SupportedIdentityProviders": [
+          "COGNITO"
+        ],
+        "UserPoolId": {
+          "Ref": "UserPool6BA7E5F2"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "UserPoolClientId": {
+      "Value": {
+        "Ref": "UserPooluserpoolclient3CEE0CDA"
+      }
+    },
+    "LambdaArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "CustomEmailerLambdaB6C685E3",
+          "Arn"
+        ]
+      }
+    },
+    "KeyArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "SymmetricKeyC3B15300",
+          "Arn"
+        ]
+      }
+    }
+  }
+}

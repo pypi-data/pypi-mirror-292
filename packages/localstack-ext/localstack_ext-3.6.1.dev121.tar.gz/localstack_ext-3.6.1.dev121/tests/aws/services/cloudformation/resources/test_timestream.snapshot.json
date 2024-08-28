@@ -1,0 +1,75 @@
+{
+  "tests/aws/services/cloudformation/resources/test_timestream.py::test_create_db_tables": {
+    "recorded-date": "28-02-2024, 17:59:57",
+    "recorded-content": {
+      "outputs": {
+        "DatabaseAttArn": "arn:<partition>:timestream:<region>:111111111111:database/<resource:1>",
+        "DatabaseRef": "<resource:1>",
+        "Table1AttArn": "arn:<partition>:timestream:<region>:111111111111:database/<resource:1>/table/<resource:2>",
+        "Table1AttName": "<resource:2>",
+        "Table1Ref": "<resource:1>|<resource:2>",
+        "Table2AttArn": "arn:<partition>:timestream:<region>:111111111111:database/<resource:1>/table/<resource:3>",
+        "Table2AttName": "<resource:3>",
+        "Table2Ref": "<resource:1>|<resource:3>"
+      },
+      "describe_database": {
+        "Database": {
+          "Arn": "arn:<partition>:timestream:<region>:111111111111:database/<resource:1>",
+          "CreationTime": "datetime",
+          "DatabaseName": "<resource:1>",
+          "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/<resource:4>",
+          "LastUpdatedTime": "datetime",
+          "TableCount": 2
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "table1": {
+        "Arn": "arn:<partition>:timestream:<region>:111111111111:database/<resource:1>/table/<resource:2>",
+        "CreationTime": "datetime",
+        "DatabaseName": "<resource:1>",
+        "LastUpdatedTime": "datetime",
+        "MagneticStoreWriteProperties": {
+          "EnableMagneticStoreWrites": false
+        },
+        "RetentionProperties": {
+          "MagneticStoreRetentionPeriodInDays": 73000,
+          "MemoryStoreRetentionPeriodInHours": 6
+        },
+        "Schema": {
+          "CompositePartitionKey": [
+            {
+              "Type": "MEASURE"
+            }
+          ]
+        },
+        "TableName": "<resource:2>",
+        "TableStatus": "ACTIVE"
+      },
+      "table2": {
+        "Arn": "arn:<partition>:timestream:<region>:111111111111:database/<resource:1>/table/<resource:3>",
+        "CreationTime": "datetime",
+        "DatabaseName": "<resource:1>",
+        "LastUpdatedTime": "datetime",
+        "MagneticStoreWriteProperties": {
+          "EnableMagneticStoreWrites": false
+        },
+        "RetentionProperties": {
+          "MagneticStoreRetentionPeriodInDays": 73000,
+          "MemoryStoreRetentionPeriodInHours": 6
+        },
+        "Schema": {
+          "CompositePartitionKey": [
+            {
+              "Type": "MEASURE"
+            }
+          ]
+        },
+        "TableName": "<resource:3>",
+        "TableStatus": "ACTIVE"
+      }
+    }
+  }
+}

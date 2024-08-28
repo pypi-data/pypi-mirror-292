@@ -1,0 +1,1221 @@
+{
+  "Resources": {
+    "vpcA2121C38": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet1Subnet2E65531E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.0.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTable48A2DF9B": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTableAssociation5D3F4579": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        }
+      }
+    },
+    "vpcPublicSubnet1DefaultRoute10708846": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcPublicSubnet1EIPDA49DCBE": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet1NATGateway9C16659E": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "vpcPublicSubnet1EIPDA49DCBE",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPublicSubnet1DefaultRoute10708846",
+        "vpcPublicSubnet1RouteTableAssociation5D3F4579"
+      ]
+    },
+    "vpcPublicSubnet2Subnet009B674F": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.64.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableEB40D4CB": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableAssociation21F81B59": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet2Subnet009B674F"
+        }
+      }
+    },
+    "vpcPublicSubnet2DefaultRouteA1EC0F60": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcPublicSubnet2EIP9B3743B1": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet2NATGateway9B8AE11A": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "vpcPublicSubnet2EIP9B3743B1",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet2Subnet009B674F"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PublicSubnet2"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPublicSubnet2DefaultRouteA1EC0F60",
+        "vpcPublicSubnet2RouteTableAssociation21F81B59"
+      ]
+    },
+    "vpcPrivateSubnet1Subnet934893E8": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.128.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PrivateSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet1RouteTableB41A48CC": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PrivateSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet1RouteTableAssociation67945127": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet1RouteTableB41A48CC"
+        },
+        "SubnetId": {
+          "Ref": "vpcPrivateSubnet1Subnet934893E8"
+        }
+      }
+    },
+    "vpcPrivateSubnet1DefaultRoute1AA8E2E5": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "vpcPublicSubnet1NATGateway9C16659E"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet1RouteTableB41A48CC"
+        }
+      }
+    },
+    "vpcPrivateSubnet2Subnet7031C2BA": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.192.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PrivateSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet2RouteTable7280F23E": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc/PrivateSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet2RouteTableAssociation007E94D3": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet2RouteTable7280F23E"
+        },
+        "SubnetId": {
+          "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+        }
+      }
+    },
+    "vpcPrivateSubnet2DefaultRouteB0E07F99": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "vpcPublicSubnet2NATGateway9B8AE11A"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet2RouteTable7280F23E"
+        }
+      }
+    },
+    "vpcIGWE57CBDCA": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ClusterStack/vpc"
+          }
+        ]
+      }
+    },
+    "vpcVPCGW7984C166": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "securityGroup32C48086": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "ClusterStack/securityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "parameterGroupFE655916": {
+      "Type": "AWS::RDS::DBClusterParameterGroup",
+      "Properties": {
+        "Description": "Cluster parameter group for aurora-postgresql15",
+        "Family": "aurora-postgresql15",
+        "Parameters": {
+          "shared_preload_libraries": "pg_stat_statements,pg_tle"
+        }
+      }
+    },
+    "auroraClusterSubnetsBE64252C": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnets for auroraCluster database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ]
+      }
+    },
+    "auroraClusterSecurityGroupE3588702": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "RDS security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "auroraClusterSecurityGroupfrom00000IndirectPortC4DD4401": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "Description": "Open to the world",
+        "FromPort": {
+          "Fn::GetAtt": [
+            "auroraCluster42005FB7",
+            "Endpoint.Port"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "auroraClusterSecurityGroupE3588702",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "ToPort": {
+          "Fn::GetAtt": [
+            "auroraCluster42005FB7",
+            "Endpoint.Port"
+          ]
+        }
+      }
+    },
+    "auroraClusterSecret93BADEB9": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName"
+              }
+            ]
+          ]
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{\"username\":\"username\"}"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "auroraClusterSecretAttachmentB98E1A52": {
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+      "Properties": {
+        "SecretId": {
+          "Ref": "auroraClusterSecret93BADEB9"
+        },
+        "TargetId": {
+          "Ref": "auroraCluster42005FB7"
+        },
+        "TargetType": "AWS::RDS::DBCluster"
+      }
+    },
+    "auroraCluster42005FB7": {
+      "Type": "AWS::RDS::DBCluster",
+      "Properties": {
+        "CopyTagsToSnapshot": true,
+        "DBClusterParameterGroupName": {
+          "Ref": "parameterGroupFE655916"
+        },
+        "DBSubnetGroupName": {
+          "Ref": "auroraClusterSubnetsBE64252C"
+        },
+        "DatabaseName": "defaultDatabaseName",
+        "Engine": "aurora-postgresql",
+        "EngineVersion": "15.2",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "auroraClusterSecret93BADEB9"
+              },
+              ":SecretString:password::}}"
+            ]
+          ]
+        },
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "auroraClusterSecret93BADEB9"
+              },
+              ":SecretString:username::}}"
+            ]
+          ]
+        },
+        "Port": 5432,
+        "ServerlessV2ScalingConfiguration": {
+          "MaxCapacity": 1,
+          "MinCapacity": 0.5
+        },
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "auroraClusterSecurityGroupE3588702",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "auroraClusterwriter77F12F2E": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "DBClusterIdentifier": {
+          "Ref": "auroraCluster42005FB7"
+        },
+        "DBInstanceClass": "db.serverless",
+        "Engine": "aurora-postgresql",
+        "PromotionTier": 0
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "auroraClusterreader63809E4D": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "DBClusterIdentifier": {
+          "Ref": "auroraCluster42005FB7"
+        },
+        "DBInstanceClass": "db.serverless",
+        "Engine": "aurora-postgresql",
+        "PromotionTier": 1
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "RDSHelperLambdaServiceRole2C130C7E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "RDSHelperLambdaServiceRoleDefaultPolicy23267DA0": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "auroraClusterSecretAttachmentB98E1A52"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "RDSHelperLambdaServiceRoleDefaultPolicy23267DA0",
+        "Roles": [
+          {
+            "Ref": "RDSHelperLambdaServiceRole2C130C7E"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "RDSHelperLambdaSecurityGroup15834A25": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Automatic security group for Lambda Function ClusterStackRDSHelperLambdaB826A021",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "RDSHelperLambdaC4020FE7": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "-",
+              [
+                "localstack-testing",
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                {
+                  "Ref": "AWS::Region"
+                }
+              ]
+            ]
+          },
+          "S3Key": "rds-lambda-helper.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "RDS_SECRET": {
+              "Ref": "auroraClusterSecretAttachmentB98E1A52"
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "RDSHelperLambdaServiceRole2C130C7E",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.10",
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "RDSHelperLambdaSecurityGroup15834A25",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "vpcPrivateSubnet1Subnet934893E8"
+            },
+            {
+              "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "RDSHelperLambdaServiceRoleDefaultPolicy23267DA0",
+        "RDSHelperLambdaServiceRole2C130C7E",
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "NeptuneClusterSubnetsCDB62775": {
+      "Type": "AWS::Neptune::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnets for NeptuneCluster database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ]
+      }
+    },
+    "NeptuneClusterSecurityGroup644E519E": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Neptune security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "NeptuneCluster7FC72740": {
+      "Type": "AWS::Neptune::DBCluster",
+      "Properties": {
+        "DBSubnetGroupName": {
+          "Ref": "NeptuneClusterSubnetsCDB62775"
+        },
+        "StorageEncrypted": true,
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "NeptuneClusterSecurityGroup644E519E",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "NeptuneClusterInstance1D301D758": {
+      "Type": "AWS::Neptune::DBInstance",
+      "Properties": {
+        "AutoMinorVersionUpgrade": false,
+        "DBClusterIdentifier": {
+          "Ref": "NeptuneCluster7FC72740"
+        },
+        "DBInstanceClass": "db.r5.large"
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "DocDBSecurityGroup4B2123E2": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Allow traffic to DocDB",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "DocDBSecurityGroupfromClusterStackLambdaSecurityGroupCB37A06A2701735C21972": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "Description": "Allow Lambda SG to connect to DocumentDB on 27017",
+        "FromPort": 27017,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "DocDBSecurityGroup4B2123E2",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "LambdaSecurityGroup0BD9FC99",
+            "GroupId"
+          ]
+        },
+        "ToPort": 27017
+      }
+    },
+    "LambdaSecurityGroup0BD9FC99": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Allow Lambda to communicate with DocDB",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "LambdaSecurityGroupfrom00000IndirectPortE895AF05": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "Description": "Open to the world",
+        "FromPort": {
+          "Fn::GetAtt": [
+            "DocDBCluster37494708",
+            "Port"
+          ]
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "LambdaSecurityGroup0BD9FC99",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "ToPort": {
+          "Fn::GetAtt": [
+            "DocDBCluster37494708",
+            "Port"
+          ]
+        }
+      }
+    },
+    "ParameterGroup5E32DECB": {
+      "Type": "AWS::DocDB::DBClusterParameterGroup",
+      "Properties": {
+        "Description": "Cluster parameter group for docdb5.0",
+        "Family": "docdb5.0",
+        "Parameters": {
+          "tls": "disabled"
+        }
+      }
+    },
+    "DocDBClusterSubnets7472C183": {
+      "Type": "AWS::DocDB::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnets for DocDBCluster database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ]
+      }
+    },
+    "DocDBClusterSecretC4D9D094": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName"
+              }
+            ]
+          ]
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": "\"@/",
+          "GenerateStringKey": "password",
+          "PasswordLength": 41,
+          "SecretStringTemplate": "{\"username\":\"myuser\"}"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "DocDBClusterSecretAttachment14A486E4": {
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+      "Properties": {
+        "SecretId": {
+          "Ref": "DocDBClusterSecretC4D9D094"
+        },
+        "TargetId": {
+          "Ref": "DocDBCluster37494708"
+        },
+        "TargetType": "AWS::DocDB::DBCluster"
+      }
+    },
+    "DocDBCluster37494708": {
+      "Type": "AWS::DocDB::DBCluster",
+      "Properties": {
+        "DBClusterParameterGroupName": {
+          "Ref": "ParameterGroup5E32DECB"
+        },
+        "DBSubnetGroupName": {
+          "Ref": "DocDBClusterSubnets7472C183"
+        },
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "DocDBClusterSecretC4D9D094"
+              },
+              ":SecretString:password::}}"
+            ]
+          ]
+        },
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "DocDBClusterSecretC4D9D094"
+              },
+              ":SecretString:username::}}"
+            ]
+          ]
+        },
+        "StorageEncrypted": true,
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "LambdaSecurityGroup0BD9FC99",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "DocDBClusterInstance15E47FA80": {
+      "Type": "AWS::DocDB::DBInstance",
+      "Properties": {
+        "DBClusterIdentifier": {
+          "Ref": "DocDBCluster37494708"
+        },
+        "DBInstanceClass": "db.r5.large"
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "DocDBHelperLambdaServiceRole17FFE32D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "DocDBHelperLambdaServiceRoleDefaultPolicy75ED696C": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "DocDBClusterSecretAttachment14A486E4"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "DocDBHelperLambdaServiceRoleDefaultPolicy75ED696C",
+        "Roles": [
+          {
+            "Ref": "DocDBHelperLambdaServiceRole17FFE32D"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    },
+    "DocDBHelperLambda4F2FE535": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "-",
+              [
+                "localstack-testing",
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                {
+                  "Ref": "AWS::Region"
+                }
+              ]
+            ]
+          },
+          "S3Key": "docdb-lambda-helper.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "SECRET_NAME": {
+              "Ref": "DocDBClusterSecretAttachment14A486E4"
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "DocDBHelperLambdaServiceRole17FFE32D",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs16.x",
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "LambdaSecurityGroup0BD9FC99",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "vpcPrivateSubnet1Subnet934893E8"
+            },
+            {
+              "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "DocDBHelperLambdaServiceRoleDefaultPolicy75ED696C",
+        "DocDBHelperLambdaServiceRole17FFE32D",
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ]
+    }
+  },
+  "Outputs": {
+    "ClusterId": {
+      "Value": {
+        "Ref": "auroraCluster42005FB7"
+      }
+    },
+    "SecretArn": {
+      "Value": {
+        "Ref": "auroraClusterSecretAttachmentB98E1A52"
+      }
+    },
+    "RDSLambdaQueryHelper": {
+      "Value": {
+        "Ref": "RDSHelperLambdaC4020FE7"
+      }
+    },
+    "NeptuneClusterId": {
+      "Value": {
+        "Ref": "NeptuneCluster7FC72740"
+      }
+    },
+    "DocDBClusterId": {
+      "Value": {
+        "Ref": "DocDBCluster37494708"
+      }
+    },
+    "DocDBSecretArn": {
+      "Value": {
+        "Ref": "DocDBClusterSecretAttachment14A486E4"
+      }
+    },
+    "DocDBLambdaQueryHelper": {
+      "Value": {
+        "Ref": "DocDBHelperLambda4F2FE535"
+      }
+    }
+  }
+}

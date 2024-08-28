@@ -1,0 +1,67 @@
+Parameters:
+  SchemaS3Location:
+    Type: String
+  ResolverCodeS3Location:
+    Type: String
+  FunctionCodeS3Location:
+    Type: String
+  ApiName:
+    Type: String
+
+Resources:
+  GraphQLApi:
+    Type: AWS::AppSync::GraphQLApi
+    Properties:
+      Name: !Ref ApiName
+      AuthenticationType: API_KEY
+
+  ApiKey:
+    Type: AWS::AppSync::ApiKey
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+
+  GraphQLSchema:
+    DependsOn: GraphQLApi
+    Type: AWS::AppSync::GraphQLSchema
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      DefinitionS3Location: !Ref SchemaS3Location
+
+  DataSource:
+    Type: AWS::AppSync::DataSource
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      Name: noneds
+      Type: NONE
+
+  PipelineResolver:
+    Type: AWS::AppSync::Resolver
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      CodeS3Location: !Ref ResolverCodeS3Location
+      Kind: PIPELINE
+      TypeName: Query
+      FieldName: todo
+      PipelineConfig:
+        Functions:
+          - !GetAtt Function.FunctionId
+      Runtime:
+        Name: APPSYNC_JS
+        RuntimeVersion: 1.0.0
+
+  Function:
+    Type: AWS::AppSync::FunctionConfiguration
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      CodeS3Location: !Ref FunctionCodeS3Location
+      DataSourceName: !GetAtt DataSource.Name
+      Name: fn
+      Runtime:
+        Name: APPSYNC_JS
+        RuntimeVersion: 1.0.0
+
+Outputs:
+  ApiKeyValue:
+    Value: !GetAtt ApiKey.ApiKey
+  GraphQLUrl:
+    Value: !GetAtt GraphQLApi.GraphQLUrl

@@ -1,0 +1,213 @@
+{
+  "tests/aws/services/cloudformation/resources/test_appsync.py::test_graphqlapi": {
+    "recorded-date": "01-03-2024, 14:35:20",
+    "recorded-content": {
+      "stack_outputs": {
+        "GraphApiId": "<resource:1>",
+        "GraphArn": "arn:<partition>:appsync:<region>:111111111111:apis/<resource:1>",
+        "GraphRef": "arn:<partition>:appsync:<region>:111111111111:apis/<resource:1>",
+        "GraphUrl": "api-url"
+      },
+      "stack_resource_descriptions": [
+        {
+          "StackName": "<stack-name:1>",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+          "LogicalResourceId": "GraphQLApi",
+          "PhysicalResourceId": "arn:<partition>:appsync:<region>:111111111111:apis/<resource:1>",
+          "ResourceType": "AWS::AppSync::GraphQLApi",
+          "Timestamp": "timestamp",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ],
+      "api": {
+        "graphqlApi": {
+          "apiId": "<resource:1>",
+          "apiType": "GRAPHQL",
+          "arn": "arn:<partition>:appsync:<region>:111111111111:apis/<resource:1>",
+          "authenticationType": "AWS_IAM",
+          "dns": {
+            "GRAPHQL": "api-url",
+            "REALTIME": "<api-url-realtime:1>"
+          },
+          "introspectionConfig": "ENABLED",
+          "name": "<api-name:1>",
+          "owner": "111111111111",
+          "queryDepthLimit": 0,
+          "resolverCountLimit": 0,
+          "tags": {
+            "foo": "bar"
+          },
+          "uris": {
+            "GRAPHQL": "api-url",
+            "REALTIME": "wss://<api-url-realtime:1>/graphql"
+          },
+          "visibility": "GLOBAL",
+          "xrayEnabled": false
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_appsync.py::test_graphql_schema": {
+    "recorded-date": "09-09-2022, 14:05:19",
+    "recorded-content": {
+      "stack_outputs": {
+        "ApiId": "<resource:1>",
+        "SchemaRef": "<resource:1>GraphQLSchema"
+      },
+      "stack_resource_descriptions": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "GraphQLApi",
+            "PhysicalResourceId": "arn:<partition>:appsync:<region>:111111111111:apis/<resource:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::AppSync::GraphQLApi",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "GraphQLSchema",
+            "PhysicalResourceId": "<resource:1>GraphQLSchema",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::AppSync::GraphQLSchema",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "model": {
+        "type": {
+          "arn": "arn:<partition>:appsync:<region>:111111111111:apis/<resource:1>/types/<resource:3>",
+          "definition": {
+            "name": "<resource:3>",
+            "kind": "OBJECT",
+            "fields": [
+              {
+                "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "name": "ID"
+                  }
+                },
+                "args": [],
+                "directives": [],
+                "isDeprecated": false
+              },
+              {
+                "name": "name",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "name": "String"
+                  }
+                },
+                "args": [],
+                "directives": [],
+                "isDeprecated": false
+              },
+              {
+                "name": "description",
+                "type": {
+                  "name": "String"
+                },
+                "args": [],
+                "directives": [],
+                "isDeprecated": false
+              },
+              {
+                "name": "priority",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "name": "Priority"
+                  }
+                },
+                "args": [],
+                "directives": [],
+                "isDeprecated": false
+              }
+            ],
+            "interfaces": [],
+            "directives": []
+          },
+          "format": "JSON",
+          "name": "<resource:3>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_appsync.py::TestExpandedScenario::test_deploy_scenario[\\n        query VTLDynamoResolver {\\n            vtl {\\n                dynamoResult\\n            }\\n        }\\n        ]": {
+    "recorded-date": "24-11-2023, 14:46:59",
+    "recorded-content": {
+      "response": {
+        "data": {
+          "vtl": {
+            "dynamoResult": "dynamodb"
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_appsync.py::TestExpandedScenario::test_deploy_scenario[\\n        query JSPipelineResolver {\\n            js {\\n                result\\n            }\\n        }\\n        ]": {
+    "recorded-date": "24-11-2023, 14:46:59",
+    "recorded-content": {
+      "response": {
+        "data": {
+          "js": {
+            "result": "jsresult"
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_appsync.py::TestExpandedScenario::test_deploy_scenario[\\n        query Full {\\n            vtl {\\n                dynamoResult\\n            }\\n            js {\\n                result\\n            }\\n        }\\n            ]": {
+    "recorded-date": "24-11-2023, 14:46:59",
+    "recorded-content": {
+      "response": {
+        "data": {
+          "js": {
+            "result": "jsresult"
+          },
+          "vtl": {
+            "dynamoResult": "dynamodb"
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_appsync.py::test_s3_code_locations": {
+    "recorded-date": "01-02-2024, 12:33:29",
+    "recorded-content": {
+      "response-body": {
+        "data": {
+          "todo": {
+            "id": "abc123"
+          }
+        }
+      }
+    }
+  }
+}

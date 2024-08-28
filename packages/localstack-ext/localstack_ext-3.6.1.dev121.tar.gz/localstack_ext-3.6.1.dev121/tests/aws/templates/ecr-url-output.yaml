@@ -1,0 +1,39 @@
+Resources:
+  Repo02AC86CF:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: {{ repo_name }}
+Outputs:
+  # construct repo URI from Arn
+  RepoUriOutput:
+    Value:
+      Fn::Join:
+        - ""
+        - - Fn::Select:
+              - 4
+              - Fn::Split:
+                  - ":"
+                  - Fn::GetAtt:
+                      - Repo02AC86CF
+                      - Arn
+          - .dkr.ecr.
+          - Fn::Select:
+              - 3
+              - Fn::Split:
+                  - ":"
+                  - Fn::GetAtt:
+                      - Repo02AC86CF
+                      - Arn
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: Repo02AC86CF
+    Export:
+      Name: RepoUriOutput
+
+  # export repo URI from RepositoryUri attribute
+  RepoUriFromAttr:
+    Value:
+      Fn::GetAtt:
+        - Repo02AC86CF
+        - RepositoryUri

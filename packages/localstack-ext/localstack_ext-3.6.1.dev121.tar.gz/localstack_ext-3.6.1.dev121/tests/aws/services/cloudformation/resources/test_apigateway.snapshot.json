@@ -1,0 +1,43 @@
+{
+  "tests/aws/services/cloudformation/resources/test_apigateway.py::test_vpc_link": {
+    "recorded-date": "07-06-2023, 21:26:51",
+    "recorded-content": {
+      "stack-outputs": {
+        "VpcLinkIdAttr": "<vpclink-id>",
+        "VpcLinkRef": "<vpclink-id>"
+      },
+      "describe-resource": {
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        },
+        "LastUpdatedTimestamp": "timestamp",
+        "LogicalResourceId": "MyVpcLink",
+        "Metadata": {},
+        "PhysicalResourceId": "<vpclink-id>",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceType": "AWS::ApiGateway::VpcLink",
+        "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name>/3c82ae10-056f-11ee-8ee9-06c84f3b8984",
+        "StackName": "<stack-name>"
+      },
+      "get-vpc-link": {
+        "description": "VPC Link example",
+        "id": "<vpclink-id>",
+        "name": "vpclink-b1b7dcad",
+        "status": "AVAILABLE",
+        "statusMessage": "Your vpc link is ready for use",
+        "tags": {
+          "aws:cloudformation:logical-id": "MyVpcLink",
+          "aws:cloudformation:stack-id": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name>/3c82ae10-056f-11ee-8ee9-06c84f3b8984",
+          "aws:cloudformation:stack-name": "<stack-name>"
+        },
+        "targetArns": [
+          "arn:<partition>:elasticloadbalancing:<region>:111111111111:loadbalancer/net/stack-MyLoa-14MA86DSEGAVM/ad9358baf57fba43"
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+Parameters:
+  RoleArn:
+    Type: String
+  Alias:
+    Type: String
+    Default: default
+Resources:
+  RoleAlias:
+    Type: AWS::IoT::RoleAlias
+    Properties:
+      RoleArn:
+        Ref: RoleArn
+      CredentialDurationSeconds: 1000
+      RoleAlias:
+        Ref: Alias
+      Tags:
+        - Key: key
+          Value: value
+Outputs:
+  AliasRef:
+    Value:
+      Ref: RoleAlias
+  AliasArn:
+    Value:
+      Fn::GetAtt:
+        - RoleAlias
+        - RoleAliasArn

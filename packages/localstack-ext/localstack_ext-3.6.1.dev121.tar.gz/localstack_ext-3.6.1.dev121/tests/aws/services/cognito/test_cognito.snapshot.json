@@ -1,0 +1,5327 @@
+{
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_admin_change_password": {
+    "recorded-date": "30-08-2022, 18:48:55",
+    "recorded-content": {
+      "create-user": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        },
+        "User": {
+          "Attributes": [
+            {
+              "Name": "sub",
+              "Value": "<user-sub:1>"
+            }
+          ],
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "test@example.com"
+        }
+      },
+      "init-auth": {
+        "ChallengeName": "NEW_PASSWORD_REQUIRED",
+        "ChallengeParameters": {
+          "USER_ID_FOR_SRP": "test@example.com",
+          "requiredAttributes": "[]",
+          "userAttributes": {}
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        },
+        "Session": "<session:1>"
+      },
+      "respond-to-auth-challenge": {
+        "AuthenticationResult": {
+          "AccessToken": "<access-token:1>",
+          "ExpiresIn": 3600,
+          "IdToken": "<id-token:1>",
+          "RefreshToken": "<refresh-token:1>",
+          "TokenType": "Bearer"
+        },
+        "ChallengeParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user": {
+        "Enabled": true,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        },
+        "UserAttributes": [
+          {
+            "Name": "sub",
+            "Value": "<user-sub:1>"
+          }
+        ],
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "CONFIRMED",
+        "Username": "test@example.com"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_get_user_with_fake_access_token": {
+    "recorded-date": "30-08-2022, 19:54:21",
+    "recorded-content": {
+      "error": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "Invalid Access Token"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        },
+        "message": "Invalid Access Token"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_pool_client_updates": {
+    "recorded-date": "06-04-2023, 11:39:13",
+    "recorded-content": {
+      "pool_details1": {
+        "UserPoolClient": {
+          "AllowedOAuthFlowsUserPoolClient": false,
+          "AuthSessionValidity": 3,
+          "CallbackURLs": [
+            "https://test"
+          ],
+          "ClientId": "<client-id:1>",
+          "ClientName": "c1",
+          "CreationDate": "datetime",
+          "EnablePropagateAdditionalUserContextData": false,
+          "EnableTokenRevocation": true,
+          "ExplicitAuthFlows": [
+            "USER_PASSWORD_AUTH"
+          ],
+          "LastModifiedDate": "datetime",
+          "RefreshTokenValidity": 30,
+          "TokenValidityUnits": {},
+          "UserPoolId": "<user-pool-id:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "pool_details2": {
+        "UserPoolClient": {
+          "AllowedOAuthFlowsUserPoolClient": false,
+          "AuthSessionValidity": 3,
+          "ClientId": "<client-id:1>",
+          "ClientName": "c1",
+          "CreationDate": "datetime",
+          "EnablePropagateAdditionalUserContextData": false,
+          "EnableTokenRevocation": true,
+          "LastModifiedDate": "datetime",
+          "RefreshTokenValidity": 30,
+          "SupportedIdentityProviders": [
+            "test-idp"
+          ],
+          "TokenValidityUnits": {},
+          "UserPoolId": "<user-pool-id:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "pool_details3": {
+        "UserPoolClient": {
+          "AllowedOAuthFlowsUserPoolClient": false,
+          "AuthSessionValidity": 3,
+          "ClientId": "<client-id:1>",
+          "ClientName": "c1",
+          "CreationDate": "datetime",
+          "EnablePropagateAdditionalUserContextData": false,
+          "EnableTokenRevocation": true,
+          "ExplicitAuthFlows": [
+            "ALLOW_REFRESH_TOKEN_AUTH"
+          ],
+          "LastModifiedDate": "datetime",
+          "RefreshTokenValidity": 30,
+          "TokenValidityUnits": {},
+          "UserPoolId": "<user-pool-id:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_create_admin_user_with_duplicate_email": {
+    "recorded-date": "13-09-2022, 22:08:00",
+    "recorded-content": {
+      "create_user_pool_response": {
+        "UserPool": {
+          "AdminCreateUserConfig": {
+            "AllowAdminCreateUserOnly": false,
+            "UnusedAccountValidityDays": 7
+          },
+          "Arn": "arn:<partition>:cognito-idp:<region>:111111111111:userpool/<user-pool-id:1>",
+          "CreationDate": "datetime",
+          "EmailConfiguration": {
+            "EmailSendingAccount": "COGNITO_DEFAULT"
+          },
+          "EstimatedNumberOfUsers": 0,
+          "Id": "<user-pool-id:1>",
+          "LambdaConfig": {},
+          "LastModifiedDate": "datetime",
+          "MfaConfiguration": "OFF",
+          "Name": "<pool-name>",
+          "Policies": {
+            "PasswordPolicy": {
+              "MinimumLength": 8,
+              "RequireLowercase": true,
+              "RequireNumbers": true,
+              "RequireSymbols": true,
+              "RequireUppercase": true,
+              "TemporaryPasswordValidityDays": 7
+            }
+          },
+          "SchemaAttributes": [
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": false,
+              "Name": "sub",
+              "Required": true,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "1"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "given_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "family_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "middle_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "nickname",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "preferred_username",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "profile",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "picture",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "website",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "email",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Boolean",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "email_verified",
+              "Required": false
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "gender",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "birthdate",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "10",
+                "MinLength": "10"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "zoneinfo",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "locale",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "phone_number",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Boolean",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "phone_number_verified",
+              "Required": false
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "address",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Number",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "updated_at",
+              "NumberAttributeConstraints": {
+                "MinValue": "0"
+              },
+              "Required": false
+            }
+          ],
+          "UserAttributeUpdateSettings": {
+            "AttributesRequireVerificationBeforeUpdate": []
+          },
+          "UsernameAttributes": [
+            "phone_number",
+            "email"
+          ],
+          "VerificationMessageTemplate": {
+            "DefaultEmailOption": "CONFIRM_WITH_CODE"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_user_pool_client_response": {
+        "UserPoolClient": {
+          "AllowedOAuthFlowsUserPoolClient": false,
+          "AuthSessionValidity": 3,
+          "ClientId": "<client-id:1>",
+          "ClientName": "<client-name:1>",
+          "CreationDate": "datetime",
+          "EnablePropagateAdditionalUserContextData": false,
+          "EnableTokenRevocation": true,
+          "LastModifiedDate": "datetime",
+          "RefreshTokenValidity": 30,
+          "TokenValidityUnits": {},
+          "UserPoolId": "<user-pool-id:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "admin_create_user_result": {
+        "User": {
+          "Attributes": [
+            {
+              "Name": "sub",
+              "Value": "<username:1>"
+            },
+            {
+              "Name": "email",
+              "Value": "<email>"
+            }
+          ],
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "<username:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "username_exists_exc": {
+        "Error": {
+          "Code": "UsernameExistsException",
+          "Message": "An account with the given email already exists."
+        },
+        "message": "An account with the given email already exists.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_create_admin_user_with_duplicate_email_but_valid_userconfiguration": {
+    "recorded-date": "09-09-2022, 23:57:15",
+    "recorded-content": {
+      "create_user_pool_response": {
+        "UserPool": {
+          "AdminCreateUserConfig": {
+            "AllowAdminCreateUserOnly": false,
+            "UnusedAccountValidityDays": 7
+          },
+          "AliasAttributes": [
+            "preferred_username"
+          ],
+          "Arn": "arn:<partition>:cognito-idp:<region>:111111111111:userpool/<user-pool-id:1>",
+          "AutoVerifiedAttributes": [
+            "email"
+          ],
+          "CreationDate": "datetime",
+          "EmailConfiguration": {
+            "EmailSendingAccount": "COGNITO_DEFAULT"
+          },
+          "EstimatedNumberOfUsers": 0,
+          "Id": "<user-pool-id:1>",
+          "LambdaConfig": {},
+          "LastModifiedDate": "datetime",
+          "MfaConfiguration": "OFF",
+          "Name": "<pool-name>",
+          "Policies": {
+            "PasswordPolicy": {
+              "MinimumLength": 8,
+              "RequireLowercase": true,
+              "RequireNumbers": true,
+              "RequireSymbols": true,
+              "RequireUppercase": true,
+              "TemporaryPasswordValidityDays": 7
+            }
+          },
+          "SchemaAttributes": [
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": false,
+              "Name": "sub",
+              "Required": true,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "1"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "given_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "family_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "middle_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "nickname",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "preferred_username",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "profile",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "picture",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "website",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "email",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Boolean",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "email_verified",
+              "Required": false
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "gender",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "birthdate",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "10",
+                "MinLength": "10"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "zoneinfo",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "locale",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "phone_number",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Boolean",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "phone_number_verified",
+              "Required": false
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "address",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Number",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "updated_at",
+              "NumberAttributeConstraints": {
+                "MinValue": "0"
+              },
+              "Required": false
+            }
+          ],
+          "UserAttributeUpdateSettings": {
+            "AttributesRequireVerificationBeforeUpdate": []
+          },
+          "UsernameConfiguration": {
+            "CaseSensitive": false
+          },
+          "VerificationMessageTemplate": {
+            "DefaultEmailOption": "CONFIRM_WITH_CODE"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_user_pool_client_response": {
+        "UserPoolClient": {
+          "AllowedOAuthFlowsUserPoolClient": false,
+          "AuthSessionValidity": 3,
+          "ClientId": "<client-id:1>",
+          "ClientName": "<client-name:1>",
+          "CreationDate": "datetime",
+          "EnablePropagateAdditionalUserContextData": false,
+          "EnableTokenRevocation": true,
+          "LastModifiedDate": "datetime",
+          "RefreshTokenValidity": 30,
+          "TokenValidityUnits": {},
+          "UserPoolId": "<user-pool-id:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "admin_create_user_username1_result": {
+        "User": {
+          "Attributes": [
+            {
+              "Name": "email",
+              "Value": "<email>"
+            },
+            {
+              "Name": "sub",
+              "Value": "<uuid>"
+            }
+          ],
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "username1"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "admin_create_user_username2_result": {
+        "User": {
+          "Attributes": [
+            {
+              "Name": "email",
+              "Value": "<email>"
+            },
+            {
+              "Name": "sub",
+              "Value": "<uuid>"
+            }
+          ],
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "username2"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestAuthFlows::test_invalid_srp_raises_error[COFFEEG]": {
+    "recorded-date": "12-10-2022, 12:14:05",
+    "recorded-content": {
+      "invalid_srp_response": "An error occurred (InvalidParameterException) when calling the InitiateAuth operation: 1 validation error detected: Value 'COFFEEG' at 'a' failed to satisfy constraint: Member must satisfy regular expression pattern: ^[0-9a-fA-F]+$"
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestAuthFlows::test_invalid_srp_raises_error[None]": {
+    "recorded-date": "12-10-2022, 12:14:07",
+    "recorded-content": {
+      "invalid_srp_response": "An error occurred (InvalidParameterException) when calling the InitiateAuth operation: Missing required parameter SRP_A"
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestTriggers::test_custom_auth_triggers": {
+    "recorded-date": "19-06-2023, 11:40:49",
+    "recorded-content": {
+      "error1": {
+        "Error": {
+          "Code": "UserNotFoundException",
+          "Message": "User does not exist."
+        },
+        "message": "User does not exist.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "result1": {
+        "ChallengeName": "CUSTOM_CHALLENGE",
+        "ChallengeParameters": {
+          "USERNAME": "<username:1>",
+          "code": "code123"
+        },
+        "Session": "session",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "result2": {
+        "AuthenticationResult": {
+          "AccessToken": "<access-token:1>",
+          "ExpiresIn": 3600,
+          "IdToken": "<id-token:1>",
+          "RefreshToken": "<refresh-token:1>",
+          "TokenType": "Bearer"
+        },
+        "ChallengeParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "lambda_events1": [
+        {
+          "req": {
+            "version": "version",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "<username:1>",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client-id:1>"
+            },
+            "triggerSource": "DefineAuthChallenge_Authentication",
+            "request": {
+              "userAttributes": {
+                "sub": "<sub:1>",
+                "cognito:user_status": "CONFIRMED"
+              },
+              "session": [
+                {
+                  "challengeName": "SRP_A",
+                  "challengeResult": true,
+                  "challengeMetadata": null
+                }
+              ]
+            },
+            "response": {
+              "challengeName": null,
+              "issueTokens": null,
+              "failAuthentication": null
+            }
+          },
+          "res": {
+            "challengeName": "CUSTOM_CHALLENGE",
+            "issueTokens": false,
+            "failAuthentication": false
+          }
+        },
+        {
+          "req": {
+            "version": "version",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "<username:1>",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client-id:1>"
+            },
+            "triggerSource": "CreateAuthChallenge_Authentication",
+            "request": {
+              "userAttributes": {
+                "sub": "<sub:1>",
+                "cognito:user_status": "CONFIRMED"
+              },
+              "challengeName": "CUSTOM_CHALLENGE",
+              "session": [
+                {
+                  "challengeName": "SRP_A",
+                  "challengeResult": true,
+                  "challengeMetadata": null
+                }
+              ]
+            },
+            "response": {
+              "publicChallengeParameters": null,
+              "privateChallengeParameters": null,
+              "challengeMetadata": null
+            }
+          },
+          "res": {
+            "publicChallengeParameters": {
+              "code": "code123"
+            },
+            "privateChallengeParameters": {
+              "answer": "resp456"
+            },
+            "challengeMetadata": null
+          }
+        },
+        {
+          "req": {
+            "version": "version",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "<username:1>",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client-id:1>"
+            },
+            "triggerSource": "VerifyAuthChallengeResponse_Authentication",
+            "request": {
+              "userAttributes": {
+                "sub": "<sub:1>",
+                "cognito:user_status": "CONFIRMED"
+              },
+              "privateChallengeParameters": {
+                "answer": "resp456"
+              },
+              "challengeAnswer": "resp456"
+            },
+            "response": {
+              "answerCorrect": null
+            }
+          },
+          "res": {
+            "answerCorrect": true
+          }
+        },
+        {
+          "req": {
+            "version": "version",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "<username:1>",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client-id:1>"
+            },
+            "triggerSource": "DefineAuthChallenge_Authentication",
+            "request": {
+              "userAttributes": {
+                "sub": "<sub:1>",
+                "cognito:user_status": "CONFIRMED"
+              },
+              "session": [
+                {
+                  "challengeName": "SRP_A",
+                  "challengeResult": true,
+                  "challengeMetadata": null
+                },
+                {
+                  "challengeName": "CUSTOM_CHALLENGE",
+                  "challengeResult": true,
+                  "challengeMetadata": null
+                }
+              ]
+            },
+            "response": {
+              "challengeName": null,
+              "issueTokens": null,
+              "failAuthentication": null
+            }
+          },
+          "res": {
+            "challengeName": null,
+            "issueTokens": true,
+            "failAuthentication": false
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_create_pool_mfa_off": {
+    "recorded-date": "30-12-2022, 22:38:55",
+    "recorded-content": {
+      "create_user_pool_mfa_off": {
+        "UserPool": {
+          "AdminCreateUserConfig": {
+            "AllowAdminCreateUserOnly": false,
+            "UnusedAccountValidityDays": 7
+          },
+          "Arn": "<user-pool-arn:1>",
+          "CreationDate": "datetime",
+          "DeletionProtection": "INACTIVE",
+          "EmailConfiguration": {
+            "EmailSendingAccount": "COGNITO_DEFAULT"
+          },
+          "EstimatedNumberOfUsers": 0,
+          "Id": "<user-pool-id:1>",
+          "LambdaConfig": {},
+          "LastModifiedDate": "datetime",
+          "MfaConfiguration": "OFF",
+          "Name": "<pool-name>",
+          "Policies": {
+            "PasswordPolicy": {
+              "MinimumLength": 8,
+              "RequireLowercase": true,
+              "RequireNumbers": true,
+              "RequireSymbols": true,
+              "RequireUppercase": true,
+              "TemporaryPasswordValidityDays": 7
+            }
+          },
+          "SchemaAttributes": [
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": false,
+              "Name": "sub",
+              "Required": true,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "1"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "given_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "family_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "middle_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "nickname",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "preferred_username",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "profile",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "picture",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "website",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "email",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Boolean",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "email_verified",
+              "Required": false
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "gender",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "birthdate",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "10",
+                "MinLength": "10"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "zoneinfo",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "locale",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "phone_number",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Boolean",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "phone_number_verified",
+              "Required": false
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "address",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Number",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "updated_at",
+              "NumberAttributeConstraints": {
+                "MinValue": "0"
+              },
+              "Required": false
+            }
+          ],
+          "SmsAuthenticationMessage": "Your authentication code is {####}",
+          "UserAttributeUpdateSettings": {
+            "AttributesRequireVerificationBeforeUpdate": []
+          },
+          "VerificationMessageTemplate": {
+            "DefaultEmailOption": "CONFIRM_WITH_CODE"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_user_pool_mfa_config": {
+        "MfaConfiguration": "OFF",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_create_user_group_in_pool": {
+    "recorded-date": "30-12-2022, 22:42:29",
+    "recorded-content": {
+      "create_user_pool": {
+        "UserPool": {
+          "AdminCreateUserConfig": {
+            "AllowAdminCreateUserOnly": false,
+            "UnusedAccountValidityDays": 7
+          },
+          "Arn": "arn:<partition>:cognito-idp:<region>:111111111111:userpool/<user-pool-id>",
+          "CreationDate": "datetime",
+          "DeletionProtection": "INACTIVE",
+          "EmailConfiguration": {
+            "EmailSendingAccount": "COGNITO_DEFAULT"
+          },
+          "EstimatedNumberOfUsers": 0,
+          "Id": "<user-pool-id>",
+          "LambdaConfig": {},
+          "LastModifiedDate": "datetime",
+          "MfaConfiguration": "OFF",
+          "Name": "<pool-name>",
+          "Policies": {
+            "PasswordPolicy": {
+              "MinimumLength": 8,
+              "RequireLowercase": true,
+              "RequireNumbers": true,
+              "RequireSymbols": true,
+              "RequireUppercase": true,
+              "TemporaryPasswordValidityDays": 7
+            }
+          },
+          "SchemaAttributes": [
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": false,
+              "Name": "sub",
+              "Required": true,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "1"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "given_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "family_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "middle_name",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "nickname",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "preferred_username",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "profile",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "picture",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "website",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "email",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Boolean",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "email_verified",
+              "Required": false
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "gender",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "birthdate",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "10",
+                "MinLength": "10"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "zoneinfo",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "locale",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "phone_number",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Boolean",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "phone_number_verified",
+              "Required": false
+            },
+            {
+              "AttributeDataType": "String",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "address",
+              "Required": false,
+              "StringAttributeConstraints": {
+                "MaxLength": "2048",
+                "MinLength": "0"
+              }
+            },
+            {
+              "AttributeDataType": "Number",
+              "DeveloperOnlyAttribute": false,
+              "Mutable": true,
+              "Name": "updated_at",
+              "NumberAttributeConstraints": {
+                "MinValue": "0"
+              },
+              "Required": false
+            }
+          ],
+          "UserAttributeUpdateSettings": {
+            "AttributesRequireVerificationBeforeUpdate": []
+          },
+          "VerificationMessageTemplate": {
+            "DefaultEmailOption": "CONFIRM_WITH_CODE"
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_group": {
+        "Group": {
+          "CreationDate": "datetime",
+          "Description": "Managed by Terraform",
+          "GroupName": "<group-name:1>",
+          "LastModifiedDate": "datetime",
+          "UserPoolId": "<user-pool-id>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get_group": {
+        "Group": {
+          "CreationDate": "datetime",
+          "Description": "Managed by Terraform",
+          "GroupName": "<group-name:1>",
+          "LastModifiedDate": "datetime",
+          "UserPoolId": "<user-pool-id>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_group_with_role_arn": {
+        "Group": {
+          "CreationDate": "datetime",
+          "GroupName": "<group-name:2>",
+          "LastModifiedDate": "datetime",
+          "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+          "UserPoolId": "<user-pool-id>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_group_with_role_arn_doesnotexist": {
+        "Group": {
+          "CreationDate": "datetime",
+          "GroupName": "<group-name:3>",
+          "LastModifiedDate": "datetime",
+          "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>-doesnotexist",
+          "UserPoolId": "<user-pool-id>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestTriggers::test_auth_trigger_group_overrides": {
+    "recorded-date": "06-02-2023, 23:21:34",
+    "recorded-content": {
+      "user-details": {
+        "Enabled": true,
+        "UserAttributes": [
+          {
+            "Name": "sub",
+            "Value": "<sub:1>"
+          }
+        ],
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "CONFIRMED",
+        "Username": "<username:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "user-details-updated": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "auth_result": {
+        "AccessToken": "<access-token:1>",
+        "ExpiresIn": 3600,
+        "IdToken": "<id-token:1>",
+        "RefreshToken": "<refresh-token:1>",
+        "TokenType": "Bearer"
+      },
+      "id_token_claims": {
+        "cognito:groups": [
+          "group1",
+          "group2"
+        ],
+        "event_id": "<uuid:1>",
+        "sub": "<sub:1>",
+        "token_use": "id"
+      },
+      "access_token_claims": {
+        "client_id": "<client-id:1>",
+        "cognito:groups": [
+          "group1",
+          "group2"
+        ],
+        "event_id": "<uuid:1>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "<username:1>"
+      },
+      "group1_users": [],
+      "lambda_events": [
+        {
+          "req": {
+            "version": "version",
+            "triggerSource": "TokenGeneration_Authentication",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "<username:1>",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client-id:1>"
+            },
+            "request": {
+              "userAttributes": {
+                "sub": "<sub:1>",
+                "cognito:user_status": "CONFIRMED",
+                "custom:userId": "<username:1>"
+              },
+              "groupConfiguration": {
+                "groupsToOverride": [
+                  "group3"
+                ],
+                "iamRolesToOverride": [],
+                "preferredRole": null
+              }
+            },
+            "response": {
+              "claimsOverrideDetails": null
+            }
+          },
+          "res": {
+            "claimsOverrideDetails": {
+              "claimsToAddOrOverride": {
+                "add_attr1": "value1"
+              },
+              "claimsToSuppress": [
+                "username",
+                "client_id"
+              ],
+              "groupOverrideDetails": {
+                "groupsToOverride": [
+                  "group1",
+                  "group2"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_restore_forgotten_password": {
+    "recorded-date": "07-02-2023, 20:27:14",
+    "recorded-content": {
+      "get-user": {
+        "sub": "<sub:1>"
+      },
+      "error1": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Cannot reset password for the user as there is no registered/verified email or phone_number"
+        },
+        "message": "Cannot reset password for the user as there is no registered/verified email or phone_number"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognitoIdentity::test_create_identity_get_id": {
+    "recorded-date": "28-02-2023, 20:36:00",
+    "recorded-content": {
+      "identity-pool": {
+        "AllowUnauthenticatedIdentities": true,
+        "CognitoIdentityProviders": [
+          {
+            "ClientId": "<client-id:1>",
+            "ProviderName": "cognito-idp.<region>.amazonaws.com/<user-pool-id>",
+            "ServerSideTokenCheck": false
+          }
+        ],
+        "IdentityPoolId": "<identity-pool-id>",
+        "IdentityPoolName": "<identity-pool-name:1>",
+        "IdentityPoolTags": {}
+      },
+      "id-result": {
+        "IdentityId": "<identity-id:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_invalid_pool_client_parameters": {
+    "recorded-date": "05-04-2023, 22:35:28",
+    "recorded-content": {
+      "client-error-1": {
+        "Error": {
+          "Code": "InvalidOAuthFlowException",
+          "Message": "client_credentials flow can not be selected along with code flow or implicit flow."
+        },
+        "message": "client_credentials flow can not be selected along with code flow or implicit flow.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "client-error-2": {
+        "Error": {
+          "Code": "InvalidOAuthFlowException",
+          "Message": "CallbackUrls can not be empty when code flow or implicit flow is selected"
+        },
+        "message": "CallbackUrls can not be empty when code flow or implicit flow is selected",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "client-error-3": {
+        "Error": {
+          "Code": "InvalidOAuthFlowException",
+          "Message": "email is not supported with client_credentials flow"
+        },
+        "message": "email is not supported with client_credentials flow",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "client-error-4": {
+        "Error": {
+          "Code": "InvalidOAuthFlowException",
+          "Message": "client_credentials flow can not be selected if client does not have a client secret."
+        },
+        "message": "client_credentials flow can not be selected if client does not have a client secret.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_token_endpoint[client_credentials-body]": {
+    "recorded-date": "26-03-2024, 17:51:18",
+    "recorded-content": {
+      "pool-client": {
+        "AllowedOAuthFlows": [
+          "client_credentials"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "<custom-scope>"
+        ],
+        "AuthSessionValidity": 3,
+        "CallbackURLs": [
+          "https://localhost.localstack.cloud:4566"
+        ],
+        "ClientId": "<client-id:1>",
+        "ClientName": "<client-name:1>",
+        "ClientSecret": "<client-secret:1>",
+        "CreationDate": "creation-date",
+        "EnablePropagateAdditionalUserContextData": false,
+        "EnableTokenRevocation": true,
+        "ExplicitAuthFlows": [
+          "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+          "ALLOW_CUSTOM_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH",
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_USER_SRP_AUTH"
+        ],
+        "LastModifiedDate": "last-modified-date",
+        "RefreshTokenValidity": 30,
+        "TokenValidityUnits": {},
+        "UserPoolId": "<user-pool-id:1>"
+      },
+      "scopes": [
+        "<custom-scope>"
+      ]
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_token_endpoint[client_credentials-query_params]": {
+    "recorded-date": "26-03-2024, 17:52:40",
+    "recorded-content": {
+      "pool-client": {
+        "AllowedOAuthFlows": [
+          "client_credentials"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "<custom-scope>"
+        ],
+        "AuthSessionValidity": 3,
+        "CallbackURLs": [
+          "https://localhost.localstack.cloud:4566"
+        ],
+        "ClientId": "<client-id:1>",
+        "ClientName": "<client-name:1>",
+        "ClientSecret": "<client-secret:1>",
+        "CreationDate": "creation-date",
+        "EnablePropagateAdditionalUserContextData": false,
+        "EnableTokenRevocation": true,
+        "ExplicitAuthFlows": [
+          "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+          "ALLOW_CUSTOM_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH",
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_USER_SRP_AUTH"
+        ],
+        "LastModifiedDate": "last-modified-date",
+        "RefreshTokenValidity": 30,
+        "TokenValidityUnits": {},
+        "UserPoolId": "<user-pool-id:1>"
+      },
+      "scopes": [
+        "<custom-scope>"
+      ]
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_token_endpoint[code-body]": {
+    "recorded-date": "26-03-2024, 17:54:09",
+    "recorded-content": {
+      "pool-client": {
+        "AllowedOAuthFlows": [
+          "code"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "openid",
+          "email"
+        ],
+        "AuthSessionValidity": 3,
+        "CallbackURLs": [
+          "https://localhost.localstack.cloud:4566"
+        ],
+        "ClientId": "<client-id:1>",
+        "ClientName": "<client-name:1>",
+        "CreationDate": "creation-date",
+        "EnablePropagateAdditionalUserContextData": false,
+        "EnableTokenRevocation": true,
+        "ExplicitAuthFlows": [
+          "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+          "ALLOW_CUSTOM_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH",
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_USER_SRP_AUTH"
+        ],
+        "LastModifiedDate": "last-modified-date",
+        "RefreshTokenValidity": 30,
+        "TokenValidityUnits": {},
+        "UserPoolId": "<user-pool-id:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_token_endpoint[code-query_params]": {
+    "recorded-date": "26-03-2024, 17:55:39",
+    "recorded-content": {
+      "pool-client": {
+        "AllowedOAuthFlows": [
+          "code"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "openid",
+          "email"
+        ],
+        "AuthSessionValidity": 3,
+        "CallbackURLs": [
+          "https://localhost.localstack.cloud:4566"
+        ],
+        "ClientId": "<client-id:1>",
+        "ClientName": "<client-name:1>",
+        "CreationDate": "creation-date",
+        "EnablePropagateAdditionalUserContextData": false,
+        "EnableTokenRevocation": true,
+        "ExplicitAuthFlows": [
+          "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+          "ALLOW_CUSTOM_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH",
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_USER_SRP_AUTH"
+        ],
+        "LastModifiedDate": "last-modified-date",
+        "RefreshTokenValidity": 30,
+        "TokenValidityUnits": {},
+        "UserPoolId": "<user-pool-id:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestAuthFlows::test_valid_srp_login": {
+    "recorded-date": "18-06-2023, 18:49:34",
+    "recorded-content": {
+      "initiate-auth": {
+        "ChallengeName": "PASSWORD_VERIFIER",
+        "ChallengeParameters": {
+          "SALT": "<salt:1>",
+          "SECRET_BLOCK": "<secret-block:1>",
+          "SRP_B": "<srp-b:1>",
+          "USERNAME": "<username:1>",
+          "USER_ID_FOR_SRP": "<username:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "initiate-auth-admin": {
+        "ChallengeName": "PASSWORD_VERIFIER",
+        "ChallengeParameters": {
+          "SALT": "<salt:1>",
+          "SECRET_BLOCK": "<secret-block:2>",
+          "SRP_B": "<srp-b:2>",
+          "USERNAME": "<username:1>",
+          "USER_ID_FOR_SRP": "<username:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_mfa_config": {
+    "recorded-date": "08-05-2023, 12:11:45",
+    "recorded-content": {}
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_update_user_mfa_preferences": {
+    "recorded-date": "18-05-2023, 19:13:29",
+    "recorded-content": {
+      "get-user-1": {
+        "Enabled": true,
+        "UserAttributes": {
+          "phone_number": "+10000000",
+          "phone_number_verified": "true",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "CONFIRMED",
+        "Username": "<username:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "updated-user-1": {
+        "Enabled": true,
+        "UserAttributes": {
+          "phone_number": "+10000000",
+          "phone_number_verified": "true",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserMFASettingList": [
+          "SMS_MFA"
+        ],
+        "UserStatus": "CONFIRMED",
+        "Username": "<username:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "updated-user-2": {
+        "Enabled": true,
+        "PreferredMfaSetting": "SMS_MFA",
+        "UserAttributes": {
+          "phone_number": "+10000000",
+          "phone_number_verified": "true",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserMFASettingList": [
+          "SMS_MFA"
+        ],
+        "UserStatus": "CONFIRMED",
+        "Username": "<username:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[email-True-True]": {
+    "recorded-date": "08-05-2023, 16:58:46",
+    "recorded-content": {
+      "error-no-email": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "No email provided but email_verified was true"
+        },
+        "message": "No email provided but email_verified was true",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:2>",
+        "email_verified": "false",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[email-True-False]": {
+    "recorded-date": "08-05-2023, 16:58:48",
+    "recorded-content": {
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:2>",
+        "email_verified": "false",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[email-False-True]": {
+    "recorded-date": "08-05-2023, 16:58:51",
+    "recorded-content": {
+      "error-no-email": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "No email provided but email_verified was true"
+        },
+        "message": "No email provided but email_verified was true",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[email-False-False]": {
+    "recorded-date": "08-05-2023, 16:58:53",
+    "recorded-content": {
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[phone_number-True-True]": {
+    "recorded-date": "08-05-2023, 16:58:56",
+    "recorded-content": {
+      "error-no-email": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "No email provided but email_verified was true"
+        },
+        "message": "No email provided but email_verified was true",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "phone_number": "+1000000000",
+        "phone_number_verified": "false",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[phone_number-True-False]": {
+    "recorded-date": "08-05-2023, 16:58:58",
+    "recorded-content": {
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "phone_number": "+1000000000",
+        "phone_number_verified": "false",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[phone_number-False-True]": {
+    "recorded-date": "08-05-2023, 16:59:00",
+    "recorded-content": {
+      "error-no-email": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "No email provided but email_verified was true"
+        },
+        "message": "No email provided but email_verified was true",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[phone_number-False-False]": {
+    "recorded-date": "08-05-2023, 16:59:02",
+    "recorded-content": {
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[name-True-True]": {
+    "recorded-date": "08-05-2023, 16:59:04",
+    "recorded-content": {
+      "error-no-email": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "No email provided but email_verified was true"
+        },
+        "message": "No email provided but email_verified was true",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[name-True-False]": {
+    "recorded-date": "08-05-2023, 16:59:06",
+    "recorded-content": {
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[name-False-True]": {
+    "recorded-date": "08-05-2023, 16:59:09",
+    "recorded-content": {
+      "error-no-email": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "No email provided but email_verified was true"
+        },
+        "message": "No email provided but email_verified was true",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "email_verified": "True",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_attributes_upon_creation[name-False-False]": {
+    "recorded-date": "08-05-2023, 16:59:11",
+    "recorded-content": {
+      "create-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "sub": "<sub:1>"
+      },
+      "get-user": {
+        "custom:foobar": "test123",
+        "email": "<email:1>",
+        "sub": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_srp_login": {
+    "recorded-date": "25-05-2023, 01:51:16",
+    "recorded-content": {
+      "user-pool": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_email",
+              "Priority": 1
+            },
+            {
+              "Name": "verified_phone_number",
+              "Priority": 2
+            }
+          ]
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": false,
+          "UnusedAccountValidityDays": 7
+        },
+        "Arn": "arn:<partition>:cognito-idp:<region>:111111111111:userpool/<pool-id>",
+        "CreationDate": "datetime",
+        "DeletionProtection": "INACTIVE",
+        "EmailConfiguration": {
+          "EmailSendingAccount": "COGNITO_DEFAULT"
+        },
+        "EstimatedNumberOfUsers": 0,
+        "Id": "<pool-id>",
+        "LambdaConfig": {},
+        "LastModifiedDate": "datetime",
+        "MfaConfiguration": "OFF",
+        "Name": "<pool-name>",
+        "Policies": {
+          "PasswordPolicy": {
+            "MinimumLength": 8,
+            "RequireLowercase": true,
+            "RequireNumbers": true,
+            "RequireSymbols": true,
+            "RequireUppercase": true,
+            "TemporaryPasswordValidityDays": 7
+          }
+        },
+        "SchemaAttributes": [
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": false,
+            "Name": "sub",
+            "Required": true,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "1"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "name",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "given_name",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "family_name",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "middle_name",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "nickname",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "preferred_username",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "profile",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "picture",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "website",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "email",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "Boolean",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "email_verified",
+            "Required": false
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "gender",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "birthdate",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "10",
+              "MinLength": "10"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "zoneinfo",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "locale",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "phone_number",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "Boolean",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "phone_number_verified",
+            "Required": false
+          },
+          {
+            "AttributeDataType": "String",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "address",
+            "Required": false,
+            "StringAttributeConstraints": {
+              "MaxLength": "2048",
+              "MinLength": "0"
+            }
+          },
+          {
+            "AttributeDataType": "Number",
+            "DeveloperOnlyAttribute": false,
+            "Mutable": true,
+            "Name": "updated_at",
+            "NumberAttributeConstraints": {
+              "MinValue": "0"
+            },
+            "Required": false
+          }
+        ],
+        "UserAttributeUpdateSettings": {
+          "AttributesRequireVerificationBeforeUpdate": []
+        },
+        "UsernameConfiguration": {
+          "CaseSensitive": false
+        },
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE"
+        }
+      },
+      "user-pool-client": {
+        "AllowedOAuthFlowsUserPoolClient": false,
+        "AuthSessionValidity": 3,
+        "ClientId": "<client-id>",
+        "ClientName": "c1",
+        "CreationDate": "datetime",
+        "EnablePropagateAdditionalUserContextData": false,
+        "EnableTokenRevocation": true,
+        "ExplicitAuthFlows": [
+          "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+          "ALLOW_CUSTOM_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH",
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_USER_SRP_AUTH"
+        ],
+        "LastModifiedDate": "datetime",
+        "RefreshTokenValidity": 30,
+        "TokenValidityUnits": {},
+        "UserPoolId": "<pool-id>"
+      },
+      "error-invalid-username": {
+        "Error": {
+          "Code": "UserNotFoundException",
+          "Message": "User does not exist."
+        },
+        "message": "User does not exist.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-invalid-password": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "Incorrect username or password."
+        },
+        "message": "Incorrect username or password.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-user-already-deleted": {
+        "Error": {
+          "Code": "UserNotFoundException",
+          "Message": "User does not exist."
+        },
+        "message": "User does not exist.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_signup_case_insensitive_and_auth_using_srp": {
+    "recorded-date": "25-05-2023, 02:33:55",
+    "recorded-content": {
+      "error-user-already-deleted": {
+        "Error": {
+          "Code": "UserNotFoundException",
+          "Message": "User does not exist."
+        },
+        "message": "User does not exist.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestAuthFlows::test_auth_srp_get_secret_and_salt": {
+    "recorded-date": "25-05-2023, 03:44:07",
+    "recorded-content": {}
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_pool_error_messages": {
+    "recorded-date": "02-06-2023, 18:31:19",
+    "recorded-content": {
+      "error-list-users-limit": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "1 validation error detected: Value '100' at 'limit' failed to satisfy constraint: Member must have value less than or equal to 60"
+        },
+        "message": "1 validation error detected: Value '100' at 'limit' failed to satisfy constraint: Member must have value less than or equal to 60",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-already-confirmed": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "User cannot be confirmed. Current status is CONFIRMED"
+        },
+        "message": "User cannot be confirmed. Current status is CONFIRMED",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_admin_set_permanent_invalid_password": {
+    "recorded-date": "06-06-2023, 11:48:41",
+    "recorded-content": {
+      "invalid-permanent-password": {
+        "Error": {
+          "Code": "InvalidPasswordException",
+          "Message": "Password does not conform to policy: Password not long enough"
+        },
+        "message": "Password does not conform to policy: Password not long enough",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "invalid-not-permanent-password": {
+        "Error": {
+          "Code": "InvalidPasswordException",
+          "Message": "Password does not conform to policy: Password not long enough"
+        },
+        "message": "Password does not conform to policy: Password not long enough",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "valid-password-user-status": {
+        "Enabled": true,
+        "UserAttributes": [
+          {
+            "Name": "sub",
+            "Value": "a9206455-3e21-42b5-aa09-279033952880"
+          }
+        ],
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "username-35c3b20f",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_password_policy": {
+    "recorded-date": "05-06-2023, 16:57:01",
+    "recorded-content": {
+      "password-too-short": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Password is too short (minimum length 10)"
+        },
+        "message": "Password is too short (minimum length 10)",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "password-no-symbols": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Password invalid (requires special symbols)"
+        },
+        "message": "Password invalid (requires special symbols)",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "password-no-numbers": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Password invalid (requires numbers)"
+        },
+        "message": "Password invalid (requires numbers)",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_auth_not_authorized_user": {
+    "recorded-date": "08-06-2023, 21:15:27",
+    "recorded-content": {
+      "user-disabled-exception": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "User is disabled."
+        },
+        "message": "User is disabled.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "user-re-enabled-init-auth": {
+        "ChallengeName": "NEW_PASSWORD_REQUIRED",
+        "ChallengeParameters": {
+          "USER_ID_FOR_SRP": "test@example.com",
+          "requiredAttributes": "[]",
+          "userAttributes": {}
+        },
+        "Session": "AYABeOxcMe-89WAzYcNWGSdc7pUAHQABAAdTZXJ2aWNlABBDb2duaXRvVXNlclBvb2xzAAEAB2F3cy1rbXMAS2Fybjphd3M6a21zOnVzLWVhc3QtMTo3NDU2MjM0Njc1NTU6a2V5L2IxNTVhZmNhLWJmMjktNGVlZC1hZmQ4LWE5ZTA5MzY1M2RiZQC4AQIBAHgDHnKSW2nDRJSDSLf55TGFyX5On_wV32whMfiMxuCEIAHEg3jOP00v1sFmgBcTCLImAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM-7cygBL5olFXKrqoAgEQgDvadT-QjX58IvB0r5tWkYDzoQlrlqL8N7O-6aHxyCARwJogO115zTxza9csRIN8KBjci9LyNOOj6tEpXwIAAAAADAAAEAAAAAAAAAAAAAAAAABohweiOWr5VyVt2prmw1W8_____wAAAAEAAAAAAAAAAAAAAAEAAADBArGEJlimQYs178EPbpw6DxZnn-A48BLdltxSpfVoSR0trtkmpZzIGjlxrJ5ZVLzl3_UvDgLiY7NnN-PqwdGUofuQGsXl0942soD5iBGjIdtz4rkc0DKIhXSC-ts1ByYR7s-M3whRfc2wjItzoAKvYf-uj2yWu1Po4CZDNxx0EEKDXeaSwwLEExMZ6SietelDYIp0IQSs6sRzvA64deYaaBhEG7QnLRCQv15TuGkYegcegR4vLXT6n8YzPfZPFjDT782wmuJ3u7ZWBEZnk4biiTQ",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_invalid_expiration_unit": {
+    "recorded-date": "09-06-2023, 16:31:30",
+    "recorded-content": {
+      "invalid-token-unit": "An error occurred (InvalidParameterException) when calling the CreateUserPoolClient operation: 3 validation errors detected: Value 'invalid_unit' at 'tokenValidityUnits.idToken' failed to satisfy constraint: Member must satisfy enum value set: [hours, days, minutes, seconds]; Value 'invalid_unit' at 'tokenValidityUnits.accessToken' failed to satisfy constraint: Member must satisfy enum value set: [hours, days, minutes, seconds]; Value 'bubu' at 'tokenValidityUnits.refreshToken' failed to satisfy constraint: Member must satisfy enum value set: [hours, days, minutes, seconds]"
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_invalid_expiration_unit[invalid-hours-hours]": {
+    "recorded-date": "09-06-2023, 16:37:51",
+    "recorded-content": {
+      "invalid-token-unit": "An error occurred (InvalidParameterException) when calling the CreateUserPoolClient operation: 1 validation error detected: Value 'invalid' at 'tokenValidityUnits.accessToken' failed to satisfy constraint: Member must satisfy enum value set: [hours, days, minutes, seconds]"
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_invalid_expiration_unit[invalid-invalid-hours]": {
+    "recorded-date": "09-06-2023, 16:37:53",
+    "recorded-content": {
+      "invalid-token-unit": "An error occurred (InvalidParameterException) when calling the CreateUserPoolClient operation: 2 validation errors detected: Value 'invalid' at 'tokenValidityUnits.idToken' failed to satisfy constraint: Member must satisfy enum value set: [hours, days, minutes, seconds]; Value 'invalid' at 'tokenValidityUnits.accessToken' failed to satisfy constraint: Member must satisfy enum value set: [hours, days, minutes, seconds]"
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_invalid_expiration_unit[invalid-invalid-invalid]": {
+    "recorded-date": "09-06-2023, 16:37:55",
+    "recorded-content": {
+      "invalid-token-unit": "An error occurred (InvalidParameterException) when calling the CreateUserPoolClient operation: 3 validation errors detected: Value 'invalid' at 'tokenValidityUnits.idToken' failed to satisfy constraint: Member must satisfy enum value set: [hours, days, minutes, seconds]; Value 'invalid' at 'tokenValidityUnits.accessToken' failed to satisfy constraint: Member must satisfy enum value set: [hours, days, minutes, seconds]; Value 'invalid' at 'tokenValidityUnits.refreshToken' failed to satisfy constraint: Member must satisfy enum value set: [hours, days, minutes, seconds]"
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestTriggers::test_cognito_admin_create_signup_triggers": {
+    "recorded-date": "16-06-2023, 11:44:49",
+    "recorded-content": {
+      "admin_create_user": {
+        "User": {
+          "Attributes": [
+            {
+              "Name": "sub",
+              "Value": "<sub-value:1>"
+            }
+          ],
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "<username:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "error1": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "User cannot be confirmed. Current status is FORCE_CHANGE_PASSWORD"
+        },
+        "message": "User cannot be confirmed. Current status is FORCE_CHANGE_PASSWORD",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "admin_get_user_username1": {
+        "Enabled": true,
+        "UserAttributes": [
+          {
+            "Name": "sub",
+            "Value": "<sub-value:1>"
+          }
+        ],
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "<username:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "sign_up": {
+        "UserConfirmed": false,
+        "UserSub": "user-sub",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "admin_get_user_username2_1": {
+        "Enabled": true,
+        "UserAttributes": [
+          {
+            "Name": "sub",
+            "Value": "<sub-value:2>"
+          }
+        ],
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "<username:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "admin_confirm_sign_up": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "admin_get_user_username2_2": {
+        "Enabled": true,
+        "UserAttributes": [
+          {
+            "Name": "sub",
+            "Value": "<sub-value:2>"
+          }
+        ],
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "CONFIRMED",
+        "Username": "<username:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "error2": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "User cannot be confirmed. Current status is CONFIRMED"
+        },
+        "message": "User cannot be confirmed. Current status is CONFIRMED",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    },
+    "tests/aws/services/cognito/test_cognito.py::TestAuthFlows::test_srp_custom_auth_flow": {
+      "recorded-date": "18-06-2023, 18:39:21",
+      "recorded-content": {
+        "initiate-auth-custom": {
+          "ChallengeName": "PASSWORD_VERIFIER",
+          "ChallengeParameters": {
+            "SALT": "<salt:1>",
+            "SECRET_BLOCK": "<secret-block:1>",
+            "SRP_B": "<srp-b:1>",
+            "USERNAME": "<username:1>",
+            "USER_ID_FOR_SRP": "<username:1>"
+          },
+          "Session": "session",
+          "ResponseMetadata": {
+            "HTTPHeaders": {},
+            "HTTPStatusCode": 200
+          }
+        },
+        "respond-auth-1": {
+          "ChallengeName": "CUSTOM_CHALLENGE",
+          "ChallengeParameters": {},
+          "Session": "session",
+          "ResponseMetadata": {
+            "HTTPHeaders": {},
+            "HTTPStatusCode": 200
+          }
+        },
+        "respond-auth-2": {
+          "AuthenticationResult": {
+            "AccessToken": "<access-token:1>",
+            "ExpiresIn": 3600,
+            "IdToken": "<id-token:1>",
+            "RefreshToken": "<refresh-token:1>",
+            "TokenType": "Bearer"
+          },
+          "ChallengeParameters": {},
+          "ResponseMetadata": {
+            "HTTPHeaders": {},
+            "HTTPStatusCode": 200
+          }
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_signup_with_email_phone_aliases": {
+    "recorded-date": "07-08-2024, 12:22:17",
+    "recorded-content": {
+      "get-user-email": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "<email:1>",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "<sub:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "respond-to-auth-challenge-token": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:1>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:1>",
+        "origin_jti": "<origin_jti:1>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "<sub:1>"
+      },
+      "initiate-auth-after-pw-update": {
+        "AuthenticationResult": {
+          "AccessToken": "<access-token:1>",
+          "ExpiresIn": 3600,
+          "IdToken": "<id-token:1>",
+          "RefreshToken": "<refresh-token:1>",
+          "TokenType": "Bearer"
+        },
+        "ChallengeParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "initiate-auth-after-pw-update-access-token": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:2>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:2>",
+        "origin_jti": "<origin_jti:2>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "<sub:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestAuthFlows::test_srp_custom_auth_flow": {
+    "recorded-date": "19-06-2023, 09:54:36",
+    "recorded-content": {
+      "initiate-auth-custom": {
+        "ChallengeName": "PASSWORD_VERIFIER",
+        "ChallengeParameters": {
+          "SALT": "<salt:1>",
+          "SECRET_BLOCK": "<secret-block:1>",
+          "SRP_B": "<srp-b:1>",
+          "USERNAME": "<username:1>",
+          "USER_ID_FOR_SRP": "<username:1>"
+        },
+        "Session": "session",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "respond-auth-1": {
+        "ChallengeName": "CUSTOM_CHALLENGE",
+        "ChallengeParameters": {},
+        "Session": "session",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "respond-auth-2": {
+        "AuthenticationResult": {
+          "AccessToken": "<access-token:1>",
+          "ExpiresIn": 3600,
+          "IdToken": "<id-token:1>",
+          "RefreshToken": "<refresh-token:1>",
+          "TokenType": "Bearer"
+        },
+        "ChallengeParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[email]": {
+    "recorded-date": "24-07-2023, 13:43:58",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "email": "test@example.com",
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "<sub:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test@example.com",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "<sub:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test2@example.com",
+          "email_verified": "false",
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "<sub:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[None]": {
+    "recorded-date": "24-07-2023, 13:44:01",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "test@example.com"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "test@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "test2@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[True-email]": {
+    "recorded-date": "24-07-2023, 13:49:39",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "email": "test@example.com",
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "<sub:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test@example.com",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "<sub:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test2@example.com",
+          "email_verified": "false",
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "<sub:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[True-None]": {
+    "recorded-date": "24-07-2023, 13:49:42",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "email": "test@example.com",
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "test@example.com"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test@example.com",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "test@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test2@example.com",
+          "email_verified": "false",
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "test2@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[False-email]": {
+    "recorded-date": "24-07-2023, 13:49:45",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "email": "test@example.com",
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "<sub:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test@example.com",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "<sub:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test2@example.com",
+          "email_verified": "false",
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "<sub:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[False-None]": {
+    "recorded-date": "24-07-2023, 13:49:48",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "test@example.com"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "test@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "test2@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[True-True-email]": {
+    "recorded-date": "30-07-2023, 12:36:23",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "email": "test@example.com",
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "<sub:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test@example.com",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "<sub:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test2@example.com",
+          "email_verified": "false",
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "<sub:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[True-True-None]": {
+    "recorded-date": "30-07-2023, 12:36:56",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "email": "test@example.com",
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "test@example.com"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test@example.com",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "test@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test2@example.com",
+          "email_verified": "false",
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "test2@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[True-False-email]": {
+    "recorded-date": "30-07-2023, 12:37:25",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "email": "test@example.com",
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "<sub:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test@example.com",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "<sub:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test2@example.com",
+          "email_verified": "false",
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "<sub:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[True-False-None]": {
+    "recorded-date": "30-07-2023, 12:37:54",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "test@example.com"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "test@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "test2@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[False-True-email]": {
+    "recorded-date": "30-07-2023, 12:37:58",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "email": "test@example.com",
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "<sub:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test@example.com",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "<sub:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test2@example.com",
+          "email_verified": "false",
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "<sub:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[False-True-None]": {
+    "recorded-date": "30-07-2023, 12:38:03",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "email": "test@example.com",
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "test@example.com"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test@example.com",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "test@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test2@example.com",
+          "email_verified": "false",
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "test2@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[False-False-email]": {
+    "recorded-date": "30-07-2023, 12:38:07",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "email": "test@example.com",
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "<sub:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test@example.com",
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "<sub:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "email": "test2@example.com",
+          "email_verified": "false",
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "<sub:2>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_create_user_with_email_uses_sub_as_username[False-False-None]": {
+    "recorded-date": "30-07-2023, 12:38:11",
+    "recorded-content": {
+      "create-user-response": {
+        "User": {
+          "Attributes": {
+            "sub": "<sub:1>"
+          },
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "test@example.com"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response": {
+        "Enabled": true,
+        "UserAttributes": {
+          "sub": "<sub:1>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "test@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-user-response2": {
+        "Enabled": true,
+        "UserAttributes": {
+          "sub": "<sub:2>"
+        },
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "UNCONFIRMED",
+        "Username": "test2@example.com",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_pool_attributes[True]": {
+    "recorded-date": "02-08-2023, 12:18:32",
+    "recorded-content": {
+      "error-attr-not-in-schema": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Attributes did not conform to the schema: foo: Attribute does not exist in the schema.\n"
+        },
+        "message": "Attributes did not conform to the schema: foo: Attribute does not exist in the schema.\n",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "user-attributes": {
+        "Attributes": {
+          "custom:custom:myattr1": "admin",
+          "sub": "<sub:1>"
+        },
+        "Enabled": true,
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "username-8cd5f20d"
+      },
+      "error-attr-not-in-schema-custom-prefix": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Attributes did not conform to the schema: custom:myattr1: Attribute does not exist in the schema.\n"
+        },
+        "message": "Attributes did not conform to the schema: custom:myattr1: Attribute does not exist in the schema.\n",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_user_pool_attributes[False]": {
+    "recorded-date": "02-08-2023, 12:18:35",
+    "recorded-content": {
+      "error-attr-not-in-schema": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Attributes did not conform to the schema: foo: Attribute does not exist in the schema.\n"
+        },
+        "message": "Attributes did not conform to the schema: foo: Attribute does not exist in the schema.\n",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "user-attributes": {
+        "Attributes": {
+          "custom:myattr1": "admin",
+          "sub": "<sub:1>"
+        },
+        "Enabled": true,
+        "UserCreateDate": "datetime",
+        "UserLastModifiedDate": "datetime",
+        "UserStatus": "FORCE_CHANGE_PASSWORD",
+        "Username": "username-90a12ea6"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_custom_attributes_cannot_be_required": {
+    "recorded-date": "27-09-2023, 19:53:30",
+    "recorded-content": {
+      "custom-attr-required": {
+        "Code": "InvalidParameterException",
+        "Message": "Required custom attributes are not supported currently."
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_auth_prevent_user_existence_error": {
+    "recorded-date": "02-01-2024, 14:16:11",
+    "recorded-content": {
+      "error": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "Incorrect username or password."
+        },
+        "message": "Incorrect username or password.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_delete_user": {
+    "recorded-date": "02-01-2024, 14:16:36",
+    "recorded-content": {
+      "initiate_auth": {
+        "AuthenticationResult": {
+          "AccessToken": "<access-token:1>",
+          "ExpiresIn": 3600,
+          "IdToken": "<id-token:1>",
+          "RefreshToken": "<refresh-token:1>",
+          "TokenType": "Bearer"
+        },
+        "ChallengeParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "deleted_user": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "error-user-already-deleted": {
+        "Error": {
+          "Code": "UserNotFoundException",
+          "Message": "User does not exist."
+        },
+        "message": "User does not exist.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_signup_require_phone_email": {
+    "recorded-date": "07-02-2024, 20:14:29",
+    "recorded-content": {
+      "error": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Username should be a phone number."
+        },
+        "message": "Username should be a phone number.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_signup_require_phone_email[username_attributes0]": {
+    "recorded-date": "07-02-2024, 20:17:31",
+    "recorded-content": {
+      "error": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Username should be an email."
+        },
+        "message": "Username should be an email.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_signup_require_phone_email[username_attributes1]": {
+    "recorded-date": "07-02-2024, 20:17:36",
+    "recorded-content": {
+      "error": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Username should be a phone number."
+        },
+        "message": "Username should be a phone number.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestUserAttributes::test_signup_require_phone_email[username_attributes2]": {
+    "recorded-date": "07-02-2024, 20:17:40",
+    "recorded-content": {
+      "error": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "Username should be either an email or a phone number."
+        },
+        "message": "Username should be either an email or a phone number.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestTriggers::test_signup_trigger_params": {
+    "recorded-date": "08-02-2024, 16:23:24",
+    "recorded-content": {
+      "trigger-log-request": {
+        "clientMetadata": {
+          "foo": "bar"
+        },
+        "userAttributes": {
+          "email": "info@localstack.cloud",
+          "name": "John Doe"
+        },
+        "validationData": {
+          "company": "localstack"
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestTriggers::test_pre_generation_token_trigger_v2": {
+    "recorded-date": "11-04-2024, 17:34:21",
+    "recorded-content": {
+      "trigger-log-request": {
+        "groupConfiguration": {
+          "groupsToOverride": [],
+          "iamRolesToOverride": [],
+          "preferredRole": null
+        },
+        "scopes": [
+          "aws.cognito.signin.user.admin"
+        ],
+        "userAttributes": {
+          "cognito:user_status": "CONFIRMED",
+          "email": "info@localstack.cloud",
+          "email_verified": "false",
+          "name": "John Doe",
+          "sub": "<user-sub:1>"
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_cognito_authorizer_scopes": {
+    "recorded-date": "23-03-2024, 22:32:48",
+    "recorded-content": {
+      "authorized-call": {
+        "message": "LocalStack is awesome!"
+      },
+      "unauthorized-call": {
+        "message": "Unauthorized"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_custom_scopes": {
+    "recorded-date": "26-03-2024, 18:05:39",
+    "recorded-content": {
+      "claims-one": "http://test123/scope1",
+      "claims-all": "http://test123/scope1 http://test123/scope.2"
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_login_incorrect_password": {
+    "recorded-date": "10-04-2024, 22:41:36",
+    "recorded-content": {
+      "incorrect-pass-error": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "Incorrect username or password."
+        },
+        "message": "Incorrect username or password.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_change_password[user-{short_uid}]": {
+    "recorded-date": "11-04-2024, 13:50:24",
+    "recorded-content": {
+      "change-password": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "initiate-auth-change": {
+        "AuthenticationResult": {
+          "AccessToken": "<access-token:1>",
+          "ExpiresIn": 3600,
+          "IdToken": "<id-token:1>",
+          "RefreshToken": "<refresh-token:1>",
+          "TokenType": "Bearer"
+        },
+        "ChallengeParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "auth-invalid-pass": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "Incorrect username or password."
+        },
+        "message": "Incorrect username or password.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "admin-init-auth-change": {
+        "ChallengeName": "NEW_PASSWORD_REQUIRED",
+        "ChallengeParameters": {
+          "USER_ID_FOR_SRP": "<user-sub:1>",
+          "requiredAttributes": "[]",
+          "userAttributes": {}
+        },
+        "Session": "<session:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "admin-auth-invalid-pass": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "Incorrect username or password."
+        },
+        "message": "Incorrect username or password.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_change_password[user-{short_uid}@example.com]": {
+    "recorded-date": "11-04-2024, 13:50:40",
+    "recorded-content": {
+      "change-password": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "initiate-auth-change": {
+        "AuthenticationResult": {
+          "AccessToken": "<access-token:1>",
+          "ExpiresIn": 3600,
+          "IdToken": "<id-token:1>",
+          "RefreshToken": "<refresh-token:1>",
+          "TokenType": "Bearer"
+        },
+        "ChallengeParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "auth-invalid-pass": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "Incorrect username or password."
+        },
+        "message": "Incorrect username or password.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "admin-init-auth-change": {
+        "ChallengeName": "NEW_PASSWORD_REQUIRED",
+        "ChallengeParameters": {
+          "USER_ID_FOR_SRP": "<user-sub:1>",
+          "requiredAttributes": "[]",
+          "userAttributes": {}
+        },
+        "Session": "<session:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "admin-auth-invalid-pass": {
+        "Error": {
+          "Code": "NotAuthorizedException",
+          "Message": "Incorrect username or password."
+        },
+        "message": "Incorrect username or password.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestTriggers::test_cognito_custom_email_signup": {
+    "recorded-date": "15-05-2024, 00:24:03",
+    "recorded-content": {
+      "trigger-logs": {
+        "callerContext": {
+          "awsSdkVersion": "aws-sdk-unknown-unknown",
+          "clientId": "<client-id:1>"
+        },
+        "region": "<region>",
+        "request": {
+          "clientMetadata": null,
+          "code": "<code:1>",
+          "type": "customEmailSenderRequestV1",
+          "userAttributes": {
+            "cognito:user_status": "UNCONFIRMED",
+            "email": "info@localstack.cloud",
+            "email_verified": "false",
+            "sub": "<sub:1>"
+          }
+        },
+        "response": {
+          "emailMessage": "hello"
+        },
+        "triggerSource": "CustomEmailSender_SignUp",
+        "userName": "<user-name:1>",
+        "userPoolId": "<user-pool-id:1>",
+        "version": "1"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_identity_providers": {
+    "recorded-date": "27-06-2024, 20:52:03",
+    "recorded-content": {
+      "create-idp-provider": {
+        "IdentityProvider": {
+          "AttributeMapping": {
+            "email": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+            "name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+          },
+          "CreationDate": "creation-date",
+          "IdpIdentifiers": [
+            "<identifiers:1>"
+          ],
+          "LastModifiedDate": "last-modified-date",
+          "ProviderDetails": {
+            "ActiveEncryptionCertificate": "<active-encryption-certificate:1>",
+            "MetadataURL": "<metadata-u-r-l:1>",
+            "SLORedirectBindingURI": "<s-l-o-redirect-binding-u-r-i:1>",
+            "SSORedirectBindingURI": "<s-s-o-redirect-binding-u-r-i:1>"
+          },
+          "ProviderName": "<provider-name:1>",
+          "ProviderType": "SAML",
+          "UserPoolId": "<user-pool-id:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-idp-provider": {
+        "IdentityProvider": {
+          "AttributeMapping": {
+            "email": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+            "name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+          },
+          "CreationDate": "creation-date",
+          "IdpIdentifiers": [
+            "<identifiers:1>"
+          ],
+          "LastModifiedDate": "last-modified-date",
+          "ProviderDetails": {
+            "ActiveEncryptionCertificate": "<active-encryption-certificate:1>",
+            "MetadataURL": "<metadata-u-r-l:1>",
+            "SLORedirectBindingURI": "<s-l-o-redirect-binding-u-r-i:1>",
+            "SSORedirectBindingURI": "<s-s-o-redirect-binding-u-r-i:1>"
+          },
+          "ProviderName": "<provider-name:1>",
+          "ProviderType": "SAML",
+          "UserPoolId": "<user-pool-id:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-provider-by-identifier": {
+        "IdentityProvider": {
+          "AttributeMapping": {
+            "email": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+            "name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+          },
+          "CreationDate": "creation-date",
+          "IdpIdentifiers": [
+            "<identifiers:1>"
+          ],
+          "LastModifiedDate": "last-modified-date",
+          "ProviderDetails": {
+            "ActiveEncryptionCertificate": "<active-encryption-certificate:1>",
+            "MetadataURL": "<metadata-u-r-l:1>",
+            "SLORedirectBindingURI": "<s-l-o-redirect-binding-u-r-i:1>",
+            "SSORedirectBindingURI": "<s-s-o-redirect-binding-u-r-i:1>"
+          },
+          "ProviderName": "<provider-name:1>",
+          "ProviderType": "SAML",
+          "UserPoolId": "<user-pool-id:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "update-idp": {
+        "IdentityProvider": {
+          "AttributeMapping": {
+            "email": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/email",
+            "name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/fistname"
+          },
+          "CreationDate": "creation-date",
+          "LastModifiedDate": "last-modified-date",
+          "ProviderDetails": {
+            "ActiveEncryptionCertificate": "<active-encryption-certificate:1>",
+            "MetadataURL": "<metadata-u-r-l:1>",
+            "SLORedirectBindingURI": "<s-l-o-redirect-binding-u-r-i:1>",
+            "SSORedirectBindingURI": "<s-s-o-redirect-binding-u-r-i:1>"
+          },
+          "ProviderName": "<provider-name:1>",
+          "ProviderType": "SAML",
+          "UserPoolId": "<user-pool-id:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_authorize_redirects_to_login": {
+    "recorded-date": "25-07-2024, 15:45:46",
+    "recorded-content": {
+      "query-no-provider": {
+        "client_id": [
+          "16913gfjj8eskle4omf3te9vrs"
+        ],
+        "redirect_uri": [
+          "https://localstack.cloud"
+        ],
+        "response_type": [
+          "code"
+        ],
+        "scope": [
+          "aws.cognito.signin.user.admin"
+        ],
+        "state": [
+          "dbl67v3dOztFKn7p1XIxi2XWuIu4ritM"
+        ]
+      },
+      "query-COGNITO": {
+        "client_id": [
+          "16913gfjj8eskle4omf3te9vrs"
+        ],
+        "identity_provider": [
+          "COGNITO"
+        ],
+        "redirect_uri": [
+          "https://localstack.cloud"
+        ],
+        "response_type": [
+          "code"
+        ],
+        "scope": [
+          "aws.cognito.signin.user.admin"
+        ],
+        "state": [
+          "dbl67v3dOztFKn7p1XIxi2XWuIu4ritM"
+        ]
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestTriggers::test_custom_challenge_trigger_params": {
+    "recorded-date": "07-08-2024, 21:52:09",
+    "recorded-content": {
+      "initiate-auth": {
+        "ChallengeName": "CUSTOM_CHALLENGE",
+        "ChallengeParameters": {
+          "USERNAME": "<username:1>"
+        },
+        "Session": "session",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "respond-to-auth": {
+        "AuthenticationResult": {
+          "AccessToken": "<access-token:1>",
+          "ExpiresIn": 3600,
+          "IdToken": "<id-token:1>",
+          "RefreshToken": "<refresh-token:1>",
+          "TokenType": "Bearer"
+        },
+        "ChallengeParameters": {},
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "access-token": {
+        "auth_time": "auth_time",
+        "client_id": "<client-id:1>",
+        "event_id": "<uuid:1>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "https://cognito-idp.<region>.amazonaws.com/<user-pool-id:1>",
+        "jti": "<jti:1>",
+        "origin_jti": "<origin_jti:1>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "<username:1>"
+      },
+      "trigger-define-auth-first": {
+        "callerContext": {
+          "awsSdkVersion": "aws-sdk-unknown-unknown",
+          "clientId": "<client-id:1>"
+        },
+        "region": "<region>",
+        "request": {
+          "session": [],
+          "userAttributes": {
+            "cognito:user_status": "CONFIRMED",
+            "email": "john@doe.com",
+            "name": "John Doe",
+            "phone_number": "+12131234125",
+            "phone_number_verified": "true",
+            "sub": "<sub:1>"
+          }
+        },
+        "response": {
+          "challengeName": null,
+          "failAuthentication": null,
+          "issueTokens": null
+        },
+        "triggerSource": "DefineAuthChallenge_Authentication",
+        "userName": "<username:1>",
+        "userPoolId": "<user-pool-id:1>",
+        "version": "1"
+      },
+      "trigger-define-auth-second": {
+        "callerContext": {
+          "awsSdkVersion": "aws-sdk-unknown-unknown",
+          "clientId": "<client-id:1>"
+        },
+        "region": "<region>",
+        "request": {
+          "session": [
+            {
+              "challengeMetadata": null,
+              "challengeName": "CUSTOM_CHALLENGE",
+              "challengeResult": true
+            }
+          ],
+          "userAttributes": {
+            "cognito:user_status": "CONFIRMED",
+            "email": "john@doe.com",
+            "name": "John Doe",
+            "phone_number": "+12131234125",
+            "phone_number_verified": "true",
+            "sub": "<sub:1>"
+          }
+        },
+        "response": {
+          "challengeName": null,
+          "failAuthentication": null,
+          "issueTokens": null
+        },
+        "triggerSource": "DefineAuthChallenge_Authentication",
+        "userName": "<username:1>",
+        "userPoolId": "<user-pool-id:1>",
+        "version": "1"
+      },
+      "trigger-auth-create-chall": [
+        {
+          "version": "1",
+          "region": "<region>",
+          "userPoolId": "<user-pool-id:1>",
+          "userName": "<username:1>",
+          "callerContext": {
+            "awsSdkVersion": "aws-sdk-unknown-unknown",
+            "clientId": "<client-id:1>"
+          },
+          "triggerSource": "CreateAuthChallenge_Authentication",
+          "request": {
+            "userAttributes": {
+              "sub": "<sub:1>",
+              "cognito:user_status": "CONFIRMED",
+              "name": "John Doe",
+              "phone_number_verified": "true",
+              "phone_number": "+12131234125",
+              "email": "john@doe.com"
+            },
+            "challengeName": "CUSTOM_CHALLENGE",
+            "session": []
+          },
+          "response": {
+            "publicChallengeParameters": null,
+            "privateChallengeParameters": null,
+            "challengeMetadata": null
+          }
+        }
+      ],
+      "trigger-auth-verify-chall": [
+        {
+          "version": "1",
+          "region": "<region>",
+          "userPoolId": "<user-pool-id:1>",
+          "userName": "<username:1>",
+          "callerContext": {
+            "awsSdkVersion": "aws-sdk-unknown-unknown",
+            "clientId": "<client-id:1>"
+          },
+          "triggerSource": "VerifyAuthChallengeResponse_Authentication",
+          "request": {
+            "userAttributes": {
+              "sub": "<sub:1>",
+              "cognito:user_status": "CONFIRMED",
+              "name": "John Doe",
+              "phone_number_verified": "true",
+              "phone_number": "+12131234125",
+              "email": "john@doe.com"
+            },
+            "privateChallengeParameters": {
+              "answer": "test-answer-123"
+            },
+            "challengeAnswer": "test-answer-123"
+          },
+          "response": {
+            "answerCorrect": null
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestTriggers::test_user_migration_lambda[None]": {
+    "recorded-date": "07-08-2024, 21:41:58",
+    "recorded-content": {
+      "initiate-auth-access-test1234-nonexisting-0": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:1>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:1>",
+        "origin_jti": "<origin_jti:1>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "test1234-nonexisting"
+      },
+      "initiate-auth-access-test1234-nonexisting-1": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:2>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:2>",
+        "origin_jti": "<origin_jti:2>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "test1234-nonexisting"
+      },
+      "initiate-auth-access-user-preferred-0": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:3>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:3>",
+        "origin_jti": "<origin_jti:3>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:2>",
+        "token_use": "access",
+        "username": "user-preferred"
+      },
+      "initiate-auth-access-user-preferred-1": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:4>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:4>",
+        "origin_jti": "<origin_jti:4>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:2>",
+        "token_use": "access",
+        "username": "user-preferred"
+      },
+      "no-user-attached-when-no-alias": {
+        "Error": {
+          "Code": "UserNotFoundException",
+          "Message": "Exception migrating user in app client <client_id:1>: Invalid username or missing email / phone_number / preferred_username attributes"
+        },
+        "message": "Exception migrating user in app client <client_id:1>: Invalid username or missing email / phone_number / preferred_username attributes",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "get-users": {
+        "Users": [
+          {
+            "Attributes": [
+              {
+                "Name": "custom:updated_attr1",
+                "Value": "test_attr_value"
+              },
+              {
+                "Name": "email",
+                "Value": "test-trigger@example.com"
+              },
+              {
+                "Name": "email_verified",
+                "Value": "true"
+              },
+              {
+                "Name": "sub",
+                "Value": "<sub:1>"
+              }
+            ],
+            "Enabled": true,
+            "UserCreateDate": "datetime",
+            "UserLastModifiedDate": "datetime",
+            "UserStatus": "CONFIRMED",
+            "Username": "test1234-nonexisting"
+          },
+          {
+            "Attributes": [
+              {
+                "Name": "email",
+                "Value": "test-trigger@example.com"
+              },
+              {
+                "Name": "email_verified",
+                "Value": "true"
+              },
+              {
+                "Name": "sub",
+                "Value": "<sub:2>"
+              }
+            ],
+            "Enabled": true,
+            "UserCreateDate": "datetime",
+            "UserLastModifiedDate": "datetime",
+            "UserStatus": "CONFIRMED",
+            "Username": "user-preferred"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "lambda_events": [
+        {
+          "req": {
+            "version": "1",
+            "triggerSource": "UserMigration_Authentication",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "test1234-nonexisting",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client_id:1>"
+            },
+            "request": {
+              "password": "test123",
+              "validationData": {
+                "foo": "bar"
+              },
+              "userAttributes": null
+            },
+            "response": {
+              "userAttributes": null,
+              "forceAliasCreation": null,
+              "enableSMSMFA": null,
+              "finalUserStatus": null,
+              "messageAction": null,
+              "desiredDeliveryMediums": null
+            }
+          },
+          "res": {
+            "userAttributes": {
+              "email": "test-trigger@example.com",
+              "email_verified": "true"
+            },
+            "forceAliasCreation": null,
+            "enableSMSMFA": null,
+            "finalUserStatus": "CONFIRMED",
+            "messageAction": "SUPPRESS",
+            "desiredDeliveryMediums": null
+          }
+        },
+        {
+          "req": {
+            "version": "1",
+            "triggerSource": "UserMigration_Authentication",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "user-preferred",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client_id:1>"
+            },
+            "request": {
+              "password": "test123",
+              "validationData": {
+                "foo": "bar"
+              },
+              "userAttributes": null
+            },
+            "response": {
+              "userAttributes": null,
+              "forceAliasCreation": null,
+              "enableSMSMFA": null,
+              "finalUserStatus": null,
+              "messageAction": null,
+              "desiredDeliveryMediums": null
+            }
+          },
+          "res": {
+            "userAttributes": {
+              "email": "test-trigger@example.com",
+              "email_verified": "true"
+            },
+            "forceAliasCreation": null,
+            "enableSMSMFA": null,
+            "finalUserStatus": "CONFIRMED",
+            "messageAction": "SUPPRESS",
+            "desiredDeliveryMediums": null
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestTriggers::test_user_migration_lambda[email]": {
+    "recorded-date": "07-08-2024, 21:42:17",
+    "recorded-content": {
+      "initiate-auth-access-test1234-nonexisting-0": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:1>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:1>",
+        "origin_jti": "<origin_jti:1>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "test1234-nonexisting"
+      },
+      "initiate-auth-access-test1234-nonexisting-1": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:2>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:2>",
+        "origin_jti": "<origin_jti:2>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "test1234-nonexisting"
+      },
+      "initiate-auth-access-defined": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:3>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:3>",
+        "origin_jti": "<origin_jti:3>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:2>",
+        "token_use": "access",
+        "username": "lambda-defined-username"
+      },
+      "initiate-auth-id-token-defined": {
+        "aud": "<client_id:1>",
+        "auth_time": "auth_time",
+        "cognito:username": "lambda-defined-username",
+        "email": "user-defined-test@ex.com",
+        "email_verified": true,
+        "event_id": "<uuid:3>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:4>",
+        "origin_jti": "<origin_jti:3>",
+        "sub": "<sub:2>",
+        "token_use": "id"
+      },
+      "get-users": {
+        "Users": [
+          {
+            "Attributes": [
+              {
+                "Name": "email",
+                "Value": "user-defined-test@ex.com"
+              },
+              {
+                "Name": "email_verified",
+                "Value": "true"
+              },
+              {
+                "Name": "sub",
+                "Value": "<sub:2>"
+              }
+            ],
+            "Enabled": true,
+            "UserCreateDate": "datetime",
+            "UserLastModifiedDate": "datetime",
+            "UserStatus": "CONFIRMED",
+            "Username": "lambda-defined-username"
+          },
+          {
+            "Attributes": [
+              {
+                "Name": "custom:updated_attr1",
+                "Value": "test_attr_value"
+              },
+              {
+                "Name": "email",
+                "Value": "test-trigger@example.com"
+              },
+              {
+                "Name": "email_verified",
+                "Value": "true"
+              },
+              {
+                "Name": "sub",
+                "Value": "<sub:1>"
+              }
+            ],
+            "Enabled": true,
+            "UserCreateDate": "datetime",
+            "UserLastModifiedDate": "datetime",
+            "UserStatus": "CONFIRMED",
+            "Username": "test1234-nonexisting"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "lambda_events": [
+        {
+          "req": {
+            "version": "1",
+            "triggerSource": "UserMigration_Authentication",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "test1234-nonexisting",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client_id:1>"
+            },
+            "request": {
+              "password": "test123",
+              "validationData": {
+                "foo": "bar"
+              },
+              "userAttributes": null
+            },
+            "response": {
+              "userAttributes": null,
+              "forceAliasCreation": null,
+              "enableSMSMFA": null,
+              "finalUserStatus": null,
+              "messageAction": null,
+              "desiredDeliveryMediums": null
+            }
+          },
+          "res": {
+            "userAttributes": {
+              "email": "test-trigger@example.com",
+              "email_verified": "true"
+            },
+            "forceAliasCreation": null,
+            "enableSMSMFA": null,
+            "finalUserStatus": "CONFIRMED",
+            "messageAction": "SUPPRESS",
+            "desiredDeliveryMediums": null
+          }
+        },
+        {
+          "req": {
+            "version": "1",
+            "triggerSource": "UserMigration_Authentication",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "user-defined-test@ex.com",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client_id:1>"
+            },
+            "request": {
+              "password": "test123",
+              "validationData": {
+                "alias_type": "email"
+              },
+              "userAttributes": null
+            },
+            "response": {
+              "userAttributes": null,
+              "forceAliasCreation": null,
+              "enableSMSMFA": null,
+              "finalUserStatus": null,
+              "messageAction": null,
+              "desiredDeliveryMediums": null
+            }
+          },
+          "res": {
+            "userAttributes": {
+              "email": "user-defined-test@ex.com",
+              "email_verified": "true",
+              "username": "lambda-defined-username"
+            },
+            "forceAliasCreation": null,
+            "enableSMSMFA": null,
+            "finalUserStatus": "CONFIRMED",
+            "messageAction": "SUPPRESS",
+            "desiredDeliveryMediums": null
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestTriggers::test_user_migration_lambda[preferred_username]": {
+    "recorded-date": "07-08-2024, 21:42:33",
+    "recorded-content": {
+      "initiate-auth-access-test1234-nonexisting-0": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:1>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:1>",
+        "origin_jti": "<origin_jti:1>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "test1234-nonexisting"
+      },
+      "initiate-auth-access-test1234-nonexisting-1": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:2>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:2>",
+        "origin_jti": "<origin_jti:2>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "test1234-nonexisting"
+      },
+      "initiate-auth-access-email-0": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:3>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:3>",
+        "origin_jti": "<origin_jti:3>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:2>",
+        "token_use": "access",
+        "username": "test1234@nonexisting.com"
+      },
+      "initiate-auth-access-email-1": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:4>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:4>",
+        "origin_jti": "<origin_jti:4>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:2>",
+        "token_use": "access",
+        "username": "test1234@nonexisting.com"
+      },
+      "initiate-auth-access-defined": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:5>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:5>",
+        "origin_jti": "<origin_jti:5>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:3>",
+        "token_use": "access",
+        "username": "lambda-defined-username"
+      },
+      "initiate-auth-id-token-defined": {
+        "aud": "<client_id:1>",
+        "auth_time": "auth_time",
+        "cognito:username": "lambda-defined-username",
+        "email": "test-trigger@example.com",
+        "email_verified": true,
+        "event_id": "<uuid:5>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:6>",
+        "origin_jti": "<origin_jti:5>",
+        "preferred_username": "user-defined-test",
+        "sub": "<sub:3>",
+        "token_use": "id"
+      },
+      "get-users": {
+        "Users": [
+          {
+            "Attributes": [
+              {
+                "Name": "email",
+                "Value": "test-trigger@example.com"
+              },
+              {
+                "Name": "email_verified",
+                "Value": "true"
+              },
+              {
+                "Name": "preferred_username",
+                "Value": "user-defined-test"
+              },
+              {
+                "Name": "sub",
+                "Value": "<sub:3>"
+              }
+            ],
+            "Enabled": true,
+            "UserCreateDate": "datetime",
+            "UserLastModifiedDate": "datetime",
+            "UserStatus": "CONFIRMED",
+            "Username": "lambda-defined-username"
+          },
+          {
+            "Attributes": [
+              {
+                "Name": "custom:updated_attr1",
+                "Value": "test_attr_value"
+              },
+              {
+                "Name": "email",
+                "Value": "test-trigger@example.com"
+              },
+              {
+                "Name": "email_verified",
+                "Value": "true"
+              },
+              {
+                "Name": "sub",
+                "Value": "<sub:1>"
+              }
+            ],
+            "Enabled": true,
+            "UserCreateDate": "datetime",
+            "UserLastModifiedDate": "datetime",
+            "UserStatus": "CONFIRMED",
+            "Username": "test1234-nonexisting"
+          },
+          {
+            "Attributes": [
+              {
+                "Name": "email",
+                "Value": "test1234@nonexisting.com"
+              },
+              {
+                "Name": "email_verified",
+                "Value": "true"
+              },
+              {
+                "Name": "sub",
+                "Value": "<sub:2>"
+              }
+            ],
+            "Enabled": true,
+            "UserCreateDate": "datetime",
+            "UserLastModifiedDate": "datetime",
+            "UserStatus": "CONFIRMED",
+            "Username": "test1234@nonexisting.com"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "lambda_events": [
+        {
+          "req": {
+            "version": "1",
+            "triggerSource": "UserMigration_Authentication",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "test1234-nonexisting",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client_id:1>"
+            },
+            "request": {
+              "password": "test123",
+              "validationData": {
+                "foo": "bar"
+              },
+              "userAttributes": null
+            },
+            "response": {
+              "userAttributes": null,
+              "forceAliasCreation": null,
+              "enableSMSMFA": null,
+              "finalUserStatus": null,
+              "messageAction": null,
+              "desiredDeliveryMediums": null
+            }
+          },
+          "res": {
+            "userAttributes": {
+              "email": "test-trigger@example.com",
+              "email_verified": "true"
+            },
+            "forceAliasCreation": null,
+            "enableSMSMFA": null,
+            "finalUserStatus": "CONFIRMED",
+            "messageAction": "SUPPRESS",
+            "desiredDeliveryMediums": null
+          }
+        },
+        {
+          "req": {
+            "version": "1",
+            "triggerSource": "UserMigration_Authentication",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "test1234@nonexisting.com",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client_id:1>"
+            },
+            "request": {
+              "password": "test123",
+              "validationData": {
+                "foo": "bar"
+              },
+              "userAttributes": null
+            },
+            "response": {
+              "userAttributes": null,
+              "forceAliasCreation": null,
+              "enableSMSMFA": null,
+              "finalUserStatus": null,
+              "messageAction": null,
+              "desiredDeliveryMediums": null
+            }
+          },
+          "res": {
+            "userAttributes": {
+              "email": "test1234@nonexisting.com",
+              "email_verified": "true"
+            },
+            "forceAliasCreation": null,
+            "enableSMSMFA": null,
+            "finalUserStatus": "CONFIRMED",
+            "messageAction": "SUPPRESS",
+            "desiredDeliveryMediums": null
+          }
+        },
+        {
+          "req": {
+            "version": "1",
+            "triggerSource": "UserMigration_Authentication",
+            "region": "<region>",
+            "userPoolId": "<user-pool-id:1>",
+            "userName": "user-defined-test",
+            "callerContext": {
+              "awsSdkVersion": "aws-sdk-unknown-unknown",
+              "clientId": "<client_id:1>"
+            },
+            "request": {
+              "password": "test123",
+              "validationData": {
+                "alias_type": "preferred_username"
+              },
+              "userAttributes": null
+            },
+            "response": {
+              "userAttributes": null,
+              "forceAliasCreation": null,
+              "enableSMSMFA": null,
+              "finalUserStatus": null,
+              "messageAction": null,
+              "desiredDeliveryMediums": null
+            }
+          },
+          "res": {
+            "userAttributes": {
+              "email": "test-trigger@example.com",
+              "email_verified": "true",
+              "username": "lambda-defined-username",
+              "preferred_username": "user-defined-test"
+            },
+            "forceAliasCreation": null,
+            "enableSMSMFA": null,
+            "finalUserStatus": "CONFIRMED",
+            "messageAction": "SUPPRESS",
+            "desiredDeliveryMediums": null
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_admin_create_user_username_in_token": {
+    "recorded-date": "06-08-2024, 19:15:30",
+    "recorded-content": {
+      "create-user": {
+        "User": {
+          "Attributes": [
+            {
+              "Name": "email",
+              "Value": "test@ex.com"
+            },
+            {
+              "Name": "email_verified",
+              "Value": "true"
+            },
+            {
+              "Name": "sub",
+              "Value": "<sub:1>"
+            }
+          ],
+          "Enabled": true,
+          "UserCreateDate": "datetime",
+          "UserLastModifiedDate": "datetime",
+          "UserStatus": "FORCE_CHANGE_PASSWORD",
+          "Username": "my-defined-username"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "admin-set-pwd": {
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "initiate-auth-access-token": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:1>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:1>",
+        "origin_jti": "<origin_jti:1>",
+        "scope": "aws.cognito.signin.user.admin",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "my-defined-username"
+      },
+      "initiate-auth-id-token": {
+        "aud": "<client_id:1>",
+        "auth_time": "auth_time",
+        "cognito:username": "my-defined-username",
+        "email": "test@ex.com",
+        "email_verified": true,
+        "event_id": "<uuid:1>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:2>",
+        "origin_jti": "<origin_jti:1>",
+        "sub": "<sub:1>",
+        "token_use": "id"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_login_via_web_form": {
+    "recorded-date": "12-08-2024, 00:15:39",
+    "recorded-content": {
+      "userInfo": {
+        "custom:foo": "bar",
+        "family_name": "Doe",
+        "given_name": "John",
+        "sub": "<sub:1>",
+        "username": "<username:1>"
+      }
+    }
+  },
+  "tests/aws/services/cognito/test_cognito.py::TestCognito::test_login_via_web_form_with_scopes": {
+    "recorded-date": "12-08-2024, 01:39:31",
+    "recorded-content": {
+      "no-scope-provided": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:1>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:1>",
+        "scope": "openid email",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "<username:1>",
+        "version": 2
+      },
+      "all-scopes": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:2>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:2>",
+        "scope": "openid email",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "<username:1>",
+        "version": 2
+      },
+      "plus-delimiter-scopes": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:3>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:3>",
+        "scope": "openid email",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "<username:1>",
+        "version": 2
+      },
+      "email-scope": {
+        "auth_time": "auth_time",
+        "client_id": "<client_id:1>",
+        "event_id": "<uuid:4>",
+        "exp": "exp",
+        "iat": "iat",
+        "iss": "<iss:1>",
+        "jti": "<jti:4>",
+        "scope": "email",
+        "sub": "<sub:1>",
+        "token_use": "access",
+        "username": "<username:1>",
+        "version": 2
+      }
+    }
+  }
+}

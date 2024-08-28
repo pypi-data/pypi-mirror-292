@@ -1,0 +1,126 @@
+{
+  "tests/aws/services/eks/test_eks.py::TestK3SCluster::test_cluster_default_version": {
+    "recorded-date": "23-08-2022, 00:33:01",
+    "recorded-content": {
+      "cluster_details": {
+        "arn": "arn:<partition>:eks:<region>:111111111111:cluster/<name:1>",
+        "certificateAuthority": {
+          "data": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvakNDQWVhZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJeU1EZ3lNakl5TWpnME5Wb1hEVE15TURneE9USXlNamcwTlZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSjF4ClhuRk1XK3VIaExyRWJjVFlUWEVTaG5ZQmFSeUhuOXRvalBxZXprcjdqRTZMM2dZQk0yRXpyb1A1d3NVVjluT3EKMVFLdlZwTytzd0tsZUcrMHdTVEpxbk93SmhicWtpZG9RZW1iWmVsTVFHczJXUXBOSGVqOFExeTNUNHNSQWpXegpicWxwR3lmNFVGblRKNnlLSXFHTWM1aElQSEU1VExneUNsTlhGSnBxQnV0WXZqOFZyM0gyMGtGVnlYYXpJeWlYClhOU05OZnFUNHliN1RLc0NwSzdQV2lkN3Z3c3pVTkkyU1NYV0FoU3JtdWlsYWwxMC92djlBS00zOW9KUlkwTnkKRFRLK3VmdHFzK0FMbHNyUGpTK05tWWRJQURxYXBNc1R3bW45cmpQcmpMcEQ5NS9xWDhiazFNWll5U0tYNXkzNwpJYVQwQnVRQi9mVkJtaE9Wbk8wQ0F3RUFBYU5aTUZjd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZMYU5CaVRFTVVUajlFdWhDQ0FnS1VTd21ZRVZNQlVHQTFVZEVRUU8KTUF5Q0NtdDFZbVZ5Ym1WMFpYTXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBSFNScG44ZDNSUW03VnNNOERCSQp5T2cyb3owNWROT2JSajBFa1J1cHhRVnQ3bk5BT3hzV2liazJIa0daTmtyM0Joak8zdjd2NnBzTmpBeldUU0lzCmFwMTZoWFBqNkN6aFNPYmIySFpYc0E1ZmtyWXBoRHFMa0o3T2ZibFdYbmY4MW9QSEZ3YVNnbFRlU1k0a2dKaTUKTm9KbWs5VSt2S3VUQmgrYTRYWjJoemtIbnZPdEFZUTZaNjQvVDdxS0ZuUlN4VVo3bm9CWWpXZEswTXVGUUZQTgpaejlFeHNyZ2IxcnhxME1lWmRiN082YkNpRGFxbTF3NXRmVytvRzNrZjdzanpkVXh5ajByeU5vODlIV3RxMW10CnJ0NFg3SUhQS0hqdVB0VkR6eWZ4S0NVcmdtN0N3cWNmL3V3SDJzSVZXVHc5Q0ozdWZlb2tzcFlGa1pNenhMc3YKZGlBPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+        },
+        "createdAt": "datetime",
+        "endpoint": "https://48370CF890623291A3DD72ADB38D64C5.gr7.<region>.eks.amazonaws.com",
+        "identity": {
+          "oidc": {
+            "issuer": "https://oidc.eks.<region>.amazonaws.com/id/48370CF890623291A3DD72ADB38D64C5"
+          }
+        },
+        "kubernetesNetworkConfig": {
+          "ipFamily": "ipv4",
+          "serviceIpv4Cidr": "10.100.0.0/16"
+        },
+        "logging": {
+          "clusterLogging": [
+            {
+              "enabled": false,
+              "types": [
+                "api",
+                "audit",
+                "authenticator",
+                "controllerManager",
+                "scheduler"
+              ]
+            }
+          ]
+        },
+        "name": "<name:1>",
+        "platformVersion": "eks.5",
+        "resourcesVpcConfig": {
+          "clusterSecurityGroupId": "sg-078d88a2c9c6d7cc8",
+          "endpointPrivateAccess": false,
+          "endpointPublicAccess": true,
+          "publicAccessCidrs": [
+            "0.0.0.0/0"
+          ],
+          "securityGroupIds": [],
+          "subnetIds": [
+            "subnet-010229bd1f82e2a27",
+            "subnet-02e4eef2cfa5a9e47"
+          ],
+          "vpcId": "vpc-038f3a90d44aa3636"
+        },
+        "roleArn": "arn:<partition>:iam::111111111111:role/r-4791ef85",
+        "status": "ACTIVE",
+        "tags": {},
+        "version": "1.22"
+      }
+    }
+  },
+  "tests/aws/services/eks/test_eks.py::TestEKS::test_invalid_k8s_versions[test]": {
+    "recorded-date": "22-08-2024, 15:45:12",
+    "recorded-content": {
+      "invalid-k8s-version-exception": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "unsupported Kubernetes version test"
+        },
+        "clusterName": "<cluster-name:1>",
+        "message": "unsupported Kubernetes version test",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/eks/test_eks.py::TestEKS::test_invalid_k8s_versions[100.1]": {
+    "recorded-date": "22-08-2024, 15:45:12",
+    "recorded-content": {
+      "invalid-k8s-version-exception": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "unsupported Kubernetes version 100.1"
+        },
+        "clusterName": "<cluster-name:1>",
+        "message": "unsupported Kubernetes version 100.1",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/eks/test_eks.py::TestEKS::test_invalid_k8s_versions[1.60]": {
+    "recorded-date": "22-08-2024, 15:45:13",
+    "recorded-content": {
+      "invalid-k8s-version-exception": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "unsupported Kubernetes version 1.60"
+        },
+        "clusterName": "<cluster-name:1>",
+        "message": "unsupported Kubernetes version 1.60",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/eks/test_eks.py::TestEKS::test_invalid_k8s_versions[0]": {
+    "recorded-date": "22-08-2024, 15:45:13",
+    "recorded-content": {
+      "invalid-k8s-version-exception": {
+        "Error": {
+          "Code": "InvalidParameterException",
+          "Message": "unsupported Kubernetes version 0"
+        },
+        "clusterName": "<cluster-name:1>",
+        "message": "unsupported Kubernetes version 0",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  }
+}

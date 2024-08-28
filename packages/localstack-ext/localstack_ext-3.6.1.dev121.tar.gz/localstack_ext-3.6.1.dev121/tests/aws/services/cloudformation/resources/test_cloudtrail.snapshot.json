@@ -1,0 +1,38 @@
+{
+  "tests/aws/services/cloudformation/resources/test_cloudtrail.py::test_cloud_trail_deploy": {
+    "recorded-date": "18-12-2023, 14:38:28",
+    "recorded-content": {
+      "get-trail": {
+        "HasCustomEventSelectors": false,
+        "HasInsightSelectors": false,
+        "HomeRegion": "<region>",
+        "IncludeGlobalServiceEvents": true,
+        "IsMultiRegionTrail": true,
+        "IsOrganizationTrail": false,
+        "LogFileValidationEnabled": false,
+        "Name": "<cloud-trail:1>",
+        "S3BucketName": "<s3-bucket-name:1>",
+        "TrailARN": "arn:<partition>:cloudtrail:<region>:111111111111:trail/<cloud-trail:1>"
+      },
+      "tags": [
+        {
+          "ResourceId": "arn:<partition>:cloudtrail:<region>:111111111111:trail/<cloud-trail:1>",
+          "TagsList": [
+            {
+              "Key": "Environment",
+              "Value": "Testing"
+            },
+            {
+              "Key": "Owner",
+              "Value": "LocalStack"
+            }
+          ]
+        }
+      ],
+      "stack_outputs": {
+        "CloudTrail": "<cloud-trail:1>",
+        "CloudTrailArn": "cloud-trail-arn"
+      }
+    }
+  }
+}

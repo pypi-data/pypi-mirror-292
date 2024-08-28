@@ -1,0 +1,2061 @@
+{
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_db_instance_already_exists": {
+    "recorded-date": "22-09-2023, 18:37:52",
+    "recorded-content": {
+      "create-db-instance": {
+        "ActivityStreamStatus": "stopped",
+        "AllocatedStorage": 5,
+        "AssociatedRoles": [],
+        "AutoMinorVersionUpgrade": true,
+        "AvailabilityZone": "availability-zone",
+        "BackupRetentionPeriod": 1,
+        "BackupTarget": "region",
+        "CACertificateIdentifier": "<c-a-certificate-identifier:1>",
+        "CertificateDetails": {
+          "CAIdentifier": "<c-a-certificate-identifier:1>",
+          "ValidTill": "datetime"
+        },
+        "CopyTagsToSnapshot": false,
+        "CustomerOwnedIpEnabled": false,
+        "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<db-instance-id:1>",
+        "DBInstanceClass": "db.m6g.large",
+        "DBInstanceIdentifier": "<db-instance-id:1>",
+        "DBInstanceStatus": "available",
+        "DBParameterGroups": [
+          {
+            "DBParameterGroupName": "default.postgres13",
+            "ParameterApplyStatus": "in-sync"
+          }
+        ],
+        "DBSecurityGroups": [],
+        "DBSubnetGroup": {
+          "DBSubnetGroupDescription": "default",
+          "DBSubnetGroupName": "default",
+          "SubnetGroupStatus": "Complete",
+          "Subnets": [
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:1>"
+              },
+              "SubnetIdentifier": "<subnet-id:1>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            },
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:2>"
+              },
+              "SubnetIdentifier": "<subnet-id:2>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            },
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:3>"
+              },
+              "SubnetIdentifier": "<subnet-id:3>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            },
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:4>"
+              },
+              "SubnetIdentifier": "<subnet-id:4>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            },
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:5>"
+              },
+              "SubnetIdentifier": "<subnet-id:5>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            },
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:6>"
+              },
+              "SubnetIdentifier": "<subnet-id:6>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            }
+          ],
+          "VpcId": "<vpc-id:1>"
+        },
+        "DbInstancePort": 0,
+        "DbiResourceId": "<dbi-resource-id:1>",
+        "DeletionProtection": false,
+        "DomainMemberships": [],
+        "Endpoint": {
+          "Address": "address",
+          "HostedZoneId": "<hosted-zone-id:1>",
+          "Port": "port"
+        },
+        "Engine": "postgres",
+        "EngineVersion": "13.7",
+        "IAMDatabaseAuthenticationEnabled": false,
+        "InstanceCreateTime": "datetime",
+        "LatestRestorableTime": "datetime",
+        "LicenseModel": "postgresql-license",
+        "MasterUsername": "test",
+        "MonitoringInterval": 0,
+        "MultiAZ": false,
+        "NetworkType": "IPV4",
+        "OptionGroupMemberships": [
+          {
+            "OptionGroupName": "default:postgres-13",
+            "Status": "in-sync"
+          }
+        ],
+        "PendingModifiedValues": {},
+        "PerformanceInsightsEnabled": false,
+        "PreferredBackupWindow": "<backup-window>",
+        "PreferredMaintenanceWindow": "<maintenance-window>",
+        "PubliclyAccessible": true,
+        "ReadReplicaDBInstanceIdentifiers": [],
+        "StorageEncrypted": false,
+        "StorageThroughput": 0,
+        "StorageType": "gp2",
+        "TagList": [],
+        "VpcSecurityGroups": [
+          {
+            "Status": "active",
+            "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+          }
+        ]
+      },
+      "create-db-instance-already-exists": {
+        "Error": {
+          "Code": "DBInstanceAlreadyExists",
+          "Message": "DB instance already exists",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_db_cluster_already_exists": {
+    "recorded-date": "22-09-2023, 13:01:18",
+    "recorded-content": {
+      "create-db-cluster-already-exists": {
+        "Error": {
+          "Code": "DBClusterAlreadyExistsFault",
+          "Message": "DB Cluster already exists",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_create_db_cluster_non_existing_parameter_group": {
+    "recorded-date": "22-09-2023, 14:34:57",
+    "recorded-content": {
+      "create_db_cluster": {
+        "Error": {
+          "Code": "DBClusterParameterGroupNotFound",
+          "Message": "DBClusterParameterGroup not found: my-test-group",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_create_db_instance_non_existing_parameter_group": {
+    "recorded-date": "22-09-2023, 12:53:58",
+    "recorded-content": {
+      "create_db_instance": {
+        "Error": {
+          "Code": "DBParameterGroupNotFound",
+          "Message": "DBParameterGroup not found: my-test-group",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_create_aurora_v2_cluster": {
+    "recorded-date": "11-09-2023, 15:17:45",
+    "recorded-content": {
+      "describe-db-cluster-1": {
+        "DBClusters": [
+          {
+            "ActivityStreamStatus": "stopped",
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZones": "availability-zones",
+            "BackupRetentionPeriod": 1,
+            "ClusterCreateTime": "datetime",
+            "CopyTagsToSnapshot": false,
+            "CrossAccountClone": false,
+            "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBClusterMembers": [],
+            "DBClusterParameterGroup": "default.aurora-postgresql13",
+            "DBSubnetGroup": "default",
+            "DatabaseName": "test",
+            "DbClusterResourceId": "<db-cluster-resource-id:1>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "EarliestRestorableTime": "datetime",
+            "Endpoint": "endpoint",
+            "Engine": "aurora-postgresql",
+            "EngineMode": "provisioned",
+            "EngineVersion": "13.7",
+            "HostedZoneId": "<hosted-zone-id:1>",
+            "HttpEndpointEnabled": false,
+            "IAMDatabaseAuthenticationEnabled": false,
+            "LatestRestorableTime": "datetime",
+            "MasterUsername": "test",
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "Port": "<port>",
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "ReadReplicaIdentifiers": [],
+            "ReaderEndpoint": "reader-endpoint",
+            "Status": "available",
+            "StorageEncrypted": false,
+            "TagList": [],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-db-cluster-endpoints": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "creating"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "creating"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "error-engine": "An error occurred (InvalidParameterCombination) when calling the CreateDBInstance operation: The engine name requested for your DB instance (aurora-mysql) doesn't match the engine name of your DB cluster (aurora-postgresql).",
+      "error-storage-size": "An error occurred (InvalidParameterCombination) when calling the CreateDBInstance operation: The requested DB instance will be a member of a DB cluster. You don't need to set storage size.",
+      "error-dbname": "An error occurred (InvalidParameterCombination) when calling the CreateDBInstance operation: The requested DB Instance will be a member of a DB Cluster. Set database name for the DB Cluster.",
+      "error-master-user": "An error occurred (InvalidParameterCombination) when calling the CreateDBInstance operation: The requested DB Instance will be a member of a DB Cluster. Set master user name for the DB Cluster.",
+      "error-master-user-password": "An error occurred (InvalidParameterCombination) when calling the CreateDBInstance operation: The requested DB Instance will be a member of a DB Cluster. Set master user password for the DB Cluster.",
+      "describe-db-cluster": {
+        "DBClusters": [
+          {
+            "ActivityStreamStatus": "stopped",
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZones": "availability-zones",
+            "BackupRetentionPeriod": 1,
+            "ClusterCreateTime": "datetime",
+            "CopyTagsToSnapshot": false,
+            "CrossAccountClone": false,
+            "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBClusterMembers": [
+              {
+                "DBClusterParameterGroupStatus": "in-sync",
+                "DBInstanceIdentifier": "<db-instance-id:1>",
+                "IsClusterWriter": true,
+                "PromotionTier": 1
+              }
+            ],
+            "DBClusterParameterGroup": "default.aurora-postgresql13",
+            "DBSubnetGroup": "default",
+            "DatabaseName": "test",
+            "DbClusterResourceId": "<db-cluster-resource-id:1>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "EarliestRestorableTime": "datetime",
+            "Endpoint": "endpoint",
+            "Engine": "aurora-postgresql",
+            "EngineMode": "provisioned",
+            "EngineVersion": "13.7",
+            "HostedZoneId": "<hosted-zone-id:1>",
+            "HttpEndpointEnabled": false,
+            "IAMDatabaseAuthenticationEnabled": false,
+            "LatestRestorableTime": "datetime",
+            "MasterUsername": "test",
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "Port": "<port>",
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "ReadReplicaIdentifiers": [],
+            "ReaderEndpoint": "reader-endpoint",
+            "Status": "available",
+            "StorageEncrypted": false,
+            "TagList": [],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-db-instances": {
+        "DBInstances": [
+          {
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZone": "availability-zone",
+            "BackupRetentionPeriod": 1,
+            "BackupTarget": "region",
+            "CACertificateIdentifier": "<c-a-certificate-identifier:1>",
+            "CertificateDetails": {
+              "CAIdentifier": "<c-a-certificate-identifier:1>",
+              "ValidTill": "datetime"
+            },
+            "CopyTagsToSnapshot": false,
+            "CustomerOwnedIpEnabled": false,
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<db-instance-id:1>",
+            "DBInstanceClass": "db.t3.large",
+            "DBInstanceIdentifier": "<db-instance-id:1>",
+            "DBInstanceStatus": "available",
+            "DBName": "test",
+            "DBParameterGroups": [
+              {
+                "DBParameterGroupName": "default.aurora-postgresql13",
+                "ParameterApplyStatus": "in-sync"
+              }
+            ],
+            "DBSecurityGroups": [],
+            "DBSubnetGroup": {
+              "DBSubnetGroupDescription": "default",
+              "DBSubnetGroupName": "default",
+              "SubnetGroupStatus": "Complete",
+              "Subnets": [
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:1>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:1>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:2>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:2>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:3>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:3>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:4>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:4>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:5>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:5>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:6>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:6>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                }
+              ],
+              "VpcId": "<vpc-id:1>"
+            },
+            "DbInstancePort": 0,
+            "DbiResourceId": "<dbi-resource-id:1>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "Endpoint": "endpoint",
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "13.7",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "InstanceCreateTime": "datetime",
+            "LicenseModel": "postgresql-license",
+            "MasterUsername": "test",
+            "MonitoringInterval": 0,
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "OptionGroupMemberships": [
+              {
+                "OptionGroupName": "default:aurora-postgresql-13",
+                "Status": "in-sync"
+              }
+            ],
+            "PendingModifiedValues": {},
+            "PerformanceInsightsEnabled": false,
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "PromotionTier": 1,
+            "PubliclyAccessible": false,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "StorageEncrypted": false,
+            "StorageThroughput": 0,
+            "StorageType": "aurora",
+            "TagList": [],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-db-cluster-endpoints-2": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "WRITER",
+            "Status": "available"
+          },
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "endpoint",
+            "EndpointType": "READER",
+            "Status": "available"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_describe_db_cluster_not_existent": {
+    "recorded-date": "03-02-2023, 14:22:19",
+    "recorded-content": {
+      "describe-db-clusters-with-cluster-id": {
+        "Error": {
+          "Code": "DBClusterNotFoundFault",
+          "Message": "DBCluster fake-db-cluster-id not found.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_create_aurora_v2_cluster_delete_instances": {
+    "recorded-date": "06-02-2023, 13:32:19",
+    "recorded-content": {
+      "describe-db-instances": {
+        "DBInstances": [
+          {
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZone": "<subnet-name:2>",
+            "BackupRetentionPeriod": 1,
+            "BackupTarget": "region",
+            "CACertificateIdentifier": "<c-a-certificate-identifier:1>",
+            "CertificateDetails": {
+              "CAIdentifier": "<c-a-certificate-identifier:1>",
+              "ValidTill": "datetime"
+            },
+            "CopyTagsToSnapshot": false,
+            "CustomerOwnedIpEnabled": false,
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<db-instance-id:1>",
+            "DBInstanceClass": "db.t3.large",
+            "DBInstanceIdentifier": "<db-instance-id:1>",
+            "DBInstanceStatus": "available",
+            "DBName": "test",
+            "DBParameterGroups": [
+              {
+                "DBParameterGroupName": "default.aurora-postgresql13",
+                "ParameterApplyStatus": "in-sync"
+              }
+            ],
+            "DBSecurityGroups": [],
+            "DBSubnetGroup": {
+              "DBSubnetGroupDescription": "default",
+              "DBSubnetGroupName": "default",
+              "SubnetGroupStatus": "Complete",
+              "Subnets": [
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:1>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:1>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:2>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:2>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:3>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:3>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:4>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:4>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:5>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:5>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:6>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:6>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                }
+              ],
+              "VpcId": "<vpc-id:1>"
+            },
+            "DbInstancePort": 0,
+            "DbiResourceId": "<dbi-resource-id:1>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "Endpoint": "endpoint",
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "13.7",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "InstanceCreateTime": "datetime",
+            "LicenseModel": "postgresql-license",
+            "MasterUsername": "test",
+            "MonitoringInterval": 0,
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "OptionGroupMemberships": [
+              {
+                "OptionGroupName": "default:aurora-postgresql-13",
+                "Status": "in-sync"
+              }
+            ],
+            "PendingModifiedValues": {},
+            "PerformanceInsightsEnabled": false,
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "PromotionTier": 1,
+            "PubliclyAccessible": false,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "StorageEncrypted": false,
+            "StorageThroughput": 0,
+            "StorageType": "aurora",
+            "TagList": [],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "error-delete_db_cluster": "An error occurred (InvalidDBClusterStateFault) when calling the DeleteDBCluster operation: Cluster cannot be deleted, it still contains DB instances in non-deleting state.",
+      "delete_db_instance": {
+        "DBInstance": {
+          "AllocatedStorage": 1,
+          "AssociatedRoles": [],
+          "AutoMinorVersionUpgrade": true,
+          "AvailabilityZone": "<subnet-name:2>",
+          "BackupRetentionPeriod": 1,
+          "BackupTarget": "region",
+          "CACertificateIdentifier": "",
+          "CopyTagsToSnapshot": false,
+          "CustomerOwnedIpEnabled": false,
+          "DBClusterIdentifier": "<db-cluster-id:1>",
+          "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<db-instance-id:1>",
+          "DBInstanceClass": "db.t3.large",
+          "DBInstanceIdentifier": "<db-instance-id:1>",
+          "DBInstanceStatus": "deleting",
+          "DBName": "test",
+          "DBParameterGroups": [
+            {
+              "DBParameterGroupName": "default.aurora-postgresql13",
+              "ParameterApplyStatus": "in-sync"
+            }
+          ],
+          "DBSecurityGroups": [],
+          "DBSubnetGroup": {
+            "DBSubnetGroupDescription": "default",
+            "DBSubnetGroupName": "default",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:1>"
+                },
+                "SubnetIdentifier": "<subnet-id:1>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:2>"
+                },
+                "SubnetIdentifier": "<subnet-id:2>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:3>"
+                },
+                "SubnetIdentifier": "<subnet-id:3>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:4>"
+                },
+                "SubnetIdentifier": "<subnet-id:4>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:5>"
+                },
+                "SubnetIdentifier": "<subnet-id:5>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:6>"
+                },
+                "SubnetIdentifier": "<subnet-id:6>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              }
+            ],
+            "VpcId": "<vpc-id:1>"
+          },
+          "DbInstancePort": 0,
+          "DbiResourceId": "<dbi-resource-id:1>",
+          "DeletionProtection": false,
+          "DomainMemberships": [],
+          "Endpoint": "endpoint",
+          "Engine": "aurora-postgresql",
+          "EngineVersion": "13.7",
+          "IAMDatabaseAuthenticationEnabled": false,
+          "InstanceCreateTime": "datetime",
+          "LicenseModel": "postgresql-license",
+          "MasterUsername": "test",
+          "MonitoringInterval": 0,
+          "MultiAZ": false,
+          "NetworkType": "IPV4",
+          "OptionGroupMemberships": [
+            {
+              "OptionGroupName": "default:aurora-postgresql-13",
+              "Status": "in-sync"
+            }
+          ],
+          "PendingModifiedValues": {},
+          "PerformanceInsightsEnabled": false,
+          "PreferredBackupWindow": "<backup-window>",
+          "PreferredMaintenanceWindow": "<maintenance-window>",
+          "PromotionTier": 1,
+          "PubliclyAccessible": false,
+          "ReadReplicaDBInstanceIdentifiers": [],
+          "StorageEncrypted": false,
+          "StorageThroughput": 0,
+          "StorageType": "aurora",
+          "TagList": [],
+          "VpcSecurityGroups": [
+            {
+              "Status": "active",
+              "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+            }
+          ]
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete_db_cluster": {
+        "DBCluster": {
+          "AllocatedStorage": 1,
+          "AssociatedRoles": [],
+          "AutoMinorVersionUpgrade": false,
+          "AvailabilityZones": [
+            "<subnet-name:3>",
+            "<subnet-name:1>",
+            "<subnet-name:2>"
+          ],
+          "BackupRetentionPeriod": 1,
+          "ClusterCreateTime": "datetime",
+          "CopyTagsToSnapshot": false,
+          "CrossAccountClone": false,
+          "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+          "DBClusterIdentifier": "<db-cluster-id:1>",
+          "DBClusterMembers": [
+            {
+              "DBClusterParameterGroupStatus": "in-sync",
+              "DBInstanceIdentifier": "<db-instance-id:1>",
+              "IsClusterWriter": true,
+              "PromotionTier": 1
+            }
+          ],
+          "DBClusterParameterGroup": "default.aurora-postgresql13",
+          "DBSubnetGroup": "default",
+          "DatabaseName": "test",
+          "DbClusterResourceId": "<db-cluster-resource-id:1>",
+          "DeletionProtection": false,
+          "DomainMemberships": [],
+          "EarliestRestorableTime": "datetime",
+          "Endpoint": "endpoint",
+          "Engine": "aurora-postgresql",
+          "EngineMode": "provisioned",
+          "EngineVersion": "13.7",
+          "HostedZoneId": "<hosted-zone-id:1>",
+          "HttpEndpointEnabled": false,
+          "IAMDatabaseAuthenticationEnabled": false,
+          "LatestRestorableTime": "datetime",
+          "MasterUsername": "test",
+          "MultiAZ": false,
+          "NetworkType": "IPV4",
+          "Port": 5432,
+          "PreferredBackupWindow": "<backup-window>",
+          "PreferredMaintenanceWindow": "<maintenance-window>",
+          "ReadReplicaIdentifiers": [],
+          "ReaderEndpoint": "reader-endpoint",
+          "Status": "available",
+          "StorageEncrypted": false,
+          "TagList": [],
+          "VpcSecurityGroups": [
+            {
+              "Status": "active",
+              "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+            }
+          ]
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_generate_db_auth_token": {
+    "recorded-date": "01-03-2024, 17:40:10",
+    "recorded-content": {
+      "db-instance": {
+        "ActivityStreamStatus": "stopped",
+        "AllocatedStorage": 20,
+        "AssociatedRoles": [],
+        "AutoMinorVersionUpgrade": true,
+        "AvailabilityZone": "<subnet-name:5>",
+        "BackupRetentionPeriod": 1,
+        "BackupTarget": "region",
+        "CACertificateIdentifier": "<c-a-certificate-identifier:1>",
+        "CertificateDetails": {
+          "CAIdentifier": "<c-a-certificate-identifier:1>",
+          "ValidTill": "<datetime>"
+        },
+        "CopyTagsToSnapshot": false,
+        "CustomerOwnedIpEnabled": false,
+        "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<db-instance-id:1>",
+        "DBInstanceClass": "db.t3.small",
+        "DBInstanceIdentifier": "<db-instance-id:1>",
+        "DBInstanceStatus": "available",
+        "DBName": "test",
+        "DBParameterGroups": [
+          {
+            "DBParameterGroupName": "default.postgres16",
+            "ParameterApplyStatus": "in-sync"
+          }
+        ],
+        "DBSecurityGroups": [],
+        "DBSubnetGroup": {
+          "DBSubnetGroupDescription": "default",
+          "DBSubnetGroupName": "default",
+          "SubnetGroupStatus": "Complete",
+          "Subnets": [
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:1>"
+              },
+              "SubnetIdentifier": "<subnet-id:1>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            },
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:2>"
+              },
+              "SubnetIdentifier": "<subnet-id:2>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            },
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:3>"
+              },
+              "SubnetIdentifier": "<subnet-id:3>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            },
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:4>"
+              },
+              "SubnetIdentifier": "<subnet-id:4>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            },
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:5>"
+              },
+              "SubnetIdentifier": "<subnet-id:5>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            },
+            {
+              "SubnetAvailabilityZone": {
+                "Name": "<subnet-name:6>"
+              },
+              "SubnetIdentifier": "<subnet-id:6>",
+              "SubnetOutpost": {},
+              "SubnetStatus": "Active"
+            }
+          ],
+          "VpcId": "<vpc-id:1>"
+        },
+        "DbInstancePort": 0,
+        "DbiResourceId": "<dbi-resource-id:1>",
+        "DedicatedLogVolume": false,
+        "DeletionProtection": false,
+        "DomainMemberships": [],
+        "Endpoint": "endpoint",
+        "Engine": "postgres",
+        "EngineVersion": "16.1",
+        "IAMDatabaseAuthenticationEnabled": true,
+        "InstanceCreateTime": "<datetime>",
+        "IsStorageConfigUpgradeAvailable": false,
+        "LatestRestorableTime": "<datetime>",
+        "LicenseModel": "postgresql-license",
+        "MasterUsername": "test",
+        "MonitoringInterval": 0,
+        "MultiAZ": false,
+        "NetworkType": "IPV4",
+        "OptionGroupMemberships": [
+          {
+            "OptionGroupName": "default:postgres-16",
+            "Status": "in-sync"
+          }
+        ],
+        "PendingModifiedValues": {},
+        "PerformanceInsightsEnabled": false,
+        "PreferredBackupWindow": "<backup-window>",
+        "PreferredMaintenanceWindow": "<maintenance-window>",
+        "PubliclyAccessible": true,
+        "ReadReplicaDBInstanceIdentifiers": [],
+        "StorageEncrypted": false,
+        "StorageThroughput": 0,
+        "StorageType": "gp2",
+        "TagList": [],
+        "VpcSecurityGroups": [
+          {
+            "Status": "active",
+            "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+          }
+        ]
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_add_role_to_db_instance": {
+    "recorded-date": "08-04-2023, 19:00:33",
+    "recorded-content": {
+      "associated-roles": [
+        {
+          "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+          "FeatureName": "s3Import",
+          "Status": "ACTIVE"
+        }
+      ],
+      "error-1": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "The engine PostgreSQL supports only one ARN associated with feature name s3Import.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-2": {
+        "Error": {
+          "Code": "DBInstanceRoleNotFound",
+          "Message": "The arn:<partition>:iam::111111111111:role/<role-name> IAM role doesn't match with the s3Import feature for the <db-id> DB instance. Check and try again.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_add_role_to_db_cluster": {
+    "recorded-date": "08-04-2023, 19:22:02",
+    "recorded-content": {
+      "associated-roles": [
+        {
+          "RoleArn": "arn:<partition>:iam::111111111111:role/<role-name>",
+          "Status": "ACTIVE",
+          "FeatureName": "s3Export"
+        }
+      ],
+      "error-1": {
+        "Error": {
+          "Code": "DBClusterRoleAlreadyExists",
+          "Message": "Role ARN arn:<partition>:iam::111111111111:role/<role-name> is already associated with DB Cluster: <db-id>. Verify your role ARN and try again.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "error-2": {
+        "Error": {
+          "Code": "DBClusterRoleNotFound",
+          "Message": "Role ARN arn:<partition>:iam::111111111111:role/<role-name> with Feature Name s3Export cannot be found for DB Cluster: <db-id>. Verify your role ARN and try again.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsCrud::test_db_cluster_parameter_groups": {
+    "recorded-date": "24-05-2023, 19:12:10",
+    "recorded-content": {
+      "create_db_cluster_parameter_group": {
+        "DBClusterParameterGroup": {
+          "DBClusterParameterGroupArn": "arn:<partition>:rds:<region>:111111111111:cluster-pg:g1",
+          "DBClusterParameterGroupName": "g1",
+          "DBParameterGroupFamily": "aurora-postgresql14",
+          "Description": "desc 123"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_db_cluster_parameter_groups": {
+        "DBClusterParameterGroups": [
+          {
+            "DBClusterParameterGroupArn": "arn:<partition>:rds:<region>:111111111111:cluster-pg:g1",
+            "DBClusterParameterGroupName": "g1",
+            "DBParameterGroupFamily": "aurora-postgresql14",
+            "Description": "desc 123"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "modify_db_cluster_parameter_group": {
+        "DBClusterParameterGroupName": "g1",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list_tags_for_resource": {
+        "TagList": [
+          {
+            "Key": "Hello",
+            "Value": "World"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsCrud::test_create_modify_option_group": {
+    "recorded-date": "25-05-2023, 17:13:30",
+    "recorded-content": {
+      "create_option_group": {
+        "OptionGroup": {
+          "AllowsVpcAndNonVpcInstanceMemberships": true,
+          "EngineName": "mariadb",
+          "MajorEngineVersion": "10.0",
+          "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:mytest",
+          "OptionGroupDescription": "my test desc",
+          "OptionGroupName": "mytest",
+          "Options": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_option_group": {
+        "OptionGroupsList": [
+          {
+            "AllowsVpcAndNonVpcInstanceMemberships": true,
+            "EngineName": "mariadb",
+            "MajorEngineVersion": "10.0",
+            "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:mytest",
+            "OptionGroupDescription": "my test desc",
+            "OptionGroupName": "mytest",
+            "Options": []
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list_tags": {
+        "TagList": [
+          {
+            "Key": "option-1",
+            "Value": "1"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "modify_to_include": {
+        "OptionGroup": {
+          "AllowsVpcAndNonVpcInstanceMemberships": false,
+          "EngineName": "mariadb",
+          "MajorEngineVersion": "10.0",
+          "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:mytest",
+          "OptionGroupDescription": "my test desc",
+          "OptionGroupName": "mytest",
+          "Options": "<options>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_option_group2": {
+        "OptionGroupsList": [
+          {
+            "AllowsVpcAndNonVpcInstanceMemberships": false,
+            "EngineName": "mariadb",
+            "MajorEngineVersion": "10.0",
+            "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:mytest",
+            "OptionGroupDescription": "my test desc",
+            "OptionGroupName": "mytest",
+            "Options": "<options>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list_tags_copy": {
+        "TagList": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "copy_option_group": {
+        "OptionGroup": {
+          "AllowsVpcAndNonVpcInstanceMemberships": false,
+          "EngineName": "mariadb",
+          "MajorEngineVersion": "10.0",
+          "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:secondtest",
+          "OptionGroupDescription": "hello this is a second test",
+          "OptionGroupName": "secondtest",
+          "Options": "<options>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "modify_option_group": {
+        "OptionGroup": {
+          "AllowsVpcAndNonVpcInstanceMemberships": false,
+          "EngineName": "mariadb",
+          "MajorEngineVersion": "10.0",
+          "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:secondtest",
+          "OptionGroupDescription": "hello this is a second test",
+          "OptionGroupName": "secondtest",
+          "Options": "<options>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_option_group_copy": {
+        "OptionGroupsList": [
+          {
+            "AllowsVpcAndNonVpcInstanceMemberships": false,
+            "EngineName": "mariadb",
+            "MajorEngineVersion": "10.0",
+            "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:secondtest",
+            "OptionGroupDescription": "hello this is a second test",
+            "OptionGroupName": "secondtest",
+            "Options": "<options>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_option_group3": {
+        "OptionGroupsList": [
+          {
+            "AllowsVpcAndNonVpcInstanceMemberships": false,
+            "EngineName": "mariadb",
+            "MajorEngineVersion": "10.0",
+            "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:mytest",
+            "OptionGroupDescription": "my test desc",
+            "OptionGroupName": "mytest",
+            "Options": "<options>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "modify_to_remove": {
+        "OptionGroup": {
+          "AllowsVpcAndNonVpcInstanceMemberships": true,
+          "EngineName": "mariadb",
+          "MajorEngineVersion": "10.0",
+          "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:mytest",
+          "OptionGroupDescription": "my test desc",
+          "OptionGroupName": "mytest",
+          "Options": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_option_group4": {
+        "OptionGroupsList": [
+          {
+            "AllowsVpcAndNonVpcInstanceMemberships": true,
+            "EngineName": "mariadb",
+            "MajorEngineVersion": "10.0",
+            "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:mytest",
+            "OptionGroupDescription": "my test desc",
+            "OptionGroupName": "mytest",
+            "Options": []
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_option_group_copy2": {
+        "OptionGroupsList": [
+          {
+            "AllowsVpcAndNonVpcInstanceMemberships": false,
+            "EngineName": "mariadb",
+            "MajorEngineVersion": "10.0",
+            "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:secondtest",
+            "OptionGroupDescription": "hello this is a second test",
+            "OptionGroupName": "secondtest",
+            "Options": "<options>"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "list_tags_copy_with_tags": {
+        "TagList": [
+          {
+            "Key": "tag1",
+            "Value": "mytag"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsCrud::test_negative_cases_modify_option_group": {
+    "recorded-date": "25-05-2023, 18:25:48",
+    "recorded-content": {
+      "option-group-does-not-exist": {
+        "Error": {
+          "Code": "OptionGroupNotFoundFault",
+          "Message": "Specified OptionGroupName: doesnotexist not found.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      },
+      "invalid-modify": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "At least one option must be added, modified, or removed.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "option-group-already-exists": {
+        "Error": {
+          "Code": "OptionGroupAlreadyExistsFault",
+          "Message": "An option group named mytest already exists.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "remove-not-existing-option": {
+        "OptionGroup": {
+          "AllowsVpcAndNonVpcInstanceMemberships": true,
+          "EngineName": "mariadb",
+          "MajorEngineVersion": "10.0",
+          "OptionGroupArn": "arn:<partition>:rds:<region>:111111111111:og:mytest",
+          "OptionGroupDescription": "my test desc",
+          "OptionGroupName": "mytest",
+          "Options": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsCrud::test_copy_db_parameter_groups": {
+    "recorded-date": "10-08-2023, 12:59:56",
+    "recorded-content": {
+      "copy_db_parameter_groups": {
+        "DBParameterGroup": {
+          "DBParameterGroupArn": "arn:<partition>:rds:<region>:111111111111:pg:target",
+          "DBParameterGroupFamily": "mysql5.7",
+          "DBParameterGroupName": "target",
+          "Description": "target parameter group"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "copy_db_parameter_groups_already_exists_error": "An error occurred (DBParameterGroupAlreadyExists) when calling the CopyDBParameterGroup operation: Parameter group target already exists",
+      "copy_db_parameter_groups_non_existing_error_1": "An error occurred (DBParameterGroupNotFound) when calling the CopyDBParameterGroup operation: Parameter group does not exist",
+      "copy_db_parameter_groups_non_existing_error_2": "An error occurred (DBParameterGroupNotFound) when calling the CopyDBParameterGroup operation: Parameter group does not exist",
+      "describe_db_parameter_groups": {
+        "DBParameterGroups": [
+          {
+            "DBParameterGroupArn": "arn:<partition>:rds:<region>:111111111111:pg:target",
+            "DBParameterGroupFamily": "mysql5.7",
+            "DBParameterGroupName": "target",
+            "Description": "target parameter group"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_serverless_no_custom_cluster_endpoint": {
+    "recorded-date": "11-09-2023, 12:24:33",
+    "recorded-content": {
+      "describe-serverless-v1-cluster": {
+        "DBClusters": [
+          {
+            "ActivityStreamStatus": "stopped",
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZones": "availability-zones",
+            "BackupRetentionPeriod": 1,
+            "Capacity": 8,
+            "ClusterCreateTime": "datetime",
+            "CopyTagsToSnapshot": false,
+            "CrossAccountClone": false,
+            "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBClusterMembers": [],
+            "DBClusterParameterGroup": "default.aurora-postgresql13",
+            "DBSubnetGroup": "default",
+            "DbClusterResourceId": "<db-cluster-resource-id:1>",
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "EarliestRestorableTime": "datetime",
+            "Endpoint": "<endpoint:1>",
+            "Engine": "aurora-postgresql",
+            "EngineMode": "serverless",
+            "EngineVersion": "13.9",
+            "HostedZoneId": "<hosted-zone-id:1>",
+            "HttpEndpointEnabled": false,
+            "IAMDatabaseAuthenticationEnabled": false,
+            "KmsKeyId": "<kms-key-id:1>",
+            "LatestRestorableTime": "datetime",
+            "MasterUsername": "test",
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "Port": "<port>",
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "ReadReplicaIdentifiers": [],
+            "ScalingConfigurationInfo": {
+              "AutoPause": true,
+              "MaxCapacity": 16,
+              "MinCapacity": 2,
+              "SecondsBeforeTimeout": 300,
+              "SecondsUntilAutoPause": 300,
+              "TimeoutAction": "RollbackCapacityChange"
+            },
+            "Status": "available",
+            "StorageEncrypted": true,
+            "TagList": [],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-db-cluster-endpoints": {
+        "DBClusterEndpoints": [
+          {
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "Endpoint": "<endpoint:1>",
+            "EndpointType": "WRITER",
+            "Status": "available"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "invalid_create_db_cluster_endpoint": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "Feature not supported by the cluster mode",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsPostgres::test_create_aurora_v2_cluster_reboot_instances": {
+    "recorded-date": "23-01-2024, 19:30:01",
+    "recorded-content": {
+      "describe-db-instances": {
+        "DBInstances": [
+          {
+            "AllocatedStorage": 1,
+            "AssociatedRoles": [],
+            "AutoMinorVersionUpgrade": true,
+            "AvailabilityZone": "<subnet-name:1>",
+            "BackupRetentionPeriod": 1,
+            "BackupTarget": "region",
+            "CACertificateIdentifier": "<c-a-certificate-identifier:1>",
+            "CertificateDetails": {
+              "CAIdentifier": "<c-a-certificate-identifier:1>",
+              "ValidTill": "datetime"
+            },
+            "CopyTagsToSnapshot": false,
+            "CustomerOwnedIpEnabled": false,
+            "DBClusterIdentifier": "<db-cluster-id:1>",
+            "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<db-instance-id:1>",
+            "DBInstanceClass": "db.t3.large",
+            "DBInstanceIdentifier": "<db-instance-id:1>",
+            "DBInstanceStatus": "available",
+            "DBName": "test",
+            "DBParameterGroups": [
+              {
+                "DBParameterGroupName": "default.aurora-postgresql15",
+                "ParameterApplyStatus": "in-sync"
+              }
+            ],
+            "DBSecurityGroups": [],
+            "DBSubnetGroup": {
+              "DBSubnetGroupDescription": "default",
+              "DBSubnetGroupName": "default",
+              "SubnetGroupStatus": "Complete",
+              "Subnets": [
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:1>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:1>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:2>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:2>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:3>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:3>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:4>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:4>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:5>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:5>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetAvailabilityZone": {
+                    "Name": "<subnet-name:6>"
+                  },
+                  "SubnetIdentifier": "<subnet-id:6>",
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                }
+              ],
+              "VpcId": "<vpc-id:1>"
+            },
+            "DbInstancePort": 0,
+            "DbiResourceId": "<dbi-resource-id:1>",
+            "DedicatedLogVolume": false,
+            "DeletionProtection": false,
+            "DomainMemberships": [],
+            "Endpoint": "endpoint",
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "15.4",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "InstanceCreateTime": "datetime",
+            "LicenseModel": "postgresql-license",
+            "MasterUsername": "test",
+            "MonitoringInterval": 0,
+            "MultiAZ": false,
+            "NetworkType": "IPV4",
+            "OptionGroupMemberships": [
+              {
+                "OptionGroupName": "default:aurora-postgresql-15",
+                "Status": "in-sync"
+              }
+            ],
+            "PendingModifiedValues": {},
+            "PerformanceInsightsEnabled": false,
+            "PreferredBackupWindow": "<backup-window>",
+            "PreferredMaintenanceWindow": "<maintenance-window>",
+            "PromotionTier": 1,
+            "PubliclyAccessible": false,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "StorageEncrypted": false,
+            "StorageThroughput": 0,
+            "StorageType": "aurora",
+            "TagList": [],
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "reboot-db-instance": {
+        "DBInstance": {
+          "AllocatedStorage": 1,
+          "AssociatedRoles": [],
+          "AutoMinorVersionUpgrade": true,
+          "AvailabilityZone": "<subnet-name:1>",
+          "BackupRetentionPeriod": 1,
+          "BackupTarget": "region",
+          "CACertificateIdentifier": "<c-a-certificate-identifier:1>",
+          "CertificateDetails": {
+            "CAIdentifier": "<c-a-certificate-identifier:1>",
+            "ValidTill": "datetime"
+          },
+          "CopyTagsToSnapshot": false,
+          "CustomerOwnedIpEnabled": false,
+          "DBClusterIdentifier": "<db-cluster-id:1>",
+          "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<db-instance-id:1>",
+          "DBInstanceClass": "db.t3.large",
+          "DBInstanceIdentifier": "<db-instance-id:1>",
+          "DBInstanceStatus": "rebooting",
+          "DBName": "test",
+          "DBParameterGroups": [
+            {
+              "DBParameterGroupName": "default.aurora-postgresql15",
+              "ParameterApplyStatus": "in-sync"
+            }
+          ],
+          "DBSecurityGroups": [],
+          "DBSubnetGroup": {
+            "DBSubnetGroupDescription": "default",
+            "DBSubnetGroupName": "default",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:1>"
+                },
+                "SubnetIdentifier": "<subnet-id:1>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:2>"
+                },
+                "SubnetIdentifier": "<subnet-id:2>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:3>"
+                },
+                "SubnetIdentifier": "<subnet-id:3>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:4>"
+                },
+                "SubnetIdentifier": "<subnet-id:4>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:5>"
+                },
+                "SubnetIdentifier": "<subnet-id:5>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetAvailabilityZone": {
+                  "Name": "<subnet-name:6>"
+                },
+                "SubnetIdentifier": "<subnet-id:6>",
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              }
+            ],
+            "VpcId": "<vpc-id:1>"
+          },
+          "DbInstancePort": 0,
+          "DbiResourceId": "<dbi-resource-id:1>",
+          "DedicatedLogVolume": false,
+          "DeletionProtection": false,
+          "DomainMemberships": [],
+          "Endpoint": "endpoint",
+          "Engine": "aurora-postgresql",
+          "EngineVersion": "15.4",
+          "IAMDatabaseAuthenticationEnabled": false,
+          "InstanceCreateTime": "datetime",
+          "LicenseModel": "postgresql-license",
+          "MasterUsername": "test",
+          "MonitoringInterval": 0,
+          "MultiAZ": false,
+          "NetworkType": "IPV4",
+          "OptionGroupMemberships": [
+            {
+              "OptionGroupName": "default:aurora-postgresql-15",
+              "Status": "in-sync"
+            }
+          ],
+          "PendingModifiedValues": {},
+          "PerformanceInsightsEnabled": false,
+          "PreferredBackupWindow": "<backup-window>",
+          "PreferredMaintenanceWindow": "<maintenance-window>",
+          "PromotionTier": 1,
+          "PubliclyAccessible": false,
+          "ReadReplicaDBInstanceIdentifiers": [],
+          "StorageEncrypted": false,
+          "StorageThroughput": 0,
+          "StorageType": "aurora",
+          "TagList": [],
+          "VpcSecurityGroups": [
+            {
+              "Status": "active",
+              "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+            }
+          ]
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsMysql::test_create_aurora_db[provisioned-8.0.mysql_aurora.3.04.0]": {
+    "recorded-date": "14-05-2024, 14:43:44",
+    "recorded-content": {
+      "create-cluster": {
+        "ActivityStreamStatus": "stopped",
+        "AllocatedStorage": 1,
+        "AssociatedRoles": [],
+        "AutoMinorVersionUpgrade": true,
+        "AvailabilityZones": "<availability_zones>",
+        "BackupRetentionPeriod": 1,
+        "ClusterCreateTime": "<datetime>",
+        "CopyTagsToSnapshot": false,
+        "CrossAccountClone": false,
+        "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+        "DBClusterIdentifier": "<db-cluster-id:1>",
+        "DBClusterMembers": [],
+        "DBClusterParameterGroup": "default.aurora-mysql8.0",
+        "DBSubnetGroup": "<db_subnet_group>",
+        "DbClusterResourceId": "<db-cluster-resource-id:1>",
+        "DeletionProtection": false,
+        "DomainMemberships": [],
+        "EarliestRestorableTime": "<datetime>",
+        "Endpoint": "<db-cluster-id:1>.cluster-cv7ssqk8cl0y.<region>.rds.amazonaws.com",
+        "Engine": "aurora-mysql",
+        "EngineMode": "provisioned",
+        "EngineVersion": "8.0.mysql_aurora.3.04.0",
+        "HostedZoneId": "<hosted-zone-id:1>",
+        "HttpEndpointEnabled": false,
+        "IAMDatabaseAuthenticationEnabled": false,
+        "LatestRestorableTime": "<datetime>",
+        "LocalWriteForwardingStatus": "disabled",
+        "MasterUsername": "myuser",
+        "MultiAZ": false,
+        "NetworkType": "IPV4",
+        "Port": "port",
+        "PreferredBackupWindow": "preferred-backup-window",
+        "PreferredMaintenanceWindow": "preferred-maintenance-window",
+        "ReadReplicaIdentifiers": [],
+        "ReaderEndpoint": "reader-endpoint",
+        "Status": "available",
+        "StorageEncrypted": false,
+        "TagList": [],
+        "VpcSecurityGroups": [
+          {
+            "Status": "active",
+            "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+          }
+        ]
+      },
+      "create-instance": {
+        "AllocatedStorage": 1,
+        "AssociatedRoles": [],
+        "AutoMinorVersionUpgrade": true,
+        "AvailabilityZone": "<region>b",
+        "BackupRetentionPeriod": 1,
+        "BackupTarget": "region",
+        "CACertificateIdentifier": "<c-a-certificate-identifier:1>",
+        "CertificateDetails": "<certificate_details>",
+        "CopyTagsToSnapshot": false,
+        "CustomerOwnedIpEnabled": false,
+        "DBClusterIdentifier": "<db-cluster-id:1>",
+        "DBInstanceArn": "arn:<partition>:rds:<region>:111111111111:db:<db-instance-id:1>",
+        "DBInstanceClass": "db.t4g.medium",
+        "DBInstanceIdentifier": "<db-instance-id:1>",
+        "DBInstanceStatus": "available",
+        "DBParameterGroups": [
+          {
+            "DBParameterGroupName": "default.aurora-mysql8.0",
+            "ParameterApplyStatus": "in-sync"
+          }
+        ],
+        "DBSecurityGroups": [],
+        "DBSubnetGroup": "<db_subnet_group>",
+        "DbInstancePort": 0,
+        "DbiResourceId": "<dbi-resource-id:1>",
+        "DedicatedLogVolume": false,
+        "DeletionProtection": false,
+        "DomainMemberships": [],
+        "Endpoint": {
+          "Address": "address",
+          "HostedZoneId": "<hosted-zone-id:1>",
+          "Port": "port"
+        },
+        "Engine": "aurora-mysql",
+        "EngineVersion": "8.0.mysql_aurora.3.04.0",
+        "IAMDatabaseAuthenticationEnabled": false,
+        "InstanceCreateTime": "<datetime>",
+        "LicenseModel": "general-public-license",
+        "MasterUsername": "myuser",
+        "MonitoringInterval": 0,
+        "MultiAZ": false,
+        "NetworkType": "IPV4",
+        "OptionGroupMemberships": [
+          {
+            "OptionGroupName": "default:aurora-mysql-8-0",
+            "Status": "in-sync"
+          }
+        ],
+        "PendingModifiedValues": {},
+        "PerformanceInsightsEnabled": true,
+        "PerformanceInsightsKMSKeyId": "arn:<partition>:kms:<region>:111111111111:key/a50c90c1-e7d4-47b2-997e-b5c5b0e05cf1",
+        "PerformanceInsightsRetentionPeriod": 7,
+        "PreferredBackupWindow": "preferred-backup-window",
+        "PreferredMaintenanceWindow": "preferred-maintenance-window",
+        "PromotionTier": 1,
+        "PubliclyAccessible": false,
+        "ReadReplicaDBInstanceIdentifiers": [],
+        "StorageEncrypted": false,
+        "StorageThroughput": 0,
+        "StorageType": "aurora",
+        "TagList": [],
+        "VpcSecurityGroups": [
+          {
+            "Status": "active",
+            "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+          }
+        ]
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsMysql::test_create_aurora_db[5.7.mysql_aurora.2.11.4]": {
+    "recorded-date": "14-05-2024, 13:13:02",
+    "recorded-content": {
+      "create-cluster": {
+        "ActivityStreamStatus": "stopped",
+        "AllocatedStorage": 1,
+        "AssociatedRoles": [],
+        "AutoMinorVersionUpgrade": true,
+        "AvailabilityZones": "<availability_zones>",
+        "BackupRetentionPeriod": 1,
+        "Capacity": 8,
+        "ClusterCreateTime": "<datetime>",
+        "CopyTagsToSnapshot": false,
+        "CrossAccountClone": false,
+        "DBClusterArn": "<d-b-cluster-arn:1>",
+        "DBClusterIdentifier": "<d-b-cluster-identifier:1>",
+        "DBClusterMembers": [],
+        "DBClusterParameterGroup": "default.aurora-mysql5.7",
+        "DBSubnetGroup": "<db_subnet_group>",
+        "DbClusterResourceId": "<db-cluster-resource-id:1>",
+        "DeletionProtection": false,
+        "DomainMemberships": [],
+        "EarliestRestorableTime": "<datetime>",
+        "Endpoint": "<d-b-cluster-identifier:1>.cluster-cv7ssqk8cl0y.<region>.rds.amazonaws.com",
+        "Engine": "aurora-mysql",
+        "EngineMode": "serverless",
+        "EngineVersion": "5.7.mysql_aurora.2.11.4",
+        "HostedZoneId": "<hosted-zone-id:1>",
+        "HttpEndpointEnabled": false,
+        "IAMDatabaseAuthenticationEnabled": false,
+        "KmsKeyId": "arn:<partition>:kms:<region>:111111111111:key/a50c90c1-e7d4-47b2-997e-b5c5b0e05cf1",
+        "LatestRestorableTime": "<datetime>",
+        "MasterUsername": "myuser",
+        "MultiAZ": false,
+        "NetworkType": "IPV4",
+        "Port": 3306,
+        "PreferredBackupWindow": "<preferred-backup-window:1>",
+        "PreferredMaintenanceWindow": "<preferred-maintenance-window:1>",
+        "ReadReplicaIdentifiers": [],
+        "ScalingConfigurationInfo": {
+          "AutoPause": true,
+          "MaxCapacity": 16,
+          "MinCapacity": 2,
+          "SecondsBeforeTimeout": 300,
+          "SecondsUntilAutoPause": 300,
+          "TimeoutAction": "RollbackCapacityChange"
+        },
+        "Status": "available",
+        "StorageEncrypted": true,
+        "TagList": [],
+        "VpcSecurityGroups": [
+          {
+            "Status": "active",
+            "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+          }
+        ]
+      },
+      "error-create-instance": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "Instances cannot be added to Aurora Serverless clusters.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsMysql::test_create_aurora_db_invalid_version": {
+    "recorded-date": "14-05-2024, 16:29:31",
+    "recorded-content": {
+      "create-cluster-error": {
+        "Error": {
+          "Code": "InvalidParameterCombination",
+          "Message": "Cannot find version 8.0.34 for aurora-mysql",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-aurora-mysql-8.0": "8.0.mysql_aurora.3.05.2",
+      "create-aurora-mysql-5.7": "5.7.mysql_aurora.2.11.5",
+      "create-cluster-error-5.6": {
+        "Error": {
+          "Code": "InvalidParameterCombination",
+          "Message": "Cannot find version 5.6 for aurora-mysql",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsMysql::test_delete_db_parameters_in_use": {
+    "recorded-date": "29-04-2024, 14:08:23",
+    "recorded-content": {
+      "create-db-parameter-group": {
+        "DBParameterGroup": {
+          "DBParameterGroupArn": "arn:<partition>:rds:<region>:111111111111:pg:testing-mysql",
+          "DBParameterGroupFamily": "mysql8.0",
+          "DBParameterGroupName": "testing-mysql",
+          "Description": "custom mysql db parameter group"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-db-parameter-group-in-use-error": {
+        "Error": {
+          "Code": "InvalidDBParameterGroupState",
+          "Message": "One or more database instances are still members of this parameter group testing-mysql, so the group cannot be deleted",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create-db-cluster-parameter-group": {
+        "DBClusterParameterGroup": {
+          "DBClusterParameterGroupArn": "arn:<partition>:rds:<region>:111111111111:cluster-pg:testing-mysql-cluster",
+          "DBClusterParameterGroupName": "testing-mysql-cluster",
+          "DBParameterGroupFamily": "aurora-mysql8.0",
+          "Description": "description for custom db cluster parameter group"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "delete-db-cluster-parameter-group-in-use-error": {
+        "Error": {
+          "Code": "InvalidDBParameterGroupState",
+          "Message": "One or more database instances are still members of this parameter group testing-mysql-cluster, so the group cannot be deleted",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds.py::TestRdsMysql::test_create_aurora_db[serverless-5.7.mysql_aurora.2.11.4]": {
+    "recorded-date": "14-05-2024, 14:48:58",
+    "recorded-content": {
+      "create-cluster": {
+        "ActivityStreamStatus": "stopped",
+        "AllocatedStorage": 1,
+        "AssociatedRoles": [],
+        "AutoMinorVersionUpgrade": true,
+        "AvailabilityZones": "<availability_zones>",
+        "BackupRetentionPeriod": 1,
+        "Capacity": 8,
+        "ClusterCreateTime": "<datetime>",
+        "CopyTagsToSnapshot": false,
+        "CrossAccountClone": false,
+        "DBClusterArn": "arn:<partition>:rds:<region>:111111111111:cluster:<db-cluster-id:1>",
+        "DBClusterIdentifier": "<db-cluster-id:1>",
+        "DBClusterMembers": [],
+        "DBClusterParameterGroup": "default.aurora-mysql5.7",
+        "DBSubnetGroup": "<db_subnet_group>",
+        "DbClusterResourceId": "<db-cluster-resource-id:1>",
+        "DeletionProtection": false,
+        "DomainMemberships": [],
+        "EarliestRestorableTime": "<datetime>",
+        "Endpoint": "<db-cluster-id:1>.cluster-cv7ssqk8cl0y.<region>.rds.amazonaws.com",
+        "Engine": "aurora-mysql",
+        "EngineMode": "serverless",
+        "EngineVersion": "5.7.mysql_aurora.2.11.4",
+        "HostedZoneId": "<hosted-zone-id:1>",
+        "HttpEndpointEnabled": false,
+        "IAMDatabaseAuthenticationEnabled": false,
+        "KmsKeyId": "<kms-key-id:1>",
+        "LatestRestorableTime": "<datetime>",
+        "MasterUsername": "myuser",
+        "MultiAZ": false,
+        "NetworkType": "IPV4",
+        "Port": "port",
+        "PreferredBackupWindow": "preferred-backup-window",
+        "PreferredMaintenanceWindow": "preferred-maintenance-window",
+        "ReadReplicaIdentifiers": [],
+        "ScalingConfigurationInfo": {
+          "AutoPause": true,
+          "MaxCapacity": 16,
+          "MinCapacity": 2,
+          "SecondsBeforeTimeout": 300,
+          "SecondsUntilAutoPause": 300,
+          "TimeoutAction": "RollbackCapacityChange"
+        },
+        "Status": "available",
+        "StorageEncrypted": true,
+        "TagList": [],
+        "VpcSecurityGroups": [
+          {
+            "Status": "active",
+            "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+          }
+        ]
+      },
+      "error-create-instance": {
+        "Error": {
+          "Code": "InvalidParameterValue",
+          "Message": "Instances cannot be added to Aurora Serverless clusters.",
+          "Type": "Sender"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  }
+}

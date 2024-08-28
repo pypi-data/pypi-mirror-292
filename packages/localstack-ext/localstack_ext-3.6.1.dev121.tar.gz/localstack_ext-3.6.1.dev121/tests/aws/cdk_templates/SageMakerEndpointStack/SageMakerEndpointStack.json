@@ -1,0 +1,119 @@
+{
+  "Resources": {
+    "SageMakerExecutionRole7843F3B8": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sagemaker.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonSageMakerFullAccess"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    "Model": {
+      "Type": "AWS::SageMaker::Model",
+      "Properties": {
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "SageMakerExecutionRole7843F3B8",
+            "Arn"
+          ]
+        },
+        "PrimaryContainer": {
+          "Image": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                ".dkr.ecr.",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ".",
+                {
+                  "Ref": "AWS::URLSuffix"
+                },
+                "/dummy-repository:latest"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "EndpointConfig": {
+      "Type": "AWS::SageMaker::EndpointConfig",
+      "Properties": {
+        "ProductionVariants": [
+          {
+            "InitialInstanceCount": 1,
+            "InitialVariantWeight": 1,
+            "InstanceType": "ml.t2.medium",
+            "ModelName": {
+              "Fn::GetAtt": [
+                "Model",
+                "ModelName"
+              ]
+            },
+            "VariantName": {
+              "Fn::GetAtt": [
+                "Model",
+                "ModelName"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "Endpoint": {
+      "Type": "AWS::SageMaker::Endpoint",
+      "Properties": {
+        "EndpointConfigName": {
+          "Fn::GetAtt": [
+            "EndpointConfig",
+            "EndpointConfigName"
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ModelRef": {
+      "Value": {
+        "Ref": "Model"
+      }
+    },
+    "EndpointRef": {
+      "Value": {
+        "Ref": "Endpoint"
+      }
+    },
+    "EndpointConfigRef": {
+      "Value": {
+        "Ref": "EndpointConfig"
+      }
+    }
+  }
+}

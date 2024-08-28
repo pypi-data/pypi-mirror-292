@@ -1,0 +1,2202 @@
+{
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraPostgres::test_data_api": {
+    "recorded-date": "30-05-2023, 18:03:06",
+    "recorded-content": {
+      "result-query": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": true,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "id",
+            "name": "id",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 4,
+            "typeName": "serial"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "int_test",
+            "name": "int_test",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "small",
+            "name": "small",
+            "nullable": 1,
+            "precision": 5,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 5,
+            "typeName": "int2"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "big",
+            "name": "big",
+            "nullable": 1,
+            "precision": 19,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": -5,
+            "typeName": "int8"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bool",
+            "name": "bool",
+            "nullable": 1,
+            "precision": 1,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": -7,
+            "typeName": "bool"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "realtest",
+            "name": "realtest",
+            "nullable": 1,
+            "precision": 8,
+            "scale": 8,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 7,
+            "typeName": "float4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "double",
+            "name": "double",
+            "nullable": 1,
+            "precision": 17,
+            "scale": 17,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 8,
+            "typeName": "float8"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "numeric",
+            "name": "numeric",
+            "nullable": 1,
+            "precision": 0,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 2,
+            "typeName": "numeric"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "varchar_test",
+            "name": "varchar_test",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 12,
+            "typeName": "varchar"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "text_test",
+            "name": "text_test",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 12,
+            "typeName": "text"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "uuid_test",
+            "name": "uuid_test",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 1111,
+            "typeName": "uuid"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "json_test",
+            "name": "json_test",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 1111,
+            "typeName": "json"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "jsonb_test",
+            "name": "jsonb_test",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 1111,
+            "typeName": "jsonb"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "dt",
+            "name": "dt",
+            "nullable": 1,
+            "precision": 13,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 91,
+            "typeName": "date"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "ts",
+            "name": "ts",
+            "nullable": 1,
+            "precision": 29,
+            "scale": 6,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 93,
+            "typeName": "timestamp"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "tstz",
+            "name": "tstz",
+            "nullable": 1,
+            "precision": 35,
+            "scale": 6,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 93,
+            "typeName": "timestamptz"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "t",
+            "name": "t",
+            "nullable": 1,
+            "precision": 15,
+            "scale": 6,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 92,
+            "typeName": "time"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "ttz",
+            "name": "ttz",
+            "nullable": 1,
+            "precision": 21,
+            "scale": 6,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 92,
+            "typeName": "timetz"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 1
+            },
+            {
+              "longValue": 123
+            },
+            {
+              "longValue": 123
+            },
+            {
+              "longValue": 123
+            },
+            {
+              "booleanValue": true
+            },
+            {
+              "doubleValue": 1.1
+            },
+            {
+              "doubleValue": 1.1
+            },
+            {
+              "stringValue": "1.2"
+            },
+            {
+              "stringValue": "test"
+            },
+            {
+              "stringValue": "test"
+            },
+            {
+              "stringValue": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+            },
+            {
+              "stringValue": "{\"test\": \"t123\"}"
+            },
+            {
+              "stringValue": "{\"test\": \"t123\"}"
+            },
+            {
+              "stringValue": "1999-01-08"
+            },
+            {
+              "stringValue": "2022-10-02 10:10:10.101"
+            },
+            {
+              "stringValue": "2022-10-02 10:10:10.101"
+            },
+            {
+              "stringValue": "04:05:06"
+            },
+            {
+              "stringValue": "04:05:06"
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "result-query-coalesce": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": true,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "id",
+            "name": "id",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 4,
+            "typeName": "serial"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "int_test",
+            "name": "int_test",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "foo",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "aliastest",
+            "name": "aliastest",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "",
+            "type": 4,
+            "typeName": "int4"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 1
+            },
+            {
+              "longValue": 123
+            },
+            {
+              "longValue": 1
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "result-query-case": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "aliastest",
+            "name": "aliastest",
+            "nullable": 0,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "",
+            "type": 12,
+            "typeName": "text"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "stringValue": "Book"
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraPostgresCfn::test_select_char": {
+    "recorded-date": "04-04-2024, 23:30:35",
+    "recorded-content": {
+      "create-result": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "insert-result": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "query-result": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "country_code",
+            "name": "country_code",
+            "nullable": 0,
+            "precision": 2,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "organisation",
+            "type": 1,
+            "typeName": "bpchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "stringValue": "FR"
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMysql::test_data_api[False]": {
+    "recorded-date": "28-06-2023, 12:37:01",
+    "recorded-content": {
+      "select-result": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "id",
+            "name": "id",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "<table-name>",
+            "type": 4,
+            "typeName": "INT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "name",
+            "name": "name",
+            "nullable": 1,
+            "precision": 65535,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "<table-name>",
+            "type": -1,
+            "typeName": "TEXT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "num",
+            "name": "num",
+            "nullable": 1,
+            "precision": 22,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "<table-name>",
+            "type": 8,
+            "typeName": "DOUBLE"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 42
+            },
+            {
+              "stringValue": "test 123"
+            },
+            {
+              "doubleValue": 123.456
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMysql::test_data_api[True]": {
+    "recorded-date": "28-06-2023, 14:08:21",
+    "recorded-content": {
+      "select-result": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "id",
+            "name": "id",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "<table-name>",
+            "type": 4,
+            "typeName": "INT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "name",
+            "name": "name",
+            "nullable": 1,
+            "precision": 65535,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "<table-name>",
+            "type": -1,
+            "typeName": "TEXT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "num",
+            "name": "num",
+            "nullable": 1,
+            "precision": 22,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "<table-name>",
+            "type": 8,
+            "typeName": "DOUBLE"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 42
+            },
+            {
+              "stringValue": "test 123"
+            },
+            {
+              "doubleValue": 123.456
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_statement_setup[postgres-v1]": {
+    "recorded-date": "08-04-2024, 16:50:41",
+    "recorded-content": {
+      "create-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_statement_setup[postgres-v2]": {
+    "recorded-date": "08-04-2024, 16:50:42",
+    "recorded-content": {
+      "create-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_statement_setup[mysql-v1]": {
+    "recorded-date": "08-04-2024, 16:51:14",
+    "recorded-content": {
+      "create-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_statement_drop[postgres-v1]": {
+    "recorded-date": "08-04-2024, 16:51:21",
+    "recorded-content": {
+      "delete-all": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "drop-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_statement_drop[postgres-v2]": {
+    "recorded-date": "08-04-2024, 16:51:21",
+    "recorded-content": {
+      "delete-all": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "drop-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_statement_drop[mysql-v1]": {
+    "recorded-date": "08-04-2024, 16:51:21",
+    "recorded-content": {
+      "delete-all": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "drop-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_statement_inserts[postgres-v1]": {
+    "recorded-date": "08-04-2024, 16:51:15",
+    "recorded-content": {
+      "insert-items-1": {
+        "updateResults": [
+          {
+            "generatedFields": [
+              {
+                "longValue": 10
+              },
+              {
+                "isNull": true
+              }
+            ]
+          },
+          {
+            "generatedFields": [
+              {
+                "longValue": 11
+              },
+              {
+                "isNull": true
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-items-1": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 10
+            },
+            {
+              "isNull": true
+            }
+          ],
+          [
+            {
+              "longValue": 11
+            },
+            {
+              "isNull": true
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "insert-items-2": {
+        "error": "Parameter validation failed:\nInvalid type for parameter sql, value: None, type: <class 'NoneType'>, valid types: <class 'str'>"
+      },
+      "select-item-first": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-items-2": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 10
+            },
+            {
+              "isNull": true
+            }
+          ],
+          [
+            {
+              "longValue": 11
+            },
+            {
+              "isNull": true
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "batch-delete-items": {
+        "updateResults": [
+          {
+            "generatedFields": [
+              {
+                "longValue": 10
+              },
+              {
+                "isNull": true
+              }
+            ]
+          },
+          {
+            "generatedFields": [
+              {
+                "longValue": 11
+              },
+              {
+                "isNull": true
+              }
+            ]
+          },
+          {
+            "generatedFields": []
+          },
+          {
+            "generatedFields": []
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-items-3": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_statement_inserts[postgres-v2]": {
+    "recorded-date": "08-04-2024, 16:51:18",
+    "recorded-content": {
+      "insert-items-1": {
+        "updateResults": [
+          {
+            "generatedFields": []
+          },
+          {
+            "generatedFields": []
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-items-1": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 10
+            },
+            {
+              "isNull": true
+            }
+          ],
+          [
+            {
+              "longValue": 11
+            },
+            {
+              "isNull": true
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "insert-items-2": {
+        "error": "Parameter validation failed:\nInvalid type for parameter sql, value: None, type: <class 'NoneType'>, valid types: <class 'str'>"
+      },
+      "select-item-first": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-items-2": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 10
+            },
+            {
+              "isNull": true
+            }
+          ],
+          [
+            {
+              "longValue": 11
+            },
+            {
+              "isNull": true
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "batch-delete-items": {
+        "updateResults": [
+          {
+            "generatedFields": []
+          },
+          {
+            "generatedFields": []
+          },
+          {
+            "generatedFields": []
+          },
+          {
+            "generatedFields": []
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-items-3": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_statement_inserts[mysql-v1]": {
+    "recorded-date": "08-04-2024, 16:51:19",
+    "recorded-content": {
+      "insert-items-1": {
+        "updateResults": [
+          {
+            "generatedFields": []
+          },
+          {
+            "generatedFields": []
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-items-1": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 4,
+            "typeName": "INT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 12,
+            "typeName": "VARCHAR"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 10
+            },
+            {
+              "isNull": true
+            }
+          ],
+          [
+            {
+              "longValue": 11
+            },
+            {
+              "isNull": true
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "insert-items-2": {
+        "updateResults": [
+          {
+            "generatedFields": []
+          },
+          {
+            "generatedFields": []
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-item-first": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 12,
+            "typeName": "VARCHAR"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "stringValue": "first"
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-items-2": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 4,
+            "typeName": "INT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 12,
+            "typeName": "VARCHAR"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 10
+            },
+            {
+              "isNull": true
+            }
+          ],
+          [
+            {
+              "longValue": 11
+            },
+            {
+              "isNull": true
+            }
+          ],
+          [
+            {
+              "longValue": 12
+            },
+            {
+              "stringValue": "first"
+            }
+          ],
+          [
+            {
+              "longValue": 13
+            },
+            {
+              "stringValue": "second"
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "batch-delete-items": {
+        "updateResults": [
+          {
+            "generatedFields": [
+              {
+                "longValue": 0
+              }
+            ]
+          },
+          {
+            "generatedFields": [
+              {
+                "longValue": 0
+              }
+            ]
+          },
+          {
+            "generatedFields": [
+              {
+                "longValue": 0
+              }
+            ]
+          },
+          {
+            "generatedFields": [
+              {
+                "longValue": 0
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-items-3": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 4,
+            "typeName": "INT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 12,
+            "typeName": "VARCHAR"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_validate_atomicity[postgres-v1]": {
+    "recorded-date": "08-04-2024, 16:51:19",
+    "recorded-content": {
+      "missing-in-second-insert": {
+        "error": "An error occurred (BadRequestException) when calling the BatchExecuteStatement operation: Cannot find parameter: bar"
+      },
+      "select-all-1": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "wrong-type-in-second-insert": {
+        "error": "Parameter validation failed:\nInvalid type for parameter parameterSets[1][0].value.longValue, value: string, type: <class 'str'>, valid types: <class 'int'>"
+      },
+      "select-all-2": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "extra-parameter-in-second-insert": {
+        "error": "Parameter validation failed:\nInvalid type for parameter parameterSets[1][0].value.longValue, value: string, type: <class 'str'>, valid types: <class 'int'>"
+      },
+      "select-all-3": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_validate_atomicity[postgres-v2]": {
+    "recorded-date": "08-04-2024, 16:51:20",
+    "recorded-content": {
+      "missing-in-second-insert": {
+        "error": "An error occurred (ValidationException) when calling the BatchExecuteStatement operation: Cannot find parameter: bar"
+      },
+      "select-all-1": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "wrong-type-in-second-insert": {
+        "error": "Parameter validation failed:\nInvalid type for parameter parameterSets[1][0].value.longValue, value: string, type: <class 'str'>, valid types: <class 'int'>"
+      },
+      "select-all-2": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "extra-parameter-in-second-insert": {
+        "error": "Parameter validation failed:\nInvalid type for parameter parameterSets[1][0].value.longValue, value: string, type: <class 'str'>, valid types: <class 'int'>"
+      },
+      "select-all-3": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commontable",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_batch_execute_validate_atomicity[mysql-v1]": {
+    "recorded-date": "08-04-2024, 16:51:20",
+    "recorded-content": {
+      "missing-in-second-insert": {
+        "error": "An error occurred (BadRequestException) when calling the BatchExecuteStatement operation: Cannot find parameter: bar"
+      },
+      "select-all-1": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 4,
+            "typeName": "INT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 12,
+            "typeName": "VARCHAR"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "wrong-type-in-second-insert": {
+        "error": "Parameter validation failed:\nInvalid type for parameter parameterSets[1][0].value.longValue, value: string, type: <class 'str'>, valid types: <class 'int'>"
+      },
+      "select-all-2": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 4,
+            "typeName": "INT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 12,
+            "typeName": "VARCHAR"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "extra-parameter-in-second-insert": {
+        "error": "Parameter validation failed:\nInvalid type for parameter parameterSets[1][0].value.longValue, value: string, type: <class 'str'>, valid types: <class 'int'>"
+      },
+      "select-all-3": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 4,
+            "typeName": "INT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "commonTable",
+            "type": 12,
+            "typeName": "VARCHAR"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_column_metadata_for_postgres[postgres-v1]": {
+    "recorded-date": "08-04-2024, 16:51:22",
+    "recorded-content": {
+      "create-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "insert-items-1": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-all": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "postgreswithcaps",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "postgreswithcaps",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 1
+            },
+            {
+              "isNull": true
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "drop-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_column_metadata_for_postgres[postgres-v2]": {
+    "recorded-date": "08-04-2024, 16:51:22",
+    "recorded-content": {
+      "create-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "insert-items-1": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-all": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "postgreswithcaps",
+            "type": 4,
+            "typeName": "int4"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": true,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 2147483647,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "postgreswithcaps",
+            "type": 12,
+            "typeName": "varchar"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 1
+            },
+            {
+              "isNull": true
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "drop-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_column_metadata_for_postgres[mysql-v1]": {
+    "recorded-date": "08-04-2024, 16:51:23",
+    "recorded-content": {}
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_column_metadata_for_mysql[postgres-v1]": {
+    "recorded-date": "08-04-2024, 16:51:23",
+    "recorded-content": {}
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_column_metadata_for_mysql[postgres-v2]": {
+    "recorded-date": "08-04-2024, 16:51:23",
+    "recorded-content": {}
+  },
+  "tests/aws/services/rds/test_rds_data.py::TestAuroraMultiEngine::test_column_metadata_for_mysql[mysql-v1]": {
+    "recorded-date": "08-04-2024, 16:51:23",
+    "recorded-content": {
+      "create-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "insert-items-1": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 1,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "select-all": {
+        "columnMetadata": [
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": true,
+            "label": "foo",
+            "name": "foo",
+            "nullable": 0,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "mysqlnocaps",
+            "type": 4,
+            "typeName": "INT"
+          },
+          {
+            "arrayBaseColumnType": 0,
+            "isAutoIncrement": false,
+            "isCaseSensitive": false,
+            "isCurrency": false,
+            "isSigned": false,
+            "label": "bar",
+            "name": "bar",
+            "nullable": 1,
+            "precision": 10,
+            "scale": 0,
+            "schemaName": "",
+            "tableName": "mysqlnocaps",
+            "type": 12,
+            "typeName": "VARCHAR"
+          }
+        ],
+        "numberOfRecordsUpdated": 0,
+        "records": [
+          [
+            {
+              "longValue": 1
+            },
+            {
+              "isNull": true
+            }
+          ]
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "drop-table": {
+        "generatedFields": [],
+        "numberOfRecordsUpdated": 0,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

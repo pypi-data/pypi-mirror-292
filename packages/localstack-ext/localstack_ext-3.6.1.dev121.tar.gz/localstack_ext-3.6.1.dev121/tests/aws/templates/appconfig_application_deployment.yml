@@ -1,0 +1,79 @@
+Parameters:
+  AppName:
+    Type: String
+  EnvironmentName:
+    Type: String
+  ConfigurationProfileName:
+    Type: String
+  DeploymentStrategyName:
+    Type: String
+Resources:
+  App:
+    Type: AWS::AppConfig::Application
+    Properties:
+      Name:
+        Ref: AppName
+  ConfigurationProfile:
+    Type: AWS::AppConfig::ConfigurationProfile
+    Properties:
+      ApplicationId:
+        Ref: App
+      LocationUri: hosted
+      Name:
+        Ref: ConfigurationProfileName
+  ConfigurationVersion:
+    Type: AWS::AppConfig::HostedConfigurationVersion
+    Properties:
+      ApplicationId:
+        Ref: App
+      ConfigurationProfileId:
+        Ref: ConfigurationProfile
+      Content: My hosted configuration version
+      ContentType: text/plain
+  Environment:
+    Type: AWS::AppConfig::Environment
+    Properties:
+      ApplicationId:
+        Ref: App
+      Name:
+        Ref: EnvironmentName
+  DeploymentStrategy:
+    Type: AWS::AppConfig::DeploymentStrategy
+    Properties:
+      DeploymentDurationInMinutes: 0
+      GrowthFactor: 1.0
+      Name:
+        Ref: DeploymentStrategyName
+      ReplicateTo: NONE
+  Deployment:
+    Type: AWS::AppConfig::Deployment
+    Properties:
+      ApplicationId:
+        Ref: App
+      ConfigurationProfileId:
+        Ref: ConfigurationProfile
+      ConfigurationVersion:
+        Ref: ConfigurationVersion
+      DeploymentStrategyId:
+        Ref: DeploymentStrategy
+      EnvironmentId:
+        Ref: Environment
+Outputs:
+  DeploymentRef:
+    Value:
+      Ref: Deployment
+  DeploymentStrategyRef:
+    Value:
+      Ref: DeploymentStrategy
+  EnvironmentRef:
+    Value:
+      Ref: Environment
+  ConfigurationVersionRef:
+    Value:
+      Ref: ConfigurationVersion
+  ConfigurationProfileRef:
+    Value:
+      Ref: ConfigurationProfile
+  ApplicationRef:
+    Value:
+      Ref: App

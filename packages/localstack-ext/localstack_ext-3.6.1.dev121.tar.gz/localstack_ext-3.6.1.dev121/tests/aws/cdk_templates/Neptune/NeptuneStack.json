@@ -1,0 +1,766 @@
+{
+  "Resources": {
+    "vpcA2121C38": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet1Subnet2E65531E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.0.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTable48A2DF9B": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet1RouteTableAssociation5D3F4579": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        }
+      }
+    },
+    "vpcPublicSubnet1DefaultRoute10708846": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet1RouteTable48A2DF9B"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcPublicSubnet1EIPDA49DCBE": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet1NATGateway9C16659E": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "vpcPublicSubnet1EIPDA49DCBE",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPublicSubnet1DefaultRoute10708846",
+        "vpcPublicSubnet1RouteTableAssociation5D3F4579"
+      ]
+    },
+    "vpcPublicSubnet2Subnet009B674F": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.64.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableEB40D4CB": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPublicSubnet2RouteTableAssociation21F81B59": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet2Subnet009B674F"
+        }
+      }
+    },
+    "vpcPublicSubnet2DefaultRouteA1EC0F60": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPublicSubnet2RouteTableEB40D4CB"
+        }
+      },
+      "DependsOn": [
+        "vpcVPCGW7984C166"
+      ]
+    },
+    "vpcPublicSubnet2EIP9B3743B1": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "vpcPublicSubnet2NATGateway9B8AE11A": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "vpcPublicSubnet2EIP9B3743B1",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet2Subnet009B674F"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PublicSubnet2"
+          }
+        ]
+      },
+      "DependsOn": [
+        "vpcPublicSubnet2DefaultRouteA1EC0F60",
+        "vpcPublicSubnet2RouteTableAssociation21F81B59"
+      ]
+    },
+    "vpcPrivateSubnet1Subnet934893E8": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.128.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PrivateSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet1RouteTableB41A48CC": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PrivateSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet1RouteTableAssociation67945127": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet1RouteTableB41A48CC"
+        },
+        "SubnetId": {
+          "Ref": "vpcPrivateSubnet1Subnet934893E8"
+        }
+      }
+    },
+    "vpcPrivateSubnet1DefaultRoute1AA8E2E5": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "vpcPublicSubnet1NATGateway9C16659E"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet1RouteTableB41A48CC"
+        }
+      }
+    },
+    "vpcPrivateSubnet2Subnet7031C2BA": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.192.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PrivateSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet2RouteTable7280F23E": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc/PrivateSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "vpcPrivateSubnet2RouteTableAssociation007E94D3": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet2RouteTable7280F23E"
+        },
+        "SubnetId": {
+          "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+        }
+      }
+    },
+    "vpcPrivateSubnet2DefaultRouteB0E07F99": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "vpcPublicSubnet2NATGateway9B8AE11A"
+        },
+        "RouteTableId": {
+          "Ref": "vpcPrivateSubnet2RouteTable7280F23E"
+        }
+      }
+    },
+    "vpcIGWE57CBDCA": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "NeptuneStack/vpc"
+          }
+        ]
+      }
+    },
+    "vpcVPCGW7984C166": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "vpcIGWE57CBDCA"
+        },
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "ClusterParams0B94958F": {
+      "Type": "AWS::Neptune::DBClusterParameterGroup",
+      "Properties": {
+        "Description": "Cluster parameter group",
+        "Family": "neptune1.3",
+        "Parameters": {
+          "neptune_enable_audit_log": "1"
+        }
+      }
+    },
+    "DbInstanceParamsBDC667A1": {
+      "Type": "AWS::Neptune::DBParameterGroup",
+      "Properties": {
+        "Description": "Db parameter group",
+        "Family": "neptune1.3",
+        "Parameters": {
+          "neptune_query_timeout": "120000"
+        }
+      }
+    },
+    "NeptuneClusterSubnetsCDB62775": {
+      "Type": "AWS::Neptune::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnets for NeptuneCluster database",
+        "SubnetIds": [
+          {
+            "Ref": "vpcPrivateSubnet1Subnet934893E8"
+          },
+          {
+            "Ref": "vpcPrivateSubnet2Subnet7031C2BA"
+          }
+        ]
+      }
+    },
+    "NeptuneClusterSecurityGroup644E519E": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Neptune security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "NeptuneClusterSecurityGroupfromNeptuneStacksecurityGroup9DE4C49881825776D47F": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "Description": "from NeptuneStacksecurityGroup9DE4C498:8182",
+        "FromPort": 8182,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "NeptuneClusterSecurityGroup644E519E",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "securityGroup32C48086",
+            "GroupId"
+          ]
+        },
+        "ToPort": 8182
+      }
+    },
+    "NeptuneCluster7FC72740": {
+      "Type": "AWS::Neptune::DBCluster",
+      "Properties": {
+        "DBClusterParameterGroupName": {
+          "Ref": "ClusterParams0B94958F"
+        },
+        "DBSubnetGroupName": {
+          "Ref": "NeptuneClusterSubnetsCDB62775"
+        },
+        "EngineVersion": "1.3.0.0",
+        "StorageEncrypted": true,
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "NeptuneClusterSecurityGroup644E519E",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "NeptuneClusterInstance1D301D758": {
+      "Type": "AWS::Neptune::DBInstance",
+      "Properties": {
+        "AutoMinorVersionUpgrade": false,
+        "DBClusterIdentifier": {
+          "Ref": "NeptuneCluster7FC72740"
+        },
+        "DBInstanceClass": "db.t3.medium",
+        "DBParameterGroupName": {
+          "Ref": "DbInstanceParamsBDC667A1"
+        }
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "NeptuneClusterInstance2F8EC627E": {
+      "Type": "AWS::Neptune::DBInstance",
+      "Properties": {
+        "AutoMinorVersionUpgrade": false,
+        "DBClusterIdentifier": {
+          "Ref": "NeptuneCluster7FC72740"
+        },
+        "DBInstanceClass": "db.t3.medium",
+        "DBParameterGroupName": {
+          "Ref": "DbInstanceParamsBDC667A1"
+        }
+      },
+      "DependsOn": [
+        "vpcPrivateSubnet1DefaultRoute1AA8E2E5",
+        "vpcPrivateSubnet1RouteTableAssociation67945127",
+        "vpcPrivateSubnet2DefaultRouteB0E07F99",
+        "vpcPrivateSubnet2RouteTableAssociation007E94D3"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "securityGroup32C48086": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "NeptuneStack/securityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "SSH access",
+            "FromPort": 22,
+            "IpProtocol": "tcp",
+            "ToPort": 22
+          }
+        ],
+        "VpcId": {
+          "Ref": "vpcA2121C38"
+        }
+      }
+    },
+    "bastionneptuneaccess2B1C1F1F": {
+      "Type": "AWS::EC2::KeyPair",
+      "Properties": {
+        "KeyFormat": "pem",
+        "KeyName": "NeptuneStackbastionneptuneaccess1364634A",
+        "KeyType": "rsa",
+        "PublicKeyMaterial": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCFgproDGF4CKtYpzGBr2gGWjQX4vIQojtbRw+xTjdGbHIWMnABfE3Xyqz8VFS22cnOUQC6qTi+7nY9elN0zpYY86nyiXGVUJV7GqE+6yzpL62ttqNNHgWDBIfkKzkGSWNy5BP2AuNi75QJDjntRCFnpMqLiLpZW7MFfJgHk5wuwuoVlw7SEGTktcGz0ts7ivEFhvLjqlWxn6aW7I9G8VAuJ5v0+tKZxUHLwwaeticnmp2rwEBizli/kDDDIGVA1UVT+xtSRWwn92TNzoyr+H81FMi04n5QvBXeDS0TdmzEwAlw2XHPTJ3bctXsRtSVmQEWPgobV+WsFmCWzf6IGQJ"
+      }
+    },
+    "BastionHostLinuxInstanceRoleD0686397": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ec2.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "BastionHost"
+          }
+        ]
+      }
+    },
+    "BastionHostLinuxInstanceRoleDefaultPolicyA9404994": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ssmmessages:*",
+                "ssm:UpdateInstanceInformation",
+                "ec2messages:*"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BastionHostLinuxInstanceRoleDefaultPolicyA9404994",
+        "Roles": [
+          {
+            "Ref": "BastionHostLinuxInstanceRoleD0686397"
+          }
+        ]
+      }
+    },
+    "BastionHostLinuxInstanceProfileF7A246ED": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "BastionHostLinuxInstanceRoleD0686397"
+          }
+        ]
+      }
+    },
+    "BastionHostLinuxD318DEDE": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "IamInstanceProfile": {
+          "Ref": "BastionHostLinuxInstanceProfileF7A246ED"
+        },
+        "ImageId": {
+          "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amikernel510hvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+        },
+        "InstanceType": "t3.nano",
+        "KeyName": {
+          "Ref": "bastionneptuneaccess2B1C1F1F"
+        },
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "securityGroup32C48086",
+              "GroupId"
+            ]
+          }
+        ],
+        "SubnetId": {
+          "Ref": "vpcPublicSubnet1Subnet2E65531E"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "BastionHost"
+          }
+        ],
+        "UserData": {
+          "Fn::Base64": "#!/bin/bash"
+        }
+      },
+      "DependsOn": [
+        "BastionHostLinuxInstanceRoleDefaultPolicyA9404994",
+        "BastionHostLinuxInstanceRoleD0686397"
+      ]
+    }
+  },
+  "Outputs": {
+    "BastionHostLinuxBastionHostIdF6BA3B6C": {
+      "Description": "Instance ID of the bastion host. Use this to connect via SSM Session Manager",
+      "Value": {
+        "Ref": "BastionHostLinuxD318DEDE"
+      }
+    },
+    "NeptuneClusterId": {
+      "Value": {
+        "Ref": "NeptuneCluster7FC72740"
+      }
+    },
+    "DBParameterGroupName": {
+      "Value": {
+        "Ref": "DbInstanceParamsBDC667A1"
+      }
+    },
+    "DBClusterParameterGroupName": {
+      "Value": {
+        "Ref": "ClusterParams0B94958F"
+      }
+    },
+    "NeptuneEndpoint": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            {
+              "Fn::GetAtt": [
+                "NeptuneCluster7FC72740",
+                "Endpoint"
+              ]
+            },
+            ":",
+            {
+              "Fn::GetAtt": [
+                "NeptuneCluster7FC72740",
+                "Port"
+              ]
+            }
+          ]
+        ]
+      }
+    },
+    "ClusterHostName": {
+      "Value": {
+        "Fn::GetAtt": [
+          "NeptuneCluster7FC72740",
+          "Endpoint"
+        ]
+      }
+    },
+    "ClusterPort": {
+      "Value": {
+        "Fn::GetAtt": [
+          "NeptuneCluster7FC72740",
+          "Port"
+        ]
+      }
+    },
+    "TxClusterHostName": {
+      "Value": {
+        "Fn::GetAtt": [
+          "NeptuneCluster7FC72740",
+          "Endpoint"
+        ]
+      }
+    },
+    "TxClusterPort": {
+      "Value": {
+        "Fn::GetAtt": [
+          "NeptuneCluster7FC72740",
+          "Port"
+        ]
+      }
+    },
+    "BastionPublicIp": {
+      "Value": {
+        "Fn::GetAtt": [
+          "BastionHostLinuxD318DEDE",
+          "PublicIp"
+        ]
+      }
+    },
+    "BastionInstanceId": {
+      "Value": {
+        "Ref": "BastionHostLinuxD318DEDE"
+      }
+    }
+  },
+  "Parameters": {
+    "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amikernel510hvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+      "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-kernel-5.10-hvm-x86_64-gp2"
+    }
+  }
+}

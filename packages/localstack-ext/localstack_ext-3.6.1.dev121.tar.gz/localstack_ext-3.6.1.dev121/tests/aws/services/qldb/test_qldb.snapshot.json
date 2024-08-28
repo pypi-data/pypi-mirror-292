@@ -1,0 +1,437 @@
+{
+  "tests/aws/services/qldb/test_qldb.py::TestQLDB::test_query_committed_views": {
+    "recorded-date": "18-11-2023, 17:54:22",
+    "recorded-content": {
+      "ledger": {
+        "Arn": "<ledger_name:1>",
+        "CreationDateTime": "date",
+        "DeletionProtection": true,
+        "Name": "<ledger_name:2>",
+        "PermissionsMode": "ALLOW_ALL",
+        "State": "ACTIVE",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "insert_result": [
+        {
+          "documentId": "<document-id:1>"
+        }
+      ],
+      "metadata_result_0": [
+        {
+          "blockAddress": {
+            "strandId": "strand-id",
+            "sequenceNo": 1
+          },
+          "hash": "<hash:1>",
+          "data": {
+            "a": 123
+          },
+          "metadata": {
+            "id": "id",
+            "version": 0,
+            "txTime": "tx-time",
+            "txId": "<tx-id:1>"
+          }
+        }
+      ],
+      "metadata_result_1": [
+        {
+          "blockAddress": {
+            "strandId": "strand-id",
+            "sequenceNo": 1
+          },
+          "hash": "<hash:1>",
+          "data": {
+            "a": 123
+          },
+          "metadata": {
+            "id": "id",
+            "version": 0,
+            "txTime": "tx-time",
+            "txId": "<tx-id:1>"
+          }
+        }
+      ],
+      "metadata_result_2": []
+    }
+  },
+  "tests/aws/services/qldb/test_qldb.py::TestQLDB::test_query_ion_timestamp": {
+    "recorded-date": "06-01-2023, 10:50:11",
+    "recorded-content": {
+      "query-result-1": [
+        "{'IonBinary': b'\\xe0\\x01\\x00\\xea\\xee\\x90\\x81\\x83\\xdd\\x87\\xbb\\x8acreated_at\\xda\\x8ah\\x80\\x0f\\xe6\\x8c\\x9e\\x80\\x99\\x9c'}"
+      ],
+      "query-result-2": [
+        {
+          "IonBinary": "4AEA6u6QgYPdh7uKY3JlYXRlZF9hdNqKaIAP5oyegJmc"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/qldb/test_qldb.py::TestQLDB::test_update_query_response": {
+    "recorded-date": "27-01-2023, 17:03:09",
+    "recorded-content": {
+      "insert-result": [
+        {
+          "documentId": "<document-id:1>"
+        }
+      ],
+      "update-result": [
+        {
+          "documentId": "<document-id:1>"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/qldb/test_qldb.py::TestQLDB::test_query_by_metadata": {
+    "recorded-date": "18-11-2023, 03:06:05",
+    "recorded-content": {
+      "select-all": [
+        {
+          "test": 123,
+          "id": "id"
+        },
+        {
+          "test": 456,
+          "id": "id"
+        }
+      ],
+      "select-committed": [
+        {
+          "blockAddress": {
+            "strandId": "strand-id",
+            "sequenceNo": 0
+          },
+          "data": {
+            "test": 123
+          },
+          "metadata": {
+            "id": "id",
+            "version": 0,
+            "txTime": "tx-time",
+            "txId": "<tx-id:1>"
+          }
+        },
+        {
+          "blockAddress": {
+            "strandId": "strand-id",
+            "sequenceNo": 1
+          },
+          "data": {
+            "test": 456
+          },
+          "metadata": {
+            "id": "id",
+            "version": 0,
+            "txTime": "tx-time",
+            "txId": "<tx-id:2>"
+          }
+        }
+      ],
+      "select-committed-by-id": [
+        {
+          "blockAddress": {
+            "strandId": "strand-id",
+            "sequenceNo": 0
+          },
+          "data": {
+            "test": 123
+          },
+          "metadata": {
+            "id": "id",
+            "version": 0,
+            "txTime": "tx-time",
+            "txId": "<tx-id:1>"
+          }
+        }
+      ],
+      "select-by-id-regular": []
+    }
+  },
+  "tests/aws/services/qldb/test_qldb.py::TestHistoryQueries::test_query_history_with_start_end_timestamps": {
+    "recorded-date": "18-11-2023, 02:32:02",
+    "recorded-content": {
+      "around-first-insert": [
+        {
+          "attributes": "{'value': 'foo 1234 bar'}"
+        }
+      ],
+      "first-and-second-inserts": [
+        {
+          "attributes": "{'value': 'foo 1234 bar'}"
+        },
+        {
+          "attributes": "{'value': 'foo 1234 bar2'}"
+        }
+      ],
+      "around-second-insert": [
+        {
+          "attributes": "{'value': 'foo 1234 bar'}"
+        },
+        {
+          "attributes": "{'value': 'foo 1234 bar2'}"
+        }
+      ],
+      "second-insert-and-update": [
+        {
+          "attributes": "{'value': 'foo 1234 bar'}"
+        },
+        {
+          "attributes": "{'value': 'foo 1234 bar2'}"
+        },
+        {
+          "attributes": "{'value': 'foo 1234 bar3'}"
+        }
+      ],
+      "history-query": [
+        {
+          "attributes": "{'value': 'foo 1234 bar2'}"
+        },
+        {
+          "attributes": "{'value': 'foo 1234 bar3'}"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/qldb/test_qldb.py::TestHistoryQueries::test_query_history": {
+    "recorded-date": "18-11-2023, 03:08:37",
+    "recorded-content": {
+      "history-1": [
+        {
+          "blockAddress": {
+            "strandId": "strand-id",
+            "sequenceNo": 1
+          },
+          "hash": "<hash:1>",
+          "data": {
+            "id": "id"
+          },
+          "metadata": {
+            "id": "id",
+            "version": 0,
+            "txTime": "tx-time",
+            "txId": "<tx-id:1>"
+          }
+        }
+      ],
+      "history-2": [
+        {
+          "blockAddress": {
+            "strandId": "strand-id",
+            "sequenceNo": 1
+          },
+          "hash": "<hash:1>",
+          "data": {
+            "id": "id"
+          },
+          "metadata": {
+            "id": "id",
+            "version": 0,
+            "txTime": "tx-time",
+            "txId": "<tx-id:1>"
+          }
+        }
+      ],
+      "history-3": [
+        {
+          "blockAddress": {
+            "strandId": "strand-id",
+            "sequenceNo": 1
+          },
+          "hash": "<hash:1>",
+          "data": {
+            "id": "id"
+          },
+          "metadata": {
+            "id": "id",
+            "version": 0,
+            "txTime": "tx-time",
+            "txId": "<tx-id:1>"
+          }
+        },
+        {
+          "blockAddress": {
+            "strandId": "strand-id",
+            "sequenceNo": 5
+          },
+          "hash": "<hash:2>",
+          "data": {
+            "id": "id",
+            "foo": 123
+          },
+          "metadata": {
+            "id": "id",
+            "version": 1,
+            "txTime": "tx-time",
+            "txId": "<tx-id:2>"
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/qldb/test_qldb.py::TestHistoryQueries::test_query_history_with_updates": {
+    "recorded-date": "18-11-2023, 13:27:04",
+    "recorded-content": {
+      "history-0": [
+        {
+          "data": "{'id': 123}",
+          "version": 0
+        }
+      ],
+      "history-1": [
+        {
+          "data": "{'id': 123}",
+          "version": 0
+        },
+        {
+          "data": "{'id': 123, 'attr': '2'}",
+          "version": 1
+        }
+      ],
+      "history-2": [
+        {
+          "data": "{'id': 123}",
+          "version": 0
+        },
+        {
+          "data": "{'id': 123, 'attr': '2'}",
+          "version": 1
+        },
+        {
+          "data": "{'id': 123, 'attr': '3'}",
+          "version": 2
+        }
+      ],
+      "history-3": [
+        {
+          "data": "{'id': 123}",
+          "version": 0
+        },
+        {
+          "data": "{'id': 123, 'attr': '2'}",
+          "version": 1
+        }
+      ],
+      "history-4": [
+        {
+          "data": "{'id': 123}",
+          "version": 0
+        },
+        {
+          "data": "{'id': 123, 'attr': '2'}",
+          "version": 1
+        },
+        {
+          "data": "{'id': 123, 'attr': '3'}",
+          "version": 2
+        }
+      ],
+      "history-5": [
+        {
+          "data": "{'id': 123, 'attr': '2'}",
+          "version": 1
+        },
+        {
+          "data": "{'id': 123, 'attr': '3'}",
+          "version": 2
+        }
+      ],
+      "history-6": [
+        {
+          "data": "{'id': 123, 'attr': '3'}",
+          "version": 2
+        }
+      ]
+    }
+  },
+  "tests/aws/services/qldb/test_qldb.py::TestQLDB::test_create_ledger_response[None]": {
+    "recorded-date": "15-02-2024, 14:42:50",
+    "recorded-content": {
+      "create-ledger": {
+        "Arn": "arn:<partition>:qldb:<region>:111111111111:ledger/<ledger-name>",
+        "CreationDateTime": "datetime",
+        "DeletionProtection": true,
+        "Name": "<ledger-name>",
+        "PermissionsMode": "ALLOW_ALL",
+        "State": "CREATING",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-active-ledger": {
+        "Arn": "arn:<partition>:qldb:<region>:111111111111:ledger/<ledger-name>",
+        "CreationDateTime": "datetime",
+        "DeletionProtection": true,
+        "Name": "<ledger-name>",
+        "PermissionsMode": "ALLOW_ALL",
+        "State": "ACTIVE",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/qldb/test_qldb.py::TestQLDB::test_create_ledger_response[False]": {
+    "recorded-date": "15-02-2024, 14:43:52",
+    "recorded-content": {
+      "create-ledger": {
+        "Arn": "arn:<partition>:qldb:<region>:111111111111:ledger/<ledger-name>",
+        "CreationDateTime": "datetime",
+        "DeletionProtection": false,
+        "Name": "<ledger-name>",
+        "PermissionsMode": "ALLOW_ALL",
+        "State": "CREATING",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-active-ledger": {
+        "Arn": "arn:<partition>:qldb:<region>:111111111111:ledger/<ledger-name>",
+        "CreationDateTime": "datetime",
+        "DeletionProtection": false,
+        "Name": "<ledger-name>",
+        "PermissionsMode": "ALLOW_ALL",
+        "State": "ACTIVE",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/qldb/test_qldb.py::TestQLDB::test_create_ledger_response[True]": {
+    "recorded-date": "15-02-2024, 14:45:16",
+    "recorded-content": {
+      "create-ledger": {
+        "Arn": "arn:<partition>:qldb:<region>:111111111111:ledger/<ledger-name>",
+        "CreationDateTime": "datetime",
+        "DeletionProtection": true,
+        "Name": "<ledger-name>",
+        "PermissionsMode": "ALLOW_ALL",
+        "State": "CREATING",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe-active-ledger": {
+        "Arn": "arn:<partition>:qldb:<region>:111111111111:ledger/<ledger-name>",
+        "CreationDateTime": "datetime",
+        "DeletionProtection": true,
+        "Name": "<ledger-name>",
+        "PermissionsMode": "ALLOW_ALL",
+        "State": "ACTIVE",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

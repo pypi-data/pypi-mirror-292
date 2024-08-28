@@ -1,0 +1,20 @@
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/24
+
+  VpcCidrBlock:
+    Type: AWS::EC2::VPCCidrBlock
+    Properties:
+      VpcId: !Ref VPC
+      AmazonProvidedIpv6CidrBlock: false
+      CidrBlock: 192.0.0.0/24
+
+Outputs:
+  VpcId:
+    Value: !Ref VPC
+  PrimaryCidrBlock:
+    Value: !GetAtt VPC.CidrBlock
+  CidrBlockAssociation:
+    Value: !Select [ 0, !GetAtt VPC.CidrBlockAssociations]

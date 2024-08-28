@@ -1,0 +1,16 @@
+Description: "AWS Glue Workflow"
+
+Parameters:
+  WorkflowName:
+    Type: String
+    Default: workflow-name
+
+Resources:
+  Workflow:
+    Type: AWS::Glue::Workflow
+    Properties:
+      Name: !Ref WorkflowName
+
+Outputs:
+  WorkflowRef:
+    Value: !Ref Workflow

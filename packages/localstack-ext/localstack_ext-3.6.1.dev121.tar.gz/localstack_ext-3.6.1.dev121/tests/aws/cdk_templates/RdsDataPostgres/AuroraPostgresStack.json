@@ -1,0 +1,563 @@
+{
+  "Resources": {
+    "AuroraVpc7929A8B8": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc"
+          }
+        ]
+      }
+    },
+    "AuroraVpcPublicSubnet1SubnetF8BCC22E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.0.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "AuroraVpc7929A8B8"
+        }
+      }
+    },
+    "AuroraVpcPublicSubnet1RouteTable0FDE665F": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PublicSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "AuroraVpc7929A8B8"
+        }
+      }
+    },
+    "AuroraVpcPublicSubnet1RouteTableAssociationE4C5DAEF": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "AuroraVpcPublicSubnet1RouteTable0FDE665F"
+        },
+        "SubnetId": {
+          "Ref": "AuroraVpcPublicSubnet1SubnetF8BCC22E"
+        }
+      }
+    },
+    "AuroraVpcPublicSubnet1DefaultRoute4BA3D6BB": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "AuroraVpcIGW219B2B09"
+        },
+        "RouteTableId": {
+          "Ref": "AuroraVpcPublicSubnet1RouteTable0FDE665F"
+        }
+      },
+      "DependsOn": [
+        "AuroraVpcVPCGW5794319F"
+      ]
+    },
+    "AuroraVpcPublicSubnet1EIP714AF1E9": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PublicSubnet1"
+          }
+        ]
+      }
+    },
+    "AuroraVpcPublicSubnet1NATGatewayDC0C6106": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "AuroraVpcPublicSubnet1EIP714AF1E9",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "AuroraVpcPublicSubnet1SubnetF8BCC22E"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PublicSubnet1"
+          }
+        ]
+      },
+      "DependsOn": [
+        "AuroraVpcPublicSubnet1DefaultRoute4BA3D6BB",
+        "AuroraVpcPublicSubnet1RouteTableAssociationE4C5DAEF"
+      ]
+    },
+    "AuroraVpcPublicSubnet2Subnet3FD1101C": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.64.0/18",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "AuroraVpc7929A8B8"
+        }
+      }
+    },
+    "AuroraVpcPublicSubnet2RouteTable63A7EA98": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PublicSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "AuroraVpc7929A8B8"
+        }
+      }
+    },
+    "AuroraVpcPublicSubnet2RouteTableAssociation027872B6": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "AuroraVpcPublicSubnet2RouteTable63A7EA98"
+        },
+        "SubnetId": {
+          "Ref": "AuroraVpcPublicSubnet2Subnet3FD1101C"
+        }
+      }
+    },
+    "AuroraVpcPublicSubnet2DefaultRoute67937832": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "AuroraVpcIGW219B2B09"
+        },
+        "RouteTableId": {
+          "Ref": "AuroraVpcPublicSubnet2RouteTable63A7EA98"
+        }
+      },
+      "DependsOn": [
+        "AuroraVpcVPCGW5794319F"
+      ]
+    },
+    "AuroraVpcPublicSubnet2EIP1290CFE8": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PublicSubnet2"
+          }
+        ]
+      }
+    },
+    "AuroraVpcPublicSubnet2NATGatewayB8A4A43A": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "AuroraVpcPublicSubnet2EIP1290CFE8",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "AuroraVpcPublicSubnet2Subnet3FD1101C"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PublicSubnet2"
+          }
+        ]
+      },
+      "DependsOn": [
+        "AuroraVpcPublicSubnet2DefaultRoute67937832",
+        "AuroraVpcPublicSubnet2RouteTableAssociation027872B6"
+      ]
+    },
+    "AuroraVpcPrivateSubnet1Subnet7697A21E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.128.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PrivateSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "AuroraVpc7929A8B8"
+        }
+      }
+    },
+    "AuroraVpcPrivateSubnet1RouteTable3CA3EB57": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PrivateSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "AuroraVpc7929A8B8"
+        }
+      }
+    },
+    "AuroraVpcPrivateSubnet1RouteTableAssociation9295F555": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "AuroraVpcPrivateSubnet1RouteTable3CA3EB57"
+        },
+        "SubnetId": {
+          "Ref": "AuroraVpcPrivateSubnet1Subnet7697A21E"
+        }
+      }
+    },
+    "AuroraVpcPrivateSubnet1DefaultRouteC7786258": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "AuroraVpcPublicSubnet1NATGatewayDC0C6106"
+        },
+        "RouteTableId": {
+          "Ref": "AuroraVpcPrivateSubnet1RouteTable3CA3EB57"
+        }
+      }
+    },
+    "AuroraVpcPrivateSubnet2SubnetC1CDD381": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "CidrBlock": "10.0.192.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PrivateSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "AuroraVpc7929A8B8"
+        }
+      }
+    },
+    "AuroraVpcPrivateSubnet2RouteTable0949AE72": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc/PrivateSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "AuroraVpc7929A8B8"
+        }
+      }
+    },
+    "AuroraVpcPrivateSubnet2RouteTableAssociation6B2C77B4": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "AuroraVpcPrivateSubnet2RouteTable0949AE72"
+        },
+        "SubnetId": {
+          "Ref": "AuroraVpcPrivateSubnet2SubnetC1CDD381"
+        }
+      }
+    },
+    "AuroraVpcPrivateSubnet2DefaultRoute90B49ED3": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "AuroraVpcPublicSubnet2NATGatewayB8A4A43A"
+        },
+        "RouteTableId": {
+          "Ref": "AuroraVpcPrivateSubnet2RouteTable0949AE72"
+        }
+      }
+    },
+    "AuroraVpcIGW219B2B09": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AuroraPostgresStack/AuroraVpc"
+          }
+        ]
+      }
+    },
+    "AuroraVpcVPCGW5794319F": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "AuroraVpcIGW219B2B09"
+        },
+        "VpcId": {
+          "Ref": "AuroraVpc7929A8B8"
+        }
+      }
+    },
+    "parameterGroupFE655916": {
+      "Type": "AWS::RDS::DBClusterParameterGroup",
+      "Properties": {
+        "Description": "Cluster parameter group for aurora-postgresql13",
+        "Family": "aurora-postgresql13",
+        "Parameters": {
+          "shared_preload_libraries": "auto_explain"
+        }
+      }
+    },
+    "AuroraClusterSubnetsF3E9E6AD": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnets for AuroraCluster database",
+        "SubnetIds": [
+          {
+            "Ref": "AuroraVpcPrivateSubnet1Subnet7697A21E"
+          },
+          {
+            "Ref": "AuroraVpcPrivateSubnet2SubnetC1CDD381"
+          }
+        ]
+      }
+    },
+    "AuroraClusterSecurityGroupD85BF9CB": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "RDS security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "AuroraVpc7929A8B8"
+        }
+      }
+    },
+    "AuroraClusterSecret8E4F2BC8": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName"
+              }
+            ]
+          ]
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{\"username\":\"clusteradmin\"}"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "AuroraClusterSecretAttachmentDB8032DA": {
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+      "Properties": {
+        "SecretId": {
+          "Ref": "AuroraClusterSecret8E4F2BC8"
+        },
+        "TargetId": {
+          "Ref": "AuroraCluster23D869C0"
+        },
+        "TargetType": "AWS::RDS::DBCluster"
+      }
+    },
+    "AuroraCluster23D869C0": {
+      "Type": "AWS::RDS::DBCluster",
+      "Properties": {
+        "CopyTagsToSnapshot": true,
+        "DBClusterParameterGroupName": {
+          "Ref": "parameterGroupFE655916"
+        },
+        "DBSubnetGroupName": {
+          "Ref": "AuroraClusterSubnetsF3E9E6AD"
+        },
+        "DatabaseName": "demos",
+        "EnableHttpEndpoint": true,
+        "Engine": "aurora-postgresql",
+        "EngineMode": "serverless",
+        "EngineVersion": "13.5",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "AuroraClusterSecret8E4F2BC8"
+              },
+              ":SecretString:password::}}"
+            ]
+          ]
+        },
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "AuroraClusterSecret8E4F2BC8"
+              },
+              ":SecretString:username::}}"
+            ]
+          ]
+        },
+        "StorageEncrypted": true,
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "AuroraClusterSecurityGroupD85BF9CB",
+              "GroupId"
+            ]
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    }
+  },
+  "Outputs": {
+    "ClusterId": {
+      "Value": {
+        "Ref": "AuroraCluster23D869C0"
+      }
+    },
+    "ClusterArn": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              "Ref": "AWS::Partition"
+            },
+            ":rds:",
+            {
+              "Ref": "AWS::Region"
+            },
+            ":",
+            {
+              "Ref": "AWS::AccountId"
+            },
+            ":cluster:",
+            {
+              "Ref": "AuroraCluster23D869C0"
+            }
+          ]
+        ]
+      }
+    },
+    "SecretArn": {
+      "Value": {
+        "Ref": "AuroraClusterSecretAttachmentDB8032DA"
+      }
+    },
+    "DatabaseName": {
+      "Value": "demos"
+    }
+  }
+}

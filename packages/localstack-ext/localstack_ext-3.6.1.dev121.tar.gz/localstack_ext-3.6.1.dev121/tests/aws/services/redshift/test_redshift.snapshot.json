@@ -1,0 +1,249 @@
+{
+  "tests/aws/services/redshift/test_redshift.py::TestRedshiftCdk::test_redshift_cluster_connection": {
+    "recorded-date": "25-09-2023, 12:52:37",
+    "recorded-content": {
+      "basic_table_insert_lambda": {
+        "ExecutedVersion": "$LATEST",
+        "Payload": {
+          "responseMessage": "Query successfully executed"
+        },
+        "StatusCode": 200,
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/redshift/test_redshift.py::TestRedshiftCdk::test_cdk_cluster_creation": {
+    "recorded-date": "03-10-2023, 14:13:31",
+    "recorded-content": {
+      "describe_clusters": {
+        "Clusters": [
+          {
+            "AllowVersionUpgrade": true,
+            "AquaConfiguration": {
+              "AquaConfigurationStatus": "auto",
+              "AquaStatus": "<availability-zone-relocation-status:1>"
+            },
+            "AutomatedSnapshotRetentionPeriod": 1,
+            "AvailabilityZone": "<availability-zone:1>",
+            "AvailabilityZoneRelocationStatus": "<availability-zone-relocation-status:1>",
+            "ClusterAvailabilityStatus": "Available",
+            "ClusterCreateTime": "datetime",
+            "ClusterIdentifier": "<cluster-identifier:1>",
+            "ClusterNamespaceArn": "<cluster-namespace-arn:1>",
+            "ClusterNodes": "cluster-nodes",
+            "ClusterParameterGroups": [
+              {
+                "ParameterApplyStatus": "in-sync",
+                "ParameterGroupName": "default.redshift-1.0"
+              }
+            ],
+            "ClusterPublicKey": "cluster-public-key",
+            "ClusterRevisionNumber": "56754",
+            "ClusterSecurityGroups": [],
+            "ClusterStatus": "available",
+            "ClusterSubnetGroupName": "<cluster-subnet-group-name:1>",
+            "ClusterVersion": "1.0",
+            "DBName": "default_db",
+            "DeferredMaintenanceWindows": [],
+            "Encrypted": true,
+            "Endpoint": {
+              "Address": "address",
+              "Port": "port"
+            },
+            "EnhancedVpcRouting": false,
+            "IamRoles": [],
+            "KmsKeyId": "kms-key-id",
+            "MaintenanceTrackName": "current",
+            "ManualSnapshotRetentionPeriod": -1,
+            "MasterUsername": "admin",
+            "NextMaintenanceWindowStartTime": "datetime",
+            "NodeType": "dc2.large",
+            "NumberOfNodes": 1,
+            "PendingModifiedValues": {},
+            "PreferredMaintenanceWindow": "preferred-maintenance-window",
+            "PubliclyAccessible": true,
+            "Tags": [],
+            "TotalStorageCapacityInMegaBytes": 400000,
+            "VpcId": "<vpc-id:1>",
+            "VpcSecurityGroups": [
+              {
+                "Status": "active",
+                "VpcSecurityGroupId": "<vpc-security-group-id:1>"
+              }
+            ]
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/redshift/test_redshift.py::TestRedshiftCdk::test_redshift_describe_cluster_parameters": {
+    "recorded-date": "26-09-2023, 12:59:42",
+    "recorded-content": {
+      "describe_parameter_groups": {
+        "ParameterGroups": [
+          {
+            "Description": "Default parameter group for redshift-1.0",
+            "ParameterGroupFamily": "redshift-1.0",
+            "ParameterGroupName": "default.redshift-1.0",
+            "Tags": []
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_parameters": {
+        "Parameters": [
+          {
+            "AllowedValues": "true,false",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "Use auto analyze",
+            "IsModifiable": true,
+            "ParameterName": "auto_analyze",
+            "ParameterValue": "true",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "true,false",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "Enable AutoMV",
+            "IsModifiable": true,
+            "ParameterName": "auto_mv",
+            "ParameterValue": "true",
+            "Source": "engine-default"
+          },
+          {
+            "ApplyType": "static",
+            "DataType": "string",
+            "Description": "Sets the display format for date and time values.",
+            "IsModifiable": true,
+            "ParameterName": "datestyle",
+            "ParameterValue": "ISO, MDY",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "true,false",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "Preserve case sensitivity for database identifiers such as table or column names in parser",
+            "IsModifiable": true,
+            "ParameterName": "enable_case_sensitive_identifier",
+            "ParameterValue": "false",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "true,false",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "parameter for audit logging purpose",
+            "IsModifiable": true,
+            "ParameterName": "enable_user_activity_logging",
+            "ParameterValue": "false",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "-15-2",
+            "ApplyType": "static",
+            "DataType": "integer",
+            "Description": "Sets the number of digits displayed for floating-point values",
+            "IsModifiable": true,
+            "ParameterName": "extra_float_digits",
+            "ParameterValue": "0",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "0-10",
+            "ApplyType": "static",
+            "DataType": "integer",
+            "Description": "The maximum concurrency scaling clusters can be used.",
+            "IsModifiable": true,
+            "ParameterName": "max_concurrency_scaling_clusters",
+            "ParameterValue": "1",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "0-14400000",
+            "ApplyType": "static",
+            "DataType": "integer",
+            "Description": "Sets the max cursor result set size",
+            "IsModifiable": true,
+            "ParameterName": "max_cursor_result_set_size",
+            "ParameterValue": "default",
+            "Source": "engine-default"
+          },
+          {
+            "ApplyType": "static",
+            "DataType": "string",
+            "Description": "This parameter applies a user-defined label to a group of queries that are run during the same session..",
+            "IsModifiable": true,
+            "ParameterName": "query_group",
+            "ParameterValue": "default",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "true,false",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "require ssl for all databaseconnections",
+            "IsModifiable": true,
+            "ParameterName": "require_ssl",
+            "ParameterValue": "false",
+            "Source": "engine-default"
+          },
+          {
+            "ApplyType": "static",
+            "DataType": "string",
+            "Description": "Sets the schema search order for names that are not schema-qualified.",
+            "IsModifiable": true,
+            "ParameterName": "search_path",
+            "ParameterValue": "$user, public",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "0,100-2147483647",
+            "ApplyType": "static",
+            "DataType": "integer",
+            "Description": "Aborts any statement that takes over the specified number of milliseconds.",
+            "IsModifiable": true,
+            "ParameterName": "statement_timeout",
+            "ParameterValue": "0",
+            "Source": "engine-default"
+          },
+          {
+            "AllowedValues": "true,false",
+            "ApplyType": "static",
+            "DataType": "boolean",
+            "Description": "Use fips ssl library",
+            "IsModifiable": true,
+            "ParameterName": "use_fips_ssl",
+            "ParameterValue": "false",
+            "Source": "engine-default"
+          },
+          {
+            "ApplyType": "static",
+            "DataType": "string",
+            "Description": "wlm json configuration",
+            "IsModifiable": true,
+            "ParameterName": "wlm_json_configuration",
+            "ParameterValue": "[{\"auto_wlm\":true}]",
+            "Source": "engine-default"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

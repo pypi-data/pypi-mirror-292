@@ -1,0 +1,39 @@
+Parameters:
+  DbName:
+    Type: String
+  TableName:
+    Type: String
+
+Resources:
+  myDatabase1:
+    Type: AWS::Timestream::Database
+    Properties:
+      DatabaseName: !Ref DbName
+  myTable1:
+    Type: AWS::Timestream::Table
+    Properties:
+      DatabaseName: !Ref myDatabase1
+      TableName: !Ref TableName
+  myTable2:
+    Type: AWS::Timestream::Table
+    Properties:
+      DatabaseName: !Ref myDatabase1
+      # leaving TableName empty, should be auto-generated
+
+Outputs:
+  DatabaseRef:
+    Value: !Ref myDatabase1
+  DatabaseAttArn:
+    Value: !GetAtt myDatabase1.Arn
+  Table1Ref:
+    Value: !Ref myTable1
+  Table1AttArn:
+    Value: !GetAtt myTable1.Arn
+  Table1AttName:
+    Value: !GetAtt myTable1.Name
+  Table2Ref:
+    Value: !Ref myTable2
+  Table2AttArn:
+    Value: !GetAtt myTable2.Arn
+  Table2AttName:
+    Value: !GetAtt myTable2.Name

@@ -1,0 +1,9 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  Zone:
+    Type: AWS::MSK::Cluster
+    Properties:
+      ClusterName: {{ cluster_name }}
+      KafkaVersion: v1
+      BrokerNodeGroupInfo: {"ClientSubnets": [ ], "InstanceType": "inst1" }
+      NumberOfBrokerNodes: 1

@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template for creating a CloudTrail
+Parameters:
+  TrailName:
+    Description: The name of the trail.
+    Type: String
+  BucketName:
+    Description: The name of the bucket.
+    Type: String
+
+Resources:
+  CloudTrailBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: BucketName
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "AWSCloudTrailAclCheck"
+            Effect: Allow
+            Principal:
+              Service: 'cloudtrail.amazonaws.com'
+            Action: "s3:GetBucketAcl"
+            Resource: !Sub arn:aws:s3:::${BucketName}
+          - Sid: "AWSCloudTrailWrite"
+            Effect: Allow
+            Principal:
+              Service: 'cloudtrail.amazonaws.com'
+            Action: "s3:PutObject"
+            Resource: !Sub arn:aws:s3:::${BucketName}/AWSLogs/${AWS::AccountId}/*
+            Condition:
+              StringEquals:
+                's3:x-amz-acl': 'bucket-owner-full-control'
+
+  CloudTrail:
+    DependsOn:
+      - CloudTrailBucketPolicy
+    Type: "AWS::CloudTrail::Trail"
+    Properties:
+      TrailName:
+        Ref: TrailName
+      S3BucketName:
+        Ref: BucketName
+      IncludeGlobalServiceEvents: true
+      IsLogging: true
+      IsMultiRegionTrail: true
+      Tags:
+        - Key: "Environment"
+          Value: "Testing"
+        - Key: "Owner"
+          Value: "LocalStack"
+
+Outputs:
+  CloudTrail:
+    Value: !Ref CloudTrail
+  CloudTrailArn:
+    Description: The ARN of the CloudTrail
+    Value: !GetAtt CloudTrail.Arn

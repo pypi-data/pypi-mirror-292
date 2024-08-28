@@ -1,0 +1,115 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+ sam-app
+ Sample SAM Template for sam-app
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+ Function:
+   Timeout: 3
+Parameters:
+  OriginDomain:
+    Type: String
+    Description: Origin domain for CloudFront to send a request to Api Gateway
+Resources:
+ TestFunction:
+   Type: AWS::Serverless::Function
+   Properties:
+     InlineCode: |-
+       exports.handler = function(event, context, callback) {
+         sendResponse();
+         return;
+
+         function sendResponse() {
+           var response = {
+             'headers': {
+               "Access-Control-Allow-Origin": "*",
+               "Location": "https://www.google.com/"
+             },
+             'statusCode': 302,
+             'isBase64Encoded': false,
+             'body': ''
+           };
+
+           callback(null, response);
+         }
+       };
+     Handler: index.handler
+     Runtime: nodejs16.x
+     Timeout: 30
+     Events:
+       TestAPI:
+         Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+         Properties:
+           Path: /test
+           Method: post
+           RestApiId:
+             Ref: PublicAPIGateway
+ PublicAPIGateway:
+   Type: AWS::Serverless::Api
+   Properties:
+     StageName: prod
+     DefinitionBody:
+       swagger: "2.0"
+       info:
+         version: "1.0"
+         title: "Public API"
+       basePath: /prod
+       schemes:
+       - "https"
+       x-amazon-apigateway-binary-media-types:
+       - "/"
+       paths:
+         /test:
+           post:
+             responses: {}
+             x-amazon-apigateway-integration:
+               uri:
+                 Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${TestFunction.Arn}/invocations
+               passthroughBehavior: "when_no_match"
+               httpMethod: "POST"
+               type: "aws_proxy"
+ CloudFrontOriginAccessIdentity:
+   Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
+   Properties:
+     CloudFrontOriginAccessIdentityConfig:
+       Comment: 'CDN Infrastructure'
+ WebsiteCDN:
+   Type: AWS::CloudFront::Distribution
+   Properties:
+     DistributionConfig:
+       Enabled: true
+       # Cheapest option by default (https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_DistributionConfig.html)
+       PriceClass: PriceClass_All
+       # Enable http2 transfer for better performances
+       HttpVersion: http2
+       # Origins are where CloudFront fetches content
+       Origins:
+         - Id: public-lambda-functions
+           DomainName: !Join ['.', [!Ref PublicAPIGateway, !Ref OriginDomain]]
+           # This is the stage
+           OriginPath: "/prod"
+           CustomOriginConfig:
+             OriginProtocolPolicy: 'https-only' # API Gateway only supports HTTPS
+       DefaultCacheBehavior:
+         AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+         TargetOriginId: public-lambda-functions # The public lambda functions (via API Gateway)
+         # Disable caching for the Lambda functions https://aws.amazon.com/premiumsupport/knowledge-center/prevent-cloudfront-from-caching-files/
+         DefaultTTL: 0
+         MinTTL: 0
+         MaxTTL: 0
+         # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-forwardedvalues.html
+         ForwardedValues:
+           QueryString: true
+           Cookies:
+             Forward: all # Forward cookies to use them in the API gateway
+         ViewerProtocolPolicy: redirect-to-https
+       CustomErrorResponses:
+         # Do not cache HTTP errors
+         - ErrorCode: 500
+           ErrorCachingMinTTL: 0
+         - ErrorCode: 504
+           ErrorCachingMinTTL: 0
+Outputs:
+  CloudfrontHost:
+    Value: !GetAtt WebsiteCDN.DomainName

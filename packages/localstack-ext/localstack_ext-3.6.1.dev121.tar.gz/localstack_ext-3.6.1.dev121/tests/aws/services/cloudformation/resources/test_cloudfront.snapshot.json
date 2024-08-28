@@ -1,0 +1,420 @@
+{
+  "tests/aws/services/cloudformation/resources/test_cloudfront.py::test_cloudfront_distribution_with_logging": {
+    "recorded-date": "11-10-2022, 13:49:36",
+    "recorded-content": {
+      "stack_outputs": {
+        "DistributionId": "<resource:1>",
+        "DomainName": "domain-name"
+      },
+      "distribution": {
+        "Distribution": {
+          "ARN": "arn:<partition>:cloudfront::111111111111:distribution/<resource:1>",
+          "ActiveTrustedKeyGroups": {
+            "Enabled": false,
+            "Quantity": 0
+          },
+          "ActiveTrustedSigners": {
+            "Enabled": false,
+            "Quantity": 0
+          },
+          "DistributionConfig": {
+            "Aliases": {
+              "Quantity": 0
+            },
+            "CacheBehaviors": {
+              "Quantity": 0
+            },
+            "CallerReference": "<caller-reference:1>",
+            "Comment": "",
+            "CustomErrorResponses": {
+              "Quantity": 0
+            },
+            "DefaultCacheBehavior": {
+              "AllowedMethods": {
+                "CachedMethods": {
+                  "Items": [
+                    "HEAD",
+                    "GET"
+                  ],
+                  "Quantity": 2
+                },
+                "Items": [
+                  "HEAD",
+                  "GET"
+                ],
+                "Quantity": 2
+              },
+              "CachePolicyId": "<uuid:1>",
+              "Compress": true,
+              "FieldLevelEncryptionId": "",
+              "FunctionAssociations": {
+                "Quantity": 0
+              },
+              "LambdaFunctionAssociations": {
+                "Items": [
+                  {
+                    "EventType": "origin-request",
+                    "IncludeBody": true,
+                    "LambdaFunctionARN": "arn:<partition>:lambda:<region>:111111111111:function:<resource:2>"
+                  }
+                ],
+                "Quantity": 1
+              },
+              "SmoothStreaming": false,
+              "TargetOriginId": "TmpStackApiCloudFrontDistributionOrigin1D9F0BD14",
+              "TrustedKeyGroups": {
+                "Enabled": false,
+                "Quantity": 0
+              },
+              "TrustedSigners": {
+                "Enabled": false,
+                "Quantity": 0
+              },
+              "ViewerProtocolPolicy": "allow-all"
+            },
+            "DefaultRootObject": "",
+            "Enabled": true,
+            "HttpVersion": "http1.1",
+            "IsIPV6Enabled": true,
+            "Logging": {
+              "Bucket": "bucket",
+              "Enabled": true,
+              "IncludeCookies": false,
+              "Prefix": ""
+            },
+            "OriginGroups": {
+              "Quantity": 0
+            },
+            "Origins": {
+              "Items": [
+                {
+                  "ConnectionAttempts": 3,
+                  "ConnectionTimeout": 10,
+                  "CustomHeaders": {
+                    "Quantity": 0
+                  },
+                  "CustomOriginConfig": {
+                    "HTTPPort": 80,
+                    "HTTPSPort": 443,
+                    "OriginKeepaliveTimeout": 5,
+                    "OriginProtocolPolicy": "https-only",
+                    "OriginReadTimeout": 30,
+                    "OriginSslProtocols": {
+                      "Items": [
+                        "TLSv1.2"
+                      ],
+                      "Quantity": 1
+                    }
+                  },
+                  "DomainName": "domain-name",
+                  "Id": "TmpStackApiCloudFrontDistributionOrigin1D9F0BD14",
+                  "OriginPath": "",
+                  "OriginShield": {
+                    "Enabled": false
+                  }
+                }
+              ],
+              "Quantity": 1
+            },
+            "PriceClass": "PriceClass_All",
+            "Restrictions": {
+              "GeoRestriction": {
+                "Quantity": 0,
+                "RestrictionType": "none"
+              }
+            },
+            "ViewerCertificate": {
+              "CertificateSource": "cloudfront",
+              "CloudFrontDefaultCertificate": true,
+              "MinimumProtocolVersion": "TLSv1",
+              "SSLSupportMethod": "vip"
+            },
+            "WebACLId": ""
+          },
+          "DomainName": "domain-name",
+          "Id": "<resource:1>",
+          "InProgressInvalidationBatches": 0,
+          "LastModifiedTime": "datetime",
+          "Status": "Deployed"
+        },
+        "ETag": "<e-tag:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_cloudfront.py::test_origin_request_policies": {
+    "recorded-date": "07-10-2022, 13:31:44",
+    "recorded-content": {
+      "stack_outputs": {
+        "PolicyId": "<policy-id:1>"
+      },
+      "origin_request_policy": {
+        "ETag": "<e-tag:1>",
+        "OriginRequestPolicy": {
+          "Id": "<policy-id:1>",
+          "LastModifiedTime": "datetime",
+          "OriginRequestPolicyConfig": {
+            "Comment": "test comment",
+            "CookiesConfig": {
+              "CookieBehavior": "whitelist",
+              "Cookies": {
+                "Items": [
+                  "foo123",
+                  "test"
+                ],
+                "Quantity": 2
+              }
+            },
+            "HeadersConfig": {
+              "HeaderBehavior": "whitelist",
+              "Headers": {
+                "Items": [
+                  "Content-Type",
+                  "test123"
+                ],
+                "Quantity": 2
+              }
+            },
+            "Name": "<name:1>",
+            "QueryStringsConfig": {
+              "QueryStringBehavior": "whitelist",
+              "QueryStrings": {
+                "Items": [
+                  "foobar",
+                  "xyz-123"
+                ],
+                "Quantity": 2
+              }
+            }
+          }
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_cloudfront.py::test_origin_access_control": {
+    "recorded-date": "13-01-2023, 14:53:39",
+    "recorded-content": {
+      "stack_outputs": {
+        "OACId": "<origin-access-control-id:1>",
+        "OACRef": "<origin-access-control-id:1>"
+      },
+      "stack_resource_descriptions": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "OriginAccessControl",
+            "PhysicalResourceId": "<origin-access-control-id:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::CloudFront::OriginAccessControl",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_cloudfront.py::test_cache_policies": {
+    "recorded-date": "14-03-2023, 20:30:13",
+    "recorded-content": {
+      "stack_outputs": {
+        "PolicyId": "<id:1>",
+        "PolicyModDate": "date"
+      },
+      "cache_policy": {
+        "CachePolicyConfig": {
+          "DefaultTTL": 86400,
+          "MaxTTL": 31536000,
+          "MinTTL": 1,
+          "Name": "<name:1>",
+          "ParametersInCacheKeyAndForwardedToOrigin": {
+            "CookiesConfig": {
+              "CookieBehavior": "whitelist",
+              "Cookies": {
+                "Items": [
+                  "foo123",
+                  "test"
+                ],
+                "Quantity": 2
+              }
+            },
+            "EnableAcceptEncodingBrotli": false,
+            "EnableAcceptEncodingGzip": true,
+            "HeadersConfig": {
+              "HeaderBehavior": "whitelist",
+              "Headers": {
+                "Items": [
+                  "Content-Type",
+                  "test123"
+                ],
+                "Quantity": 2
+              }
+            },
+            "QueryStringsConfig": {
+              "QueryStringBehavior": "whitelist",
+              "QueryStrings": {
+                "Items": [
+                  "foobar",
+                  "xyz-123"
+                ],
+                "Quantity": 2
+              }
+            }
+          }
+        },
+        "Id": "<id:1>",
+        "LastModifiedTime": "datetime"
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_cloudfront.py::test_create_stack_cloudfront": {
+    "recorded-date": "02-05-2024, 18:08:41",
+    "recorded-content": {
+      "stack_outputs": {
+        "CdnDistribution": "<cdn-distribution:1>",
+        "Function": "arn:<partition>:cloudfront::111111111111:function/<resource:1>"
+      },
+      "stack_resource_descriptions": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "CdnDistribution",
+            "PhysicalResourceId": "<cdn-distribution:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::CloudFront::Distribution",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ContentBucket",
+            "PhysicalResourceId": "bucket-2028d446dev",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::S3::Bucket",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ContentBucketAccessIdentity",
+            "PhysicalResourceId": "E30XZSOZXEWLTD",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ContentBucketPolicy",
+            "PhysicalResourceId": "bucket-2028d446dev",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::S3::BucketPolicy",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "MyResponseHeadersPolicy",
+            "PhysicalResourceId": "<uuid:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::CloudFront::ResponseHeadersPolicy",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "TestApp",
+            "PhysicalResourceId": "arn:<partition>:cloudfront::111111111111:function/<resource:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::CloudFront::Function",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "TestReqPolicy",
+            "PhysicalResourceId": "<uuid:2>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::CloudFront::OriginRequestPolicy",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "UploadBucket",
+            "PhysicalResourceId": "bucket-b036614fdev",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::S3::Bucket",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "UploadBucketAccessIdentity",
+            "PhysicalResourceId": "E9V25ZZZOVCI0",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "UploadBucketPolicy",
+            "PhysicalResourceId": "bucket-b036614fdev",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::S3::BucketPolicy",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

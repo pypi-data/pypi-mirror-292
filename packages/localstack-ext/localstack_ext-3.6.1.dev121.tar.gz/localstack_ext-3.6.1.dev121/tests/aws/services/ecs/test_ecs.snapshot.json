@@ -1,0 +1,4090 @@
+{
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_describe_undefined_task_definition": {
+    "recorded-date": "16-04-2023, 21:16:08",
+    "recorded-content": {
+      "undefined_task_definition": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Unable to describe task definition."
+        },
+        "message": "Unable to describe task definition.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTaskExecution::test_update_service_creates_new_deployment": {
+    "recorded-date": "07-02-2024, 15:39:59",
+    "recorded-content": {}
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_list_services_no_default_cluster": {
+    "recorded-date": "18-06-2023, 11:01:19",
+    "recorded-content": {
+      "list_services_no_default_cluster": {
+        "Error": {
+          "Code": "ClusterNotFoundException",
+          "Message": "Cluster not found."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestServiceCrud::test_create_delete_service": {
+    "recorded-date": "04-07-2023, 09:40:27",
+    "recorded-content": {
+      "service-creation-result": {
+        "clusterArn": "arn:<partition>:ecs:<region>:111111111111:cluster/cluster-name",
+        "createdAt": "datetime",
+        "createdBy": "<created-by:1>",
+        "deploymentConfiguration": {
+          "deploymentCircuitBreaker": {
+            "enable": false,
+            "rollback": false
+          },
+          "maximumPercent": 200,
+          "minimumHealthyPercent": 100
+        },
+        "deploymentController": {
+          "type": "ECS"
+        },
+        "deployments": [
+          {
+            "createdAt": "datetime",
+            "desiredCount": 0,
+            "failedTasks": 0,
+            "id": "<id:1>",
+            "launchType": "EC2",
+            "pendingCount": 0,
+            "rolloutState": "<rollout-state:1>",
+            "rolloutStateReason": "<rollout-state-reason:1>",
+            "runningCount": 0,
+            "status": "<status:1>",
+            "taskDefinition": "arn:<partition>:ecs:<region>:111111111111:task-definition/family-name:1",
+            "updatedAt": "datetime"
+          }
+        ],
+        "desiredCount": 0,
+        "enableECSManagedTags": false,
+        "enableExecuteCommand": false,
+        "events": [],
+        "launchType": "EC2",
+        "loadBalancers": [],
+        "pendingCount": 0,
+        "placementConstraints": [],
+        "placementStrategy": [],
+        "propagateTags": "NONE",
+        "runningCount": 0,
+        "schedulingStrategy": "REPLICA",
+        "serviceArn": "arn:<partition>:ecs:<region>:111111111111:service/cluster-name/service-name",
+        "serviceName": "service-name",
+        "serviceRegistries": [],
+        "status": "<status:2>",
+        "taskDefinition": "arn:<partition>:ecs:<region>:111111111111:task-definition/family-name:1"
+      },
+      "service-describe-result": {
+        "clusterArn": "arn:<partition>:ecs:<region>:111111111111:cluster/cluster-name",
+        "createdAt": "datetime",
+        "createdBy": "<created-by:1>",
+        "deploymentConfiguration": {
+          "deploymentCircuitBreaker": {
+            "enable": false,
+            "rollback": false
+          },
+          "maximumPercent": 200,
+          "minimumHealthyPercent": 100
+        },
+        "deploymentController": {
+          "type": "ECS"
+        },
+        "deployments": [
+          {
+            "createdAt": "datetime",
+            "desiredCount": 0,
+            "failedTasks": 0,
+            "id": "<id:1>",
+            "launchType": "EC2",
+            "pendingCount": 0,
+            "rolloutState": "<rollout-state:1>",
+            "rolloutStateReason": "<rollout-state-reason:1>",
+            "runningCount": 0,
+            "status": "<status:1>",
+            "taskDefinition": "arn:<partition>:ecs:<region>:111111111111:task-definition/family-name:1",
+            "updatedAt": "datetime"
+          }
+        ],
+        "desiredCount": 0,
+        "enableECSManagedTags": false,
+        "enableExecuteCommand": false,
+        "events": [],
+        "launchType": "EC2",
+        "loadBalancers": [],
+        "pendingCount": 0,
+        "placementConstraints": [],
+        "placementStrategy": [],
+        "propagateTags": "NONE",
+        "runningCount": 0,
+        "schedulingStrategy": "REPLICA",
+        "serviceArn": "arn:<partition>:ecs:<region>:111111111111:service/cluster-name/service-name",
+        "serviceName": "service-name",
+        "serviceRegistries": [],
+        "status": "<status:2>",
+        "taskDefinition": "arn:<partition>:ecs:<region>:111111111111:task-definition/family-name:1"
+      },
+      "service-update-result": {
+        "clusterArn": "arn:<partition>:ecs:<region>:111111111111:cluster/cluster-name",
+        "createdAt": "datetime",
+        "createdBy": "<created-by:1>",
+        "deploymentConfiguration": {
+          "deploymentCircuitBreaker": {
+            "enable": false,
+            "rollback": false
+          },
+          "maximumPercent": 200,
+          "minimumHealthyPercent": 100
+        },
+        "deploymentController": {
+          "type": "ECS"
+        },
+        "deployments": [
+          {
+            "createdAt": "datetime",
+            "desiredCount": 0,
+            "failedTasks": 0,
+            "id": "<id:1>",
+            "launchType": "EC2",
+            "pendingCount": 0,
+            "rolloutState": "<rollout-state:1>",
+            "rolloutStateReason": "<rollout-state-reason:1>",
+            "runningCount": 0,
+            "status": "<status:1>",
+            "taskDefinition": "arn:<partition>:ecs:<region>:111111111111:task-definition/family-name:1",
+            "updatedAt": "datetime"
+          }
+        ],
+        "desiredCount": 0,
+        "enableECSManagedTags": false,
+        "enableExecuteCommand": false,
+        "events": [],
+        "launchType": "EC2",
+        "loadBalancers": [],
+        "pendingCount": 0,
+        "placementConstraints": [],
+        "placementStrategy": [],
+        "propagateTags": "NONE",
+        "runningCount": 0,
+        "schedulingStrategy": "REPLICA",
+        "serviceArn": "arn:<partition>:ecs:<region>:111111111111:service/cluster-name/service-name",
+        "serviceName": "service-name",
+        "serviceRegistries": [],
+        "status": "<status:2>",
+        "taskDefinition": "arn:<partition>:ecs:<region>:111111111111:task-definition/family-name:1"
+      },
+      "service-delete-result": {
+        "clusterArn": "arn:<partition>:ecs:<region>:111111111111:cluster/cluster-name",
+        "createdAt": "datetime",
+        "createdBy": "<created-by:1>",
+        "deploymentConfiguration": {
+          "deploymentCircuitBreaker": {
+            "enable": false,
+            "rollback": false
+          },
+          "maximumPercent": 200,
+          "minimumHealthyPercent": 100
+        },
+        "deploymentController": {
+          "type": "ECS"
+        },
+        "deployments": [
+          {
+            "createdAt": "datetime",
+            "desiredCount": 0,
+            "failedTasks": 0,
+            "id": "<id:1>",
+            "launchType": "EC2",
+            "pendingCount": 0,
+            "rolloutState": "<rollout-state:1>",
+            "rolloutStateReason": "<rollout-state-reason:1>",
+            "runningCount": 0,
+            "status": "<status:1>",
+            "taskDefinition": "arn:<partition>:ecs:<region>:111111111111:task-definition/family-name:1",
+            "updatedAt": "datetime"
+          }
+        ],
+        "desiredCount": 0,
+        "enableECSManagedTags": false,
+        "enableExecuteCommand": false,
+        "events": [],
+        "launchType": "EC2",
+        "loadBalancers": [],
+        "pendingCount": 0,
+        "placementConstraints": [],
+        "placementStrategy": [],
+        "propagateTags": "NONE",
+        "runningCount": 0,
+        "schedulingStrategy": "REPLICA",
+        "serviceArn": "arn:<partition>:ecs:<region>:111111111111:service/cluster-name/service-name",
+        "serviceName": "service-name",
+        "serviceRegistries": [],
+        "status": "<status:3>",
+        "taskDefinition": "arn:<partition>:ecs:<region>:111111111111:task-definition/family-name:1"
+      },
+      "service-describe-result-2": {
+        "clusterArn": "arn:<partition>:ecs:<region>:111111111111:cluster/cluster-name",
+        "createdAt": "datetime",
+        "createdBy": "<created-by:1>",
+        "deploymentConfiguration": {
+          "deploymentCircuitBreaker": {
+            "enable": false,
+            "rollback": false
+          },
+          "maximumPercent": 200,
+          "minimumHealthyPercent": 100
+        },
+        "deploymentController": {
+          "type": "ECS"
+        },
+        "deployments": [
+          {
+            "createdAt": "datetime",
+            "desiredCount": 0,
+            "failedTasks": 0,
+            "id": "<id:1>",
+            "launchType": "EC2",
+            "pendingCount": 0,
+            "rolloutState": "<rollout-state:2>",
+            "rolloutStateReason": "<rollout-state-reason:2>",
+            "runningCount": 0,
+            "status": "<status:1>",
+            "taskDefinition": "arn:<partition>:ecs:<region>:111111111111:task-definition/family-name:1",
+            "updatedAt": "datetime"
+          }
+        ],
+        "desiredCount": 0,
+        "enableECSManagedTags": false,
+        "enableExecuteCommand": false,
+        "events": [],
+        "launchType": "EC2",
+        "loadBalancers": [],
+        "pendingCount": 0,
+        "placementConstraints": [],
+        "placementStrategy": [],
+        "propagateTags": "NONE",
+        "runningCount": 0,
+        "schedulingStrategy": "REPLICA",
+        "serviceArn": "arn:<partition>:ecs:<region>:111111111111:service/cluster-name/service-name",
+        "serviceName": "service-name",
+        "serviceRegistries": [],
+        "status": "IN<status:2>",
+        "taskDefinition": "arn:<partition>:ecs:<region>:111111111111:task-definition/family-name:1"
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_valid_image[alpine]": {
+    "recorded-date": "25-08-2023, 22:55:00",
+    "recorded-content": {
+      "create_task_definition_valid_image": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "2"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "test_family_766e3291",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/test_family_766e3291:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_valid_image[alpine:latest]": {
+    "recorded-date": "25-08-2023, 22:55:01",
+    "recorded-content": {
+      "create_task_definition_valid_image": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "2"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine:latest",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "test_family_6a63ecf3",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/test_family_6a63ecf3:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_valid_image[alpine:3.12]": {
+    "recorded-date": "25-08-2023, 22:55:01",
+    "recorded-content": {
+      "create_task_definition_valid_image": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "2"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine:3.12",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "test_family_ccff7016",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/test_family_ccff7016:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_valid_image[alpine@sha256:1234567890]": {
+    "recorded-date": "25-08-2023, 22:55:02",
+    "recorded-content": {}
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_valid_image[library/alpine]": {
+    "recorded-date": "25-08-2023, 22:55:03",
+    "recorded-content": {
+      "create_task_definition_valid_image": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "2"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "library/alpine",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "test_family_7656e36e",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/test_family_7656e36e:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[alpine-True]": {
+    "recorded-date": "25-08-2023, 23:44:50",
+    "recorded-content": {
+      "create_task_definition_valid_image": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "2"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[alpine:latest-True]": {
+    "recorded-date": "25-08-2023, 23:44:51",
+    "recorded-content": {
+      "create_task_definition_valid_image": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "2"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine:latest",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[alpine:3.12-True]": {
+    "recorded-date": "25-08-2023, 23:44:51",
+    "recorded-content": {
+      "create_task_definition_valid_image": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "2"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine:3.12",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[library/alpine-True]": {
+    "recorded-date": "25-08-2023, 23:44:54",
+    "recorded-content": {
+      "create_task_definition_valid_image": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "2"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "library/alpine",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[alpine@sha256:1234567890-False]": {
+    "recorded-date": "25-08-2023, 23:45:02",
+    "recorded-content": {
+      "create_task_definition_invalid_image": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest hash value should be exactly 64 characters long."
+        },
+        "message": "Container.image digest hash value should be exactly 64 characters long.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[@library/alpine:latest-False]": {
+    "recorded-date": "25-08-2023, 23:44:57",
+    "recorded-content": {
+      "create_task_definition_invalid_image": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image repository should not be null or empty."
+        },
+        "message": "Container.image repository should not be null or empty.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[library/@alpine:latest-True]": {
+    "recorded-date": "25-08-2023, 23:00:30",
+    "recorded-content": {}
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[library/alpine@latest-False]": {
+    "recorded-date": "25-08-2023, 23:44:59",
+    "recorded-content": {
+      "create_task_definition_invalid_image": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest is incomplete."
+        },
+        "message": "Container.image digest is incomplete.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[library/image@name:latest-False]": {
+    "recorded-date": "25-08-2023, 23:45:00",
+    "recorded-content": {
+      "create_task_definition_invalid_image": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest hash function is unsupported."
+        },
+        "message": "Container.image digest hash function is unsupported.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[library/image@name-False]": {
+    "recorded-date": "25-08-2023, 23:45:01",
+    "recorded-content": {
+      "create_task_definition_invalid_image": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest is incomplete."
+        },
+        "message": "Container.image digest is incomplete.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[alpine:latest@sha256:1234567890-False]": {
+    "recorded-date": "25-08-2023, 23:45:04",
+    "recorded-content": {
+      "create_task_definition_invalid_image": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest hash value should be exactly 64 characters long."
+        },
+        "message": "Container.image digest hash value should be exactly 64 characters long.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[library/@alpine:latest-False]": {
+    "recorded-date": "25-08-2023, 23:44:58",
+    "recorded-content": {
+      "create_task_definition_invalid_image": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest hash function is unsupported."
+        },
+        "message": "Container.image digest hash function is unsupported.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[alpine@sha256:1fd62556954250bac80d601a196bb7fd480ceba7c10e94dd8fd4c6d1c08783d5-True]": {
+    "recorded-date": "25-08-2023, 23:44:52",
+    "recorded-content": {
+      "create_task_definition_valid_image": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "2"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine@sha256:1fd62556954250bac80d601a196bb7fd480ceba7c10e94dd8fd4c6d1c08783d5",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "requiresAttributes": [
+            {
+              "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+            }
+          ],
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[alpin e:3.12.0-False]": {
+    "recorded-date": "25-08-2023, 23:44:54",
+    "recorded-content": {
+      "create_task_definition_invalid_image": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image contains invalid characters."
+        },
+        "message": "Container.image contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[alpine 3.12.0-False]": {
+    "recorded-date": "25-08-2023, 23:44:55",
+    "recorded-content": {
+      "create_task_definition_invalid_image": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image contains invalid characters."
+        },
+        "message": "Container.image contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[alpine@3.12.0-False]": {
+    "recorded-date": "25-08-2023, 23:44:56",
+    "recorded-content": {
+      "create_task_definition_invalid_image": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest is incomplete."
+        },
+        "message": "Container.image digest is incomplete.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/test_ecs.py::TestTasksCrud::test_create_task_definition_image_validation[docker.io/nginx-True]": {
+    "recorded-date": "25-08-2023, 23:44:53",
+    "recorded-content": {
+      "create_task_definition_valid_image": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "2"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "docker.io/nginx",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_err[invalid name-valid_image]": {
+    "recorded-date": "07-02-2024, 16:14:08",
+    "recorded-content": {
+      "create_task_definition_err": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.name contains invalid characters."
+        },
+        "message": "Container.name contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_err[invalid name-invalid image]": {
+    "recorded-date": "07-02-2024, 16:14:09",
+    "recorded-content": {
+      "create_task_definition_err": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.name contains invalid characters."
+        },
+        "message": "Container.name contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_err[valid_name-invalid image]": {
+    "recorded-date": "07-02-2024, 16:14:09",
+    "recorded-content": {
+      "create_task_definition_err": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image contains invalid characters."
+        },
+        "message": "Container.image contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine-True]": {
+    "recorded-date": "08-08-2024, 13:49:39",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine:latest-True]": {
+    "recorded-date": "08-08-2024, 13:49:40",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine:latest",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine:3.12-True]": {
+    "recorded-date": "08-08-2024, 13:49:40",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine:3.12",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha256:1fd62556954250bac80d601a196bb7fd480ceba7c10e94dd8fd4c6d1c08783d5-True]": {
+    "recorded-date": "08-08-2024, 13:49:40",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine@sha256:1fd62556954250bac80d601a196bb7fd480ceba7c10e94dd8fd4c6d1c08783d5",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "requiresAttributes": [
+            {
+              "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+            }
+          ],
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-docker.io/nginx-True]": {
+    "recorded-date": "08-08-2024, 13:49:40",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "docker.io/nginx",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-library/alpine-True]": {
+    "recorded-date": "08-08-2024, 13:49:40",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "library/alpine",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpin e:3.12.0-False]": {
+    "recorded-date": "08-08-2024, 13:49:41",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image contains invalid characters."
+        },
+        "message": "Container.image contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine 3.12.0-False]": {
+    "recorded-date": "08-08-2024, 13:49:41",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image contains invalid characters."
+        },
+        "message": "Container.image contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@3.12.0-False]": {
+    "recorded-date": "08-08-2024, 13:49:41",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest is incomplete."
+        },
+        "message": "Container.image digest is incomplete.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-@library/alpine:latest-False]": {
+    "recorded-date": "08-08-2024, 13:49:50",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image repository should not be null or empty."
+        },
+        "message": "Container.image repository should not be null or empty.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-library/@alpine:latest-False]": {
+    "recorded-date": "08-08-2024, 13:49:50",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest hash function is unsupported."
+        },
+        "message": "Container.image digest hash function is unsupported.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-library/alpine@latest-False]": {
+    "recorded-date": "08-08-2024, 13:49:50",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest is incomplete."
+        },
+        "message": "Container.image digest is incomplete.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-library/image@name:latest-False]": {
+    "recorded-date": "08-08-2024, 13:49:51",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest hash function is unsupported."
+        },
+        "message": "Container.image digest hash function is unsupported.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-library/image@name-False]": {
+    "recorded-date": "08-08-2024, 13:49:56",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest is incomplete."
+        },
+        "message": "Container.image digest is incomplete.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha256:1234567890-False]": {
+    "recorded-date": "08-08-2024, 13:49:56",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest hash value should be exactly 64 characters long."
+        },
+        "message": "Container.image digest hash value should be exactly 64 characters long.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine:latest@sha256:1234567890-False]": {
+    "recorded-date": "08-08-2024, 13:49:56",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest hash value should be exactly 64 characters long."
+        },
+        "message": "Container.image digest hash value should be exactly 64 characters long.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test container-alpine-False]": {
+    "recorded-date": "08-08-2024, 13:49:58",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.name contains invalid characters."
+        },
+        "message": "Container.name contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[@test-container-alpine-False]": {
+    "recorded-date": "08-08-2024, 13:49:59",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.name contains invalid characters."
+        },
+        "message": "Container.name contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[$test-container-alpine-False]": {
+    "recorded-date": "08-08-2024, 13:49:59",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.name contains invalid characters."
+        },
+        "message": "Container.name contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test@container-alpine-False]": {
+    "recorded-date": "08-08-2024, 13:49:59",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.name contains invalid characters."
+        },
+        "message": "Container.name contains invalid characters.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-alpine-True]": {
+    "recorded-date": "08-08-2024, 13:49:59",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-alpine-False]": {
+    "recorded-date": "08-08-2024, 13:50:04",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.name should be 255 characters or less."
+        },
+        "message": "Container.name should be 255 characters or less.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition": {
+    "recorded-date": "31-08-2023, 02:31:35",
+    "recorded-content": {
+      "create_task_definition_invalid_1": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Invalid setting for container 'test_container'. At least one of 'memory' or 'memoryReservation' must be specified."
+        },
+        "message": "Invalid setting for container 'test_container'. At least one of 'memory' or 'memoryReservation' must be specified.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "create_task_definition_1": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "cpu": 0,
+              "environment": [],
+              "essential": true,
+              "image": "alpine",
+              "memory": 128,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_task_definition_1": {
+        "tags": [],
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "cpu": 0,
+              "environment": [],
+              "essential": true,
+              "image": "alpine",
+              "memory": 128,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "create_task_definition_2": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "cpu": 0,
+              "environment": [],
+              "essential": true,
+              "image": "alpine",
+              "memory": 128,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "ephemeralStorage": {
+            "sizeInGiB": 1
+          },
+          "family": "<family-name:2>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "requiresAttributes": [
+            {
+              "name": "ecs.capability.extensible-ephemeral-storage"
+            }
+          ],
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:2>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_task_definition_2": {
+        "tags": [],
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "cpu": 0,
+              "environment": [],
+              "essential": true,
+              "image": "alpine",
+              "memory": 128,
+              "mountPoints": [],
+              "name": "test_container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "ephemeralStorage": {
+            "sizeInGiB": 1
+          },
+          "family": "<family-name:2>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/local",
+          "requiresAttributes": [
+            {
+              "name": "ecs.capability.extensible-ephemeral-storage"
+            }
+          ],
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:2>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_fargate_task_definition_optional_container_memory": {
+    "recorded-date": "28-09-2023, 16:09:49",
+    "recorded-content": {
+      "fargate_optional_container_memory": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EC2",
+            "FARGATE"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 0,
+              "environment": [],
+              "essential": true,
+              "image": "alpine",
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "cpu": "256",
+          "family": "<family-name:1>",
+          "memory": "2048",
+          "networkMode": "awsvpc",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "requiresAttributes": [
+            {
+              "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+              "name": "ecs.capability.task-eni"
+            }
+          ],
+          "requiresCompatibilities": [
+            "FARGATE"
+          ],
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[xeFs8NP5bbAJzMyZQFbimPA2TofLZDNnnISSSOBkQni02E/e9/47M6X39MaOWTd0j/1]": {
+    "recorded-date": "18-10-2023, 11:31:33",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "xeFs8NP5bbAJzMyZQFbimPA2TofLZDNnnISSSOBkQni02E/e9/47M6X39MaOWTd0j/1",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[oYqqnY9b2K4sit13Wnovcu_GSPZpbeGjuwOb3L56CvxiIOOkXdnbYRpKnDZNoc9w_qQpw7bnM150]": {
+    "recorded-date": "18-10-2023, 11:31:33",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "oYqqnY9b2K4sit13Wnovcu_GSPZpbeGjuwOb3L56CvxiIOOkXdnbYRpKnDZNoc9w_qQpw7bnM150",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[f__HiUvwLQCeJZzX-0]": {
+    "recorded-date": "18-10-2023, 11:31:34",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "f__HiUvwLQCeJZzX-0",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[d9pkoMtZEFO8p2CDyH0rTyOj7Spnc4-biWjFiOx703/:t4yM10ps-wD1bpFkSrRo2CJAXHGQP8p_4oo16gh_67U3h5VorSdjqV-Vz6eyJwPepo2Ir55xFaHYRWgO3kK4pbyqO_2ErwmpeHk0Sd0lGssJ4HA2MvEyEu_sp/3]": {
+    "recorded-date": "18-10-2023, 11:31:34",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "d9pkoMtZEFO8p2CDyH0rTyOj7Spnc4-biWjFiOx703/:t4yM10ps-wD1bpFkSrRo2CJAXHGQP8p_4oo16gh_67U3h5VorSdjqV-Vz6eyJwPepo2Ir55xFaHYRWgO3kK4pbyqO_2ErwmpeHk0Sd0lGssJ4HA2MvEyEu_sp/3",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[fe9GzAA4hd/qFI6/sJcKhqlOF6OAXGbD3d]": {
+    "recorded-date": "18-10-2023, 11:31:35",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "fe9GzAA4hd/qFI6/sJcKhqlOF6OAXGbD3d",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[4]": {
+    "recorded-date": "18-10-2023, 11:31:35",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "4",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[hc41/xpz24pgyiYWwnQK8hBghmY5Hgtw-cxD4scBcdi96LO_gSHvY/do6Z3T4IHz_uRrFCMgI_KWZl9hnLlkBRW1UGu0YNEmAY9EFoCOV8RDWnnkCSlBO6vSM6gxmfFBdC6wcC0WCIYSDJA60EK8X2DwGjq/30l]": {
+    "recorded-date": "18-10-2023, 11:31:36",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "hc41/xpz24pgyiYWwnQK8hBghmY5Hgtw-cxD4scBcdi96LO_gSHvY/do6Z3T4IHz_uRrFCMgI_KWZl9hnLlkBRW1UGu0YNEmAY9EFoCOV8RDWnnkCSlBO6vSM6gxmfFBdC6wcC0WCIYSDJA60EK8X2DwGjq/30l",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[hBupzM9E-Ajmao_PTEtKnLEXhlG_ryeYr154XNr]": {
+    "recorded-date": "18-10-2023, 11:31:36",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "hBupzM9E-Ajmao_PTEtKnLEXhlG_ryeYr154XNr",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[yLY820GqBFD00C6ahzLb_LBeX-gG:ySaayu29uIp2L7fZaZJOy0q1N0F7JJBI]": {
+    "recorded-date": "18-10-2023, 11:31:37",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "yLY820GqBFD00C6ahzLb_LBeX-gG:ySaayu29uIp2L7fZaZJOy0q1N0F7JJBI",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[GgzXW5Aeul2NyL-U]": {
+    "recorded-date": "18-10-2023, 11:31:37",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "GgzXW5Aeul2NyL-U",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[4XgV944vEl7DEI_0u-V5Iefh34/n/tBH1LB9mQwcKrU8d46z9O5HSanNKePtt-7]": {
+    "recorded-date": "18-10-2023, 11:31:38",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "4XgV944vEl7DEI_0u-V5Iefh34/n/tBH1LB9mQwcKrU8d46z9O5HSanNKePtt-7",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[Bj1O3Eca4TbwL0rDcG3ygAf7McQ3gt_tg_R-qX1H1yDB71b35wABQsegTXbQ5qrkPM7Tr0ygOXgK6ZNDOAf4wREWc91mJQyxTab-GfSkorRKiA7NU21nSOnc4KmJhjFsHBZijJQ-6]": {
+    "recorded-date": "18-10-2023, 11:31:38",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "Bj1O3Eca4TbwL0rDcG3ygAf7McQ3gt_tg_R-qX1H1yDB71b35wABQsegTXbQ5qrkPM7Tr0ygOXgK6ZNDOAf4wREWc91mJQyxTab-GfSkorRKiA7NU21nSOnc4KmJhjFsHBZijJQ-6",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[Tvx:JfmMbtmTUK0jUOIgqGh2G2hhU/XkTqJ16Q8m2o9PW6ujNuCHR47JpNg/kfOB9dI_18IVC7EiJzFpG9aqhbkDvyhxy77jEoy6:Tb03NQdF4NeqdFRbBqJybhk75Ww7fYaHne5wbZ9dy]": {
+    "recorded-date": "18-10-2023, 11:31:39",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "Tvx:JfmMbtmTUK0jUOIgqGh2G2hhU/XkTqJ16Q8m2o9PW6ujNuCHR47JpNg/kfOB9dI_18IVC7EiJzFpG9aqhbkDvyhxy77jEoy6:Tb03NQdF4NeqdFRbBqJybhk75Ww7fYaHne5wbZ9dy",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[:::///__55::::://---:1abc::/]": {
+    "recorded-date": "18-10-2023, 11:31:41",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": ":::///__55::::://---:1abc::/",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[aA9-_:./#--__::..//##----____::::....////####]": {
+    "recorded-date": "18-10-2023, 11:31:41",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "aA9-_:./#--__::..//##----____::::....////####",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-public.ecr.aws/xray/aws-xray-daemon:3.x-True]": {
+    "recorded-date": "08-08-2024, 13:49:40",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "public.ecr.aws/xray/aws-xray-daemon:3.x",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08-True]": {
+    "recorded-date": "17-10-2023, 09:45:00",
+    "recorded-content": {}
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08@9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08-True]": {
+    "recorded-date": "17-10-2023, 09:45:01",
+    "recorded-content": {}
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08-True]": {
+    "recorded-date": "08-08-2024, 13:49:41",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "requiresAttributes": [
+            {
+              "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+            }
+          ],
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08-True]": {
+    "recorded-date": "17-10-2023, 09:46:08",
+    "recorded-content": {}
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08-False]": {
+    "recorded-date": "08-08-2024, 13:49:44",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image is incomplete."
+        },
+        "message": "Container.image is incomplete.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08@-False]": {
+    "recorded-date": "17-10-2023, 09:48:21",
+    "recorded-content": {}
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08@-True]": {
+    "recorded-date": "08-08-2024, 13:49:46",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "alpine@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08@",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "requiresAttributes": [
+            {
+              "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+            }
+          ],
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08@sha256-True]": {
+    "recorded-date": "17-10-2023, 09:49:19",
+    "recorded-content": {}
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08@s-True]": {
+    "recorded-date": "17-10-2023, 09:50:03",
+    "recorded-content": {}
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08@s-False]": {
+    "recorded-date": "08-08-2024, 13:49:50",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image is incomplete."
+        },
+        "message": "Container.image is incomplete.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_loose_image_name_regex[---//##@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08]": {
+    "recorded-date": "18-10-2023, 11:31:42",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "---//##@sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:iam::111111111111:user/Integration_Testing",
+          "requiresAttributes": [
+            {
+              "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+            }
+          ],
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha384:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08-False]": {
+    "recorded-date": "08-08-2024, 13:49:47",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest hash function is unsupported."
+        },
+        "message": "Container.image digest hash function is unsupported.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-alpine@sha512:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08-False]": {
+    "recorded-date": "08-08-2024, 13:49:48",
+    "recorded-content": {
+      "create_task_definition_invalid": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.image digest hash function is unsupported."
+        },
+        "message": "Container.image digest hash function is unsupported.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-public.ecr.aws/xray/aws-xray-daemon:v3.0.0-True]": {
+    "recorded-date": "08-08-2024, 13:49:41",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "public.ecr.aws/xray/aws-xray-daemon:v3.0.0",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTaskExecution::test_read_from_json_secret[True-False]": {
+    "recorded-date": "29-01-2024, 22:14:33",
+    "recorded-content": {
+      "describe-task": {
+        "attachments": [
+          {
+            "details": [
+              {
+                "name": "subnetId",
+                "value": "subnet-099e8fecd6d1ebd84"
+              },
+              {
+                "name": "networkInterfaceId",
+                "value": "eni-092bbdc74ce71aa78"
+              },
+              {
+                "name": "macAddress",
+                "value": "06:6b:ac:ee:ee:03"
+              },
+              {
+                "name": "privateIPv4Address",
+                "value": "10.0.1.115"
+              }
+            ],
+            "id": "<uuid:1>",
+            "status": "DELETED",
+            "type": "ElasticNetworkInterface"
+          }
+        ],
+        "attributes": [
+          {
+            "name": "ecs.cpu-architecture",
+            "value": "x86_64"
+          }
+        ],
+        "availabilityZone": "<region>b",
+        "clusterArn": "<cluster-arn:1>",
+        "connectivity": "CONNECTED",
+        "connectivityAt": "datetime",
+        "containers": [
+          {
+            "containerArn": "<container-arn:1>",
+            "cpu": "128",
+            "exitCode": 0,
+            "healthStatus": "UNKNOWN",
+            "image": "ubuntu:latest",
+            "imageDigest": "sha256:e6173d4dc55e76b87c4af8db8821b1feae4146dd47341e4d431118c7dd060a74",
+            "lastStatus": "STOPPED",
+            "managedAgents": [
+              {
+                "lastStatus": "STOPPED",
+                "name": "ExecuteCommandAgent"
+              }
+            ],
+            "memory": "256",
+            "name": "<container-name>",
+            "networkBindings": [],
+            "networkInterfaces": [
+              {
+                "attachmentId": "<uuid:1>",
+                "privateIpv4Address": "10.0.1.115"
+              }
+            ],
+            "runtimeId": "063ab62afad84c50b227b2f535e42269-231020458",
+            "taskArn": "<task-arn:1>"
+          }
+        ],
+        "cpu": "512",
+        "createdAt": "datetime",
+        "desiredStatus": "STOPPED",
+        "enableExecuteCommand": true,
+        "ephemeralStorage": {
+          "sizeInGiB": 20
+        },
+        "executionStoppedAt": "datetime",
+        "group": "family:test_family_b16b339b",
+        "healthStatus": "UNKNOWN",
+        "lastStatus": "STOPPED",
+        "launchType": "FARGATE",
+        "memory": "1024",
+        "overrides": {
+          "containerOverrides": [
+            {
+              "name": "<container-name>"
+            }
+          ],
+          "inferenceAcceleratorOverrides": []
+        },
+        "platformFamily": "Linux",
+        "platformVersion": "1.4.0",
+        "pullStartedAt": "datetime",
+        "pullStoppedAt": "datetime",
+        "startedAt": "datetime",
+        "stopCode": "EssentialContainerExited",
+        "stoppedAt": "datetime",
+        "stoppedReason": "Essential container in task exited",
+        "stoppingAt": "datetime",
+        "tags": [],
+        "taskArn": "<task-arn:1>",
+        "taskDefinitionArn": "<task-definition-arn:1>",
+        "version": 5
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTaskExecution::test_read_from_json_secret[False-True]": {
+    "recorded-date": "29-01-2024, 22:17:26",
+    "recorded-content": {
+      "describe-task": {
+        "attachments": [
+          {
+            "details": [
+              {
+                "name": "subnetId",
+                "value": "subnet-08178d5fd05d0957b"
+              },
+              {
+                "name": "networkInterfaceId",
+                "value": "eni-008489ee0445ccc06"
+              },
+              {
+                "name": "macAddress",
+                "value": "02:96:5c:a5:02:41"
+              },
+              {
+                "name": "privateIPv4Address",
+                "value": "10.0.0.132"
+              }
+            ],
+            "id": "<uuid:1>",
+            "status": "DELETED",
+            "type": "ElasticNetworkInterface"
+          }
+        ],
+        "attributes": [
+          {
+            "name": "ecs.cpu-architecture",
+            "value": "x86_64"
+          }
+        ],
+        "availabilityZone": "<region>a",
+        "clusterArn": "<cluster-arn:1>",
+        "connectivity": "CONNECTED",
+        "connectivityAt": "datetime",
+        "containers": [
+          {
+            "containerArn": "<container-arn:1>",
+            "cpu": "128",
+            "exitCode": 0,
+            "healthStatus": "UNKNOWN",
+            "image": "ubuntu:latest",
+            "imageDigest": "sha256:e6173d4dc55e76b87c4af8db8821b1feae4146dd47341e4d431118c7dd060a74",
+            "lastStatus": "STOPPED",
+            "managedAgents": [
+              {
+                "lastStatus": "STOPPED",
+                "name": "ExecuteCommandAgent"
+              }
+            ],
+            "memory": "256",
+            "name": "<container-name>",
+            "networkBindings": [],
+            "networkInterfaces": [
+              {
+                "attachmentId": "<uuid:1>",
+                "privateIpv4Address": "10.0.0.132"
+              }
+            ],
+            "runtimeId": "fd74422bc21241899f4cfc676d7dd801-322504486",
+            "taskArn": "<task-arn:1>"
+          }
+        ],
+        "cpu": "512",
+        "createdAt": "datetime",
+        "desiredStatus": "STOPPED",
+        "enableExecuteCommand": true,
+        "ephemeralStorage": {
+          "sizeInGiB": 20
+        },
+        "executionStoppedAt": "datetime",
+        "group": "family:test_family_28fcef14",
+        "healthStatus": "UNKNOWN",
+        "lastStatus": "STOPPED",
+        "launchType": "FARGATE",
+        "memory": "1024",
+        "overrides": {
+          "containerOverrides": [
+            {
+              "name": "<container-name>"
+            }
+          ],
+          "inferenceAcceleratorOverrides": []
+        },
+        "platformFamily": "Linux",
+        "platformVersion": "1.4.0",
+        "pullStartedAt": "datetime",
+        "pullStoppedAt": "datetime",
+        "startedAt": "datetime",
+        "stopCode": "EssentialContainerExited",
+        "stoppedAt": "datetime",
+        "stoppedReason": "Essential container in task exited",
+        "stoppingAt": "datetime",
+        "tags": [],
+        "taskArn": "<task-arn:1>",
+        "taskDefinitionArn": "<task-definition-arn:1>",
+        "version": 5
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTaskExecution::test_read_from_json_secret[False-False]": {
+    "recorded-date": "29-01-2024, 22:20:10",
+    "recorded-content": {
+      "describe-task": {
+        "attachments": [
+          {
+            "details": [
+              {
+                "name": "subnetId",
+                "value": "subnet-069faaee2d4bc8b4a"
+              },
+              {
+                "name": "networkInterfaceId",
+                "value": "eni-0d794b16a9456cad7"
+              },
+              {
+                "name": "macAddress",
+                "value": "02:40:86:97:96:9f"
+              },
+              {
+                "name": "privateIPv4Address",
+                "value": "10.0.0.103"
+              }
+            ],
+            "id": "<uuid:1>",
+            "status": "DELETED",
+            "type": "ElasticNetworkInterface"
+          }
+        ],
+        "attributes": [
+          {
+            "name": "ecs.cpu-architecture",
+            "value": "x86_64"
+          }
+        ],
+        "availabilityZone": "<region>a",
+        "clusterArn": "<cluster-arn:1>",
+        "connectivity": "CONNECTED",
+        "connectivityAt": "datetime",
+        "containers": [
+          {
+            "containerArn": "<container-arn:1>",
+            "cpu": "128",
+            "exitCode": 0,
+            "healthStatus": "UNKNOWN",
+            "image": "ubuntu:latest",
+            "imageDigest": "sha256:e6173d4dc55e76b87c4af8db8821b1feae4146dd47341e4d431118c7dd060a74",
+            "lastStatus": "STOPPED",
+            "managedAgents": [
+              {
+                "lastStatus": "STOPPED",
+                "name": "ExecuteCommandAgent"
+              }
+            ],
+            "memory": "256",
+            "name": "<container-name>",
+            "networkBindings": [],
+            "networkInterfaces": [
+              {
+                "attachmentId": "<uuid:1>",
+                "privateIpv4Address": "10.0.0.103"
+              }
+            ],
+            "runtimeId": "47e6d1a3fdee4beeb3a9418866c87cb0-3495033482",
+            "taskArn": "<task-arn:1>"
+          }
+        ],
+        "cpu": "512",
+        "createdAt": "datetime",
+        "desiredStatus": "STOPPED",
+        "enableExecuteCommand": true,
+        "ephemeralStorage": {
+          "sizeInGiB": 20
+        },
+        "executionStoppedAt": "datetime",
+        "group": "family:test_family_f8ee60b7",
+        "healthStatus": "UNKNOWN",
+        "lastStatus": "STOPPED",
+        "launchType": "FARGATE",
+        "memory": "1024",
+        "overrides": {
+          "containerOverrides": [
+            {
+              "name": "<container-name>"
+            }
+          ],
+          "inferenceAcceleratorOverrides": []
+        },
+        "platformFamily": "Linux",
+        "platformVersion": "1.4.0",
+        "pullStartedAt": "datetime",
+        "pullStoppedAt": "datetime",
+        "startedAt": "datetime",
+        "stopCode": "EssentialContainerExited",
+        "stoppedAt": "datetime",
+        "stoppedReason": "Essential container in task exited",
+        "stoppingAt": "datetime",
+        "tags": [],
+        "taskArn": "<task-arn:1>",
+        "taskDefinitionArn": "<task-definition-arn:1>",
+        "version": 5
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_update_cluster": {
+    "recorded-date": "07-02-2024, 09:46:12",
+    "recorded-content": {
+      "cluster_update_response": {
+        "cluster": {
+          "activeServicesCount": 0,
+          "attachments": [],
+          "capacityProviders": [],
+          "clusterArn": "arn:<partition>:ecs:<region>:111111111111:cluster/<cluster-name:1>",
+          "clusterName": "<cluster-name:1>",
+          "defaultCapacityProviderStrategy": [],
+          "pendingTasksCount": 0,
+          "registeredContainerInstancesCount": 0,
+          "runningTasksCount": 0,
+          "settings": [
+            {
+              "name": "containerInsights",
+              "value": "enabled"
+            }
+          ],
+          "statistics": [],
+          "status": "ACTIVE",
+          "tags": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_err[None-None]": {
+    "recorded-date": "07-02-2024, 16:14:09",
+    "recorded-content": {
+      "create_task_definition_err": {
+        "Error": {
+          "Code": "ClientException",
+          "Message": "Container.name should not be null or empty."
+        },
+        "message": "Container.name should not be null or empty.",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestClustersCrud::test_cluster_capacity_providers": {
+    "recorded-date": "07-02-2024, 16:56:08",
+    "recorded-content": {
+      "put-cluster-capacity-providers": {
+        "cluster": {
+          "activeServicesCount": 0,
+          "attachments": [],
+          "attachmentsStatus": "UPDATE_IN_PROGRESS",
+          "capacityProviders": [
+            "FARGATE"
+          ],
+          "clusterArn": "arn:<partition>:ecs:<region>:111111111111:cluster/<resource:1>",
+          "clusterName": "<resource:1>",
+          "defaultCapacityProviderStrategy": [
+            {
+              "base": 0,
+              "capacityProvider": "FARGATE",
+              "weight": 2
+            }
+          ],
+          "pendingTasksCount": 0,
+          "registeredContainerInstancesCount": 0,
+          "runningTasksCount": 0,
+          "settings": [
+            {
+              "name": "containerInsights",
+              "value": "disabled"
+            }
+          ],
+          "statistics": [],
+          "status": "ACTIVE",
+          "tags": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTaskExecution::test_get_aws_execution_env_from_task[FARGATE]": {
+    "recorded-date": "28-02-2024, 21:33:13",
+    "recorded-content": {
+      "get_aws_execution_env_from_task": [
+        "AWS_ECS_FARGATE"
+      ]
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTaskExecution::test_environment_variable_expansion": {
+    "recorded-date": "03-04-2024, 15:45:09",
+    "recorded-content": {
+      "task-definition": {
+        "compatibilities": [
+          "EC2",
+          "FARGATE"
+        ],
+        "containerDefinitions": [
+          {
+            "command": [
+              "sh",
+              "-c",
+              "env; echo DONE"
+            ],
+            "cpu": 128,
+            "environment": [
+              {
+                "name": "MY_BASE_VAR",
+                "value": "foo"
+              },
+              {
+                "name": "MY_DERIVED_VAR",
+                "value": "${MY_BASE_VAR} foo"
+              }
+            ],
+            "essential": true,
+            "image": "ubuntu:latest",
+            "logConfiguration": {
+              "logDriver": "awslogs",
+              "options": {
+                "awslogs-create-group": "true",
+                "awslogs-group": "<log-group-name>",
+                "awslogs-region": "<region>",
+                "awslogs-stream-prefix": "ecs"
+              }
+            },
+            "memory": 256,
+            "mountPoints": [],
+            "name": "<container-name>",
+            "portMappings": [],
+            "systemControls": [],
+            "volumesFrom": []
+          }
+        ],
+        "cpu": "512",
+        "executionRoleArn": "arn:<partition>:iam::111111111111:role/<execution-role-name>",
+        "family": "<task-family>",
+        "memory": "1024",
+        "networkMode": "awsvpc",
+        "placementConstraints": [],
+        "registeredAt": "datetime",
+        "registeredBy": "arn:<partition>:iam::111111111111:user/localstack-testing",
+        "requiresAttributes": [
+          {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+          },
+          {
+            "name": "ecs.capability.execution-role-awslogs"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+          },
+          {
+            "name": "ecs.capability.task-eni"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+          }
+        ],
+        "requiresCompatibilities": [
+          "FARGATE"
+        ],
+        "revision": 1,
+        "status": "ACTIVE",
+        "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<task-family>:1",
+        "taskRoleArn": "arn:<partition>:iam::111111111111:role/<execution-role-name>",
+        "volumes": []
+      },
+      "environment": {
+        "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI": "<credentials-uri>",
+        "AWS_DEFAULT_REGION": "<region>",
+        "AWS_EXECUTION_ENV": "AWS_ECS_FARGATE",
+        "AWS_REGION": "<region>",
+        "ECS_AGENT_URI": "http://169.254.170.2/api/<hostname>",
+        "ECS_CONTAINER_METADATA_URI": "http://169.254.170.2/v3/<hostname>",
+        "ECS_CONTAINER_METADATA_URI_V4": "http://169.254.170.2/v4/<hostname>",
+        "HOME": "/root",
+        "HOSTNAME": "<hostname>",
+        "MY_BASE_VAR": "foo",
+        "MY_DERIVED_VAR": "${MY_BASE_VAR} foo",
+        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "PWD": "/"
+      }
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTaskExecution::test_ecs_task_metadata_endpoints[v2]": {
+    "recorded-date": "25-03-2024, 17:14:54",
+    "recorded-content": {
+      "endpoint-responses": [
+        {
+          "Cluster": "arn:<partition>:ecs:<region>:111111111111:cluster/<cluster-name>",
+          "TaskARN": "arn:<partition>:ecs:<region>:111111111111:task/<cluster-name>/<task-id>",
+          "Family": "<task-family>",
+          "Revision": "1",
+          "DesiredStatus": "RUNNING",
+          "KnownStatus": "RUNNING",
+          "Containers": [
+            {
+              "DockerId": "<docker-id:1>",
+              "Name": "<docker-name:1>",
+              "DockerName": "<docker-name:1>",
+              "Image": "curlimages/curl:8.3.0",
+              "ImageID": "<image-i-d:1>",
+              "Labels": {
+                "com.amazonaws.ecs.cluster": "arn:<partition>:ecs:<region>:111111111111:cluster/<cluster-name>",
+                "com.amazonaws.ecs.container-name": "<docker-name:1>",
+                "com.amazonaws.ecs.task-arn": "arn:<partition>:ecs:<region>:111111111111:task/<cluster-name>/<task-id>",
+                "com.amazonaws.ecs.task-definition-family": "<task-family>",
+                "com.amazonaws.ecs.task-definition-version": "1"
+              },
+              "DesiredStatus": "RUNNING",
+              "KnownStatus": "RUNNING",
+              "Limits": {
+                "CPU": 128,
+                "Memory": 256
+              },
+              "CreatedAt": "date",
+              "StartedAt": "date",
+              "Type": "NORMAL",
+              "Networks": [
+                {
+                  "NetworkMode": "awsvpc",
+                  "IPv4Addresses": "i-pv4-addresses"
+                }
+              ]
+            }
+          ],
+          "Limits": {
+            "CPU": 0.5,
+            "Memory": 1024
+          },
+          "PullStartedAt": "date",
+          "PullStoppedAt": "date",
+          "AvailabilityZone": "<availability-zone:1>"
+        },
+        {
+          "DockerId": "<docker-id:1>",
+          "Name": "<docker-name:1>",
+          "DockerName": "<docker-name:1>",
+          "Image": "curlimages/curl:8.3.0",
+          "ImageID": "<image-i-d:1>",
+          "Labels": {
+            "com.amazonaws.ecs.cluster": "arn:<partition>:ecs:<region>:111111111111:cluster/<cluster-name>",
+            "com.amazonaws.ecs.container-name": "<docker-name:1>",
+            "com.amazonaws.ecs.task-arn": "arn:<partition>:ecs:<region>:111111111111:task/<cluster-name>/<task-id>",
+            "com.amazonaws.ecs.task-definition-family": "<task-family>",
+            "com.amazonaws.ecs.task-definition-version": "1"
+          },
+          "DesiredStatus": "RUNNING",
+          "KnownStatus": "RUNNING",
+          "Limits": {
+            "CPU": 128,
+            "Memory": 256
+          },
+          "CreatedAt": "date",
+          "StartedAt": "date",
+          "Type": "NORMAL",
+          "Networks": [
+            {
+              "NetworkMode": "awsvpc",
+              "IPv4Addresses": "i-pv4-addresses"
+            }
+          ]
+        },
+        {
+          "<docker-id:1>": {
+            "read": "date",
+            "preread": "0001-01-01T00:00:00Z",
+            "pids_stats": {},
+            "blkio_stats": {
+              "io_service_bytes_recursive": "<blkio-stat>",
+              "io_serviced_recursive": "<blkio-stat>",
+              "io_queue_recursive": "<blkio-stat>",
+              "io_service_time_recursive": "<blkio-stat>",
+              "io_wait_time_recursive": "<blkio-stat>",
+              "io_merged_recursive": "<blkio-stat>",
+              "io_time_recursive": "<blkio-stat>",
+              "sectors_recursive": "<blkio-stat>"
+            },
+            "num_procs": 0,
+            "storage_stats": {},
+            "cpu_stats": {
+              "cpu_usage": {
+                "total_usage": "int",
+                "percpu_usage": [
+                  "int",
+                  "int"
+                ],
+                "usage_in_kernelmode": "int",
+                "usage_in_usermode": "int"
+              },
+              "system_cpu_usage": "int",
+              "online_cpus": "int",
+              "throttling_data": {
+                "periods": "int",
+                "throttled_periods": "int",
+                "throttled_time": "int"
+              }
+            },
+            "precpu_stats": {
+              "cpu_usage": {
+                "total_usage": "int",
+                "usage_in_kernelmode": "int",
+                "usage_in_usermode": "int"
+              },
+              "throttling_data": {
+                "periods": "int",
+                "throttled_periods": "int",
+                "throttled_time": "int"
+              }
+            },
+            "memory_stats": {
+              "usage": "int",
+              "max_usage": "int",
+              "stats": {
+                "active_anon": "int",
+                "active_file": "int",
+                "cache": "int",
+                "dirty": "int",
+                "hierarchical_memory_limit": "int",
+                "hierarchical_memsw_limit": "int",
+                "inactive_anon": "int",
+                "inactive_file": "int",
+                "mapped_file": "int",
+                "pgfault": "int",
+                "pgmajfault": "int",
+                "pgpgin": "int",
+                "pgpgout": "int",
+                "rss": "int",
+                "rss_huge": "int",
+                "total_active_anon": "int",
+                "total_active_file": "int",
+                "total_cache": "int",
+                "total_dirty": "int",
+                "total_inactive_anon": "int",
+                "total_inactive_file": "int",
+                "total_mapped_file": "int",
+                "total_pgfault": "int",
+                "total_pgmajfault": "int",
+                "total_pgpgin": "int",
+                "total_pgpgout": "int",
+                "total_rss": "int",
+                "total_rss_huge": "int",
+                "total_unevictable": "int",
+                "total_writeback": "int",
+                "unevictable": "int",
+                "writeback": "int"
+              },
+              "limit": "int"
+            },
+            "name": "<docker-name:1>",
+            "id": "<docker-id:1>",
+            "networks": {
+              "eth1": {
+                "rx_bytes": "int",
+                "rx_packets": "int",
+                "rx_errors": "int",
+                "rx_dropped": "int",
+                "tx_bytes": "int",
+                "tx_packets": "int",
+                "tx_errors": "int",
+                "tx_dropped": "int"
+              }
+            }
+          }
+        },
+        {
+          "read": "date",
+          "preread": "0001-01-01T00:00:00Z",
+          "pids_stats": {},
+          "blkio_stats": {
+            "io_service_bytes_recursive": "<blkio-stat>",
+            "io_serviced_recursive": "<blkio-stat>",
+            "io_queue_recursive": "<blkio-stat>",
+            "io_service_time_recursive": "<blkio-stat>",
+            "io_wait_time_recursive": "<blkio-stat>",
+            "io_merged_recursive": "<blkio-stat>",
+            "io_time_recursive": "<blkio-stat>",
+            "sectors_recursive": "<blkio-stat>"
+          },
+          "num_procs": 0,
+          "storage_stats": {},
+          "cpu_stats": {
+            "cpu_usage": {
+              "total_usage": "int",
+              "percpu_usage": [
+                "int",
+                "int"
+              ],
+              "usage_in_kernelmode": "int",
+              "usage_in_usermode": "int"
+            },
+            "system_cpu_usage": "int",
+            "online_cpus": "int",
+            "throttling_data": {
+              "periods": "int",
+              "throttled_periods": "int",
+              "throttled_time": "int"
+            }
+          },
+          "precpu_stats": {
+            "cpu_usage": {
+              "total_usage": "int",
+              "usage_in_kernelmode": "int",
+              "usage_in_usermode": "int"
+            },
+            "throttling_data": {
+              "periods": "int",
+              "throttled_periods": "int",
+              "throttled_time": "int"
+            }
+          },
+          "memory_stats": {
+            "usage": "int",
+            "max_usage": "int",
+            "stats": {
+              "active_anon": "int",
+              "active_file": "int",
+              "cache": "int",
+              "dirty": "int",
+              "hierarchical_memory_limit": "int",
+              "hierarchical_memsw_limit": "int",
+              "inactive_anon": "int",
+              "inactive_file": "int",
+              "mapped_file": "int",
+              "pgfault": "int",
+              "pgmajfault": "int",
+              "pgpgin": "int",
+              "pgpgout": "int",
+              "rss": "int",
+              "rss_huge": "int",
+              "total_active_anon": "int",
+              "total_active_file": "int",
+              "total_cache": "int",
+              "total_dirty": "int",
+              "total_inactive_anon": "int",
+              "total_inactive_file": "int",
+              "total_mapped_file": "int",
+              "total_pgfault": "int",
+              "total_pgmajfault": "int",
+              "total_pgpgin": "int",
+              "total_pgpgout": "int",
+              "total_rss": "int",
+              "total_rss_huge": "int",
+              "total_unevictable": "int",
+              "total_writeback": "int",
+              "unevictable": "int",
+              "writeback": "int"
+            },
+            "limit": "int"
+          },
+          "name": "<docker-name:1>",
+          "id": "<docker-id:1>",
+          "networks": {
+            "eth1": {
+              "rx_bytes": "int",
+              "rx_packets": "int",
+              "rx_errors": "int",
+              "rx_dropped": "int",
+              "tx_bytes": "int",
+              "tx_packets": "int",
+              "tx_errors": "int",
+              "tx_dropped": "int"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTaskExecution::test_ecs_task_metadata_endpoints[v3]": {
+    "recorded-date": "25-03-2024, 17:15:53",
+    "recorded-content": {
+      "endpoint-responses": [
+        {
+          "DockerId": "<docker-id:1>",
+          "Name": "<docker-name:1>",
+          "DockerName": "<docker-name:1>",
+          "Image": "curlimages/curl:8.3.0",
+          "ImageID": "<image-i-d:1>",
+          "Labels": {
+            "com.amazonaws.ecs.cluster": "arn:<partition>:ecs:<region>:111111111111:cluster/<cluster-name>",
+            "com.amazonaws.ecs.container-name": "<docker-name:1>",
+            "com.amazonaws.ecs.task-arn": "arn:<partition>:ecs:<region>:111111111111:task/<cluster-name>/<task-id>",
+            "com.amazonaws.ecs.task-definition-family": "<task-family>",
+            "com.amazonaws.ecs.task-definition-version": "1"
+          },
+          "DesiredStatus": "RUNNING",
+          "KnownStatus": "RUNNING",
+          "Limits": {
+            "CPU": 128,
+            "Memory": 256
+          },
+          "CreatedAt": "date",
+          "StartedAt": "date",
+          "Type": "NORMAL",
+          "Networks": [
+            {
+              "NetworkMode": "awsvpc",
+              "IPv4Addresses": "i-pv4-addresses"
+            }
+          ]
+        },
+        {
+          "Cluster": "arn:<partition>:ecs:<region>:111111111111:cluster/<cluster-name>",
+          "TaskARN": "arn:<partition>:ecs:<region>:111111111111:task/<cluster-name>/<task-id>",
+          "Family": "<task-family>",
+          "Revision": "1",
+          "DesiredStatus": "RUNNING",
+          "KnownStatus": "RUNNING",
+          "Containers": [
+            {
+              "DockerId": "<docker-id:1>",
+              "Name": "<docker-name:1>",
+              "DockerName": "<docker-name:1>",
+              "Image": "curlimages/curl:8.3.0",
+              "ImageID": "<image-i-d:1>",
+              "Labels": {
+                "com.amazonaws.ecs.cluster": "arn:<partition>:ecs:<region>:111111111111:cluster/<cluster-name>",
+                "com.amazonaws.ecs.container-name": "<docker-name:1>",
+                "com.amazonaws.ecs.task-arn": "arn:<partition>:ecs:<region>:111111111111:task/<cluster-name>/<task-id>",
+                "com.amazonaws.ecs.task-definition-family": "<task-family>",
+                "com.amazonaws.ecs.task-definition-version": "1"
+              },
+              "DesiredStatus": "RUNNING",
+              "KnownStatus": "RUNNING",
+              "Limits": {
+                "CPU": 128,
+                "Memory": 256
+              },
+              "CreatedAt": "date",
+              "StartedAt": "date",
+              "Type": "NORMAL",
+              "Networks": [
+                {
+                  "NetworkMode": "awsvpc",
+                  "IPv4Addresses": "i-pv4-addresses"
+                }
+              ]
+            }
+          ],
+          "Limits": {
+            "CPU": 0.5,
+            "Memory": 1024
+          },
+          "PullStartedAt": "date",
+          "PullStoppedAt": "date",
+          "AvailabilityZone": "<availability-zone:1>"
+        },
+        {
+          "read": "date",
+          "preread": "0001-01-01T00:00:00Z",
+          "pids_stats": {},
+          "blkio_stats": {
+            "io_service_bytes_recursive": "<blkio-stat>",
+            "io_serviced_recursive": "<blkio-stat>",
+            "io_queue_recursive": "<blkio-stat>",
+            "io_service_time_recursive": "<blkio-stat>",
+            "io_wait_time_recursive": "<blkio-stat>",
+            "io_merged_recursive": "<blkio-stat>",
+            "io_time_recursive": "<blkio-stat>",
+            "sectors_recursive": "<blkio-stat>"
+          },
+          "num_procs": 0,
+          "storage_stats": {},
+          "cpu_stats": {
+            "cpu_usage": {
+              "total_usage": "int",
+              "percpu_usage": [
+                "int",
+                "int"
+              ],
+              "usage_in_kernelmode": "int",
+              "usage_in_usermode": "int"
+            },
+            "system_cpu_usage": "int",
+            "online_cpus": "int",
+            "throttling_data": {
+              "periods": "int",
+              "throttled_periods": "int",
+              "throttled_time": "int"
+            }
+          },
+          "precpu_stats": {
+            "cpu_usage": {
+              "total_usage": "int",
+              "usage_in_kernelmode": "int",
+              "usage_in_usermode": "int"
+            },
+            "throttling_data": {
+              "periods": "int",
+              "throttled_periods": "int",
+              "throttled_time": "int"
+            }
+          },
+          "memory_stats": {
+            "usage": "int",
+            "max_usage": "int",
+            "stats": {
+              "active_anon": "int",
+              "active_file": "int",
+              "cache": "int",
+              "dirty": "int",
+              "hierarchical_memory_limit": "int",
+              "hierarchical_memsw_limit": "int",
+              "inactive_anon": "int",
+              "inactive_file": "int",
+              "mapped_file": "int",
+              "pgfault": "int",
+              "pgmajfault": "int",
+              "pgpgin": "int",
+              "pgpgout": "int",
+              "rss": "int",
+              "rss_huge": "int",
+              "total_active_anon": "int",
+              "total_active_file": "int",
+              "total_cache": "int",
+              "total_dirty": "int",
+              "total_inactive_anon": "int",
+              "total_inactive_file": "int",
+              "total_mapped_file": "int",
+              "total_pgfault": "int",
+              "total_pgmajfault": "int",
+              "total_pgpgin": "int",
+              "total_pgpgout": "int",
+              "total_rss": "int",
+              "total_rss_huge": "int",
+              "total_unevictable": "int",
+              "total_writeback": "int",
+              "unevictable": "int",
+              "writeback": "int"
+            },
+            "limit": "int"
+          },
+          "name": "<docker-name:1>",
+          "id": "<docker-id:1>",
+          "networks": {
+            "eth1": {
+              "rx_bytes": "int",
+              "rx_packets": "int",
+              "rx_errors": "int",
+              "rx_dropped": "int",
+              "tx_bytes": "int",
+              "tx_packets": "int",
+              "tx_errors": "int",
+              "tx_dropped": "int"
+            }
+          }
+        },
+        {
+          "<docker-id:1>": {
+            "read": "date",
+            "preread": "0001-01-01T00:00:00Z",
+            "pids_stats": {},
+            "blkio_stats": {
+              "io_service_bytes_recursive": "<blkio-stat>",
+              "io_serviced_recursive": "<blkio-stat>",
+              "io_queue_recursive": "<blkio-stat>",
+              "io_service_time_recursive": "<blkio-stat>",
+              "io_wait_time_recursive": "<blkio-stat>",
+              "io_merged_recursive": "<blkio-stat>",
+              "io_time_recursive": "<blkio-stat>",
+              "sectors_recursive": "<blkio-stat>"
+            },
+            "num_procs": 0,
+            "storage_stats": {},
+            "cpu_stats": {
+              "cpu_usage": {
+                "total_usage": "int",
+                "percpu_usage": [
+                  "int",
+                  "int"
+                ],
+                "usage_in_kernelmode": "int",
+                "usage_in_usermode": "int"
+              },
+              "system_cpu_usage": "int",
+              "online_cpus": "int",
+              "throttling_data": {
+                "periods": "int",
+                "throttled_periods": "int",
+                "throttled_time": "int"
+              }
+            },
+            "precpu_stats": {
+              "cpu_usage": {
+                "total_usage": "int",
+                "usage_in_kernelmode": "int",
+                "usage_in_usermode": "int"
+              },
+              "throttling_data": {
+                "periods": "int",
+                "throttled_periods": "int",
+                "throttled_time": "int"
+              }
+            },
+            "memory_stats": {
+              "usage": "int",
+              "max_usage": "int",
+              "stats": {
+                "active_anon": "int",
+                "active_file": "int",
+                "cache": "int",
+                "dirty": "int",
+                "hierarchical_memory_limit": "int",
+                "hierarchical_memsw_limit": "int",
+                "inactive_anon": "int",
+                "inactive_file": "int",
+                "mapped_file": "int",
+                "pgfault": "int",
+                "pgmajfault": "int",
+                "pgpgin": "int",
+                "pgpgout": "int",
+                "rss": "int",
+                "rss_huge": "int",
+                "total_active_anon": "int",
+                "total_active_file": "int",
+                "total_cache": "int",
+                "total_dirty": "int",
+                "total_inactive_anon": "int",
+                "total_inactive_file": "int",
+                "total_mapped_file": "int",
+                "total_pgfault": "int",
+                "total_pgmajfault": "int",
+                "total_pgpgin": "int",
+                "total_pgpgout": "int",
+                "total_rss": "int",
+                "total_rss_huge": "int",
+                "total_unevictable": "int",
+                "total_writeback": "int",
+                "unevictable": "int",
+                "writeback": "int"
+              },
+              "limit": "int"
+            },
+            "name": "<docker-name:1>",
+            "id": "<docker-id:1>",
+            "networks": {
+              "eth1": {
+                "rx_bytes": "int",
+                "rx_packets": "int",
+                "rx_errors": "int",
+                "rx_dropped": "int",
+                "tx_bytes": "int",
+                "tx_packets": "int",
+                "tx_errors": "int",
+                "tx_dropped": "int"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTaskExecution::test_ecs_task_metadata_endpoints[v4]": {
+    "recorded-date": "25-03-2024, 17:16:51",
+    "recorded-content": {
+      "endpoint-responses": [
+        {
+          "DockerId": "<docker-id:1>",
+          "Name": "<docker-name:1>",
+          "DockerName": "<docker-name:1>",
+          "Image": "curlimages/curl:8.3.0",
+          "ImageID": "<image-i-d:1>",
+          "Labels": {
+            "com.amazonaws.ecs.cluster": "arn:<partition>:ecs:<region>:111111111111:cluster/<cluster-name>",
+            "com.amazonaws.ecs.container-name": "<docker-name:1>",
+            "com.amazonaws.ecs.task-arn": "arn:<partition>:ecs:<region>:111111111111:task/<cluster-name>/<task-id>",
+            "com.amazonaws.ecs.task-definition-family": "<task-family>",
+            "com.amazonaws.ecs.task-definition-version": "1"
+          },
+          "DesiredStatus": "RUNNING",
+          "KnownStatus": "RUNNING",
+          "Limits": {
+            "CPU": 128,
+            "Memory": 256
+          },
+          "CreatedAt": "date",
+          "StartedAt": "date",
+          "Type": "NORMAL",
+          "LogDriver": "awslogs",
+          "LogOptions": {
+            "awslogs-create-group": "true",
+            "awslogs-group": "<log-group-name>",
+            "awslogs-region": "<region>",
+            "awslogs-stream": "ecs/<docker-name:1>/<task-id>"
+          },
+          "ContainerARN": "arn:<partition>:ecs:<region>:111111111111:container/<cluster-name>/<task-id>/<uuid>",
+          "Networks": [
+            {
+              "NetworkMode": "awsvpc",
+              "IPv4Addresses": "i-pv4-addresses",
+              "AttachmentIndex": 0,
+              "MACAddress": "m-a-c-address",
+              "IPv4SubnetCIDRBlock": "i-pv4-subnet-c-i-d-r-block",
+              "DomainNameServers": "domain-name-servers",
+              "DomainNameSearchList": [
+                "<region>.compute.internal"
+              ],
+              "SubnetGatewayIpv4Address": "subnet-gateway-ipv4-address"
+            }
+          ],
+          "Snapshotter": "overlayfs"
+        },
+        {
+          "Cluster": "arn:<partition>:ecs:<region>:111111111111:cluster/<cluster-name>",
+          "TaskARN": "arn:<partition>:ecs:<region>:111111111111:task/<cluster-name>/<task-id>",
+          "Family": "<task-family>",
+          "Revision": "1",
+          "DesiredStatus": "RUNNING",
+          "KnownStatus": "RUNNING",
+          "Limits": {
+            "CPU": 0.5,
+            "Memory": 1024
+          },
+          "PullStartedAt": "date",
+          "PullStoppedAt": "date",
+          "AvailabilityZone": "<availability-zone:1>",
+          "LaunchType": "FARGATE",
+          "Containers": [
+            {
+              "DockerId": "<docker-id:1>",
+              "Name": "<docker-name:1>",
+              "DockerName": "<docker-name:1>",
+              "Image": "curlimages/curl:8.3.0",
+              "ImageID": "<image-i-d:1>",
+              "Labels": {
+                "com.amazonaws.ecs.cluster": "arn:<partition>:ecs:<region>:111111111111:cluster/<cluster-name>",
+                "com.amazonaws.ecs.container-name": "<docker-name:1>",
+                "com.amazonaws.ecs.task-arn": "arn:<partition>:ecs:<region>:111111111111:task/<cluster-name>/<task-id>",
+                "com.amazonaws.ecs.task-definition-family": "<task-family>",
+                "com.amazonaws.ecs.task-definition-version": "1"
+              },
+              "DesiredStatus": "RUNNING",
+              "KnownStatus": "RUNNING",
+              "Limits": {
+                "CPU": 128,
+                "Memory": 256
+              },
+              "CreatedAt": "date",
+              "StartedAt": "date",
+              "Type": "NORMAL",
+              "LogDriver": "awslogs",
+              "LogOptions": {
+                "awslogs-create-group": "true",
+                "awslogs-group": "<log-group-name>",
+                "awslogs-region": "<region>",
+                "awslogs-stream": "ecs/<docker-name:1>/<task-id>"
+              },
+              "ContainerARN": "arn:<partition>:ecs:<region>:111111111111:container/<cluster-name>/<task-id>/<uuid>",
+              "Networks": [
+                {
+                  "NetworkMode": "awsvpc",
+                  "IPv4Addresses": "i-pv4-addresses",
+                  "AttachmentIndex": 0,
+                  "MACAddress": "m-a-c-address",
+                  "IPv4SubnetCIDRBlock": "i-pv4-subnet-c-i-d-r-block",
+                  "DomainNameServers": "domain-name-servers",
+                  "DomainNameSearchList": [
+                    "<region>.compute.internal"
+                  ],
+                  "SubnetGatewayIpv4Address": "subnet-gateway-ipv4-address"
+                }
+              ],
+              "Snapshotter": "overlayfs"
+            }
+          ],
+          "ClockDrift": {
+            "ClockErrorBound": "clock-error-bound",
+            "ReferenceTimestamp": "date",
+            "ClockSynchronizationStatus": "SYNCHRONIZED"
+          },
+          "EphemeralStorageMetrics": {
+            "Utilized": 24,
+            "Reserved": 20496
+          }
+        },
+        {
+          "read": "date",
+          "preread": "0001-01-01T00:00:00Z",
+          "pids_stats": {},
+          "blkio_stats": {
+            "io_service_bytes_recursive": "<blkio-stat>",
+            "io_serviced_recursive": "<blkio-stat>",
+            "io_queue_recursive": "<blkio-stat>",
+            "io_service_time_recursive": "<blkio-stat>",
+            "io_wait_time_recursive": "<blkio-stat>",
+            "io_merged_recursive": "<blkio-stat>",
+            "io_time_recursive": "<blkio-stat>",
+            "sectors_recursive": "<blkio-stat>"
+          },
+          "num_procs": 0,
+          "storage_stats": {},
+          "cpu_stats": {
+            "cpu_usage": {
+              "total_usage": "int",
+              "percpu_usage": [
+                "int",
+                "int"
+              ],
+              "usage_in_kernelmode": "int",
+              "usage_in_usermode": "int"
+            },
+            "system_cpu_usage": "int",
+            "online_cpus": "int",
+            "throttling_data": {
+              "periods": "int",
+              "throttled_periods": "int",
+              "throttled_time": "int"
+            }
+          },
+          "precpu_stats": {
+            "cpu_usage": {
+              "total_usage": "int",
+              "usage_in_kernelmode": "int",
+              "usage_in_usermode": "int"
+            },
+            "throttling_data": {
+              "periods": "int",
+              "throttled_periods": "int",
+              "throttled_time": "int"
+            }
+          },
+          "memory_stats": {
+            "usage": "int",
+            "max_usage": "int",
+            "stats": {
+              "active_anon": "int",
+              "active_file": "int",
+              "cache": "int",
+              "dirty": "int",
+              "hierarchical_memory_limit": "int",
+              "hierarchical_memsw_limit": "int",
+              "inactive_anon": "int",
+              "inactive_file": "int",
+              "mapped_file": "int",
+              "pgfault": "int",
+              "pgmajfault": "int",
+              "pgpgin": "int",
+              "pgpgout": "int",
+              "rss": "int",
+              "rss_huge": "int",
+              "total_active_anon": "int",
+              "total_active_file": "int",
+              "total_cache": "int",
+              "total_dirty": "int",
+              "total_inactive_anon": "int",
+              "total_inactive_file": "int",
+              "total_mapped_file": "int",
+              "total_pgfault": "int",
+              "total_pgmajfault": "int",
+              "total_pgpgin": "int",
+              "total_pgpgout": "int",
+              "total_rss": "int",
+              "total_rss_huge": "int",
+              "total_unevictable": "int",
+              "total_writeback": "int",
+              "unevictable": "int",
+              "writeback": "int"
+            },
+            "limit": "int"
+          },
+          "name": "<docker-name:1>",
+          "id": "<docker-id:1>",
+          "networks": {
+            "eth1": {
+              "rx_bytes": "int",
+              "rx_packets": "int",
+              "rx_errors": "int",
+              "rx_dropped": "int",
+              "tx_bytes": "int",
+              "tx_packets": "int",
+              "tx_errors": "int",
+              "tx_dropped": "int"
+            }
+          }
+        },
+        {
+          "<docker-id:1>": {
+            "read": "date",
+            "preread": "0001-01-01T00:00:00Z",
+            "pids_stats": {},
+            "blkio_stats": {
+              "io_service_bytes_recursive": "<blkio-stat>",
+              "io_serviced_recursive": "<blkio-stat>",
+              "io_queue_recursive": "<blkio-stat>",
+              "io_service_time_recursive": "<blkio-stat>",
+              "io_wait_time_recursive": "<blkio-stat>",
+              "io_merged_recursive": "<blkio-stat>",
+              "io_time_recursive": "<blkio-stat>",
+              "sectors_recursive": "<blkio-stat>"
+            },
+            "num_procs": 0,
+            "storage_stats": {},
+            "cpu_stats": {
+              "cpu_usage": {
+                "total_usage": "int",
+                "percpu_usage": [
+                  "int",
+                  "int"
+                ],
+                "usage_in_kernelmode": "int",
+                "usage_in_usermode": "int"
+              },
+              "system_cpu_usage": "int",
+              "online_cpus": "int",
+              "throttling_data": {
+                "periods": "int",
+                "throttled_periods": "int",
+                "throttled_time": "int"
+              }
+            },
+            "precpu_stats": {
+              "cpu_usage": {
+                "total_usage": "int",
+                "usage_in_kernelmode": "int",
+                "usage_in_usermode": "int"
+              },
+              "throttling_data": {
+                "periods": "int",
+                "throttled_periods": "int",
+                "throttled_time": "int"
+              }
+            },
+            "memory_stats": {
+              "usage": "int",
+              "max_usage": "int",
+              "stats": {
+                "active_anon": "int",
+                "active_file": "int",
+                "cache": "int",
+                "dirty": "int",
+                "hierarchical_memory_limit": "int",
+                "hierarchical_memsw_limit": "int",
+                "inactive_anon": "int",
+                "inactive_file": "int",
+                "mapped_file": "int",
+                "pgfault": "int",
+                "pgmajfault": "int",
+                "pgpgin": "int",
+                "pgpgout": "int",
+                "rss": "int",
+                "rss_huge": "int",
+                "total_active_anon": "int",
+                "total_active_file": "int",
+                "total_cache": "int",
+                "total_dirty": "int",
+                "total_inactive_anon": "int",
+                "total_inactive_file": "int",
+                "total_mapped_file": "int",
+                "total_pgfault": "int",
+                "total_pgmajfault": "int",
+                "total_pgpgin": "int",
+                "total_pgpgout": "int",
+                "total_rss": "int",
+                "total_rss_huge": "int",
+                "total_unevictable": "int",
+                "total_writeback": "int",
+                "unevictable": "int",
+                "writeback": "int"
+              },
+              "limit": "int"
+            },
+            "name": "<docker-name:1>",
+            "id": "<docker-id:1>",
+            "networks": {
+              "eth1": {
+                "rx_bytes": "int",
+                "rx_packets": "int",
+                "rx_errors": "int",
+                "rx_dropped": "int",
+                "tx_bytes": "int",
+                "tx_packets": "int",
+                "tx_errors": "int",
+                "tx_dropped": "int"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "tests/aws/services/ecs/test_ecs.py::TestTasksCrud::test_create_task_definition_validation[test-container-localhost.localstack.cloud:4510/cdk-hnb659fds-container-assets-111111111111-us-region-1:5f423786c2e2f4ca36a670185bfd1e7f44f59942e3f5ad1994fcf1a1d1d66ba0-True]": {
+    "recorded-date": "08-08-2024, 13:49:40",
+    "recorded-content": {
+      "create_task_definition_valid": {
+        "taskDefinition": {
+          "compatibilities": [
+            "EXTERNAL",
+            "EC2"
+          ],
+          "containerDefinitions": [
+            {
+              "command": [
+                "sleep",
+                "1"
+              ],
+              "cpu": 10,
+              "environment": [],
+              "essential": true,
+              "image": "localhost.localstack.cloud:4510/cdk-hnb659fds-container-assets-111111111111-us-region-1:5f423786c2e2f4ca36a670185bfd1e7f44f59942e3f5ad1994fcf1a1d1d66ba0",
+              "memory": 123,
+              "mountPoints": [],
+              "name": "test-container",
+              "portMappings": [],
+              "systemControls": [],
+              "volumesFrom": []
+            }
+          ],
+          "family": "<family-name:1>",
+          "placementConstraints": [],
+          "registeredAt": "datetime",
+          "registeredBy": "arn:<partition>:sts::111111111111:assumed-role/AWSReservedSSO_AWSAdministratorAccess_2af0fc60fb59da5a/daniel.fangl@localstack.cloud",
+          "revision": 1,
+          "status": "ACTIVE",
+          "taskDefinitionArn": "arn:<partition>:ecs:<region>:111111111111:task-definition/<family-name:1>:1",
+          "volumes": []
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

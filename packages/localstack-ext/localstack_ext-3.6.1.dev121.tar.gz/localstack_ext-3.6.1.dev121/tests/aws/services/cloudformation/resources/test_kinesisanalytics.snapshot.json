@@ -1,0 +1,141 @@
+{
+  "tests/aws/services/cloudformation/resources/test_kinesisanalytics.py::test_application_with_output_and_reference": {
+    "recorded-date": "20-11-2023, 18:12:58",
+    "recorded-content": {
+      "stack_outputs": {
+        "ApplicationRef": "<resource:2>",
+        "OutputRef": "2.1"
+      },
+      "stack_resource_descriptions": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "BasicApplication",
+            "PhysicalResourceId": "<resource:2>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::KinesisAnalytics::Application",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "BasicApplicationOutputs",
+            "PhysicalResourceId": "2.1",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::KinesisAnalytics::ApplicationOutput",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "InputKinesisStream",
+            "PhysicalResourceId": "<resource:3>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::Kinesis::Stream",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "KinesisAnalyticsRole",
+            "PhysicalResourceId": "<resource:4>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IAM::Role",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "OutputKinesisStream",
+            "PhysicalResourceId": "<resource:5>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::Kinesis::Stream",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "kinesisAnalyticsApp": {
+        "ApplicationDetail": {
+          "ApplicationARN": "arn:<partition>:kinesisanalytics:<region>:111111111111:application/<resource:2>",
+          "ApplicationDescription": "SampleApp",
+          "ApplicationName": "<resource:2>",
+          "ApplicationStatus": "READY",
+          "ApplicationVersionId": 2,
+          "CreateTimestamp": "timestamp",
+          "InputDescriptions": [
+            {
+              "InAppStreamNames": [
+                "exampleNamePrefix_001"
+              ],
+              "InputId": "1.1",
+              "InputParallelism": {
+                "Count": 1
+              },
+              "InputSchema": {
+                "RecordColumns": [
+                  {
+                    "Mapping": "$.example",
+                    "Name": "example",
+                    "SqlType": "VARCHAR(16)"
+                  }
+                ],
+                "RecordFormat": {
+                  "MappingParameters": {
+                    "JSONMappingParameters": {
+                      "RecordRowPath": "$"
+                    }
+                  },
+                  "RecordFormatType": "JSON"
+                }
+              },
+              "InputStartingPositionConfiguration": {},
+              "KinesisStreamsInputDescription": {
+                "ResourceARN": "arn:<partition>:kinesis:<region>:111111111111:stream/<resource:3>",
+                "RoleARN": "arn:<partition>:iam::111111111111:role/<resource:4>"
+              },
+              "NamePrefix": "exampleNamePrefix"
+            }
+          ],
+          "LastUpdateTimestamp": "timestamp",
+          "OutputDescriptions": [
+            {
+              "DestinationSchema": {
+                "RecordFormatType": "CSV"
+              },
+              "KinesisStreamsOutputDescription": {
+                "ResourceARN": "arn:<partition>:kinesis:<region>:111111111111:stream/<resource:5>",
+                "RoleARN": "arn:<partition>:iam::111111111111:role/<resource:4>"
+              },
+              "Name": "exampleOutput",
+              "OutputId": "2.1"
+            }
+          ]
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

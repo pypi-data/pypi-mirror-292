@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  MyDomainName:
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: mydomainame.example.com
+      DomainNameConfigurations:
+        - EndpointType: REGIONAL
+          CertificateArn: >-
+            arn:aws:acm:us-east-1:123456789012:certificate/1a2b3c4d-aaaa-aaaa-aaaa-1a2b3c4d5e6f
+          CertificateName: testCertificate
+  MyApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: test-proxy-7534
+      Description: Lambda proxy
+      ProtocolType: HTTP
+      Target: arn:aws:apigateway:.../invocations
+  MyAuthorizer:
+    Type: AWS::ApiGatewayV2::Authorizer
+    Properties:
+      Name: LambdaAuthorizer
+      ApiId: !Ref MyApi
+      AuthorizerType: REQUEST
+      AuthorizerCredentialsArn: Arn
+      AuthorizerUri: !Join
+        - ''
+        - - 'arn:'
+          - !Ref 'AWS::Partition'
+          - ':apigateway:'
+          - !Ref 'AWS::Region'
+          - ':lambda:path/2015-03-31/functions/'
+          - /invocations
+      AuthorizerResultTtlInSeconds: 500
+      IdentitySource:
+        - route.request.header.Auth
+  MyProxyIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref MyApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: http://test123
+      PayloadFormatVersion: "2.0"
+  MyIntegrationResponse:
+    Type: AWS::ApiGatewayV2::IntegrationResponse
+    Properties:
+      ApiId: !Ref MyApi
+      IntegrationId: !Ref MyProxyIntegration
+      IntegrationResponseKey: /200/

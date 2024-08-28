@@ -1,0 +1,361 @@
+{
+  "tests/aws/services/s3/test_s3_select.py::TestS3Select::test_s3_select_wrong_expression_type": {
+    "recorded-date": "09-11-2022, 16:33:50",
+    "recorded-content": {
+      "error-select-expr-type": {
+        "Error": {
+          "Code": "InvalidExpressionType",
+          "Message": "The SQL-WRONG expressionType is invalid. Please check the service documentation and try again."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      }
+    }
+  },
+  "tests/aws/services/s3/test_s3_select.py::TestS3Select::test_inconsistent_number_of_columns": {
+    "recorded-date": "28-02-2023, 14:02:56",
+    "recorded-content": {
+      "raw-row-0": ",\n            10,20,30\n"
+    }
+  },
+  "tests/aws/services/s3/test_s3_select.py::TestS3Select::test_big_file_query[1000000]": {
+    "recorded-date": "13-09-2023, 03:12:26",
+    "recorded-content": {
+      "head-obj": {
+        "AcceptRanges": "bytes",
+        "ContentLength": 1000000,
+        "ContentType": "binary/octet-stream",
+        "ETag": "\"a888393b3aafd7f70cc230924141f0ec\"",
+        "LastModified": "datetime",
+        "Metadata": {},
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/s3/test_s3_select.py::TestS3Select::test_big_file_query[50000000]": {
+    "recorded-date": "13-09-2023, 03:12:48",
+    "recorded-content": {
+      "head-obj": {
+        "AcceptRanges": "bytes",
+        "ContentLength": 50000000,
+        "ContentType": "binary/octet-stream",
+        "ETag": "\"735c2c579f210040db042cd3168ea679-6\"",
+        "LastModified": "datetime",
+        "Metadata": {},
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/s3/test_s3_select.py::TestS3Select::test_query_on_gzip_object[gzip-CSV]": {
+    "recorded-date": "04-06-2024, 12:16:42",
+    "recorded-content": {
+      "put-object": {
+        "ETag": "\"fb5fc1214855be6241c183883067eda0\"",
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "head-obj": {
+        "AcceptRanges": "bytes",
+        "ContentEncoding": "gzip",
+        "ContentLength": 105,
+        "ContentType": "binary/octet-stream",
+        "ETag": "\"fb5fc1214855be6241c183883067eda0\"",
+        "LastModified": "datetime",
+        "Metadata": {},
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "no-compression-type-specified": {
+        "Error": {
+          "Code": "InvalidTextEncoding",
+          "Message": "UTF-8 encoding is required. The text encoding error was found near byte 105."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "query-result": {
+        "result": [
+          [
+            "Country",
+            "Country (Name)",
+            "Population"
+          ],
+          [
+            "US",
+            "United States",
+            "360000000"
+          ],
+          [
+            "CH",
+            "Switzerland",
+            "9000000"
+          ],
+          [
+            "DE",
+            "Germany",
+            "800000000"
+          ]
+        ]
+      }
+    }
+  },
+  "tests/aws/services/s3/test_s3_select.py::TestS3Select::test_query_on_gzip_object[gzip-JSON]": {
+    "recorded-date": "04-06-2024, 12:16:44",
+    "recorded-content": {
+      "put-object": {
+        "ETag": "\"6fa17eb62c1f3c250f2cd475c6d5fec3\"",
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "head-obj": {
+        "AcceptRanges": "bytes",
+        "ContentEncoding": "gzip",
+        "ContentLength": 123,
+        "ContentType": "binary/octet-stream",
+        "ETag": "\"6fa17eb62c1f3c250f2cd475c6d5fec3\"",
+        "LastModified": "datetime",
+        "Metadata": {},
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "no-compression-type-specified": {
+        "Error": {
+          "Code": "InvalidTextEncoding",
+          "Message": "UTF-8 encoding is required. The text encoding error was found near byte 123."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "query-result": {
+        "result": [
+          [
+            "US",
+            "United States",
+            "360000000"
+          ],
+          [
+            "CH",
+            "Switzerland",
+            "9000000"
+          ],
+          [
+            "DE",
+            "Germany",
+            "800000000"
+          ]
+        ]
+      }
+    }
+  },
+  "tests/aws/services/s3/test_s3_select.py::TestS3Select::test_query_on_gzip_object[None-CSV]": {
+    "recorded-date": "04-06-2024, 12:16:47",
+    "recorded-content": {
+      "put-object": {
+        "ETag": "\"fb5fc1214855be6241c183883067eda0\"",
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "head-obj": {
+        "AcceptRanges": "bytes",
+        "ContentLength": 105,
+        "ContentType": "binary/octet-stream",
+        "ETag": "\"fb5fc1214855be6241c183883067eda0\"",
+        "LastModified": "datetime",
+        "Metadata": {},
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "no-compression-type-specified": {
+        "Error": {
+          "Code": "InvalidTextEncoding",
+          "Message": "UTF-8 encoding is required. The text encoding error was found near byte 105."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "query-result": {
+        "result": [
+          [
+            "Country",
+            "Country (Name)",
+            "Population"
+          ],
+          [
+            "US",
+            "United States",
+            "360000000"
+          ],
+          [
+            "CH",
+            "Switzerland",
+            "9000000"
+          ],
+          [
+            "DE",
+            "Germany",
+            "800000000"
+          ]
+        ]
+      }
+    }
+  },
+  "tests/aws/services/s3/test_s3_select.py::TestS3Select::test_query_on_gzip_object[None-JSON]": {
+    "recorded-date": "04-06-2024, 12:16:50",
+    "recorded-content": {
+      "put-object": {
+        "ETag": "\"6fa17eb62c1f3c250f2cd475c6d5fec3\"",
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "head-obj": {
+        "AcceptRanges": "bytes",
+        "ContentLength": 123,
+        "ContentType": "binary/octet-stream",
+        "ETag": "\"6fa17eb62c1f3c250f2cd475c6d5fec3\"",
+        "LastModified": "datetime",
+        "Metadata": {},
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "no-compression-type-specified": {
+        "Error": {
+          "Code": "InvalidTextEncoding",
+          "Message": "UTF-8 encoding is required. The text encoding error was found near byte 123."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "query-result": {
+        "result": [
+          [
+            "US",
+            "United States",
+            "360000000"
+          ],
+          [
+            "CH",
+            "Switzerland",
+            "9000000"
+          ],
+          [
+            "DE",
+            "Germany",
+            "800000000"
+          ]
+        ]
+      }
+    }
+  },
+  "tests/aws/services/s3/test_s3_select.py::TestS3Select::test_query_on_bzip2_object": {
+    "recorded-date": "04-06-2024, 13:03:07",
+    "recorded-content": {
+      "put-object": {
+        "ETag": "\"bbd4f756fd8b5a9b9ff569c6de78a826\"",
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "head-obj": {
+        "AcceptRanges": "bytes",
+        "ContentLength": 120,
+        "ContentType": "binary/octet-stream",
+        "ETag": "\"bbd4f756fd8b5a9b9ff569c6de78a826\"",
+        "LastModified": "datetime",
+        "Metadata": {},
+        "ServerSideEncryption": "AES256",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "no-compression-type-specified": {
+        "Error": {
+          "Code": "InvalidTextEncoding",
+          "Message": "UTF-8 encoding is required. The text encoding error was found near byte 120."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "wrong-compression-type-specified": {
+        "Error": {
+          "Code": "InvalidCompressionFormat",
+          "Message": "RANDOM is not applicable to the queried object. Please correct the request and try again."
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 400
+        }
+      },
+      "query-result": {
+        "result": [
+          [
+            "Country",
+            "Country (Name)",
+            "Population"
+          ],
+          [
+            "US",
+            "United States",
+            "360000000"
+          ],
+          [
+            "CH",
+            "Switzerland",
+            "9000000"
+          ],
+          [
+            "DE",
+            "Germany",
+            "800000000"
+          ]
+        ]
+      }
+    }
+  }
+}

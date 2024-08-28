@@ -1,0 +1,60 @@
+{
+  "tests/aws/services/cloudformation/resources/test_iot.py::test_role_alias": {
+    "recorded-date": "04-01-2023, 10:28:34",
+    "recorded-content": {
+      "stack_outputs": {
+        "AliasArn": "arn:<partition>:iot:<region>:111111111111:rolealias/role-alias",
+        "AliasRef": "role-alias"
+      },
+      "stack_resource_descriptions": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "RoleAlias",
+            "PhysicalResourceId": "role-alias",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IoT::RoleAlias",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_iot.py::test_role": {
+    "recorded-date": "04-06-2024, 07:40:09",
+    "recorded-content": {
+      "stack_outputs": {
+        "TopicRuleArn": "arn:<partition>:iot:<region>:111111111111:rule/<resource:1>",
+        "TopicRuleRef": "<resource:1>"
+      },
+      "stack_resource_descriptions": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "MyTopicRule",
+            "PhysicalResourceId": "<resource:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IoT::TopicRule",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:2>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

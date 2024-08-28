@@ -1,0 +1,668 @@
+{
+  "tests/aws/services/athena/test_athena.py::TestAthena::test_csv_serde_alter_table": {
+    "recorded-date": "15-04-2023, 14:56:24",
+    "recorded-content": {
+      "create-table": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": []
+          },
+          "Rows": []
+        }
+      },
+      "alter-table": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": []
+          },
+          "Rows": []
+        }
+      },
+      "describe-table": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": [
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "col_name",
+                "Name": "col_name",
+                "Nullable": "UNKNOWN",
+                "Precision": 0,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "string"
+              },
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "data_type",
+                "Name": "data_type",
+                "Nullable": "UNKNOWN",
+                "Precision": 0,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "string"
+              },
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "comment",
+                "Name": "comment",
+                "Nullable": "UNKNOWN",
+                "Precision": 0,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "string"
+              }
+            ]
+          },
+          "Rows": [
+            {
+              "Data": [
+                {
+                  "VarCharValue": "test"
+                },
+                {
+                  "VarCharValue": "string"
+                },
+                {
+                  "VarCharValue": "<comment>"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "test2"
+                },
+                {
+                  "VarCharValue": "string"
+                },
+                {
+                  "VarCharValue": "<comment>"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "tests/aws/services/athena/test_athena.py::TestAthena::test_create_deltalake_table_queries[True]": {
+    "recorded-date": "25-07-2023, 14:10:06",
+    "recorded-content": {
+      "create-table": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": []
+          },
+          "Rows": []
+        }
+      },
+      "describe-table": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": []
+          },
+          "Rows": [
+            {
+              "Data": [
+                {
+                  "VarCharValue": "letter\tstring\t"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "number\tlong\t"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "\t\t"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "# Partition Information\t\t"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "# col_name\tdata_type\tcomment"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "select": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": [
+              {
+                "CaseSensitive": true,
+                "CatalogName": "hive",
+                "Label": "letter",
+                "Name": "letter",
+                "Nullable": "UNKNOWN",
+                "Precision": 2147483647,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "varchar"
+              },
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "number",
+                "Name": "number",
+                "Nullable": "UNKNOWN",
+                "Precision": 19,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "bigint"
+              }
+            ]
+          },
+          "Rows": [
+            {
+              "Data": [
+                {
+                  "VarCharValue": "letter"
+                },
+                {
+                  "VarCharValue": "number"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "x"
+                },
+                {
+                  "VarCharValue": "66"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "y"
+                },
+                {
+                  "VarCharValue": "77"
+                }
+              ]
+            }
+          ]
+        },
+        "UpdateCount": 0
+      }
+    }
+  },
+  "tests/aws/services/athena/test_athena.py::TestAthena::test_execute_unload_query_to_s3[PARQUET]": {
+    "recorded-date": "09-01-2024, 01:59:08",
+    "recorded-content": {
+      "query-result-file-content": [
+        {
+          "id": 1,
+          "name": "a"
+        },
+        {
+          "id": 2,
+          "name": "b"
+        },
+        {
+          "id": 3,
+          "name": "c"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/athena/test_athena.py::TestAthena::test_execute_unload_query_to_s3[JSON]": {
+    "recorded-date": "09-01-2024, 01:59:13",
+    "recorded-content": {
+      "query-result-file-content": [
+        {
+          "id": 1,
+          "name": "a"
+        },
+        {
+          "id": 2,
+          "name": "b"
+        },
+        {
+          "id": 3,
+          "name": "c"
+        }
+      ]
+    }
+  },
+  "tests/aws/services/athena/test_athena.py::TestAthena::test_create_and_query_view": {
+    "recorded-date": "30-04-2024, 23:31:02",
+    "recorded-content": {
+      "result": [
+        {
+          "Data": [
+            {
+              "VarCharValue": "test"
+            }
+          ]
+        },
+        {
+          "Data": [
+            {
+              "VarCharValue": "foo"
+            }
+          ]
+        },
+        {
+          "Data": [
+            {
+              "VarCharValue": "bar"
+            }
+          ]
+        },
+        {
+          "Data": [
+            {
+              "VarCharValue": "baz"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "tests/aws/services/athena/test_athena.py::TestAthena::test_query_info_schema_columns": {
+    "recorded-date": "01-05-2024, 11:19:04",
+    "recorded-content": {
+      "select-columns": [
+        {
+          "Data": [
+            {
+              "VarCharValue": "table_catalog"
+            },
+            {
+              "VarCharValue": "table_schema"
+            },
+            {
+              "VarCharValue": "table_name"
+            },
+            {
+              "VarCharValue": "column_name"
+            },
+            {
+              "VarCharValue": "ordinal_position"
+            },
+            {
+              "VarCharValue": "column_default"
+            },
+            {
+              "VarCharValue": "is_nullable"
+            },
+            {
+              "VarCharValue": "data_type"
+            },
+            {
+              "VarCharValue": "comment"
+            },
+            {
+              "VarCharValue": "extra_info"
+            }
+          ]
+        },
+        {
+          "Data": [
+            {
+              "VarCharValue": "awsdatacatalog"
+            },
+            {
+              "VarCharValue": "default"
+            },
+            {
+              "VarCharValue": "t_ba159966"
+            },
+            {
+              "VarCharValue": "col1"
+            },
+            {
+              "VarCharValue": "1"
+            },
+            {},
+            {
+              "VarCharValue": "YES"
+            },
+            {
+              "VarCharValue": "varchar"
+            },
+            {},
+            {}
+          ]
+        }
+      ]
+    }
+  },
+  "tests/aws/services/athena/test_athena.py::TestAthena::test_create_with_inferred_location": {
+    "recorded-date": "23-05-2024, 07:46:49",
+    "recorded-content": {
+      "select-all": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": [
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "id",
+                "Name": "id",
+                "Nullable": "UNKNOWN",
+                "Precision": 10,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "integer"
+              }
+            ]
+          },
+          "Rows": [
+            {
+              "Data": [
+                {
+                  "VarCharValue": "id"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "1"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "2"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "3"
+                }
+              ]
+            }
+          ]
+        },
+        "UpdateCount": 0
+      }
+    }
+  },
+  "tests/aws/services/athena/test_athena.py::TestAthena::test_iceberg_table_partitioning": {
+    "recorded-date": "07-08-2024, 12:36:13",
+    "recorded-content": {
+      "create-table": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": []
+          },
+          "Rows": []
+        }
+      },
+      "insert-data": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": [
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "rows",
+                "Name": "rows",
+                "Nullable": "UNKNOWN",
+                "Precision": 19,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "bigint"
+              }
+            ]
+          },
+          "Rows": []
+        },
+        "UpdateCount": 1
+      },
+      "select-data": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": [
+              {
+                "CaseSensitive": true,
+                "CatalogName": "hive",
+                "Label": "message_id",
+                "Name": "message_id",
+                "Nullable": "UNKNOWN",
+                "Precision": 2147483647,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "varchar"
+              },
+              {
+                "CaseSensitive": true,
+                "CatalogName": "hive",
+                "Label": "subject",
+                "Name": "subject",
+                "Nullable": "UNKNOWN",
+                "Precision": 2147483647,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "varchar"
+              },
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "countries",
+                "Name": "countries",
+                "Nullable": "UNKNOWN",
+                "Precision": 0,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "array"
+              },
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "tenant_id",
+                "Name": "tenant_id",
+                "Nullable": "UNKNOWN",
+                "Precision": 19,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "bigint"
+              },
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "dt",
+                "Name": "dt",
+                "Nullable": "UNKNOWN",
+                "Precision": 0,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "date"
+              }
+            ]
+          },
+          "Rows": [
+            {
+              "Data": [
+                {
+                  "VarCharValue": "message_id"
+                },
+                {
+                  "VarCharValue": "subject"
+                },
+                {
+                  "VarCharValue": "countries"
+                },
+                {
+                  "VarCharValue": "tenant_id"
+                },
+                {
+                  "VarCharValue": "dt"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "msg1"
+                },
+                {
+                  "VarCharValue": "sub 123"
+                },
+                {
+                  "VarCharValue": "[c1, c2]"
+                },
+                {
+                  "VarCharValue": "123"
+                },
+                {
+                  "VarCharValue": "2022-01-01"
+                }
+              ]
+            }
+          ]
+        },
+        "UpdateCount": 0
+      },
+      "select-updated-data": {
+        "ResultSet": {
+          "ResultSetMetadata": {
+            "ColumnInfo": [
+              {
+                "CaseSensitive": true,
+                "CatalogName": "hive",
+                "Label": "message_id",
+                "Name": "message_id",
+                "Nullable": "UNKNOWN",
+                "Precision": 2147483647,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "varchar"
+              },
+              {
+                "CaseSensitive": true,
+                "CatalogName": "hive",
+                "Label": "subject",
+                "Name": "subject",
+                "Nullable": "UNKNOWN",
+                "Precision": 2147483647,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "varchar"
+              },
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "countries",
+                "Name": "countries",
+                "Nullable": "UNKNOWN",
+                "Precision": 0,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "array"
+              },
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "tenant_id",
+                "Name": "tenant_id",
+                "Nullable": "UNKNOWN",
+                "Precision": 19,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "bigint"
+              },
+              {
+                "CaseSensitive": false,
+                "CatalogName": "hive",
+                "Label": "dt",
+                "Name": "dt",
+                "Nullable": "UNKNOWN",
+                "Precision": 0,
+                "Scale": 0,
+                "SchemaName": "",
+                "TableName": "",
+                "Type": "date"
+              }
+            ]
+          },
+          "Rows": [
+            {
+              "Data": [
+                {
+                  "VarCharValue": "message_id"
+                },
+                {
+                  "VarCharValue": "subject"
+                },
+                {
+                  "VarCharValue": "countries"
+                },
+                {
+                  "VarCharValue": "tenant_id"
+                },
+                {
+                  "VarCharValue": "dt"
+                }
+              ]
+            },
+            {
+              "Data": [
+                {
+                  "VarCharValue": "msg1_updated"
+                },
+                {
+                  "VarCharValue": "sub 123"
+                },
+                {
+                  "VarCharValue": "[c1, c2]"
+                },
+                {
+                  "VarCharValue": "123"
+                },
+                {
+                  "VarCharValue": "2022-01-01"
+                }
+              ]
+            }
+          ]
+        },
+        "UpdateCount": 0
+      }
+    }
+  }
+}

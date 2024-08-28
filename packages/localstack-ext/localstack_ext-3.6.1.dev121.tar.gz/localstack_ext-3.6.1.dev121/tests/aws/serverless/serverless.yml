@@ -1,0 +1,36 @@
+service: sls-test
+
+provider:
+  stage: ${opt:stage, self:provider.environment.stage}
+  name: aws
+  deploymentBucket:
+    name: localstack-websockets-serverless
+
+plugins:
+  - serverless-deployment-bucket
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages: "local"
+
+functions:
+  connectionHandler:
+    handler: handler.handler
+    events:
+      - websocket:
+          route: $connect
+      - websocket:
+          route: $disconnect
+  defaultHandler:
+    handler: handler.handler
+    events:
+      - websocket:
+          route: $default
+          routeResponseSelectionExpression: $default
+  actionHandler:
+    handler: handler.handler
+    events:
+      - websocket:
+          route: test-action
+          routeResponseSelectionExpression: $default

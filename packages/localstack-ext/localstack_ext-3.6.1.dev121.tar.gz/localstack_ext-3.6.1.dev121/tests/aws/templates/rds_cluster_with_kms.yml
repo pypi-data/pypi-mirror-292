@@ -1,0 +1,42 @@
+Parameters:
+  DatabaseName:
+    Type: String
+    Default: MyDatabase
+
+Resources:
+  MyDBCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      DatabaseName: !Ref DatabaseName
+      Engine: aurora-mysql
+      MasterUsername: test
+      ManageMasterUserPassword: true
+      MasterUserSecret:
+        KmsKeyId:
+          !Ref KMSKey
+  KMSKey:
+    Type: 'AWS::KMS::Key'
+    Properties:
+      Description: Manual test KMS key
+      EnableKeyRotation: True
+      KeyPolicy:
+        Version: "2012-10-17"
+        Id: !Ref "AWS::StackName"
+        Statement:
+          - Sid: "Allow administration of the key"
+            Effect: "Allow"
+            Principal:
+              AWS:
+                Fn::Sub: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:root'
+            Action:
+              - "kms:*"
+            Resource: "*"
+
+Outputs:
+  DBClusterIdentifier:
+      Value: !Ref MyDBCluster
+  ClusterSecretArn:
+    Value: !GetAtt MyDBCluster.MasterUserSecret.SecretArn
+
+  KMSKeyArn:
+    Value: !Ref KMSKey

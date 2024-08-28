@@ -1,0 +1,25 @@
+Parameters:
+  Application:
+    Type: String
+    Description: Application name
+    Default: myapp
+Resources:
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/24
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${Application}-ec2
+      GroupDescription: !Sub ${Application} allowed ports
+      VpcId: !Ref Vpc
+  EC2AllEgress:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      IpProtocol: "-1"
+      GroupId: !Ref EC2SecurityGroup
+      CidrIp: 0.0.0.0/0
+Outputs:
+  SecurityGroupId:
+    Value: !Ref EC2SecurityGroup

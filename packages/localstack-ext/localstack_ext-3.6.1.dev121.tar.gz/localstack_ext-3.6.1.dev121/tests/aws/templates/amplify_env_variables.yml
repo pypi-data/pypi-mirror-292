@@ -1,0 +1,26 @@
+Resources:
+  MyAmplifyApp:
+    Type: AWS::Amplify::App
+    Properties:
+      Name: MyAmplifyApplication
+      CustomRules:
+        - Source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json|webp)$)([^.]+$)/>'
+          Status: 200
+          Target: "/index.html"
+      EnvironmentVariables:
+        - Name: API_URL
+          Value: 'https://yourapi.example.com'
+        - Name: ANOTHER_VAR
+          Value: 'SomeValue'
+        - Name: ARE_WE_COOL
+          Value: 'Yes we are'
+        - Name: MEANING_OF_UNIVERSE
+          Value: 42
+Outputs:
+  AmplifyAppId:
+    Value: !GetAtt MyAmplifyApp.AppId
+  AppDefaultDomain:
+    Value: !GetAtt MyAmplifyApp.DefaultDomain
+  AppARN:
+    Value: !Ref MyAmplifyApp
+

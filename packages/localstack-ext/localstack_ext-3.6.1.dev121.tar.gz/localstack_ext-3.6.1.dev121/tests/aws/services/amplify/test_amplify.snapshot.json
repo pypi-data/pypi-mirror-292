@@ -1,0 +1,61 @@
+{
+  "tests/aws/services/amplify/test_amplify.py::TestAmplifyProvider::test_create_app": {
+    "recorded-date": "02-10-2022, 00:23:31",
+    "recorded-content": {
+      "create_amplify_app_response": {
+        "app": {
+          "appArn": "arn:<partition>:amplify:<region>:111111111111:apps/<app-id:1>",
+          "appId": "<app-id:1>",
+          "createTime": "datetime",
+          "customHeaders": "",
+          "customRules": [],
+          "defaultDomain": "<app-id:1>.amplifyapp.com",
+          "description": "my test app",
+          "enableAutoBranchCreation": false,
+          "enableBasicAuth": false,
+          "enableBranchAutoBuild": false,
+          "enableBranchAutoDeletion": false,
+          "name": "<name:1>",
+          "platform": "WEB",
+          "updateTime": "datetime"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/amplify/test_amplify.py::TestAmplifyProvider::test_tag_non_existing_app": {
+    "recorded-date": "02-10-2022, 00:29:06",
+    "recorded-content": {
+      "tag_app_error": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Resource was not found"
+        },
+        "message": "Resource was not found",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  },
+  "tests/aws/services/amplify/test_amplify.py::TestAmplifyProvider::test_tag_illegal_resource": {
+    "recorded-date": "02-10-2022, 00:29:13",
+    "recorded-content": {
+      "tag_resource_error": {
+        "Error": {
+          "Code": "NotFoundException",
+          "Message": "Resource was not found"
+        },
+        "message": "Resource was not found",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 404
+        }
+      }
+    }
+  }
+}

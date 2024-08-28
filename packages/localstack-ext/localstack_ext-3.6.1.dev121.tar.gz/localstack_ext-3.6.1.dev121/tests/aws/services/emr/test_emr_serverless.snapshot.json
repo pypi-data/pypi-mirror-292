@@ -1,0 +1,126 @@
+{
+  "tests/aws/services/emr/test_emr_serverless.py::TestEmrServerless::test_create_application_run_job": {
+    "recorded-date": "12-07-2024, 20:45:22",
+    "recorded-content": {
+      "create-app-details": {
+        "applicationId": "<application-id>",
+        "arn": "<arn:1>",
+        "name": "<name:1>",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "get-app-details": {
+        "application": {
+          "applicationId": "<application-id>",
+          "architecture": "X86_64",
+          "arn": "<arn:1>",
+          "autoStartConfiguration": {
+            "enabled": true
+          },
+          "autoStopConfiguration": {
+            "enabled": true,
+            "idleTimeoutMinutes": 15
+          },
+          "createdAt": "<datetime>",
+          "monitoringConfiguration": {
+            "managedPersistenceMonitoringConfiguration": {
+              "enabled": true
+            }
+          },
+          "name": "<name:1>",
+          "releaseLabel": "emr-6.6.0",
+          "state": "CREATED",
+          "stateDetails": "Application created by user.",
+          "tags": {},
+          "type": "Spark",
+          "updatedAt": "<datetime>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "job-run-before-start": {
+        "jobRun": {
+          "applicationId": "<application-id>",
+          "arn": "<arn:1>/jobruns/<job-run-id>",
+          "attempt": 1,
+          "attemptCreatedAt": "<datetime>",
+          "attemptUpdatedAt": "<datetime>",
+          "configurationOverrides": {
+            "monitoringConfiguration": {
+              "managedPersistenceMonitoringConfiguration": {
+                "enabled": true
+              },
+              "s3MonitoringConfiguration": {
+                "logUri": "s3://<s3-bucket>/logs/"
+              }
+            }
+          },
+          "createdAt": "<datetime>",
+          "createdBy": "<created-by:1>",
+          "executionRole": "<role-arn>",
+          "executionTimeoutMinutes": 720,
+          "jobDriver": {
+            "sparkSubmit": {
+              "entryPoint": "s3://<s3-bucket>/pi.py"
+            }
+          },
+          "jobRunId": "<job-run-id>",
+          "mode": "BATCH",
+          "releaseLabel": "emr-6.6.0",
+          "retryPolicy": {
+            "maxAttempts": 1
+          },
+          "state": "PENDING",
+          "stateDetails": "The JobRun is waiting for the application to start.",
+          "tags": {},
+          "updatedAt": "<datetime>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "job-finished-result": {
+        "applicationId": "<application-id>",
+        "arn": "<arn:1>/jobruns/<job-run-id>",
+        "attempt": 1,
+        "attemptCreatedAt": "<datetime>",
+        "attemptUpdatedAt": "<datetime>",
+        "configurationOverrides": {
+          "monitoringConfiguration": {
+            "managedPersistenceMonitoringConfiguration": {
+              "enabled": true
+            },
+            "s3MonitoringConfiguration": {
+              "logUri": "s3://<s3-bucket>/logs/"
+            }
+          }
+        },
+        "createdAt": "<datetime>",
+        "createdBy": "<created-by:1>",
+        "executionRole": "<role-arn>",
+        "executionTimeoutMinutes": 720,
+        "jobDriver": {
+          "sparkSubmit": {
+            "entryPoint": "s3://<s3-bucket>/pi.py"
+          }
+        },
+        "jobRunId": "<job-run-id>",
+        "mode": "BATCH",
+        "releaseLabel": "emr-6.6.0",
+        "retryPolicy": {
+          "maxAttempts": 1
+        },
+        "state": "SUCCESS",
+        "stateDetails": "",
+        "tags": {},
+        "totalExecutionDurationSeconds": 30,
+        "updatedAt": "<datetime>"
+      }
+    }
+  }
+}

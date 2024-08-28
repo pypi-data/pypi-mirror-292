@@ -1,0 +1,155 @@
+{
+  "tests/aws/services/cloudformation/resources/test_appconfig.py::test_application_deployment": {
+    "recorded-date": "22-11-2022, 15:31:39",
+    "recorded-content": {
+      "outputs": {
+        "ApplicationRef": "<app-id:1>",
+        "ConfigurationProfileRef": "<configuration-profile-id:1>",
+        "ConfigurationVersionRef": "1",
+        "DeploymentRef": "1",
+        "DeploymentStrategyRef": "<deployment-strategy-ref:1>",
+        "EnvironmentRef": "<environment-id:1>"
+      },
+      "app": {
+        "Id": "<app-id:1>",
+        "Name": "app-name",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "environment": {
+        "ApplicationId": "<app-id:1>",
+        "Id": "<environment-id:1>",
+        "Name": "environment-name",
+        "State": "ReadyForDeployment",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "configuration_profile": {
+        "ApplicationId": "<app-id:1>",
+        "Id": "<configuration-profile-id:1>",
+        "LocationUri": "hosted",
+        "Name": "configuration-profile-name",
+        "Type": "AWS.Freeform",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "configuration_version": {
+        "ApplicationId": "<app-id:1>",
+        "ConfigurationProfileId": "<configuration-profile-id:1>",
+        "ContentType": "text/plain",
+        "VersionNumber": 1
+      },
+      "deployment_strategy": {
+        "DeploymentDurationInMinutes": 0,
+        "FinalBakeTimeInMinutes": 0,
+        "GrowthFactor": 1.0,
+        "GrowthType": "LINEAR",
+        "Id": "<deployment-strategy-ref:1>",
+        "Name": "deployment-strategy-name",
+        "ReplicateTo": "NONE",
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "deployment": {
+        "ConfigurationName": "configuration-profile-name",
+        "ConfigurationVersion": "1",
+        "DeploymentDurationInMinutes": 0,
+        "DeploymentNumber": 1,
+        "FinalBakeTimeInMinutes": 0,
+        "GrowthFactor": 1.0,
+        "GrowthType": "LINEAR",
+        "PercentageComplete": 100.0,
+        "StartedAt": "datetime",
+        "State": "COMPLETE"
+      },
+      "resource": {
+        "StackResources": [
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "App",
+            "PhysicalResourceId": "<app-id:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::AppConfig::Application",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ConfigurationProfile",
+            "PhysicalResourceId": "<configuration-profile-id:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::AppConfig::ConfigurationProfile",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "ConfigurationVersion",
+            "PhysicalResourceId": "1",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::AppConfig::HostedConfigurationVersion",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "Deployment",
+            "PhysicalResourceId": "1",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::AppConfig::Deployment",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "DeploymentStrategy",
+            "PhysicalResourceId": "<deployment-strategy-ref:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::AppConfig::DeploymentStrategy",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          },
+          {
+            "DriftInformation": {
+              "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "Environment",
+            "PhysicalResourceId": "<environment-id:1>",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::AppConfig::Environment",
+            "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+            "StackName": "<stack-name:1>",
+            "Timestamp": "timestamp"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}

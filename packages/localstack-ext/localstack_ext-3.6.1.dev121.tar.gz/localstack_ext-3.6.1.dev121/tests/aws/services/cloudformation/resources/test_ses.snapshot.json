@@ -1,0 +1,119 @@
+{
+  "tests/aws/services/cloudformation/resources/test_ses.py::test_create_template": {
+    "recorded-date": "27-12-2023, 19:12:58",
+    "recorded-content": {
+      "template": {
+        "Template": {
+          "HtmlPart": "World",
+          "SubjectPart": "Hello",
+          "TemplateName": "<template-name>",
+          "TextPart": "Some Text"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_resource_template": {
+        "StackResourceDetail": {
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          },
+          "LastUpdatedTimestamp": "timestamp",
+          "LogicalResourceId": "MyTemplate",
+          "Metadata": {},
+          "PhysicalResourceId": "<template-name>",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "ResourceType": "AWS::SES::Template",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "StackName": "<stack-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  },
+  "tests/aws/services/cloudformation/resources/test_ses.py::test_create_receiptrules": {
+    "recorded-date": "27-12-2023, 19:32:28",
+    "recorded-content": {
+      "describe_receipt_rule_set": {
+        "Metadata": {
+          "CreatedTimestamp": "timestamp",
+          "Name": "<rule-set-name>"
+        },
+        "Rules": [
+          {
+            "Actions": [
+              {
+                "S3Action": {
+                  "BucketName": "<bucket-name>"
+                }
+              }
+            ],
+            "Enabled": true,
+            "Name": "<rule-name>",
+            "ScanEnabled": false,
+            "TlsPolicy": "Optional"
+          }
+        ],
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_resource_receipt_rule_set": {
+        "StackResourceDetail": {
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          },
+          "LastUpdatedTimestamp": "timestamp",
+          "LogicalResourceId": "ruleset3A509FA6",
+          "Metadata": {},
+          "PhysicalResourceId": "<rule-set-name>",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "ResourceType": "AWS::SES::ReceiptRuleSet",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "StackName": "<stack-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      },
+      "describe_receipt_rule": {
+        "Actions": [
+          {
+            "S3Action": {
+              "BucketName": "<bucket-name>"
+            }
+          }
+        ],
+        "Enabled": true,
+        "Name": "<rule-name>",
+        "ScanEnabled": false,
+        "TlsPolicy": "Optional"
+      },
+      "describe_resource_receipt_rule": {
+        "StackResourceDetail": {
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          },
+          "LastUpdatedTimestamp": "timestamp",
+          "LogicalResourceId": "myrule48A3298E",
+          "Metadata": {},
+          "PhysicalResourceId": "<rule-name>",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "ResourceType": "AWS::SES::ReceiptRule",
+          "StackId": "arn:<partition>:cloudformation:<region>:111111111111:stack/<stack-name:1>/<resource:1>",
+          "StackName": "<stack-name:1>"
+        },
+        "ResponseMetadata": {
+          "HTTPHeaders": {},
+          "HTTPStatusCode": 200
+        }
+      }
+    }
+  }
+}
