@@ -1,0 +1,15 @@
+"@type": type.googleapis.com/envoy.extensions.filters.http.grpc_json_transcoder.v3.GrpcJsonTranscoder
+# ATTENTION: if you update this, also update the matching
+# values in `envoy_filter_generator.py` method
+# `generate_transcoding_filter`.
+convert_grpc_status: true
+print_options:
+  add_whitespace: true
+  always_print_enums_as_ints: false
+  always_print_primitive_fields: true
+  preserve_proto_field_names: false
+proto_descriptor_bin: {{ proto_descriptor_bin }}
+services:
+  {% for service_name in service_names %}
+  - {{ service_name }}
+  {% endfor %}
