@@ -1,0 +1,322 @@
+Metadata-Version: 2.1
+Name: graphfleet
+Version: 0.5.25
+Summary: Advanced implementation of GraphRAG for enhanced LLM reasoning
+Home-page: https://github.com/Qredence/GraphFleet
+License: Apache-2.0
+Keywords: knowledge,graph,rag,agentic,agent
+Author: Zachary
+Author-email: zachary@qredence.ai
+Requires-Python: >=3.11.2,<3.13
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Provides-Extra: redis
+Requires-Dist: alembic (>=1.13.0,<2.0.0)
+Requires-Dist: asyncpg (>=0.29.0,<0.30.0)
+Requires-Dist: fastapi (>=0.110.1,<0.111.0)
+Requires-Dist: graphrag (>=0.3.1,<0.4.0)
+Requires-Dist: httpx (>=0.27.0,<0.28.0)
+Requires-Dist: networkx (>=3.0,<4.0)
+Requires-Dist: numpy (>=1.25.2,<2.0.0)
+Requires-Dist: openai (>=1.35.7,<2.0.0)
+Requires-Dist: pandas (>=2.2.2,<3.0.0)
+Requires-Dist: passlib[bcrypt] (>=1.7.4,<2.0.0)
+Requires-Dist: pydantic (>=2.0,<3.0)
+Requires-Dist: python-jose[cryptography] (>=3.3.0,<4.0.0)
+Requires-Dist: python-multipart (>=0.0.9,<0.0.10)
+Requires-Dist: redis[hiredis] (>=5.0.0,<6.0.0) ; extra == "redis"
+Requires-Dist: scikit-learn (>=1.5.1,<2.0.0)
+Requires-Dist: sqlalchemy[asyncio] (>=2.0.0,<3.0.0)
+Requires-Dist: structlog (>=24.1.0,<25.0.0)
+Requires-Dist: tiktoken (>=0.7.0,<0.8.0)
+Requires-Dist: transformers (>=4.44.2,<5.0.0)
+Requires-Dist: uvicorn[standard] (>=0.25.0,<0.26.0)
+Project-URL: Repository, https://github.com/Qredence/GraphFleet
+Description-Content-Type: text/markdown
+
+# Overview
+
+<div align="left">
+<a href="https://pypi.org/project/graphfleet/">
+   <img alt="Pepy Total Downlods" src="https://img.shields.io/pepy/dt/graphfleet">
+   </a>
+   <img alt="GitHub License" src="https://img.shields.io/github/license/qredence/graphfleet">
+   <img alt="GitHub forks" src="https://img.shields.io/github/forks/qredence/graphfleet">
+   <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/qredence/graphfleet">
+
+</div>
+
+![GraphFleet_Query](https://github.com/user-attachments/assets/cf32f463-d52f-4568-a795-1f869f33d07f)
+
+GraphFleet is an advanced implementation of [GraphRAG from Microsoft](https://github.com/microsoft/graphrag), designed to enhance large language models' ability to reason about complex information and private datasets. It builds upon GraphRAG (Retrieval Augmented Generation using Graph structures) and will gradually adopt its own path to fulfill our roadmap at Qredence.
+
+## GraphFleet
+
+GraphFleet uses knowledge graphs to provide substantial improvements in question-and-answer performance when reasoning about complex information. It addresses limitations of traditional RAG approaches:
+
+## Roadmap
+
+- [ ] Provide a FleetUI Design Kit and a quicker way of starting GraphFleet locally.
+- [ ] Provide a Toddle interface ready to use for GraphFleet
+- [ ] Add integrations of Composio
+- [ ] Add integrations of LangSmith
+- [ ] Add few selfhosting  one click deploy solutions.
+- [ ] Access GraphFleet through a secure and enterprise-ready Azure Cloud hosting version.
+- [ ] And way more... 👀
+
+## Key Features
+
+- Structured, hierarchical approach to Retrieval Augmented Generation.
+- Knowledge graph extraction from raw text.
+- Community hierarchy building.
+- Hierarchical summarization.
+- Enhanced reasoning capabilities for LLMs on private datasets.
+
+## Contribute
+
+- Leave us a star ♥
+- Fork and contribute to the project
+- <a href="https://discord.gg/BD8MPgzEJc">
+    <img alt="Discord" src="https://img.shields.io/discord/1053300403149733969?style=for-the-badge&logo=discord">
+   </a>
+   <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/agenticfleet?style=for-the-badge&logo=x&logoColor=white&labelColor=blue&link=https%3A%2F%2Fx.com%2Fagenticfleet">
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.11
+
+- Poetry
+- Make sure to have a virtual environment manager such as `virtualenv` installed
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Qredence/GraphFleet.git
+   cd GraphFleet
+   ```
+
+2. Install the dependencies:
+
+   ```bash
+   poetry shell
+   poetry install
+   ```
+
+### Usage
+
+1. Configuration:
+Environment Variables: Set up your environment variables in a .env file (refer to the .env.example file for available options). Key variables include:
+
+Fill in the .env file in the root folder and the one in the graphfleet folder.
+
+ ```sh
+export GRAPHRAG_API_KEY="your_api_key_here"
+export GRAPHRAG_API_BASE="<https://your-azure-openai-resource.openai.azure.com/>"
+export GRAPHRAG_API_VERSION=""
+export GRAPHRAG_DEPLOYMENT_NAME="your_deployment_name"
+export GRAPHRAG_API_TYPE="azure_openai"
+export GRAPHRAG_EMBEDDING_MODEL="text-embedding-ada-002"
+export GRAPHRAG_LLM_MODEL="gpt-4"
+export GRAPHRAG_DATA_PATH="./your_data_directory"
+export GRAPHRAG_EMBEDDING_TYPE="azure_openai_embedding"
+export GRAPHRAG_EMBEDDING_KEY="your_embedding_key_here"
+export GRAPHRAG_EMBEDDING_ENDPOINT="<https://your-azure-openai-embedding-resource.openai.azure.com/>"
+export GRAPHRAG_EMBEDDING_DEPLOYMENT_NAME="your_embedding_deployment_name"
+
+```
+
+   settings.yaml: Customize GraphFleet's behavior further by modifying the settings.yaml file within the graphfleet directory.
+
+1. Data Indexing:
+Jupyter Notebook Guide: Follow the instructions provided in the get-started-graphfleet.ipynb notebook to learn how to index your data with GraphFleet. This notebook provides a hands-on experience for setting up your knowledge base.
+
+1. Interacting with GraphFleet:
+Jupyter Notebooks: Explore GraphFleet's capabilities with the provided notebooks:
+
+   get-started-graphfleet.ipynb: A comprehensive guide to indexing your data and running basic queries.
+
+   Local Search Notebook.ipynb: Demonstrates local search techniques.
+
+   app.py (FastAPI Application): Run a Streamlit-powered web interface to interact with GraphFleet using a user-friendly chat-like interface.
+
+### Add your text files in ./graphfleet/input/ and run the auto_prompt function
+
+``` bash
+!python -m graphrag.prompt_tune \
+    --config ./graphfleet/settings.yaml \
+    --root ./graphfleet \
+    --no-entity-types \
+    --output ./graphfleet/prompts
+```
+
+
+
+### Data Indexing:
+
+Jupyter Notebook Guide: Follow the instructions provided in the get-started-graphfleet.ipynb notebook to learn how to index your data with GraphFleet. This notebook provides a hands-on experience for setting up your knowledge base.
+
+``` bash
+! python -m graphrag.index \
+    --verbose \
+    --root ./graphfleet \
+    --config ./graphfleet/settings.yaml
+```
+
+
+## Interacting with GraphFleet:
+Jupyter Notebooks: Explore GraphFleet's capabilities with the provided notebooks:
+
+get-started-graphfleet.ipynb: A comprehensive guide to indexing your data and running basic queries.
+Local Search Notebook.ipynb: Demonstrates local search techniques.
+[Add descriptions of other notebooks and their purpose here]
+app.py (FastAPI Application): Run a Streamlit-powered web interface to interact with GraphFleet using a user-friendly chat-like interface:
+
+### Running the API only (or run CLI commands for local search or global search)
+
+To run the API, save the code in a file named api.py and execute the following command in your terminal:
+
+``` bash
+## uvicorn app:main --reload --port 8001 
+```
+
+### Run the CLI commands to query the graph (Follow the get-started-graphfleet.ipynb notebook)
+
+``` bash
+! python -m graphrag.query \
+--root ./graphfleet \
+--method global \
+--streaming \ #stream the response
+"Language Agent Tree Search?"
+```
+
+``` bash
+! python -m graphrag.query \
+--root ./graphfleet \
+--method global \
+--streaming \ #stream the response
+"What are the key features of GraphRAG ??"
+```
+
+### Running the API only
+
+To run the API, save the code in a file named api.py and execute the following command in your terminal:
+
+``` bash
+## uvicorn api:app --reload --port 8001 SOON
+```
+
+
+## Security
+
+For details about our security policy, please see [Security](SECURITY.md) or [Security](docs/SECURITY.md).
+
+## License
+
+This project is licensed under the Apache License 2.0. For the full license text, please see [License](LICENSE) or [License](docs/LICENSE).
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Qredence/GraphFleet&type=Date)](https://star-history.com/#Qredence/GraphFleet&Date)
+
+# Security Policy
+
+## Supported Versions
+
+Use this section to tell people about which versions of your project are
+currently being supported with security updates.
+
+| Version | Supported          |
+| ------- | ------------------ |
+| 5.1.x   | :white_check_mark: |
+| 5.0.x   | :x:                |
+| 4.0.x   | :white_check_mark: |
+| < 4.0   | :x:                |
+
+## Reporting a Vulnerability
+
+Use this section to tell people how to report a vulnerability.
+
+Tell them where to go, how often they can expect to get an update on a
+reported vulnerability, what to expect if the vulnerability is accepted or
+declined, etc.
+
+# Contributing to GraphFleet
+
+First off, thank you for considering contributing to GraphFleet! It's people like you that make GraphFleet such a great tool.
+
+## Code of Conduct
+
+By participating in this project, you are expected to uphold our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## How Can I Contribute?
+
+### Reporting Bugs
+
+This section guides you through submitting a bug report for GraphFleet. Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports.
+
+- Use a clear and descriptive title for the issue to identify the problem.
+- Describe the exact steps which reproduce the problem in as many details as possible.
+- Provide specific examples to demonstrate the steps.
+
+### Suggesting Enhancements
+
+This section guides you through submitting an enhancement suggestion for GraphFleet, including completely new features and minor improvements to existing functionality.
+
+- Use a clear and descriptive title for the issue to identify the suggestion.
+- Provide a step-by-step description of the suggested enhancement in as many details as possible.
+- Provide specific examples to demonstrate the steps.
+
+
+
+### Pull Requests
+
+The process described here has several goals:
+
+- Maintain GraphFleet's quality
+- Fix problems that are important to users
+- Engage the community in working toward the best possible GraphFleet
+- Enable a sustainable system for GraphFleet's maintainers to review contributions
+
+Please follow these steps to have your contribution considered by the maintainers:
+
+1. After you submit your pull request, verify that all [status checks](https://help.github.com/articles/about-status-checks/) are passing
+
+## Styleguides
+
+### Git Commit Messages
+
+- Use the present tense ("Add feature" not "Added feature")
+- Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
+- Limit the first line to 72 characters or less
+- Reference issues and pull requests liberally after the first line
+
+### Python Styleguide
+
+All Python code must adhere to the [PEP 8 style guide](https://www.python.org/dev/peps/pep-0008/).
+
+### Documentation Styleguide
+
+- Use [Markdown](https://daringfireball.net/projects/markdown/) for documentation.
+- Reference functions and classes in backticks.
+
+## Additional Notes
+
+### Issue and Pull Request Labels
+
+This section lists the labels we use to help us track and manage issues and pull requests.
+
+* `bug` - Issues for bugs in the codebase.
+* `enhancement` - Issues for new features or improvements.
+* `documentation` - Issues related to documentation.
+* `help-wanted` - Issues where we need help from the community.
+
+## Thank You!
+
+Your contributions to open source, large or small, make projects like this possible. Thank you for taking the time to contribute.
+
+
