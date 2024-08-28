@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-stonfi"
+version = "1.0"
+description = "Asynchronous Python SDK for StonFi"
+authors = [
+    {name = "gkozyrev (George Kozyrev)", email = "me@gkozyrev.ru"}
+]
+dependencies = [
+    "pytoniq",
+    "aiohttp",
+    "async-lru"
+]
+readme = "README.md"
+classifiers = ["Development Status :: 4 - Beta",
+              "Intended Audience :: Developers",
+              "Programming Language :: Python :: 3.10",
+              "Programming Language :: Python :: 3.11",
+              "Programming Language :: Python :: 3.12",
+              "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+              "Topic :: Software Development :: Libraries",
+              "Topic :: Software Development :: Libraries :: Python Modules",
+              "Typing :: Typed"]
+
+[project.urls]
+Homepage = "https://github.com/gkozyrev/py-stonfi"
