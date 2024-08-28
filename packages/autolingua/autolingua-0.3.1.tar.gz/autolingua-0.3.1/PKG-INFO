@@ -1,0 +1,100 @@
+Metadata-Version: 2.1
+Name: autolingua
+Version: 0.3.1
+Summary: autolingua description
+Author-email: Álvaro Ramajo-Ballester <aramajo@ing.uc3m.es>
+Project-URL: Homepage, https://github.com/ramajoballester/autolingua
+Project-URL: Bug Tracker, https://github.com/ramajoballester/autolingua/issues
+Keywords: python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: verbecc
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: openpyxl
+Requires-Dist: argparse
+Requires-Dist: ipykernel
+Requires-Dist: ipywidgets
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Provides-Extra: dev
+Requires-Dist: ipykernel; extra == "dev"
+Requires-Dist: ipywidgets; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: bump-my-version; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx==7.1.2; extra == "docs"
+Requires-Dist: sphinx_rtd_theme==1.3.0; extra == "docs"
+Requires-Dist: sphinx-copybutton==0.5.1; extra == "docs"
+Requires-Dist: sphinx-markdown-tables==0.0.17; extra == "docs"
+Requires-Dist: sphinx-tabs; extra == "docs"
+Requires-Dist: numpydoc==1.5.0; extra == "docs"
+Requires-Dist: myst-parser==2.0.0; extra == "docs"
+Provides-Extra: full
+Requires-Dist: autolingua[dev,docs]; extra == "full"
+
+# Autolingua
+Automated linguistic codification python package used in [[1]](https://doi.org/10.19130/iifl.adel.2022.10.2.X00S25872)
+
+## Installation
+
+To install the package, run the following commands:
+
+```bash
+git clone https://github.com/ramajoballester/autolingua.git
+cd autolingua
+pip install -e .
+```
+
+Once installed, you can run the package by typing `autolingua <command>` in the terminal from every directory. Please run `autolingua -h` to check the available commands.
+
+# Automatic variable codification
+
+Automatic codification script. Run ```autolingua codification -h``` to check the program settings.
+
+Run it from the directory where the input files are located.
+
+```bash
+autolingua codification -init_cell D446 -file_name PRESEEA_1995_Nivel_bajo.xlsx -color
+```
+
+
+# PULSO project automatic lemmatization
+
+Automatic lemmatization replacement script. Run ```autolingua lemmatization -h``` to check the program settings.
+
+Run it from the directory where the input Excel files are located.
+
+```bash
+autolingua replacement -fases_filename filename -input_filename filename 
+```
+
+For sequential fase data loading:
+
+```bash
+autolingua replacement -fases_filename filename -input_filename filename -fase2_from_file filename -fase3_from_file filename
+```
+
+
+# References
+
+[1] Ávila, A. M., Segura, A. (2022). Estudio de las variables predictoras de la expresión del sujeto pronominal en el corpus PRESEEA. Málaga. Nivel de instrucción bajo, Anuario de Letras. Lingüística y Filología, vol. 10, no. 2, pp.57–93. doi:10.19130/iifl.adel.2022.10.2.X00S25872
+
+# Citation
+
+If you use this repository, please cite:
+
+Ramajo-Ballester, Á. (2022). Autolingua repository, GitHub. https://github.com/ramajoballester/autolingua
