@@ -1,0 +1,2 @@
+import{p as a,f as o}from"./flowDb-c1833063.JiUnHJzw.js";import{f as e,a as t}from"./styles-483fbfea.CBO2hP6m.js";import{y as s}from"./Messages.D4TXQOB0.js";import"./graph.JTkfSao3.js";import"./layout.uaBCRHO1.js";import"./dayjs.min.CnqrW7zs.js";const b={parser:a,db:o,renderer:e,styles:t,init:r=>{r.flowchart||(r.flowchart={}),r.flowchart.arrowMarkerAbsolute=r.arrowMarkerAbsolute,s({flowchart:{arrowMarkerAbsolute:r.arrowMarkerAbsolute}}),e.setConf(r.flowchart),o.clear(),o.setGen("gen-2")}};export{b as diagram};
+//# sourceMappingURL=flowDiagram-v2-13329dc7.adMjX8pv.js.map
