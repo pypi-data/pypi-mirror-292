@@ -1,0 +1,53 @@
+[completion]
+provider = "litellm"
+concurrent_request_limit = 1
+
+  [completion.generation_config]
+  model = "ollama/llama3.1"
+  temperature = 0.1
+  top_p = 1
+  max_tokens_to_sample = 1_024
+  stream = false
+  add_generation_kwargs = { }
+
+[embedding]
+provider = "ollama"
+base_model = "mxbai-embed-large"
+base_dimension = 1_024
+batch_size = 32
+add_title_as_prefix = true
+
+[parsing]
+excluded_parsers = [ "gif", "jpeg", "jpg", "png", "svg", "mp3", "mp4" ]
+
+[kg]
+provider = "neo4j"
+kg_extraction_prompt = "graphrag_triplet_extraction_zero_shot"
+
+  [kg.kg_extraction_config]
+  model = "ollama/llama3.1"
+  temperature = 1
+  top_p = 1
+  max_tokens_to_sample = 1_024
+  stream = false
+  add_generation_kwargs = { }
+
+
+  [kg.kg_enrichment_settings]
+    max_knowledge_triples = 100
+    generation_config_triplet = { model = "ollama/llama3.1" } # and other params, model used for triplet extraction
+    generation_config_enrichment = { model = "ollama/llama3.1" } # and other params, model used for node description and graph clustering
+    leiden_params = { max_cluster_size = 1000 } # more params in graspologic/partition/leiden.py
+
+  [kg.kg_search_config]
+    model = "ollama/llama3.1"
+
+[database]
+provider = "postgres"
+
+[agent]
+system_instruction_name = "rag_agent"
+tool_names = ["search"]
+
+  [agent.generation_config]
+  model = "ollama/llama3.1"
