@@ -1,0 +1,80 @@
+![builtapi_python.png](docs%2Fmedia%2Fbuiltapi_python.png)
+
+Python CLient for BuiltAPI service
+
+Dear users, welcome to the repository with Python binding for BuiltAPI.
+
+## Basic usage example
+
+```python
+from builtapi.token import get_token
+from builtapi.api.main import BuiltAPI
+
+# Create BuiltAPI instance
+token = get_token(
+  username='username',
+  password='password',
+  client_id='client_id',
+  client_secret='client_secret',
+)
+client = BuiltAPI(
+  workspace_id='workspace_id',
+  token=token,
+)
+
+# Get all entities
+entities = client.entities.list()
+
+# Get all records from entity
+records = client.records.list(entity_id='entity_id')
+
+# Create new record
+new_record = client.records.create(
+  entity_id='entity_id',
+  data={
+    'field1': 'value1',
+    'field2': 'value2',
+  }
+)
+```
+
+## Brief introduction
+
+First you need to understand how the BuiltAPI platform works. For this purpose it will be useful to review the
+official documentation - [BuiltAPI documentation](https://docs.builtapi.dev/). However, to make it shorter we will describe the main building blocks of the service here:
+
+- `Workspace` - group all business entities with separate databases;
+- `Entity` - 'data capacitor' or storage. It is the basic building block in which data is stored;
+- `Record` - individual elements (rows) in an entity (database);
+- `View` - Transformation pipeline for data in an entity;
+
+The main goal of this library is to provide a simple and convenient way to interact with the BuiltAPI service using Python.
+
+## Repository structure
+
+This repository consists of the following key elements:
+
+- `applications` - complicated real use cases of this library;
+- `builtapi` - the core of the Python-binding library;
+- `examples` - folder with simple examples how to use this binding (see section Examples below);
+- `tests` - folder with unit and integration tests which cover the vital functionality both of the BuiltAPI platform
+  and Python binding.
+
+### Examples
+
+Examples how to use binding can be found in [examples folder](examples), for example:
+
+- [users_interaction.py](examples/users_interaction.py) - example how to send requests to Users module using latest BuiltAPI version
+- [workspaces_interaction.py](examples/workspaces_interaction.py) - example how to send requests to Workspaces module using latest BuiltAPI version
+- [entities_interaction.py](examples/entities_interaction.py) - example how to send requests to Entities module using latest BuiltAPI version
+- [entities_records_interaction.py](examples/entities_records_interaction.py) - example how to create entities, fill it with data and get data back
+
+### Applications
+
+Real use cases is presented in the [applications](applications) folder:
+
+- [dwell_density.py](applications/dwell_density.py) - merging data from three different sources and providing aggregation logic to calculate sum, mean values and others statistics
+
+## Additional information
+
+Link to the console: https://console.builtapi.dev/
