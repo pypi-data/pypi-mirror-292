@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: winuvloop
+Version: 0.1.4
+Summary: winuvloop is a Python package that automatically installs and configures the optimal event loop for your platform, setting up uvloop on Linux/POSIX systems and winloop on Windows, ensuring seamless cross-platform development.
+License: MIT
+Author: Aviad Rozenhek
+Author-email: aviadr1@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: uvloop (>=0.17.0,<0.18.0) ; sys_platform != "win32"
+Requires-Dist: winloop (>=0.1.0,<0.2.0) ; sys_platform == "win32"
+Description-Content-Type: text/markdown
+
+# winuvloop
+
+`winuvloop` is a Python package that ensures you always use the best event loop for your platform. 
+It automatically sets up `uvloop` on Linux/POSIX systems and `winloop` on Windows, optimizing performance and compatibility without extra configuration. 
+By using `winuvloop`, you can streamline your development process and focus on writing your application code, knowing that the right event loop is always in place for seamless cross-platform functionality.
+
+## Features
+
+- **Cross-Platform Compatibility**: Automatically installs `uvloop` on POSIX systems and `winloop` on Windows.
+- **Easy Integration**: Just add `winuvloop` to your `pyproject.toml` or `requirements.txt` and let it handle the rest.
+- **Simplified Event Loop Setup**: No need to worry about platform-specific event loop installation and initialization.
+
+## Installation
+
+You can install `winuvloop` via pip:
+
+```bash
+pip install winuvloop
+```
+
+Or by adding it to your `pyproject.toml` in a Poetry-managed project:
+
+```bash
+poetry add winuvloop
+```
+
+## Usage
+
+Simply import the package, and use it as you would uv/win loop:
+
+```python
+import winuvloop
+
+# the preferred way to use win/uv loop is with the run method
+uvwinloop.run(my_coroutine)
+```
+
+alternatively, you can install the loop globally:
+```python
+import winuvloop
+
+# The correct event loop is now installed and ready to use.
+winuvloop.install()
+```
+
+## Requirements
+
+- Python 3.11 or higher
+- `uvloop` for POSIX systems
+- `winloop` for Windows systems
+
+## Platform Support
+
+- **POSIX (Linux, macOS)**: Installs `uvloop`
+- **Windows**: Installs `winloop`
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request or open an issue.
+
+## Contact
+
+For any questions or suggestions, please contact `aviadr1@gmail.com`.
+
