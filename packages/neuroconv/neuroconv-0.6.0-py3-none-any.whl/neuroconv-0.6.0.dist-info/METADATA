@@ -1,0 +1,521 @@
+Metadata-Version: 2.1
+Name: neuroconv
+Version: 0.6.0
+Summary: Convert data from proprietary formats to NWB format.
+Author: Cody Baker, Szonja Weigl, Heberto Mayorquin, Paul Adkisson, Luiz Tauffer
+Author-email: Ben Dichter <ben.dichter@catalystneuro.com>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2019, Neurodata Without Borders
+        All rights reserved.
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice, this
+           list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation
+           and/or other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its
+           contributors may be used to endorse or promote products derived from
+           this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+Project-URL: Homepage, https://github.com/catalystneuro/neuroconv
+Keywords: nwb
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS
+Classifier: License :: OSI Approved :: BSD License
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: jsonschema>=3.2.0
+Requires-Dist: PyYAML>=5.4
+Requires-Dist: scipy>=1.4.1
+Requires-Dist: h5py>=3.9.0
+Requires-Dist: hdmf>=3.13.0
+Requires-Dist: hdmf-zarr>=0.7.0
+Requires-Dist: pynwb>=2.7.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: typing-extensions>=4.1.0
+Requires-Dist: psutil>=5.8.0
+Requires-Dist: tqdm>=4.60.0
+Requires-Dist: pandas
+Requires-Dist: parse>=1.20.0
+Requires-Dist: click
+Requires-Dist: docstring-parser
+Requires-Dist: packaging
+Requires-Dist: numpy<2.0.0,>=1.22.0; python_version <= "3.11"
+Requires-Dist: numpy<2.0.0,>=1.26.0; python_version >= "3.12"
+Provides-Extra: abf
+Requires-Dist: neo>=0.13.2; extra == "abf"
+Requires-Dist: ndx-dandi-icephys>=0.4.0; extra == "abf"
+Provides-Extra: alphaomega
+Requires-Dist: spikeinterface>=0.101.0; extra == "alphaomega"
+Requires-Dist: neo>=0.13.2; extra == "alphaomega"
+Requires-Dist: MEArec>=1.8.0; extra == "alphaomega"
+Requires-Dist: hdf5storage>=0.1.18; extra == "alphaomega"
+Requires-Dist: pymatreader>=0.0.32; extra == "alphaomega"
+Requires-Dist: natsort>=7.1.1; extra == "alphaomega"
+Requires-Dist: lxml>=4.6.5; extra == "alphaomega"
+Requires-Dist: lxml>=4.9.4; extra == "alphaomega"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "alphaomega"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "alphaomega"
+Provides-Extra: audio
+Requires-Dist: ndx-sound>=0.2.0; extra == "audio"
+Provides-Extra: aws
+Requires-Dist: boto3; extra == "aws"
+Provides-Extra: axona
+Requires-Dist: spikeinterface>=0.101.0; extra == "axona"
+Requires-Dist: neo>=0.13.2; extra == "axona"
+Requires-Dist: MEArec>=1.8.0; extra == "axona"
+Requires-Dist: hdf5storage>=0.1.18; extra == "axona"
+Requires-Dist: pymatreader>=0.0.32; extra == "axona"
+Requires-Dist: natsort>=7.1.1; extra == "axona"
+Requires-Dist: lxml>=4.6.5; extra == "axona"
+Requires-Dist: lxml>=4.9.4; extra == "axona"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "axona"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "axona"
+Provides-Extra: behavior
+Requires-Dist: av>=10.0.0; extra == "behavior"
+Requires-Dist: ndx-pose==0.1.1; extra == "behavior"
+Requires-Dist: neuroconv[video]; extra == "behavior"
+Requires-Dist: ndx-sound>=0.2.0; extra == "behavior"
+Requires-Dist: ndx-miniscope>=0.5.1; extra == "behavior"
+Requires-Dist: natsort>=8.3.1; extra == "behavior"
+Requires-Dist: ndx-events==0.2.0; extra == "behavior"
+Requires-Dist: opencv-python-headless>=4.5.1.48; extra == "behavior"
+Requires-Dist: sleap-io<0.0.12,>=0.0.2; python_version < "3.9" and extra == "behavior"
+Requires-Dist: sleap-io>=0.0.2; python_version >= "3.9" and extra == "behavior"
+Requires-Dist: tables<3.9.2; sys_platform == "darwin" and extra == "behavior"
+Requires-Dist: opencv-python-headless<4.7.0.72,>=4.5.1.48; sys_platform == "darwin" and extra == "behavior"
+Requires-Dist: opencv-python-headless<4.7,>=4.5.1.48; (sys_platform == "darwin" and python_version >= "3.11") and extra == "behavior"
+Requires-Dist: tables; (sys_platform == "linux" or sys_platform == "win32") and extra == "behavior"
+Provides-Extra: biocam
+Requires-Dist: spikeinterface>=0.101.0; extra == "biocam"
+Requires-Dist: neo>=0.13.2; extra == "biocam"
+Requires-Dist: MEArec>=1.8.0; extra == "biocam"
+Requires-Dist: hdf5storage>=0.1.18; extra == "biocam"
+Requires-Dist: pymatreader>=0.0.32; extra == "biocam"
+Requires-Dist: natsort>=7.1.1; extra == "biocam"
+Requires-Dist: lxml>=4.6.5; extra == "biocam"
+Requires-Dist: lxml>=4.9.4; extra == "biocam"
+Requires-Dist: pyedflib>=0.1.36; extra == "biocam"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "biocam"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "biocam"
+Provides-Extra: blackrock
+Requires-Dist: spikeinterface>=0.101.0; extra == "blackrock"
+Requires-Dist: neo>=0.13.2; extra == "blackrock"
+Requires-Dist: MEArec>=1.8.0; extra == "blackrock"
+Requires-Dist: hdf5storage>=0.1.18; extra == "blackrock"
+Requires-Dist: pymatreader>=0.0.32; extra == "blackrock"
+Requires-Dist: natsort>=7.1.1; extra == "blackrock"
+Requires-Dist: lxml>=4.6.5; extra == "blackrock"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "blackrock"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "blackrock"
+Provides-Extra: brukertiff
+Requires-Dist: roiextractors>=0.5.7; extra == "brukertiff"
+Requires-Dist: tifffile>=2023.3.21; extra == "brukertiff"
+Requires-Dist: tiffile>=2018.10.18; extra == "brukertiff"
+Provides-Extra: caiman
+Requires-Dist: roiextractors>=0.5.7; extra == "caiman"
+Requires-Dist: tifffile>=2023.3.21; extra == "caiman"
+Requires-Dist: tiffile>=2018.10.18; extra == "caiman"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "caiman"
+Provides-Extra: cellexplorer
+Requires-Dist: spikeinterface>=0.101.0; extra == "cellexplorer"
+Requires-Dist: neo>=0.13.2; extra == "cellexplorer"
+Requires-Dist: MEArec>=1.8.0; extra == "cellexplorer"
+Requires-Dist: hdf5storage>=0.1.18; extra == "cellexplorer"
+Requires-Dist: pymatreader>=0.0.32; extra == "cellexplorer"
+Provides-Extra: cnmfe
+Requires-Dist: roiextractors>=0.5.7; extra == "cnmfe"
+Requires-Dist: tifffile>=2023.3.21; extra == "cnmfe"
+Requires-Dist: tiffile>=2018.10.18; extra == "cnmfe"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "cnmfe"
+Provides-Extra: compressors
+Requires-Dist: hdf5plugin; extra == "compressors"
+Provides-Extra: csv
+Provides-Extra: dandi
+Requires-Dist: dandi>=0.58.1; extra == "dandi"
+Provides-Extra: deeplabcut
+Requires-Dist: ndx-pose==0.1.1; extra == "deeplabcut"
+Requires-Dist: neuroconv[video]; extra == "deeplabcut"
+Requires-Dist: tables<3.9.2; sys_platform == "darwin" and extra == "deeplabcut"
+Requires-Dist: tables; (sys_platform == "linux" or sys_platform == "win32") and extra == "deeplabcut"
+Provides-Extra: docs
+Requires-Dist: Jinja2<3.1; extra == "docs"
+Requires-Dist: Sphinx==5.1.1; extra == "docs"
+Requires-Dist: sphinx-rtd-theme==1.0.0; extra == "docs"
+Requires-Dist: readthedocs-sphinx-search==0.1.2; extra == "docs"
+Requires-Dist: sphinx-toggleprompt==0.2.0; extra == "docs"
+Requires-Dist: sphinx-copybutton==0.5.0; extra == "docs"
+Requires-Dist: roiextractors; extra == "docs"
+Requires-Dist: spikeinterface>=0.101.0; extra == "docs"
+Requires-Dist: pydata-sphinx-theme==0.12.0; extra == "docs"
+Provides-Extra: ecephys
+Requires-Dist: spikeinterface>=0.101.0; extra == "ecephys"
+Requires-Dist: neo>=0.13.2; extra == "ecephys"
+Requires-Dist: MEArec>=1.8.0; extra == "ecephys"
+Requires-Dist: hdf5storage>=0.1.18; extra == "ecephys"
+Requires-Dist: pymatreader>=0.0.32; extra == "ecephys"
+Requires-Dist: natsort>=7.1.1; extra == "ecephys"
+Requires-Dist: lxml>=4.6.5; extra == "ecephys"
+Requires-Dist: lxml>=4.9.4; extra == "ecephys"
+Requires-Dist: pyedflib>=0.1.36; extra == "ecephys"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "ecephys"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "ecephys"
+Provides-Extra: edf
+Requires-Dist: spikeinterface>=0.101.0; extra == "edf"
+Requires-Dist: neo>=0.13.2; extra == "edf"
+Requires-Dist: MEArec>=1.8.0; extra == "edf"
+Requires-Dist: hdf5storage>=0.1.18; extra == "edf"
+Requires-Dist: pymatreader>=0.0.32; extra == "edf"
+Requires-Dist: natsort>=7.1.1; extra == "edf"
+Requires-Dist: lxml>=4.6.5; extra == "edf"
+Requires-Dist: lxml>=4.9.4; extra == "edf"
+Requires-Dist: pyedflib>=0.1.36; extra == "edf"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "edf"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "edf"
+Provides-Extra: excel
+Requires-Dist: openpyxl; extra == "excel"
+Requires-Dist: xlrd; extra == "excel"
+Provides-Extra: extract
+Requires-Dist: roiextractors>=0.5.7; extra == "extract"
+Requires-Dist: tifffile>=2023.3.21; extra == "extract"
+Requires-Dist: tiffile>=2018.10.18; extra == "extract"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "extract"
+Provides-Extra: fictrac
+Provides-Extra: full
+Requires-Dist: dandi>=0.58.1; extra == "full"
+Requires-Dist: hdf5plugin; extra == "full"
+Requires-Dist: roiextractors>=0.5.7; extra == "full"
+Requires-Dist: tifffile>=2023.3.21; extra == "full"
+Requires-Dist: tiffile>=2018.10.18; extra == "full"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "full"
+Requires-Dist: tdt; extra == "full"
+Requires-Dist: ndx-fiber-photometry; extra == "full"
+Requires-Dist: ndx-miniscope>=0.5.1; extra == "full"
+Requires-Dist: natsort>=8.3.1; extra == "full"
+Requires-Dist: spikeinterface>=0.101.0; extra == "full"
+Requires-Dist: neo>=0.13.2; extra == "full"
+Requires-Dist: MEArec>=1.8.0; extra == "full"
+Requires-Dist: hdf5storage>=0.1.18; extra == "full"
+Requires-Dist: pymatreader>=0.0.32; extra == "full"
+Requires-Dist: natsort>=7.1.1; extra == "full"
+Requires-Dist: lxml>=4.6.5; extra == "full"
+Requires-Dist: lxml>=4.9.4; extra == "full"
+Requires-Dist: pyedflib>=0.1.36; extra == "full"
+Requires-Dist: ndx-dandi-icephys>=0.4.0; extra == "full"
+Requires-Dist: av>=10.0.0; extra == "full"
+Requires-Dist: ndx-pose==0.1.1; extra == "full"
+Requires-Dist: neuroconv[video]; extra == "full"
+Requires-Dist: ndx-sound>=0.2.0; extra == "full"
+Requires-Dist: ndx-events==0.2.0; extra == "full"
+Requires-Dist: opencv-python-headless>=4.5.1.48; extra == "full"
+Requires-Dist: openpyxl; extra == "full"
+Requires-Dist: xlrd; extra == "full"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "full"
+Requires-Dist: sleap-io<0.0.12,>=0.0.2; python_version < "3.9" and extra == "full"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "full"
+Requires-Dist: sleap-io>=0.0.2; python_version >= "3.9" and extra == "full"
+Requires-Dist: tables<3.9.2; sys_platform == "darwin" and extra == "full"
+Requires-Dist: opencv-python-headless<4.7.0.72,>=4.5.1.48; sys_platform == "darwin" and extra == "full"
+Requires-Dist: opencv-python-headless<4.7,>=4.5.1.48; (sys_platform == "darwin" and python_version >= "3.11") and extra == "full"
+Requires-Dist: tables; (sys_platform == "linux" or sys_platform == "win32") and extra == "full"
+Provides-Extra: hdf5
+Requires-Dist: roiextractors>=0.5.7; extra == "hdf5"
+Requires-Dist: tifffile>=2023.3.21; extra == "hdf5"
+Requires-Dist: tiffile>=2018.10.18; extra == "hdf5"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "hdf5"
+Provides-Extra: icephys
+Requires-Dist: neo>=0.13.2; extra == "icephys"
+Requires-Dist: ndx-dandi-icephys>=0.4.0; extra == "icephys"
+Provides-Extra: intan
+Requires-Dist: spikeinterface>=0.101.0; extra == "intan"
+Requires-Dist: neo>=0.13.2; extra == "intan"
+Requires-Dist: MEArec>=1.8.0; extra == "intan"
+Requires-Dist: hdf5storage>=0.1.18; extra == "intan"
+Requires-Dist: pymatreader>=0.0.32; extra == "intan"
+Requires-Dist: natsort>=7.1.1; extra == "intan"
+Requires-Dist: lxml>=4.6.5; extra == "intan"
+Requires-Dist: lxml>=4.9.4; extra == "intan"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "intan"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "intan"
+Provides-Extra: kilosort
+Requires-Dist: spikeinterface>=0.101.0; extra == "kilosort"
+Requires-Dist: neo>=0.13.2; extra == "kilosort"
+Requires-Dist: MEArec>=1.8.0; extra == "kilosort"
+Requires-Dist: hdf5storage>=0.1.18; extra == "kilosort"
+Requires-Dist: pymatreader>=0.0.32; extra == "kilosort"
+Requires-Dist: natsort>=7.1.1; extra == "kilosort"
+Requires-Dist: lxml>=4.6.5; extra == "kilosort"
+Requires-Dist: lxml>=4.9.4; extra == "kilosort"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "kilosort"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "kilosort"
+Provides-Extra: lightningpose
+Requires-Dist: ndx-pose==0.1.1; extra == "lightningpose"
+Requires-Dist: neuroconv[video]; extra == "lightningpose"
+Provides-Extra: maxwell
+Requires-Dist: spikeinterface>=0.101.0; extra == "maxwell"
+Requires-Dist: neo>=0.13.2; extra == "maxwell"
+Requires-Dist: MEArec>=1.8.0; extra == "maxwell"
+Requires-Dist: hdf5storage>=0.1.18; extra == "maxwell"
+Requires-Dist: pymatreader>=0.0.32; extra == "maxwell"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "maxwell"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "maxwell"
+Provides-Extra: mcsraw
+Requires-Dist: spikeinterface>=0.101.0; extra == "mcsraw"
+Requires-Dist: neo>=0.13.2; extra == "mcsraw"
+Requires-Dist: MEArec>=1.8.0; extra == "mcsraw"
+Requires-Dist: hdf5storage>=0.1.18; extra == "mcsraw"
+Requires-Dist: pymatreader>=0.0.32; extra == "mcsraw"
+Requires-Dist: natsort>=7.1.1; extra == "mcsraw"
+Requires-Dist: lxml>=4.6.5; extra == "mcsraw"
+Requires-Dist: lxml>=4.9.4; extra == "mcsraw"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "mcsraw"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "mcsraw"
+Provides-Extra: mearec
+Requires-Dist: spikeinterface>=0.101.0; extra == "mearec"
+Requires-Dist: neo>=0.13.2; extra == "mearec"
+Requires-Dist: MEArec>=1.8.0; extra == "mearec"
+Provides-Extra: medpc
+Requires-Dist: ndx-events==0.2.0; extra == "medpc"
+Provides-Extra: micromanagertiff
+Requires-Dist: roiextractors>=0.5.7; extra == "micromanagertiff"
+Requires-Dist: tifffile>=2023.3.21; extra == "micromanagertiff"
+Provides-Extra: miniscope
+Requires-Dist: ndx-miniscope>=0.5.1; extra == "miniscope"
+Requires-Dist: natsort>=8.3.1; extra == "miniscope"
+Provides-Extra: neuralynx
+Provides-Extra: neuroscope
+Requires-Dist: spikeinterface>=0.101.0; extra == "neuroscope"
+Requires-Dist: neo>=0.13.2; extra == "neuroscope"
+Requires-Dist: MEArec>=1.8.0; extra == "neuroscope"
+Requires-Dist: hdf5storage>=0.1.18; extra == "neuroscope"
+Requires-Dist: pymatreader>=0.0.32; extra == "neuroscope"
+Requires-Dist: natsort>=7.1.1; extra == "neuroscope"
+Requires-Dist: lxml>=4.6.5; extra == "neuroscope"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "neuroscope"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "neuroscope"
+Provides-Extra: openephys
+Requires-Dist: spikeinterface>=0.101.0; extra == "openephys"
+Requires-Dist: neo>=0.13.2; extra == "openephys"
+Requires-Dist: MEArec>=1.8.0; extra == "openephys"
+Requires-Dist: hdf5storage>=0.1.18; extra == "openephys"
+Requires-Dist: pymatreader>=0.0.32; extra == "openephys"
+Requires-Dist: natsort>=7.1.1; extra == "openephys"
+Requires-Dist: lxml>=4.6.5; extra == "openephys"
+Requires-Dist: lxml>=4.9.4; extra == "openephys"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "openephys"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "openephys"
+Provides-Extra: ophys
+Requires-Dist: roiextractors>=0.5.7; extra == "ophys"
+Requires-Dist: tifffile>=2023.3.21; extra == "ophys"
+Requires-Dist: tiffile>=2018.10.18; extra == "ophys"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "ophys"
+Requires-Dist: tdt; extra == "ophys"
+Requires-Dist: ndx-fiber-photometry; extra == "ophys"
+Requires-Dist: ndx-miniscope>=0.5.1; extra == "ophys"
+Requires-Dist: natsort>=8.3.1; extra == "ophys"
+Provides-Extra: phy
+Requires-Dist: spikeinterface>=0.101.0; extra == "phy"
+Requires-Dist: neo>=0.13.2; extra == "phy"
+Requires-Dist: MEArec>=1.8.0; extra == "phy"
+Requires-Dist: hdf5storage>=0.1.18; extra == "phy"
+Requires-Dist: pymatreader>=0.0.32; extra == "phy"
+Requires-Dist: natsort>=7.1.1; extra == "phy"
+Requires-Dist: lxml>=4.6.5; extra == "phy"
+Requires-Dist: lxml>=4.9.4; extra == "phy"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "phy"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "phy"
+Provides-Extra: plexon
+Requires-Dist: spikeinterface>=0.101.0; extra == "plexon"
+Requires-Dist: neo>=0.13.2; extra == "plexon"
+Requires-Dist: MEArec>=1.8.0; extra == "plexon"
+Requires-Dist: hdf5storage>=0.1.18; extra == "plexon"
+Requires-Dist: pymatreader>=0.0.32; extra == "plexon"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "plexon"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "plexon"
+Provides-Extra: sbx
+Requires-Dist: roiextractors>=0.5.7; extra == "sbx"
+Requires-Dist: tifffile>=2023.3.21; extra == "sbx"
+Requires-Dist: tiffile>=2018.10.18; extra == "sbx"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "sbx"
+Requires-Dist: tdt; extra == "sbx"
+Requires-Dist: ndx-fiber-photometry; extra == "sbx"
+Provides-Extra: scanimage
+Requires-Dist: roiextractors>=0.5.7; extra == "scanimage"
+Requires-Dist: tifffile>=2023.3.21; extra == "scanimage"
+Requires-Dist: tiffile>=2018.10.18; extra == "scanimage"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "scanimage"
+Provides-Extra: sima
+Requires-Dist: roiextractors>=0.5.7; extra == "sima"
+Requires-Dist: tifffile>=2023.3.21; extra == "sima"
+Requires-Dist: tiffile>=2018.10.18; extra == "sima"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "sima"
+Requires-Dist: tdt; extra == "sima"
+Requires-Dist: ndx-fiber-photometry; extra == "sima"
+Requires-Dist: ndx-miniscope>=0.5.1; extra == "sima"
+Requires-Dist: natsort>=8.3.1; extra == "sima"
+Provides-Extra: sleap
+Requires-Dist: av>=10.0.0; extra == "sleap"
+Requires-Dist: sleap-io<0.0.12,>=0.0.2; python_version < "3.9" and extra == "sleap"
+Requires-Dist: sleap-io>=0.0.2; python_version >= "3.9" and extra == "sleap"
+Provides-Extra: spike2
+Requires-Dist: spikeinterface>=0.101.0; extra == "spike2"
+Requires-Dist: neo>=0.13.2; extra == "spike2"
+Requires-Dist: MEArec>=1.8.0; extra == "spike2"
+Requires-Dist: hdf5storage>=0.1.18; extra == "spike2"
+Requires-Dist: pymatreader>=0.0.32; extra == "spike2"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "spike2"
+Provides-Extra: spikegadgets
+Requires-Dist: spikeinterface>=0.101.0; extra == "spikegadgets"
+Requires-Dist: neo>=0.13.2; extra == "spikegadgets"
+Requires-Dist: MEArec>=1.8.0; extra == "spikegadgets"
+Requires-Dist: hdf5storage>=0.1.18; extra == "spikegadgets"
+Requires-Dist: pymatreader>=0.0.32; extra == "spikegadgets"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "spikegadgets"
+Provides-Extra: spikeglx
+Requires-Dist: spikeinterface>=0.101.0; extra == "spikeglx"
+Requires-Dist: neo>=0.13.2; extra == "spikeglx"
+Requires-Dist: MEArec>=1.8.0; extra == "spikeglx"
+Requires-Dist: hdf5storage>=0.1.18; extra == "spikeglx"
+Requires-Dist: pymatreader>=0.0.32; extra == "spikeglx"
+Requires-Dist: natsort>=7.1.1; extra == "spikeglx"
+Requires-Dist: lxml>=4.6.5; extra == "spikeglx"
+Requires-Dist: lxml>=4.9.4; extra == "spikeglx"
+Requires-Dist: zugbruecke>=0.2.1; platform_system != "Windows" and extra == "spikeglx"
+Requires-Dist: sonpy>=1.7.1; python_version == "3.9" and extra == "spikeglx"
+Provides-Extra: suite2p
+Requires-Dist: roiextractors>=0.5.7; extra == "suite2p"
+Requires-Dist: tifffile>=2023.3.21; extra == "suite2p"
+Requires-Dist: tiffile>=2018.10.18; extra == "suite2p"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "suite2p"
+Provides-Extra: tdt
+Requires-Dist: spikeinterface>=0.101.0; extra == "tdt"
+Requires-Dist: neo>=0.13.2; extra == "tdt"
+Requires-Dist: MEArec>=1.8.0; extra == "tdt"
+Requires-Dist: hdf5storage>=0.1.18; extra == "tdt"
+Requires-Dist: pymatreader>=0.0.32; extra == "tdt"
+Provides-Extra: tdt_fp
+Requires-Dist: roiextractors>=0.5.7; extra == "tdt-fp"
+Requires-Dist: tifffile>=2023.3.21; extra == "tdt-fp"
+Requires-Dist: tiffile>=2018.10.18; extra == "tdt-fp"
+Requires-Dist: scanimage-tiff-reader>=1.4.1; extra == "tdt-fp"
+Requires-Dist: tdt; extra == "tdt-fp"
+Requires-Dist: ndx-fiber-photometry; extra == "tdt-fp"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: ndx-events>=0.2.0; extra == "test"
+Requires-Dist: parameterized>=0.8.1; extra == "test"
+Requires-Dist: ndx-miniscope; extra == "test"
+Requires-Dist: spikeinterface[qualitymetrics]>=0.101.0; extra == "test"
+Requires-Dist: zarr<2.18.0; extra == "test"
+Requires-Dist: pytest-xdist; extra == "test"
+Provides-Extra: text
+Requires-Dist: openpyxl; extra == "text"
+Requires-Dist: xlrd; extra == "text"
+Provides-Extra: tiff
+Requires-Dist: roiextractors>=0.5.7; extra == "tiff"
+Requires-Dist: tifffile>=2023.3.21; extra == "tiff"
+Requires-Dist: tiffile>=2018.10.18; extra == "tiff"
+Provides-Extra: video
+Requires-Dist: opencv-python-headless>=4.5.1.48; extra == "video"
+Requires-Dist: opencv-python-headless<4.7.0.72,>=4.5.1.48; sys_platform == "darwin" and extra == "video"
+Requires-Dist: opencv-python-headless<4.7,>=4.5.1.48; (sys_platform == "darwin" and python_version >= "3.11") and extra == "video"
+
+[![PyPI version](https://badge.fury.io/py/neuroconv.svg)](https://badge.fury.io/py/neuroconv.svg)
+![Daily Tests](https://github.com/catalystneuro/neuroconv/actions/workflows/dailies.yml/badge.svg)
+![Auto-release](https://github.com/catalystneuro/neuroconv/actions/workflows/auto-publish.yml/badge.svg)
+[![codecov](https://codecov.io/github/catalystneuro/neuroconv/coverage.svg?branch=main)](https://codecov.io/github/catalystneuro/neuroconv?branch=main)
+[![documentation](https://readthedocs.org/projects/neuroconv/badge/?version=main)](https://neuroconv.readthedocs.io/en/main/)
+[![Python](https://img.shields.io/pypi/pyversions/neuroconv.svg)](https://pypi.python.org/pypi/neuroconv)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+[![License](https://img.shields.io/pypi/l/neuroconv.svg)](https://github.com/catalystneuro/neuroconv/license.txt)
+
+<p align="center">
+  <img src="https://github.com/catalystneuro/neuroconv/blob/main/docs/img/neuroconv_logo.png" width="250" alt="NeuroConv logo"/>
+  <h3 align="center">Automatically convert neurophysiology data to NWB</h3>
+</p>
+<p align="center">
+   <a href="https://neuroconv.readthedocs.io/"><strong>Explore our documentation »</strong></a>
+</p>
+
+
+<!-- TABLE OF CONTENTS -->
+
+## Table of Contents
+
+- [About](#about)
+- [Installation](#installation)
+- [Documentation](#documentation)
+- [License](#license)
+
+## About
+
+NeuroConv is a Python package for converting neurophysiology data in a variety of proprietary formats to the [Neurodata Without Borders (NWB)](http://nwb.org) standard.
+
+Features:
+
+* Reads data from 40 popular neurophysiology data formats and writes to NWB using best practices.
+* Extracts relevant metadata from each format.
+* Handles large data volume by reading datasets piece-wise.
+* Minimizes the size of the NWB files by automatically applying chunking and lossless compression.
+* Supports ensembles of multiple data streams, and supports common methods for temporal alignment of streams.
+
+## Installation
+We always recommend installing and running Python packages in a clean environment. One way to do this is via [conda environments](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#activating-an-environment):
+
+```shell
+conda create --name <give the environment a name> --python <choose a version of Python to use>
+conda activate <environment name>
+```
+
+To install the latest stable release of **neuroconv** though PyPI, run:
+
+```shell
+pip install neuroconv
+```
+
+To install the current unreleased `main` branch (requires `git` to be installed in your environment, such was via `conda install git`), run:
+
+```shell
+pip install git+https://github.com/catalystneuro/neuroconv.git@main
+```
+
+NeuroConv also supports a variety of extra dependencies that can be specified inside square brackets, such as
+
+```shell
+pip install "neuroconv[openephys, dandi]"
+```
+
+which will then install extra dependencies related to reading OpenEphys data as well as the usage of the DANDI CLI (such as automatic upload to the [DANDI Archive](https://www.dandiarchive.org/)).
+
+You can read more about these options in the main [installation guide](https://neuroconv.readthedocs.io/en/main/user_guide/datainterfaces.html#installation).
+
+
+## Documentation
+See our [ReadTheDocs page](https://neuroconv.readthedocs.io/en/main/) for full documentation, including a gallery of all supported formats.
+
+## License
+NeuroConv is distributed under the BSD3 License. See [LICENSE](https://github.com/catalystneuro/neuroconv/blob/main/license.txt) for more information.
