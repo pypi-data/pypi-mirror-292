@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: omdev
+Version: 0.0.0.dev10
+Summary: omdev
+Author: wrmsr
+License: BSD-3-Clause
+Project-URL: source, https://github.com/wrmsr/omlish
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: POSIX
+Requires-Python: >=3.12
+License-File: LICENSE
+Requires-Dist: omlish ==0.0.0.dev10
+Provides-Extra: all
+Requires-Dist: pycparser >=2.22 ; extra == 'all'
+Requires-Dist: cffi >=1.17 ; extra == 'all'
+Requires-Dist: pcpp >=1.30 ; extra == 'all'
+Requires-Dist: mypy >=1.11 ; extra == 'all'
+Requires-Dist: tokenize-rt >=6 ; extra == 'all'
+Provides-Extra: c
+Requires-Dist: pycparser >=2.22 ; extra == 'c'
+Requires-Dist: cffi >=1.17 ; extra == 'c'
+Requires-Dist: pcpp >=1.30 ; extra == 'c'
+Provides-Extra: mypy
+Requires-Dist: mypy >=1.11 ; extra == 'mypy'
+Provides-Extra: tokens
+Requires-Dist: tokenize-rt >=6 ; extra == 'tokens'
+
