@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: negromate.karaoke
+Version: 1.0
+Summary: Player for NegroMate karaoke parties
+Home-page: http://negromate.rocks
+Author: Ales (Shagi) Zabala Alava
+Author-email: shagi@gisa-elkartea.org
+License: GPLv3
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: X11 Applications
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Games/Entertainment
+Classifier: Topic :: Multimedia :: Graphics :: Presentation
+Requires-Python: >=3.4
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: kivy
+Requires-Dist: negromate.songs==1.4
+
+Negro Mate Karaoke
+==================
+
+Simple karaoke bideo browser.
+
+Uses kivy, installation instructions here: https://kivy.org/doc/stable/installation/installation-devel.html
+
+Usage
+-----
+
+Launch:
+
+    negromate karaoke 
+
+Keyboard shortcuts:
+
+- A: Previous song
+- S: Play
+- D: Next song
+
+The songs are played with vlc, so to exit a playing song: `Ctrl-C`.
+
+
+Install Mini-howto
+------------------
+Instalation uses the pep517 packaging format, whichs requires pip version
+19 or newer.
+
+    pip install "pip>=19"
+
+Install dependencies for Kivy:
+
+    apt-get install python3-dev python-setuptools python-pygame python-opengl \
+      python-enchant python-dev build-essential python-pip libgl1-mesa-dev \
+      libgles2-mesa-dev zlib1g-dev
+
+Install this package
+
+    pip install .
