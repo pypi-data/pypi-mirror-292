@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: '{"request": "/api/v4/main-account/withdraw-pay", "nonce": 1724779381450,
+      "nonceWindow": true, "amount": "5", "ticker": "USDT", "address": "7b22571598a94549165ce860597b033158e1821fb6b033679fcb02a986c8c520",
+      "memo": null, "uniqueId": "95fb1fe9-4626-4842-9e86-383849ce8120", "network":
+      "NEAR"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '290'
+      content-type:
+      - application/json
+      host:
+      - whitebit.com
+      user-agent:
+      - python-httpx/0.27.0
+      x-txc-payload:
+      - eyJyZXF1ZXN0IjoiL2FwaS92NC9tYWluLWFjY291bnQvd2l0aGRyYXctcGF5Iiwibm9uY2UiOjE3MjQ3NzkzODE0NTAsIm5vbmNlV2luZG93Ijp0cnVlLCJhbW91bnQiOiI1IiwidGlja2VyIjoiVVNEVCIsImFkZHJlc3MiOiI3YjIyNTcxNTk4YTk0NTQ5MTY1Y2U4NjA1OTdiMDMzMTU4ZTE4MjFmYjZiMDMzNjc5ZmNiMDJhOTg2YzhjNTIwIiwibWVtbyI6bnVsbCwidW5pcXVlSWQiOiI5NWZiMWZlOS00NjI2LTQ4NDItOWU4Ni0zODM4NDljZTgxMjAiLCJuZXR3b3JrIjoiTkVBUiJ9
+    method: POST
+    uri: https://whitebit.com/api/v4/main-account/withdraw-pay
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAACA4uOBQApu0wNAgAAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8b9dbf3e98306346-LHR
+      Cache-Control:
+      - no-cache, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '22'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 27 Aug 2024 17:23:01 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=hw0.j2FPS1Tl.13MVdMQVKJ32YndhG7qsF5AfCSkPvI-1724779381-1.0.1.1-mYpY8gbZqBKV_aFmDKfJ1VoMChPLz6zkYyF494EmTBvpdT4Af5kbvJGxmlS8HY.OCXsMWemdzG5YMRQM398Mfg;
+        path=/; expires=Tue, 27-Aug-24 17:53:01 GMT; domain=.whitebit.com; HttpOnly;
+        Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      alt-svc:
+      - h3=":443"; ma=86400
+      vary:
+      - Accept-Encoding
+    status:
+      code: 201
+      message: Created
+version: 1
