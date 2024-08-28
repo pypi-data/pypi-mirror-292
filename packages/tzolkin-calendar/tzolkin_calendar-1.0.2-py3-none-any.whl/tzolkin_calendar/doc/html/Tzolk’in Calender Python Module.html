@@ -1,0 +1,628 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage of tzolkin-calendar in Your Python Code &mdash; tzolkin-calendar 1.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=66b59bf7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=68b195bf"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tzolkin_calendar Package" href="tzolkin_calendar.html" />
+    <link rel="prev" title="License" href="license.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #5DB1DE" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            tzolkin-calendar
+          </a>
+              <div class="version">
+                1.0.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Release-Candidate/tzolkin-calendar">GitHub Project Page</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/tzolkin-calendar/">PyPI (pip) Package</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Release-Candidate/tzolkin-calendar/issues/new/choose">Report a Bug or a Feature Request</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Release-Candidate/tzolkin-calendar/issues">Issue Tracker at GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mybinder.org/v2/gh/Release-Candidate/tzolkin-calendar/main?filepath=Tzolk%E2%80%99in%20Calendar.ipynb">Interactive Jupyter Notebook Online</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://maya.nmai.si.edu/">Smithsonian National Museum of the American Indian: Living Maya Time</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://maya.nmai.si.edu/calendar/maya-calendar-converter">Smithsonian National Museum of the American Indian: Maya Calendar Converter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation and Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#windows">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#linux">Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#mac-os-x">Mac OS X</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#id4">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_notebook.html">Interactive Jupyter Notebook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jupyter_notebook.html#installation">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tzolk%E2%80%99in%20Command%20Line.html">Tzolk’in Command Line Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tzolk%E2%80%99in%20Command%20Line.html#converting-gregorian-dates-to-tzolkin-dates">Converting Gregorian Dates to Tzolk’in Dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tzolk%E2%80%99in%20Command%20Line.html#searching-tzolkin-dates">Searching Tzolk’in Dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tzolk%E2%80%99in%20Command%20Line.html#print-all-tzolkin-dates-in-a-tzolkin-year">Print all Tzolk’in Dates in a Tzolk’in Year</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using in Your Code</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage of tzolkin-calendar in Your Python Code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#import-the-module">Import the Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-tzolkin-date-class-tzolkin">The Tzolk’in Date Class <code class="docutils literal notranslate"><span class="pre">Tzolkin</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#convert-gregorian-dates-to-tzolkin-dates">Convert Gregorian Dates to Tzolk’in Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-tzolkin-dates">Set Tzolk’in Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#search-gregorian-dates-to-a-given-tzolkin-date">Search Gregorian Dates to a given Tzolk’in Date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calculations-using-tzolkin-dates">Calculations using Tzolk’in Dates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tzolkin_calendar.html">tzolkin_calendar Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tzolkin_calendar.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tzolkin_calendar.html#module-tzolkin_calendar.tzolkin">tzolkin_calendar.tzolkin module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin"><code class="docutils literal notranslate"><span class="pre">Tzolkin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.addDays"><code class="docutils literal notranslate"><span class="pre">Tzolkin.addDays()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.addTimedelta"><code class="docutils literal notranslate"><span class="pre">Tzolkin.addTimedelta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.fromDate"><code class="docutils literal notranslate"><span class="pre">Tzolkin.fromDate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.fromDateString"><code class="docutils literal notranslate"><span class="pre">Tzolkin.fromDateString()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.fromIsoFormat"><code class="docutils literal notranslate"><span class="pre">Tzolkin.fromIsoFormat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.fromToday"><code class="docutils literal notranslate"><span class="pre">Tzolkin.fromToday()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getDayDiff"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getDayDiff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getDayName"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getDayName()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getDayNameNumber"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getDayNameNumber()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getDayNumber"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getDayNumber()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getDayTimedelta"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getDayTimedelta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getLastDate"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getLastDate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getLastDateList"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getLastDateList()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getNameNumberFromName"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getNameNumberFromName()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getNextDate"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getNextDate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getNextDateList"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getNextDateList()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getTzolkinCalendar"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getTzolkinCalendar()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getTzolkinDate"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getTzolkinDate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.getTzolkinYearDay"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getTzolkinYearDay()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.tzolkin.Tzolkin.parseTzolkinName"><code class="docutils literal notranslate"><span class="pre">Tzolkin.parseTzolkinName()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tzolkin_calendar.html#module-tzolkin_calendar.calculate">tzolkin_calendar.calculate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.calculate.calculateTzolkinName"><code class="docutils literal notranslate"><span class="pre">calculateTzolkinName()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.calculate.calculateTzolkinNumber"><code class="docutils literal notranslate"><span class="pre">calculateTzolkinNumber()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.calculate.getTzolkinDay"><code class="docutils literal notranslate"><span class="pre">getTzolkinDay()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.calculate.getTzolkinDiff"><code class="docutils literal notranslate"><span class="pre">getTzolkinDiff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.calculate.gregorian2tzolkin"><code class="docutils literal notranslate"><span class="pre">gregorian2tzolkin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.calculate.lastTzolkin"><code class="docutils literal notranslate"><span class="pre">lastTzolkin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.calculate.makeLookUpTable"><code class="docutils literal notranslate"><span class="pre">makeLookUpTable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.calculate.nextTzolkin"><code class="docutils literal notranslate"><span class="pre">nextTzolkin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.calculate.parseTzolkinName"><code class="docutils literal notranslate"><span class="pre">parseTzolkinName()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.calculate.tzolkin2gregorian"><code class="docutils literal notranslate"><span class="pre">tzolkin2gregorian()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tzolkin_calendar.html#module-tzolkin_calendar.main">tzolkin_calendar.main module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tzolkin_calendar.html#tzolkin_calendar.main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#report-issues-bugs-and-feature-requests">Report Issues (Bugs and Feature Requests)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#forking-the-repository">Forking the Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#setting-the-development-environment">Setting the Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#github-documentation-on-collaborating-with-issues-and-pull-requests">Github Documentation on Collaborating with Issues and Pull Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#common-tasks-developing-tzolkin-calendar">Common Tasks Developing tzolkin-calendar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#jupyter-notebooks">Jupyter Notebooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#changing-and-generating-documentation">Changing and Generating Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="contributing.html#github-documentation">GitHub Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#python-source-code">Python Source Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#tests">Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#local-source-code-linters">Local Source Code Linters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#github-workflows-actions">GitHub Workflows/Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Indices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #5DB1DE" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">tzolkin-calendar</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage of tzolkin-calendar in Your Python Code</li>
+
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="license.html" class="btn btn-neutral float-left" title="License" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tzolkin_calendar.html" class="btn btn-neutral float-right" title="tzolkin_calendar Package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage-of-tzolkin-calendar-in-your-python-code">
+<h1>Usage of tzolkin-calendar in Your Python Code<a class="headerlink" href="#usage-of-tzolkin-calendar-in-your-python-code" title="Link to this heading"></a></h1>
+<p>You can try the tzolkin_calendar package interactively using the online Jupyter Notebook at MyBinder:
+<a class="reference external" href="https://mybinder.org/v2/gh/Release-Candidate/tzolkin-calendar/main?filepath=Tzolk%E2%80%99in%20Calender%20Python%20Module.ipynb">tzolkin_calendar module</a></p>
+<section id="import-the-module">
+<h2>Import the Module<a class="headerlink" href="#import-the-module" title="Link to this heading"></a></h2>
+<p>To use the Tzolk’in date package, import <code class="docutils literal notranslate"><span class="pre">tzolkin_calender</span></code> (with an
+underscore <code class="docutils literal notranslate"><span class="pre">_</span></code>).</p>
+<p>A short check to see if it is working, is to print the version of
+<code class="docutils literal notranslate"><span class="pre">tzolkin-calendar</span></code>, that’s the constant <code class="docutils literal notranslate"><span class="pre">tzolkin_calendar.VERSION</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the package.</span>
+<span class="kn">import</span> <span class="nn">tzolkin_calendar</span>
+
+<span class="c1"># Check, if it is working.</span>
+<span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">VERSION</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;0.9.3&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="the-tzolkin-date-class-tzolkin">
+<h2>The Tzolk’in Date Class <code class="docutils literal notranslate"><span class="pre">Tzolkin</span></code><a class="headerlink" href="#the-tzolkin-date-class-tzolkin" title="Link to this heading"></a></h2>
+<p>The Tzolk’in date class resides in the module
+<code class="docutils literal notranslate"><span class="pre">tzolkin_calendar.tzolkin</span></code>, and is named <code class="docutils literal notranslate"><span class="pre">Tzolkin</span></code>.</p>
+<p>So, import that module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the module tzolkin that contains `Tzolkin`.</span>
+<span class="kn">from</span> <span class="nn">tzolkin_calendar</span> <span class="kn">import</span> <span class="n">tzolkin</span>
+</pre></div>
+</div>
+<section id="convert-gregorian-dates-to-tzolkin-dates">
+<h3>Convert Gregorian Dates to Tzolk’in Dates<a class="headerlink" href="#convert-gregorian-dates-to-tzolkin-dates" title="Link to this heading"></a></h3>
+<p>To get the Tzolk’in date of today, call the static method <code class="docutils literal notranslate"><span class="pre">fromToday</span></code>.
+This returns a <code class="docutils literal notranslate"><span class="pre">Tzolkin</span></code> instance holding the Tzolk’in date of today
+(‘today’ is the 22nd of March, 2021, with a Tzolk’in date of ‘1 Bʼen’)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="o">.</span><span class="n">fromToday</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;3 Men&#39;</span>
+</pre></div>
+</div>
+<p>You can generate a <code class="docutils literal notranslate"><span class="pre">Tzolkin</span></code> instance from any gregorian date using
+the <code class="docutils literal notranslate"><span class="pre">datetime.date</span></code> class or a date string.</p>
+<p>So, first import the datetime module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+</pre></div>
+</div>
+<p>And then use the 3 possibilities to set the Tzolk’in date from a
+gregorian date. Or, in other words, to convert a gregorian date to a
+Tzolk’in date.</p>
+<ol class="arabic simple">
+<li><p>from a datetime.date instance using <code class="docutils literal notranslate"><span class="pre">Tzolkin.fromDate</span></code>. We use the
+method <code class="docutils literal notranslate"><span class="pre">fromisoformat</span></code> to set the gregorian date to the 22nd of
+March 2021 with the date string ‘2021-03-22’. The Tzolk’in date of
+the 22nd of March 2021 is ‘1 Bʼen’.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gregorian_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;2021-03-22&quot;</span><span class="p">)</span>
+
+<span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="o">.</span><span class="n">fromDate</span><span class="p">(</span><span class="n">gregorian_date</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;1 Bʼen&#39;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>from an ISO date string using <code class="docutils literal notranslate"><span class="pre">Tzolkin.fromIsoFormat</span></code>. We set the
+Tzolk’in date to the 22nd of March 2021 with the ISO date string
+‘2021-03-22’. The Tzolk’in date of the 22nd of March 2021 is ‘1
+Bʼen’.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="o">.</span><span class="n">fromIsoFormat</span><span class="p">(</span><span class="s2">&quot;2021-03-22&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;1 Bʼen&#39;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>from an arbitrary date string using <code class="docutils literal notranslate"><span class="pre">Tzolkin.fromDateString</span></code>. We
+set the Tzolk’in date to the 22nd of March 2021 with the date string
+‘22=03*2021’ and the format string <code class="docutils literal notranslate"><span class="pre">fmt</span></code> ’%d=%m*%Y’. The Tzolk’in
+date of the 22nd of March 2021 is ‘1 Bʼen’.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="o">.</span><span class="n">fromDateString</span><span class="p">(</span><span class="s2">&quot;22=03*2021&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">=%m*%Y&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;1 Bʼen&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="set-tzolkin-dates">
+<h3>Set Tzolk’in Dates<a class="headerlink" href="#set-tzolkin-dates" title="Link to this heading"></a></h3>
+<p>You can set the <code class="docutils literal notranslate"><span class="pre">Tzolkin</span></code> instance to a Tzolk’in Date using it’s
+constructor. The constructor takes the Tzolk’in day number (between 1
+and 13 including 1 and 13) and either a Tzolk’in day name or the number
+of the Tzolk’in day name (between 1 and 20 , including 1 and 20).</p>
+<p>To get a dictionary of Tzolk’in day names and numbers, look at
+<code class="docutils literal notranslate"><span class="pre">tzolkin.day_names</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin</span><span class="o">.</span><span class="n">day_names</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;Imix&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;Ikʼ&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;Akʼbʼal&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;Kʼan&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">&#39;Chikchan&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s1">&#39;Kimi&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s1">&#39;Manikʼ&#39;</span><span class="p">,</span>
+ <span class="mi">8</span><span class="p">:</span> <span class="s1">&#39;Lamat&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s1">&#39;Muluk&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="s1">&#39;Ok&#39;</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="s1">&#39;Chuwen&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="s1">&#39;Ebʼ&#39;</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="s1">&#39;Bʼen&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="s1">&#39;Ix&#39;</span><span class="p">,</span>
+ <span class="mi">15</span><span class="p">:</span> <span class="s1">&#39;Men&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="s1">&#39;Kʼibʼ&#39;</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="s1">&#39;Kabʼan&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="s1">&#39;Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="s1">&#39;Kawak&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="s1">&#39;Ajaw&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If we want to set a Tzolk’in day of ‘8 Kabʼan’, we can either pass the
+day number 8 and day name Kabʼan to the constructor, or the day number 8
+and the day name number 17.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Kabʼan&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;8 Kabʼan&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">name_number</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;8 Kabʼan&#39;</span>
+</pre></div>
+</div>
+<p>If we pass an invalid number (not in [1, 13]) or name to the
+constructor, we get a <code class="docutils literal notranslate"><span class="pre">TzolkinException</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span> <span class="n">name_number</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+
+    <span class="n">TzolkinException</span><span class="p">:</span> <span class="n">number</span> <span class="mi">53</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">Tzolkin</span> <span class="n">day</span> <span class="n">number</span><span class="p">,</span> <span class="ow">not</span> <span class="n">between</span> <span class="mi">1</span> <span class="ow">and</span> <span class="mi">13</span> <span class="p">(</span><span class="n">including</span> <span class="mi">1</span> <span class="ow">and</span> <span class="mi">13</span><span class="p">)</span>
+
+<span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Hugo&quot;</span><span class="p">)</span>
+
+    <span class="n">TzolkinException</span><span class="p">:</span> <span class="n">string</span> <span class="s2">&quot;Hugo&quot;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">Tzolkin</span> <span class="n">day</span> <span class="n">name</span><span class="p">,</span> <span class="n">one</span> <span class="n">of</span><span class="p">:</span> <span class="n">dict_values</span><span class="p">([</span><span class="s1">&#39;Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;Men&#39;</span><span class="p">,</span> <span class="s1">&#39;Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;Ajaw&#39;</span><span class="p">])</span>
+
+<span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">name_number</span><span class="o">=-</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="n">TzolkinException</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">Tzolkin</span> <span class="n">day</span> <span class="n">name</span> <span class="n">number</span><span class="p">,</span> <span class="n">it</span> <span class="n">must</span> <span class="n">be</span> <span class="n">between</span> <span class="mi">1</span> <span class="ow">and</span> <span class="mi">20</span> <span class="p">(</span><span class="n">including</span> <span class="mi">1</span> <span class="ow">and</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These Tzolk’in day numbers and names can be accessed using the methods
+<code class="docutils literal notranslate"><span class="pre">getDayNumber</span></code>, <code class="docutils literal notranslate"><span class="pre">getDayName</span></code> and <code class="docutils literal notranslate"><span class="pre">getDayNameNumber</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the Tzolk’in date to &#39;12 Kimi&#39;.</span>
+<span class="n">tzolkin_date</span> <span class="o">=</span> <span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Kimi&quot;</span><span class="p">)</span>
+
+<span class="n">tzolkin_date</span><span class="o">.</span><span class="n">getDayNumber</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">12</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin_date</span><span class="o">.</span><span class="n">getDayName</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;Kimi&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin_date</span><span class="o">.</span><span class="n">getDayNameNumber</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">6</span>
+</pre></div>
+</div>
+<p>To get the number of Tzolk’in day in the Tzolk’in year of 260 days,
+there is <code class="docutils literal notranslate"><span class="pre">getTzolkinYearDay</span></code>. For example ‘12 Kimi’ is the 246. day
+(of 260 days) of the Tzolk’in year</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin_date</span><span class="o">.</span><span class="n">getTzolkinYearDay</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">246</span>
+</pre></div>
+</div>
+<p>To parse a Tzolk’in day name that isn’t exactly like the ones in <code class="docutils literal notranslate"><span class="pre">tzolkin.day_names</span></code>
+there is the method <code class="docutils literal notranslate"><span class="pre">Tzolkin.parseTzolkinName</span></code>, that ignores upper- and lowercase and
+all non-alphanumeric and non-ascii characters.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">day_number</span> <span class="o">=</span> <span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="o">.</span><span class="n">parseTzolkinName</span><span class="p">(</span><span class="s2">&quot;EtZ`nAB&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">day_number</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">tzolkin_name</span> <span class="o">=</span> <span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">day_names</span><span class="p">[</span><span class="n">day_number</span><span class="p">]</span>
+<span class="n">tzolkin_name</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;Etzʼnabʼ&#39;</span>
+</pre></div>
+</div>
+<p>All 260 Tzolk’in days of a Tzolk’in year we can get as a list of strings
+from the static method <code class="docutils literal notranslate"><span class="pre">getTzolkinCalendar</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="o">.</span><span class="n">getTzolkinCalendar</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;1 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Bʼen&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Kimi&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Kawak&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Ebʼ&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Chikchan&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Etzʼnabʼ&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Chuwen&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Kʼan&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Kabʼan&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Ok&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Akʼbʼal&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Kʼibʼ&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Muluk&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Ikʼ&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Men&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Lamat&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Imix&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Manikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Ix&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Ajaw&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Imix&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Ikʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Akʼbʼal&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Kʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Chikchan&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Kimi&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Manikʼ&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;1 Lamat&#39;</span><span class="p">,</span> <span class="s1">&#39;2 Muluk&#39;</span><span class="p">,</span> <span class="s1">&#39;3 Ok&#39;</span><span class="p">,</span> <span class="s1">&#39;4 Chuwen&#39;</span><span class="p">,</span> <span class="s1">&#39;5 Ebʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;6 Bʼen&#39;</span><span class="p">,</span> <span class="s1">&#39;7 Ix&#39;</span><span class="p">,</span> <span class="s1">&#39;8 Men&#39;</span><span class="p">,</span> <span class="s1">&#39;9 Kʼibʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;10 Kabʼan&#39;</span><span class="p">,</span> <span class="s1">&#39;11 Etzʼnabʼ&#39;</span><span class="p">,</span> <span class="s1">&#39;12 Kawak&#39;</span><span class="p">,</span> <span class="s1">&#39;13 Ajaw&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="search-gregorian-dates-to-a-given-tzolkin-date">
+<h3>Search Gregorian Dates to a given Tzolk’in Date<a class="headerlink" href="#search-gregorian-dates-to-a-given-tzolkin-date" title="Link to this heading"></a></h3>
+<p>We can search for the next (forward in time) or last (backwards in time)
+day with the same Tzolk’in date using the methods <code class="docutils literal notranslate"><span class="pre">getNextDate</span></code> and
+<code class="docutils literal notranslate"><span class="pre">getLastDate</span></code>. Both methods return a <code class="docutils literal notranslate"><span class="pre">datetime.date</span></code> object.</p>
+<p>When searching for the next gregorian date that has the Tzolk’in date ‘7
+Kawak’, we get the 28th of March, 2021 - because we started searching
+‘today’, which is the 22nd of March 2021.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the Tzolk’in date to search for to &#39;7 Kawak&#39;.</span>
+<span class="n">tzolkin_date</span> <span class="o">=</span> <span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Kawak&quot;</span><span class="p">)</span>
+
+<span class="n">tzolkin_date</span><span class="o">.</span><span class="n">getNextDate</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When searching for the last gregorian date that has the Tzolk’in date ‘7
+Kawak’, we get the 11th of July, 2020 - because we started searching
+‘today’, which is the 22nd of March 2021.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin_date</span><span class="o">.</span><span class="n">getLastDate</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Both methods, <code class="docutils literal notranslate"><span class="pre">getNextDate</span></code> and <code class="docutils literal notranslate"><span class="pre">getLastDate</span></code> take an optional
+argument <code class="docutils literal notranslate"><span class="pre">start_date</span></code>, which is the gregorian date to start the
+search. If no <code class="docutils literal notranslate"><span class="pre">start_date</span></code> is given, ‘today’ is used as the start
+date.</p>
+<p>So now we search again for ‘7 Kawak’ in both directions, but this time
+we start at the 10th of July, 2020.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the Tzolk’in date to search for to &#39;7 Kawak&#39;.</span>
+<span class="n">tzolkin_date</span> <span class="o">=</span> <span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Kawak&quot;</span><span class="p">)</span>
+
+<span class="c1"># Set the start date of the search to the 10th of July, 2020.</span>
+<span class="n">start_search</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;2020-07-10&quot;</span><span class="p">)</span>
+
+<span class="n">start_search</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;2020-07-10&#39;</span>
+</pre></div>
+</div>
+<p>For the next day with a Tzolk’in date of ‘7 Kawak’ we now get the 11th
+of July, 2020.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin_date</span><span class="o">.</span><span class="n">getNextDate</span><span class="p">(</span><span class="n">start_date</span><span class="o">=</span><span class="n">start_search</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For the last day before our start date with a Tzolk’in date of ‘7 Kawak’
+we now get the 25th of October, 2019.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin_date</span><span class="o">.</span><span class="n">getLastDate</span><span class="p">(</span><span class="n">start_date</span><span class="o">=</span><span class="n">start_search</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To get a list of <code class="docutils literal notranslate"><span class="pre">datetime.date</span></code> dates with the same Tzolk’in date, we
+can use the methods <code class="docutils literal notranslate"><span class="pre">getNextDateList</span></code> and <code class="docutils literal notranslate"><span class="pre">getLastDateList</span></code>.</p>
+<p>Again, we can set the argument <code class="docutils literal notranslate"><span class="pre">start_date</span></code> to a gregorian date to
+start the search or not set it to start the search today. The number of
+elements in the returned list is set using the parameter <code class="docutils literal notranslate"><span class="pre">list_size</span></code>,
+which defaults to 50.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the Tzolk’in date to search for to &#39;7 Kawak&#39;.</span>
+<span class="n">tzolkin_date</span> <span class="o">=</span> <span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Kawak&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s start the search for dates with a Tzolk’in date of ’ 7 Kawak’
+today, the 22nd of March 2021, and set the list size to 9 elements:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin_date</span><span class="o">.</span><span class="n">getNextDateList</span><span class="p">(</span><span class="n">list_size</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2026</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2026</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Now start searching for ‘7 Kawak’ on the 29th of March, 2021 and set the
+returned list size to 5.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the start date of the search to the 29th of March, 2021.</span>
+<span class="n">start_search</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;2021-03-29&quot;</span><span class="p">)</span>
+
+<span class="n">tzolkin_date</span><span class="o">.</span><span class="n">getLastDateList</span><span class="p">(</span><span class="n">start_date</span><span class="o">=</span><span class="n">start_search</span><span class="p">,</span> <span class="n">list_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+ <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">23</span><span class="p">)]</span>
+</pre></div>
+</div>
+</section>
+<section id="calculations-using-tzolkin-dates">
+<h3>Calculations using Tzolk’in Dates<a class="headerlink" href="#calculations-using-tzolkin-dates" title="Link to this heading"></a></h3>
+<p>There are 4 methods to get the difference in days between two Tzolk’in
+dates and to add (or subtract) days from a Tzolk’in date: <code class="docutils literal notranslate"><span class="pre">addDays</span></code>,
+<code class="docutils literal notranslate"><span class="pre">addTimedelta</span></code>, <code class="docutils literal notranslate"><span class="pre">getDayDiff</span></code> and <code class="docutils literal notranslate"><span class="pre">getDayTimedelta</span></code>.</p>
+<p>Lets start with a Tzolk’in date of ‘6 Muluk’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Muluk&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;6 Muluk&#39;</span>
+</pre></div>
+</div>
+<p>Add 6 days to it, and we get a Tzolk’in date of ‘12 Men’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Muluk&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">addDays</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;12 Men&#39;</span>
+</pre></div>
+</div>
+<p>Instead of using ints, we can also add and subtract
+<code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code> objects. Now subtract 6 days from ‘12 Men’ - we
+get ‘6 Muluk’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">to_subtract</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=-</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Men&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">addTimedelta</span><span class="p">(</span><span class="n">to_subtract</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;6 Muluk&#39;</span>
+</pre></div>
+</div>
+<p>To get the difference between two Tzolk’in dates there exist the Methods
+<code class="docutils literal notranslate"><span class="pre">getDayDiff</span></code> and <code class="docutils literal notranslate"><span class="pre">getDayTimedelta</span></code>.</p>
+<p>Lets calculate the difference in days between ‘6 Muluk’ and ‘12 Men’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set start_tzolkin to &#39;6 Muluk&#39;.</span>
+<span class="n">start_tzolkin</span> <span class="o">=</span> <span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Muluk&quot;</span><span class="p">)</span>
+
+<span class="c1"># Set end_tzolkin to &#39;12 Men&#39;.</span>
+<span class="n">end_tzolkin</span> <span class="o">=</span> <span class="n">tzolkin</span><span class="o">.</span><span class="n">Tzolkin</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">name_str</span><span class="o">=</span><span class="s2">&quot;Men&quot;</span><span class="p">)</span>
+
+<span class="n">start_tzolkin</span><span class="o">.</span><span class="n">getDayDiff</span><span class="p">(</span><span class="n">end_tzolkin</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">6</span>
+</pre></div>
+</div>
+<p>And using <code class="docutils literal notranslate"><span class="pre">getDayTimedelta</span></code>, which returns a <code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code>
+object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">start_tzolkin</span><span class="o">.</span><span class="n">getDayTimedelta</span><span class="p">(</span><span class="n">end_tzolkin</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What happens, if we calculate the difference between ‘12 Men’ and ‘6
+Muluk’?</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">end_tzolkin</span><span class="o">.</span><span class="n">getDayDiff</span><span class="p">(</span><span class="n">start_tzolkin</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">254</span>
+</pre></div>
+</div>
+<p>We get 254 days, not -6. That’s because the difference is always
+calculated forward in time. If you want to get negative days or the
+shortest possible time difference, subtract 260 from the the result (the
+number of days in a Tzolk’in year). As soon as the difference in days is
+greater than 130, to minimum time distance in days ‘is negative’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">day_diff</span> <span class="o">=</span> <span class="n">end_tzolkin</span><span class="o">.</span><span class="n">getDayDiff</span><span class="p">(</span><span class="n">start_tzolkin</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">day_diff</span> <span class="o">&gt;</span> <span class="mi">130</span><span class="p">:</span>
+    <span class="n">day_diff</span> <span class="o">=</span> <span class="mi">260</span> <span class="o">-</span> <span class="n">day_diff</span>
+<span class="n">day_diff</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">6</span>
+</pre></div>
+</div>
+<p>Or you can use the minimum of <code class="docutils literal notranslate"><span class="pre">result</span></code> and <code class="docutils literal notranslate"><span class="pre">|result</span> <span class="pre">-</span> <span class="pre">260|</span></code> that is
+<code class="docutils literal notranslate"><span class="pre">abs(result</span> <span class="pre">-</span> <span class="pre">260)</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">day_diff</span> <span class="o">=</span> <span class="n">end_tzolkin</span><span class="o">.</span><span class="n">getDayDiff</span><span class="p">(</span><span class="n">start_tzolkin</span><span class="p">)</span>
+<span class="n">shortest_diff</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">day_diff</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">day_diff</span> <span class="o">-</span> <span class="mi">260</span><span class="p">))</span>
+<span class="n">shortest_diff</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">6</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="license.html" class="btn btn-neutral float-left" title="License" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tzolkin_calendar.html" class="btn btn-neutral float-right" title="tzolkin_calendar Package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on 27.08.2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
