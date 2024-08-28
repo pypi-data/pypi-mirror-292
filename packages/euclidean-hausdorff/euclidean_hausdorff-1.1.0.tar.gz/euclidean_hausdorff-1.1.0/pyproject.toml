@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "euclidean_hausdorff"
+version = "1.1.0"
+license={file="LICENSE"}
+dynamic=["dependencies"]
+authors = [
+    {name="Vladyslav Oles", email="vlad.oles@proton.me"},
+    {name="Blake Cecil"}
+]
+description = "quick approximation of the Gromov–Hausdorff distance using Euclidean isometries"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/bcecil2/euclidean_hausdorff"
+Issues = "https://github.com/bcecil2/euclidean_hausdorff/issues"
