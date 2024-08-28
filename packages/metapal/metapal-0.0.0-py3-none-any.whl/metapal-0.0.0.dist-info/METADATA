@@ -1,0 +1,68 @@
+Metadata-Version: 2.1
+Name: metapal
+Version: 0.0.0
+Summary: Experiments regarding LLM components
+Author-email: Vivien Cabannes <vivien.cabannes@gmail.com>
+Project-URL: Homepage, https://github.com/facebookresearch/pal
+Project-URL: Bug Tracker, https://github.com/facebookresearch/pal/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: numpy
+Requires-Dist: torch
+Requires-Dist: fire
+Requires-Dist: sentencepiece
+Requires-Dist: tiktoken
+Requires-Dist: transformers
+Requires-Dist: ipykernel
+Requires-Dist: ipywidgets
+Requires-Dist: matplotlib
+Requires-Dist: networkx
+Requires-Dist: black
+Requires-Dist: flake8
+Requires-Dist: flake8-pyproject
+Requires-Dist: isort
+
+## PAL: Predictive Analysis & Laws for Neural Networks
+
+Dismantling large language models parts to understand them better, with the hope to build better models.
+
+#### Requirements
+The code back-end is made with:
+```text
+numpy
+torch
+```
+The visualization are made with:
+```text
+matplotlib
+networkx
+```
+
+#### Research papers
+- Vivien Cabannes, Charles Arnal, Wassim Bouaziz, Alice Yang, Francois Charton, Julia Kempe. *Iteration Head: A Mechanistic Study of Chain-of-Thought*, 2024. The codebase is in the folder `projects/cot`.
+
+- Vivien Cabannes, Elvis Dohmatob, Alberto Bietti. *Scaling laws for associative memories*, in International Conference on Learning Representations (ICLR), 2024. The codebase is in the folder `projects/scaling_laws`.
+
+- Vivien Cabannes, Berfin Simsek, Alberto Bietti. *Learning Associative Memories with Gradient Descent* in International Conference on Machine Learning (ICML), 2024. The codebase is in the folder `projects/gradient_descent`.
+
+- In preparation. Codebase in `pruning`.
+Show that learning appear by pruning circuits.
+
+- In preparation. Codebase in `factorization`.
+Empirical study of memorization capacity of MLPs and their abilities to leverage hidden factorization.
+
+## Organization
+The main resuable code is in the `src` folder.
+The code for our different research streams is in the `projects` folder.
+Other folders may include:
+- `data`: contains data used in the experiments.
+- `models`: saves models' weights.
+- `launchers`: contains bash scripts to launch experiments.
+- `notebooks`: used for exploration and visualization.
+- `scripts`: contains python scripts to run experiments.
+- `tests`: contains tests for the code.
+- `tutorial`: contains tutorial notebooks to get started with LLMs' training.
