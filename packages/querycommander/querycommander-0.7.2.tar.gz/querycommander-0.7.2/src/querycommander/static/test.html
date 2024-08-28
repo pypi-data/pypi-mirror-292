@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/sql/sql.min.js"></script>
+<style>
+    /* Ensure the container takes full height and width of its parent */
+    #editor-container {
+      width: 100%;
+      height: 100%;
+      position: relative; /* Important for absolute positioning of CodeMirror */
+    }
+  
+    /* Make CodeMirror fill the container */
+    .CodeMirror {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+    </head>
+
+    <body>
+        <div style="border: 2px solid black;height: 700px;" id="editor-container"><textarea id="sql-editor">test</textarea></div>
+<textarea style="overflow: scroll;"></textarea>
+<div>test</div>
+    </body>
+    <script type="text/javascript">
+        var editor = CodeMirror.fromTextArea(document.getElementById('sql-editor'), {
+  mode: 'text/x-sql',
+  lineNumbers: true,
+  theme: 'default',
+  scrollbarStyle: 'native'
+});
+    </script>
+</html>
