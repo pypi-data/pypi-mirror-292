@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: omlish
+Version: 0.0.0.dev7
+Summary: omlish
+Author: wrmsr
+License: BSD-3-Clause
+Project-URL: source, https://github.com/wrmsr/omlish
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: POSIX
+Requires-Python: >=3.12
+License-File: LICENSE
+Provides-Extra: async
+Requires-Dist: anyio >=4.4 ; extra == 'async'
+Requires-Dist: sniffio >=1.3 ; extra == 'async'
+Requires-Dist: trio >=0.26 ; extra == 'async'
+Requires-Dist: greenlet >=3 ; (python_version < "3.13") and extra == 'async'
+Requires-Dist: trio-asyncio >=0.15 ; (python_version < "3.13") and extra == 'async'
+Provides-Extra: compression
+Requires-Dist: lz4 >=4 ; extra == 'compression'
+Requires-Dist: zstd >=1.5 ; extra == 'compression'
+Requires-Dist: python-snappy >=0.7 ; (python_version < "3.13") and extra == 'compression'
+Provides-Extra: formats
+Requires-Dist: orjson >3.10 ; extra == 'formats'
+Requires-Dist: cloudpickle >=3 ; extra == 'formats'
+Requires-Dist: pyyaml >=5 ; extra == 'formats'
+Provides-Extra: http
+Requires-Dist: httpx[http2] >=0.27 ; extra == 'http'
+Provides-Extra: misc
+Requires-Dist: jinja2 >=3.1 ; extra == 'misc'
+Requires-Dist: psutil >=6 ; extra == 'misc'
+Requires-Dist: wrapt >=1.14 ; extra == 'misc'
+Provides-Extra: secrets
+Requires-Dist: cryptography >=43 ; extra == 'secrets'
+Provides-Extra: sql
+Requires-Dist: pg8000 >=1.31 ; extra == 'sql'
+Requires-Dist: pymysql >=1.1 ; extra == 'sql'
+Requires-Dist: aiomysql >=0.2 ; extra == 'sql'
+Requires-Dist: aiosqlite >=0.20 ; extra == 'sql'
+Requires-Dist: sqlalchemy[asyncio] >=2 ; (python_version < "3.13") and extra == 'sql'
+Requires-Dist: asyncpg >=0.29 ; (python_version < "3.13") and extra == 'sql'
+Requires-Dist: sqlalchemy >=2 ; (python_version >= "3.13") and extra == 'sql'
+Provides-Extra: sqlx
+Requires-Dist: duckdb >=1 ; extra == 'sqlx'
+Requires-Dist: sqlean.py >=3.45 ; (python_version < "3.13") and extra == 'sqlx'
+Provides-Extra: testing
+Requires-Dist: pytest >=8 ; extra == 'testing'
+
