@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[project]
+name = "lastmile_auto_eval"
+version = "0.0.5"
+authors = [{ name = "LastMile AI" }]
+description = "An API for using metric models (either provided by default or fine-tuned yourself) to evaluate LLMs."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+]
+dynamic = ["dependencies", "optional-dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+
+# Black formatting
+[tool.black]
+include = '\.pyi?$'
+exclude = '''
+/(
+      .eggs         # exclude a few common directories in the
+    | .git          # root of the project
+    | .hg
+    | .mypy_cache
+    | .tox
+    | venv
+    | buck-out
+    | dist
+  )/
+'''
