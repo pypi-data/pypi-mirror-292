@@ -1,0 +1,149 @@
+Metadata-Version: 2.1
+Name: marine-plus
+Version: 0.0.6.post3
+Summary: Marine: Multi-task learning based on Japanese accent estimation (Also supports Windows and Python 3.12)
+Author: Byeongseon Park
+Author-email: 6gsn.park@gmail.com
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy<2,>=1.21.0
+Requires-Dist: torch>=1.7.0
+Requires-Dist: hydra-core>=1.1.0
+Requires-Dist: hydra-colorlog>=1.1.0
+Requires-Dist: tqdm
+Requires-Dist: joblib
+Requires-Dist: pykakasi>=2.3.0
+Requires-Dist: importlib-resources; python_version < "3.9"
+Provides-Extra: dev
+Requires-Dist: torchmetrics; extra == "dev"
+Requires-Dist: scikit-learn; extra == "dev"
+Requires-Dist: docstr-coverage; extra == "dev"
+Requires-Dist: tensorboard; extra == "dev"
+Requires-Dist: matplotlib; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pysen; extra == "dev"
+Requires-Dist: black>=19.19b0; extra == "dev"
+Requires-Dist: flake8>=3.7; extra == "dev"
+Requires-Dist: flake8-bugbear; extra == "dev"
+Requires-Dist: isort>=4.3; extra == "dev"
+Requires-Dist: click; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == "docs"
+Requires-Dist: sphinx-autobuild; extra == "docs"
+Requires-Dist: sphinx-rtd-theme; extra == "docs"
+Requires-Dist: nbsphinx>=0.8.6; extra == "docs"
+Requires-Dist: Jinja2>=3.0.1; extra == "docs"
+Requires-Dist: pandoc; extra == "docs"
+Requires-Dist: ipython; extra == "docs"
+Requires-Dist: jupyter; extra == "docs"
+Provides-Extra: pyopenjtalk
+Requires-Dist: pyopenjtalk-plus; extra == "pyopenjtalk"
+
+# marine-plus
+
+[![PyPI](https://img.shields.io/pypi/v/marine-plus.svg)](https://pypi.python.org/pypi/marine-plus)
+[![Python package](https://github.com/tsukumijima/marine-plus/actions/workflows/ci.yml/badge.svg)](https://github.com/tsukumijima/marine-plus/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
+marine-plus は、主に Windows 対応や新しい Python バージョンのサポートなどコードのメンテナンスを目的とした、[marine](https://github.com/6gsn/marine) の派生ライブラリです。
+
+## Installation
+
+下記コマンドを実行して、ライブラリをインストールできます。
+
+```bash
+pip install marine-plus
+```
+
+下記のドキュメントは、[marine](https://github.com/6gsn/marine) 本家のドキュメントを改変なしでそのまま引き継いでいます。  
+これらのドキュメントの内容が marine-plus にも通用するかは保証されません。
+
+-------
+
+# **MARINE** : **M**ulti-task lea**R**n**I**ng-based Japa**N**ese accent **E**stimation
+
+[![PyPI](https://img.shields.io/pypi/v/marine.svg)](https://pypi.python.org/pypi/marine)
+[![Python package](https://github.com/6gsn/marine/actions/workflows/ci.yml/badge.svg)](https://github.com/6gsn/marine/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7092054.svg)](https://doi.org/10.5281/zenodo.7092054)
+
+`marine` is a tool kit for building the Japanese accent estimation model proposed in [our paper](https://www.isca-speech.org/archive/interspeech_2022/park22b_interspeech.html) ([demo](https://6gsn.github.io/demos/mtl_accent/)).
+
+For academic use, please cite the following paper ([ISCA archive](https://www.isca-speech.org/archive/interspeech_2022/park22b_interspeech.html)).
+
+```bibtex
+@inproceedings{park22b_interspeech,
+  author={Byeongseon Park and Ryuichi Yamamoto and Kentaro Tachibana},
+  title={{A Unified Accent Estimation Method Based on Multi-Task Learning for Japanese Text-to-Speech}},
+  year=2022,
+  booktitle={Proc. Interspeech 2022},
+  pages={1931--1935},
+  doi={10.21437/Interspeech.2022-334}
+}
+```
+
+## Notice
+
+The model included in this package is trained using [JSUT corpus](https://sites.google.com/site/shinnosuketakamichi/publication/jsut), which is not the same as the dataset in [our paper](https://www.isca-speech.org/archive/interspeech_2022/park22b_interspeech.html). Therefore, the model's performance is also not equal to the performance introduced in our paper.
+
+## Get started
+
+### Installation
+
+```shell
+$ pip install marine
+```
+
+### For development
+
+```shell
+$ pip install -e ".[dev]"
+```
+
+### Quick demo
+
+```python
+In [1]: from marine.predict import Predictor
+
+In [2]: nodes = [{"surface": "こんにちは", "pos": "感動詞:*:*:*", "pron": "コンニチワ", "c_type": "*", "c_form": "*", "accent_type": 0, "accent_con_type": "-1", "chain_flag": -1}]
+
+In [3]: predictor = Predictor()
+
+In [4]: predictor.predict([nodes])
+Out[4]:
+{'mora': [['コ', 'ン', 'ニ', 'チ', 'ワ']],
+ 'intonation_phrase_boundary': [[0, 0, 0, 0, 0]],
+ 'accent_phrase_boundary': [[0, 0, 0, 0, 0]],
+ 'accent_status': [[0, 0, 0, 0, 0]]}
+
+In [5]: predictor.predict([nodes], accent_represent_mode="high_low")
+Out[5]:
+{'mora': [['コ', 'ン', 'ニ', 'チ', 'ワ']],
+ 'intonation_phrase_boundary': [[0, 0, 0, 0, 0]],
+ 'accent_phrase_boundary': [[0, 0, 0, 0, 0]],
+ 'accent_status': [[0, 1, 1, 1, 1]]}
+```
+
+### Build model yourself
+
+Coming soon...
+
+## LICENSE
+
+- marine: Apache 2.0 license ([LICENSE](LICENSE))
+- JSUT: CC-BY-SA 4.0 license, etc. (Please check [jsut-label/LICENCE.txt](https://github.com/sarulab-speech/jsut-label/blob/master/LICENCE.txt))
