@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "fotetizar"
+version = "0.1.52"
+description = "Turn your code into stylish images faster than you can say 'syntax error!' 🖼️✨"
+authors = ["Torrez, Milton <torrez.mn@gmail.com>"]
+readme = "docs/README.md"
+license = "MIT"
+keywords = ["code", "share_code", "images"]
+packages = [
+    { include = "fotetizar" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pillow = "^10.4.0"
+
+[tool.poetry.scripts]
+fotetizar = "fotetizar.fotetizar:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
