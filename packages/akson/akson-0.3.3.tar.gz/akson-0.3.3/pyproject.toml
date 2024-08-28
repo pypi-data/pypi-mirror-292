@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "akson"
+version = "0.3.3"
+description = "CLI and libary for Akson AI agents"
+authors = ["Akson AI <hi@akson.ai>"]
+homepage = "https://akson.ai"
+repository = "https://github.com/akson-ai/akson-python"
+keywords = ["ai", "agents"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^2.7.3"
+click = "^8.1.7"
+prompt-toolkit = "^3.0.47"
+
+# We don't pin the exact version of these packages because
+# semver treats every update as a breaking change if major version is zero.
+# We don't want to cause a dependency conflict where akson package is installed.
+# These packages are quite stable and not expected to have breaking changes.
+fastapi = ">=0.110.0"
+uvicorn = ">=0.25.0"
+httpx = ">=0.24.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+flake8 = "^7.1.0"
+black = "^24.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+akson = 'akson.cli.main:cli'
+
+[tool.black]
+line-length = 120
