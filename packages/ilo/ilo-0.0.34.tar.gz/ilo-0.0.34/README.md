@@ -1,0 +1,70 @@
+<picture align="center">
+    <img alt="Ilo robot" src="https://images.squarespace-cdn.com/content/v1/6312fe2115db3003bd2ec2f1/546df043-e044-4003-867b-802738eb1332/LOGO+ILO+PYTHON.png">
+</picture>
+
+# ilo robot
+
+A package that lets users control ilo the new educational robot using python command lines.
+
+## Features
+
+- Moves the robot in **many directions** with python commands line
+- Creates **movement loops**
+- Play with the robot in **real time** with your keyboard
+- Use **colored plates** to make the robot move and many other **autonomous modes**
+
+## Where to get it ?
+
+```
+# with pip
+pip install ilo
+```
+
+## How to update it ?
+
+```
+# with pip
+pip install ilo --upgrade
+```
+
+## Dependencies
+
+- [Keyboard - Take full control of your keyboard with this small Python library. Hook global events, register hotkeys, simulate key presses and much more.](https://pypi.org/project/keyboard/)
+
+- [PrettyTable - A simple Python library for easily displaying tabular data in a visually appealing ASCII table format.](https://pypi.org/project/prettytable/)
+
+Don't worry, this dependency is automatically installed with the ilo library.
+
+## Example
+
+```
+import ilo
+
+my_ilo = ilo.robot(1)
+
+my_ilo.set_led_color(200,0,0)      # color is red
+my_ilo.set_led_color(0,0,200)      # color is blue
+
+while true:
+
+    print("Ilo moves forward")
+    my_ilo.move("front", 100)
+    
+    while my_ilo.get_distance() > 20:
+        pass
+        
+    my_ilo.stop()
+    print("ilo has encountered an obstacle")
+    
+    if my_ilo.get_distance() > 20:
+        my_ilo.move("right", 80)
+        print("ilo moves to the right at 80% speed")
+    
+    else:
+        my_ilo.move("left", 70)
+        print("ilo moves to the left at 70% speed")
+```
+
+## About us
+
+Find us on our [***website***](https://ilorobot.com) ;)
