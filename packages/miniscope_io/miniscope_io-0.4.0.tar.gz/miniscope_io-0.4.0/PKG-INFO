@@ -1,0 +1,83 @@
+Metadata-Version: 2.1
+Name: miniscope_io
+Version: 0.4.0
+Summary: Generic I/O for miniscopes
+Home-page: https://miniscope-io.readthedocs.io/
+License: AGPL-3.0
+Keywords: miniscope,neuroscience,io
+Author: sneakers-the-rat
+Author-email: JLSaunders987@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Multimedia :: Video
+Classifier: Topic :: Multimedia :: Video :: Capture
+Classifier: Topic :: Scientific/Engineering
+Provides-Extra: dev
+Provides-Extra: docs
+Provides-Extra: plot
+Provides-Extra: tests
+Requires-Dist: autodoc-pydantic (>=2.0.1,<3.0.0) ; extra == "docs" or extra == "dev"
+Requires-Dist: bitstring (>=4.2.3,<5.0.0)
+Requires-Dist: black (>=24.1.1,<25.0.0) ; extra == "dev"
+Requires-Dist: click (>=8.1.7,<9.0.0)
+Requires-Dist: furo (>2023.07.26) ; extra == "docs" or extra == "dev"
+Requires-Dist: matplotlib (>=3.9.2) ; extra == "tests" or extra == "docs" or extra == "plot" or extra == "dev"
+Requires-Dist: myst-parser (>3.0.0) ; extra == "docs" or extra == "dev"
+Requires-Dist: nox (>=2024.4.15) ; extra == "dev"
+Requires-Dist: numpy (>=1.25.0)
+Requires-Dist: opencv-python (>=4.7.0.72,<5.0.0.0)
+Requires-Dist: pandas (>=2.1.0,<3.0.0)
+Requires-Dist: pre-commit (>=3.7.1,<4.0.0) ; extra == "dev"
+Requires-Dist: pydantic (>=2.3.0,<3.0.0)
+Requires-Dist: pydantic-settings (>=2.0.3,<3.0.0)
+Requires-Dist: pyserial (>=3.5,<4.0)
+Requires-Dist: pytest (>=8.2.2,<9.0.0) ; extra == "tests" or extra == "dev"
+Requires-Dist: pytest-cov (>=5.0.0,<6.0.0) ; extra == "tests" or extra == "dev"
+Requires-Dist: pytest-timeout (>=2.3.1,<3.0.0) ; extra == "tests" or extra == "dev"
+Requires-Dist: pyyaml (>=6.0.1,<7.0.0)
+Requires-Dist: rich (>=13.6.0,<14.0.0)
+Requires-Dist: ruff (>=0.2.0,<0.3.0) ; extra == "dev"
+Requires-Dist: sphinx (>=6.2.1) ; extra == "docs" or extra == "dev"
+Requires-Dist: sphinx-click (>=6.0.0,<7.0.0) ; extra == "docs" or extra == "dev"
+Requires-Dist: tqdm (>=4.66.1,<5.0.0)
+Project-URL: Documentation, https://miniscope-io.readthedocs.io/
+Project-URL: Repository, https://github.com/Aharoni-Lab/miniscope-io
+Description-Content-Type: text/markdown
+
+# miniscope-io
+
+[![PyPI - Version](https://img.shields.io/pypi/v/miniscope-io)](https://pypi.org/project/miniscope_io/)
+[![Documentation Status](https://readthedocs.org/projects/miniscope-io/badge/?version=latest)](https://miniscope-io.readthedocs.io/en/latest/?badge=latest)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/miniscope-io)
+![PyPI - Status](https://img.shields.io/pypi/status/miniscope-io)
+[![Coverage Status](https://coveralls.io/repos/github/Aharoni-Lab/miniscope-io/badge.svg?branch=main)](https://coveralls.io/github/Aharoni-Lab/miniscope-io?branch=main)
+
+Generic i/o interfaces for miniscopes.
+
+In alpha - Fuller README forthcoming.
+
+See the docs for now: https://miniscope-io.readthedocs.io/
+
+
+
+## Licensing
+
+This package includes software sublicensed from more 
+restrictive licenses. Those licenses can be found
+in the `LICENSE` files in the respective directories 
+containing the unmodified source material
+
+* `miniscope_io/vendor/opalkelly` 
