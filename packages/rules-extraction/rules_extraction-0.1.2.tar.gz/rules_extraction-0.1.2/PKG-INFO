@@ -1,0 +1,114 @@
+Metadata-Version: 2.3
+Name: rules-extraction
+Version: 0.1.2
+Summary: Rules extraction for eXplainable AI
+Author-email: Arthur Babey <arthur.babey@heig-vd.ch>
+License: 3-Clause BSD License
+License-File: LICENSE
+Keywords: machine learning,xai
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Requires-Python: >=3.9.0
+Requires-Dist: black>=23.9.1
+Requires-Dist: build>=1.0.3
+Requires-Dist: coverage>=7.3.1
+Requires-Dist: flake8>=6.1.0
+Requires-Dist: matplotlib>=3.7.3
+Requires-Dist: numpy<2.0.0,>=1.17.4
+Requires-Dist: pandas==2.0.3
+Requires-Dist: pre-commit>=3.4.0
+Requires-Dist: scikit-learn>=1.1.3
+Requires-Dist: sphinx-autodoc-typehints>=1.22
+Requires-Dist: sphinx-rtd-theme>=1.3.0
+Requires-Dist: sphinx>=6.2.1
+Requires-Dist: torch>=2.0.1
+Requires-Dist: torchvision>=0.15.2
+Description-Content-Type: text/markdown
+
+# Rules extraction ![Python checks](https://github.com/HES-XPLAIN/rules-extraction/actions/workflows/build.yml/badge.svg)
+
+Rules extraction for eXplainable AI
+
+* [Documentation](https://hes-xplain.github.io/rules-extraction/)
+
+## Installation
+
+```
+pip install rules-extraction
+```
+
+## Contribution
+
+### Install Python
+
+Install [Python](https://www.python.org/), version 3.9 or newer (3.11 recommanded):
+
+* **Linux, macOS, Windows/WSL**: Use your package manager to install `python3` and `python3-dev`
+* **Windows**: `winget install Python.Python.3.11`
+
+> [!WARNING]
+> On Windows, avoid installing Python through the Microsoft Store as the package has additional permission restrictions.
+
+### Install dependencies
+
+Using pip
+
+```shell
+python -m venv .venv
+source .venv/bin/activate
+pip install .
+```
+
+> [!NOTE]
+> On Windows, use `.venv\Scripts\activate` instead.
+
+#### Add dependencies
+
+To add new dependencies to the project, add them to the `pyproject.toml` file.
+To add them to the virtualenv, use:
+
+```
+pip install .
+```
+
+### Work with virtualenv
+
+To activate the virtualenv, use the standard methods:
+
+* Unix: `source .venv/bin/activate`
+* Windows: `.venv\Scripts\activate`
+
+To leave the virtualenv, use `deactivate`.
+
+### Install Pre-commit hooks
+
+Git hooks are used to ensure quality checks are run by all developers every time
+before a commit.
+
+Install with `pip install pre-commit`.
+
+To enable pre-commit:
+
+```shell
+pre-commit install
+```
+
+Pre-commit hooks can be run manually with:
+
+```shell
+pre-commit run --all-files
+```
+
+## Release
+
+To publish the package on [PyPI](https://pypi.org/project/rules-extraction/), refer to [RELEASE](RELEASE.md).
