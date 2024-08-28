@@ -1,0 +1,19 @@
+name: my_model_env
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11.2  # Specify Python version
+  - pytorch  # Latest PyTorch with CUDA support
+  - mlflow  # Latest MLflow version from conda-forge
+  - pip
+  - numpy  # Let conda handle the version for better compatibility
+  - pandas  # Same here, no need to specify version unless necessary
+  - scikit-learn
+  - scipy
+  - cloudpickle
+  - dill
+  - pip:
+    - torch  # If you prefer to use pip version, ensure compatibility
+    - emb-model==0.2.9  # Custom model, version specified
