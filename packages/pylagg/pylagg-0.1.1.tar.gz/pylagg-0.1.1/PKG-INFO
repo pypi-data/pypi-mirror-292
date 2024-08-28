@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: pylagg
+Version: 0.1.1
+Summary: A CLI tool for creating images from genome data
+Author: Your Name
+Author-email: you@example.com
+Requires-Python: >=3.12,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: fastapi (>=0.110.0,<0.111.0)
+Requires-Dist: httpx (>=0.27.0,<0.28.0)
+Requires-Dist: mypy (>=1.9.0,<2.0.0)
+Requires-Dist: numpy (>=1.26.4,<2.0.0)
+Requires-Dist: pillow (>=10.2.0,<11.0.0)
+Requires-Dist: pytest (>=8.1.1,<9.0.0)
+Requires-Dist: python-multipart (>=0.0.9,<0.0.10)
+Requires-Dist: tqdm (>=4.66.4,<5.0.0)
+Requires-Dist: typer (>=0.11.1,<0.12.0)
+Requires-Dist: uvicorn (>=0.29.0,<0.30.0)
+Description-Content-Type: text/markdown
+
+# LAGG
+A CLI tool for generating chaos graphs from DNA sequences.
+
+
+## For Contributors
+All of the following instructions requires that you type `cd backend` so that your terminal points to backend directory.
+
+### Install Dependencies
+Install [Poetry](https://python-poetry.org) on your system.
+Installation instructions can be found [here](https://python-poetry.org/docs/#installation).
+
+Use `poetry install` to install all dependencies automatically in a new virtual environment.
+If you'd like to install the dependencies directly within the project directory, type the following command:
+```
+poetry config virtualenvs.in-project true
+```
+
+### Running the API
+To run the API, first, activate the virtual environment using `poetry shell`.
+
+Use `python main.py` to run the backend API.
+Add `/docs` to the end of the given URL to see the OpenAPI docs and run the endpoints.
+
+### Running Tests
+To run tests, first, activate the virtual environment using `poetry shell`.
+
+Use `pytest` to run all tests in the backend.
+
