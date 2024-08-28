@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "cluedin-magic"
+version = "0.1.0"
+description = "IPython magic commands for CluedIn"
+authors = ["Roman Klimenko <roman@klimenko.dk>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+ipython = "^8.26.0"
+cluedin = "^2.5.0"
+pandas = "^2.2.2"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+pytest = "^8.3.2"
+python-dotenv = "^1.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
