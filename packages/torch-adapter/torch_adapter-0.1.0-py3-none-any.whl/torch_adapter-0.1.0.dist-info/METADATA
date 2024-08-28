@@ -1,0 +1,65 @@
+Metadata-Version: 2.1
+Name: torch_adapter
+Version: 0.1.0
+Summary: This library offers an implementation of PyTorch’s preprocessing and inference steps using the OpenVINO API, effectively serving as an adapter for PyTorch.
+Keywords: Python,PyTorch,openvino
+Author-Email: LucaTamSapienza <tutordimatematica.ing@gmail.com>
+License: Copyright (c) 2024 Luca Tam
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.9
+Project-URL: Repository, https://github.com/LucaTamSapienza/torch_adapter
+Project-URL: Issues, https://github.com/LucaTamSapienza/torch_adapter/issues
+Requires-Python: >=3.9
+Requires-Dist: torch==2.3.0
+Requires-Dist: numpy
+Requires-Dist: torchvision==0.18.0
+Requires-Dist: openvino
+Description-Content-Type: text/markdown
+
+# torch_adapter
+
+**Requirments:**
+- python >= 3.9
+- venv
+
+> [!IMPORTANT]
+> If you encounter any issues or believe some dependencies are missing, please don't hesitate to contact me. Also, ensure to double-check each command to confirm that everything is functioning as expected.
+```sh
+git clone git@github.com:LucaTamSapienza/torch_adapter.git
+cd torch_adapter
+git checkout pre-release
+python3.9 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+You may need to export your PYTHONPATH to point to the torch_adapter directory:
+
+
+```
+export PYTHONPATH=$PYTHONPATH:path_to_torch_adapter
+```
+
+> [!NOTE]
+> Please replace path_to_torch_adapter with the actual path to the torch_adapter directory on your system.
+
+Now you can check if everything works by running `pytest tests/`
