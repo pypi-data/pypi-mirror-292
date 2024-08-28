@@ -1,0 +1,29 @@
+# pyproject.toml
+
+[build-system]
+requires=['setuptools>=61.0']
+build-backend='setuptools.build_meta'
+
+[project]
+name='pdf-unannotate'
+version='0.99.1'
+description="Command line script to easily remove annotations from PDFs."
+readme='README.md'
+authors=[{name="Michael Wilson", email='mawilson@udel.edu'}]
+classifiers=[
+	'Development Status :: 4 - Beta',
+	'Programming Language :: Python',
+	'Programming Language :: Python :: 3',
+]
+keywords=['pdf', 'PDF', 'PyPDF2', 'annotation']
+requires-python='>=3'
+dependencies=[
+	'PyPDF2>=3.0.1',
+	'tqdm>=4.66.5',
+]
+
+[project.urls]
+Homepage='https://github.com/mawilson1234/pdf-unannotate'
+
+[project.scripts]
+pdf-unannotate='pdf_unannotate.__main__:main'
