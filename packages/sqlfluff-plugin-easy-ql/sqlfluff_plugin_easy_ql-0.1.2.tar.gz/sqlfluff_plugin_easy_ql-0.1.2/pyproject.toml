@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sqlfluff-plugin-easy-ql"
+version = "0.1.2"
+authors = [
+  { name="Jordi Puig Rabat", email="jordipuig37@gmail.com" },
+]
+description = "A sqlfluff plugin"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "sqlfluff>=0.4.0"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/jordipuig37/easy-ql"
+Issues = "https://github.com/jordipuig37/easy-ql/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.entry-points."sqlfluff"]
+sqlfluff_easy_ql = "sqlfluff_easy_ql"
