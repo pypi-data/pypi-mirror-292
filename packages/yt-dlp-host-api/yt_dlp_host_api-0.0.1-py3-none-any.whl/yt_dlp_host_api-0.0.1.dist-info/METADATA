@@ -1,0 +1,101 @@
+Metadata-Version: 2.1
+Name: yt_dlp_host_api
+Version: 0.0.1
+Summary: A Python library for interacting with the yt-dlp-host API
+Author-email: "Amadeus (Wasys)" <tubik.corp@gmail.com>
+Project-URL: Homepage, https://github.com/Vasysik/yt-dlp-host-api
+Project-URL: Issues, https://github.com/Vasysik/yt-dlp-host-api/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests >=2.25.1
+
+# yt-dlp-host API Client
+
+This is a Python library for interacting with the yt-dlp-host API.
+
+## Installation
+
+You can install the library using pip:
+
+```
+pip install yt-dlp-host-api
+```
+
+## Usage
+
+Here's a basic example of how to use the library:
+
+```python
+import yt_dlp_host_api
+
+# Initialize the API client
+api = yt_dlp_host_api.api('http://your-api-url.com')
+client = api.get_client('YOUR_API_KEY')
+
+# Download a video
+client.get_video(url='https://youtu.be/1FPdtR_5KFo').save_file("test_video.mp4")
+print("Video saved to test_video.mp4")
+
+# Download a audio
+client.get_audio(url='https://youtu.be/1FPdtR_5KFo').save_file("test_audio.mp3")
+print("Audio saved to test_audio.mp3")
+
+# Get info
+info_json = client.get_info(url='https://youtu.be/1FPdtR_5KFo').get_json(['qualities', 'title'])
+print("Video info:", info_json)
+
+# Admin operations (requires admin API key)
+new_key = client.admin.create_key("user_key", ["get_video", "get_info"])
+keys = client.admin.list_keys()
+client.admin.delete_key("user_key")
+```
+
+## Features
+
+- Download YouTube videos
+- Retrieve video information
+- Admin operations:
+  - Create new API keys
+  - List existing API keys
+  - Delete API keys
+
+## API Reference
+
+### Client
+
+- `client.get_video(url, quality='best')`: Simple way to get the result of get_video
+- `client.get_audio(url)`: Simple way to get the result of get_audio
+- `client.get_info(url)`: Simple way to get the result of get_info
+- `client.send_task.get_video(url, quality='best')`: Initiates a get_video task
+- `client.send_task.get_audio(url, quality='best')`: Initiates a get_audio task
+- `client.send_task.get_info(url)`: Initiates a get_info task
+
+### Task
+
+- `task.get_status()`: Get the current status of a task
+- `task.get_result()`: Wait for and return the result of a task
+
+### TaskResult
+
+- `result.get_file()`: Get the file
+- `result.get_file_url()`: Get the URL of the downloaded file
+- `result.save_file(path)`: Save the downloaded file to the specified path
+- `result.get_json(fields=None)`: Get the JSON data for info tasks (optionally filtered by fields)
+
+### Admin
+
+- `client.admin.create_key(name, permissions)`: Create a new API key
+- `client.admin.list_keys()`: List all existing API keys
+- `client.admin.delete_key(name)`: Delete an API key
+
+## Error Handling
+
+The library uses exceptions to handle errors. Catch `yt_dlp_host_api.exceptions.APIError` to handle API-related errors.
+
+## Contributing
+
+Contributions to yt-dlp-host-api are welcome! If you have any suggestions, bug reports, or feature requests, please open an issue on the GitHub repository. Pull requests are also encouraged.
