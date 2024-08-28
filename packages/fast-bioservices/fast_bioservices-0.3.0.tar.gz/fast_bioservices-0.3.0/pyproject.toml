@@ -1,0 +1,21 @@
+[project]
+name = "fast-bioservices"
+version = "0.3.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "appdirs>=1.4.4",
+    "pandas>=2.0.0",
+    "rich>=13.7",
+    "loguru>=0.7.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.2",
+]
