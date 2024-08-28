@@ -1,0 +1,185 @@
+Metadata-Version: 2.1
+Name: intelisys
+Version: 0.5.6
+Summary: Intelligence/AI services for the Lifsys Enterprise with enhanced max_history_words, efficient history trimming, and improved document processing
+Home-page: https://github.com/lifsys/intelisys
+Author: Lifsys Enterprise
+Author-email: Lifsys Enterprise <contact@lifsys.com>
+License: MIT License
+        
+        Copyright (c) 2024 Lifsys Enterprise
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/lifsys/intelisys
+Project-URL: Documentation, https://intelisys.readthedocs.io/
+Project-URL: Repository, https://github.com/lifsys/intelisys.git
+Project-URL: Bug Tracker, https://github.com/lifsys/intelisys/issues
+Keywords: ai,intelligence,openai,anthropic,google,groq,openrouter,document processing
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai>=1.0.0
+Requires-Dist: jinja2>=3.0.0
+Requires-Dist: onepasswordconnectsdk>=1.0.0
+Requires-Dist: anthropic>=0.3.0
+Requires-Dist: pillow>=8.0.0
+Requires-Dist: termcolor>=1.1.0
+Requires-Dist: aiohttp>=3.7.4
+Requires-Dist: pydantic>=1.8.0
+Requires-Dist: PyPDF2>=1.26.0
+Requires-Dist: python-pptx>=0.6.18
+Requires-Dist: openpyxl>=3.0.7
+Requires-Dist: python-docx>=0.8.11
+Requires-Dist: chardet>=4.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: flake8>=3.9; extra == "dev"
+Requires-Dist: black>=21.5b1; extra == "dev"
+
+# Intelisys: Your Advanced AI Assistant Library
+
+Welcome to Intelisys, a powerful and versatile AI assistant library that provides a unified interface for interacting with various AI models and providers. Intelisys is designed to make AI integration seamless and efficient for developers of all levels.
+
+## What's New in Version 0.5.6
+
+- Enhanced `max_history_words` functionality for improved conversation management
+- Optimized history trimming for efficient memory usage
+- Improved asynchronous support with better error handling
+- Added support for structured output with OpenAI provider using Pydantic models
+- Expanded reference capabilities, now supporting various document types (PDF, Word, Excel, PowerPoint)
+- Improved performance for long-running conversations
+
+## Key Features
+
+- Multi-provider support (OpenAI, Anthropic, OpenRouter, Groq)
+- Asynchronous operations for improved performance
+- Template-based chat for easy customization
+- Structured output support using Pydantic models (OpenAI only)
+- Image processing capabilities
+- Efficient conversation history management
+- Reference information support from various sources
+
+## Installation
+
+Install Intelisys using pip:
+
+```bash
+pip install intelisys
+```
+
+## Quick Start
+
+Here's a simple example to get you started:
+
+```python
+from intelisys import Intelisys
+
+# Create an Intelisys instance
+ai = Intelisys(provider="openai", model="gpt-4")
+
+# Chat with the AI
+response = ai.chat("What is the capital of France?")
+print(response)
+```
+
+## Advanced Usage
+
+### Template-Based Chat
+
+Use templates for more structured interactions:
+
+```python
+ai = Intelisys(provider="anthropic", model="claude-3-5-sonnet-20240620")
+ai.set_default_template("Explain {{topic}} in simple terms.")
+response = ai.template_chat(render_data={"topic": "quantum computing"})
+print(response)
+```
+
+### Asynchronous Operations
+
+Perform asynchronous chats for improved efficiency:
+
+```python
+import asyncio
+
+async def async_chat():
+    ai = Intelisys(provider="openai", model="gpt-4", use_async=True)
+    response = await ai.chat_async("Discuss the future of AI")
+    print(response)
+
+asyncio.run(async_chat())
+```
+
+### Structured Output
+
+Get structured responses using Pydantic models (OpenAI only):
+
+```python
+from pydantic import BaseModel
+
+class MovieReview(BaseModel):
+    title: str
+    rating: float
+    summary: str
+
+ai = Intelisys(provider="openai", model="gpt-4")
+ai.set_output_model(MovieReview)
+result = ai.chat("Review the movie 'Inception'")
+print(result)  # This will be a MovieReview instance
+```
+
+### Reference Information
+
+Provide context to your AI assistant:
+
+```python
+ai = Intelisys(provider="openai", model="gpt-4")
+ai.reference("https://example.com/article.html")
+ai.reference("/path/to/local/document.pdf")
+response = ai.chat("Summarize the referenced information")
+print(response)
+```
+
+## API Reference
+
+For a complete API reference, please refer to our [documentation](https://intelisys.readthedocs.io/).
+
+## Contributing
+
+We welcome contributions to Intelisys! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Changelog
+
+For a detailed list of changes and version history, please refer to the [CHANGELOG.md](CHANGELOG.md) file.
