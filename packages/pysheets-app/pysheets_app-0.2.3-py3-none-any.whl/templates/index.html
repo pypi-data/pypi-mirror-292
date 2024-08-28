@@ -1,0 +1,75 @@
+<!--
+ Copyright (c) 2024 laffra - All Rights Reserved. 
+ 
+ This file is part of the PySheets projects and contains the HTML for rendering the applicaiton UI.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>PySheets</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    {{pyscript|safe}}
+
+    <script src="lib/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="lib/jqueryui.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="lib/jqueryui.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="lib/codemirror.js"></script>
+    <script src="lib/python.min.js"></script>
+    <link rel="stylesheet" href="lib/codemirror.min.css">
+
+    <script defer src="lib/leader-line.min.js"></script>
+    <script defer src="lib/html2canvas.min.js"></script>
+
+    <script src="pysheets.js" type="module"></script>
+
+    <script>
+        window.version_pyscript = '2024.8.2';
+        window.version_interpreter = '{{version_interpreter}}';
+        window.runtime = '{{runtime}}';
+        window.version = '{{version}}';
+        window.editor_width = parseFloat('{{editor_width}}');
+        window.timestamp = parseFloat('{{timestamp|safe}}');
+        window.path = '{{path}}';
+    </script>
+    <link defer rel="stylesheet" href="pysheets.css">
+
+    <{{runtime}}-config>
+        interpreter = "{{interpreter|safe}}"
+        {{auto|safe}}
+        {{packages|safe}}
+        [files]
+        {{files|safe}}
+    </{{runtime}}-config>
+    <script type="{{runtime}}">
+        import pysheets
+        pysheets.main()
+    </script>
+    <style>
+        {{css}}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img class="logo" src="favicon.ico">
+            <div id="menu" class="menu"></div>
+        </div>
+        <div id="cell-attributes-container" class="cell-attributes-container"></div>
+        <div id="info" class="info">
+            <input id="title" value={{loading}}>
+        </div>
+        <div class="column buttons-container"></div>
+        <div class="column user-image-container">
+        </div>
+    </div>
+    <div id="main" class="main" tabindex="0">
+    {{sheet_html|safe}}
+    </div>
+</body>
+
+</html>
