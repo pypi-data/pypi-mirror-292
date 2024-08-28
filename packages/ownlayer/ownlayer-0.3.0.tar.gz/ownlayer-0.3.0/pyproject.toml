@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "ownlayer"
+version = "0.3.0"
+description = "Ownlayer Python SDK"
+authors = ["Diego Sisto <diego@ownlayer.com>", "Jack <jack@ownlayer.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+python-dotenv = "^1.0.1"
+wrapt = "^1.16.0"
+requests = "^2.32.3"
+datetime = "^5.5"
+pydantic = "^2.8.2"
+openai = { version = "^1.37.2", optional = true }
+anthropic = { version = "^0.34.0", optional = true }
+
+[tool.poetry.extras]
+openai = ["openai"]
+anthropic = ["anthropic"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+Homepage = "https://github.com/OwnLayer/ownlayer_py_sdk"
+Issues = "https://github.com/OwnLayer/ownlayer_py_sdk/issues"
