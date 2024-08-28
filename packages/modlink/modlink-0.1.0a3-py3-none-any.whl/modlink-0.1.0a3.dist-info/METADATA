@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: modlink
+Version: 0.1.0a3
+Summary: Modular links library for developing agent communication.
+License: GPL-3.0-or-later
+Author: Kyle Madsen
+Author-email: kyle.mdsn@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: pydantic (>=2.5.3,<3.0.0)
+Description-Content-Type: text/markdown
+
+[![PyPI version](https://img.shields.io/pypi/v/modlink.svg)](https://pypi.org/project/modlink/)
+[![Python versions](https://img.shields.io/pypi/pyversions/modlink.svg)](https://pypi.org/project/modlink/)
+[![License](https://img.shields.io/pypi/l/modlink.svg)](https://pypi.org/project/modlink/)
+[![Wheel](https://img.shields.io/pypi/wheel/modlink.svg)](https://pypi.org/project/modlink/)
+
+# ModLink
+
+ModLink is a library designed to give agents a means to communicate.
+
+See the [PATTERN.md](PATTERN.md) for more information on the pattern used in ModLink.
+
+## Usage
+
+For more detailed usage and examples, see the [examples](examples/README.md) directory. After defining your agents, you can link them with additional tools. For instance, you can use [AgentArgParser](modlink/tools/agent_arg_parser.py) to enable command-line interaction with your agents.
+
+## Contributing
+
+We welcome contributions! If you'd like to contribute, please see our [CONTRIBUTING.md](CONTRIBUTING.md) for more information. 
+
+## License
+
+ModLink is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for more details.
+
