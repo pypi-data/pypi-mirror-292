@@ -1,0 +1,137 @@
+Metadata-Version: 2.1
+Name: periorbital_package
+Version: 0.1.0
+Summary: A package for periorbital distance segmentation and measurement.
+Home-page: https://github.com/monkeygobah/periorbital_package
+Author: Georgie Nahass
+Author-email: gnahas2@uic.edu
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: torch>=1.9.0
+Requires-Dist: torchvision>=0.10.0
+Requires-Dist: huggingface_hub
+Requires-Dist: numpy>=1.19.2
+Requires-Dist: scipy>=1.5.2
+Requires-Dist: matplotlib>=3.3.2
+Requires-Dist: opencv-python>=4.5.1
+Requires-Dist: scikit-learn>=0.24.2
+Requires-Dist: pillow>=8.0.1
+Requires-Dist: pandas>=1.1.3
+Requires-Dist: mediapipe>=0.8.6
+
+# Periorbital Segmentation and Distance Measurement Package
+
+## Table of Contents
+
+- [Background](#background)
+- [Installation](#installation)
+- [Designed with Two Primary Users in Mind](#designed-with-two-primary-users-in-mind)
+- [Instructions for User 1](#instructions-for-user-1)
+- [Instructions for User 2](#instructions-for-user-2)
+- [What is Returned](#what-is-returned)
+- [Important Functions and Classes](#important-functions-and-classes)
+- [Things to Keep in Mind](#things-to-keep-in-mind)
+
+## Background
+
+This package is designed to assist researchers and practitioners in the field of ophthalmology and facial analysis by providing tools to segment periorbital features and compute associated distance measurements. Whether you have a pretrained segmentation model or require a full pipeline from segmentation to distance measurement, this package offers a streamlined approach to analyze periorbital regions in facial images.
+
+## Installation
+
+To install this package, you can clone the repository and install it locally, or install it directly via pip:
+
+``` bash
+pip install git+https://github.com/monkeygobah/periorbital_package.git
+```
+
+## Designed with Two Primary Users in Mind
+
+1. **Users with an image of a face or eyes looking to compute periorbital distances and associated plots but without a segmentation model**:
+   - This user can leverage the package's built-in segmentation models to process their images, obtain segmentation masks, and compute the relevant periorbital distances and plots.
+  
+2. **Users who have developed their own segmentation model for the brow, iris, and sclera (+/- caruncle and lid) and want to use the segmentation masks to get arrays**:
+   - This user can input their custom segmentation masks into the package to compute periorbital measurements without the need for additional segmentation.
+
+## Instructions for User 1
+
+1. Prepare your image in a compatible format (e.g., JPEG, PNG).
+2. Use the `run_periorbital_pipeline` function with your image and specify `full_face=True` if your image contains a full face.
+3. The package will handle segmentation and return measurements and plots.
+
+## Instructions for User 2
+
+1. Prepare your segmentation masks for the brow, iris, sclera, and optional caruncle and lid. For every anatomical object, the mask for both the left and the right anatomical structure needs to be stored in a dict with the following keynames and correspinding pixel values to be compatible with the measurement pipeline
+
+    ```python
+    sample_dict = {
+        'sclera_orig': 2,
+        'iris': 3,
+        'brow': 1,
+        'caruncle': 4,
+        'lid': 5
+    }
+    ```
+This means that if your segmentation model predicts all 5 structures, you will have 10 entries in the dict (5 for left, and 5 for right). To be compatible with the measurement pipeline, only sclera_orig, iris, and brow are required.
+
+2. Use the `run_periorbital_pipeline` function with your masks and set the `model='custom'` parameter.
+3. The package will use your provided masks to compute the relevant measurements.
+
+## What is Returned
+
+When you run the periorbital pipeline, the following outputs are returned:
+
+- **Pixel Measurements DataFrame**: A DataFrame containing periorbital measurements in pixel values.
+- **Millimeter Measurements DataFrame**: A DataFrame containing periorbital measurements converted to millimeters.
+- **Segmentation Masks**: The segmentation masks for each anatomical structure.
+- **Overlay Images**: Images with segmentation masks overlaid on the original image.
+- **Annotated Image**: An image with annotated periorbital measurements.
+
+## Important Functions and Classes
+
+- **`run_periorbital_pipeline`**: The main function to run the entire pipeline, from segmentation to measurement extraction.
+
+- **`PupilIris`, `Sclera`, `Brows`**: Classes responsible for extracting specific anatomical features from the segmentation masks:
+  - **`PupilIris`**: Extracts the centroid, diameter, and superior/inferior points of the iris.
+  - **`Sclera`**: Extracts key points of the sclera and fits polynomials to the upper and lower borders of the sclera.
+  - **`Brows`**: Extracts key points on the eyebrows relative to the medial canthus, lateral canthus, and iris center.
+
+- **`EyeFeatureExtractor`**: A class that coordinates the extraction of all relevant periorbital features from the segmentation masks. It utilizes `PupilIris`, `Sclera`, and `Brows` classes to gather and organize landmarks into a cohesive structure for measurement.
+
+- **`EyeMetrics`**: 
+  - **Description**: This class is responsible for calculating various periorbital distances based on the extracted landmarks. 
+  - **Example Usage**: You can instantiate this class with the `landmarks` and `predictions_dict` and call its `run` method to get a dictionary of measurements in pixel values.
+  - **Code Example**:
+    ```python
+    periorbital_calculator = EyeMetrics(landmarks, predictions_dict)
+    measurements_pix = periorbital_calculator.run()
+    ```
+
+- **`Plotter`**:
+  - **Description**: This class is used to create annotated plots of the periorbital measurements directly on the resized images. It visualizes the extracted features and measurements.
+  - **Example Usage**: After calculating the measurements, use this class to generate annotated images that overlay the results on the original image.
+  - **Code Example**:
+    ```python
+    periorbital_plotter = Plotter()
+    image_annot = periorbital_plotter.create_plots(resize_img, predictions_dict, landmarks, img_name, measurements_pix)
+    ```
+
+- **`Tester`**:
+  - **Description**: This class is responsible for handling the segmentation process. It loads a specified model, applies it to the input image, and returns the segmentation masks and predictions. 
+  - **Example Usage**: You can instantiate this class with the model weights and image name, then call the `test_single_image` method to obtain the segmentation results.
+  - **Code Example**:
+    ```python
+    test_obj = Tester(model_weights=model, image_name=img_name)
+    predictions_dict, resize_img, segmentation_mask_array, merged_image_array = test_obj.test_single_image(img)
+    ```
+
+
+## Things to Keep in Mind
+
+1. **Iris Segmentation Failure**:
+   - If the iris fails to be segmented in both eyes, the entire program will not work. The current implementation cannot handle cases where one eye is closed or absent.
+
+2. **Brow Segmentation Failure**:
+   - If the brow is not segmented, the coordinates for the brow points will be set to 0. This will result in curious measurements in the final dataset of periorbital measurements. Future improvements should address this limitation.
