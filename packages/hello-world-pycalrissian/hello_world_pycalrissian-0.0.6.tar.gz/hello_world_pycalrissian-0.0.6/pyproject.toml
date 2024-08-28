@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools", "wheel", "build", "setuptools-scm","unidep","unidep[toml]"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hello-world-pycalrissian"
+version = "0.0.6"
+authors = [
+    {name = "Parham Membari", email = "parham.membari@terradue.com"},
+]
+description = "A very simple Hello world app to submit a job using pycalrissian"
+readme = "README.md"
+keywords = ["pycalrissian", "kubernetes"]
+license = {text = "MIT"}
+dynamic = ["dependencies", "optional-dependencies"]
+[tool.unidep]
+channels = ["conda-forge","terradue"]
+dependencies = [
+    { pip ="click2cwl"},
+    { pip = "loguru" },
+    { pip = "kubernetes==28.1.0" },
+]
+
+[project.scripts]
+hello-world-pycalrissian = "hello_world_pycalrissian.app:main"
+
+[project.urls]
+Homepage = "https://gitlab.com/pmembari/simple-app-with-pycalrissian"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+
