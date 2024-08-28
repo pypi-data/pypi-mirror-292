@@ -1,0 +1,81 @@
+\begin{table}[t]
+
+((* if tmpl_data.obs_merger_class_0 == 'All Markets' *))
+	((* set obs_merger_class_0 = "All Markets" *))
+((* else *))
+	((* set obs_merger_class_0 = "Markets with, ``" + tmpl_data.obs_merger_class_0 + "''" *))
+((* endif *))
+
+((* set obs_merger_class_1 = "Markets with, ``" + tmpl_data.obs_merger_class_1 + "''" *))
+
+    \centering
+    \caption{FTC Merger Investigations Data}\label{tbl:FTCInvData_\JINVAR{- tmpl_data.obs_summary_type }_alt}
+    {\footnotesize
+        \JINVAR{ tmpl_data.obs_summary_type_title } \\
+        Grouped by Entry Conditions and Reporting Period \\[0.5\baselineskip]
+    }
+
+    \sffamily\scriptsize\addfontfeatures{Numbers={Monospaced,Lining}}
+    \SetTblrInner{stretch=0, rowsep=3pt, colsep=3pt, hspan=even}
+    \begin{tikzpicture}[auto, font = \sffamily]
+    \begin{tblr}{
+        baseline=T,
+        width=\textwidth,
+        colspec = {%
+            Q[c,m,wd=\JINVAR{ tmpl_data.hdrcol_width }]%
+            Q[r,m]%
+            Q[r,m]%
+            Q[r,m]%
+            Q[r,m]%
+            Q[r,m]%
+            Q[r,m]%
+            Q[r,m]%
+            Q[r,m]%
+        },
+        row{odd[6]} = {bg=table_bar_green},
+        row{1-5} = {fg=white, bg=OBSHDRFill},
+        column{1} = {fg=white, bg=OBSHDRFill},
+        cell{1}{1} = {r=5, c=1}{c, f},
+        cell{1}{2} = {r=1, c=8}{c},
+        cell{2}{2,6} = {r=1, c=4}{c},
+        cell{3,4}{2,4,6,8} = {r=1, c=2}{c},
+        cell{5}{2-9} = {r, m, cmd=\rothead},
+        vline{4,8} = {3-5}{1pt, white},
+        vline{6} = {2-5}{1pt, white},
+        vline{4,6,8} = {6-Z}{1pt, OBSHDRFill},
+        hline{Y} = {1-Z}{1pt, OBSHDRFill},
+    }
+        { \JINVAR{- tmpl_data.hdrcol_desc_text } } &
+        Observed Data & & & & & & & \\
+        sp0 &
+        \JINVAR{ obs_merger_class_0 } & sp0 & sp0 & sp0 &
+        \JINVAR{ obs_merger_class_1 } & sp0 & sp0 & sp0 \\
+        sp0 &
+        \JINVAR{ tmpl_data.obs_periods_str|replace(" & ", " & sp0 & ") } & sp0 &
+        \JINVAR{ tmpl_data.obs_periods_str|replace(" & ", " & sp0 & ") } & sp0 \\
+        sp0 &
+        \JINVAR{ tmpl_data.mkt_counts_str_class_0|replace(" & ", " & sp0 & ") } & sp0 &
+        \JINVAR{ tmpl_data.mkt_counts_str_class_0|replace(" & ", " & sp0 & ") } & sp0 \\
+        sp0 &
+        {Relative \\ Frequency} &
+        {Proportion \\ Enforced} &
+        {Relative \\ Frequency} &
+        {Proportion \\ Enforced} &
+        {Relative\\ Frequency} &
+        {Proportion \\ Enforced} &
+        {Relative \\ Frequency} &
+        {Proportion \\ Enforced} \\
+        %
+        \JINVAR{ tmpl_data.invdata_datstr -}
+    \end{tblr}
+    \end{tikzpicture}
+
+    \setlist{nosep}
+    \vspace{\baselineskip}
+    {\raggedright\sffamily\tiny
+        \JINVAR{ tmpl_data.invdata_notestr }
+        \vspace{\baselineskip}
+        \JINVAR{ tmpl_data.invdata_sourcestr }
+    }
+    \vspace{\baselineskip}
+\end{table}
