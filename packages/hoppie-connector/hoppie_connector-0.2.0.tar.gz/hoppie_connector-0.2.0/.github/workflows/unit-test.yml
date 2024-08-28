@@ -1,0 +1,39 @@
+name: Perform unit-test and code linting
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - '**.py'
+      - '.github/workflows/unit-test.yml'
+      - 'pyproject.toml'
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .[Test]
+    
+    - name: Run unit tests
+      run: |
+        pytest
+    
+    - name: Perform code linting
+      run: |
+        ruff check
