@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools >= 61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nc-helpers"
+description = "helper function for ncubed software"
+# readme = "README.md"
+authors = [{ name="Jasper Schoenmaker", email="jasper.schoenmaker@ncubed.nl" }]
+requires-python = ">=3.10"
+keywords = ["ncubed", "helpers", "mis", "nc_accelerator"]
+version = "v1.0.1"
+# license = {text = "GPL-3.0 license"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "diffsync>=2.0.0",
+    "requests>=2.32.3",
+    "python-dotenv>=1.0.1"
+]
+
+#[project.optional-dependencies]
+#dev = [
+   # "bandit==1.7.4",
+#]
+
+
