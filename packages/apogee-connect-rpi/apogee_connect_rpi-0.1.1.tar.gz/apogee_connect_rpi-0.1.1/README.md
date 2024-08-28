@@ -1,0 +1,232 @@
+# Apogee Connect for Raspberry Pi 
+
+Apogee Connect for Raspberry Pi is a lightweight script intended for automating the data collection process with Apogee's Bluetooth sensors. This command line application will automatically connect to and collect data from an Apogee Bluetooth sensor and store the data in a .csv file with various configurable options.
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Installation](#installation)
+   - [Prerequisite](#prerequisite)
+   - [Installation](#installation-1)
+   - [Update](#update)
+   - [Uninstall](#uninstall)
+- [Basic Example](#basic_example)
+- [Commands](#commands)
+   - [collect](#collect)
+   - [config](#config)
+   - [list](#list)
+   - [scan](#scan)
+   - [stop](#stop)
+   - [version](#version)
+   - [help](#help)
+- [Contact](#contact)
+
+## Installation
+
+### *Prerequisite*
+
+In order to install Apogee Connect for Raspberry Pi, you will need pip (the package installer for Python). Pip is likely already included by default on a Raspberry PI or if you installed Python from source or with an installer from python.org. You can confirm pip is installed by running the command:
+
+`pip --version`
+
+If pip isn't already installed visit the following site for instructions on a simple pip installation:
+
+[https://pip.pypa.io/en/stable/installation/](https://pip.pypa.io/en/stable/installation/)
+
+### *Installation*
+
+1) We recommend installing the app onto a Raspberry Pi using pipx, a tool that uses pip in order to install stand-alone command line applications in an isolated environment. You will only ever need to install pipx once. In terminal, run the following command:
+
+`sudo apt install pipx`
+
+   Note: You may need to close and restart your terminal after installing pipx for it to be recognized.
+
+2) Install the Apogee Connect for Raspberry Pi from the Python Package Index by running the following command in terminal:
+
+`pipx install apogee-connect-rpi`
+
+3) Add the install location to your PATH environment variables so that it can be run from anywhere in the terminal.
+
+`pipx ensurepath`
+
+4) Verify installation by running the following command (It may be necessary to close and restart terminal first for the changes to take effect):
+
+`apogee --version`
+
+#### *Update*
+
+Whenever updates are available, the app can be updated simply by running the following command in terminal:
+
+`pipx upgrade apogee-connect-rpi`
+
+#### *Uninstall*
+
+To uninstall, run the following command in terminal:
+
+`pipx uninstall apogee-connect-rpi`
+
+
+## Basic Example
+
+Note: “apogee” is the command that can be run from the terminal at any location to use the app.
+ 
+1. Scan for nearby Apogee sensors to obtain sensor's MAC address required for connection.
+
+`apogee scan`
+
+2. Start collecting data from the sensor with the MAC address of AA:BB:CC:DD:EE:FF at an interval of 10 minutes.
+
+`apogee collect AA:BB:CC:DD:EE:FF --interval 10`
+ 
+3. See a list of all currently collecting sensors along with the number of logs currently collected, data save location, start/end time, etc.
+
+`apogee list`
+ 
+4. Stop data collection from the sensor with the MAC address of AA:BB:CC:DD:EE:FF at a future time of 1726247820 (Epoch timestamp in seconds).
+
+`apogee stop AA:BB:CC:DD:EE:FF --end 1726247820`
+
+
+## Commands
+
+*Key:*
+
+`apogee command <required_arguments> [--optional_arguments (default: value)]`
+
+
+### collect
+
+*Usage*
+
+Automatically collect data from an Apogee sensor and write the data to a csv file (For peace of mind, all this data is also logged in the sensors internal memory and the application will attempt to retrieve missed data if there is a temporary interruption in connection)
+
+*Example*
+
+`apogee collect E8:63:32:06:6D:7D  --interval 10 --start 1720647720 --end 1721250915 --file /usr/documents/greenhouse-data.csv --append`
+
+*Documentation*
+
+`apogee collect <MAC address> [--interval (default: 5)] [--start (default: Now)] [--end (default: Never)] [--file (default: ./data/MAC_address.csv)] [--append]`
+
+| Argument | Default Value | Usage |
+| -------- | ------------- | ----- |
+| Mac Address| N/A (required) | MAC address of sensor in the format of AA:BB:CC:DD:EE:FF |
+| -i, --interval | 5 minutes | Collect data every set number of minutes (must be a positive integer) |
+| -s, --start | Now | Start time for data collection using epoch time (Unix timestamp in seconds) |
+| -e, --end | Never | End time for data collection using epoch time (Unix timestamp in seconds) |
+| -f, --file | ./data/MAC_address.csv | File path to write data to csv file. Will create folders and files is they don’t exist. |
+| -a, --append | N/A | Add this flag to automatically append data to the file if it exists instead of overwriting. |  
+
+
+### config
+
+*Usage*
+
+Change or view the default configuration of application.
+
+*Example*
+
+`apogee config --filepath /usr/documents/live-data --precision 4 --temp F --par-filtering True`
+
+*Documentation*
+
+`apogee config [--filepath (default: ./data/)] [--precision (default: 2)] [--temp (default: C)] [--par-filtering (default: False)]`
+
+| Argument | Default Value | Usage |
+| -------- | ------------- | ----- |
+| (N/A)| (N/A) | If no optional arguments are provided, the current configuration will be displayed. |
+| -f, --filepath | ./data/ | The default path to save collected data. Adjust to avoid needing to specify full filepath every time data collection is initiated. |
+| --p, --precision | 2 | Maximum number of decimal places for live data. |
+| -t, --temp | C | Change preferred temperature units. Enter “C” for Celsius and “F” for Fahrenheit (without quotations). |
+| -pf, --par-filtering | False | Filter negative PAR (PPFD) values to compensate for sensor "noise" in low-light conditions. Enter "True" or "False" (without quotations). |
+
+### list
+
+*Usage*
+
+List all the sensors currently collecting data.
+
+*Example*
+
+`apogee list`
+
+*Documentation*
+
+`apogee list`
+
+
+### scan
+
+*Usage*
+
+Scan for nearby Apogee sensors
+
+*Example*
+
+`apogee scan --time 15`
+
+*Documentation*
+
+`apogee scan [--time (default: 10)]`
+
+| Argument | Default Value | Usage |
+| -------- | ------------- | ----- |
+|-t, --time | 5-20 | Number of seconds to scan for Apogee Bluetooth sensors. If not set, scanning will continue until no new sensors are being discovered or a maximum of 20 seconds. |
+
+
+### stop
+
+*Usage*
+
+Stop data collection from an Apogee sensor. Can optionally use the '--all' flag to stop data collection from all Apogee sensors instead.
+
+*Example*
+
+`apogee stop E8:63:32:06:6D:7D  --end 1724428813`
+
+*Documentation*
+
+`apogee stop <MAC address> [--end (default: now)]`
+
+| Argument | Default Value | Usage |
+| -------- | ------------- | ----- |
+| MAC address | N/A (required) | MAC address of sensor in the format of AA:BB:CC:DD:EE:FF (Required unless the '--all' flag is used). |
+| -e, --end | Now | End time for data collection using epoch time (Unix timestamp in seconds). Cannot be used when using the '--all' flag. |
+| -a, --all | N/A | Stop data collection for all sensors (Can be used instead of the MAC address requirement).|
+
+
+### version
+
+*Usage*
+
+Show current application version
+
+*Example*
+
+`apogee --version`
+
+*Documentation*
+
+`apogee --version`
+
+`apogee -v`
+
+
+### help
+
+*Usage*
+
+Show help menu for entire application or for specific command, depending on usage
+
+*Example*
+
+`apogee collect --help`
+
+*Documentation*
+
+Entering just `--help` (or `-h`) will show a high-level overview of available commands.
+Entering a command followed by `--help` will show a menu with required and optional arguments.
+Any unrecognized command will also print the high-level overview help menu.
+
+## Contact
+
+For more information or additional help, contact Apogee Instruments at: [techsupport@apogeeinstruments.com](mailto:techsupport@apogeeinstruments.com) or [+1(435)245-8012](tel:+14352458012)

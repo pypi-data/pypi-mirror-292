@@ -1,0 +1,45 @@
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "apogee-connect-rpi"
+dynamic = ["version"]
+description = "Automates data collection with Bluetooth sensors from Apogee Instruments, Inc. using a Raspberry Pi"
+authors = [{name = "Apogee Instruments, Inc.", email = "developer@apogeeinstruments.com"}]
+license = {file = "LICENSE"}
+readme = "README.md"
+dependencies = [
+    "numpy", 
+    "python-crontab", 
+    "bleak", 
+    "asyncio",
+    "filelock"
+]
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+[project.scripts]
+apogee = "apogee_connect_rpi.main:main"
+
+[tool.setuptools]
+packages = ["apogee_connect_rpi"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"apogee_connect_rpi" = [
+    "Helpers/*.py", 
+    "Helpers/*.sh",
+    "json/*.json",
+    "Scripts/*.py",
+    "README.md"
+]
