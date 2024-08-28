@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: superset_custom_visual
+Version: 0.1.0
+Summary: Custom visualization plugin for Apache Superset
+Home-page: https://github.com/your-github-repo
+Author: Your Name
+Author-email: your.email@example.com
+Keywords: superset plugin visualization
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: JavaScript
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/markdown
+Requires-Dist: apache-superset>=1.0.0
+
+# customchart
+
+This is the Custom Chart Superset Chart Plugin.
+
+### Usage
+
+To build the plugin, run the following commands:
+
+```
+npm ci
+npm run build
+```
+
+Alternatively, to run the plugin in development mode (=rebuilding whenever changes are made), start the dev server with the following command:
+
+```
+npm run dev
+```
+
+To add the package to Superset, go to the `superset-frontend` subdirectory in your Superset source folder (assuming both the `customchart` plugin and `superset` repos are in the same root directory) and run
+```
+npm i -S ../../customchart
+```
+
+After this edit the `superset-frontend/src/visualizations/presets/MainPreset.js` and make the following changes:
+
+```js
+import { Customchart } from 'customchart';
+```
+
+to import the plugin and later add the following to the array that's passed to the `plugins` property:
+```js
+new Customchart().configure({ key: 'customchart' }),
+```
+
+After that the plugin should show up when you run Superset, e.g. the development server:
+
+```
+npm run dev-server
+```
