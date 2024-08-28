@@ -1,0 +1,5 @@
+GENERATE_GRAPH_PATH = "/generate"
+IMPORT_GRAPH_PATH = "/import"
+GET_ARNS_PATH = "/arns"
+GET_SUPPORTED_RESOURCES = "/supported-resources"
+COMPUTE_STATUS_PATH = "/status"
