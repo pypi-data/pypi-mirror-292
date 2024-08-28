@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: passme
+Version: 1.2.1
+Summary: Password management with command line
+Author: Katsutoshi Seki
+License: MIT
+Project-URL: Homepage, https://github.com/sekika/passme/blob/master/doc/README.rst
+Project-URL: Source, https://github.com/sekika/passme
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Topic :: Security
+Classifier: Topic :: Security :: Cryptography
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: BSD
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Natural Language :: English
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: ConfigObj
+Requires-Dist: clipboard
+Requires-Dist: setuptools
+
+# Passme
+
+Passme is a password management tool with command line or web browzer. It helps you generate strong passwords for many sites. It generates password every time from a site-specific seed (sitekey) stored in the configuration file (sitekey file) and a master password that you memorize and type every time.
+
+## Features
+
+- Easy to use from command line. Best fit for programmers.
+- HTML file can be created to generate the passwords from your mobile devices.
+- Site-specific seeds are stored in a single text file and can be managed easily.
+
+## Basic usage
+
+```
+> passme google
+Master password: (input master password)
+OT9BD5h6cHmWlN
+Password copied to clipboard.
+```
+
+## Use as a Python library
+
+```
+import passme
+master = input('Input master password: ')
+password = passme.readpass('google', master)
+print('Google password: ' + password)
+```
+
+## Full document
+
+- See [full document](https://github.com/sekika/passme/blob/master/doc/README.rst)
+- [Tutorial movie](https://youtu.be/6DXPhyYhYsE)
