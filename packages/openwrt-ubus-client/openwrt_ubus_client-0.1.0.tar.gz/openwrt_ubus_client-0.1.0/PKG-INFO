@@ -1,0 +1,34 @@
+Metadata-Version: 2.3
+Name: openwrt-ubus-client
+Version: 0.1.0
+Summary: Client for OpenWrt microbus
+Project-URL: Documentation, https://github.com/andyjduncan/openwrt-ubus-client#readme
+Project-URL: Issues, https://github.com/andyjduncan/openwrt-ubus-client/issues
+Project-URL: Source, https://github.com/andyjduncan/openwrt-ubus-client
+Author-email: Andy Duncan <andy@adjectivecolournoun.com>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: httpx==0.27.0
+Provides-Extra: test
+Requires-Dist: pytest-asyncio==0.24.0; extra == 'test'
+Requires-Dist: pytest-httpx==0.30.0; extra == 'test'
+Requires-Dist: pytest==8.3.2; extra == 'test'
+Requires-Dist: time-machine==2.15.0; extra == 'test'
+Description-Content-Type: text/x-rst
+
+===================
+OpenWrt ubus client
+===================
+
+This is a python client for https://openwrt.org/docs/techref/ubus[OpenWrt micro bus].  It uses the https://openwrt.org/docs/techref/ubus#access_to_ubus_over_http[http jsonrpc] protocol.  This requires the `uhttpd-mod-ubus` package to be installed.
