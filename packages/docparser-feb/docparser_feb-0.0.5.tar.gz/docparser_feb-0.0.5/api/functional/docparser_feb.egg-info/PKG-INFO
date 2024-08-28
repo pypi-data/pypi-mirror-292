@@ -1,0 +1,140 @@
+Metadata-Version: 2.1
+Name: docparser-feb
+Version: 0.0.5
+Summary: Document parsing tool for LLM training and Rag
+Home-page: https://github.com/feb-co/DocParser
+Author: Licheng Wang
+Author-email: 244267620@qq.com
+License: MIT
+Keywords: pdf,LLM,ChatGPT,transformer,pytorch,deep learning
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: albumentations==1.4.11
+Requires-Dist: bs4
+Requires-Dist: cn2an==0.5.22
+Requires-Dist: datrie==0.8.2
+Requires-Dist: effdet==0.3
+Requires-Dist: hanziconv==0.3.2
+Requires-Dist: html_text==0.6.2
+Requires-Dist: lxml==5.1.0
+Requires-Dist: layoutparser
+Requires-Dist: nougat-ocr
+Requires-Dist: nltk
+Requires-Dist: opencv-python==4.9.0.80
+Requires-Dist: openpyxl==3.1.2
+Requires-Dist: pdfplumber
+Requires-Dist: pyclipper
+Requires-Dist: PyPDF2
+Requires-Dist: python-docx==1.1.0
+Requires-Dist: python-pptx==0.6.23
+Requires-Dist: ruamel.yaml==0.18.6
+Requires-Dist: roman-numbers==1.0.2
+Requires-Dist: shapely==2.0.3
+Requires-Dist: StrEnum==0.4.15
+Requires-Dist: tika
+Requires-Dist: transformers==4.38.2
+Requires-Dist: word2number==1.1
+Requires-Dist: xgboost==2.0.3
+Requires-Dist: langdetect
+
+# DocParser 📄
+
+DocParser is a powerful tool for LLM traning and other application, for examples: RAG, which support to parse multi type file, includes:
+
+## Feature 🎉
+
+### File types supported for parsing:
+
+- [Pdf](#Pdf): Use OCR to parse PDF documents and output text in markdown format. The parsing results can be used for LLM pretrain, RAG, etc.
+- [Html](#Html): Use [jina](https://jina.ai/reader) to parse multi html pages and output text in markdown.
+
+## Install
+
+From pip:
+
+```bash
+pip install docparser_feb
+```
+
+From repository:
+
+```bash
+pip install git+https://github.com/feb-co/DocParser.git
+```
+
+Or install it directly through the installation package:
+
+```bash
+git clone https://github.com/feb-co/DocParser.git
+cd DocParser
+pip install -e .
+```
+
+## API/Functional
+
+### Pdf
+
+#### From CLI
+
+You can run the following script to get the pdf parsing results:
+
+```shell
+export LOG_LEVEL="ERROR"
+export DOC_PARSER_MODEL_DIR="xxx"
+export DOC_PARSER_OPENAI_URL="xxx"
+export DOC_PARSER_OPENAI_KEY="xxx"
+export DOC_PARSER_OPENAI_MODEL="gpt-4-0125-preview"
+export DOC_PARSER_OPENAI_RETRY="3"
+docparser-pdf \
+    --inputs path/to/file.pdf or path/to/directory \
+    --output_dir output_directory \
+    --page_range '0:1' --mode 'figure latex' \
+    --rendering --use_llm --overwrite_result
+```
+
+The following is a description of the relevant parameters:
+
+```bash
+usage: docparser-pdf [-h] --inputs INPUTS --output_dir OUTPUT_DIR [--page_range PAGE_RANGE] [--mode {plain,figure placehold,figure latex}] [--rendering] [--use_llm]
+
+options:
+  -h, --help            show this help message and exit
+  --inputs INPUTS       Directory where to store PDFs, or a file path to a single PDF
+  --output_dir OUTPUT_DIR
+                        Directory where to store the output results (md/json/images).
+  --page_range PAGE_RANGE
+                        The page range to parse the PDF, the format is 'start_page:end_page', that is, [start, end). Default: full.
+  --mode {plain,figure placehold,figure latex}
+                        The mode for parsing the PDF, to extract only the plain text or the text plus images.
+  --rendering           Is it necessary to render the recognition results of the input PDF to output the recognition range? Default: False.
+  --use_llm             Do you need to use LLM to format the parsing results? If so, please specify the corresponding parameters through the environment variables: DOC_PARSER_OPENAI_URL, DOC_PARSER_OPENAI_KEY, DOC_PARSER_OPENAI_MODEL. Default: False.
+  --overwrite_result    If the parsed target file already exists, should it be rewritten? Default: False.
+```
+
+#### From Python
+
+
+### Html
+
+#### From CLI
+
+You can run the following script to get the html parsing results:
+
+```bash
+docparser-html https://github.com/mem0ai/mem0
+```
+
+#### From Python
