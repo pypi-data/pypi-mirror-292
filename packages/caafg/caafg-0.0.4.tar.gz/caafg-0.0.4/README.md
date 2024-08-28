@@ -1,0 +1,92 @@
+# CAAFG - Context Aware Automated Feature Generators
+A collection of different context aware automated feature generators.
+
+
+## Usage
+Begin by installing 
+```python
+pip3 install caafg
+```
+
+To use this package choose any generator type. Available types can be visited
+at [generators](#generators). Each generator requires server backend hosting a language model which can be queried. The connector to different types of language models is linked in this project but is mainly implemented in the [remoteinference](https://github.com/jariskueken/llm_inference) package. For a list of available models ref [here](https://github.com/jariskueken/llm_inference).
+
+Each generator implements the ```AbstractGenerator``` interface which provides basic functionality for a generator. Here is an example. First initalize the generator with a corresponding model backend:
+
+```python
+import os
+
+from caafg.generators import BlueprintGenerator
+from caafg.models import OpenAILLM
+
+model = OpenAILLM(
+    api_key=api_key=os.environ.get('OPEANI_API_KEY'),
+    model_type='gpt-4o-mini'
+    )
+
+generator = BlueprintGenerator(model=model)
+```
+
+Now for each dataset the generator requires the training data as it will include samples of this data in the instructions prompt as well as a dataset name and dataset description if available. All this information should be stored in the ```Dataset```object. Subsequently the model can be asked to generate n_features simoultaniously:
+
+```python
+from caafg.dataset import Dataset
+
+generator = BlueprintGenerator(model=model)
+
+ds = Dataset(
+    X=train_X,
+    y=train_y,
+    dataset_name="Dataset Name",
+    dataset_description="Some Description"
+    )
+
+features = generator.ask(
+    dataset=ds,
+    n_features=5,
+)
+```
+
+The ```ask``` method of the generator will return a dictionary containing all the information that the language model provided for the given generator type. For this example the result will look similar to this:
+
+```python
+{
+    'blueprint_feature_0':
+    {
+        'name': 'f5',
+        'operator': 'Add',
+        'features': ['1', '2'], 'features_combination': 'Add(1, 2)',
+        'description': 'Some Description',
+        'reasoning': 'Some Reasonong'
+        },
+    'blueprint_feature_1':
+    {
+        ...
+    },
+    ...
+    }
+```
+
+This list of proposed features can then be applied to the train and test set by calling the ```transform``` method of the generator:
+
+```python
+
+train_X, test_X = generator.transform(
+    train_X,
+    test_X,
+    features
+    )
+```
+
+## Generators
+
+### Blueprint Generator
+This generator proposes as new features a combination of existing features and an operator that should be applied to the features to create the new one.
+Usage:
+```python
+from caafg.genertors import BlueprintGenerator
+
+generator = BlueprintGenerator()
+````
+
+## Models

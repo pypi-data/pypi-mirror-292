@@ -1,0 +1,1 @@
+from .interfaces import AbstractGenerator  # noqa: F401

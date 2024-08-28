@@ -1,0 +1,1 @@
+from .blueprintcaafg.generator import BlueprintGenerator
