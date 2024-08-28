@@ -1,0 +1,162 @@
+[project]
+name = "htrflow"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+license = {text = "EUPL-1.2"}
+authors = [
+    {name = "Riksarkivets AI-labb", email = "ai@riksarkivet.se"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+requires-python = ">=3.10"
+
+dependencies = [
+    "jinja2 == 3.1.3",
+    "lorem >=0.1.1,<0.2",
+    "matplotlib >=3.8.3,<4",
+    "numpy == 1.26.4",
+    "opencv-python >=4.6.0",
+    "tqdm >=4.66.2,<5",
+    "xmlschema >=3.0.2,<4",
+    "requests >=2.31.0,<3",
+]
+
+
+[tool.hatch.build]
+include = [
+    "src/htrflow/serialization/*"
+]
+
+[tool.uv.sources]
+htrflow = { path = "./src/htrflow" }
+
+[project.scripts]
+htrflow = "htrflow.cli:app"
+
+[tool.uv]
+dev-dependencies = [
+    "mypy >=1.8.0",
+    "pre-commit >=3.6.2",
+    "pytest >=8.0.1",
+    "pytest-cov >=4.1.0",
+    "pytest-github-actions-annotate-failures >=0.2.0",
+    "python-dotenv >=1.0.1",
+    "ruff >=0.6.2",
+    "twine>=5.1.1",
+]
+
+[project.optional-dependencies]
+docs = [
+    "mike >=2.1.1",
+    "mkdocs-jupyter >=0.24.6",
+    "mkdocs-material >=9.5.10",
+    "mkdocstrings[python] >=0.20",
+    "mkdocs-table-reader-plugin >=2.2.2",
+    "mkdocs-git-revision-date-localized-plugin >=1.2.6",
+    "termynal >=0.12.1",
+    "mkdocs-swagger-ui-tag >=0.6.10"
+]
+
+huggingface = [
+    "transformers[torch] >=4.44.1" ,
+    "huggingface-hub[cli] >=0.24.6",
+    "datasets >=2.17.1",
+]
+llm = [
+    "htrflow[huggingface]",
+    "accelerate >=0.33.0",
+    "bitsandbytes >=0.43.3",
+]
+ultralytics = [
+    "ultralytics >=8.0.225",
+    "huggingface-hub[cli] >=0.24.6",
+]
+cli = [
+    "typer>=0.12.0",
+    "rich >=13.7.1",
+    "htrflow[eval]"
+]
+eval = [
+    "jiwer >=3.0.4",
+    "pandas >=2.2.2",
+    "pagexml-tools >=0.5.0",
+]
+all = [
+    "htrflow[llm]",
+    "htrflow[ultralytics]",
+    "htrflow[cli]"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+# Test configuration (tool.pytest.ini_options)
+[tool.pytest.ini_options]
+addopts = "-v --cov htrflow --cov-report term-missing --no-cov-on-fail"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "gpu: marks tests as gpu (deselect with '-m \"not gpu\"')",
+]
+pythonpath = "src"
+testpaths = ["tests/unit"]
+
+# Coverage configuration (tool.coverage)
+[tool.coverage.run]
+source = ["src/htrflow"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if __name__ == .__main__.:",
+    "pragma: no cover",
+    "def __repr__",
+    "if self\\.debug",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+
+# Formatting and linting (tool.ruff)
+[tool.ruff]
+line-length = 119
+target-version = "py310"
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+ignore = ["C901", "E741", "W605"]
+select = ["C", "E", "F", "I", "W"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402", "F401", "F403", "F811"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["htrflow"]
+lines-after-imports = 2
+
+# Typing (tool.mypy)
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+exclude = ['venv', '.venv', "tests", "docs"]
+ignore_missing_imports = true
+mypy_path = "src"
+no_implicit_optional = true
+no_implicit_reexport = true
+show_error_codes = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+
+# Scaffolding (tool.cruft)
+[tool.cruft]
+skip = ["src", "tests"]
