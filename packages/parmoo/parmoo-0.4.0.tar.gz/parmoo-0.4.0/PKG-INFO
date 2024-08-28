@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: parmoo
+Version: 0.4.0
+Summary: Python library for parallel multiobjective simulation optimization
+Home-page: https://github.com/parmoo/parmoo
+Author: Tyler H. Chang, Stefan M. Wild, et al.
+Author-email: parmoo@lbl.gov
+License: BSD 3-clause
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+License-File: LICENSE
+Requires-Dist: jax[cpu]
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: pandas
+Provides-Extra: extras
+Requires-Dist: libensemble; extra == "extras"
+Requires-Dist: plotly; extra == "extras"
+Requires-Dist: dash; extra == "extras"
+Requires-Dist: kaleido; extra == "extras"
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == "docs"
+Requires-Dist: sphinxcontrib.bibtex; extra == "docs"
+Requires-Dist: sphinx_rtd_theme; extra == "docs"
+
+ParMOO is a Python library for solving parallel multiobjective simulation
+optimization problems.
+
+ParMOO uses response surface methodology (surrogate modeling) and is
+flexible enough to allow users to specify their own search techniques,
+surrogates, optimization solvers, and multiobjective acquisition functions.
+
+ParMOO also seeks to exploit structure in simulation optimization problems,
+by modeling simulations separately from surrogates.
+
+
+ParMOO is distributed under a BSD 3-clause license.
+
