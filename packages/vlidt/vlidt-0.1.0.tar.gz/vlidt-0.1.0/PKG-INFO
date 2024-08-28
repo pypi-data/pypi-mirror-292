@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: vlidt
+Version: 0.1.0
+Summary: dataclass & validation simple as well as hell.
+License: MIT
+Author: misano
+Author-email: me@MirSobhan.ir
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Description-Content-Type: text/markdown
+
+# Validata
+dataclass & validation simple as well as hell. 
+
+## install
+```bash
+pip install validata
+```
+with github
+```
+git clone https://github.com/MirS0bhan/validata && cd validata
+pip install .
+```
+
+## usage 
+```python
+from validata import BaseModel
+
+class A(BaseModel):
+  x:int
+  y:int
+
+class B(A):
+  z:list[str]
+
+c = B(5, 6, ["abc", "xyz"])
+```
+
+
