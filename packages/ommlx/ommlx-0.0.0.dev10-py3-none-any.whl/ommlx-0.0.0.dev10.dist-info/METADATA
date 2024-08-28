@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: ommlx
+Version: 0.0.0.dev10
+Summary: ommlx
+Author: wrmsr
+License: BSD-3-Clause
+Project-URL: source, https://github.com/wrmsr/omlish
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: POSIX
+Requires-Python: >=3.12
+License-File: LICENSE
+Requires-Dist: omlish ==0.0.0.dev10
+Provides-Extra: all
+Requires-Dist: torch >=2.4 ; extra == 'all'
+Provides-Extra: torch
+Requires-Dist: torch >=2.4 ; extra == 'torch'
+
