@@ -1,0 +1,23 @@
+{#def person, search_link, searchFacet, role = None #}
+{% set person_dict = person | to_dict %}
+{% set title = person_dict.fullName ~ ": " ~ _("Find more records by this person") %}
+{% set data = {
+    "value": person_dict.fullName,
+    "title": _("Find more records by this person"),
+    "label": person_dict.fullName,
+    "aria": title,
+} %}
+
+<div role="listitem" class="item creatibutor-wrap separated">
+    <div class="content">
+        <SearchLink data={data}  searchFacet={searchFacet} search_link={search_link}></SearchLink>
+        {% if person_dict.authorityIdentifiers%}
+            {% for identifier in person_dict.authorityIdentifiers%}
+                <IdentifierBadge identifier={identifier} creatibutorName={person_dict.fullName} />
+            {% endfor %}
+        {% endif %}
+        {%- if role -%}
+            ({{role}})
+        {%- endif -%}
+    </div>
+</div>
