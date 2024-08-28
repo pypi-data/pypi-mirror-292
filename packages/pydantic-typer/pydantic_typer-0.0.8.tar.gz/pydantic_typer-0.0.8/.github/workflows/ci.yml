@@ -1,0 +1,32 @@
+name: CI
+
+permissions:
+  statuses: write
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+      - name: Install Hatch
+        uses: pypa/hatch@install
+      - name: Lint
+        run: hatch run dev:check
+      - name: Test & Coverage
+        run: |
+          hatch test --cover \
+          && hatch run dev:coverage html
+      - name: Publish coverage report
+        run: hatch run dev:smokeshow upload htmlcov
+        env:
+          SMOKESHOW_GITHUB_STATUS_DESCRIPTION: Coverage {coverage-percentage}
+          SMOKESHOW_GITHUB_COVERAGE_THRESHOLD: 99
+          SMOKESHOW_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
