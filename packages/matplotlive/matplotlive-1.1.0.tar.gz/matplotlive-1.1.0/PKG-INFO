@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: matplotlive
+Version: 1.1.0
+Summary: Stream live plots to a matplotlib figure.
+Author-email: Stéphane Caron <stephane.caron@inria.fr>
+Maintainer-email: Stéphane Caron <stephane.caron@inria.fr>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Requires-Dist: matplotlib >=3.3.4
+Requires-Dist: numpy >=1.15.4
+Project-URL: Changelog, https://github.com/stephane-caron/matplotlive/blob/main/CHANGELOG.md
+Project-URL: Source, https://github.com/stephane-caron/matplotlive
+Project-URL: Tracker, https://github.com/stephane-caron/matplotlive/issues
+
+# matplotlive
+
+[![Build](https://img.shields.io/github/actions/workflow/status/stephane-caron/matplotlive/ci.yml?branch=main)](https://github.com/stephane-caron/matplotlive/actions)
+[![Coverage](https://coveralls.io/repos/github/stephane-caron/matplotlive/badge.svg?branch=main)](https://coveralls.io/github/stephane-caron/matplotlive?branch=main)
+[![Conda version](https://img.shields.io/conda/vn/conda-forge/matplotlive.svg)](https://anaconda.org/conda-forge/matplotlive)
+[![PyPI version](https://img.shields.io/pypi/v/matplotlive)](https://pypi.org/project/matplotlive/)
+
+Stream live plots to a [Matplotlib](https://matplotlib.org/) figure.
+
+## Example
+
+```py
+import math
+import matplotlive
+
+plot = matplotlive.LivePlot(
+    timestep=0.01,  # seconds
+    duration=1.0,   # seconds
+    ylim=(-5.0, 5.0),
+)
+
+for i in range(10_000):
+    plot.send("bar", math.sin(0.3 * i))
+    plot.send("foo", 3 * math.cos(0.2 * i))
+    plot.update()
+```
+
+## Installation
+
+### From conda-forge
+
+```console
+conda install -c conda-forge matplotlive
+```
+
+### From PyPI
+
+```console
+pip install matplotlive
+```
+
+## See also
+
+- [Teleplot](https://github.com/nesnes/teleplot): alternative to plot telemetry data from a running program.
+
