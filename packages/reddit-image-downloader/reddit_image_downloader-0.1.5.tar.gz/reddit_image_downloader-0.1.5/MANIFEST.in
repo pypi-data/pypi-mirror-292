@@ -1,0 +1,12 @@
+# Include essential files
+include README.md
+include LICENSE
+include requirements.txt
+include reddit_image_downloader/config.json
+
+# Include all Python files in the package source code directory
+recursive-include reddit_image_downloader *.py
+
+# Exclude unnecessary files
+global-exclude *.pyc
+global-exclude __pycache__/
