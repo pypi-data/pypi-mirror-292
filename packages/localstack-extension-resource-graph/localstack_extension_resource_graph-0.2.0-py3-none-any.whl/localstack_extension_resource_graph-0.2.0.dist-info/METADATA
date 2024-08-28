@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: localstack-extension-resource-graph
+Version: 0.2.0
+Summary: Altimeter based LocalStack extension that allows you to create and import into neptune a graph of the resources in your LocalStack instance
+Author-email: LocalStack Team <info@localstack.com>
+License: UNLICENSED
+Keywords: localstack,localstack-extension,extension
+Requires-Python: >=3.8
+Requires-Dist: gremlinpython
+Requires-Dist: localstack-client
+Requires-Dist: jsonpatch
+Requires-Dist: pydantic
+Requires-Dist: pydantic-settings
+Requires-Dist: python-dateutil
+Requires-Dist: PyYAML
+Requires-Dist: rolo
+Requires-Dist: jinja2
+Requires-Dist: rdflib==6.0.2
+Requires-Dist: requests
+Requires-Dist: structlog
+Requires-Dist: toml
+Provides-Extra: dev
+Requires-Dist: localstack>=0.0.0.dev; extra == "dev"
+
