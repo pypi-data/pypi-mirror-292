@@ -1,0 +1,3 @@
+VALUE_NULL_OR_EMPTY = "Value cannot be empty or null"
+MODEL_STAGE_TYPE = "STAGING|PRODUCTION"
+EXPERIMENT_FIELD_DESCRIPTION = "Experiment Name"
