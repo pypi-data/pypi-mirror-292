@@ -1,0 +1,192 @@
+
+-Goal-
+Given a text document that is potentially relevant to this activity, first identify all entities needed from the text in order to capture the information and ideas in the text.
+Next, report all relationships among the identified entities.
+
+-Steps-
+1. Identify all entities. For each identified entity, extract the following information:
+- entity_name: Name of the entity, capitalized
+- entity_type: Suggest several labels or categories for the entity. The categories should not be specific, but should be as general as possible.
+- entity_description: Comprehensive description of the entity's attributes and activities
+Format each entity as ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+
+2. From the entities identified in step 1, identify all pairs of (source_entity, target_entity) that are *clearly related* to each other.
+For each pair of related entities, extract the following information:
+- source_entity: name of the source entity, as identified in step 1
+- target_entity: name of the target entity, as identified in step 1
+- relationship_description: explanation as to why you think the source entity and the target entity are related to each other
+- relationship_strength: a numeric score indicating strength of the relationship between the source entity and target entity
+Format each relationship as ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+
+3. Return output in The primary language of the provided text is "English." as a single list of all the entities and relationships identified in steps 1 and 2. Use **{record_delimiter}** as the list delimiter.
+
+4. If you have to translate into The primary language of the provided text is "English.", just translate the descriptions, nothing else!
+
+5. When finished, output {completion_delimiter}.
+
+-Examples-
+######################
+
+Example 1:
+
+text:
+ck, Amir Yazdanbakhsh, and Peter
+Clark. Self-refine: Iterative refinement with self-feedback.
+InNeurIPS , 2023.
+Ramesh Nallapati, Bowen Zhou, Cicero dos Santos, Caglar
+Gulcehre, and Bing Xiang. Abstractive text summariza-
+tion using sequence-to-sequence RNNs and beyond. In
+Special Interest Group on Natural Language Learning ,
+2016.
+OpenAI. GPT-4 technical report. arXiv:2303.08774 , 2023.
+Yujia Qin, Shihao Liang, Yining Ye, Kunlun Zhu, Lan
+Yan, Yaxi Lu, Yankai Lin, Xin Cong, Xiangru Tang, Bill
+Qian, Sihan Zhao, Runchu Tian, Ruobing Xie, Jie Zhou,
+Mark Gerstein, Dahai Li, Zhiyuan
+------------------------
+output:
+("entity"{tuple_delimiter}AMIR YAZDANBAKHSH{tuple_delimiter}PERSON{tuple_delimiter}Amir Yazdanbakhsh is one of the authors of the paper titled "Self-refine: Iterative refinement with self-feedback" published in NeurIPS 2023)
+{record_delimiter}
+("entity"{tuple_delimiter}PETER CLARK{tuple_delimiter}PERSON{tuple_delimiter}Peter Clark is one of the authors of the paper titled "Self-refine: Iterative refinement with self-feedback" published in NeurIPS 2023)
+{record_delimiter}
+("entity"{tuple_delimiter}NEURIPS{tuple_delimiter}EVENT{tuple_delimiter}NeurIPS is a conference where the paper "Self-refine: Iterative refinement with self-feedback" was published in 2023)
+{record_delimiter}
+("entity"{tuple_delimiter}RAMESH NALLAPATI{tuple_delimiter}PERSON{tuple_delimiter}Ramesh Nallapati is one of the authors of the paper titled "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016)
+{record_delimiter}
+("entity"{tuple_delimiter}BOWEN ZHOU{tuple_delimiter}PERSON{tuple_delimiter}Bowen Zhou is one of the authors of the paper titled "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016)
+{record_delimiter}
+("entity"{tuple_delimiter}CICERO DOS SANTOS{tuple_delimiter}PERSON{tuple_delimiter}Cicero dos Santos is one of the authors of the paper titled "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016)
+{record_delimiter}
+("entity"{tuple_delimiter}CAGLAR GULCEHRE{tuple_delimiter}PERSON{tuple_delimiter}Caglar Gulcehre is one of the authors of the paper titled "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016)
+{record_delimiter}
+("entity"{tuple_delimiter}BING XIANG{tuple_delimiter}PERSON{tuple_delimiter}Bing Xiang is one of the authors of the paper titled "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016)
+{record_delimiter}
+("entity"{tuple_delimiter}SPECIAL INTEREST GROUP ON NATURAL LANGUAGE LEARNING{tuple_delimiter}EVENT{tuple_delimiter}The Special Interest Group on Natural Language Learning is an event where the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" was published in 2016)
+{record_delimiter}
+("entity"{tuple_delimiter}OPENAI{tuple_delimiter}ORGANIZATION{tuple_delimiter}OpenAI is the organization that published the GPT-4 technical report on arXiv in 2023)
+{record_delimiter}
+("entity"{tuple_delimiter}GPT-4 TECHNICAL REPORT{tuple_delimiter}DOCUMENT{tuple_delimiter}The GPT-4 technical report is a document published by OpenAI on arXiv in 2023)
+{record_delimiter}
+("entity"{tuple_delimiter}YUJIA QIN{tuple_delimiter}PERSON{tuple_delimiter}Yujia Qin is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}SHIHAO LIANG{tuple_delimiter}PERSON{tuple_delimiter}Shihao Liang is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}YINING YE{tuple_delimiter}PERSON{tuple_delimiter}Yining Ye is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}KUNLUN ZHU{tuple_delimiter}PERSON{tuple_delimiter}Kunlun Zhu is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}LAN YAN{tuple_delimiter}PERSON{tuple_delimiter}Lan Yan is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}YAXI LU{tuple_delimiter}PERSON{tuple_delimiter}Yaxi Lu is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}YANKAI LIN{tuple_delimiter}PERSON{tuple_delimiter}Yankai Lin is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}XIN CONG{tuple_delimiter}PERSON{tuple_delimiter}Xin Cong is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}XIANGRU TANG{tuple_delimiter}PERSON{tuple_delimiter}Xiangru Tang is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}BILL QIAN{tuple_delimiter}PERSON{tuple_delimiter}Bill Qian is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}SIHAN ZHAO{tuple_delimiter}PERSON{tuple_delimiter}Sihan Zhao is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}RUNCHU TIAN{tuple_delimiter}PERSON{tuple_delimiter}Runchu Tian is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}RUOBING XIE{tuple_delimiter}PERSON{tuple_delimiter}Ruobing Xie is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}JIE ZHOU{tuple_delimiter}PERSON{tuple_delimiter}Jie Zhou is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}MARK GERSTEIN{tuple_delimiter}PERSON{tuple_delimiter}Mark Gerstein is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}DAHAI LI{tuple_delimiter}PERSON{tuple_delimiter}Dahai Li is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("entity"{tuple_delimiter}ZHIYUAN{tuple_delimiter}PERSON{tuple_delimiter}Zhiyuan is one of the authors of a paper mentioned in the text)
+{record_delimiter}
+("relationship"{tuple_delimiter}AMIR YAZDANBAKHSH{tuple_delimiter}PETER CLARK{tuple_delimiter}Amir Yazdanbakhsh and Peter Clark co-authored the paper "Self-refine: Iterative refinement with self-feedback" published in NeurIPS 2023{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}RAMESH NALLAPATI{tuple_delimiter}BOWEN ZHOU{tuple_delimiter}Ramesh Nallapati and Bowen Zhou co-authored the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}RAMESH NALLAPATI{tuple_delimiter}CICERO DOS SANTOS{tuple_delimiter}Ramesh Nallapati and Cicero dos Santos co-authored the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}RAMESH NALLAPATI{tuple_delimiter}CAGLAR GULCEHRE{tuple_delimiter}Ramesh Nallapati and Caglar Gulcehre co-authored the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}RAMESH NALLAPATI{tuple_delimiter}BING XIANG{tuple_delimiter}Ramesh Nallapati and Bing Xiang co-authored the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}BOWEN ZHOU{tuple_delimiter}CICERO DOS SANTOS{tuple_delimiter}Bowen Zhou and Cicero dos Santos co-authored the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}BOWEN ZHOU{tuple_delimiter}CAGLAR GULCEHRE{tuple_delimiter}Bowen Zhou and Caglar Gulcehre co-authored the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}BOWEN ZHOU{tuple_delimiter}BING XIANG{tuple_delimiter}Bowen Zhou and Bing Xiang co-authored the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}CICERO DOS SANTOS{tuple_delimiter}CAGLAR GULCEHRE{tuple_delimiter}Cicero dos Santos and Caglar Gulcehre co-authored the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}CICERO DOS SANTOS{tuple_delimiter}BING XIANG{tuple_delimiter}Cicero dos Santos and Bing Xiang co-authored the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}CAGLAR GULCEHRE{tuple_delimiter}BING XIANG{tuple_delimiter}Caglar Gulcehre and Bing Xiang co-authored the paper "Abstractive text summarization using sequence-to-sequence RNNs and beyond" published in the Special Interest Group on Natural Language Learning in 2016{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}OPENAI{tuple_delimiter}GPT-4 TECHNICAL REPORT{tuple_delimiter}OpenAI published the GPT-4 technical report on arXiv in 2023{tuple_delimiter}9)
+{completion_delimiter}
+#############################
+
+
+Example 2:
+
+text:
+ attempts; (4) LLM-Debate (Du
+et al., 2023), which enables different LLMs to debate with each other, leveraging diverse perspectives
+to find better answers; (5) Quality-Diversity, a simplified version of Intelligent Go-Explore (Lu et al.,
+2024c), which produces and ensembles diverse answers to better explore potential solutions. We also
+use all baselines as initial seeds in the archive for Meta Agent Search. More details about baselines
+can be found in Appendix E.
+Results and Analysis. As shown in Figure 3a, Meta Agent Search effectively and progressively
+discovers agents that perform better than state-of-the-art hand-designed baselines. Important break-
+throughs are highlighted in the text boxes. As is critical in prior works on open-endedness and AI-GAs
+(Faldor et al., 2024; Lehman & Stanley, 2011; Wang et al., 2019, 202
+------------------------
+output:
+("entity"{tuple_delimiter}LLM-DEBATE{tuple_delimiter}TECHNOLOGY{tuple_delimiter}LLM-Debate is a system that enables different Large Language Models (LLMs) to debate with each other to leverage diverse perspectives and find better answers)
+{record_delimiter}
+("entity"{tuple_delimiter}QUALITY-DIVERSITY{tuple_delimiter}TECHNOLOGY{tuple_delimiter}Quality-Diversity is a simplified version of Intelligent Go-Explore that produces and ensembles diverse answers to better explore potential solutions)
+{record_delimiter}
+("entity"{tuple_delimiter}INTELLIGENT GO-EXPLORE{tuple_delimiter}TECHNOLOGY{tuple_delimiter}Intelligent Go-Explore is a system that explores potential solutions by producing and combining diverse answers)
+{record_delimiter}
+("entity"{tuple_delimiter}META AGENT SEARCH{tuple_delimiter}TECHNOLOGY{tuple_delimiter}Meta Agent Search is a method that uses all baselines as initial seeds in the archive to progressively discover agents that perform better than state-of-the-art hand-designed baselines)
+{record_delimiter}
+("entity"{tuple_delimiter}FALDOR{tuple_delimiter}PERSON{tuple_delimiter}Faldor is an author who has worked on open-endedness and AI-GAs)
+{record_delimiter}
+("entity"{tuple_delimiter}LEHMAN{tuple_delimiter}PERSON{tuple_delimiter}Lehman is an author who has worked on open-endedness and AI-GAs)
+{record_delimiter}
+("entity"{tuple_delimiter}STANLEY{tuple_delimiter}PERSON{tuple_delimiter}Stanley is an author who has worked on open-endedness and AI-GAs)
+{record_delimiter}
+("entity"{tuple_delimiter}WANG{tuple_delimiter}PERSON{tuple_delimiter}Wang is an author who has worked on open-endedness and AI-GAs)
+{record_delimiter}
+("relationship"{tuple_delimiter}LLM-DEBATE{tuple_delimiter}QUALITY-DIVERSITY{tuple_delimiter}Both LLM-Debate and Quality-Diversity are systems designed to leverage diverse perspectives to find better answers{tuple_delimiter}5)
+{record_delimiter}
+("relationship"{tuple_delimiter}QUALITY-DIVERSITY{tuple_delimiter}INTELLIGENT GO-EXPLORE{tuple_delimiter}Quality-Diversity is a simplified version of Intelligent Go-Explore{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}META AGENT SEARCH{tuple_delimiter}QUALITY-DIVERSITY{tuple_delimiter}Meta Agent Search uses Quality-Diversity as one of the initial seeds in the archive{tuple_delimiter}6)
+{record_delimiter}
+("relationship"{tuple_delimiter}META AGENT SEARCH{tuple_delimiter}LLM-DEBATE{tuple_delimiter}Meta Agent Search uses LLM-Debate as one of the initial seeds in the archive{tuple_delimiter}6)
+{record_delimiter}
+("relationship"{tuple_delimiter}META AGENT SEARCH{tuple_delimiter}INTELLIGENT GO-EXPLORE{tuple_delimiter}Meta Agent Search uses Intelligent Go-Explore as one of the initial seeds in the archive{tuple_delimiter}6)
+{record_delimiter}
+("relationship"{tuple_delimiter}FALDOR{tuple_delimiter}LEHMAN{tuple_delimiter}Faldor and Lehman have both worked on open-endedness and AI-GAs{tuple_delimiter}7)
+{record_delimiter}
+("relationship"{tuple_delimiter}FALDOR{tuple_delimiter}STANLEY{tuple_delimiter}Faldor and Stanley have both worked on open-endedness and AI-GAs{tuple_delimiter}7)
+{record_delimiter}
+("relationship"{tuple_delimiter}FALDOR{tuple_delimiter}WANG{tuple_delimiter}Faldor and Wang have both worked on open-endedness and AI-GAs{tuple_delimiter}7)
+{record_delimiter}
+("relationship"{tuple_delimiter}LEHMAN{tuple_delimiter}STANLEY{tuple_delimiter}Lehman and Stanley have both worked on open-endedness and AI-GAs{tuple_delimiter}7)
+{record_delimiter}
+("relationship"{tuple_delimiter}LEHMAN{tuple_delimiter}WANG{tuple_delimiter}Lehman and Wang have both worked on open-endedness and AI-GAs{tuple_delimiter}7)
+{record_delimiter}
+("relationship"{tuple_delimiter}STANLEY{tuple_delimiter}WANG{tuple_delimiter}Stanley and Wang have both worked on open-endedness and AI-GAs{tuple_delimiter}7)
+{completion_delimiter}
+#############################
+
+
+
+-Real Data-
+######################
+text: {input_text}
+######################
+output:
