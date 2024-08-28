@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools", "wheel", "build", "setuptools-scm","unidep","unidep[toml]"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "click2cwl"
+version = "0.0.4"
+authors = [
+    {name = "Fabrice Brito", email = "fabrice.brito@terradue.com"},
+    {name = "Parham Membari", email = "parham.membari@terradue.com"},
+]
+description = "Generates CWL documents and associated parameters from a Click CLI definition "
+readme = "README.md"
+keywords = ["click2cwl", "CWL"]
+license = {text = "Apache License,  Version 2.0"}
+
+dependencies = ["click", "pyyaml"]
+
+[project.scripts]
+test1 = "click2cwl.tests:test1"
+test2 = "click2cwl.tests:test2"
+
+[project.urls]
+Homepage = "https://github.com/Terradue/click2cwl"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+
