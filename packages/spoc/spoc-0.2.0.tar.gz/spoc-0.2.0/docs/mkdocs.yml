@@ -1,0 +1,145 @@
+# Configurations
+site_name: Spoc
+site_url: https://hlop3z.github.io/spoc/
+repo_url: https://github.com/hlop3z/spoc
+copyright: Copyright © hlop3z
+
+# Navigation
+nav:
+  - SPOC:
+      - Introduction: index.md
+      - Getting Started:
+          - Overview: getting-started/overview.md
+          - Project: getting-started/project.md
+          - Component(s): getting-started/component.md
+          - Plugin(s): getting-started/plugins.md
+          - Framework: getting-started/framework.md
+          - Testing: getting-started/testing.md
+  - Reference:
+      - Framework: api/framework.md
+      - Constants: constants.md
+      - Workers: api/workers.md
+      - Tools: api/utils.md
+
+# Path Watch
+watch:
+  - custom_theme
+  - ../src
+
+# Extras
+extra:
+  generator: false
+
+# Theme
+theme:
+  custom_dir: custom_theme/
+  name: material
+  locale: en
+  logo: assets/images/logo.png
+  favicon: assets/images/logo.png
+  features:
+    - content.code.annotate
+    - navigation.expand
+    - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - navigation.footer
+  icon:
+    logo: material/webhook
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: green
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: green
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+# Plugins
+plugins:
+  - search
+
+  # Macros
+  - macros:
+      modules:
+        - macros
+
+  # termynal
+  - termynal
+
+  # mkdocstrings
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [..] # search packages in the src folder
+          options:
+            # Docstring Style
+            docstring_style: google
+            docstring_section_style: list # table | list | spacy
+
+            # Symbol
+            show_symbol_type_toc: true
+            show_symbol_type_heading: false
+
+            # Headings
+            show_root_heading: true
+            separate_signature: false
+
+            # Generic
+            allow_inspection: true
+            group_by_category: true
+            show_bases: false
+            show_labels: true
+            show_source: false
+            unwrap_annotated: true
+
+            # Members
+            members_order: source
+            inherited_members: false
+
+            # Object Paths
+            show_root_members_full_path: false
+            show_object_full_path: false
+
+            # Init
+            merge_init_into_class: true
+            docstring_options:
+              ignore_init_summary: true
+
+            # Docstring Include
+            show_docstring_functions: false
+            show_docstring_examples: false
+            show_if_no_docstring: false
+
+            # Filters
+            filters:
+              - "!^_"

@@ -1,0 +1,43 @@
+name: Upload Release to PyPI
+
+# on: workflow_dispatch
+on:
+  workflow_dispatch: # Manually triggered
+  push:
+    tags:
+      - v* # Automatically triggered on tags that match the pattern
+
+permissions:
+  contents: read
+
+jobs:
+  pypi-publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+
+    environment:
+      name: pypi
+      url: https://pypi.org/p/spoc
+
+    permissions:
+      contents: read # Required for accessing repository contents
+      id-token: write # Required for GitHub Actions OIDC authentication
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install UV
+        run: curl -LsSf https://astral.sh/uv/0.3.5/install.sh | sh
+
+      - name: Build Python Package
+        run: uvx --from build pyproject-build --installer uv
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        # run: uvx twine upload dist/*
