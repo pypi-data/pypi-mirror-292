@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: forement
+Version: 0.0.1
+Summary: A collection of unsupervised clustering tools for foreground segmentation
+Author-email: Brandon Hastings <bhastings23320@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 Brandon Hastings
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/brandon-hastings/forement
+Keywords: foreground segmentation,color clustering
+Classifier: Programming Language :: Python
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ultralytics>=8.2.82
+Requires-Dist: opencv-python>=4.10.0.84
+Requires-Dist: orchard-bouman>=1.0.1
+
+# FOREground segMENTation
+A collection of unsupervised clustering tools for foreground segmentation of an image to isolate an object of interest.
+
+### Requirements:
+- ultralytics
+- opencv-python
+- orchard-bouman
+
+Developed in Python 3.10, but anything over Python 3.7 should work
+
+### Installation:
+```
+pip install forement
+```
+
+### Usage:
+To use from the command line use the command:
+```
+python forement.py -image_path -method -k -channel -output_dir -save_image -show_image
+```
+Arguments:
+- image_path, type=str, help=Input the path to the image to perform clustering on.
+- method, type=str, help=Method to segment images by, options include "sam", "kmeans", "ob", "em", "ob-em".
+- k, type=int | None, default=None, help=How many clusters to generate. For method "ob" or "ob-em" clusters is 2^k.
+- channel, type=int, default=0, help=Color channel to use when running mode counts on images.
+- output_dir, type=str | None, default=None, help=Folder to save images to. If None, created images are saved in the folder of the original image.
+- save_image, type=bool, default=False, help=Whether or not to save the segmented image.
+- show_image, type=bool, default=False, help=Whether or not to display the segmented image.
+
+Available methods:
+- kmeans: "kmeans"
+- Orchard Bouman: "ob"
+- Expectation Maximization: "em"
+- Expectation Maximization using Orchard Bouman: "ob-em"
+- SAM (Segment anything model): "sam"
+
+
+In addition to the command line call, all functions can be imported to your own scripts and used as part of a larger program.

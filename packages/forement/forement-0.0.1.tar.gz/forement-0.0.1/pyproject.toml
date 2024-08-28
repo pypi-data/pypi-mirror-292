@@ -1,0 +1,20 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=69.0.3", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = 'forement'
+version = '0.0.1'
+readme = "README.md"
+description = 'A collection of unsupervised clustering tools for foreground segmentation'
+license = {file = "LICENSE"}
+authors = [{name = 'Brandon Hastings', email = 'bhastings23320@gmail.com'}]
+classifiers = ["Programming Language :: Python"]
+keywords = ["foreground segmentation", "color clustering"]
+dependencies = ["ultralytics >= 8.2.82", "opencv-python >= 4.10.0.84", "orchard-bouman >= 1.0.1"]
+requires-python = ">=3.10"
+
+[project.urls]
+Homepage = 'https://github.com/brandon-hastings/forement'
