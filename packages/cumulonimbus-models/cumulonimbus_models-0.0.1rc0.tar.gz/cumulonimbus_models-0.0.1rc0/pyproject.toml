@@ -1,0 +1,120 @@
+[project]
+
+name = "cumulonimbus-models"
+requires-python = ">=3.12,<3.13"
+dynamic = ["dependencies", "version"]
+
+readme = "README.md"
+authors = [
+    { name = "Guy Wilson", email = "guywilsonjr@gmail.com" },
+]
+maintainers = [
+    { name = "Guy Wilson", email = "guywilsonjr@gmail.com" },
+]
+
+
+classifiers = [
+    # How mature is this project? Common values are
+    #   3 - Alpha
+    #   4 - Beta
+    #   5 - Production/Stable
+    "Development Status :: 3 - Alpha",
+    # Indicate who your project is intended for
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    # Pick your license as you wish (see also "license" above)
+    "License :: OSI Approved :: Apple Public Source License",    # Specify the Python versions you support here.
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+
+
+[project.urls]
+Homepage = "https://github.com/guywilsonjr/cdk-simple-constructs-python"
+Repository = "https://github.com/guywilsonjr/cdk-simple-constructs-python"
+
+
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8", "pydantic", "mypy", "pydantic-settings"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.mypy]
+plugins = [
+    "pydantic.mypy"
+]
+mypy_path = "src"
+files = ["src"]
+cache_dir = '/dev/null'
+strict = true
+disallow_any_unimported = true
+disallow_any_expr = true
+disallow_any_decorated = true
+disallow_any_explicit = true
+disallow_subclassing_any = true
+disallow_untyped_decorators = true
+warn_unreachable = true
+show_error_context = true
+show_error_code_links = true
+warn_incomplete_stub = true
+pretty = true
+
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+
+[[tool.mypy.overrides]]
+module = ["cumulonimbus_models.settings"]
+disallow_any_explicit = false
+
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+
+[tool.setuptools_scm]
+git_describe_command = "git describe --abbrev=0"
+local_scheme = "no-local-version"
+version_scheme = "only-version"
+
+
+[tool.pytest.ini_options]
+
+console_output_style = "progress-even-when-capture-no"
+addopts = "-svvv --cov=src --cov-report=html --cov-report=term-missing --log-cli-level=INFO"
+log_cli_level = "INFO"
+testpaths = ["tests"]
+pythonpath = "src"
+
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py312
+
+[testenv]
+package = wheel
+setenv =
+    CUMULONIMBUS_MYPYCIFY = 1
+deps =
+    -rrequirements-test.txt
+commands =
+    pytest -svvv tests/ --log-cli-level=INFO
+
+[pytest]
+log_cli = true
+pythonpath = src
+"""
+
+
+[tool.cibuildwheel]
+
+archs = ["x86_64"]
+skip = "*musllinux*"
+
+[tool.uv.pip]
