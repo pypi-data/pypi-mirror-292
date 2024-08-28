@@ -1,0 +1,57 @@
+[tool.poetry]
+name = "trustpoint-client"
+version = "0.0.2"
+description = "Trustpoint Client Software"
+authors = ["TrustPoint-Project"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+click = "^8.1.7"
+requests = "^2.32.3"
+cryptography = "^43.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.2"
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "single"
+multiline-quotes = "double"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN101", "ANN102", "ANN401",
+    "D203", "D213", "D415",
+    "TD003",
+    "FIX",
+    "COM812",               # Not compatible with the formatter
+    "ISC001"                # Not compatible with the formatter
+]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+
+# TODO(Alex): Remove this if we want to use the LED sections
+[tool.ruff.lint.per-file-ignores]
+"revpi_led.py" = ["ERA001"]
+"rpi_led.py" = ["ERA001"]
+
+[tool.poetry.scripts]
+trustpoint-client = "trustpoint_client.__main__:cli.cli"
