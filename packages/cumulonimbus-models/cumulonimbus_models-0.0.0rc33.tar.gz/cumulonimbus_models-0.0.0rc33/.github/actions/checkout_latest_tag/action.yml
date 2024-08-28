@@ -1,0 +1,8 @@
+runs:
+  steps:
+    - name: Checkout Latest tag
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref }}
+        fetch-depth: 1
+        fetch-tags: true
