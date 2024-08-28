@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: prombin
+Version: 1.0
+Summary: CLI tool for installing/updating the latest Prometheus precompiled binary
+Home-page: https://github.com/joetor5/prombin
+Author: Joel Torres
+Author-email: joetor5@icloud.com
+License: MIT
+Platform: any
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Environment :: Console
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: beautifulsoup4==4.12.3
+Requires-Dist: requests==2.32.3
+Requires-Dist: tqdm==4.66.5
+
+# prombin
+
+CLI tool for installing/updating the latest Prometheus precompiled binary from https://prometheus.io/download/.
+
+## Install
+pip install prombin
+
+## Usage
+
+### Fresh Install
+```
+prombin install [--lts]
+```
+
+### Updating
+```
+prombin update [--check]
+```
