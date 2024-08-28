@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: exengine
+Version: 0.2.1
+Summary: Microscopy execution engine with support for multiple hardware backends
+Author-email: Henry Pinkard <henry.pinkard.open.source@gmail.com>
+Description-Content-Type: text/markdown
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Requires-Dist: pydantic
+Requires-Dist: numpy
+Requires-Dist: mmpycorex ; extra == "all"
+Requires-Dist: ndstorage ; extra == "all"
+Requires-Dist: sphinx ; extra == "docs"
+Requires-Dist: mmpycorex ; extra == "micromanager"
+Requires-Dist: ndstorage ; extra == "ndstorage"
+Requires-Dist: pytest ; extra == "test"
+Project-URL: Home, https://github.com/micro-manager/ExEngine
+Provides-Extra: all
+Provides-Extra: docs
+Provides-Extra: micromanager
+Provides-Extra: ndstorage
+Provides-Extra: test
+
+[![Documentation Status](https://readthedocs.org/projects/exengine/badge/?version=latest)](https://exengine.readthedocs.io/en/latest/?badge=latest)
+[![License](https://img.shields.io/pypi/l/exengine.svg)](https://github.com/micro-manager/exengine/raw/master/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/exengine.svg)](https://pypi.org/project/exengine)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/exengine.svg)](https://pypistats.org/packages/exengine)
+   
+   
+<img src="docs/_static/exengine_bigpicture.svg" width="600">
+
+ExEngine is a pure Python toolkit for building microscopy and laboratory hardware control software. Unlike application-specific software that provide tightly integrated device access, control logic, and user interfaces,ExEngine is a flexible intermediary which enables mixing and matching of components from different frameworks within a single application. This approach allows researchers to build custom software that meets their specific needs, without being limited to vertically integrated software stacks.
+
+For me information, visit the documentation at [https://exengine.readthedocs.io](https://exengine.readthedocs.io).
+
