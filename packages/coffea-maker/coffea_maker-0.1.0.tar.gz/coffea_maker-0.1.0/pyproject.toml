@@ -1,0 +1,65 @@
+[build-system]
+
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+
+name = "coffea-maker"
+description = "Law automation for coffea-based workflows."
+authors = [
+    {name = "Marcel Rieger", email = "marcel.rieger@cern.ch"},
+]
+keywords = [
+    "coffea",
+    "law",
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: BSD License",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Information Technology",
+]
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+dynamic = ["version", "readme", "dependencies"]
+
+
+[project.urls]
+
+Homepage = "https://github.com/riga/scinum"
+Documentation = "https://scinum.readthedocs.io"
+Repository = "https://github.com/riga/scinum.git"
+
+
+[tool.setuptools.dynamic]
+
+version = {attr = "coffea_maker.__init__.__version__"}
+readme = {file = ["README.md"], content-type = "text/markdown"}
+dependencies = {file = ["requirements.txt"]}
+
+
+[tool.setuptools]
+
+include-package-data = false
+
+
+[tool.setuptools.packages.find]
+
+include = ["coffea_maker"]
+
+
+[tool.mypy]
+
+disable_error_code = ["no-redef", "valid-type"]
+exclude = ["tests", "build", "docs"]
