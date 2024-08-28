@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: octomap_py
+Version: 1.8.0.post13
+Summary: Python binding of the OctoMap library.
+Home-page: https://github.com/ethanmclark1/octomap_py
+Author: Blake Narramore
+Author-email: blaque2pi@msn.com
+License: BSD
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: C++
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy<1.25.0,>=1.24.3
+Provides-Extra: example
+Requires-Dist: glooey; extra == "example"
+Requires-Dist: imgviz>=1.2.0; extra == "example"
+Requires-Dist: pyglet; extra == "example"
+Requires-Dist: trimesh[easy]; extra == "example"
+
+
+<h1 align="center">octomap_py</h1>
+<h4 align="center">Python binding of <a href="https://github.com/OctoMap/octomap">the OctoMap library</a>.</h4>
+
+<div align="center">
+  <a href="https://pypi.python.org/pypi/octomap-py"><img src="https://img.shields.io/pypi/v/octomap-py.svg"></a>
+  <a href="https://pypi.org/project/octomap-py"><img src="https://img.shields.io/pypi/pyversions/octomap-py.svg"></a>
+</div>
+
+## Installation
+
+```bash
+pip install octomap-py
+```
+
+## Example
+
+```bash
+git clone https://github.com/ethanmclark1/octomap_py.git && cd octomap_py
+pip install -e '.[example]'
+
+cd examples
+python insertPointCloud.py
+```
+
+<img src="examples/.readme/insertPointCloud.jpg" height="200px" />
+
+## Acknowledgement
+
+This is a fork of [wkentaro/octoma-python](https://github.com/wkentaro/octomap_py) which is a fork of [neka-nat/python-octomap](https://github.com/neka-nat/python-octomap).
