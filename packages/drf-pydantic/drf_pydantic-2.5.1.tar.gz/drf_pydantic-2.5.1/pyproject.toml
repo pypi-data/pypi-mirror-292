@@ -1,0 +1,114 @@
+[tool.poetry]
+name = "drf-pydantic"
+version = "2.5.1"
+description = "Use pydantic with the Django REST framework"
+license = "MIT"
+authors = ["George Bocharov <bocharovgeorgii@gmail.com>"]
+readme = "README.md"
+homepage = "https://github.com/georgebv/drf-pydantic"
+repository = "https://github.com/georgebv/drf-pydantic"
+keywords = ["django", "drf", "pydantic", "typing", "rest", "api"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed"
+]
+packages = [
+    { include = "drf_pydantic", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = {extras = ["email"], version = "^2.0.0"}
+djangorestframework = "^3.13.0"
+
+[tool.poetry.group.development.dependencies]
+pre-commit = "^3.6.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.4"
+pytest-cov = "^4.1.0"
+
+[tool.poetry.group.lint.dependencies]
+ruff = "^0.1.13"
+mypy = "^1.8.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+# https://docs.astral.sh/ruff/rules
+select = [
+    # Pyflakes
+    "F",
+    # pycodestyle
+    "E",
+    # pep8-naming
+    "N",
+    # flake8-bandit
+    "S",
+    # flake8-comprehensions
+    "C4",
+    # flake8-logging-format
+    "G",
+    # flake8-print
+    "T20",
+    # flake8-use-pathlib
+    "PTH",
+    # Pylint
+    "PL",
+    # Ruff-specific rules
+    "RUF",
+]
+ignore = [
+    # Bandit: assert statement
+    "S101",
+    # `subprocess` call: check for execution of untrusted input
+    "S603", "S607",
+    # `open()` should be replaced by `Path.open()`
+    "PTH123",
+    # Magic value used in comparison
+    "PLR2004",
+    # Too many branches
+    "PLR0912",
+    # Too many arguments
+    "PLR0913",
+    # Too many statements
+    "PLR0915",
+    # Mutable class attributes should be annotated with `typing.ClassVar`
+    "RUF012",
+    # line too long
+    "E501",
+]
+
+[tool.ruff.lint.isort]
+lines-between-types = 1
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=drf_pydantic --cov-report=term --cov-report=xml --cov-report=html"
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    'pragma: no cover',
+    'raise AssertionError',
+    'raise NotImplementedError',
+    'if __name__ == .__main__.:',
+    'def __repr__',
+    "if (typing.)?TYPE_CHECKING:",
+]
+fail_under = 90
+precision = 1
+skip_empty = true
+sort = "-Cover"
