@@ -1,0 +1,922 @@
+metadata:
+  title: |
+    Renters Rights West Virginia - Wrongful Occupation Answer
+  short title: |
+    Wrongful Occupation Answer
+  description: |
+    Wrongful Occupation Answer
+  authors:
+    - name: Dane W. Henry, Esq.
+      organization: Legal Aid of West Virginia, Inc.
+  revision_date: 2024-08-27
+  exit url: https://legalaidwv.org/renters-rights-west-virginia
+---
+features:
+  javascript: docassemble.LAWVCommon:data/static/force_lightmode.js
+  css: docassemble.LAWVCommon:data/static/lawv.css
+---
+include:
+  - docassemble.LAWVCommon:common_info.yml
+---
+objects:
+  - summons_img: DAStaticFile.using(filename='wrongful_occupation_summons.png', alt_text='Wrongful Occupation Summons')
+  - complaint_img: DAStaticFile.using(filename='wrongful_occupation_petition.png', alt_text='Wrongful Occupation Complaint')
+  - civil_judgment_order_rental_img: DAStaticFile.using(filename='civil_judgment_order_rental.png', alt_text='Civil Judgment Order - Rental')
+  - order_of_possession_img: DAStaticFile.using(filename='order_of_possession.png', alt_text='Order of Possession')
+  - p: Person
+  - r: Person
+---
+images:
+  bill_img: bill.png
+  code_img: code.png
+  cotenant_img: cotenant.png
+  factory_home_img: factory_home.jpg
+  habitability_img: compilation.jpg
+  hammer_img: hammer.png
+  house_img: house.png
+  icon_form_img: icon_form.png
+  icon_time_img: icon_time.png
+  mailbox_img: mailbox.png
+  people_img: people.png
+  people_inside_img: people_inside.png
+  petition_claims_img: petition_claims.png
+  room_img: room.png
+  room_conditions_img: room_conditions.png
+  success_exit_img: success_exit.png
+  success_exit_2_img: success_exit_2.png
+---
+terms:
+  holdover: |
+    This means your lease has expired and you have not moved.  
+  arrears: |
+    This means you are behind on rent.
+---
+imports:
+  - geopy.distance
+---
+ga id: woaIntroduction
+question: |
+  #### Introduction
+
+  # Welcome to the Renters Rights West Virginia[BR]  
+
+  # Answer to an Eviction (Wrongful Occupation) Tool
+subquestion: |
+  ### Why use this tool?
+  <p class="flex center"><span>This form helps you respond to an eviction case by telling the Magistrate Court and landlord that you are participating in the case. It can help you respond to what is written in the petition.</span></p>  
+
+  ### What to expect
+  <p class="flex center">[FILE icon_time_img, 50px]<span>Depending on your situation this will take between 5 and 15 minutes.</span></p>
+
+  ### What do you need?
+  <p class="flex center">[FILE icon_form_img, 50px]<span>Any paperwork you have from the courthouse.  This will contain important information, such as what your landlord is claiming and when you have court.</span></p>
+  
+  ***
+  ###Terms of Use:
+  ####<span style="color:black;font-weight:100;">Legal Aid of West Virginia is a non-profit law firm that provides free legal help.  This tool was developed by Legal Aid to provide information and to make it easier to fill out necessary forms.  This tool does not take the place of an attorney-client relationship. Legal Aid is not your attorney.  If you have questions about your specific situation, you should seek legal help.  The information on this tool is based on West Virginia law.  By using this tool, I agree that I have read and understand the information on this page.  If you wish to apply for Legal Aid of West Virginia’s services, you may do so here: [https://legalaidwv.org](https://legalaidwv.org/)
+  
+  <span>
+field: introduction
+buttons:
+  - I Agree: continue
+  - Exit: exit
+    color: danger
+under: |
+
+  ***
+  #### <span style="color:red">Note:</span> Legal Aid of West Virginia does not retain any of the information entered. Sessions are encrypted and only available to the user. At the conclusion of the process, all data entered is wiped to ensure user privacy.
+  ***
+---
+ga id: woaServed
+question: |
+  [FILE mailbox_img, 100%][BR]
+
+  Have you received a Petition or Summons?
+subquestion: |
+  The Petition will look like this: | The Summons looks like this:  
+  :-----: | :-----:
+  [${ complaint_img.show(width='15em') }](${ complaint_img.url_for() }) | [${ summons_img.show(width='15em') }](${ summons_img.url_for() })
+yesno: served
+right: |
+  [BR][BR]
+  ***
+  #### Related Information
+  ***
+  [YOUTUBE 5hH9emE4Ls4]
+---
+ga id: woaHearing
+decoration: mailbox_img
+question: |
+  Have you already had a **Final Hearing**, received a Civil Judgment Order, or an Order of Possession?
+subquestion: |
+  A Civil Judgment Order looks like this: | The Order of Possession looks like this:
+  :-----: | :-----:
+  [${ civil_judgment_order_rental_img.show(width='15em') }](${ civil_judgment_order_rental_img.url_for() }) | [${ order_of_possession_img.show(width='15em') }](${ order_of_possession_img.url_for() })
+yesno: hearing_held
+---
+ga id: woaCaseInformation
+question: |
+  [FILE people_img, 100%][BR]
+  Let's get some information about the case and who is involved
+fields:
+  - note: |
+      **Your Information**
+  - Full Name: r.name
+  - Email Address: r.email
+    datatype: email
+  - Phone Number: r.phone_number
+  - Address: r.address.address
+    address autocomplete: True
+  - Unit/Apt.: r.address.unit
+    required: False
+  - City: r.address.city
+  - State: r.address.state
+    code: states_list()
+    default: WV
+  - Zip: r.address.zip
+  - field: r.address.county
+    input type: hidden
+  - note: |
+      **Landlord's Information**
+  - Name on Complaint: p.name
+  - note: |
+      **Case Information**
+  - County where case is filed: county
+    input type: dropdown
+    code: counties
+  - Case Number: case_num
+  - Hearing Date: hearing_date
+    datatype: date
+    min: ${ today() }
+validation code: |
+  if not phone_number_is_valid(r.phone_number):
+    validation_error('Please enter a valid phone number.', field='r.phone_number')
+  else:
+    r.phone_number = phone_number_formatted(r.phone_number)
+---
+ga id: woaPropertyDetails
+question: |
+  [FILE factory_home_img, 100%][BR]
+  Is this a Factory-built Home Site?
+subquestion: |
+  A **Factory-built Home Site**, often called a **Mobile Home Park** is a lot or piece of land you are renting for a mobile home / trailer that you own.
+yesno: factory_built
+right: |
+  [BR][BR]
+  ***
+  #### Related Information
+  ***
+  [YOUTUBE 5snNMuGwAf0]
+---
+ga id: woaClaimDetails
+question: |
+  Why is the landlord saying you should be evicted?
+subquestion: |
+  Take a look at the Eviction Petition. What has the landlord alleged?[BR]
+  [FILE petition_claims_img, 100%]
+fields: 
+  - no label: rental_allegations
+    datatype: checkboxes
+    choices:
+      - Unpaid Rent: rent
+      - Breach of Lease: breach
+      - Damage to the Property: damage
+    none of the above: False
+---
+ga id: woaRentalResponse
+question: |
+  Are the allegations true?
+subquestion: |
+  Your landlord has claimed:  
+  
+  % if rental_allegations["rent"]:
+  * Unpaid rent  
+  % endif
+  % if rental_allegations["breach"]:
+  * A breach of the lease  
+  % endif
+  % if rental_allegations["damage"]:
+  * Damage to the property  
+  % endif
+
+  You will be allowed to provide additional details and arguments later, but for now, is what the landlord said true?
+fields:
+  - no label: rental_response
+    input type: radio
+    choices:
+      - Yes: yes
+      - No: no
+      - Some but not all of it: somewhat
+---
+ga id: woaFactoryClaimDetails
+decoration: factory_home_img
+question: |
+  Claim Details
+subquestion: |
+  Take a look at the **Petition for Summary Relief, Wrongful Occupation of Factory-Built Home Site**.  What has the landlord claimed?
+fields: 
+  - no label: factory_allegations
+    datatype: checkboxes
+    choices:
+      - Tenant is holding over: holdover
+      - Tenant is in arrears: arrears
+      - Tenant has breached the terms of the lease: lease
+      - Tenant has breached the rules of factory-built rental community: rules
+      - Tenant has failed to improve or maintain the property: improvement
+      - Tenant has failed to pay for services: services
+      - Some other breach: other
+      - There is no written agreement and Tenant has breached a warranty: unwritten
+      - Tenant has deliberately or negligently damaged property: damage
+    none of the above: False
+---
+ga id: woaFactoryResponse
+question: |
+  Are the allegations true?
+subquestion: |
+  Your landlord has claimed:  
+  
+  % if factory_allegations["holdover"]:
+  * Tenant is a {holdover}
+  % endif
+  % if factory_allegations["arrears"]:
+  * Tenant is in {arrears}
+  % endif
+  % if factory_allegations["lease"]:
+  * Tenant has breached the terms of the lease  
+  % endif
+  % if factory_allegations["rules"]:
+  * Tenant has breached the rules of factory-built rental community  
+  % endif
+  % if factory_allegations["improvement"]:
+  * Tenant has failed to improve or maintain the property  
+  % endif
+  % if factory_allegations["services"]:
+  * Tenant has failed to pay for services  
+  % endif
+  % if factory_allegations["other"]:
+  * Some other breach  
+  % endif
+  % if factory_allegations["unwritten"]:
+  * There is no written agreement and Tenant has breached a warranty  
+  % endif
+  % if factory_allegations["damage"]:
+  * Tenant has deliberately or negligently damaged property  
+  % endif
+
+  You will be allowed to provide additional details and arguments later, but for now, is what the landlord said true?
+fields:
+  - no label: factory_response
+    input type: radio
+    choices:
+      - Yes: yes
+      - No: no
+      - Some but not all of it: somewhat
+---
+ga id: woaRentOwed
+decoration: bill_img
+question: |
+  Are you behind on rent?
+subquestion: |
+  There might be ways to reduce the amount of rent owed,
+  but knowing if you have unpaid rent is important.
+yesno: rent_owed
+---
+ga id: woaDefensesExplained
+question: |
+  [FILE habitability_img, 100%][BR]
+  Possible Defenses
+subquestion: |
+  <p class="flex center"><span>Now we are going to look through some possible defenses that mgiht help your case.</span></p>
+
+  We will look for:  
+
+  * [Breaches of the Warranty of Habitability](https://www.youtube.com/watch?v=ytgs-FqL9SE)
+  * Retalation by the landlord
+  * Whether the landlord has benefited from you improving the property
+continue button field: defenses_explained
+---
+ga id: woaWarrantyBreach
+question: |
+  [FILE room_conditions_img, 100%][BR]
+  Have you had any of these problems with your rental property?
+subquestion: |
+  Please select all that apply
+fields: 
+  - no label: warranty
+    datatype: checkboxes
+    choices:
+      - No electricity: electricity
+      - No running water: water
+      - No heat in cold weather: heat
+      - Sewage backups or other leaks: sewage
+      - Untreated rodent/bug infestation: infested
+      - No smoke alarms: smoke
+      - Health, Safety, Fire, or Housing code violation: violation
+right: |
+  ***
+  #### Related Information
+  ***
+  [YOUTUBE ytgs-FqL9SE]
+---
+ga id: woaWarrantyBreachRemediation
+question: |
+  [FILE hammer_img, 100%][BR]
+  Have you spent money to fix these issues or work around them?
+
+  For instance, if there is no running water, are you buying bottled water?
+  If there is no heat, are you using space heaters which cause your electric bill to increase?
+subquestion: |
+  You listed the issues as:  
+
+  % if warranty["electricity"]:
+  * No Electricity  
+  % endif
+  % if warranty["water"]:
+  * No running water  
+  % endif
+  % if warranty["heat"]:
+  * No heat in cold weather  
+  % endif
+  % if warranty["sewage"]:
+  * Sewage backups or other leaks  
+  % endif
+  % if warranty["infested"]:
+  * Untreated rodent/bug infestation  
+  % endif
+  % if warranty["smoke"]:
+  * No smoke alarms  
+  % endif
+  % if warranty["violation"]:
+  * Health, Safety, Fire, or Housing code violation  
+  % endif
+
+  Did you spend money to fix them?
+fields:
+  - no label: warranty_remediation
+    datatype: yesnoradio
+  - How much did you spend: warranty_remediation_cost
+    datatype: currency
+    min: 0
+    show if: warranty_remediation
+---
+ga id: woaPromise
+question: |
+  Has the landlord failed to fulfill a promise?
+subquestion: |
+  Examples include:  
+
+  * Did the landlord say that there was going to be a washer/dryer?  
+  * Did the landlord promise to clear a tree or brush?
+  * Did the landlord agree to fix a problem that was present when you moved in?
+fields:
+  - no label: promise_breach
+    datatype: yesnoradio
+  - ${ p.name } promised to: promise
+    datatype: area
+    show if: promise_breach
+  - Did you spend money to fix the problem?: promise_remediation
+    datatype: yesnoradio
+    show if: promise_breach
+  - How much did you spend: promise_remediation_cost
+    datatype: currency
+    show if: promise_remediation
+---
+ga id: woaUnjustEnrichment
+question: |
+  [FILE room_img, 100%][BR]
+  Did you make any significant improvements to the property?
+subquestion: |
+  Significant improvements are things like :
+
+  * Replaced carpets or flooring
+  * Added or replacing deck/patio
+  * Added gravel or paving
+  * Removed junk from the property that was present when you moved in
+fields:
+  - no label: unjust_enrichment
+    datatype: yesnoradio
+  - ${ p.name } benefited when I: improvements
+    datatype: area
+    show if: unjust_enrichment
+  - How much did that cost?: improvements_cost
+    datatype: currency
+    show if: unjust_enrichment
+---
+ga id: woaCrossClaim
+question: |
+  [FILE cotenant_img, 100%][BR]
+  Claim Against Someone Else
+subquestion: |
+  Your landlord alleged there was a breach of the lease or damages requiring eviction.  However, if someone else caused the issue, they might be responsible instead of you.
+fields:
+  - Was there someone else **on the lease**, other than you?: cotenant
+    datatype: yesnoradio
+  - Are they also named on the petition?: named_party
+    datatype: yesnoradio
+    show if: cotenant
+  - Were they, or their guest, responsible for the damage or breach?: cotenant_responsible
+    datatype: yesnoradio
+    show if: cotenant
+  - What is their name?: cotenant_name
+    show if: cotenant_responsible
+  - They are responsible because...: cotenant_breach
+    input type: area
+    show if: cotenant_responsible
+---
+ga id: woaRetaliation
+question: |
+  [FILE code_img, 100%][BR]
+  Retaliation
+subquestion: |
+  Have you made a complaint to your landlord, housing authority, or public health official about the conditions of the property?
+yesno: retaliation
+---
+ga id: woaRentalDetail
+question: |
+  [FILE people_inside_img, 100%][BR]
+  Why should you not be evicted?
+subquestion: |
+  So far you have said that the landlord is alleging: 
+
+  % if factory_built:
+  % if factory_allegations["holdover"]:
+  * Tenant is holding over
+  % endif
+  % if factory_allegations["arrears"]:
+  * Tenant is in arrears
+  % endif
+  % if factory_allegations["lease"]:
+  * Tenant has breached the terms of the lease
+  % endif
+  % if factory_allegations["rules"]:
+  * Tenant has breached the rules of factory-built rental community
+  % endif
+  % if factory_allegations["improvement"]:
+  * Tenant has failed to improve or maintain the property
+  % endif
+  % if factory_allegations["services"]:
+  * Tenant has failed to pay for services
+  % endif
+  % if factory_allegations["other"]:
+  * Some other breach
+  % endif
+  % if factory_allegations["unwritten"]:
+  * There is no written agreement and Tenant has breached a warranty
+  % endif
+  % if factory_allegations["damage"]:
+  * Tenant has deliberately or negligently damaged property
+  % endif
+  % else:
+  % if rental_allegations["rent"]:
+  * Unpaid rent  
+  % endif
+  % if rental_allegations["breach"]:
+  * A breach of the lease  
+  % endif
+  % if rental_allegations["damage"]:
+  * Damage to the property  
+  % endif
+  % endif
+
+  % if not factory_built:
+  % if warranty.any_true():
+  However, you also said that your rental has  
+
+  % if warranty["electricity"]:
+  * No Electricity  
+  % endif
+  % if warranty["water"]:
+  * No running water  
+  % endif
+  % if warranty["heat"]:
+  * No heat in cold weather  
+  % endif
+  % if warranty["sewage"]:
+  * Sewage backups or other leaks  
+  % endif
+  % if warranty["infested"]:
+  * Untreated rodent/bug infestation  
+  % endif
+  % if warranty["smoke"]:
+  * No smoke alarms  
+  % endif
+  % if warranty["violation"]:
+  * Health, Safety, Fire, or Housing code violation  
+  % endif
+
+  % if warranty_remediation:
+  You have spent ${ currency(warranty_remediation_cost) } fixing the issues above, and will be asking for damages in a counterclaim.
+  % endif
+  % endif
+
+  % if rental_allegations["breach"] or rental_allegations["damage"]:
+  % if cotenant and cotenant_responsible:
+  You are alleging that ${ cotenant_name } is actually responsible for the breach because ${ cotenant_breach } and you do not want to be responsible for their actions.
+  % endif
+  % endif
+  % endif
+
+  % if (defined("rental_allegations['rent']") and rental_allegations["rent"]) or (defined("factory_allegations['arrears']") and factory_allegations["arrears"]):
+  % if rent_owed:
+  You do owe rent.  
+
+  % endif
+  % if promise_breach:
+  You also stated that the landlord failed to fulfill the promise of: ${ promise }
+  % if promise_remediation:
+   that cost you ${ currency(promise_remediation_cost) }, and will be asking for damages in a counterclaim
+  % endif
+  .
+  % endif
+  % endif
+
+  % if retaliation:
+  You made a complaint to your landlord, housing authority, or public official and now are facing eviction.
+  % endif
+
+  % if unjust_enrichment:
+  You also improved the property by: ${ improvements } at a cost of ${ currency(improvements_cost) }, and will be asking for damages in a counterclaim.
+  % endif
+
+  Please write why you disagree with what the landlord is alleging.  Provide specific details.
+fields:
+  - no label: rental_detail
+    input type: area
+    rows: 6
+---
+ga id: woaShortEndpoint
+question: |
+  [FILE success_exit_img, 100%][BR]
+  Final Information
+subquestion: |
+  You can download the PDFs for your **Wrongful Occupation Answer** below.  
+  
+  You can apply for Legal Aid of West Virginia's Services [here](https://legalaidwv.org/get-help/apply-for-help/).
+
+  ${ action_button_html(woa_bundle.url_for(), classname='btn btn-da btn-primary', label='Download All', icon='file-pdf') }
+  ${ action_button_html(url_action('send_woa_files'), classname='btn btn-da btn-primary', label='Email these to me', icon='envelope') }
+field: generate_wrongful_occupation_answer
+manual attachment list: True
+allow emailing: False
+buttons:
+  - All done
+---
+code: |
+  woa_documents = [wrongful_occupation_instructions, wrongful_occupation_answer]
+  woa_bundle = pdf_concatenate(woa_documents, filename=r.name.full() + " Answer to Eviction.pdf")
+---
+attachment:
+  - name: wrongful_occupation_answer
+    filename: wrongful_occupation_answer
+    pdf template file: wrongful_occupation_answer.pdf
+    variable name: wrongful_occupation_answer
+    fields:
+      - "upper_county": ${ county.upper() }
+      - "case_num": ${ case_num }
+      - "p1_name": ${ p.name }
+      - "d1_name": ${ r.name }
+      - "admitting": ${ admitting }
+      - "denying": ${ denying }
+      - "admitting_in_part": ${ admitting_in_part }
+      - "defenses": ${ defenses }
+      - "warranty_of_habitability": ${ warranty_of_habitability }
+      - "retaliation": ${ retaliation }
+      - "duty_to_pay": ${ promise_breach }
+      - "other": No
+      - "counterclaim": ${ counter_claim }
+      - "cross_claim": ${ cross_claim }
+      - "detail": ${ detail }      
+      - "d1_phone": ${ r.phone_number }
+      - "d1_address_one_line": ${ r.address.on_one_line() }
+---
+ga id: woaLongEndpoint
+question: |
+  [FILE success_exit_img, 100%][BR]
+  Final Information
+subquestion: |
+  You can download the PDFs for your **Wrongful Occupation Answer** below.  
+  
+  You can apply for Legal Aid of West Virginia's Services [here](https://legalaidwv.org/get-help/apply-for-help/).
+
+  ${ action_button_html(woa_long_bundle.url_for(), classname='btn btn-da btn-primary', label='Download All', icon='file-pdf') }
+  ${ action_button_html(url_action('send_woa_long_files'), classname='btn btn-da btn-primary', label='Email these to me', icon='envelope') }
+field: generate_longer_wrongful_occupation_answer
+manual attachment list: True
+allow emailing: False
+buttons:
+  - All done
+---
+code: |
+  woa_long_documents = [wrongful_occupation_instructions, wrongful_occupation_answer_long]
+  woa_long_bundle = pdf_concatenate(woa_long_documents, filename=r.name.full() + " Answer to Eviction.pdf")
+---
+attachment:
+  - name: wrongful_occupation_answer
+    filename: wrongful_occupation_answer
+    pdf template file: wrongful_occupation_answer_long.pdf
+    variable name: wrongful_occupation_answer_long
+    fields:
+      - "upper_county": ${ county.upper() }
+      - "case_num": ${ case_num }
+      - "p1_name": ${ p.name }
+      - "d1_name": ${ r.name }
+      - "admitting": ${ admitting }
+      - "denying": ${ denying }
+      - "admitting_in_part": ${ admitting_in_part }
+      - "defenses": ${ defenses }
+      - "warranty_of_habitability": ${ warranty_of_habitability }
+      - "retaliation": ${ retaliation }
+      - "duty_to_pay": ${ promise_breach }
+      - "other": No
+      - "counterclaim": ${ counter_claim }
+      - "cross_claim": ${ cross_claim }
+      - "detail": "See Attached Sheet"      
+      - "d1_phone": ${ r.phone_number }
+      - "d1_address_one_line": ${ r.address.on_one_line() }
+      - "extended_detail": ${ detail }
+---
+attachment:
+  - name: wrongful_occupation_instructions
+    filename: wrongful_occupation_instructions
+    pdf template file: wrongful_occupation_instructions.pdf
+    variable name: wrongful_occupation_instructions
+    editable: False
+    fields:
+      - library_address: ${ closest_library + "\n" + libraries[closest_library]["address"] }
+      - court_address: ${ county + " County Magistrate Clerk\n" + mag_address[county] }
+---
+event: send_woa_files
+code: |
+  send_email(to=r, attachments=woa_bundle,template=email_all_files)
+---
+event: send_woa_long_files
+code: |
+  send_email(to=r, attachments=woa_long_bundle,template=email_all_files)
+---
+template: email_all_files
+subject: |
+  Renters Rights West Virginia - Answer to Eviction Document Packet
+content: |
+  Your document(s) is/are attached.
+
+  Additional information can always be found at [Legal Aid of West Virginia](https://legalaidwv.org/).
+
+  *NOTE: This email address is not monitored.  Please do not reply to this message.*
+---
+ga id: woaIneligible
+event: ineligible
+question: |
+  ${ failure_title }
+subquestion: |  
+  ${ failure_reason }  
+buttons: 
+  - Exit: exit
+  - Restart: restart
+---
+ga id: woaAppeal
+question: |
+  It appears you need to file an appeal
+subquestion: |  
+  Because you have already had a final hearing and received a Civil Judgment Order or an Order of Possession, your case with the Magistrate Court is complete.  
+
+  If you do not agree with the Magistrate Court decision, you can [file an appeal](https://legalaidwv.org/legal-information/appealing-an-eviction-case-to-circuit-court/) asking a Circuit Court to review it. There are deadlines for filing an appeal. You must act quickly and you may also want to try to get legal help.  
+
+  You can click the button below to fill out the paperwork for an appeal, or if you made a mistake, you can restart the tool to fill out the answer paperwork.
+field: answer_appeal
+buttons:
+  - Continue to Appeal: appeal
+  - Restart: restart
+    color: warning
+---
+ga id: woaSuccessExit
+event: success_exit
+question: |
+  [FILE success_exit_2_img, 100%][BR]
+  Thank you for using the tool!
+subquestion: |
+  We hope this tool was useful.  Once you click exit below, your information will be purged
+  from our system.  Please be sure you have downloaded or emailed the document.
+buttons:
+  - Exit Completely: exit
+back button: True
+back button label: |
+  Wait, go back
+---
+mandatory: True
+code: |
+  closest = 999999
+  closest_library = ""
+
+  if introduction == 'exit':
+    command('exit')
+  if served:
+    if not hearing_held:
+      hearing_date
+
+      ## Library
+      r.address.geocode()
+      cords = (r.address.location.latitude,r.address.location.longitude)
+      for library in libraries:
+        distance = geopy.distance.geodesic(cords, (libraries[library]["lat"], libraries[library]["long"])).miles
+        if distance < closest:
+          closest = distance
+          closest_library = library
+
+      if factory_built:
+        factory_allegations
+        if factory_response == "yes":
+          admitting_in_part = "No"
+          admitting = "Yes"
+          denying = "No"
+        elif factory_response == "no":
+          admitting_in_part = "No"
+          admitting = "No"
+          denying = "Yes"
+        else:
+          admitting_in_part = "Yes"
+          admitting = "No"
+          denying = "No"
+
+        defenses = "No"
+        warranty_of_habitability = "No"
+        counter_claim = "No"
+        cross_claim = "No"
+
+        if factory_allegations["arrears"]:
+          rent_owed
+          if promise_breach:
+            defenses = "Yes"
+            if promise_remediation:
+              counter_claim = "Yes"
+        else:
+          rent_owed = False
+          promise_breach = False
+      else:
+        rental_allegations
+        if rental_response == "yes":
+          admitting_in_part = "No"
+          admitting = "Yes"
+          denying = "No"
+        elif rental_response == "no":
+          admitting_in_part = "No"
+          admitting = "No"
+          denying = "Yes"
+        else:
+          admitting_in_part = "Yes"
+          admitting = "No"
+          denying = "No"
+
+        if rental_allegations["rent"]:
+          rent_owed
+          if promise_breach:
+            defenses = "Yes"
+            if promise_remediation:
+              counter_claim = "Yes"
+        else:
+          rent_owed = False
+          promise_breach = False
+    
+        defenses_explained
+        if warranty.any_true():
+          defenses = "Yes"
+          warranty_of_habitability = "Yes"
+
+          if warranty_remediation:
+            counter_claim = "Yes"
+          else:
+            counter_claim = "No"
+        else:
+          defenses = "No"
+          warranty_of_habitability = "No"
+          counter_claim = "No"
+
+        if rental_allegations["breach"] or rental_allegations["damage"]:
+          if cotenant and cotenant_responsible:
+            defenses = "Yes"
+            cross_claim = "Yes"
+          else:
+            cross_claim = "No"
+        else:
+          cross_claim = "No"
+
+      if retaliation:
+        defenses = "Yes"
+      
+      if unjust_enrichment:
+        counter_claim = "Yes"
+        
+      rental_detail
+
+      if len(detail) > 600:
+        generate_longer_wrongful_occupation_answer
+      else:
+        generate_wrongful_occupation_answer
+      success_exit
+    else:
+      if answer_appeal == "appeal":
+        command('leave', url="https://iolaw.net/start/LAWV%20Petition%20for%20Appeal/")
+      else:
+        command('restart')
+  else:
+    failure_title = "It appears you do not need to file an answer right now."
+    failure_reason = "If you have not received a summons and complaint, there is no need to file an answer at this time.<br><br>For more information, read our article on the [Eviction Process Before a Court Case is Filed](https://legalaidwv.org/legal-information/eviction-process-before-a-court-case-is-filed/)."
+    ineligible
+---
+code: |
+  ## This section builds the descriptive details to create a better-pleaded pleading.
+  ## This is ripe for improvement with AI integration to make the text more human and less formulaic
+
+  detail = ""
+  total_damages = 0
+
+  if factory_built:
+    if factory_allegations["arrears"]:
+      # Landlord has alleged that tenant owes money
+      if rent_owed:
+        # Tenant does owe money
+        if promise_breach:
+          # Landlord failed to fulfill a promise
+          if promise_remediation:
+            # Tenant spent money to fix the broken promise
+            detail += p.name.full() + " alleged that I owe rent, however I withheld rent because " + p.name.full() + " promised to " + promise + " and I spent " + currency(promise_remediation_cost) + " to fix it.  I demand the same in damages. "
+            total_damages += promise_remediation_cost
+          else:
+            # Tenant has not spent money to fix the issue
+            detail += p.name.full() + " alleged that I owe rent, however I withheld rent because " + p.name.full() + " promised to " + promise + " and has not done so. "
+      else:
+        # Tenant does not owe money
+        detail += p.name.full() + " alleged that I owe rent, however I am current on rent. "
+        if promise_breach:
+          # Landlord failed to fulfill a promise
+          if promise_remediation:
+            # Tenant spent money to fix the broken promise
+            detail += "Further, " + p.name.full() + " promised to " + promise + ", failed to do so, and I spent " + currency(promise_remediation_cost) + " to fix it.  I demand the same in damages. "
+            total_damages += promise_remediation_cost
+          else:
+            # Tenant has not spent money to fix the issue
+            detail += "Further, " + p.name.full() + " promised to " + promise + ", has not done so, and is in breach. "
+  else:
+    if warranty.any_true():
+      detail += p.name.full() + " breached the Warranty of Habitability. "
+      if warranty["electricity"]:
+        detail += "There is no electricity. "
+      if warranty["water"]:
+        detail += "There is no running water. "
+      if warranty["heat"]:
+        detail += "There is no heat in cold weather. "
+      if warranty["sewage"]:
+        detail += "There are sewage backups or other leaks. "
+      if warranty["infested"]:
+        detail += "There is an untreated rodent/bug infestation. "
+      if warranty["smoke"]:
+        detail += "There are defective or missing smoke alarms. "
+      if warranty["violation"]:
+        detail += "There are Health, Safety, Fire, or Housing code violation(s). "
+      if warranty_remediation:
+        detail += "I spent " + currency(warranty_remediation_cost) + " to fix the issue and demand the same in damages. "
+        total_damages += warranty_remediation_cost
+    
+    if rental_allegations["rent"]:
+      # Landlord has alleged that tenant owes money
+      if rent_owed:
+        # Tenant does owe money
+        if promise_breach:
+          # Landlord failed to fulfill a promise
+          if promise_remediation:
+            # Tenant spent money to fix the broken promise
+            detail += p.name.full() + " alleged that I owe rent, however I withheld rent because " + p.name.full() + " promised to " + promise + " and I spent " + currency(promise_remediation_cost) + " to fix it.  I demand the same in damages. "
+            total_damages += promise_remediation_cost
+          else:
+            # Tenant has not spent money to fix the issue
+            detail += p.name.full() + " alleged that I owe rent, however I withheld rent because " + p.name.full() + " promised to " + promise + " and has not done so. "
+        if warranty.any_true():
+          detail += "My duty to pay rent is suspended because of " + p.possessive('breach') + " of the Warranty of Habitability. "
+      else:
+        # Tenant does not owe money
+        detail += p.name.full() + " alleged that I owe rent, however I am current on rent. "
+        if promise_breach:
+          # Landlord failed to fulfill a promise
+          if promise_remediation:
+            # Tenant spent money to fix the broken promise
+            detail += "Further, " + p.name.full() + " promised to " + promise + ", failed to do so, and I spent " + currency(promise_remediation_cost) + " to fix it.  I demand the same in damages. "
+            total_damages += promise_remediation_cost
+          else:
+            # Tenant has not spent money to fix the issue
+            detail += "Further, " + p.name.full() + " promised to " + promise + ", has not done so, and is in breach. "
+        if warranty.any_true():
+          detail += "My duty to pay rent is suspended because of " + p.possessive('breach') + " of the Warranty of Habitability. "
+    
+    if rental_allegations["breach"] or rental_allegations["damage"]:
+      if cotenant and cotenant_responsible:
+        detail += "I am filing a cross-claim against " + cotenant_name + " because they are responsible for the allegations by " + p.name.full() + ". " + cotenant_name + " is responsible because " + cotenant_breach + ". "   
+  
+  if retaliation:
+    detail += "I believe " + p.name.full() + " filed this action in retaliation to the complaint(s) I made about the conditions of the property. "
+
+  if unjust_enrichment:
+    detail += p.name.full() + " has been unjustly enriched when I " + improvements + " and spent " + currency(improvements_cost) + " to do so. I demand the same in damages. "
+    total_damages += improvements_cost
+  
+  if total_damages > 0:
+    detail += "The total damages is " + currency(total_damages) + ". "
+  detail += "By way of further answer: " + rental_detail

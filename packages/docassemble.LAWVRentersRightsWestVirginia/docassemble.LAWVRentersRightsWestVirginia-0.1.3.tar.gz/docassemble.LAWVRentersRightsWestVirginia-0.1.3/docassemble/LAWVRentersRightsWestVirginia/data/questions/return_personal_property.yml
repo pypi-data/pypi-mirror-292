@@ -1,0 +1,213 @@
+metadata:
+  title: |
+    Renters Rights West Virginia - Return Personal Property Letter
+  short title: |
+    Return Personal Property Letter
+  description: |
+    Return Personal Property Letter
+  authors:
+    - name: Dane W. Henry, Esq.
+      organization: Legal Aid of West Virginia, Inc.
+  revision_date: 2024-08-15
+  exit url: https://legalaidwv.org/renters-rights-west-virginia
+---
+features:
+  javascript: docassemble.LAWVCommon:data/static/force_lightmode.js
+  css: docassemble.LAWVCommon:data/static/lawv.css
+---
+include:
+  - docassemble.LAWVCommon:common_info.yml
+---
+objects:
+  - client: Individual
+  - client.rental_address: Address
+  - ll: Individual
+---
+images:
+  icon_form_img: icon_form.png
+  icon_time_img: icon_time.png
+  move_out_img: move_out.png
+  people_img: people.png
+  storage_img: storage.png
+  success_exit_img: success_exit.png
+  success_exit_2_img: success_exit_2.png
+  truck_img: truck.png
+---
+ga id: propertyIntroduction
+question: |
+  #### Introduction
+
+  # Welcome to the Renters Rights West Virginia[BR]  
+
+  # Letter to Request Return of Personal Property
+subquestion: |
+  ### Why use this tool?
+  <p class="flex center"><span>This form helps you write a letter to your landlord giving notice that you intend to get your property and when you will do it.</span></p>  
+
+  ### What to expect
+  <p class="flex center">[FILE icon_time_img, 50px]<span>Depending on your situation this will take between 5 and 15 minutes.</span></p>
+
+  ### What do you need?
+  <p class="flex center">[FILE icon_form_img, 50px]<span>Information about your rental property, your new address, and any personal property you left at the previous location.</span></p>
+  
+  ***
+  ###Terms of Use:
+  ####<span style="color:black;font-weight:100;">Legal Aid of West Virginia is a non-profit law firm that provides free legal help.  This tool was developed by Legal Aid to provide information and to make it easier to fill out necessary forms.  This tool does not take the place of an attorney-client relationship. Legal Aid is not your attorney.  If you have questions about your specific situation, you should seek legal help.  The information on this tool is based on West Virginia law.  By using this tool, I agree that I have read and understand the information on this page.  If you wish to apply for Legal Aid of West Virginia’s services, you may do so here: [https://legalaidwv.org](https://legalaidwv.org/)
+  
+  <span>
+field: introduction
+buttons:
+  - I Agree: continue
+  - Exit: exit
+    color: danger
+under: |
+
+  ***
+  #### <span style="color:red">Note:</span> Legal Aid of West Virginia does not retain any of the information entered. Sessions are encrypted and only available to the user. At the conclusion of the process, all data entered is wiped to ensure user privacy.
+  ***
+---
+ga id: propertySituationInformation
+question: |
+  [FILE move_out_img, 100%][BR]
+  Move-Out Information
+subquestion: |
+  This information is important because it determines how long the landlord must keep your belongings and gives the landlord notice of when you plan to come back.
+fields:
+  - Why did you leave the property?: origin
+    input type: radio
+    choices:
+      - Following an Eviction and Court Order: court
+      - Moving out without going to Court: abandoned
+  - What was your move out date?: move_out
+    datatype: date
+    max: ${ today() }
+  - When do you want to get your belongings?: pickup_date
+    datatype: date
+    min: ${ today() }
+    max: ${ today().plus(days=30)}
+right: |
+  ***
+  #### Related Information
+  ***
+  [YOUTUBE -MrjxDH7rAc]
+---
+ga id: propertyPersonalInformation
+question: |
+  [FILE people_img, 100%][BR]
+  Let's get some information about you and the landlord
+fields:
+  - note: |
+      **Your Current Information**
+  - First Name: client.name.first
+  - Last Name: client.name.last
+  - Email Address: client.email
+    datatype: email
+  - Address: client.address.address
+    address autocomplete: True
+  - Unit/Apt.: client.address.unit
+    required: False
+  - City: client.address.city
+  - State: client.address.state
+    code: states_list()
+    default: WV
+  - Zip: client.address.zip
+  - note: |
+      **Rental Information**
+  - Rental Address: client.rental_address.address
+    address autocomplete: True
+  - Unit/Apt.: client.rental_address.unit
+    required: False
+  - City: client.rental_address.city
+  - State: client.rental_address.state
+    code: states_list()
+    default: WV
+  - Zip: client.rental_address.zip
+  - note: |
+      **Landlord's Information**
+  - Landlord's Full Name/Company NameFirst Name: ll.name
+  - Landlord's Address: ll.address.address
+    address autocomplete: True
+  - Unit/Apt.: ll.address.unit
+    required: False
+  - City: ll.address.city
+  - State: ll.address.state
+    code: states_list()
+    default: WV
+  - Zip: ll.address.zip
+---
+ga id: propertyDescription
+question: |
+  [FILE storage_img, 100%][BR]
+  What **important** belongings did you leave behind?
+subquestion: |
+  Important items are generally those with a value of $300 or more. Creating an accurate list helps to ensure the landlord does not throw away your personal items.
+fields:
+  - no label: list_of_property
+    input type: area
+    rows: 7
+---
+ga id: propertyEndpoint
+question: |
+  [FILE success_exit_img, 100%][BR]
+  Final Information
+subquestion: |
+  You can download the files for the **Return of Personal Property Letter** below.
+
+  ${ action_button_html(property_bundle.url_for(), classname='btn btn-da btn-primary', label='Download All', icon='file-pdf') }
+  ${ action_button_html(url_action('send_property_files'), classname='btn btn-da btn-primary', label='Email these to me', icon='envelope') }
+attachment code: property_documents
+manual attachment list: True
+allow emailing: False
+field: generate_property
+buttons:
+  - All Done
+---
+code: |
+  property_documents = [client.letter]
+  property_bundle = pdf_concatenate(property_documents, filename=client.name.full() + "Return of Personal Property Letter.pdf")
+---
+attachment:
+  name: ${ client.name.full() } Return of Personal Property Letter
+  filename: ${ client.name.full() } Return of Personal Property Letter
+  docx template file: personal_property_letter.docx
+  editable: True
+  variable name: client.letter
+  valid formats:
+    - pdf
+---
+event: send_property_files
+code: |
+  send_email(to=client, attachments=property_bundle,template=email_all_files)
+---
+template: email_all_files
+subject: |
+  LAWV Legal Help for Renters - Return of Personal Property Document Packet
+content: |
+  Your document(s) is/are attached.
+
+  Additional information can always be found at [Legal Aid of West Virginia](https://legalaidwv.org/).
+
+  *NOTE: This email address is not monitored.  Please do not reply to this message.*
+---
+ga id: propertySuccessExit
+event: success_exit
+question: |
+  [FILE success_exit_2_img, 100%][BR]
+  Thank you for using the tool!
+subquestion: |
+  We hope this tool was useful.  Once you click exit below, your information will be purged
+  from our system.  Please be sure you have downloaded or emailed the document.
+buttons:
+  - Exit Completely: exit
+back button: True
+back button label: |
+  Wait, go back
+---
+mandatory: True
+code: |
+  introduction
+  origin
+  client.name.first
+  list_of_property
+  generate_property
+  success_exit
