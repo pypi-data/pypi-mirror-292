@@ -1,0 +1,104 @@
+Metadata-Version: 2.1
+Name: maqet
+Version: 0.0.1.2
+Project-URL: Repository, https://gitlab.com/m4x0n_24/maqet/-/tree/main
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: python-benedict >=0.33.2
+
+# MAQET
+
+**Work in progress.** Documentation and code can be absolute mess.
+
+If you are willing to help - open issue, MR or do something else
+to attract maintainer's attention
+
+## Description
+
+MAQET stands for M4x0n QEmu Tool.
+It's based on [QEMU](https://gitlab.com/qemu-project/qemu) python [tooling](https://gitlab.com/qemu-project/qemu/-/tree/master/python?ref_type=heads).
+
+Main goal of this project is to provide good way to run qemu virtual machine.
+Author (m4x0n) wants to create virtual environment for repeatable testing
+of Linux installation and configuration before messing around with real computer,
+so all features implemented are primarily pursuing this goal.
+
+### Roadmap
+
+First usable version:
+
+- [x] YAML manifest for VM settings
+- [x] Storage (-drive) management:
+  - [x] RAW and QCOW2 files
+  - [x] Using backing images for QCOW2
+  - [x] Internal snapshots for QCOW2
+- [x] Stages defined as python functions with decorator (Flask style)
+- [x] CLI to specify stage, additional arguments and options
+- [x] QMP commands
+
+Goals for near future (sorted by priority):
+
+- [ ] Unified naming of variables (what is config? What is manifest?)
+- [ ] Code cleanup, adding typing hints, docstrings etc.
+- [ ] Extensible system of kwargs handling in every class (see in dev notes)
+- [ ] Unit tests
+- [ ] Full translation of strings into QMP key inputs
+
+Advanced goals
+
+- [ ] Custom QMP command presets
+- [ ] Advanced storage management
+- [ ] Runtime snapshots via qmp
+- [ ] Remote storage types (iscsi)
+
+## Usage guide
+
+See [example](https://gitlab.com/m4x0n_24/maqet/-/tree/main/example)
+Full documentation will be later
+
+## Development notes
+
+### Unification of **kwargs handling in extensible way
+
+Problem: classes have *args and **kwargs arguments. It gives flexibility,
+but also makes argument handling cumbersome (Ladder of if statements).
+
+Main class - Maqet, get it's kwargs and uses them as a config,
+parses and creates Machine class object
+with relevant arguments, also in form of kwargs.
+
+Idea is to make it extensible and unified. Like this:
+
+```yaml
+binary: qemu-system-x86_64
+arguments:
+  - foo
+  - bar
+  - baz
+storage:
+  - hda:
+      size: 5G
+      type: qcow2
+      options:
+        id: sda
+      ...
+some_custom_field:
+  - memory: 8G
+  - cpu: 4
+  - print: I_LIKE_PONIES
+```
+
+Binary is easy, just pass it into Machine
+What about arguments? Also pass into Machie, I made parser that turn them
+into cli arguments for qemu binary
+Storage? Call object Storage for every object in the list and pass contents inside
+Custom field? It will be ignored. If we want to use it?
+For example:
+We want to turn `memory: 8G, cpu: 4` into `-m 8G -smp 4`
+and run `print("I_LIKE_PONIES")` before VM starts.
+So we need somehow to extend Maqet class. How to do it? Still not sure.
+
+### QEMU not in PyPI
+
+Now QEMU tooling for python is used as sparse-checkouted git submodule.
