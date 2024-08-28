@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: noxii
+Version: 0.1.8
+Summary: Official wrapper for the Noxii API
+Author: aenoxic
+License: MIT
+Keywords: noxii,noxiibot,api
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: python-dotenv
+Requires-Dist: pymongo
+Requires-Dist: requests
+Requires-Dist: httpx
+
+## ⚙️ Installation
+Python 3.10 or higher is required
+```
+pip install noxii
+```
+
+## 🚀 Example Usage
+The API key can be passed as a parameter or set as the environment variable `API_KEY`.
+
+### Sync Example
+
+```python
+from noxii import api
+
+api = NoxiiAPI(api_key="[YOUR_API_KEY]")
+
+user_stats = api.test()  # Prints "Success!" if it is installed correctly
+```
