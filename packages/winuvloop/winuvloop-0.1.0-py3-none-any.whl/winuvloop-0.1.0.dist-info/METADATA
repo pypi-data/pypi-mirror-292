@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: winuvloop
+Version: 0.1.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Provides-Extra: posix
+Requires-Dist: uvloop; extra == "posix"
+Provides-Extra: win32
+Requires-Dist: winloop; extra == "win32"
+
