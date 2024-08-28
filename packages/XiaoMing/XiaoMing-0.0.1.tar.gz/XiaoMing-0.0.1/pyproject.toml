@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "XiaoMing"
+version = "0.0.1"
+description = "高效，快速的小小WEBAPI调用插件！"
+authors = ["XiaoMing5442 <XiaoMing5442@outlook.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "XiaoMing"}]
+homepage = "https://github.com/XiaoMing5442/XiaoMing"
+repository = "https://github.com/XiaoMing5442/XiaoMing"
+documentation = "https://github.com/XiaoMing5442/XiaoMing/blob/master/README.md"
+
+# 添加清华镜像
+[[tool.poetry.source]]
+name = "tsinghua"
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/"
+default = true  # 设置清华镜像为默认回调, 以避免 poetry 在某些缺省操作里又回调到 pypi 仓库.
+
+[tool.poetry.dependencies]
+python = "^3.10"
+shutils = "^0.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
