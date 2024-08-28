@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "rria-api"
+version = "1.1.1"
+description = "A package to control the Niryo Ned and the Kinova Gen3 Lite robot arms"
+authors = ["felipeadsm <97059009+felipeadsm@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{ include = "rria_api" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pyniryo = "*"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+pytest-cov = "*"
+taskipy = "*"
+ipython = "*"
+kortex-api = {url = "https://artifactory.kinovaapps.com/artifactory/generic-public/kortex/API/2.3.0/kortex_api-2.3.0.post34-py3-none-any.whl"}
+
+[tool.poetry.group.doc.dependencies]
+mkdocs = "*"
+mkdocs-material = "*"
+mkdocstrings = "*"
+mkdocstrings-python = "*"
+pymdown-extensions = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+docs = "mkdocs serve"
+bdocs = "mkdocs build"
