@@ -1,0 +1,46 @@
+[project]
+name = "patsemb"
+version = "0.1.0"
+description = "PaTSEmb: Pattern-based Time Series Embedding"
+requires-python = ">=3.8,<=3.12"
+authors = [
+    {name = "Louis Carpentier", email = "louis.carpentier@kuleuven.be"}
+]
+keywords = ["machine-learning", "time-series", "semantic-segmentation", "data-mining"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+dynamic = ["dependencies"]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+homepage = "https://pypi.org/project/patsemb/"
+repository = "https://gitlab.kuleuven.be/m-group-campus-brugge/dtai_public/patsemb"
+changelog = "https://gitlab.kuleuven.be/m-group-campus-brugge/dtai_public/patsemb/-/blob/main/CHANGELOG.md"
+documentation = "https://patsemb-u0143709-3a07c9d27a51b62b1b2bad2f623ad154a9a19db833f1f7.pages.gitlab.kuleuven.be/"
+
+[build-system]
+requires = ["setuptools", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["patsemb", "patsemb.*"]  # alternatively: `exclude = ["additional*"]`
+namespaces = false
+
+[tool.setuptools.package-data]
+"pattern_mining.SPMF" = ["spmf.jar"]
+
+[tool.setuptools.dynamic.dependencies]
+file = ["requirements.txt"]
