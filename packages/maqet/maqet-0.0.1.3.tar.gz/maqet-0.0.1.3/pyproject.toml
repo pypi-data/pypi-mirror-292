@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+readme = "README.md"
+name = "maqet"
+version = "0.0.1.3"
+requires-python = ">= 3.12"
+dependencies = ["python-benedict>=0.33.2"]
+classifiers = [
+  # Specify the Python versions you support here.
+  "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Repository = "https://gitlab.com/m4x0n_24/maqet/-/tree/main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["maqet", "qemu.*"]
+
+# [tool.setuptools]
+# packages = ['maqet', 'qemu.qmp', 'qemu.machine', 'qemu.utils']
