@@ -1,0 +1,113 @@
+Metadata-Version: 2.3
+Name: directed-inputs-class
+Version: 0.1.0
+Summary: Directed inputs class consumes and processes inputs from sources beyond args and kwargs
+Project-URL: Documentation, https://github.com/jbcom/directed-inputs-class#readme
+Project-URL: Issues, https://github.com/jbcom/directed-inputs-class/issues
+Project-URL: Source, https://github.com/jbcom/directed-inputs-class
+Author-email: Jon Bogaty <jon@jonbogaty.com>
+Maintainer-email: Jon Bogaty <jon@jonbogaty.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: python3
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Typing :: Typed
+Requires-Python: >=3.8
+Requires-Dist: case-insensitive-dictionary>=0.2.1
+Requires-Dist: deepmerge>=1.1.1
+Requires-Dist: extended-data-types>=1.0.2
+Requires-Dist: future>=1.0.0
+Provides-Extra: docs
+Requires-Dist: docutils>=0.17; extra == 'docs'
+Requires-Dist: myst-parser>=3.0.1; extra == 'docs'
+Requires-Dist: sphinx-autodoc2>=0.5.0; extra == 'docs'
+Requires-Dist: sphinx<7.5,>=7.2; extra == 'docs'
+Requires-Dist: sphinxawesome-theme>=5.2.0; extra == 'docs'
+Provides-Extra: tests
+Requires-Dist: coverage[toml]>=7.6.0; extra == 'tests'
+Requires-Dist: pytest-cov>=5.0.0; extra == 'tests'
+Requires-Dist: pytest-mock>=3.14.0; extra == 'tests'
+Requires-Dist: pytest-xdist>=3.6.1; extra == 'tests'
+Requires-Dist: pytest>=8.2.2; extra == 'tests'
+Provides-Extra: typing
+Requires-Dist: mypy>=1.0.0; extra == 'typing'
+Requires-Dist: sortedcontainers-stubs>=2.4.2; extra == 'typing'
+Requires-Dist: types-pyyaml>=6.0.12.20240724; extra == 'typing'
+Description-Content-Type: text/markdown
+
+
+# Directed Inputs Class
+
+![Directed Inputs Class Logo](docs/_static/logo.webp)
+
+*🛠️ Manage your Python inputs efficiently! 🎯*
+
+[![CI Status](https://github.com/jbcom/directed-inputs-class/workflows/CI/badge.svg)](https://github.com/jbcom/directed-inputs-class/actions?query=workflow%3ACI)
+[![Documentation Status](https://readthedocs.org/projects/directed-inputs-class/badge/?version=latest)](https://directed-inputs-class.readthedocs.io/en/latest/?badge=latest)
+[![PyPI Package latest release](https://img.shields.io/pypi/v/directed-inputs-class.svg)](https://pypi.org/project/directed-inputs-class/)
+[![Supported versions](https://img.shields.io/pypi/pyversions/directed-inputs-class.svg)](https://pypi.org/project/directed-inputs-class/)
+
+Directed Inputs Class is a Python library that provides a flexible and robust interface for managing inputs from various sources such as environment variables, stdin, and predefined dictionaries. It offers features like input freezing, thawing, and advanced decoding utilities.
+
+## Key Features
+
+- 🧩 **Environment Variable Integration** - Seamlessly integrates environment variables into your inputs.
+- 📥 **Stdin Input Handling** - Read and merge inputs from stdin with optional overrides.
+- ❄️ **Input Freezing and Thawing** - Freeze inputs to prevent modifications, and thaw them when needed.
+- 🔄 **Advanced Decoding Utilities** - Decode inputs from Base64, JSON, and YAML formats with error handling.
+- 🔧 **Type Conversion** - Convert inputs to boolean or integer types with robust error handling.
+
+### Example Usage
+
+```python
+from directed_inputs_class import DirectedInputsClass
+
+# Initialize with environment variables and stdin
+dic = DirectedInputsClass(from_environment=True, from_stdin=True)
+
+# Retrieve and decode an input
+decoded_value = dic.decode_input("example_key", decode_from_base64=True)
+print(decoded_value)
+```
+
+### Freezing and Thawing Inputs
+
+```python
+from directed_inputs_class import DirectedInputsClass
+
+# Initialize with some inputs
+dic = DirectedInputsClass(inputs={"key1": "value1"})
+
+# Freeze the inputs
+frozen_inputs = dic.freeze_inputs()
+print(frozen_inputs)  # Outputs: {'key1': 'value1'}
+
+# Thaw the inputs
+thawed_inputs = dic.thaw_inputs()
+print(thawed_inputs)  # Outputs: {'key1': 'value1'}
+```
+
+For more usage examples, see the [Usage](https://directed-inputs-class.readthedocs.io/en/latest/usage.md) documentation.
+
+## Contributing
+
+Contributions are welcome! Please see the [Contributing Guidelines](https://github.com/jbcom/directed-inputs-class/blob/main/CONTRIBUTING.md) for more information.
+
+## Credit
+
+Directed Inputs Class is written and maintained by [Your Name](mailto:yourname@example.com).
+
+## Project Links
+
+- [**Get Help**](https://stackoverflow.com/questions/tagged/directed-inputs-class) (use the *directed-inputs-class* tag on
+  Stack Overflow)
+- [**PyPI**](https://pypi.org/project/directed-inputs-class/)
+- [**GitHub**](https://github.com/jbcom/directed-inputs-class)
+- [**Documentation**](https://directed-inputs-class.readthedocs.io/en/latest/)
+- [**Changelog**](https://github.com/jbcom/directed-inputs-class/tree/main/CHANGELOG.md)
