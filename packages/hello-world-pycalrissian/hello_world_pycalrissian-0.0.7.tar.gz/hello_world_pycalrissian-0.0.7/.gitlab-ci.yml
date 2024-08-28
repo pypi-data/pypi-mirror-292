@@ -1,0 +1,35 @@
+stages:
+  - build
+  - publish
+
+variables:
+  PIP_CACHE_DIR: $CI_PROJECT_DIR/.cache/pip
+  TWINE_USERNAME: "__token__" # Set this as a GitLab CI/CD secret variable
+  TWINE_PASSWORD: $PYPI_KEY # Set this as a GitLab CI/CD secret variable
+
+cache:
+  paths:
+    - $PIP_CACHE_DIR
+
+# Use a Python image for simplicity
+image: python:3.9 # Or any other Python version you need
+
+before_script:
+  - pip install --upgrade pip
+  - pip install wheel twine build
+
+pypi_build:
+  stage: build
+  script:
+    - pip install . # Install dependencies specified in pyproject.toml
+    - python -m build # Builds the source distribution and wheel
+  artifacts:
+    paths:
+      - dist/
+
+pypi_publish:
+  stage: publish
+  script:
+    - twine upload dist/* -u $TWINE_USERNAME -p $TWINE_PASSWORD
+  only:
+    - tags
