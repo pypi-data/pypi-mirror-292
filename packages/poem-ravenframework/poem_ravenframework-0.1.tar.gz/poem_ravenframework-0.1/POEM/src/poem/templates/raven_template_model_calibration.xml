@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+<!-- Copyright 2024, Battelle Energy Alliance, LLC All Rights Reserved -->
+<Simulation verbosity="debug">
+
+  <RunInfo>
+    <WorkingDir>calibration</WorkingDir>
+    <Sequence>BayesianInference, print</Sequence>
+    <internalParallel>False</internalParallel>
+  </RunInfo>
+
+  <Samplers>
+    <AdaptiveMetropolis name="Metropolis">
+      <samplerInit>
+        <limit>60</limit>
+        <burnIn>50</burnIn>
+      </samplerInit>
+      <likelihood log="True">likelihood</likelihood>
+      <TargetEvaluation class="DataObjects" type="PointSet">outSet</TargetEvaluation>
+    </AdaptiveMetropolis>
+  </Samplers>
+
+  <Steps>
+    <MultiRun name="BayesianInference">
+      <Input class="DataObjects" type="PointSet">inputHolderLikelihood</Input>
+      <Input class="DataObjects" type="PointSet">inputHolderGP</Input>
+      <Model class="Models" type="EnsembleModel">EnsembleLH</Model>
+      <Sampler class="Samplers" type="AdaptiveMetropolis">Metropolis</Sampler>
+      <SolutionExport class="DataObjects" type="PointSet">out_export</SolutionExport>
+      <Output class="DataObjects" type="PointSet">simData</Output>
+      <Output class="DataObjects" type="PointSet">lhData</Output>
+      <Output class="DataObjects" type="PointSet">outSet</Output>
+    </MultiRun>
+    <IOStep name="print">
+      <Input class="DataObjects" type="PointSet">out_export</Input>
+      <Input class="DataObjects" type="PointSet">outSet</Input>
+      <Output class="OutStreams" type="Print">posterior_dump</Output>
+      <Output class="OutStreams" type="Print">samples_dump</Output>
+    </IOStep>
+  </Steps>
+
+  <Models>
+    <ExternalModel name="likelihood" subType="BayCal.LikelihoodModel">
+      <inputs>outputGroup</inputs>
+      <outputs>likelihood</outputs>
+      <LikelihoodModel type="normal">
+
+      </LikelihoodModel>
+    </ExternalModel>
+    <!-- EnsembleModel -->
+    <EnsembleModel name="EnsembleLH" subType="">
+      <Model class="Models" type="ExternalModel">
+          model
+        <Input class="DataObjects" type="PointSet">inputHolderGP</Input>
+        <TargetEvaluation class="DataObjects" type="PointSet">simData</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ExternalModel">
+          likelihood
+        <Input class="DataObjects" type="PointSet">inputHolderLikelihood</Input>
+        <TargetEvaluation class="DataObjects" type="PointSet">lhData</TargetEvaluation>
+      </Model>
+    </EnsembleModel>
+  </Models>
+
+  <OutStreams>
+    <Print name="samples_dump">
+      <type>csv</type>
+      <source>outSet</source>
+      <what>input, output</what>
+    </Print>
+    <Print name="posterior_dump">
+      <type>csv</type>
+      <source>out_export</source>
+      <what>input, output</what>
+    </Print>
+  </OutStreams>
+
+  <DataObjects>
+    <PointSet name="inputHolderLikelihood">
+      <Input>outputGroup</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <PointSet name="inputHolderGP">
+      <Input>inputGroup</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+
+    <PointSet name="outSet">
+      <Input>inputGroup</Input>
+      <Output>likelihood</Output>
+    </PointSet>
+
+    <PointSet name="out_export">
+      <Input>traceID</Input>
+      <Output>inputGroup</Output>
+    </PointSet>
+
+    <PointSet name="simData">
+      <!-- calibrated parameters -->
+      <Input>inputGroup</Input>
+      <!-- simulation targets that will be passed to likelihood model -->
+      <Output>outputGroup</Output>
+    </PointSet>
+
+    <PointSet name="lhData">
+      <!-- simulation targets -->
+      <Input>outputGroup</Input>
+      <Output>likelihood</Output>
+    </PointSet>
+  </DataObjects>
+
+</Simulation>
