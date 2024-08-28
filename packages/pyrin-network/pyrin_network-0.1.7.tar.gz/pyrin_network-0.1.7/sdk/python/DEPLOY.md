@@ -1,0 +1,5 @@
+#### Deploy
+
+```bash
+maturin publish
+```
