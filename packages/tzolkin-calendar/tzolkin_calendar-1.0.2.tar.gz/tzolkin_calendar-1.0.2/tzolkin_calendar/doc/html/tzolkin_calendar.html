@@ -1,0 +1,973 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tzolkin_calendar Package &mdash; tzolkin-calendar 1.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=66b59bf7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=68b195bf"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="Usage of tzolkin-calendar in Your Python Code" href="Tzolk%E2%80%99in%20Calender%20Python%20Module.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #5DB1DE" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            tzolkin-calendar
+          </a>
+              <div class="version">
+                1.0.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Release-Candidate/tzolkin-calendar">GitHub Project Page</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/tzolkin-calendar/">PyPI (pip) Package</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Release-Candidate/tzolkin-calendar/issues/new/choose">Report a Bug or a Feature Request</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Release-Candidate/tzolkin-calendar/issues">Issue Tracker at GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mybinder.org/v2/gh/Release-Candidate/tzolkin-calendar/main?filepath=Tzolk%E2%80%99in%20Calendar.ipynb">Interactive Jupyter Notebook Online</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://maya.nmai.si.edu/">Smithsonian National Museum of the American Indian: Living Maya Time</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://maya.nmai.si.edu/calendar/maya-calendar-converter">Smithsonian National Museum of the American Indian: Maya Calendar Converter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Installation and Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#windows">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#linux">Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#mac-os-x">Mac OS X</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#id4">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_notebook.html">Interactive Jupyter Notebook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jupyter_notebook.html#installation">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Tzolk%E2%80%99in%20Command%20Line.html">Tzolk’in Command Line Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tzolk%E2%80%99in%20Command%20Line.html#converting-gregorian-dates-to-tzolkin-dates">Converting Gregorian Dates to Tzolk’in Dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tzolk%E2%80%99in%20Command%20Line.html#searching-tzolkin-dates">Searching Tzolk’in Dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tzolk%E2%80%99in%20Command%20Line.html#print-all-tzolkin-dates-in-a-tzolkin-year">Print all Tzolk’in Dates in a Tzolk’in Year</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using in Your Code</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Tzolk%E2%80%99in%20Calender%20Python%20Module.html">Usage of tzolkin-calendar in Your Python Code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Tzolk%E2%80%99in%20Calender%20Python%20Module.html#import-the-module">Import the Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Tzolk%E2%80%99in%20Calender%20Python%20Module.html#the-tzolkin-date-class-tzolkin">The Tzolk’in Date Class <code class="docutils literal notranslate"><span class="pre">Tzolkin</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Tzolk%E2%80%99in%20Calender%20Python%20Module.html#convert-gregorian-dates-to-tzolkin-dates">Convert Gregorian Dates to Tzolk’in Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tzolk%E2%80%99in%20Calender%20Python%20Module.html#set-tzolkin-dates">Set Tzolk’in Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tzolk%E2%80%99in%20Calender%20Python%20Module.html#search-gregorian-dates-to-a-given-tzolkin-date">Search Gregorian Dates to a given Tzolk’in Date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tzolk%E2%80%99in%20Calender%20Python%20Module.html#calculations-using-tzolkin-dates">Calculations using Tzolk’in Dates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">tzolkin_calendar Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tzolkin_calendar.tzolkin">tzolkin_calendar.tzolkin module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin"><code class="docutils literal notranslate"><span class="pre">Tzolkin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.addDays"><code class="docutils literal notranslate"><span class="pre">Tzolkin.addDays()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.addTimedelta"><code class="docutils literal notranslate"><span class="pre">Tzolkin.addTimedelta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.fromDate"><code class="docutils literal notranslate"><span class="pre">Tzolkin.fromDate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.fromDateString"><code class="docutils literal notranslate"><span class="pre">Tzolkin.fromDateString()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.fromIsoFormat"><code class="docutils literal notranslate"><span class="pre">Tzolkin.fromIsoFormat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.fromToday"><code class="docutils literal notranslate"><span class="pre">Tzolkin.fromToday()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getDayDiff"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getDayDiff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getDayName"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getDayName()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getDayNameNumber"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getDayNameNumber()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getDayNumber"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getDayNumber()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getDayTimedelta"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getDayTimedelta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getLastDate"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getLastDate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getLastDateList"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getLastDateList()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getNameNumberFromName"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getNameNumberFromName()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getNextDate"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getNextDate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getNextDateList"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getNextDateList()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getTzolkinCalendar"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getTzolkinCalendar()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getTzolkinDate"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getTzolkinDate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.getTzolkinYearDay"><code class="docutils literal notranslate"><span class="pre">Tzolkin.getTzolkinYearDay()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin.parseTzolkinName"><code class="docutils literal notranslate"><span class="pre">Tzolkin.parseTzolkinName()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tzolkin_calendar.calculate">tzolkin_calendar.calculate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.calculate.calculateTzolkinName"><code class="docutils literal notranslate"><span class="pre">calculateTzolkinName()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.calculate.calculateTzolkinNumber"><code class="docutils literal notranslate"><span class="pre">calculateTzolkinNumber()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.calculate.getTzolkinDay"><code class="docutils literal notranslate"><span class="pre">getTzolkinDay()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.calculate.getTzolkinDiff"><code class="docutils literal notranslate"><span class="pre">getTzolkinDiff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.calculate.gregorian2tzolkin"><code class="docutils literal notranslate"><span class="pre">gregorian2tzolkin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.calculate.lastTzolkin"><code class="docutils literal notranslate"><span class="pre">lastTzolkin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.calculate.makeLookUpTable"><code class="docutils literal notranslate"><span class="pre">makeLookUpTable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.calculate.nextTzolkin"><code class="docutils literal notranslate"><span class="pre">nextTzolkin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.calculate.parseTzolkinName"><code class="docutils literal notranslate"><span class="pre">parseTzolkinName()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.calculate.tzolkin2gregorian"><code class="docutils literal notranslate"><span class="pre">tzolkin2gregorian()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tzolkin_calendar.main">tzolkin_calendar.main module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tzolkin_calendar.main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#report-issues-bugs-and-feature-requests">Report Issues (Bugs and Feature Requests)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#forking-the-repository">Forking the Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#setting-the-development-environment">Setting the Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#github-documentation-on-collaborating-with-issues-and-pull-requests">Github Documentation on Collaborating with Issues and Pull Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#common-tasks-developing-tzolkin-calendar">Common Tasks Developing tzolkin-calendar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#jupyter-notebooks">Jupyter Notebooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#changing-and-generating-documentation">Changing and Generating Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="contributing.html#github-documentation">GitHub Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#python-source-code">Python Source Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#tests">Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#local-source-code-linters">Local Source Code Linters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#github-workflows-actions">GitHub Workflows/Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Indices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #5DB1DE" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">tzolkin-calendar</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">tzolkin_calendar Package</li>
+
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="Tzolk%E2%80%99in%20Calender%20Python%20Module.html" class="btn btn-neutral float-left" title="Usage of tzolkin-calendar in Your Python Code" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tzolkin-calendar-package">
+<h1>tzolkin_calendar Package<a class="headerlink" href="#tzolkin-calendar-package" title="Link to this heading"></a></h1>
+<p>This is the source code reference documentation, autogenerated from tzolkin-calendar’s
+source code.</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-tzolkin_calendar.tzolkin">
+<span id="tzolkin-calendar-tzolkin-module"></span><h2>tzolkin_calendar.tzolkin module<a class="headerlink" href="#module-tzolkin_calendar.tzolkin" title="Link to this heading"></a></h2>
+<p>Main Tzolkin class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tzolkin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A representation of a Tzolkin date.
+Use to do calculations and conversions from and to gregorian dates to Tzolkin dates
+and search for days.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.addDays">
+<span class="sig-name descname"><span class="pre">addDays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin"><span class="pre">Tzolkin</span></a></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.addDays" title="Link to this definition"></a></dt>
+<dd><p>Add the number of days to this Tzolkin date and return this instance too.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>days</strong> (<em>int</em>) – The number of days to add (or subtract, if &lt; 0) to this
+<cite>Tzolkin</cite> instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This instance with the number of days added (or subtracted) to it.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin">Tzolkin</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.addTimedelta">
+<span class="sig-name descname"><span class="pre">addTimedelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">timedelta</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin"><span class="pre">Tzolkin</span></a></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.addTimedelta" title="Link to this definition"></a></dt>
+<dd><p>Add the number of days given in the <cite>datetime.timedelta</cite> object to this
+Tzolkin date.
+Returns this <cite>Tzolkin</cite> instance with the days added to or subtracted from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>delta</strong> (<em>datetime.timedelta</em>) – The number of days to add (or subtrace, if &lt; 0).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This instance with the number of days added or subtracted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin">Tzolkin</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.fromDate">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromDate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin"><span class="pre">Tzolkin</span></a></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.fromDate" title="Link to this definition"></a></dt>
+<dd><p>Create a <cite>Tzolkin</cite> instance from the given gregorian date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>date</strong> (<em>datetime.date</em>) – The date to convert to a Tzolkin date.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The gregorion date <cite>date</cite> converted to a Tzolkin date.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin">Tzolkin</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.fromDateString">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromDateString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin"><span class="pre">Tzolkin</span></a></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.fromDateString" title="Link to this definition"></a></dt>
+<dd><p>Create a <cite>Tzolkin</cite> instance from the given gregorian date string.
+See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior">https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior</a>
+for a detailed description of date format strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_str</strong> (<em>str</em>) – The date to convert to a Tzolkin date.</p></li>
+<li><p><strong>fmt</strong> (<em>str</em>) – The format string to parse the given date string. See</p></li>
+<li><p><strong>strings.</strong> (<em>datetime.datetime.strptime for a description</em><em> of </em><em>date format</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The gregorion date <cite>date_str</cite> converted to a Tzolkin date.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin">Tzolkin</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.fromIsoFormat">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromIsoFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin"><span class="pre">Tzolkin</span></a></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.fromIsoFormat" title="Link to this definition"></a></dt>
+<dd><p>Create a <cite>Tzolkin</cite> instance from the given gregorian date string in ISO
+format.
+ISO format means a date in the form ‘YYYY-MM-DD’, like ‘2019-03-21’.
+See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime.fromisoformat">https://docs.python.org/3/library/datetime.html#datetime.datetime.fromisoformat</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>date_str</strong> (<em>str</em>) – See also <cite>datetime.date.fromisoformat</cite></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The gregorion date <cite>date_str</cite> converted to a Tzolkin date.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin">Tzolkin</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.fromToday">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromToday</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin"><span class="pre">Tzolkin</span></a></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.fromToday" title="Link to this definition"></a></dt>
+<dd><p>Return the current date (today) as a Tzolkin date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current day (today) as a Tzolkin date.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin">Tzolkin</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getDayDiff">
+<span class="sig-name descname"><span class="pre">getDayDiff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin"><span class="pre">Tzolkin</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getDayDiff" title="Link to this definition"></a></dt>
+<dd><p>Return the number of days between the two Tzolkin dates.
+No negative differences are returned, but the number of days to reach the
+<cite>other</cite> date if starting from this Tzolkin date.
+If this date is earlier than <cite>other</cite> the difference is
+<cite>this</cite> - <cite>other</cite>. If <cite>other</cite> is before <cite>this</cite>, 260 - <cite>this</cite> + <cite>other</cite>
+(same as 260 - (<cite>other</cite> - <cite>this</cite>)) is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin"><em>Tzolkin</em></a>) – The Tzolkin date to calculate the time difference to.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The number of days between the Tzolkin date of this <cite>Tzolkin</cite> instance</dt><dd><p>and the Tzolkin date <cite>other</cite>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getDayName">
+<span class="sig-name descname"><span class="pre">getDayName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getDayName" title="Link to this definition"></a></dt>
+<dd><p>Return the day name of the Tzolkin date of this class instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The day name of this Tzolkin date.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getDayNameNumber">
+<span class="sig-name descname"><span class="pre">getDayNameNumber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getDayNameNumber" title="Link to this definition"></a></dt>
+<dd><p>Return the number of the Tzolkin day name of this class instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of the Tzolkin day name of this Tzolkin date.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getDayNumber">
+<span class="sig-name descname"><span class="pre">getDayNumber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getDayNumber" title="Link to this definition"></a></dt>
+<dd><p>Return the day number of the Tzolkin date of this class instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The day number of this Tzolkin date.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getDayTimedelta">
+<span class="sig-name descname"><span class="pre">getDayTimedelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin"><span class="pre">Tzolkin</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">timedelta</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getDayTimedelta" title="Link to this definition"></a></dt>
+<dd><p>Return the number of days between the two Tzolkin dates as a
+<cite>datetime.timedelta</cite> object.
+No negative differences are returned, but the number of days to reach the
+<cite>other</cite> date if starting from this Tzolkin date.
+If this date is earlier than <cite>other</cite> the difference is
+<cite>this</cite> - <cite>other</cite>. If <cite>other</cite> is before <cite>this</cite>, 260 - <cite>this</cite> + <cite>other</cite>
+(same as 260 - (<cite>other</cite> - <cite>this</cite>)) is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#tzolkin_calendar.tzolkin.Tzolkin" title="tzolkin_calendar.tzolkin.Tzolkin"><em>Tzolkin</em></a>) – The Tzolkin date to calculate the time difference to.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The number of days between the Tzolkin date of this <cite>Tzolkin</cite> instance</dt><dd><p>and the Tzolkin date <cite>other</cite> as a <cite>datetime.timedelta</cite> object.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime.timedelta</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getLastDate">
+<span class="sig-name descname"><span class="pre">getLastDate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">datetime.date(2024,</span> <span class="pre">8,</span> <span class="pre">27)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">date</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getLastDate" title="Link to this definition"></a></dt>
+<dd><p>Return the last gregorian date with the Tzolkin date of this Tzolkin instance.
+Last means the first gregorian date with the same Tzolkin date as this <cite>Tzolkin</cite>
+instance before (backwards in time) <cite>start_date</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>start_date</strong> (<em>datetime.date</em><em>, </em><em>optional</em>) – The date to start searching for a day
+with the same Tzolkin date. Defaults to datetime.date.today().</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The gregorian date of the day with the same Tzolkin date as</dt><dd><p>this <cite>Tzolkin</cite> instance before <cite>start_date</cite>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime.date</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getLastDateList">
+<span class="sig-name descname"><span class="pre">getLastDateList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">datetime.date(2024,</span> <span class="pre">8,</span> <span class="pre">27)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getLastDateList" title="Link to this definition"></a></dt>
+<dd><p>Return a list of dates with the same Tzolkin date as this <cite>Tzolkin</cite> instance
+before`start_date`.
+Searches backwards in time, starting with <cite>start_date</cite>.
+The number of elements in this returned list is set with <cite>list_size</cite>, that is
+the number of dates to search and return. If <cite>list_size</cite> &lt; 1, an empty list is
+returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_date</strong> (<em>datetime.date</em><em>, </em><em>optional</em>) – The date to start searching for a day
+with the same Tzolkin date. Defaults to datetime.date.today().</p></li>
+<li><p><strong>list_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of elements in the returned list of
+dates. Defaults to 50.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The list with <cite>list_size</cite> elements of days with the</dt><dd><p>same Tzolkin date as this instance before <cite>start_date</cite>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[datetime.date]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getNameNumberFromName">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getNameNumberFromName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getNameNumberFromName" title="Link to this definition"></a></dt>
+<dd><p>Return the day name’s number (between 1 and 20) of the Tzolkin day name.
+Imix yields the number 1, Ikʼ 2, … , Ajaw yields 20.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name_str</strong> (<em>TzolkinName</em>) – The day name to convert to a number.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TzolkinException</strong> – Raised, if <cite>name_str</cite> is not a valid <cite>TzolkinName</cite>, that</p></li>
+<li><p><strong>is</strong><strong>, </strong><strong>one</strong><strong> of </strong><strong>&quot;Imix&quot;</strong><strong>, </strong><strong>&quot;Ikʼ&quot;</strong><strong>, </strong><strong>&quot;Akʼbʼal&quot;</strong><strong>, </strong><strong>&quot;Kʼan&quot;</strong><strong>, </strong><strong>&quot;Chikchan&quot;</strong><strong>, </strong><strong>&quot;Kimi&quot;</strong><strong>, </strong><strong>&quot;Manikʼ&quot;</strong><strong>,</strong> – </p></li>
+<li><p><strong>&quot;Lamat&quot;</strong><strong>, </strong><strong>&quot;Muluk&quot;</strong><strong>, </strong><strong>&quot;Ok&quot;</strong><strong>, </strong><strong>&quot;Chuwen&quot;</strong><strong>, </strong><strong>&quot;Ebʼ&quot;</strong><strong>, </strong><strong>&quot;Bʼen&quot;</strong><strong>, </strong><strong>&quot;Ix&quot;</strong><strong>, </strong><strong>&quot;Men&quot;</strong><strong>, </strong><strong>&quot;Kʼibʼ&quot;</strong><strong>,</strong> – </p></li>
+<li><p><strong>&quot;Kabʼan&quot;</strong><strong>, </strong><strong>&quot;Etzʼnabʼ&quot;</strong><strong>, </strong><strong>&quot;Kawak&quot; and &quot;Ajaw&quot;.</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The number of the Tzolkin day name, between 1 and 20 (including 1 and</dt><dd><p>20).</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getNextDate">
+<span class="sig-name descname"><span class="pre">getNextDate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">datetime.date(2024,</span> <span class="pre">8,</span> <span class="pre">27)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">date</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getNextDate" title="Link to this definition"></a></dt>
+<dd><p>Return the next gregorian date with the Tzolkin date of this Tzolkin instance.
+Next means the first gregorian date with the same Tzolkin date as this <cite>Tzolkin</cite>
+instance after (forward in time) <cite>start_date</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>start_date</strong> (<em>datetime.date</em><em>, </em><em>optional</em>) – The date to start searching for a day
+with the same Tzolkin date. Defaults to <cite>datetime.date.today()</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The gregorian date of the day with the same Tzolkin date as</dt><dd><p>this <cite>Tzolkin</cite> instance after <cite>start_date</cite>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime.date</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getNextDateList">
+<span class="sig-name descname"><span class="pre">getNextDateList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">datetime.date(2024,</span> <span class="pre">8,</span> <span class="pre">27)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getNextDateList" title="Link to this definition"></a></dt>
+<dd><p>Return a list of dates with the same Tzolkin date as this <cite>Tzolkin</cite> instance
+after <cite>start_date</cite>.
+Searches forwards in time, starting with <cite>start_date</cite>.
+The number of elements in this returned list is set with <cite>list_size</cite>, that is
+the number of dates to search and return. If <cite>list_size</cite> &lt; 1, an empty list is
+returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_date</strong> (<em>datetime.date</em><em>, </em><em>optional</em>) – The date to start searching for a day
+with the same Tzolkin date. Defaults to datetime.date.today().</p></li>
+<li><p><strong>list_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of elements in the returned list of
+dates. Defaults to 50.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The list with <cite>list_size</cite> elements of days with the</dt><dd><p>same Tzolkin date as this instance after <cite>start_date</cite>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[datetime.date]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getTzolkinCalendar">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getTzolkinCalendar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getTzolkinCalendar" title="Link to this definition"></a></dt>
+<dd><p>Return all days in a Tzolkin year as a List of strings.
+The returned List looks like: [“1 Imix”, “2 Ikʼ”, … , “13 Ajaw”]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>All days with day number and name in a list of strings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getTzolkinDate">
+<span class="sig-name descname"><span class="pre">getTzolkinDate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TzolkinDate</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getTzolkinDate" title="Link to this definition"></a></dt>
+<dd><p>Return the Tzolkin date as a <cite>TzolkinDate</cite> instance to use with the
+<cite>tzolkin_calendar.calculate</cite> functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <cite>TzolkinDate</cite> instance of this Tzolkin date.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>TzolkinDate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.getTzolkinYearDay">
+<span class="sig-name descname"><span class="pre">getTzolkinYearDay</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.getTzolkinYearDay" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Return the day of the Tzolkin year of this Tzolkin date.</dt><dd><p>1 Imix, the first day in the Tzolkin year, yields 1, 13 Ajaw, the last day of
+the Tzolkin year, yields 260 and so on.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The day of this Tzolkin date in the Tzolkin year, an integer between</dt><dd><p>1 and 260 (including 1 and 260).</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tzolkin_calendar.tzolkin.Tzolkin.parseTzolkinName">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parseTzolkinName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.tzolkin.Tzolkin.parseTzolkinName" title="Link to this definition"></a></dt>
+<dd><p>Parse the given string to get a valid Tzolkin name.
+Ignores lower- and uppercase and all non-alphanumeric or non-ASCII letters.</p>
+<p>Returns 0 if no Tzolkin day names matches the given string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name_str</strong> (<em>str</em>) – The string to parse for a Tzolkin day name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The number of the Tzolkin day name on success, 0 if no Tzolkin day name</dt><dd><p>matches.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tzolkin_calendar.calculate">
+<span id="tzolkin-calendar-calculate-module"></span><h2>tzolkin_calendar.calculate module<a class="headerlink" href="#module-tzolkin_calendar.calculate" title="Link to this heading"></a></h2>
+<p>This modules holds functions needed to calculate with Tzolkin calendar dates and
+convert them to and from gregorian dates.</p>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tzolkin_calendar.calculate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">calculate</span><span class="o">.</span><span class="n">gregorian2tzolkin</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s2">&quot;23.05.2014&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">.%m.%Y&quot;</span><span class="p">))</span>
+<span class="go">2 Etzʼnabʼ (𕐚)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tzolkin_calendar.calculate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">calculate</span><span class="o">.</span><span class="n">nextTzolkin</span><span class="p">(</span><span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">TzolkinDate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+<span class="go">datetime.date(2021, 4, 21)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tzolkin_calendar.calculate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">calculate</span><span class="o">.</span><span class="n">lastTzolkin</span><span class="p">(</span><span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">TzolkinDate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<span class="go">datetime.date(2021, 1, 5)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tzolkin_calendar.calculate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">calculate</span><span class="o">.</span><span class="n">tzolkin2gregorian</span><span class="p">(</span><span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">TzolkinDate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="s2">&quot;7&quot;</span><span class="p">),</span><span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
+<span class="go">[datetime.date(2021, 10, 15), datetime.date(2022, 7, 2), datetime.date(2023, 3, 19), datetime.date(2023, 12, 4),</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tzolkin_calendar.calculate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">calculate</span><span class="o">.</span><span class="n">tzolkin2gregorian</span><span class="p">(</span><span class="n">tzolkin_calendar</span><span class="o">.</span><span class="n">TzolkinDate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="s2">&quot;7&quot;</span><span class="p">),</span> <span class="n">forward</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
+<span class="go">[datetime.date(2021, 10, 15), datetime.date(2021, 1, 28), datetime.date(2020, 5, 13), datetime.date(2019, 8, 27),</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.calculate.calculateTzolkinName">
+<span class="sig-name descname"><span class="pre">calculateTzolkinName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_add</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.calculate.calculateTzolkinName" title="Link to this definition"></a></dt>
+<dd><p>Return the Tzolkin name <cite>to_add</cite> days after <cite>start_name</cite>.
+Add or subtracts the given integer to the index of the Tzolkin name and return
+the index of the new name. Adds <cite>to_add</cite> to the name index <cite>start_name</cite> and takes
+the value modulo 20. If the result would be 0, return 20 instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_name</strong> (<em>int</em>) – The index of the name to add days to.</p></li>
+<li><p><strong>to_add</strong> (<em>int</em>) – The number of days to add to the Tzolkin name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The index of the resulting Tzolkin name, <cite>to_add</cite> days after <cite>start_name</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.calculate.calculateTzolkinNumber">
+<span class="sig-name descname"><span class="pre">calculateTzolkinNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_add</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.calculate.calculateTzolkinNumber" title="Link to this definition"></a></dt>
+<dd><p>Return the Tzolkin number <cite>to_add</cite> days after <cite>start_number</cite>.
+Add or subtracts the given integer to the Tzolkin number and return the new number.
+Adds <cite>to_add</cite> to the number <cite>start_name</cite> and takes the value modulo 13. If the
+result would be 0, return 13 instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_number</strong> (<em>int</em>) – The number to add the days to.</p></li>
+<li><p><strong>to_add</strong> (<em>int</em>) – The number of days to add to the Tzolkin number.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resulting number <cite>to_add</cite> days after <cite>start_number</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.calculate.getTzolkinDay">
+<span class="sig-name descname"><span class="pre">getTzolkinDay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tzolkin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TzolkinDate</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.calculate.getTzolkinDay" title="Link to this definition"></a></dt>
+<dd><p>Return the day number in the Tzolkin year, in the interval [1,260] (including
+both 1 and 260).
+That is, the index of the given Tzolkin date in the 260 day Tzolkin year.
+<cite>1 Imix</cite> yields 1 (the first day of the year), <cite>13 Ajaw</cite> yields 260, the last day
+of the Tzolkin year. If the given date <cite>tzolkin</cite> does not exist, <cite>0</cite> is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tzolkin</strong> (<em>TzolkinDate</em>) – The Tzolkin date to get the day in the year of.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The day of the given date in the Tzolkin year, a positive integer between</dt><dd><p>and including 1 and 260.
+If the given date does not exist, <cite>0</cite> is returned.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.calculate.getTzolkinDiff">
+<span class="sig-name descname"><span class="pre">getTzolkinDiff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TzolkinDate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TzolkinDate</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.calculate.getTzolkinDiff" title="Link to this definition"></a></dt>
+<dd><p>Return the difference in days between the two given Tzolkin dates.
+No negative differences are returned, but the number of days to reach the <cite>end</cite> date
+if starting from <cite>start</cite>. If <cite>start</cite> is earlier than <cite>end</cite> the difference is
+<cite>start</cite> - <cite>end</cite>. If <cite>end</cite> is before <cite>start</cite>, 260 - <cite>start</cite> + <cite>end</cite>
+(same as 260 - (<cite>end</cite> - <cite>start</cite>)) is returned.</p>
+<p class="rubric">Example</p>
+<p>getTzolkinDiff returns 12 for <cite>start</cite> = 4 Manikʼ and <cite>end</cite> = 3 Kawak</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">getTzolkinDiff</span><span class="p">(</span>
+<span class="go">        start=tzolkin_calendar.TzolkinDate(number=4, name=7),</span>
+<span class="go">        end=tzolkin_calendar.TzolkinDate(number=3, name=19),</span>
+<span class="go">    ) == 12</span>
+</pre></div>
+</div>
+<p>getTzolkinDiff returns 250 for <cite>start</cite> = 8 Chuwen and <cite>end</cite> = 11 Imix</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">getTzolkinDiff</span><span class="p">(</span>
+<span class="go">        start=tzolkin_calendar.TzolkinDate(number=8, name=11),</span>
+<span class="go">        end=tzolkin_calendar.TzolkinDate(number=11, name=1),</span>
+<span class="go">    ) == 250</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<em>TzolkinDate</em>) – The Tzolkin date to start the calculation from.</p></li>
+<li><p><strong>end</strong> (<em>TzolkinDate</em>) – The Tzolkin date to calculate the time difference in days to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of days between the two given dates. Never negative (0 if
+<cite>start</cite> and <cite>end</cite> are the same day).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.calculate.gregorian2tzolkin">
+<span class="sig-name descname"><span class="pre">gregorian2tzolkin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TzolkinDate</span></span></span><a class="headerlink" href="#tzolkin_calendar.calculate.gregorian2tzolkin" title="Link to this definition"></a></dt>
+<dd><p>Return the Tzolkin date of the given gregorian date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>date</strong> (<em>datetime.date</em>) – The gregorian date to convert to Tzolkin.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Tzolkin date of the given day <cite>date</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TzolkinDate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.calculate.lastTzolkin">
+<span class="sig-name descname"><span class="pre">lastTzolkin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tzolkin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TzolkinDate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">datetime.date(2024,</span> <span class="pre">8,</span> <span class="pre">27)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">date</span></span></span><a class="headerlink" href="#tzolkin_calendar.calculate.lastTzolkin" title="Link to this definition"></a></dt>
+<dd><p>Return the last gregorian date before <cite>starting</cite>, that has a Tzolkin date of
+<cite>tzolkin</cite>.
+Search backwards in time for a day with the  Tzolkin date <cite>tzolkin</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tzolkin</strong> (<em>TzolkinDate</em>) – The Tzolkin date to search for.</p></li>
+<li><p><strong>starting</strong> (<em>datetime.date</em><em>, </em><em>optional</em>) – The date to start the search. Defaults to
+<cite>datetime.date.today()</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The last gregorian date with the given Tzolkin date <cite>tzolkin</cite></dt><dd><p>before <cite>starting</cite>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime.date</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.calculate.makeLookUpTable">
+<span class="sig-name descname"><span class="pre">makeLookUpTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">TzolkinDate</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tzolkin_calendar.calculate.makeLookUpTable" title="Link to this definition"></a></dt>
+<dd><p>Return a dictionary holding all <cite>TzolkinDate</cite> instances of a tzolkin year.
+The tzolkin year consists of all combinations of <cite>day_names</cite> and <cite>ay_numbers</cite>,
+<cite>day_numbers</cite> are the numbers from 1 to 13 and <cite>day_names</cite> the names from
+‘Imix’ to ‘Ajaw’. So a Tzolkin year is: 1 Imix, 2 Ik’, 3 Ak’b’al, … and
+finishes at 12 Kawak and finally 13 Ajaw.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The dictionary of all tzolkin date combinations in a</dt><dd><p>tzolkin year (of 260 days).</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[int, TzolkinDate]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.calculate.nextTzolkin">
+<span class="sig-name descname"><span class="pre">nextTzolkin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tzolkin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TzolkinDate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">datetime.date(2024,</span> <span class="pre">8,</span> <span class="pre">27)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">date</span></span></span><a class="headerlink" href="#tzolkin_calendar.calculate.nextTzolkin" title="Link to this definition"></a></dt>
+<dd><p>Return the next gregorian date after <cite>starting</cite>, that has a Tzolkin date of
+<cite>tzolkin</cite>.
+Search forward in time for a day with Tzolkin date <cite>tzolkin</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tzolkin</strong> (<em>TzolkinDate</em>) – The Tzolkin date to search for.</p></li>
+<li><p><strong>starting</strong> (<em>datetime.date</em><em>, </em><em>optional</em>) – The date to start the search. Defaults to
+<cite>datetime.date.today()</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The next gregorian date with the given Tzolkin date <cite>tzolkin</cite></dt><dd><p>after <cite>starting</cite>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime.date</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.calculate.parseTzolkinName">
+<span class="sig-name descname"><span class="pre">parseTzolkinName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#tzolkin_calendar.calculate.parseTzolkinName" title="Link to this definition"></a></dt>
+<dd><p>Parse the given string to get a Tzolkin day name.
+Ignores lower- and uppercase, ignores all non-alphanumberic characters.</p>
+<p>Returns 0 if no name has been found</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name_str</strong> (<em>str</em>) – The string to parse to get a Tzolkin day name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of the found Tzolkin day name. 0 on errors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.calculate.tzolkin2gregorian">
+<span class="sig-name descname"><span class="pre">tzolkin2gregorian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tzolkin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TzolkinDate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forward</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#tzolkin_calendar.calculate.tzolkin2gregorian" title="Link to this definition"></a></dt>
+<dd><p>Return a list of dates having the same Tzolkin date as the given date <cite>tzolkin</cite>.</p>
+<p>If <cite>num_results</cite> is smaller than 1, an empty list is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tzolkin</strong> (<em>TzolkinDate</em>) – The Tzolkin date to search for.</p></li>
+<li><p><strong>start</strong> (<em>datetime.date</em>) – The gregorian date to start the search from.</p></li>
+<li><p><strong>num_results</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of results to return. If this is &lt; 1,
+an empty list is returned. Defaults to 100.</p></li>
+<li><p><strong>forward</strong> (<em>bool</em><em>, </em><em>optional</em>) – The direction in time to search. Either forward (if</p></li>
+<li><p><strong>backwards</strong> (<em>forward is True</em><em>) </em><em>or</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The list of gregorian dates having the same Tzolkin date as</dt><dd><p><cite>tzolkin</cite>. The number of elements of this list is
+<cite>num_results</cite>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[datetime.date]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tzolkin_calendar.main">
+<span id="tzolkin-calendar-main-module"></span><h2>tzolkin_calendar.main module<a class="headerlink" href="#module-tzolkin_calendar.main" title="Link to this heading"></a></h2>
+<p>The main entry point of the program if tzolkin_calender is not imported, but called
+as a script.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="tzolkin_calendar.main.main">
+<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#tzolkin_calendar.main.main" title="Link to this definition"></a></dt>
+<dd><p>Main function, called if this is called as a script and not imported.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Tzolk%E2%80%99in%20Calender%20Python%20Module.html" class="btn btn-neutral float-left" title="Usage of tzolkin-calendar in Your Python Code" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on 27.08.2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
